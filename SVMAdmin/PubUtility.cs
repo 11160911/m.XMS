@@ -27,6 +27,16 @@ namespace SVMAdmin
             ndh.AppendChild(script1);
         }
 
+        public static void AppendCssAtHeadEnd(HtmlAgilityPack.HtmlDocument doc, string srcCssFile)
+        {
+            HtmlAgilityPack.HtmlNode css = doc.CreateElement("link");
+            css.Attributes.Add("type", "text/css");
+            css.Attributes.Add("rel", "stylesheet");
+            css.Attributes.Add("href", srcCssFile + "?v=" + DateTime.Now.ToString("yyMMddHHmmss"));
+            HtmlAgilityPack.HtmlNode ndh = doc.DocumentNode.SelectSingleNode("//head");
+            ndh.AppendChild(css);
+        }
+
         public static DataSet GetApiReturn(string[] message)
         {
             DataTable dtRt = new DataTable();
@@ -57,6 +67,17 @@ namespace SVMAdmin
             CR.ContentType = "text/xml";
             CR.Content = System.Text.Encoding.UTF8.GetString(ms.ToArray());
             return CR;
+        }
+
+        public static bool IsNumericColumn(this DataColumn col)
+        {
+            if (col == null)
+                return false;
+            // Make this const
+            var numericTypes = new[] { typeof(Byte), typeof(Decimal), typeof(Double),
+        typeof(Int16), typeof(Int32), typeof(Int64), typeof(SByte),
+        typeof(Single), typeof(UInt16), typeof(UInt32), typeof(UInt64)};
+            return numericTypes.Contains(col.DataType);
         }
 
         /// <summary>
@@ -438,11 +459,31 @@ namespace SVMAdmin
                 catch (Exception error)
                 {
                     dbop.Dispose();
-                    throw error;
+                    throw new Exception(error.Message);
                 }
             }
             return iEx;
         }
+
+        public static int UpdateTable(string TableName, DataTable dt, string[] UniqueKey, UserInfo uu, string ModuleID)
+        {
+            int iEx = 0;
+            using (DBOperator dbop = new DBOperator())
+            {
+                try
+                {
+                    iEx = dbop.Update(TableName, dt, UniqueKey, uu, ModuleID);
+                    dbop.Dispose();
+                }
+                catch (Exception error)
+                {
+                    dbop.Dispose();
+                    throw new Exception(error.Message);
+                }
+            }
+            return iEx;
+        }
+
 
         public static string DecodeSGID(string strSGID)
         {
@@ -593,11 +634,7 @@ namespace SVMAdmin
 
             dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "MMMachineSet", "智販機設定", "MMMachineSet", "P", "fa-cogs" });
 
-            dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "Inv", "智販機庫存", "Inv", "P", "fa-cubes" });
-
             dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMMacPLUSet", "智販機商品設定", "GMMacPLUSet", "P", "fa-cubes" });
-            dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMMacPLUSetT", "智販機商品設定Test", "GMMacPLUSetT", "P", "fa-cubes" });
-
             dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMInvPLUSet", "貨倉商品設定", "GMInvPLUSet", "P", "fa-cubes" });
             dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMInvoiceNoSet", "發票分配(店+機)", "GMInvoiceNoSet", "P", "fa-cubes" });
             dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMPicVdoSet", "圖片/影片設定", "GMPicVdoSet", "P", "fa-cubes" });

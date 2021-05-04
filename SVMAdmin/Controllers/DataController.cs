@@ -29,9 +29,11 @@ namespace SVMAdmin.Controllers
         public ActionResult LoginSys()
         {
             System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "LoginSysOK", "" });
+
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
+
                 IFormCollection rq = HttpContext.Request.Form;
                 string USERID = rq["USERID"];
                 string PASSWORD = rq["PASSWORD"];
@@ -39,6 +41,48 @@ namespace SVMAdmin.Controllers
                 UserInfo uu = new UserInfo();
                 uu.UserID = "Login";
                 uu.CompanyId = CompanyID;
+
+                string sql = "select Man_ID,Man_Name,Password from EmployeeSV ";
+                sql += " where CompanyCode='" + CompanyID.SqlQuote() + "'";
+                sql += " and Man_ID='" + USERID.SqlQuote() + "'";
+                sql += " and Password='" + PASSWORD.SqlQuote() + "'";
+                sql += "  and Password<>''";
+                DataTable dtTmp = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtTmp.Rows.Count == 0)
+                    throw new Exception("密碼錯誤");
+                dtTmp.TableName = "dtEmployee";
+                dtTmp.Columns.Add("token", typeof(string));
+                uu.UserID = USERID;
+                string token = PubUtility.GenerateJwtToken(uu);
+                dtTmp.Rows[0]["token"] = token;
+
+                ds.Tables.Add(dtTmp);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("LoginSysByApi")]
+        public ActionResult LoginSysByApi()
+        {
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "LoginSysOK", "" });
+
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+
+                IFormCollection rq = HttpContext.Request.Form;
+                string USERID = rq["USERID"];
+                string PASSWORD = rq["PASSWORD"];
+                string CompanyID = rq["CompanyID"];
+                UserInfo uu = new UserInfo();
+                uu.UserID = "Login";
+                uu.CompanyId = CompanyID;
+
 
                 DataTable dt = new DataTable("Employee");
                 dt.Columns.Add("Man_ID", typeof(string));
@@ -60,9 +104,12 @@ namespace SVMAdmin.Controllers
                 AP.Method = "LoginSys";
                 AP.ObjName = "";
                 AP.UnknowName = "";
+
+
                 string strPara = PubUtility.GetSerString(AP, typeof(iXmsApiParameter));
                 string url = ConstList.ThisSiteConfig.Companys
                     .Where<Config.Company>(C => C.CompanyID == uu.CompanyId).ToList()[0].iXmsApiUrl + "/SVMApi.aspx";
+
 
                 Uri aUri = new Uri(url);
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(aUri);
@@ -98,16 +145,24 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
-
         [Route("GetMenuInit")]
         public ActionResult GetMenuInit()
         {
             UserInfo uu = PubUtility.GetCurrentUser(this);
             System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetMenuInitOK", uu.UserID });
-            DataTable dt = ConstList.AllFunction();
-            if (ds.Tables["dtAllFunction"] == null)
-                if (dt.DataSet == null)
-                    ds.Tables.Add(dt);
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                DataTable dt = ConstList.AllFunction();
+                if (ds.Tables["dtAllFunction"] == null)
+                    if (dt.DataSet == null)
+                        ds.Tables.Add(dt);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
             return PubUtility.DatasetXML(ds);
         }
 
@@ -271,18 +326,20 @@ namespace SVMAdmin.Controllers
                     {
                         try
                         {
-                            sql = "select * from PLUSVM where GD_NO='" + dr["GD_NO"].ToString().SqlQuote() + "'";
+                            sql = "select * from PLUSV where GD_NO='" + dr["GD_NO"].ToString().SqlQuote() + "'";
                             DataTable dtOld = dbop.Query(sql, uu, "SYS");
-                            sql = "update PLUSVM set ";
-                            sql += " GD_Sname='" + dr["GD_Sname"].ToString().SqlQuote() + "'";
-                            sql += ",Photo1='" + dr["Photo1"].ToString().SqlQuote() + "'";
-                            sql += ",Photo2='" + dr["Photo2"].ToString().SqlQuote() + "'";
-                            sql += " where GD_NO='" + dr["GD_NO"].ToString().SqlQuote() + "'";
-                            dbop.ExecuteSql(sql, uu, "SYS");
+                            //sql = "update PLUSVM set ";
+                            //sql += " GD_Sname='" + dr["GD_Sname"].ToString().SqlQuote() + "'";
+                            //sql += ",Photo1='" + dr["Photo1"].ToString().SqlQuote() + "'";
+                            //sql += ",Photo2='" + dr["Photo2"].ToString().SqlQuote() + "'";
+                            //sql += " where GD_NO='" + dr["GD_NO"].ToString().SqlQuote() + "'";
+                            //dbop.ExecuteSql(sql, uu, "SYS");
+                            dbop.Update("PLUSV", dtRec, new string[] { "GD_NO" }, uu, "SYS");
+
                             string OldPhoto1 = dtOld.Rows[0]["Photo1"].ToString();
                             if (OldPhoto1 != "" & OldPhoto1 != dr["Photo1"].ToString())
                             {
-                                sql = "delete from ImageTable where SGID='"+ OldPhoto1 + "'";
+                                sql = "delete from ImageTable where SGID='" + OldPhoto1 + "'";
                                 dbop.ExecuteSql(sql, uu, "SYS");
                             }
                             string OldPhoto2 = dtOld.Rows[0]["Photo2"].ToString();
@@ -297,14 +354,14 @@ namespace SVMAdmin.Controllers
                         {
                             ts.Dispose();
                             dbop.Dispose();
-                            throw err;
+                            throw new Exception(err.Message);
                         }
                         dbop.Dispose();
                     }
                 }
                 sql = "select a.*,b.GD_PRICES,b.GD_NAME";
                 sql += " from PLUSVM a";
-                sql += " inner join PLUSV b on a.GD_NO=b.GD_NO";
+                sql += " inner join PLU b on a.GD_NO=b.GD_NO";
                 sql += " where b.GD_NO='" + dr["GD_NO"].ToString().SqlQuote() + "'";
                 DataTable dtPLU = PubUtility.SqlQry(sql, uu, "SYS");
                 dtPLU.TableName = "dtPLU";
@@ -328,15 +385,15 @@ namespace SVMAdmin.Controllers
             {
                 IFormCollection rq = HttpContext.Request.Form;
                 string KeyWord = rq["KeyWord"];
-                string sql = "select a.*,b.GD_PRICES,b.GD_NAME";
-                sql += " from PLUSVM a";
-                sql += " inner join PLUSV b on a.GD_NO=b.GD_NO";
+                string sql = "select a.*";
+                sql += " from PLUSV a";
+                //sql += " inner join PLUSV b on a.GD_NO=b.GD_NO";
                 sql += " where 1=1";
                 if (KeyWord!="")
                 {
                     sql += " and (";
-                    sql += " b.GD_NAME like '"+ KeyWord + "%'";
-                    sql += " or b.GD_NO='" + KeyWord + "'";
+                    sql += " a.GD_NAME like '"+ KeyWord + "%'";
+                    sql += " or a.GD_NO='" + KeyWord + "'";
                     sql += " or a.GD_Sname='" + KeyWord + "'";
                     sql += ")";
                 }
@@ -573,7 +630,6 @@ namespace SVMAdmin.Controllers
                 string KeyWord = rq["KeyWord"];
                 string sql = "select a.Type_ID,a.Type_Name ";
                 sql += " from Layer a";
-                //sql += " inner join PLUSV b on a.PLU=b.GD_NO";
                 sql += " where 1=1";
                 //if (KeyWord != "")
                 //{

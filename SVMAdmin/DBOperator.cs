@@ -9,13 +9,14 @@ namespace SVMAdmin
 {
     public class DBOperator : IDisposable
     {
-        private string LogPath = @"";
+        private string LogPath = "";
         private string strCommField = ",SGID,CREATE_DATE,MODIFY_DATE,CREATE_TIME,MODIFY_TIME,CREATE_USER,MODIFY_USER,STATUS,";
         private string strCommFieldUp = ",MODIFY_DATE,MODIFY_TIME,MODIFY_USER,";
         private double dblCounterValue;
-        private string vSgid;
+        private string vSgid = "";
         private string CompanyID = "";
-        System.Collections.Hashtable HTConn = new System.Collections.Hashtable();
+        //System.Collections.Hashtable HTConn = new System.Collections.Hashtable();
+        private Dictionary<string, System.Data.SqlClient.SqlConnection> HTConn = new Dictionary<string, SqlConnection>();
         string conns = "";
 
         public DBOperator()
@@ -30,10 +31,15 @@ namespace SVMAdmin
         private System.Data.SqlClient.SqlConnection SetConnectionByModule(UserInfo vUser, string ModuleID)
         {
             CompanyID = vUser.CompanyId;
-            
+            LogPath = ConstList.ThisSiteConfig.LogPath.Trim();
+            if (! LogPath.EndsWith(@"\"))
+                LogPath += @"\";
+            LogPath = ConstList.ThisSiteConfig.LogPath + CompanyID + @"\";
+            if (!System.IO.Directory.Exists(LogPath))
+                System.IO.Directory.CreateDirectory(LogPath);
             System.Data.SqlClient.SqlConnection cnX = null;
             string cnKey = CompanyID.ToUpper() + "_" + ModuleID.ToUpper();
-            if (HTConn[cnKey] != null)
+            if (HTConn.ContainsKey(cnKey))
                 cnX = (System.Data.SqlClient.SqlConnection)HTConn[cnKey];
             else
             {
@@ -44,222 +50,213 @@ namespace SVMAdmin
             return cnX;
         }
 
-        internal string Add(string TableName, DataTable dt, UserInfo vUser, System.Data.SqlClient.SqlConnection cn)
+        internal string Add(string TableName, DataTable dt, UserInfo vUser, System.Data.SqlClient.SqlConnection cn , string ModuleID)
         {
+            DataTable dtInfo = DbopUtility.GetTableInfo(TableName, vUser, ModuleID, cn);
             string strSql;
+            foreach(DataColumn col in dt.Columns)
+            {
+                if (!dtInfo.Columns.Contains(col.ColumnName))
+                    dt.Columns.Remove(col);
+            }
+            string sql1 = "insert into " + TableName + " (";
+            string sql2 = " values (";
+            List<string> allFields = new List<string>();
+            foreach (DataColumn col in dt.Columns)
+            {
+                sql1 += col.ColumnName + ",";
+                sql2 += "@" + col.ColumnName + ",";
+                allFields.Add(col.ColumnName);
+            }
+            string[] exFields = "CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime,SGID,CREATE_DATE,MODIFY_DATE,CREATE_TIME,MODIFY_TIME,CREATE_USER,MODIFY_USER".Split(",");
+            for (int i=0; i < exFields.Length; i++)
+            {
+                string fd = exFields[i];
+                if (dtInfo.Columns.Contains(fd) & !dt.Columns.Contains(fd))
+                {
+                    sql1 += fd + ",";
+                    sql2 += "@" + fd + ",";
+                    allFields.Add(fd);
+                }
+            }
+            string sqlCmd = sql1.Substring(0, sql1.Length - 1) + ")" + sql2.Substring(0, sql2.Length - 1) + ")";
             DataTable dtmp;
-            //========
-            using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.RequiresNew))
+            if (dtInfo.Columns.Contains("SGID"))
             {
-                try
+                using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.RequiresNew))
                 {
-                    string strCon = cn.ConnectionString;
-                    System.Data.SqlClient.SqlConnection cnX = GetConnection(vUser, "SYS");
-                    strSql = "UPDATE sy_COUNTER set CNT_VALUE=CNT_VALUE+" + Convert.ToString(dt.Rows.Count) + " WHERE CNT_CODE='SGID'";
-                    Int32 es = ExecuteSql(strSql, vUser, cnX);
-                    if (es == 0)
-                        throw new Exception("Can not found counter : SGID ");
-                    strSql = "select CNT_VALUE FROM sy_COUNTER WHERE CNT_CODE='SGID'";
-                    dtmp = Query(strSql, vUser, cnX);
-                    dblCounterValue = Convert.ToDouble(dtmp.Rows[0][0]) - dt.Rows.Count + 1;
-                    ts.Complete();
-                    cnX.Close();
+                    try
+                    {
+                        string strCon = cn.ConnectionString;
+                        System.Data.SqlClient.SqlConnection cnX = GetConnection(vUser, "SYS");
+                        strSql = "UPDATE sy_COUNTER set CNT_VALUE=CNT_VALUE+" + Convert.ToString(dt.Rows.Count) + " WHERE CNT_CODE='SGID'";
+                        Int32 es = ExecuteSql(strSql, vUser, cnX);
+                        if (es == 0)
+                            throw new Exception("Can not found counter : SGID ");
+                        strSql = "select CNT_VALUE FROM sy_COUNTER WHERE CNT_CODE='SGID'";
+                        dtmp = Query(strSql, vUser, cnX);
+                        dblCounterValue = Convert.ToDouble(dtmp.Rows[0][0]) - dt.Rows.Count + 1;
+                        ts.Complete();
+                        cnX.Close();
+                    }
+                    catch (Exception err)
+                    {
+                        throw new Exception(err.Message);
+                    }
+                    ts.Dispose();
                 }
-                catch (Exception err)
-                {
-                    throw new Exception(err.Message);
-                }
-                ts.Dispose();
             }
-
-            //Get Table Structure
-            strSql = "select * from " + TableName + " where 1=2";
-            dtmp = Query(strSql, vUser, cn);
-
-            string strTablefields = ",";
-            string strTmpStr;
-            string strBinary = "";
-            for (int i = 0; i < dtmp.Columns.Count; i++)
-            {
-                if (dtmp.Columns[i].DataType.ToString() != "System.Byte[]")
-                    strTablefields += dtmp.Columns[i].ColumnName.ToUpper() + ",";
-                else
-                    strBinary = dtmp.Columns[i].ColumnName;
-            }
-            // Begin to create insert Sql
-            bool isNumSGID = false;
-            try
-            {
-                if (dtmp.Columns["SGID"].DataType != typeof(string))
-                    isNumSGID = true;
-            }
-            catch { }
 
             using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required))
             {
+                string dnow = DateTime.Now.ToString("yyyy/MM/dd");
+                string tnow = DateTime.Now.ToString("HH:mm:ss");
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    string sql1 = "insert into " + TableName + " (";
-                    string sql2 = " values (";
-                    for (int j = 0; j < dt.Columns.Count; j++)
+                    System.Data.SqlClient.SqlCommand cm = new System.Data.SqlClient.SqlCommand(sqlCmd, cn);
+                    string strForLog = sqlCmd;
+                    foreach (string field in allFields)
                     {
-                        string strCn = "," + dt.Columns[j].ColumnName.ToUpper() + ",";
-                        if (strTablefields.IndexOf(strCn) > -1 & strCommField.IndexOf(strCn) < 0)
+                        string fieldL = field.ToLower();
+                        SqlParameter SP = null;
+                        if (fieldL == "sgid")
+                        { 
+                            vSgid = sgidstr(dblCounterValue);
+                            SP = cm.Parameters.AddWithValue("@" + field, vSgid);
+                        }
+                        else if (fieldL == "companycode")
+                            SP = cm.Parameters.AddWithValue("@" + field, vUser.CompanyId);
+                        else if (fieldL == "crtuser" | fieldL == "moduser" | fieldL == "create_user" | fieldL == "modify_user")
+                            SP = cm.Parameters.AddWithValue("@" + field, vUser.UserID);
+                        else if (fieldL == "crtdate" | fieldL == "moddate" | fieldL == "create_date" | fieldL == "modify_date")
+                            SP = cm.Parameters.AddWithValue("@" + field, dnow);
+                        else if (fieldL == "crttime" | fieldL == "modtime" | fieldL == "create_time" | fieldL == "modify_time")
+                            SP = cm.Parameters.AddWithValue("@"  + field, tnow);
+                        else
+                            SP = cm.Parameters.AddWithValue("@" + field, dt.Rows[i][field]);
+                        if (SP != null)
                         {
-                            sql1 += dt.Columns[j].ColumnName + ",";
-                            if (dt.Rows[i][j] == DBNull.Value)
-                                sql2 = sql2 + " Null ,";
-                            else if (dt.Columns[j].DataType == typeof(DateTime))
-                                sql2 = sql2 + "'" + dt.Rows[i][j].ToString() + "',";
-                            else if (dt.Rows[i][j].GetType() == typeof(bool))
-                            {
-                                if ((bool)dt.Rows[i][j])
-                                    sql2 = sql2 + "1,";
-                                else
-                                    sql2 = sql2 + "0,";
-                            }
-                            else if (dt.Rows[i][j].GetType().IsValueType)
-                                sql2 = sql2 + dt.Rows[i][j].ToString() + ",";
-                            else
-                            {
-                                strTmpStr = dt.Rows[i][j].ToString();
-                                if (strTmpStr.IndexOf("'") > -1)
-                                    strTmpStr = strTmpStr.Replace("'", "''");
-                                sql2 = sql2 + "N'" + strTmpStr.Trim() + "',";
-                            }
+                            if (SP.Value == DBNull.Value)
+                                strForLog = strForLog.Replace("@" + field, "null");
+                            else if (dtInfo.Columns[field].DataType == typeof(string))
+                                strForLog = strForLog.Replace("@" + field, "N'" + SP.Value.ToString().SqlQuote() + "'");
+                            else if (PubUtility.IsNumericColumn(dtInfo.Columns[field]))
+                                strForLog = strForLog.Replace("@" + field, SP.Value.ToString());
+                            else if (dtInfo.Columns[field].DataType == typeof(DateTime) || dtInfo.Columns[field].DataType == typeof(DateTimeOffset))
+                                strForLog = strForLog.Replace("@" + field, "'" + Convert.ToDateTime(SP.Value).ToString("yyyy-MM-dd HH:mm:ss") + "'");
                         }
                     }
-                    if (!isNumSGID)
-                        sql1 += "SGID,CREATE_DATE,MODIFY_DATE,CREATE_TIME,MODIFY_TIME,CREATE_USER,MODIFY_USER,STATUS)";
-                    if (isNumSGID)
-                        sql1 += "CREATE_DATE,MODIFY_DATE,CREATE_TIME,MODIFY_TIME,CREATE_USER,MODIFY_USER,STATUS)";
-                    else
-                        sql2 += "'" + InfoAdd("SGID", vUser) + "',";
-
-                    sql2 += "'" + InfoAdd("CREATE_DATE", vUser) + "',";
-                    sql2 += "'" + InfoAdd("MODIFY_DATE", vUser) + "',";
-                    sql2 += "'" + InfoAdd("CREATE_TIME", vUser) + "',";
-                    sql2 += "'" + InfoAdd("MODIFY_TIME", vUser) + "',";
-                    sql2 += "'" + InfoAdd("CREATE_USER", vUser) + "',";
-                    sql2 += "'" + InfoAdd("MODIFY_USER", vUser) + "',";
-                    string strSTATUS = "";
-                    if (dt.Columns.Contains("STATUS"))
+                    try
                     {
-                        if (dt.Rows[i]["STATUS"].ToString() != "")
-                            strSTATUS = "'" + dt.Rows[i]["STATUS"].ToString() + "')";
+                        DateTime d1 = DateTime.Now;
+                        cm.ExecuteNonQuery();
+                        DateTime d2 = DateTime.Now;
+                        WriteLogFile(LogPath + DateTime.Now.ToString("yyyyMMdd") + "SqlExec.Log", strForLog + " --; " + (d2 - d1).ToString() + ";" + vUser.UserID + " ; " + DateTime.Now.ToString("yyyyMMdd HH:mm:ss"));
                     }
-                    if (strSTATUS == "")
-                        strSTATUS = "'" + InfoAdd("STATUS", vUser) + "')";
-                    sql2 += strSTATUS;
-
-                    //sql1 = sql1.Substring(0,sql1.Length-1)+")";
-                    //sql2 = sql2.Substring(0,sql2.Length-1)+")";
-                    sql1 += sql2;
-                    ExecuteSql(sql1, vUser, cn);
-                    if (strBinary != "")
+                    catch (Exception ex)
                     {
-                        if (dt.Columns.Contains(strBinary))
-                        {
-                            if (dt.Rows[i][strBinary].ToString() != "")
-                            {
-                                strSql = "update " + TableName + " set " + strBinary + "=@image where SGID =@sgid";
-                                System.Data.SqlClient.SqlCommand cm = new System.Data.SqlClient.SqlCommand(strSql, cn);
-                                cm.Parameters.AddWithValue("image", dt.Rows[i][strBinary]);
-                                cm.Parameters.AddWithValue("sgid", vSgid);
-                                cm.ExecuteNonQuery();
-                            }
-                        }
+                        WriteLogFile(LogPath + "SqlError.Log", ex.Message);
+                        WriteLogFile(LogPath + "SqlError.Log", strForLog + " --; " + ";" + vUser.UserID + " ; " + DateTime.Now.ToString("yyyyMMdd HH:mm:ss"));
+                        throw new Exception(ex.Message);
                     }
                     dblCounterValue += 1;
                 }
                 ts.Complete();
                 ts.Dispose();
             }
+            
             return vSgid;
         }
 
         public string Add(string TableName, DataTable dt, UserInfo vUser, string ModuleID)
         {
-            return Add(TableName, dt, vUser, SetConnectionByModule(vUser, ModuleID));
+            return Add(TableName, dt, vUser, SetConnectionByModule(vUser, ModuleID), ModuleID);
         }
 
-        internal Int32 Update(string TableName, DataTable dt, UserInfo vUser, System.Data.SqlClient.SqlConnection cn)
+        internal Int32 Update(string TableName, DataTable dt, string[] UniqueKey, UserInfo vUser, System.Data.SqlClient.SqlConnection cn , string ModuleID)
         {
-            string strSql;
-            Int32 UpCnt = 0;
-            DataTable dtmp;
-            //Get Table Structure
-            strSql = "select * from " + TableName + " where 1=2";
-            dtmp = Query(strSql, vUser, cn);
-            string strTablefields = ",";
-            string strTmpStr;
-            string strBinary = "";
-            for (int i = 0; i <= dtmp.Columns.Count - 1; i++)
+            DataTable dtInfo = DbopUtility.GetTableInfo(TableName, vUser, ModuleID , cn);
+            int UpCnt = 0;
+            foreach (DataColumn col in dt.Columns)
             {
-                if (",SGID,CREATE_DATE,CREATE_TIME,CREATE_USER,MODIFY_DATE,MODIFY_TIME,MODIFY_USER,".IndexOf("," + dtmp.Columns[i].ColumnName + ",") < 0)
+                if (!dtInfo.Columns.Contains(col.ColumnName))
+                    dt.Columns.Remove(col);
+            }
+            string sql1 = "update " + TableName + " set ";
+            string sql2 = " where ";
+            List<string> allFields = new List<string>();
+            foreach (DataColumn col in dt.Columns)
+            {
+                string fd = col.ColumnName;
+                if (UniqueKey.Contains(fd))
                 {
-                    if (dtmp.Columns[i].DataType.ToString() != "System.Byte[]")
-                        strTablefields += dtmp.Columns[i].ColumnName.ToUpper() + ",";
-                    else
-                        strBinary = dtmp.Columns[i].ColumnName;
+                    sql2 += fd + "=@" + fd + " and ";
+                }
+                else
+                {
+                    sql1 += fd + "=@" + fd + ",";
+                }
+                allFields.Add(col.ColumnName);
+            }
+            string[] exFields = "ModUser,ModDate,ModTime,MODIFY_DATE,MODIFY_TIME,MODIFY_USER".Split(",");
+            for (int i = 0; i < exFields.Length; i++)
+            {
+                string fd = exFields[i];
+                if (dtInfo.Columns.Contains(fd) & !dt.Columns.Contains(fd))
+                {
+                    sql1 += fd + "=@" + fd + ",";
+                    allFields.Add(fd);
                 }
             }
-            // Begin to create insert Sql
+            string sqlCmd = sql1.Substring(0, sql1.Length - 1) + sql2.Substring(0, sql2.Length - 5);
+
             using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required))
             {
+                string dnow = DateTime.Now.ToString("yyyy/MM/dd");
+                string tnow = DateTime.Now.ToString("HH:mm:ss");
                 for (int i = 0; i <= dt.Rows.Count - 1; i++)
                 {
-                    string sql1 = "update " + TableName + " set ";
-                    string sql2 = "";
-                    for (int j = 0; j <= dt.Columns.Count - 1; j++)
+                    System.Data.SqlClient.SqlCommand cm = new System.Data.SqlClient.SqlCommand(sqlCmd, cn);
+                    string strForLog = sqlCmd;
+                    foreach (string field in allFields)
                     {
-                        if (strCommFieldUp.IndexOf("," + dt.Columns[j].ColumnName.ToUpper() + ",") == -1)
+                        string fieldL = field.ToLower();
+                        SqlParameter SP = null;
+                        if (fieldL == "moduser"| fieldL == "modify_user")
+                            SP = cm.Parameters.AddWithValue("@" + field, vUser.UserID);
+                        else if ( fieldL == "moddate" | fieldL == "modify_date")
+                            SP = cm.Parameters.AddWithValue("@" + field, dnow);
+                        else if ( fieldL == "modtime" | fieldL == "modify_time")
+                            SP = cm.Parameters.AddWithValue("@" + field, tnow);
+                        else
+                            SP = cm.Parameters.AddWithValue("@" + field, dt.Rows[i][field]);
+                        if (SP != null)
                         {
-                            if (strTablefields.IndexOf(("," + dt.Columns[j].ColumnName.ToUpper() + ",")) > -1)
-                            {
-                                sql2 += dt.Columns[j].ColumnName + "=";
-                                if (dt.Rows[i][j] == DBNull.Value)
-                                    sql2 = sql2 + " Null ,";
-                                else if (dt.Columns[j].DataType == typeof(DateTime))
-                                    sql2 = sql2 + "'" + dt.Rows[i][j].ToString() + "',";
-                                else if (dt.Rows[i][j].GetType() == typeof(bool))
-                                {
-                                    if ((bool)dt.Rows[i][j])
-                                        sql2 = sql2 + "1,";
-                                    else
-                                        sql2 = sql2 + "0,";
-                                }
-                                else if (dt.Rows[i][j].GetType().IsValueType)
-                                    sql2 = sql2 + dt.Rows[i][j].ToString() + ",";
-                                else
-                                {
-                                    strTmpStr = dt.Rows[i][j].ToString();
-                                    if (strTmpStr.IndexOf("'") > -1)
-                                        strTmpStr = strTmpStr.Replace("'", "''");
-                                    sql2 = sql2 + "N'" + strTmpStr.Trim() + "',";
-                                }
-                            }
+                            if (SP.Value == DBNull.Value)
+                                strForLog = strForLog.Replace("@" + field, "null");
+                            else if (dtInfo.Columns[field].DataType == typeof(string))
+                                strForLog = strForLog.Replace("@" + field, "N'" + SP.Value.ToString().SqlQuote() + "'");
+                            else if (PubUtility.IsNumericColumn(dtInfo.Columns[field]))
+                                strForLog = strForLog.Replace("@" + field, SP.Value.ToString());
+                            else if (dtInfo.Columns[field].DataType == typeof(DateTime) || dtInfo.Columns[field].DataType == typeof(DateTimeOffset))
+                                strForLog = strForLog.Replace("@" + field, "'" + Convert.ToDateTime(SP.Value).ToString("yyyy-MM-dd HH:mm:ss") + "'");
                         }
                     }
-                    sql2 += "MODIFY_DATE ='" + DateNowString() + "',";
-                    sql2 += "MODIFY_TIME ='" + TimeNowString() + "',";
-                    sql2 += "MODIFY_USER ='" + vUser.UserID + "' ";
-                    sql1 += sql2 + " where SGID ='" + dt.Rows[i]["SGID"].ToString().Trim() + "'";
-                    UpCnt += ExecuteSql(sql1, vUser, cn);
-                    if (strBinary != "")
+                    try
                     {
-                        if (dt.Columns.Contains(strBinary))
-                        {
-                            if (dt.Rows[i][strBinary].ToString() != "")
-                            {
-                                strSql = "update " + TableName + " set " + strBinary + "=@image where SGID=@sgid ";
-                                System.Data.SqlClient.SqlCommand cm = new System.Data.SqlClient.SqlCommand(strSql, cn);
-                                cm.Parameters.AddWithValue("image", dt.Rows[i][strBinary]);
-                                cm.Parameters.AddWithValue("sgid", dt.Rows[i]["SGID"]);
-                                cm.ExecuteNonQuery();
-                            }
-                        }
+                        DateTime d1 = DateTime.Now;
+                        UpCnt = cm.ExecuteNonQuery();
+                        DateTime d2 = DateTime.Now;
+                        WriteLogFile(LogPath + DateTime.Now.ToString("yyyyMMdd") + "SqlExec.Log", strForLog + " --; " + (d2 - d1).ToString() + ";" + vUser.UserID + " ; " + DateTime.Now.ToString("yyyyMMdd HH:mm:ss"));
                     }
+                    catch (Exception ex)
+                    {
+                        WriteLogFile(LogPath + "SqlError.Log", ex.Message);
+                        WriteLogFile(LogPath + "SqlError.Log", strForLog + " --; " + ";" + vUser.UserID + " ; " + DateTime.Now.ToString("yyyyMMdd HH:mm:ss"));
+                        throw new Exception(ex.Message);
+                    }
+
+                    
 
                 }
                 ts.Complete();
@@ -270,7 +267,12 @@ namespace SVMAdmin
 
         public Int32 Update(string TableName, DataTable dt, UserInfo vUser, string ModuleID)
         {
-            return Update(TableName, dt, vUser, SetConnectionByModule(vUser, ModuleID));
+            return Update(TableName, dt, new string[] { "SGID" }, vUser, SetConnectionByModule(vUser, ModuleID), ModuleID);
+        }
+
+        public Int32 Update(string TableName, DataTable dt, string[] UniqueKey, UserInfo vUser, string ModuleID)
+        {
+            return Update(TableName, dt, UniqueKey, vUser, SetConnectionByModule(vUser, ModuleID), ModuleID);
         }
 
 
@@ -527,7 +529,7 @@ namespace SVMAdmin
             System.Data.SqlClient.SqlConnection cn;
             try
             {
-                string strCon = GetConnectionString(vUser, ModuleID);
+                string strCon = DbopUtility.GetConnectionString(vUser, ModuleID);
                 cn = new System.Data.SqlClient.SqlConnection(strCon);
                 cn.Open();
             }
@@ -540,7 +542,7 @@ namespace SVMAdmin
         }
 
 
-        private string GetConnectionString(UserInfo vUser, string ModuleID)
+        private string GetConnectionString_old(UserInfo vUser, string ModuleID)
         {
             string strCon = "";
             try
@@ -559,58 +561,7 @@ namespace SVMAdmin
             return strCon;
         }
 
-        private string GetConnectionString_old(UserInfo vUser, string ModuleID)
-        {
-            string strCon = "";
-            try
-            {
-                string iniFile = LogPath + CompanyID + "_db.ini";
-                if (!System.IO.File.Exists(iniFile))
-                    throw new Exception("File " + iniFile + " not exists!");
-                string[] str = System.IO.File.ReadAllLines(iniFile);
-                for (int i = 0; i < str.Length; i++)
-                {
-                    strCon = str[i];
-                    if (strCon.ToUpper().IndexOf("MODULE=" + ModuleID.ToUpper()) > 0)
-                    {
-                        strCon = GetConnectionStringSqlClient(strCon);
-                        break;
-                    }
-                }
-                if (strCon == "" & str.Length > 0)
-                    strCon = GetConnectionStringSqlClient(str[0]);
-                if (strCon == "")
-                    throw new Exception("DB connection string not finded for MODULE:" + ModuleID.ToUpper());
-            }
-            catch (Exception err)
-            {
-                throw new Exception("DB connection string Error！" + err.Message);
-            }
-            return strCon;
-        }
-
-        private string GetConnectionStringSqlClient(string str)
-        {
-            string strCon = str;
-            string[] ss = strCon.Split(new char[] { ';' });
-            strCon = "";
-            for (int i = 0; i < ss.Length; i++)
-            {
-                if (ss[i].ToUpper().IndexOf("Password".ToUpper()) > -1
-                    | ss[i].ToUpper().IndexOf("User ID".ToUpper()) > -1
-                    | ss[i].ToUpper().IndexOf("Initial Catalog".ToUpper()) > -1
-                    | ss[i].ToUpper().IndexOf("Data Source".ToUpper()) > -1
-                    | ss[i].ToUpper().IndexOf("Server".ToUpper()) > -1
-                    | ss[i].ToUpper().IndexOf("Database".ToUpper()) > -1
-                    | ss[i].ToUpper().IndexOf("Uid".ToUpper()) > -1
-                    | ss[i].ToUpper().IndexOf("Pwd".ToUpper()) > -1
-                    | ss[i].ToUpper().IndexOf("Connection Timeout".ToUpper()) > -1
-                    )
-                    strCon += ";" + ss[i];
-            }
-            strCon = strCon.Substring(1);
-            return strCon;
-        }
+        
 
         private string InfoAdd(string strColName, UserInfo vUser)
         {
@@ -730,4 +681,87 @@ namespace SVMAdmin
             Dispose(false);
         }
     }
+
+    public static class DbopUtility
+    {
+        public static string GetConnectionString(UserInfo vUser, string ModuleID)
+        {
+            string strCon = "";
+            try
+            {
+                Config.ThisSiteConfig TSC = ConstList.ThisSiteConfig;
+                strCon = TSC.Companys
+                    .Where<Config.Company>(C => C.CompanyID == vUser.CompanyId).ToList<Config.Company>()[0]
+                    .Modules.Where<Config.ModuleForDB>(M => M.ModuleName == ModuleID).ToList<Config.ModuleForDB>()[0].DB;
+                //LogPath = TSC.LogPath;
+
+            }
+            catch
+            {
+                throw new Exception("未設定DB連線，CompanyId:" + vUser.CompanyId + "ModuleID:" + ModuleID);
+            }
+            return GetConnectionStringSqlClient(strCon);
+        }
+
+        private static string GetConnectionStringSqlClient(string str)
+        {
+            string strCon = str;
+            string[] ss = strCon.Split(new char[] { ';' });
+            strCon = "";
+            for (int i = 0; i < ss.Length; i++)
+            {
+                if (ss[i].ToUpper().IndexOf("Password".ToUpper()) > -1
+                    | ss[i].ToUpper().IndexOf("User ID".ToUpper()) > -1
+                    | ss[i].ToUpper().IndexOf("Initial Catalog".ToUpper()) > -1
+                    | ss[i].ToUpper().IndexOf("Data Source".ToUpper()) > -1
+                    | ss[i].ToUpper().IndexOf("Server".ToUpper()) > -1
+                    | ss[i].ToUpper().IndexOf("Database".ToUpper()) > -1
+                    | ss[i].ToUpper().IndexOf("Uid".ToUpper()) > -1
+                    | ss[i].ToUpper().IndexOf("Pwd".ToUpper()) > -1
+                    | ss[i].ToUpper().IndexOf("Connection Timeout".ToUpper()) > -1
+                    )
+                    strCon += ";" + ss[i];
+            }
+            strCon = strCon.Substring(1);
+            return strCon;
+        }
+
+        private static IDictionary<string,DataTable> TableInfos = new Dictionary<string, DataTable>();
+
+        public static DataTable GetTableInfo(string TableName, UserInfo vUser, string ModuleID, System.Data.SqlClient.SqlConnection cn)
+        {
+            DataTable dt = null;
+            string key = vUser.CompanyId + "_" + ModuleID + "_" + TableName;
+            if (!TableInfos.ContainsKey(key))
+            {
+                DataSet ds = new DataSet();
+                //string strConn = GetConnectionString(vUser, ModuleID);
+                //System.Data.SqlClient.SqlConnection cn = new SqlConnection(strConn);
+                //System.Data.SqlClient.SqlConnection cn = SetConnectionByModule()
+                //cn.Open();
+                try
+                {
+                    string sql = "select * from " + TableName + " where 1=2";
+                    System.Data.SqlClient.SqlDataAdapter da = new System.Data.SqlClient.SqlDataAdapter(sql, cn);
+                    da.SelectCommand.CommandTimeout = 180;
+                    ds.EnforceConstraints = false;
+                    da.Fill(ds);
+                    dt = ds.Tables[0];
+                    ds.Tables.Remove(dt);
+                    //cn.Close();
+                }
+                catch (Exception ex)
+                {
+                    //cn.Close();
+                    throw new Exception(ex.Message);
+                }
+                TableInfos.Add(key, dt);
+            }
+            else
+                dt = TableInfos[key];
+            return dt;
+        }
+
+    }
+
 }
