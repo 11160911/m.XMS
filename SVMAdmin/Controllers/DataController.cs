@@ -571,7 +571,7 @@ namespace SVMAdmin.Controllers
             {
                 IFormCollection rq = HttpContext.Request.Form;
                 string KeyWord = rq["KeyWord"];
-                string sql = "select a.Type_ID, a.Type_Name";
+                string sql = "select a.Type_ID,a.Type_Name ";
                 sql += " from Layer a";
                 //sql += " inner join PLUSV b on a.PLU=b.GD_NO";
                 sql += " where 1=1";
