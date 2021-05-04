@@ -573,7 +573,6 @@ namespace SVMAdmin.Controllers
                 string KeyWord = rq["KeyWord"];
                 string sql = "select a.Type_ID,a.Type_Name ";
                 sql += " from Layer a";
-                //sql += " inner join PLUSV b on a.PLU=b.GD_NO";
                 sql += " where 1=1";
                 //if (KeyWord != "")
                 //{
