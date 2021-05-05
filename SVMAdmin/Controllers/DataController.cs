@@ -262,7 +262,10 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-
+                string sql = "select * from Layer order by Type_ID";
+                DataTable dtPLU = PubUtility.SqlQry(sql, uu, "SYS");
+                dtPLU.TableName = "dtLayer";
+                ds.Tables.Add(dtPLU);
             }
             catch (Exception err)
             {

@@ -58,7 +58,8 @@
         //alert($('#cbInv').text())
 
         var pData = {
-            KeyWord: $('#txtInvSearch').val()
+            KeyWord: $('#txtInvSearch').val(),
+            LayerType: $('#cbInv').val()
         };
         PostToWebApi({ url: "api/SystemSetup/SearchInv", data: pData, success: AfterSearchInv });
     };
@@ -264,6 +265,9 @@
 
         AssignVar();
         $('#btQueryInv').click(function () { SearchInv(); });
+        var dtLayer = data.getElementsByTagName('dtLayer');
+        InitSelectItem($('#cbInv')[0], dtLayer, "Type_ID", "Type_Name", true);
+        	
         //$('#btUPPic1,#btUPPic2').click(function () { UploadPicture(this); });
         //$('#btDelete').click(function () { btDelete_click(); });
         //$('#btImportFromiXMS').click(function () { btImportFromiXMS_click(); });
