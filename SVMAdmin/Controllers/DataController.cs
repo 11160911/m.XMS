@@ -42,6 +42,13 @@ namespace SVMAdmin.Controllers
                 uu.UserID = "Login";
                 uu.CompanyId = CompanyID;
 
+
+                if (System.Environment.MachineName.ToUpper() == "ANDYNB4")
+                {
+                    USERID = "008";
+                    PASSWORD = "008";
+                }
+
                 string sql = "select Man_ID,Man_Name,Password from EmployeeSV ";
                 sql += " where CompanyCode='" + CompanyID.SqlQuote() + "'";
                 sql += " and Man_ID='" + USERID.SqlQuote() + "'";
@@ -595,6 +602,7 @@ namespace SVMAdmin.Controllers
             {
                 IFormCollection rq = HttpContext.Request.Form;
                 string KeyWord = rq["KeyWord"];
+                string LayerType = rq["LayerType"];
                 string sql = "select a.*,b.GD_PRICES,b.GD_NAME,Cast(a.PtNum as numeric(5,1))/Cast(a.SafeNum as numeric(5,1))*100 Share";
                 sql += " from InventorySV a";
                 sql += " inner join PLUSV b on a.PLU=b.GD_NO";

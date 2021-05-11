@@ -34,7 +34,7 @@
     var Initdoc = function () {
         UU = sessionStorage.getItem('token');
         PostToWebApi({ url: "api/GetMenuInit", success: AfterInit, complete: GetHeads });
-
+        
         //$('#imglogo').css('cursor', 'pointer');
 
     };
@@ -223,15 +223,15 @@
                 }
             }
 
-            else if (pg == "SysSecurity") {
-                if (window.PageSysSecurity == undefined)
-                    $.getScript('System/SysSecurity.js',
+            else if (pg == "MMMachineSet") {
+                if (window.PageMMMachineSet == undefined)
+                    $.getScript('SystemSetup/MMMachineSet.js',
                         function () {
-                            PageSysSecurity($("#app"));
+                            PageMMMachineSet($(".right_col"));
                         }
                     );
                 else {
-                    PageSysSecurity($("#app"));
+                    PageMMMachineSet($(".right_col"));
                 }
             }
             else if (pg == "SysParameter") {

@@ -54,10 +54,10 @@ namespace SVMAdmin
         {
             DataTable dtInfo = DbopUtility.GetTableInfo(TableName, vUser, ModuleID, cn);
             string strSql;
-            foreach(DataColumn col in dt.Columns)
+            for (int i = dt.Columns.Count -1; i>-1; i-- )
             {
-                if (!dtInfo.Columns.Contains(col.ColumnName))
-                    dt.Columns.Remove(col);
+                if (!dtInfo.Columns.Contains(dt.Columns[i].ColumnName))
+                    dt.Columns.Remove(dt.Columns[i]);
             }
             string sql1 = "insert into " + TableName + " (";
             string sql2 = " values (";
@@ -177,10 +177,10 @@ namespace SVMAdmin
         {
             DataTable dtInfo = DbopUtility.GetTableInfo(TableName, vUser, ModuleID , cn);
             int UpCnt = 0;
-            foreach (DataColumn col in dt.Columns)
+            for (int i = dt.Columns.Count - 1; i > -1; i--)
             {
-                if (!dtInfo.Columns.Contains(col.ColumnName))
-                    dt.Columns.Remove(col);
+                if (!dtInfo.Columns.Contains(dt.Columns[i].ColumnName))
+                    dt.Columns.Remove(dt.Columns[i]);
             }
             string sql1 = "update " + TableName + " set ";
             string sql2 = " where ";
