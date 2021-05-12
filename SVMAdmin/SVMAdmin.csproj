@@ -15,10 +15,10 @@
 
   <ItemGroup>
     <Reference Include="EPPlus">
-      <HintPath>..\..\CommDll\EPPlus.dll</HintPath>
+      <HintPath>bin\Debug\netcoreapp3.1\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack">
-      <HintPath>..\..\CommDll\HtmlAgilityPack.dll</HintPath>
+      <HintPath>bin\Debug\netcoreapp3.1\HtmlAgilityPack.dll</HintPath>
     </Reference>
   </ItemGroup>
 
