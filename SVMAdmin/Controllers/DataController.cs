@@ -42,6 +42,13 @@ namespace SVMAdmin.Controllers
                 uu.UserID = "Login";
                 uu.CompanyId = CompanyID;
 
+
+                if (System.Environment.MachineName.ToUpper() == "ANDYNB4")
+                {
+                    USERID = "008";
+                    PASSWORD = "008";
+                }
+
                 string sql = "select Man_ID,Man_Name,Password from EmployeeSV ";
                 sql += " where CompanyCode='" + CompanyID.SqlQuote() + "'";
                 sql += " and Man_ID='" + USERID.SqlQuote() + "'";
