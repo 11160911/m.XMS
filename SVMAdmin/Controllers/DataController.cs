@@ -263,9 +263,20 @@ namespace SVMAdmin.Controllers
             try
             {
                 string sql = "select * from Layer order by Type_ID";
-                DataTable dtPLU = PubUtility.SqlQry(sql, uu, "SYS");
-                dtPLU.TableName = "dtLayer";
-                ds.Tables.Add(dtPLU);
+                //DataTable dtPLU = PubUtility.SqlQry(sql, uu, "SYS");
+                //dtPLU.TableName = "dtLayer";
+                //ds.Tables.Add(dtPLU);
+
+                sql = "select Distinct WhNo ,WhNo+ST_SName WhName ";
+                sql += " from InventorySV a (NoLock) Left Join WarehouseSV b (NoLock) ";
+                sql += " On a.WhNo=b.ST_ID And a.CompanyCode=b.CompanyCode ";
+                sql += " Where a.CompanyCode='" + uu.CompanyId + "'";
+                sql += " Order By WhNo ";
+
+                DataTable dtWh = PubUtility.SqlQry(sql, uu, "SYS");
+                dtWh.TableName = "dtInvWh";
+                ds.Tables.Add(dtWh);
+
             }
             catch (Exception err)
             {
@@ -595,10 +606,14 @@ namespace SVMAdmin.Controllers
             {
                 IFormCollection rq = HttpContext.Request.Form;
                 string KeyWord = rq["KeyWord"];
-                string sql = "select a.*,b.GD_PRICES,b.GD_NAME,Cast(a.PtNum as numeric(5,1))/Cast(a.SafeNum as numeric(5,1))*100 Share";
+                string WhNo = rq["WhNo"];
+                string CkNo = rq["CkNo"];
+                string GDLayer = rq["GDLayer"];
+                string sql = "select a.*,b.GD_SNAME,";
+                sql += " cast(case when DisPlayNum>0 then Cast(Round(Cast(a.PtNum as numeric(5,1))/Cast(a.DisPlayNum as numeric(5,1))*100,0) As Int) Else 0 End As Varchar(10)) + '%' Share";
                 sql += " from InventorySV a";
-                sql += " inner join PLUSV b on a.PLU=b.GD_NO";
-                sql += " where 1=1";
+                sql += " inner join PLUSV b on a.PLU=b.GD_NO And a.CompanyCode=b.CompanyCode";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "'";
                 if (KeyWord != "")
                 {
                     sql += " and (";
@@ -607,6 +622,15 @@ namespace SVMAdmin.Controllers
                     sql += " or b.GD_Sname='" + KeyWord + "'";
                     sql += ")";
                 }
+                if (WhNo != "")
+                {
+                    sql += " and a.WhNo='" + WhNo + "'";
+                }
+                if (GDLayer != "")
+                {
+                    sql += " and a.Layer='" + GDLayer + "'";
+                }
+                sql += " Order By a.WhNo, a.CkNo, a.Layer ";
                 DataTable dtInv = PubUtility.SqlQry(sql, uu, "SYS");
                 dtInv.TableName = "dtInv";
                 ds.Tables.Add(dtInv);
@@ -619,6 +643,33 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+
+        //2021-05-07
+        [Route("SystemSetup/GetWhCkNo")]
+        public ActionResult SystemSetup_GetWhCkNo()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetWhCkNoOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string WhNo = rq["WhNo"];
+                string sql = "select a.CkNo ";
+                sql += " from WarehouseDSV a (NoLock) ";
+                sql += " where CompanyCode='" + uu.CompanyId + "' and ST_ID='" + WhNo + "'";
+                sql += " Order By CkNo ";
+                DataTable dtCK = PubUtility.SqlQry(sql, uu, "SYS");
+                dtCK.TableName = "dtCK";
+                ds.Tables.Add(dtCK);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
 
 
         [Route("SystemSetup/GetLayer")]
