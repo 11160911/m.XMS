@@ -154,6 +154,7 @@
             isCheck = false;
         }
         if (!isCheck) {
+            waitingDialog.hide();
             DyAlert("有資料未填寫，請填妥以後再儲存");
             return;
         }
