@@ -231,7 +231,21 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-                
+
+                string sql = "select Type_ID,Type_Name";
+                sql += " from TypeData ";
+                sql += " where CompanyCode='" + uu.CompanyId + "' And Type_Code='G' Order By Type_ID";
+                DataTable dtDept = PubUtility.SqlQry(sql, uu, "SYS");
+                dtDept.TableName = "dtDept";
+                ds.Tables.Add(dtDept);
+
+                sql = "select Type_ID,Type_Name";
+                sql += " from TypeData ";
+                sql += " where CompanyCode='" + uu.CompanyId + "' And Type_Code='L' Order By Type_ID";
+                DataTable dtBGNo = PubUtility.SqlQry(sql, uu, "SYS");
+                dtBGNo.TableName = "dtBGNo";
+                ds.Tables.Add(dtBGNo);
+
             }
             catch (Exception err)
             {
@@ -306,13 +320,17 @@ namespace SVMAdmin.Controllers
                 IFormCollection rq = HttpContext.Request.Form;
                 string GD_NO = rq["GD_NO"];
                 string SetSuspend = rq["SetSuspend"];
-                string sql = "update PLUSVM set GD_Flag1='"+ SetSuspend+"'";
-                sql += " where GD_NO='" + GD_NO.SqlQuote() + "'";
+                string sql = "update PLUSV set GD_Flag1='"+ SetSuspend+"'";
+                sql += " where CompanyCode='" + uu.CompanyId + "' And GD_NO='" + GD_NO.SqlQuote() + "'";
                 PubUtility.ExecuteSql(sql, uu, "SYS");
-                sql = "select a.*,b.GD_PRICES,b.GD_NAME";
-                sql += " from PLUSVM a";
-                sql += " inner join PLUSV b on a.GD_NO=b.GD_NO";
-                sql += " where b.GD_NO='" + GD_NO.SqlQuote() + "'";
+                sql = "select a.*";
+                sql += " ,Case When GD_Flag1='0' Then '未設定' When GD_Flag1='1' Then '啟用' When GD_Flag1='2' Then '停用' End GDStatus ";
+                sql += " from PLUSV a";
+                sql += " where CompanyCode='" + uu.CompanyId + "' And a.GD_NO='" + GD_NO.SqlQuote() + "'";
+                //sql = "select a.*,b.GD_PRICES,b.GD_NAME";
+                //sql += " from PLUSVM a";
+                //sql += " inner join PLUSV b on a.GD_NO=b.GD_NO";
+                //sql += " where b.GD_NO='" + GD_NO.SqlQuote() + "'";
                 DataTable dtPLU = PubUtility.SqlQry(sql, uu, "SYS");
                 dtPLU.TableName = "dtPLU";
                 ds.Tables.Add(dtPLU);
@@ -334,12 +352,13 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-                DataTable dtRec = new DataTable("PLUSVM");
-                PubUtility.AddStringColumns(dtRec, "GD_NO,GD_Sname,Photo1,Photo2");
+                DataTable dtRec = new DataTable("PLUSV");
+                PubUtility.AddStringColumns(dtRec, "CompanyCode,GD_NO,GD_Sname,Photo1");
                 DataSet dsRQ = new DataSet();
                 dsRQ.Tables.Add(dtRec);
                 PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
                 DataRow dr = dtRec.Rows[0];
+                dr["CompanyCode"] = uu.CompanyId;
                 string sql = "";
                 using (DBOperator dbop = new DBOperator())
                 {
@@ -347,7 +366,7 @@ namespace SVMAdmin.Controllers
                     {
                         try
                         {
-                            sql = "select * from PLUSV where GD_NO='" + dr["GD_NO"].ToString().SqlQuote() + "'";
+                            sql = "select * from PLUSV where CompanyCode='" + uu.CompanyId + "' And GD_NO='" + dr["GD_NO"].ToString().SqlQuote() + "'";
                             DataTable dtOld = dbop.Query(sql, uu, "SYS");
                             //sql = "update PLUSVM set ";
                             //sql += " GD_Sname='" + dr["GD_Sname"].ToString().SqlQuote() + "'";
@@ -355,7 +374,7 @@ namespace SVMAdmin.Controllers
                             //sql += ",Photo2='" + dr["Photo2"].ToString().SqlQuote() + "'";
                             //sql += " where GD_NO='" + dr["GD_NO"].ToString().SqlQuote() + "'";
                             //dbop.ExecuteSql(sql, uu, "SYS");
-                            dbop.Update("PLUSV", dtRec, new string[] { "GD_NO" }, uu, "SYS");
+                            dbop.Update("PLUSV", dtRec, new string[] { "CompanyCode" , "GD_NO" }, uu, "SYS");
 
                             string OldPhoto1 = dtOld.Rows[0]["Photo1"].ToString();
                             if (OldPhoto1 != "" & OldPhoto1 != dr["Photo1"].ToString())
@@ -363,12 +382,18 @@ namespace SVMAdmin.Controllers
                                 sql = "delete from ImageTable where SGID='" + OldPhoto1 + "'";
                                 dbop.ExecuteSql(sql, uu, "SYS");
                             }
-                            string OldPhoto2 = dtOld.Rows[0]["Photo2"].ToString();
-                            if (OldPhoto2 != "" & OldPhoto2 != dr["Photo2"].ToString())
-                            {
-                                sql = "delete from ImageTable where SGID='" + OldPhoto2 + "'";
-                                dbop.ExecuteSql(sql, uu, "SYS");
-                            }
+                            //string OldPhoto2 = dtOld.Rows[0]["Photo2"].ToString();
+                            //if (OldPhoto2 != "" & OldPhoto2 != dr["Photo2"].ToString())
+                            //{
+                            //    sql = "delete from ImageTable where SGID='" + OldPhoto2 + "'";
+                            //    dbop.ExecuteSql(sql, uu, "SYS");
+                            //}
+
+                            sql = "Update PLUSV Set GD_Flag1='1' ";
+                            sql += "Where CompanyCode='" + uu.CompanyId + "' And GD_No='" + dr["GD_NO"].ToString().SqlQuote() + "' ";
+                            sql += " And GD_Flag1='0' ";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
                             ts.Complete();
                         }
                         catch (Exception err)
@@ -380,10 +405,14 @@ namespace SVMAdmin.Controllers
                         dbop.Dispose();
                     }
                 }
-                sql = "select a.*,b.GD_PRICES,b.GD_NAME";
-                sql += " from PLUSVM a";
-                sql += " inner join PLU b on a.GD_NO=b.GD_NO";
-                sql += " where b.GD_NO='" + dr["GD_NO"].ToString().SqlQuote() + "'";
+                sql = "select a.* ";
+                sql += " ,Case When GD_Flag1='0' Then '未設定' When GD_Flag1='1' Then '啟用' When GD_Flag1='2' Then '停用' End GDStatus ";
+                sql += " from PLUSV a";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "' And a.GD_NO='" + dr["GD_NO"].ToString().SqlQuote() + "'";
+                //sql = "select a.*,b.GD_PRICES,b.GD_NAME";
+                //sql += " from PLUSVM a";
+                //sql += " inner join PLU b on a.GD_NO=b.GD_NO";
+                //sql += " where b.GD_NO='" + dr["GD_NO"].ToString().SqlQuote() + "'";
                 DataTable dtPLU = PubUtility.SqlQry(sql, uu, "SYS");
                 dtPLU.TableName = "dtPLU";
                 ds.Tables.Add(dtPLU);
@@ -406,18 +435,36 @@ namespace SVMAdmin.Controllers
             {
                 IFormCollection rq = HttpContext.Request.Form;
                 string KeyWord = rq["KeyWord"];
+                string GDDept = rq["GDDept"];
+                string GDBGNo = rq["GDBGNo"];
+                string GDStatus = rq["GDStatus"];
                 string sql = "select a.*";
+                sql += " ,Case When GD_Flag1='0' Then '未設定' When GD_Flag1='1' Then '啟用' When GD_Flag1='2' Then '停用' End GDStatus ";
                 sql += " from PLUSV a";
                 //sql += " inner join PLUSV b on a.GD_NO=b.GD_NO";
-                sql += " where 1=1";
-                if (KeyWord!="")
+                sql += " where CompanyCode='" + uu.CompanyId + "' ";
+                if (KeyWord != "")
                 {
                     sql += " and (";
-                    sql += " a.GD_NAME like '"+ KeyWord + "%'";
-                    sql += " or a.GD_NO='" + KeyWord + "'";
-                    sql += " or a.GD_Sname='" + KeyWord + "'";
+                    sql += " a.GD_NAME like '%" + KeyWord + "%'";
+                    sql += " or a.GD_NO Like '%" + KeyWord + "%'";
+                    sql += " or a.GD_Sname Like '%" + KeyWord + "%'";
                     sql += ")";
                 }
+                if (GDDept != "")
+                {
+                    sql += " and a.GD_Dept='" + GDDept + "'";
+                }
+                if (GDBGNo != "")
+                {
+                    sql += " and a.GD_BGNo='" + GDBGNo + "'";
+                }
+                if (GDStatus != "")
+                {
+                    sql += " and a.GD_Flag1='" + GDStatus + "'";
+                }
+                sql += " Order By GD_No ";
+
                 DataTable dtPLU = PubUtility.SqlQry(sql, uu, "SYS");
                 dtPLU.TableName = "dtPLU";
                 ds.Tables.Add(dtPLU);
