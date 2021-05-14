@@ -223,6 +223,18 @@
                 }
             }
 
+            else if (pg == "VMN29") {
+                if (window.PageVMN29 == undefined)
+                    $.getScript('VMN29.js',
+                        function () {
+                            PageVMN29($(".right_col"));
+                        }
+                    );
+                else {
+                    PageVMN29($(".right_col"));
+                }
+            }
+
             else if (pg == "MMMachineSet") {
                 if (window.PageMMMachineSet == undefined)
                     $.getScript('SystemSetup/MMMachineSet.js',

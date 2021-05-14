@@ -44,6 +44,7 @@
     }
 
     let GetRack = function () {
+        
         var pData = {
             KeyWord: ""
         };
@@ -55,13 +56,16 @@
     };
 
     let AfterGetRack = function (data) {
+
         if (ReturnMsg(data, 0) != "GetRackOK") {
             DyAlert(ReturnMsg(data, 0));
             return;
         }
         else {
+
             var dtRack = data.getElementsByTagName('dtRack');
             grdU.BindData(dtRack);
+
             if (dtRack.length == 0) {
                 //DyAlert("無符合資料!", BlankMode);
                 return;
@@ -80,6 +84,7 @@
         //isImport = false;
         //isDelete = false;
         EditMode = "Mod"
+
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         $('#modal_VMN29 .modal-title').text('修改貨倉類型');
@@ -191,22 +196,21 @@
            var pData = {
                Type_ID: $('#Type_ID').val()
             }
-            //alert("Add.." + $('#Type_ID').val());
+
             PostToWebApi({ url: "api/SystemSetup/ChkRackExist", data: pData, success: AfterChkRackUsed });
         }
         else if (EditMode == "Mod") {
             var pData = {
                 Type_ID: OldID
             }
-            //alert("Mod " + $('#Type_ID').val());
-            //alert("Mod old id " + OldID);
+ 
             PostToWebApi({ url: "api/SystemSetup/ChkRackUsed", data: pData, success: AfterChkRackUsed });
         }
         else  {
             var cData = {
                 Type_ID: $('#Type_ID').val()
             }
-            //alert("Del " + $('#Type_ID').val());
+
             PostToWebApi({ url: "api/SystemSetup/ChkRackUsed", data: cData, success: AfterChkRackUsed });
         }
 
@@ -338,6 +342,7 @@
 
     //2021-04-27
     let afterGetInitVMN29 = function (data) {
+
         AssignVar();
         //$('#btAddRack').click(function () { AddRack(); });
         GetRack();
@@ -348,7 +353,7 @@
         $('#btCancel').click(function () { btCancel_click(); });
         $('#btAddRack').click(function () { btAdd_click(); });
         $('.forminput input').change(function () { InputValidation(this) });
-        
+
         //SetPLUAutoComplete("GD_NAME");
         //SetPLUAutoComplete("GD_NO");
     };
@@ -450,7 +455,7 @@
 
     let afterLoadPage = function () {
         //2021-04-27
-        //console.log("afterLoadPage");
+        //alert("afterLoadPage");
         PostToWebApi({ url: "api/SystemSetup/GetInitVMN29", success: afterGetInitVMN29 });
         $('#pgVMN29').show();
     };
@@ -458,7 +463,6 @@
     if ($('#pgVMN29').length == 0) {
         //2021-04-29 Debug用，按F12後，在主控台內會顯示aaaaaaVMN29
         //console.log("aaaaaaVMN29");
-        //2021-04-27
         AllPages = new LoadAllPages(ParentNode, "VMN29", ["pgVMN29"], afterLoadPage);
     };
 
