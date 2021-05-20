@@ -235,6 +235,20 @@
                 }
             }
 
+            else if (pg == "VXT03") {
+
+                if (window.PageVXT03 == undefined)
+                    //alert("VXT03");
+                    $.getScript('VXT03.js',
+                        function () {
+                            PageVXT03($(".right_col"));
+                        }
+                    );
+                else {
+                    PageVXT03($(".right_col"));
+                }
+            }
+
             else if (pg == "MMMachineSet") {
                 if (window.PageMMMachineSet == undefined)
                     $.getScript('SystemSetup/MMMachineSet.js',

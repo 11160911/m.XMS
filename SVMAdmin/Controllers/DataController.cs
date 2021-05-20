@@ -1076,6 +1076,135 @@ namespace SVMAdmin.Controllers
         }
 
 
+        //2021-05-18 Larry
+        [Route("SystemSetup/GetInitVXT03")]
+        public ActionResult SystemSetup_GetInitVXT03()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetInitVXT03OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+
+                string sql = "select ST_ID ,ST_ID+ST_SName STName ";
+                sql += " from WarehouseSV (NoLock) ";
+                sql += " Where CompanyCode='" + uu.CompanyId + "' And ST_Type ='6'";
+                sql += " Order By ST_ID ";
+
+                DataTable dtWh = PubUtility.SqlQry(sql, uu, "SYS");
+                dtWh.TableName = "dtWh";
+                ds.Tables.Add(dtWh);
+
+
+                sql = "select ST_ID ,ST_ID+ST_SName STName ";
+                sql += " from WarehouseSV (NoLock) ";
+                sql += " Where CompanyCode='" + uu.CompanyId + "' And ST_Type Not In ('2','3','6')";
+                sql += " Order By ST_ID ";
+
+                DataTable dtS = PubUtility.SqlQry(sql, uu, "SYS");
+                dtS.TableName = "dtS";
+                ds.Tables.Add(dtS);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        //2021-05-18 Larry
+        [Route("SystemSetup/SearchVXT03")]
+        public ActionResult SystemSetup_SearchVXT03()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SearchVXT03OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+
+                string WhNo = rq["WhNo"];
+                string CkNo = rq["CkNo"];
+                string SWhNo = rq["SWhNo"];
+                string VMStatus = rq["VMStatus"];
+                string NetStatus = rq["NetStatus"];
+
+                string sql = "select a.*,c.ST_SNAME+b.ckno+'機' VMName,b.ST_ID,b.ckno,d.ST_SName SWhName";
+                sql += " from MachineList a";
+                sql += " inner join WarehouseDSV b on a.SNNo=b.SNNo And a.CompanyCode=b.CompanyCode";
+                sql += " inner join WarehouseSV c on b.ST_ID=c.ST_ID And b.CompanyCode=c.CompanyCode";
+                sql += " inner join WarehouseSV d on b.WhNoIn=d.ST_ID And b.CompanyCode=d.CompanyCode";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "'";
+                if (WhNo != "")
+                {
+                    sql += " and b.ST_ID='" + WhNo + "'";
+                }
+                if (CkNo != "")
+                {
+                    sql += " and b.CkNo='" + CkNo + "'";
+                }
+                if (SWhNo != "")
+                {
+                    sql += " and b.WhNoIn='" + SWhNo + "'";
+                }
+                if (VMStatus != "")
+                {
+                    sql += " and a.FlagUse='" + VMStatus + "'";
+                }
+                if (NetStatus != "")
+                {
+                    sql += " and a.FlagNet='" + NetStatus + "'";
+                }
+                sql += " Order By a.SNNo ";
+                DataTable dtInv = PubUtility.SqlQry(sql, uu, "SYS");
+                dtInv.TableName = "dtInv";
+                ds.Tables.Add(dtInv);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        //2021-05-18
+        [Route("SystemSetup/GetWhDSVCkNo")]
+        public ActionResult SystemSetup_GetWhDSVCkNo()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetWhDSVCkNoOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string WhNo = rq["WhNo"];
+                string sql = "select a.CkNo ";
+                sql += " from WarehouseDSV a (NoLock) ";
+                sql += " where CompanyCode='" + uu.CompanyId + "' and ST_ID='" + WhNo + "'";
+                sql += " Order By CkNo ";
+                DataTable dtCK = PubUtility.SqlQry(sql, uu, "SYS");
+                dtCK.TableName = "dtCK";
+                ds.Tables.Add(dtCK);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+
+
+
+
+
 
 
     }
