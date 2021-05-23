@@ -28,6 +28,7 @@ namespace SVMAdmin
             //    System.IO.Directory.CreateDirectory(LogPath);
         }
 
+  
         private System.Data.SqlClient.SqlConnection SetConnectionByModule(UserInfo vUser, string ModuleID)
         {
             CompanyID = vUser.CompanyId;

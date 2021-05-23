@@ -129,14 +129,6 @@
     }
 
     let btSave_click = function () {
-        waitingDialog.show("儲存中.....");
-        setTimeout(
-            function () { SaveMachineList(); }
-            ,100
-        );
-    }
-
-    let SaveMachineList = function () {
         var isCheck = true;
         var nullchk = $('#pgMMMachineSetDetail .valid-blank').prev('input').filter(function () { return this.value == '' });
         if (nullchk.length > 0) {
@@ -157,6 +149,15 @@
             DyAlert("有資料未填寫，請填妥以後再儲存");
             return;
         }
+        waitingDialog.show("儲存中.....");
+        setTimeout(
+            function () { SaveMachineList(); }
+            ,100
+        );
+    }
+
+    let SaveMachineList = function () {
+        
         var MachineList = [];
         var MachineListSpec = [];
         var DataH = {

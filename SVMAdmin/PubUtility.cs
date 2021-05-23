@@ -584,7 +584,6 @@ namespace SVMAdmin
         {
             set { _HostEnvironment = value; }
             get { return _HostEnvironment; }
-
         }
 
         public static string ConfigSetPath

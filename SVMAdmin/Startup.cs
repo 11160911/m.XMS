@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 //Eddms87808960
 namespace SVMAdmin
 {
@@ -29,6 +30,8 @@ namespace SVMAdmin
             //});
 
             services.AddRazorPages();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -369,17 +369,17 @@ namespace SVMAdmin.Controllers
                         dbop.Dispose();
                     }
                 }
-                sql = "select a.*,b.GD_PRICES,b.GD_NAME";
-                sql += " from PLUSVM a";
-                sql += " inner join PLU b on a.GD_NO=b.GD_NO";
-                sql += " where b.GD_NO='" + dr["GD_NO"].ToString().SqlQuote() + "'";
+                sql = "select a.*";
+                sql += " from PLUSV a";
+                //sql += " inner join PLU b on a.GD_NO=b.GD_NO";
+                sql += " where a.GD_NO='" + dr["GD_NO"].ToString().SqlQuote() + "'";
                 DataTable dtPLU = PubUtility.SqlQry(sql, uu, "SYS");
                 dtPLU.TableName = "dtPLU";
                 ds.Tables.Add(dtPLU);
             }
             catch (Exception err)
             {
-                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][0] = err.Message;
                 dtMessage.Rows[0][1] = err.Message;
             }
             return PubUtility.DatasetXML(ds);

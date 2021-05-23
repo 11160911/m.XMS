@@ -234,6 +234,17 @@
                     PageMMMachineSet($(".right_col"));
                 }
             }
+            else if (pg == "GMInvPLUSet") {
+                if (window.PageGMInvPLUSet == undefined)
+                    $.getScript('SystemSetup/GMInvPLUSet.js',
+                        function () {
+                            PageGMInvPLUSet($(".right_col"));
+                        }
+                    );
+                else {
+                    PageGMInvPLUSet($(".right_col"));
+                }
+            }
             else if (pg == "SysParameter") {
                 if (window.PageParameter == undefined)
                     $.getScript('System/Parameter.js',

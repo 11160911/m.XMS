@@ -618,10 +618,16 @@ var DownloadSOReportByID = function (id) {
 }
 
 
-var InitSelectItem = function(elmSelect, xml, valField, txtField, isFirstBlank) {
+var InitSelectItem = function (elmSelect, xml, valField, txtField, isFirstBlank, placeholder) {
     if (elmSelect == null)
         return;
     $(elmSelect).empty();
+    if (placeholder != null) {
+        if (placeholder.length > 0) {
+            $(elmSelect).append("<option disabled selected value=''>" + placeholder + "</option>");
+            isFirstBlank = false;
+        }
+    }
     if (isFirstBlank) {
         $(elmSelect).append("<option value=''></option>");
     }
