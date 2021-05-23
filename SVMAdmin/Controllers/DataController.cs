@@ -173,7 +173,6 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
-
         [Route("FileUpload")]
         public ActionResult FileUpload()
         {
@@ -270,9 +269,20 @@ namespace SVMAdmin.Controllers
             try
             {
                 string sql = "select * from Layer order by Type_ID";
-                DataTable dtPLU = PubUtility.SqlQry(sql, uu, "SYS");
-                dtPLU.TableName = "dtLayer";
-                ds.Tables.Add(dtPLU);
+                //DataTable dtPLU = PubUtility.SqlQry(sql, uu, "SYS");
+                //dtPLU.TableName = "dtLayer";
+                //ds.Tables.Add(dtPLU);
+
+                sql = "select Distinct WhNo ,WhNo+ST_SName WhName ";
+                sql += " from InventorySV a (NoLock) Left Join WarehouseSV b (NoLock) ";
+                sql += " On a.WhNo=b.ST_ID And a.CompanyCode=b.CompanyCode ";
+                sql += " Where a.CompanyCode='" + uu.CompanyId + "'";
+                sql += " Order By WhNo ";
+
+                DataTable dtWh = PubUtility.SqlQry(sql, uu, "SYS");
+                dtWh.TableName = "dtInvWh";
+                ds.Tables.Add(dtWh);
+
             }
             catch (Exception err)
             {
@@ -295,13 +305,17 @@ namespace SVMAdmin.Controllers
                 IFormCollection rq = HttpContext.Request.Form;
                 string GD_NO = rq["GD_NO"];
                 string SetSuspend = rq["SetSuspend"];
-                string sql = "update PLUSVM set GD_Flag1='"+ SetSuspend+"'";
-                sql += " where GD_NO='" + GD_NO.SqlQuote() + "'";
+                string sql = "update PLUSV set GD_Flag1='"+ SetSuspend+"'";
+                sql += " where CompanyCode='" + uu.CompanyId + "' And GD_NO='" + GD_NO.SqlQuote() + "'";
                 PubUtility.ExecuteSql(sql, uu, "SYS");
-                sql = "select a.*,b.GD_PRICES,b.GD_NAME";
-                sql += " from PLUSVM a";
-                sql += " inner join PLUSV b on a.GD_NO=b.GD_NO";
-                sql += " where b.GD_NO='" + GD_NO.SqlQuote() + "'";
+                sql = "select a.*";
+                sql += " ,Case When GD_Flag1='0' Then '未設定' When GD_Flag1='1' Then '啟用' When GD_Flag1='2' Then '停用' End GDStatus ";
+                sql += " from PLUSV a";
+                sql += " where CompanyCode='" + uu.CompanyId + "' And a.GD_NO='" + GD_NO.SqlQuote() + "'";
+                //sql = "select a.*,b.GD_PRICES,b.GD_NAME";
+                //sql += " from PLUSVM a";
+                //sql += " inner join PLUSV b on a.GD_NO=b.GD_NO";
+                //sql += " where b.GD_NO='" + GD_NO.SqlQuote() + "'";
                 DataTable dtPLU = PubUtility.SqlQry(sql, uu, "SYS");
                 dtPLU.TableName = "dtPLU";
                 ds.Tables.Add(dtPLU);
@@ -323,12 +337,13 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-                DataTable dtRec = new DataTable("PLUSVM");
-                PubUtility.AddStringColumns(dtRec, "GD_NO,GD_Sname,Photo1,Photo2");
+                DataTable dtRec = new DataTable("PLUSV");
+                PubUtility.AddStringColumns(dtRec, "CompanyCode,GD_NO,GD_Sname,Photo1");
                 DataSet dsRQ = new DataSet();
                 dsRQ.Tables.Add(dtRec);
                 PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
                 DataRow dr = dtRec.Rows[0];
+                dr["CompanyCode"] = uu.CompanyId;
                 string sql = "";
                 using (DBOperator dbop = new DBOperator())
                 {
@@ -336,7 +351,7 @@ namespace SVMAdmin.Controllers
                     {
                         try
                         {
-                            sql = "select * from PLUSV where GD_NO='" + dr["GD_NO"].ToString().SqlQuote() + "'";
+                            sql = "select * from PLUSV where CompanyCode='" + uu.CompanyId + "' And GD_NO='" + dr["GD_NO"].ToString().SqlQuote() + "'";
                             DataTable dtOld = dbop.Query(sql, uu, "SYS");
                             //sql = "update PLUSVM set ";
                             //sql += " GD_Sname='" + dr["GD_Sname"].ToString().SqlQuote() + "'";
@@ -344,7 +359,7 @@ namespace SVMAdmin.Controllers
                             //sql += ",Photo2='" + dr["Photo2"].ToString().SqlQuote() + "'";
                             //sql += " where GD_NO='" + dr["GD_NO"].ToString().SqlQuote() + "'";
                             //dbop.ExecuteSql(sql, uu, "SYS");
-                            dbop.Update("PLUSV", dtRec, new string[] { "GD_NO" }, uu, "SYS");
+                            dbop.Update("PLUSV", dtRec, new string[] { "CompanyCode" , "GD_NO" }, uu, "SYS");
 
                             string OldPhoto1 = dtOld.Rows[0]["Photo1"].ToString();
                             if (OldPhoto1 != "" & OldPhoto1 != dr["Photo1"].ToString())
@@ -352,12 +367,18 @@ namespace SVMAdmin.Controllers
                                 sql = "delete from ImageTable where SGID='" + OldPhoto1 + "'";
                                 dbop.ExecuteSql(sql, uu, "SYS");
                             }
-                            string OldPhoto2 = dtOld.Rows[0]["Photo2"].ToString();
-                            if (OldPhoto2 != "" & OldPhoto2 != dr["Photo2"].ToString())
-                            {
-                                sql = "delete from ImageTable where SGID='" + OldPhoto2 + "'";
-                                dbop.ExecuteSql(sql, uu, "SYS");
-                            }
+                            //string OldPhoto2 = dtOld.Rows[0]["Photo2"].ToString();
+                            //if (OldPhoto2 != "" & OldPhoto2 != dr["Photo2"].ToString())
+                            //{
+                            //    sql = "delete from ImageTable where SGID='" + OldPhoto2 + "'";
+                            //    dbop.ExecuteSql(sql, uu, "SYS");
+                            //}
+
+                            sql = "Update PLUSV Set GD_Flag1='1' ";
+                            sql += "Where CompanyCode='" + uu.CompanyId + "' And GD_No='" + dr["GD_NO"].ToString().SqlQuote() + "' ";
+                            sql += " And GD_Flag1='0' ";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
                             ts.Complete();
                         }
                         catch (Exception err)
@@ -395,18 +416,36 @@ namespace SVMAdmin.Controllers
             {
                 IFormCollection rq = HttpContext.Request.Form;
                 string KeyWord = rq["KeyWord"];
+                string GDDept = rq["GDDept"];
+                string GDBGNo = rq["GDBGNo"];
+                string GDStatus = rq["GDStatus"];
                 string sql = "select a.*";
+                sql += " ,Case When GD_Flag1='0' Then '未設定' When GD_Flag1='1' Then '啟用' When GD_Flag1='2' Then '停用' End GDStatus ";
                 sql += " from PLUSV a";
                 //sql += " inner join PLUSV b on a.GD_NO=b.GD_NO";
-                sql += " where 1=1";
-                if (KeyWord!="")
+                sql += " where CompanyCode='" + uu.CompanyId + "' ";
+                if (KeyWord != "")
                 {
                     sql += " and (";
-                    sql += " a.GD_NAME like '"+ KeyWord + "%'";
-                    sql += " or a.GD_NO='" + KeyWord + "'";
-                    sql += " or a.GD_Sname='" + KeyWord + "'";
+                    sql += " a.GD_NAME like '%" + KeyWord + "%'";
+                    sql += " or a.GD_NO Like '%" + KeyWord + "%'";
+                    sql += " or a.GD_Sname Like '%" + KeyWord + "%'";
                     sql += ")";
                 }
+                if (GDDept != "")
+                {
+                    sql += " and a.GD_Dept='" + GDDept + "'";
+                }
+                if (GDBGNo != "")
+                {
+                    sql += " and a.GD_BGNo='" + GDBGNo + "'";
+                }
+                if (GDStatus != "")
+                {
+                    sql += " and a.GD_Flag1='" + GDStatus + "'";
+                }
+                sql += " Order By GD_No ";
+
                 DataTable dtPLU = PubUtility.SqlQry(sql, uu, "SYS");
                 dtPLU.TableName = "dtPLU";
                 ds.Tables.Add(dtPLU);
@@ -602,11 +641,14 @@ namespace SVMAdmin.Controllers
             {
                 IFormCollection rq = HttpContext.Request.Form;
                 string KeyWord = rq["KeyWord"];
-                string LayerType = rq["LayerType"];
-                string sql = "select a.*,b.GD_PRICES,b.GD_NAME,Cast(a.PtNum as numeric(5,1))/Cast(a.SafeNum as numeric(5,1))*100 Share";
+                string WhNo = rq["WhNo"];
+                string CkNo = rq["CkNo"];
+                string GDLayer = rq["GDLayer"];
+                string sql = "select a.*,b.GD_SNAME,";
+                sql += " cast(case when DisPlayNum>0 then Cast(Round(Cast(a.PtNum as numeric(5,1))/Cast(a.DisPlayNum as numeric(5,1))*100,0) As Int) Else 0 End As Varchar(10)) + '%' Share";
                 sql += " from InventorySV a";
-                sql += " inner join PLUSV b on a.PLU=b.GD_NO";
-                sql += " where 1=1";
+                sql += " inner join PLUSV b on a.PLU=b.GD_NO And a.CompanyCode=b.CompanyCode";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "'";
                 if (KeyWord != "")
                 {
                     sql += " and (";
@@ -615,6 +657,15 @@ namespace SVMAdmin.Controllers
                     sql += " or b.GD_Sname='" + KeyWord + "'";
                     sql += ")";
                 }
+                if (WhNo != "")
+                {
+                    sql += " and a.WhNo='" + WhNo + "'";
+                }
+                if (GDLayer != "")
+                {
+                    sql += " and a.Layer='" + GDLayer + "'";
+                }
+                sql += " Order By a.WhNo, a.CkNo, a.Layer ";
                 DataTable dtInv = PubUtility.SqlQry(sql, uu, "SYS");
                 dtInv.TableName = "dtInv";
                 ds.Tables.Add(dtInv);
@@ -627,6 +678,33 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+
+        //2021-05-07
+        [Route("SystemSetup/GetWhCkNo")]
+        public ActionResult SystemSetup_GetWhCkNo()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetWhCkNoOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string WhNo = rq["WhNo"];
+                string sql = "select a.CkNo ";
+                sql += " from WarehouseDSV a (NoLock) ";
+                sql += " where CompanyCode='" + uu.CompanyId + "' and ST_ID='" + WhNo + "'";
+                sql += " Order By CkNo ";
+                DataTable dtCK = PubUtility.SqlQry(sql, uu, "SYS");
+                dtCK.TableName = "dtCK";
+                ds.Tables.Add(dtCK);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
 
 
         [Route("SystemSetup/GetLayer")]
@@ -690,6 +768,420 @@ namespace SVMAdmin.Controllers
             }
             return sgid;
         }
+
+
+        //2021-05-07 Larry
+        [Route("SystemSetup/GetInitVMN29")]
+        public ActionResult SystemSetup_GetInitVMN29()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetInitVMN29OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        //2021-05-07 Larry
+        [Route("SystemSetup/GetRack")]
+        public ActionResult SystemSetup_GetRack()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetRackOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                string sql = "select * from Rack Where CompanyCode='" + uu.CompanyId + "' order by Type_ID";
+
+                DataTable dtRack = PubUtility.SqlQry(sql, uu, "SYS");
+                dtRack.TableName = "dtRack";
+                ds.Tables.Add(dtRack);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        //2021-05-07 Larry
+        [Route("SystemSetup/ChkRackUsed")]
+        public ActionResult SystemSetup_ChkRackUsed()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "ChkRackUsedOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Type_ID = rq["Type_ID"];
+                string sql = "select Distinct ChannelType from MachineListSpec Where CompanyCode='" + uu.CompanyId + "' And ChannelType='" + Type_ID + "'";
+
+                DataTable dtRack = PubUtility.SqlQry(sql, uu, "SYS");
+                dtRack.TableName = "dtRack";
+                ds.Tables.Add(dtRack);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        //2021-05-07 Larry
+        [Route("SystemSetup/ChkRackExist")]
+        public ActionResult SystemSetup_ChkRackExist()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "ChkRackUsedOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Type_ID = rq["Type_ID"];
+                string sql = "select * from Rack Where CompanyCode='" + uu.CompanyId + "' And Type_ID='" + Type_ID + "'";
+
+                DataTable dtRack = PubUtility.SqlQry(sql, uu, "SYS");
+                dtRack.TableName = "dtRack";
+                ds.Tables.Add(dtRack);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+
+
+        //2021-05-07 Larry
+        [Route("SystemSetup/UpdateRack")]
+        public ActionResult SystemSetup_UpdateRack()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "UpdateRackOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                DataTable dtRec = new DataTable("Rack");
+                PubUtility.AddStringColumns(dtRec, "OldType_ID,Type_ID,Type_Name,DisplayNum");
+                DataSet dsRQ = new DataSet();
+                dsRQ.Tables.Add(dtRec);
+                PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
+                DataRow dr = dtRec.Rows[0];
+
+                string sql = "";
+                using (DBOperator dbop = new DBOperator())
+                {
+                    using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required))
+                    {
+                        try
+                        {
+                            if (dr["Type_ID"].ToString() == dr["OldType_ID"].ToString())
+                            {
+                                sql = "update Rack set ";
+                                sql += " Type_Name='" + dr["Type_Name"].ToString().SqlQuote() + "'";
+                                sql += ",DisplayNum=" + dr["DisplayNum"].ToString().SqlQuote() + "";
+                                sql += ",ModDate=convert(char(10),getdate(),111)";
+                                sql += ",ModTime=convert(char(12),getdate(),108)";
+                                sql += ",ModUser='" + uu.UserID + "'";
+                                sql += " where CompanyCode='" + uu.CompanyId + "' And Type_ID='" + dr["Type_ID"].ToString().SqlQuote() + "'";
+                                dbop.ExecuteSql(sql, uu, "SYS");
+                            }
+                            else
+                            {
+                                sql = "update Rack set ";
+                                sql += " Type_ID='" + dr["Type_ID"].ToString().SqlQuote() + "'";
+                                sql += " ,Type_Name='" + dr["Type_Name"].ToString().SqlQuote() + "'";
+                                sql += " ,DisplayNum=" + dr["DisplayNum"].ToString().SqlQuote() + "";
+                                sql += " ,ModDate=convert(char(10),getdate(),111)";
+                                sql += " ,ModTime=convert(char(12),getdate(),108)";
+                                sql += " ,ModUser='" + uu.UserID + "'";
+                                sql += " where CompanyCode='" + uu.CompanyId + "' And Type_ID='" + dr["OldType_ID"].ToString().SqlQuote() + "'";
+                                dbop.ExecuteSql(sql, uu, "SYS");
+                            }
+                            //dbop.Update("Rack", dtRec, new string[] { "Type_ID" }, uu, "SYS");
+
+                            ts.Complete();
+                        }
+                        catch (Exception err)
+                        {
+                            ts.Dispose();
+                            dbop.Dispose();
+                            throw new Exception(err.Message);
+                        }
+                        dbop.Dispose();
+                    }
+                }
+                sql = "select a.*";
+                sql += " from Rack a";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "' And a.Type_ID='" + dr["Type_ID"].ToString().SqlQuote() + "'";
+                DataTable dtRack = PubUtility.SqlQry(sql, uu, "SYS");
+                dtRack.TableName = "dtRack";
+                ds.Tables.Add(dtRack);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        //2021-05-07 Larry
+        [Route("SystemSetup/AddRack")]
+        public ActionResult SystemSetup_AddRack()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "AddRackOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                DataTable dtRec = new DataTable("Rack");
+                PubUtility.AddStringColumns(dtRec, "Type_ID,Type_Name,DisplayNum");
+                DataSet dsRQ = new DataSet();
+                dsRQ.Tables.Add(dtRec);
+                PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
+                DataRow dr = dtRec.Rows[0];
+
+                string sql = "";
+                using (DBOperator dbop = new DBOperator())
+                {
+                    using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required))
+                    {
+                        try
+                        {
+                            //sql = "Insert Into Rack (CompanyCode, CrtUser, CrtDate, CrtTime ";
+                            //sql += " ,ModUser, ModDate, ModTime";
+                            //sql += ", Type_ID, Type_Name, DisplayNum) Values ";
+                            //sql += " ('" + uu.CompanyId + "', '" + uu.UserID + "', convert(char(10),getdate(),111), convert(char(12),getdate(),108) ";
+                            //sql += " ,'" + uu.UserID + "',convert(char(10),getdate(),111), convert(char(12),getdate(),108) ";
+                            //sql += " ,'" + dr["Type_ID"].ToString().SqlQuote() + "','" + dr["Type_Name"].ToString().SqlQuote() + "'," + dr["DisplayNum"].ToString().SqlQuote() + ")";
+                            //dbop.ExecuteSql(sql, uu, "SYS");
+                            dbop.Add("Rack", dtRec, uu, "SYS");
+                            ts.Complete();
+                        }
+                        catch (Exception err)
+                        {
+                            ts.Dispose();
+                            dbop.Dispose();
+                            throw new Exception(err.Message);
+                        }
+                        dbop.Dispose();
+                    }
+                }
+                sql = "select a.*";
+                sql += " from Rack a";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "' And Type_ID='" + dr["Type_ID"].ToString().SqlQuote() + "'";
+                DataTable dtRack = PubUtility.SqlQry(sql, uu, "SYS");
+                dtRack.TableName = "dtRack";
+                ds.Tables.Add(dtRack);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        //2021-05-07 Larry
+        [Route("SystemSetup/DelRack")]
+        public ActionResult SystemSetup_DelRack()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "DelRackOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                DataTable dtRec = new DataTable("Rack");
+                PubUtility.AddStringColumns(dtRec, "Type_ID");
+                DataSet dsRQ = new DataSet();
+                dsRQ.Tables.Add(dtRec);
+                PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
+                DataRow dr = dtRec.Rows[0];
+
+                string sql = "";
+                using (DBOperator dbop = new DBOperator())
+                {
+                    using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required))
+                    {
+                        try
+                        {
+                            sql = "Delete From Rack ";
+                            sql += " where CompanyCode='" + uu.CompanyId + "' And Type_ID='" + dr["Type_ID"].ToString().SqlQuote() + "'";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+                            ts.Complete();
+                        }
+                        catch (Exception err)
+                        {
+                            ts.Dispose();
+                            dbop.Dispose();
+                            throw new Exception(err.Message);
+                        }
+                        dbop.Dispose();
+                    }
+                }
+                sql = "select a.*";
+                sql += " from Rack a";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "' ";
+                DataTable dtRack = PubUtility.SqlQry(sql, uu, "SYS");
+                dtRack.TableName = "dtRack";
+                ds.Tables.Add(dtRack);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        //2021-05-18 Larry
+        [Route("SystemSetup/GetInitVXT03")]
+        public ActionResult SystemSetup_GetInitVXT03()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetInitVXT03OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+
+                string sql = "select ST_ID ,ST_ID+ST_SName STName ";
+                sql += " from WarehouseSV (NoLock) ";
+                sql += " Where CompanyCode='" + uu.CompanyId + "' And ST_Type ='6'";
+                sql += " Order By ST_ID ";
+
+                DataTable dtWh = PubUtility.SqlQry(sql, uu, "SYS");
+                dtWh.TableName = "dtWh";
+                ds.Tables.Add(dtWh);
+
+
+                sql = "select ST_ID ,ST_ID+ST_SName STName ";
+                sql += " from WarehouseSV (NoLock) ";
+                sql += " Where CompanyCode='" + uu.CompanyId + "' And ST_Type Not In ('2','3','6')";
+                sql += " Order By ST_ID ";
+
+                DataTable dtS = PubUtility.SqlQry(sql, uu, "SYS");
+                dtS.TableName = "dtS";
+                ds.Tables.Add(dtS);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        //2021-05-18 Larry
+        [Route("SystemSetup/SearchVXT03")]
+        public ActionResult SystemSetup_SearchVXT03()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SearchVXT03OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+
+                string WhNo = rq["WhNo"];
+                string CkNo = rq["CkNo"];
+                string SWhNo = rq["SWhNo"];
+                string VMStatus = rq["VMStatus"];
+                string NetStatus = rq["NetStatus"];
+
+                string sql = "select a.*,c.ST_SNAME+b.ckno+'機' VMName,b.ST_ID,b.ckno,d.ST_SName SWhName";
+                sql += " from MachineList a";
+                sql += " inner join WarehouseDSV b on a.SNNo=b.SNNo And a.CompanyCode=b.CompanyCode";
+                sql += " inner join WarehouseSV c on b.ST_ID=c.ST_ID And b.CompanyCode=c.CompanyCode";
+                sql += " inner join WarehouseSV d on b.WhNoIn=d.ST_ID And b.CompanyCode=d.CompanyCode";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "'";
+                if (WhNo != "")
+                {
+                    sql += " and b.ST_ID='" + WhNo + "'";
+                }
+                if (CkNo != "")
+                {
+                    sql += " and b.CkNo='" + CkNo + "'";
+                }
+                if (SWhNo != "")
+                {
+                    sql += " and b.WhNoIn='" + SWhNo + "'";
+                }
+                if (VMStatus != "")
+                {
+                    sql += " and a.FlagUse='" + VMStatus + "'";
+                }
+                if (NetStatus != "")
+                {
+                    sql += " and a.FlagNet='" + NetStatus + "'";
+                }
+                sql += " Order By a.SNNo ";
+                DataTable dtInv = PubUtility.SqlQry(sql, uu, "SYS");
+                dtInv.TableName = "dtInv";
+                ds.Tables.Add(dtInv);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        //2021-05-18
+        [Route("SystemSetup/GetWhDSVCkNo")]
+        public ActionResult SystemSetup_GetWhDSVCkNo()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetWhDSVCkNoOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string WhNo = rq["WhNo"];
+                string sql = "select a.CkNo ";
+                sql += " from WarehouseDSV a (NoLock) ";
+                sql += " where CompanyCode='" + uu.CompanyId + "' and ST_ID='" + WhNo + "'";
+                sql += " Order By CkNo ";
+                DataTable dtCK = PubUtility.SqlQry(sql, uu, "SYS");
+                dtCK.TableName = "dtCK";
+                ds.Tables.Add(dtCK);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+
 
 
 

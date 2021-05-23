@@ -107,7 +107,6 @@
         InitSelectItem($('#selLayerNo')[0], dtMachineListSpec, "LayerNo", "LayerNo", true, "請選擇貨艙代號");
     }
 
-
     //尚未設定InventorySV
     let AfterGetInvtInfo = function (data) {
         if (ReturnMsg(data, 0) == "AlreadySetInventorySV") {
@@ -141,11 +140,13 @@
             CkNo = GetNodeValue(dtMachineListSpec[0], "CkNo");
             LayerNo = GetNodeValue(dtMachineListSpec[0], "LayerNo");
 
+            Chans++;
             let dispThisSetting = GetNodeValue(dtMachineListSpec[0], "ST_Sname");
             dispThisSetting += "(" + ST_ID + ")\t";
             dispThisSetting += CkNo + "機\t";
             dispThisSetting += LayerNo + "倉\t";
-            dispThisSetting += GetNodeValue(dtMachineListSpec[0], "Type_Name");
+            dispThisSetting += GetNodeValue(dtMachineListSpec[0], "Type_Name") + "\t";
+            dispThisSetting += "(" + Chans + ")";
             $('.dispThisSetting').text(dispThisSetting);            
         }
     }
@@ -196,11 +197,13 @@
         CkNo = GetNodeValue(dtMachineListSpec[0], "CkNo");
         LayerNo = GetNodeValue(dtMachineListSpec[0], "LayerNo");
 
+        Chans++;
         let dispThisSetting = GetNodeValue(dtMachineListSpec[0], "ST_Sname");
         dispThisSetting += "(" + ST_ID + ")\t";
         dispThisSetting += CkNo + "機\t";
         dispThisSetting += LayerNo + "倉\t";
-        dispThisSetting += GetNodeValue(dtMachineListSpec[0], "Type_Name");
+        dispThisSetting += GetNodeValue(dtMachineListSpec[0], "Type_Name")+ "\t";
+        dispThisSetting += "(" + Chans + ")";
         $('.dispThisSetting').text(dispThisSetting);        
     }
 
@@ -263,6 +266,8 @@
         }
 
         this.SetPluName = function (PluName) {
+            if (PluName.length > 6)
+                PluName = PluName.substr(0, 6);
             cube.find('.PluName').text(PluName);
         }
 

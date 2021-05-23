@@ -2,11 +2,6 @@
     //"use strict";
     var Initdoc = function () {
 
-        //var jjj = document.getElementById('testh1');
-        //jjj.innerText = "*雲智能販賣機後台管理系統*";
-        //$('.form-control').val('販賣機後台');
-
-
         $('#btSignIn').click(function () { LoginSys(); });
 
         $('#password').keypress(function (e) {
