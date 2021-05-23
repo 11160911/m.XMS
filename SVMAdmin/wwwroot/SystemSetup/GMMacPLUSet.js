@@ -15,9 +15,9 @@
                     { type: "Text", name: "GD_NO" },
                     { type: "Text", name: "GD_NAME" },
                     { type: "Text", name: "GD_Sname" },
-                    { type: "TextAmt", name: "GD_PRICES" },
+                    { type: "TextAmt", name: "GD_Retail" },
                     { type: "Image", name: "Photo1" },
-                    { type: "Text", name: "GD_StopDay" }
+                    { type: "Text", name: "GDStatus" }
                 ],
                 rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -39,8 +39,24 @@
     }
 
     let SearchPLU = function () {
+
+        var sGDStatus = "";
+        if ($('#cbGDFlag1').val() == "啟用") {
+            sGDStatus = "1";
+        }
+        else if ($('#cbGDFlag1').val() == "停用") {
+            sGDStatus = "2";
+        }
+        else if ($('#cbGDFlag1').val() == "未設定") {
+            sGDStatus = "0";
+        };
+
+
         var pData = {
-            KeyWord: $('#txtPLUSearch').val()
+            KeyWord: $('#txtPLUSearch').val(),
+            GDDept: $('#cbDept').val(),
+            GDBGNo: $('#cbBGNo').val(),
+            GDStatus: sGDStatus
         };
         PostToWebApi({ url: "api/SystemSetup/SearchPLU", data: pData, success: AfterSearchPLU });
     };
@@ -70,10 +86,10 @@
         var sp = GetNodeValue(trNode, "GD_Flag1");
         var bts = $(tr).find('.btsuspend i');
         bts.hide();
-        if (sp == "S")
-            $(tr).find('.btsuspend .fa-toggle-off').show();
-        else
+        if (sp == "1")
             $(tr).find('.btsuspend .fa-toggle-on').show();
+        else
+            $(tr).find('.btsuspend .fa-toggle-off').show();
         var img = $(tr).prop('Photo1');
         var imgSGID = GetNodeValue(trNode, "Photo1");
         var url = "api/GetImage?SGID=" + EncodeSGID(imgSGID) + "&UU=" + encodeURIComponent(UU);
@@ -117,11 +133,12 @@
         else
             $('#PLUPic1').prop('src', '../images/No_Pic.jpg');
 
-        var Photo2 = GetNodeValue(node, 'Photo2');
-        if (Photo2.length == 10)
-            GetGetImage("PLUPic2", Photo2); 
-        else
-            $('#PLUPic2').prop('src', '../images/No_Pic.jpg');
+        //var Photo2 = GetNodeValue(node, 'Photo2');
+        //if (Photo2.length == 10)
+        //    GetGetImage("PLUPic2", Photo2); 
+        //else
+        //    $('#PLUPic2').prop('src', '../images/No_Pic.jpg');
+
         $('#modal_GMMacPLUSet').modal('show');
     };
 
@@ -134,10 +151,10 @@
     let btSuspend_click = function (bt) {
         $(bt).closest('tr').click();
         var act = "停用";
-        SetSuspend = "S";
+        SetSuspend = "2";
         if ($(bt).hasClass('fa-toggle-off')) {
             act = "啟用";
-            SetSuspend = "";
+            SetSuspend = "1";
         }
         if (grdU.ActiveRowTR() == null) {
             DyAlert("未選取欲" + act +"之PLU");
@@ -192,14 +209,23 @@
         //if (errcount > 0)
         //    return;
 
+        if ($('#GD_Sname').val() == "" | $('#GD_Sname').val() == null) {
+            DyAlert("商品簡稱欄位必須輸入資料!!", function () { $('#GD_Sname').focus() });
+            return;
+        }
+        if ($('#Photo1').val() == "" | $('#Photo1').val() == null) {
+            DyAlert("請選擇圖片資料!!");
+            return;
+        }
         
         var pData = {
-            PLUSVM: [
+            PLUSV: [
                 {
                     GD_NO: $('#GD_NO').val(),
                     GD_Sname: $('#GD_Sname').val(),
-                    Photo1: $('#Photo1').val(),
-                    Photo2: $('#Photo2').val()
+                    Photo1: $('#Photo1').val()
+                    //,
+                    //Photo2: $('#Photo2').val()
                 }
             ]
         };
@@ -245,7 +271,13 @@
         $('#btSave').click(function () { btSave_click(); });
         $('#btCancel').click(function () { btCancel_click(); });
         //$('.forminput input').change(function () { InputValidation(this) });
-        
+
+        var dtDept = data.getElementsByTagName('dtDept');
+        InitSelectItem($('#cbDept')[0], dtDept, "Type_ID", "Type_Name", true);
+
+        var dtBGNo = data.getElementsByTagName('dtBGNo');
+        InitSelectItem($('#cbBGNo')[0], dtBGNo, "Type_ID", "Type_Name", true);
+
         SetPLUAutoComplete("GD_NAME");
         SetPLUAutoComplete("GD_NO");
     };
@@ -404,7 +436,7 @@
     let afterLoadPage = function () {
         PostToWebApi({ url: "api/SystemSetup/GetInitGMMacPLUSet", success: afterGetInitGMMacPLUSet });
         $('#pgGMMacPLUSet').show();
-        $('#pgSysUsersEdit').hide();
+        //$('#pgSysUsersEdit').hide();
     };
 
     if ($('#pgGMMacPLUSet').length == 0) {

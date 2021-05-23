@@ -12,16 +12,20 @@
             {
                 //2021-04-27
                 table_lement: $('#tbInv')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6"],
+                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7", "tdCol8", "tdCol9", "tdCol10"],
                 //class_collection: ["tdColbt icon_in_td", "tdColbt icon_in_td btsuspend", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7",  "tdCol8"],
                 fields_info: [
                     //{ type: "JQ", name: "fa-file-text-o", element: '<i class="fa fa-file-text-o"></i>' },
                     //{ type: "JQ", name: "fa-toggle-off", element: '<i class="fa fa-toggle-off"></i><i class="fa fa-toggle-on"></i>' },
+                    { type: "Text", name: "WhNo" },
+                    { type: "Text", name: "CkNo" },
+                    { type: "Text", name: "Layer" },
                     { type: "Text", name: "SNO" },
                     { type: "Text", name: "PLU" },
-                    { type: "Text", name: "GD_NAME" },
+                    { type: "Text", name: "GD_SNAME" },
+                    { type: "Text", name: "EffectiveDate" },
                     { type: "Text", name: "PtNum" },
-                    { type: "Text", name: "SafeNum" },
+                    { type: "Text", name: "DisplayNum" },
                     { type: "Text", name: "Share" }
                 ],
                 rows_per_page: 10,
@@ -47,8 +51,6 @@
     let SearchInv = function () {
 
         console.log("SearchInv");
-        //alert("SearchInv")
-        //var iChoice = $('#cbInv').
 
         //var e = document.getElementById("cbInv");
         //var str = e.options[e.selectedIndex].text;
@@ -57,9 +59,21 @@
 
         //alert($('#cbInv').text())
 
+        if ($('#txtInvSearch').val() == "") {
+            if ($('#cbWh').val() == "" & $('#cbCK').val() == "") {
+                DyAlert("請選擇店及機號查詢條件!!");
+                return;
+            }
+        }
+        else {
+
+        }
+
         var pData = {
             KeyWord: $('#txtInvSearch').val(),
-            LayerType: $('#cbInv').val()
+            WhNo: $('#cbWh').val(),
+            CkNo: $('#cbCK').val(),
+            GDLayer: $('#cbLayer').val()
         };
         PostToWebApi({ url: "api/SystemSetup/SearchInv", data: pData, success: AfterSearchInv });
     };
@@ -195,65 +209,43 @@
         $('#modal_Inv').modal('hide');
     };
 
-    let btSave_click = function () {
-        //$('.msg-valid').hide();
-        //var errcount = 0;
-        //var blankchk = $('.msg-valid.valid-blank').filter(function () {
-        //    return $(this).prev().val() == "";
-        //});
-        //errcount = blankchk.length;
-        //if (errcount > 0) {
-        //    blankchk.text("必填欄位");
-        //    blankchk.show();
-        //}
-        //errcount = $('.forminput .msg-valid').filter(function () {
-        //    return $(this).text() != "";
-        //}).length;
+    //2021-05-07
+    let cbCK_click = function () {
 
-        //if (errcount > 0)
-        //    return;
+        if ($('#cbWh').val() == "") {
+            $('#cbCK').val() == ""
+            DyAlert("請先選擇店查詢條件!!");
+            return;
+        }
+    };
 
-        
+    let GetWhCkNo = function () {
+
+        console.log("GetWhCkNo");
+
+        if ($('#cbWh').val() == "") {
+            $('#cbCK').empty();
+            return;
+        }
+        else {
+
+        }
+
         var pData = {
-            PLUSVM: [
-                {
-                    GD_NO: $('#GD_NO').val(),
-                    GD_Sname: $('#GD_Sname').val(),
-                    Photo1: $('#Photo1').val(),
-                    Photo2: $('#Photo2').val()
-                }
-            ]
+            WhNo: $('#cbWh').val()
         };
-        if (!isImport)
-            PostToWebApi({ url: "api/SystemSetup/UpdatePLU", data: pData, success: AfterUpdatePLU });
-        else
-            PostToWebApi({ url: "api/SystemSetup/ImportPLU", data: pData, success: AfterImportPLU });
-        
+        PostToWebApi({ url: "api/SystemSetup/GetWhCkNo", data: pData, success: AfterGetWhCkNo });
     };
 
-    let AfterImportPLU = function (data) {
-        if (ReturnMsg(data, 0) != "ImportPLUOK") {
+
+    let AfterGetWhCkNo = function (data) {
+        if (ReturnMsg(data, 0) != "GetWhCkNoOK") {
             DyAlert(ReturnMsg(data, 0));
+            return;
         }
         else {
-            DyAlert("匯入完成!");
-            $('#modal_test').modal('hide');
-        }
-    };
-
-    let AfterUpdatePLU = function (data) {
-        if (ReturnMsg(data, 0) != "UpdatePLUOK") {
-            DyAlert(ReturnMsg(data, 0));
-        }
-        else {
-            DyAlert("儲存完成!");
-            //2021-04-27
-            $('#modal_test').modal('hide');
-            var userxml = data.getElementsByTagName('dtPLU')[0];
-            grdU.RefreshRocord(grdU.ActiveRowTR(), userxml);
-            var tr = grdU.ActiveRowTR();
-            DisplaySuspend(tr);
-
+            var dtCK = data.getElementsByTagName('dtCK');
+            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true);
         }
     };
 
@@ -265,9 +257,13 @@
 
         AssignVar();
         $('#btQueryInv').click(function () { SearchInv(); });
-        var dtLayer = data.getElementsByTagName('dtLayer');
-        InitSelectItem($('#cbInv')[0], dtLayer, "Type_ID", "Type_Name", true);
-        	
+        //var dtLayer = data.getElementsByTagName('dtLayer');
+        //InitSelectItem($('#cbInv')[0], dtLayer, "Type_ID", "Type_Name", true);
+        var dtInvWh = data.getElementsByTagName('dtInvWh');
+        InitSelectItem($('#cbWh')[0], dtInvWh, "WhNo", "WhName", true);       
+
+        $('#cbWh').change(function () { GetWhCkNo(); });
+        $('#cbCK').change(function () { cbCK_click(); });
         //$('#btUPPic1,#btUPPic2').click(function () { UploadPicture(this); });
         //$('#btDelete').click(function () { btDelete_click(); });
         //$('#btImportFromiXMS').click(function () { btImportFromiXMS_click(); });
@@ -280,58 +276,7 @@
     };
 
 
-    let SetPLUAutoComplete = function (inputID, apiPath) {
-        var divmenu = $("<div></div>");
-        divmenu.prop('id', 'EMAC' + inputID);
-        divmenu.css("display", "block");
-        divmenu.css("position", "relative");
-        $('#' + inputID).after(divmenu);
-        if (apiPath == null)
-            apiPath = "";
-        $('#' + inputID).autocomplete({
-            position: { my: "left top", at: "left bottom" },
-            appendTo: "#" + divmenu.prop('id'),
-            source: function (request, response) {
-                $.ajax({
-                    url: apiPath + "api/SystemSetup/GetPLUFromIXms",
-                    method: "POST",
-                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                    headers: { "Authorization": "Bearer " + UU },
-                    dataType: "json",
-                    data: {
-                        "term": request.term
-                    },
-                    success: function (data) {
-                        response($.map(data.list, function (item) {
-                            return {
-                                label: item.value + ' ' + item.label,
-                                value: item.value,
-                                display: item.label
-                            }
-                        }));
-                    }
-                });
-
-            },
-            select: function (event, ui) {
-                $("#GD_NO").val(ui.item.value);
-                $("#GD_NAME").val(ui.item.display);
-                return false;
-            }
-        });
-    }
-
-    let UploadPicture = function (bt) {
-        InitFileUpload();
-        var UploadFileType = "PLU+Pic1";
-        if (bt.id == "btUPPic2") {
-            UploadFileType = "PLU+Pic2"
-        }
-        $('#modal-media').prop("UploadFileType", UploadFileType);
-        $('#modal-media').modal('show');
-    };
-
-
+ 
     let InitFileUpload = function () {
         $('#fileupload').fileupload({
             dataType: 'xml',

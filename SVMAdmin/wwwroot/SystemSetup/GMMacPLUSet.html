@@ -184,8 +184,14 @@
                           </div>
                           <style>
                               #tbGMMacPLUSet .fa-toggle-off, #tbGMMacPLUSet .fa-toggle-on {
-                                  font-size:28px;
-                                  color:lightblue;
+                                  font-size: 28px;
+                                  color: lightblue;
+                              }
+                          </style>
+                          <style>
+                              #tbGMMacPLUSet .fa-file-text-o {
+                                  font-size: 28px;
+                                  color: lightblue;
                               }
                           </style>
                           <div class="col-md-12 col-sm-12 ">
@@ -193,10 +199,42 @@
                                   <div class="x_title">
                                       <div class="form-group row">
                                           <label class="col-form-label">商品關鍵字</label>
-                                          <div class="col-md-4">
+                                          <div class="col-md-2">
                                               <input id="txtPLUSearch" type="text" class="form-control" />
                                           </div>
-                                          <div class="col-md-5">
+                                          <label class="col-form-label">部門</label>
+                                          <div class="col-md-2">
+                                              <select id="cbDept" class="form-control">
+                                                  <option></option>
+                                              </select>
+                                          </div>
+                                          <label class="col-form-label">大類</label>
+                                          <div class="col-md-2">
+                                              <select id="cbBGNo" class="form-control">
+                                                  <option></option>
+                                              </select>
+                                          </div>
+                                          <label class="col-form-label">上架狀態</label>
+                                          <div class="col-md-2">
+                                              <select id="cbGDFlag1" class="form-control">
+                                                  <option></option>
+                                                  <option>未設定</option>
+                                                  <option>啟用</option>
+                                                  <option>停用</option>
+                                              </select>
+                                          </div>
+
+                                          <!--<div class="col-md-5">
+                                              <button type="button" id="btQueryPLU" class="custom-control-inline btn btn-primary">商品查詢</button>
+                                              <button type="button" id="btImportFromiXMS" class="custom-control-inline btn btn-warning" hidden>從iXms匯入</button>
+                                          </div>-->
+                                      </div>
+                                      <div class="form-group row">
+                                          <div class="col-md-9">
+                                              <!--<button type="button" id="btQueryPLU" class="custom-control-inline btn btn-primary">商品查詢</button>-->
+                                              <!--<button type="button" id="btImportFromiXMS" class="custom-control-inline btn btn-warning" hidden>從iXms匯入</button>-->
+                                          </div>
+                                          <div class="col-md-3">
                                               <button type="button" id="btQueryPLU" class="custom-control-inline btn btn-primary">商品查詢</button>
                                               <button type="button" id="btImportFromiXMS" class="custom-control-inline btn btn-warning" hidden>從iXms匯入</button>
                                           </div>

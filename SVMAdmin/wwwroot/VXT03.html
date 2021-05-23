@@ -310,86 +310,244 @@
 
 
                 <!--2021-04-28-->
-                <article id="pgInv" class="row">
+                <article id="pgVXT03" class="row">
                     <!--2021-04-28-->
 
 
 
 
+                    <div class="modal fade" id="modal_VXT03">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">智販機監控查詢</h4>
+                                </div>
+                                <div class="modal-body modal-tab-container">
+                                    <style>
+                                        #modal-Role .msg-valid {
+                                            color: red;
+                                            font-size: 0.85rem;
+                                        }
+                                    </style>
+                                    <style>
+                                        #modal-content .col-form-label {
+                                            text-align: center;
+                                            color: red;
+                                            font-size: 0.85rem;
+                                        }
+                                    </style>
+                                    <div class="card-block forminput">
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-3">店代號</label>
+                                            <div class="col-9">
+                                                <input id="ST_ID" type="text" readonly class="form-control" autocomplete="off" />
+                                                <!--<span class="msg-valid valid-blank"></span>-->
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-3">機號</label>
+                                            <div class="col-9">
+                                                <input id="CkNo" type="text" readonly class="form-control" autocomplete="off" />
+                                                <!--<span class="msg-valid valid-blank"></span>-->
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-3">智販店簡稱</label>
+                                            <div class="col-9">
+                                                <input id="WhName" type="text" readonly class="form-control" autocomplete="off" />
+                                                <!--<span class="msg-valid valid-blank"></span>-->
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-3">供貨店倉</label>
+                                            <div class="col-9">
+                                                <input id="SWhName" type="text" readonly class="form-control" autocomplete="off" />
+                                                <!--<span class="msg-valid valid-blank"></span>-->
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-3">溫度</label>
+                                            <div class="col-9">
+                                                <input id="temperature" type="text" readonly class="form-control" autocomplete="off" />
+                                                <!--<span class="msg-valid valid-blank"></span>-->
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-3">機器狀態</label>
+                                            <div class="col-9">
+                                                <input id="VMStatus" type="text" readonly class="form-control" autocomplete="off" />
+                                                <!--<span class="msg-valid valid-blank"></span>-->
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-3">網路狀態</label>
+                                            <div class="col-9">
+                                                <input id="NetStatus" type="text" readonly class="form-control" autocomplete="off" />
+                                                <!--<span class="msg-valid valid-blank"></span>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <!--<button id="btSave" type="button" class="btn btn-danger">儲存</button>-->
+                                        <button id="btCancel" type="button" class="btn btn-primary">離開</button>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+                    </div>
+
+
+
+
+
+
+                    <!--<style>
+        #tbVXT03 .fa-toggle-off, #tbVXT03 .fa-toggle-on {
+            font-size: 28px;
+            color: lightblue;
+        }
+    </style>-->
+                    <style>
+                        #tbVXT03 .fa-check-circle {
+                            font-size: 28px;
+                            align-items: center;
+                            color: lightgreen;
+                        }
+                    </style>
+                    <style>
+                        #tbVXT03 .fa-exclamation-circle {
+                            font-size: 28px;
+                            align-items: center;
+                            color: red;
+                        }
+                    </style>
+                    <style>
+                        #tbVXT03 .fa-wrench {
+                            font-size: 28px;
+                            align-items: center;
+                            color: blue;
+                        }
+                    </style>
+                    <style>
+                        #tbVXT03 .fa-power-off {
+                            font-size: 28px;
+                            align-items: center;
+                            color: black;
+                        }
+                    </style>
+                    <style>
+                        #tbVXT03 .fa-search {
+                            font-size: 28px;
+                            /*     align-items: center;
+                            align-content: center;
+                            text-align : center ;*/
+                            color: lightblue;
+                        }
+                    </style>
+                    <!--<style>
+        .form-group row .col-form-label {
+            font-size: 28px;
+            /*     align-items: center;
+            align-content: center;*/
+            text-align : right ;
+            color: lightblue;
+        }
+    </style>-->
+
                     <div class="col-md-12 col-sm-12 ">
                         <div class="x_panel">
                             <div class="x_title">
                                 <div class="form-group row">
-                                    <label class="col-form-label">商品關鍵字</label>
-                                    <div class="col-md-2">
-                                        <input id="txtInvSearch" type="text" class="form-control" />
-                                    </div>
-                                    <label class="col-form-label">店</label>
+                                    <!--<label class="col-form-label">商品關鍵字</label>
+                    <div class="col-md-2">
+                        <input id="txtInvSearch" type="text" class="form-control" />
+                    </div>-->
+                                    <!--<div class="col-md-2">-->
+                                    <!--<button type="button" id="btQueryPLU" class="custom-control-inline btn btn-primary">商品查詢</button>-->
+                                    <!--<button type="button" id="btImportFromiXMS" class="custom-control-inline btn btn-warning" hidden>從iXms匯入</button>-->
+                                    <!--</div>-->
+                                    <label class="col-form-label">店&nbsp;&nbsp;代&nbsp;&nbsp;號</label>
                                     <div class="col-md-2">
                                         <select id="cbWh" class="form-control">
                                             <option>Choose option</option>
-                                            <option>Option one</option>
-                                            <option>Option two</option>
-                                            <option>Option three</option>
-                                            <option>Option four</option>
                                         </select>
                                     </div>
-                                    <label class="col-form-label">機</label>
+                                    <label class="col-form-label">機&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號</label>
                                     <div class="col-md-2">
                                         <select id="cbCK" class="form-control">
                                             <option> </option>
                                         </select>
                                     </div>
-                                    <label class="col-form-label">層</label>
+                                    <label class="col-form-label">供貨店倉</label>
                                     <div class="col-md-2">
-                                        <select id="cbLayer" class="form-control">
+                                        <select id="cbSWh" class="form-control">
                                             <option> </option>
                                             <option>A</option>
-                                            <option>B</option>
-                                            <option>C</option>
-                                            <option>D</option>
-                                            <option>E</option>
-                                            <option>F</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-3">
-                                        <button type="button" id="btQueryInv" class="custom-control-inline btn btn-primary">查詢</button>
+
+                                </div>
+                                <div class="form-group row">
+                                    <!--<div class="col-md-2">-->
+                                    <!--<button type="button" id="btImportFromiXMS" class="custom-control-inline btn btn-warning" hidden>從iXms匯入</button>-->
+                                    <!--</div>-->
+                                    <label class="col-form-label">機器狀態</label>
+                                    <div class="col-md-2">
+                                        <select id="cbVMStatus" class="form-control">
+                                            <option> </option>
+                                            <option>維護中</option>
+                                            <option>啟用</option>
+                                            <option>停用</option>
+                                            <option>未配置</option>
+                                        </select>
+                                    </div>
+                                    <label class="col-form-label">網路狀態</label>
+                                    <div class="col-md-2">
+                                        <select id="cbNetStatus" class="form-control">
+                                            <option> </option>
+                                            <option>連線中</option>
+                                            <option>斷線</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-9">
+                                        <!--<button type="button" id="btQueryPLU" class="custom-control-inline btn btn-primary">商品查詢</button>-->
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" id="btQueryVXT03" class="custom-control-inline btn btn-primary">查詢</button>
                                         <!--<button type="button" id="btImportFromiXMS" class="custom-control-inline btn btn-warning">從iXms匯入</button>-->
                                     </div>
                                 </div>
+
                             </div>
                             <div class="x_content">
                                 <!--2021-04-27-->
-                                <table id="tbInv" class="table table-hover">
+                                <table id="tbVXT03" class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th>店碼</th>
+                                            <th>監控查詢</th>
+                                            <th>SN碼</th>
+                                            <th>機器狀態</th>
+                                            <th>店代號</th>
                                             <th>機號</th>
-                                            <th>貨倉</th>
-                                            <th>貨道</th>
-                                            <th>商品代號</th>
-                                            <th>商品名稱</th>
-                                            <th>最近有效日</th>
-                                            <th>庫存量</th>
-                                            <th>滿倉量</th>
-                                            <th>庫存比</th>
+                                            <th>店簡稱</th>
+                                            <th>供貨店倉</th>
+                                            <th>溫度</th>
+                                            <th>網路狀態</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <!--<td><span class="fa fa-file-text-o"></span></td>-->
-                                            <!--<td><span class="fa fa-toggle-off"></span></td>-->
+                                            <td><span class="fa fa-search"></span></td>
                                             <td>11</td>
-                                            <td>11</td>
+                                            <td><span class="fa fa-check-circle"></span></td>
                                             <td>11</td>
                                             <td>11</td>
                                             <td>11</td>
                                             <td>53425</td>
-                                            <td>Airwaves超涼薄荷</td>
-                                            <td>8</td>
-                                            <td>17</td>
-                                            <td>47%</td>
-                                            <!--<td>啟用</td>-->
+                                            <td><span class="fa fa-check-circle"></span></td>
+                                            <td><span class="fa fa-check-circle"></span></td>
                                         </tr>
                                     </tbody>
                                 </table>
