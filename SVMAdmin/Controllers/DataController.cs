@@ -231,7 +231,19 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-                
+                string sql = "select Type_ID,Type_Name";
+                sql += " from TypeData ";
+                sql += " where CompanyCode='" + uu.CompanyId + "' And Type_Code='G' Order By Type_ID";
+                DataTable dtDept = PubUtility.SqlQry(sql, uu, "SYS");
+                dtDept.TableName = "dtDept";
+                ds.Tables.Add(dtDept);
+
+                sql = "select Type_ID,Type_Name";
+                sql += " from TypeData ";
+                sql += " where CompanyCode='" + uu.CompanyId + "' And Type_Code='L' Order By Type_ID";
+                DataTable dtBGNo = PubUtility.SqlQry(sql, uu, "SYS");
+                dtBGNo.TableName = "dtBGNo";
+                ds.Tables.Add(dtBGNo);
             }
             catch (Exception err)
             {
@@ -433,15 +445,15 @@ namespace SVMAdmin.Controllers
                     sql += " or a.GD_Sname Like '%" + KeyWord + "%'";
                     sql += ")";
                 }
-                if (GDDept != "")
+                if (GDDept != "" & GDDept != null)
                 {
                     sql += " and a.GD_Dept='" + GDDept + "'";
                 }
-                if (GDBGNo != "")
+                if (GDBGNo != "" & GDBGNo != null)
                 {
                     sql += " and a.GD_BGNo='" + GDBGNo + "'";
                 }
-                if (GDStatus != "")
+                if (GDStatus != "" & GDStatus != null)
                 {
                     sql += " and a.GD_Flag1='" + GDStatus + "'";
                 }
