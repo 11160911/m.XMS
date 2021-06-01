@@ -87,7 +87,16 @@
         }
         else {
             var dtSalesHD = data.getElementsByTagName('dtSalesHD');
-            grdU.BindData(dtSalesHD);
+            if (ReturnMsg(data, 1) == "") {
+                grdU.BindData(dtSalesHD);
+            }
+            else //Excel
+            {
+                var url = "api/FileDownload?ID=" + EncodeSGID(ReturnMsg(data, 1));
+                url += "&CID=" + EncodeSGID(ReturnMsg(data, 2));
+                url += "&UID=" + EncodeSGID(ReturnMsg(data, 3));
+                $('#iframe_for_download').prop('src', url);
+            }
             if (dtSalesHD.length == 0) {
                 DyAlert("無符合資料!", DummyFunction);
                 return;
@@ -108,79 +117,8 @@
         AssignVar();
         return;
         
-        $('#btQueryPLU').click(function () { SearchPLU(); });
-        $('#btUPPic1,#btUPPic2').click(function () { UploadPicture(this); });
-        //$('#btDelete').click(function () { btDelete_click(); });
-        $('#btImportFromiXMS').click(function () { btImportFromiXMS_click(); });
-        $('#btSave').click(function () { btSave_click(); });
-        $('#btCancel').click(function () { btCancel_click(); });
-        //$('.forminput input').change(function () { InputValidation(this) });
-
-        var dtDept = data.getElementsByTagName('dtDept');
-        InitSelectItem($('#cbDept')[0], dtDept, "Type_ID", "Type_Name", true);
-
-        var dtBGNo = data.getElementsByTagName('dtBGNo');
-        InitSelectItem($('#cbBGNo')[0], dtBGNo, "Type_ID", "Type_Name", true);
-
-        SetPLUAutoComplete("GD_NAME");
-        SetPLUAutoComplete("GD_NO");
     };
 
-
-  
-  
-
-  
-  
-
-
-    let InputValidation = function (ip) {
-        var str = $(ip).val();
-        var msg = "";
-        //$('.forminput .msg-valid').text('');
-        //$('.forminput .msg-valid').hide();
-        $(ip).nextAll('.msg-valid').text(msg);
-        $(ip).nextAll('.msg-valid').show();
-        if (str == "")
-            return;
-        if ($(ip).attr('id') == "USR_CODE") {
-            var re = /^[\d|a-zA-Z]+$/;
-            if (!re.test(str) | str.length < 5 | str.length > 10)
-                msg = "必須5~10碼英數字";
-        }
-        if ($(ip).attr('id') == "USR_PWD") {
-            var re = /^[\d|a-zA-Z]+$/;
-            if (!re.test(str) | str.length < 6 | str.length > 20)
-                msg = "必須6~20碼英數字";
-        }
-        if ($(ip).attr('id') == "USR_NAME_L") {
-            if (str.length > 10)
-                msg = "必須10字元以內";
-        }
-        if ($(ip).attr('id') == "USR_EMPNO") {
-            if (str.length > 10)
-                msg = "必須10字元以內";
-        }
-        if ($(ip).attr('id') == "USR_MAIL") {
-            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            if (!re.test(str))
-                msg = "e-mail格式錯誤!";
-        }
-        if ($(ip).attr('id') == "USR_MOBILE") {
-            var re = /^09\d{8}$/;
-            if (!re.test(str))
-                msg = "手機格式錯誤!";
-        }
-        if ($(ip).attr('id') == "USR_NOTE") {
-            if (str.length > 50)
-                msg = "必須50字元以內";
-        }
-        if (msg != "") {
-            //$(ip).val('');
-            $(ip).nextAll('.msg-valid').text(msg);
-            $(ip).nextAll('.msg-valid').show();
-        }
-    }
 
     let afterLoadPage = function () {
         PostToWebApi({ url: "api/AIReports/GetInitVSA04P", success: afterGetInitVSA04P });

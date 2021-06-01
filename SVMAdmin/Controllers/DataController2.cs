@@ -474,16 +474,10 @@ namespace SVMAdmin.Controllers
         public ActionResult SearchVSA04P()
         {
             UserInfo uu = PubUtility.GetCurrentUser(this);
-            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SearchVSA04POK", "" });
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SearchVSA04POK", "" , "", "" });
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-            //OpenDateS: $('#txtOpenDateS').val(),
-            //OpenDateE: $('#txtOpenDateE').val(),
-            //ST_ID: $('#selST_ID').val(),
-            //Ckno: $('#selCkno').val(),
-            //KeyWord: $('#txtSalesSearch').val()
-
 
                 IFormCollection rq = HttpContext.Request.Form;
                 string OpenDateS = rq["OpenDateS"];
@@ -508,18 +502,16 @@ namespace SVMAdmin.Controllers
                     sql += " or d.GD_Sname like ='" + Ckno.SqlQuote() + "%'";
                     sql += " or d.GD_NO like '" + Ckno.SqlQuote() + "%')";
                 }
-
                 DataTable dtDS = PubUtility.SqlQry(sql, uu, "SYS");
-                dtDS.Columns.Add("SerNo", typeof(int));
-                
+                dtDS.Columns.Add("SerNo", typeof(string));
 
-                for (int i=0; i< 5; i++)
-                {
-                    DataTable dtTmp = dtDS.Copy();
-                    dtDS.Merge(dtTmp);
-                }
+                //for (int i=0; i< 5; i++)
+                //{
+                //    DataTable dtTmp = dtDS.Copy();
+                //    dtDS.Merge(dtTmp);
+                //}
                 for (int i = 0; i < dtDS.Rows.Count; i++)
-                    dtDS.Rows[i]["SerNo"] = i + 1;
+                    dtDS.Rows[i]["SerNo"] = Convert.ToString(i + 1);
                 ds.Tables.Add(dtDS);
                 dtDS.TableName = "dtSalesHD";
                 if (ToExcel == "Y")
@@ -537,32 +529,17 @@ namespace SVMAdmin.Controllers
                         DataTable dtF = new DataTable();
                         dtF.Columns.Add("DataType", typeof(string));
                         dtF.Columns.Add("FileName", typeof(string));
-                        dtF.Columns.Add("MimeType", typeof(string));
-                        dtF.Columns.Add("FileImage", typeof(byte[]));
+                        dtF.Columns.Add("DocType", typeof(string));
+                        dtF.Columns.Add("DocImage", typeof(byte[]));
                         DataRow dr = dtF.NewRow();
                         dtF.Rows.Add(dr);
                         dr["DataType"] = "Temp";
-                        dr["FileName"] = "整合報表1_業務用_" + DateTime.Now.ToString("yyMMddHHmmss") + ".xlsx";
-                        dr["MimeType"] = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                        dr["FileImage"] = PKD.GetAsByteArray();
-
-                        //sql = "delete gtso_ReportTmp1 where SerNo='" + serno + "'";
-                        //PubUtility.ExecuteSql(sql, uu, "SYS");
-
-                        //string randsession = "xls_" + new Random().Next(10000, 99999).ToString();
-                        //HttpContext.Session.Set(randsession, PubUtility.DataTableToBytes(dtF));
-                        ////dtMessage.Rows[0][1] = randsession;
-                        /////DownloadSOReport1
-                        /////
-                        //dspy = "<script type='text/javascript'>" + " parent.CloseLoading();" + "</script>";
-                        //byte[] bb2 = System.Text.Encoding.UTF8.GetBytes(dspy);
-                        //Response.Body.Write(bb2, 0, bb2.Length);
-                        //Response.Body.Flush();
-
-                        //dspy = "<script type='text/javascript'>" + " parent.DownloadSOReportByID('" + randsession + "');" + "</script>";
-                        //bb2 = System.Text.Encoding.UTF8.GetBytes(dspy);
-                        //Response.Body.Write(bb2, 0, bb2.Length);
-                        //Response.Body.Flush();
+                        dr["FileName"] = "交易明細_" + DateTime.Now.ToString("yyMMddHHmmss") + ".xlsx";
+                        dr["DocType"] = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        dr["DocImage"] = PKD.GetAsByteArray();
+                        dtMessage.Rows[0][1] = PubUtility.AddTable("ImageTable", dtF, uu, "SYS");
+                        dtMessage.Rows[0][2] = uu.CompanyId;
+                        dtMessage.Rows[0][3] = uu.UserID;
                     }
                 }
             }
@@ -586,9 +563,33 @@ namespace SVMAdmin.Controllers
             sql += "inner join PLUSV d on a.CompanyCode=d.CompanyCode and b.GoodsNo=d.GD_NO".CrLf();
             sql += "inner join PaymentD e on a.CompanyCode=e.CompanyCode and a.ShopNo=e.ShopNo and a.OpenDate=e.OpenDate and a.CKNo=e.CkNo and a.ChrNo=e.ChrNo".CrLf();
             sql += "inner join Payment f on f.CompanyCode=e.CompanyCode and f.Pay_ID=e.Pay_ID".CrLf();
+
+
+
+
             return sql;
         }
 
+        [Route("FileDownload")]
+        public ActionResult FileDownload()
+        {
+            
+            string ID = HttpContext.Request.Query["ID"].ToString();
+            string CID = HttpContext.Request.Query["CID"].ToString();
+            string UID = HttpContext.Request.Query["UID"].ToString();
+            SVMAdmin.UserInfo uu = new UserInfo();
+            uu.CompanyId = PubUtility.DecodeSGID(CID);
+            uu.UserID = PubUtility.DecodeSGID(UID);
+            string sql = "select * from ImageTable where SGID='" + PubUtility.DecodeSGID(ID) + "'";
+            DataTable dt = PubUtility.SqlQry(sql, uu, "SYS");
+            DataRow dr = dt.Rows[0];
+            byte[] bb = dr["DocImage"] as byte[];
+            sql = "delete from ImageTable where SGID='" + PubUtility.DecodeSGID(ID) + "'";
+            PubUtility.ExecuteSql(sql, uu, "SYS");
+            string ContentType = dr["DocType"].ToString();
+            HttpContext.Response.Headers.Add("content-disposition", "attachment; filename=" + System.Web.HttpUtility.UrlEncode(dr["FileName"].ToString()));
+            return File(bb, ContentType);
+        }
 
         [Route("GetImageResize")]
         public ActionResult GetImageResize()
@@ -668,6 +669,8 @@ namespace SVMAdmin.Controllers
 
             return destImage;
         }
+
+
 
 
     }
