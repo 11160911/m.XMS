@@ -441,6 +441,155 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("AIReports/GetInitVSA04P")]
+        public ActionResult GetInitVSA04P()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetInitVSA04POK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                string sql = "Select ST_ID,ST_Sname from WarehouseSV where Companycode='" + uu.CompanyId.SqlQuote() + "' and ST_Type='6' order by ST_ID";
+                DataTable dtSV = PubUtility.SqlQry(sql, uu, "SYS");
+                ds.Tables.Add(dtSV);
+                dtSV.TableName = "dtWarehouse";
+
+                sql = "Select CkNo,SNno from WarehouseDSV where Companycode='" + uu.CompanyId.SqlQuote() + "' and 1=2";
+                DataTable dtDS = PubUtility.SqlQry(sql, uu, "SYS");
+                ds.Tables.Add(dtDS);
+                dtDS.TableName = "dtWarehouseDSV";
+
+
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("AIReports/SearchVSA04P")]
+        public ActionResult SearchVSA04P()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SearchVSA04POK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+            //OpenDateS: $('#txtOpenDateS').val(),
+            //OpenDateE: $('#txtOpenDateE').val(),
+            //ST_ID: $('#selST_ID').val(),
+            //Ckno: $('#selCkno').val(),
+            //KeyWord: $('#txtSalesSearch').val()
+
+
+                IFormCollection rq = HttpContext.Request.Form;
+                string OpenDateS = rq["OpenDateS"];
+                string OpenDateE = rq["OpenDateE"];
+                string ST_ID = rq["ST_ID"];
+                string Ckno = rq["Ckno"];
+                string KeyWord = rq["KeyWord"];
+                string ToExcel = rq["ToExcel"];
+                string sql = SqlSearchVSA04P();
+                sql += "where a.CompanyCode='" + uu.CompanyId + "'".CrLf();
+                if (OpenDateS != "")
+                    sql += " and a.OpenDate>='" + OpenDateS.SqlQuote() + "'";
+                if (OpenDateE != "")
+                    sql += " and a.OpenDate<='" + OpenDateE.SqlQuote() + "'";
+                if (ST_ID != "")
+                    sql += " and a.ShopNo='" + ST_ID.SqlQuote() + "'";
+                if (Ckno != "")
+                    sql += " and a.CKNo='" + Ckno.SqlQuote() + "'";
+                if (KeyWord != "")
+                {
+                    sql += " and (d.GD_NAME like '" + Ckno.SqlQuote() + "%'";
+                    sql += " or d.GD_Sname like ='" + Ckno.SqlQuote() + "%'";
+                    sql += " or d.GD_NO like '" + Ckno.SqlQuote() + "%')";
+                }
+
+                DataTable dtDS = PubUtility.SqlQry(sql, uu, "SYS");
+                dtDS.Columns.Add("SerNo", typeof(int));
+                
+
+                for (int i=0; i< 5; i++)
+                {
+                    DataTable dtTmp = dtDS.Copy();
+                    dtDS.Merge(dtTmp);
+                }
+                for (int i = 0; i < dtDS.Rows.Count; i++)
+                    dtDS.Rows[i]["SerNo"] = i + 1;
+                ds.Tables.Add(dtDS);
+                dtDS.TableName = "dtSalesHD";
+                if (ToExcel == "Y")
+                {
+                    dtDS.Columns["SerNo"].SetOrdinal(0);
+                    using (OfficeOpenXml.ExcelPackage PKD = new OfficeOpenXml.ExcelPackage())
+                    {
+                        string[] heads = "序號,交易序號,交易日期時間,店櫃代碼,店名,機號,貨道,發票號碼,品號,智販商品名,單價,銷售量,銷售金額,付款方式,出貨狀態".Split(",");
+
+                        OfficeOpenXml.ExcelWorksheet wsD = PKD.Workbook.Worksheets.Add("VSA04P");
+                        for (int i = 0; i < heads.Length; i++)
+                            wsD.Cells[1, i + 1].Value = heads[i];
+                        wsD.Cells["A2"].LoadFromDataTable(dtDS, false);
+
+                        DataTable dtF = new DataTable();
+                        dtF.Columns.Add("DataType", typeof(string));
+                        dtF.Columns.Add("FileName", typeof(string));
+                        dtF.Columns.Add("MimeType", typeof(string));
+                        dtF.Columns.Add("FileImage", typeof(byte[]));
+                        DataRow dr = dtF.NewRow();
+                        dtF.Rows.Add(dr);
+                        dr["DataType"] = "Temp";
+                        dr["FileName"] = "整合報表1_業務用_" + DateTime.Now.ToString("yyMMddHHmmss") + ".xlsx";
+                        dr["MimeType"] = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        dr["FileImage"] = PKD.GetAsByteArray();
+
+                        //sql = "delete gtso_ReportTmp1 where SerNo='" + serno + "'";
+                        //PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                        //string randsession = "xls_" + new Random().Next(10000, 99999).ToString();
+                        //HttpContext.Session.Set(randsession, PubUtility.DataTableToBytes(dtF));
+                        ////dtMessage.Rows[0][1] = randsession;
+                        /////DownloadSOReport1
+                        /////
+                        //dspy = "<script type='text/javascript'>" + " parent.CloseLoading();" + "</script>";
+                        //byte[] bb2 = System.Text.Encoding.UTF8.GetBytes(dspy);
+                        //Response.Body.Write(bb2, 0, bb2.Length);
+                        //Response.Body.Flush();
+
+                        //dspy = "<script type='text/javascript'>" + " parent.DownloadSOReportByID('" + randsession + "');" + "</script>";
+                        //bb2 = System.Text.Encoding.UTF8.GetBytes(dspy);
+                        //Response.Body.Write(bb2, 0, bb2.Length);
+                        //Response.Body.Flush();
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        private string SqlSearchVSA04P()
+        {
+            string sql = "select a.ChrNo,a.OpenDate+' '+a.OpenTime as OpenDT".CrLf();
+            sql += ",a.ShopNo,c.ST_Sname,a.CKNo,b.Layer+b.Sno as Channel".CrLf();
+            sql += ",a.InvNo,b.GoodsNo,d.GD_Sname,d.GD_RETAIL,b.Num,b.Cash,f.Pay_Type".CrLf();
+            sql += ",case when b.Status='Y' then '成功' when b.Status='N' then '失敗' else '' end as TranCompleted".CrLf();
+            sql += "from SalesH a".CrLf();
+            sql += "inner join SalesD b on a.CompanyCode=b.CompanyCode and a.ShopNo=b.ShopNo and a.OpenDate=b.OpenDate and a.CKNo=b.CkNo and a.ChrNo=b.ChrNo".CrLf();
+            sql += "inner join WarehouseSV c on a.CompanyCode=c.CompanyCode and a.ShopNo=c.ST_ID".CrLf();
+            sql += "inner join PLUSV d on a.CompanyCode=d.CompanyCode and b.GoodsNo=d.GD_NO".CrLf();
+            sql += "inner join PaymentD e on a.CompanyCode=e.CompanyCode and a.ShopNo=e.ShopNo and a.OpenDate=e.OpenDate and a.CKNo=e.CkNo and a.ChrNo=e.ChrNo".CrLf();
+            sql += "inner join Payment f on f.CompanyCode=e.CompanyCode and f.Pay_ID=e.Pay_ID".CrLf();
+            return sql;
+        }
+
+
         [Route("GetImageResize")]
         public ActionResult GetImageResize()
         {
