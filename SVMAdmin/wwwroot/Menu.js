@@ -249,6 +249,36 @@
                 }
             }
 
+
+            else if (pg == "VXT03_1") {
+                //alert("VXT03_1");
+                if (window.PageVXT03_1 == undefined)
+
+                    $.getScript('VXT03_1.js',
+                        function () {
+                            PageVXT03_1($(".right_col"));
+                        }
+                    );
+                else {
+                    PageVXT03_1($(".right_col"));
+                }
+            }
+
+
+            else if (pg == "VIN13_1") {
+                //alert("VIN13_1");
+                if (window.PageVIN13 == undefined)
+
+                    $.getScript('VIN13_1.js',
+                        function () {
+                            PageVIN13_1($(".right_col"));
+                        }
+                    );
+                else {
+                    PageVIN13_1($(".right_col"));
+                }
+            }
+
             else if (pg == "MMMachineSet") {
                 if (window.PageMMMachineSet == undefined)
                     $.getScript('SystemSetup/MMMachineSet.js',

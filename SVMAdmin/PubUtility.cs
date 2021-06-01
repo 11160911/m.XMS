@@ -634,6 +634,7 @@ namespace SVMAdmin
             dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "VMN29", "貨倉類型設定", "VMN29", "P", "fa-cogs" });
             dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "MMMachineSet", "智販機設定", "MMMachineSet", "P", "fa-cogs" });
             dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "VXT03", "智販機總覽", "VXT03", "P", "fa-cogs" });
+            dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "VXT03_1", "智販機監控作業", "VXT03_1", "P", "fa-cogs" });
 
             dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "Inv", "庫存查詢", "Inv", "P", "fa-cubes" });
             dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMMacPLUSet", "智販機商品設定", "GMMacPLUSet", "P", "fa-cubes" });
@@ -642,6 +643,7 @@ namespace SVMAdmin
             dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMPicVdoSet", "圖片/影片設定", "GMPicVdoSet", "P", "fa-cubes" });
             dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMMacType", "智販機類別設定", "GMMacType", "P", "fa-cubes" });
 
+            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN13_1", "換店設定", "VIN13_1", "P", "fa-th-large" });
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMPick", "商品撿貨設定", "OMPick", "P", "fa-th-large" });
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMFill", "商品補貨設定", "OMFill", "P", "fa-th-large" });
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMReturn", "商品退貨設定", "OMReturn", "P", "fa-th-large" });
@@ -650,7 +652,7 @@ namespace SVMAdmin
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMAdjust", "商品調整設定", "OMAdjust", "P", "fa-th-large" });
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMChangeST", "商品換店設定", "OMChangeST", "P", "fa-th-large" });
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMChangeGood", "換貨設定", "OMChangeGood", "P", "fa-th-large" });
-            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMChangeST", "換店設定", "OMChangeST", "P", "fa-th-large" });
+            //dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMChangeST", "換店設定", "OMChangeST", "P", "fa-th-large" });
 
             dt.Rows.Add(new object[] { "營運分析", "SaleAnalysis", "SAReport1", "區域別銷售分析", "SAReport1", "P", "fa-file-excel-o" });
             dt.Rows.Add(new object[] { "營運分析", "SaleAnalysis", "SAReport2", "商品別銷售分析", "SAReport2", "P", "fa-file-excel-o" });

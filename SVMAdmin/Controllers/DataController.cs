@@ -1195,6 +1195,237 @@ namespace SVMAdmin.Controllers
 
 
 
+        //2021-05-26 Larry
+        [Route("SystemSetup/GetWh")]
+        public ActionResult SystemSetup_GetWh()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetWhOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+
+                string sql = "select ST_ID ,ST_ID+ST_SName STName ";
+                sql += " from WarehouseSV (NoLock) ";
+                sql += " Where CompanyCode='" + uu.CompanyId + "' And ST_Type ='6'";
+                sql += " Order By ST_ID ";
+
+                DataTable dtWh = PubUtility.SqlQry(sql, uu, "SYS");
+                dtWh.TableName = "dtWh";
+                ds.Tables.Add(dtWh);
+
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+
+        //2021-05-26 Larry
+        [Route("SystemSetup/SearchVIN13_1")]
+        public ActionResult SystemSetup_SearchVIN13_1()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SearchVIN13_1OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+
+                string WhNo = rq["WhNo"];
+                string CkNo = rq["CkNo"];
+                string exDate = rq["exDate"];
+
+                string sql = "select a.*,a.WhNoOut+b.ST_SNAME WhOut,b.ST_SNAME WhOutName, a.WhNoIn+c.ST_SName WhIn,c.ST_SName WhInName,d.Man_Name";
+                sql += " ,Case When IsNull(a.AppDate,'')='' Then '未批核' Else '已批核' End AppStatus";
+                sql += " ,Case When IsNull(a.FinishDate,'')='' Then '未完成' Else '完成' End FinStatus";
+                sql += " from ChangeShopSV a";
+                sql += " inner join WarehouseSV b on a.WhNoOut=b.ST_ID And a.CompanyCode=b.CompanyCode";
+                sql += " inner join WarehouseSV c on a.WhNoIn=c.ST_ID And a.CompanyCode=c.CompanyCode";
+                sql += " left  join EmployeeSV d on a.DocUser=d.Man_ID And a.CompanyCode=d.CompanyCode";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "'";
+                if (WhNo != "")
+                {
+                    sql += " and a.WhNoOut='" + WhNo + "'";
+                }
+                if (CkNo != "")
+                {
+                    sql += " and a.CkNoOut='" + CkNo + "'";
+                }
+                if (exDate != "")
+                {
+                    sql += " and a.exchangeDate='" + exDate + "'";
+                }
+                sql += " Order By a.DocNo Desc";
+                DataTable dtInv = PubUtility.SqlQry(sql, uu, "SYS");
+                dtInv.TableName = "dtInv";
+                ds.Tables.Add(dtInv);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        //2021-05-26 Larry
+        [Route("SystemSetup/UpdateChgShop")]
+        public ActionResult SystemSetup_UpdateChgShop()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "UpdateChgShopOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                DataTable dtChgShop = new DataTable("ChgShop");
+                PubUtility.AddStringColumns(dtChgShop, "DocNo,WhNoOut,CkNoOut,WhNoIn,CkNoIn,ExchangeDate");
+                DataSet dsRQ = new DataSet();
+                dsRQ.Tables.Add(dtChgShop);
+                PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
+                DataRow dr = dtChgShop.Rows[0];
+
+                string sql = "";
+                using (DBOperator dbop = new DBOperator())
+                {
+                    using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required))
+                    {
+                        try
+                        {
+
+                            sql = "update ChangeShop set ";
+                            sql += " WhNoOut='" + dr["WhNoOut"].ToString().SqlQuote() + "'";
+                            sql += ",CkNoOut=" + dr["CkNoOut"].ToString().SqlQuote() + "";
+                            sql += ",WhNoIn='" + dr["WhNoIn"].ToString().SqlQuote() + "'";
+                            sql += ",CkNoIn=" + dr["CkNoIn"].ToString().SqlQuote() + "";
+                            sql += ",ExchangeDate=" + dr["ExchangeDate"].ToString().SqlQuote() + "";
+                            sql += ",ModDate=convert(char(10),getdate(),111)";
+                            sql += ",ModTime=convert(char(12),getdate(),108)";
+                            sql += ",ModUser='" + uu.UserID + "'";
+                            sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + dr["DocNo"].ToString().SqlQuote() + "'";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+                            //dbop.Update("Rack", dtRec, new string[] { "Type_ID" }, uu, "SYS");
+
+                            ts.Complete();
+                        }
+                        catch (Exception err)
+                        {
+                            ts.Dispose();
+                            dbop.Dispose();
+                            throw new Exception(err.Message);
+                        }
+                        dbop.Dispose();
+                    }
+                }
+                sql = "select a.*";
+                sql += " from ChangeShopSV a";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "' And a.DocNo='" + dr["DocNo"].ToString().SqlQuote() + "'";
+                DataTable dtRack = PubUtility.SqlQry(sql, uu, "SYS");
+                dtRack.TableName = "dtRack";
+                ds.Tables.Add(dtRack);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        //2021-05-26 Larry
+        [Route("SystemSetup/AddChgShop")]
+        public ActionResult SystemSetup_AddChgShop()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "AddChgShopOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                DataTable dtRec = new DataTable("Rack");
+                PubUtility.AddStringColumns(dtRec, "Type_ID,Type_Name,DisplayNum");
+                DataSet dsRQ = new DataSet();
+                dsRQ.Tables.Add(dtRec);
+                PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
+                DataRow dr = dtRec.Rows[0];
+
+                string sql = "";
+                using (DBOperator dbop = new DBOperator())
+                {
+                    using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required))
+                    {
+                        try
+                        {
+                            //sql = "Insert Into Rack (CompanyCode, CrtUser, CrtDate, CrtTime ";
+                            //sql += " ,ModUser, ModDate, ModTime";
+                            //sql += ", Type_ID, Type_Name, DisplayNum) Values ";
+                            //sql += " ('" + uu.CompanyId + "', '" + uu.UserID + "', convert(char(10),getdate(),111), convert(char(12),getdate(),108) ";
+                            //sql += " ,'" + uu.UserID + "',convert(char(10),getdate(),111), convert(char(12),getdate(),108) ";
+                            //sql += " ,'" + dr["Type_ID"].ToString().SqlQuote() + "','" + dr["Type_Name"].ToString().SqlQuote() + "'," + dr["DisplayNum"].ToString().SqlQuote() + ")";
+                            //dbop.ExecuteSql(sql, uu, "SYS");
+                            dbop.Add("Rack", dtRec, uu, "SYS");
+                            ts.Complete();
+                        }
+                        catch (Exception err)
+                        {
+                            ts.Dispose();
+                            dbop.Dispose();
+                            throw new Exception(err.Message);
+                        }
+                        dbop.Dispose();
+                    }
+                }
+                sql = "select a.*";
+                sql += " from Rack a";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "' And Type_ID='" + dr["Type_ID"].ToString().SqlQuote() + "'";
+                DataTable dtRack = PubUtility.SqlQry(sql, uu, "SYS");
+                dtRack.TableName = "dtRack";
+                ds.Tables.Add(dtRack);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+
+
+        //2021-05-26 Larry
+        [Route("SystemSetup/GetSysDate")]
+        public ActionResult SystemSetup_GetSysDate()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetSysDateOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                //string Type_ID = rq["Type_ID"];
+                string sql = "select convert(char(10),getdate(),111) SysDate";
+
+                DataTable dtSysDate = PubUtility.SqlQry(sql, uu, "SYS");
+                dtSysDate.TableName = "dtSysDate";
+                ds.Tables.Add(dtSysDate);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
 
 
 
