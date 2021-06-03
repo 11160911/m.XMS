@@ -112,7 +112,7 @@
         $('#modal_VIN13_1 .modal-title').text('智販機換店新增');
         //var node = $(grdU.ActiveRowTR()).prop('Record');
         $('#WhNoOut,#CkNoOut,#WhNoIn,#CkNoIn,#ExchangeDate').prop('readonly', false);
-        gDocNo = "";
+        //gDocNo = "";
         //alert(gDocNo);
 
         $('#WhNoOut').val('');
@@ -138,6 +138,12 @@
         $('.msg-valid').hide();
         $('#modal_VIN13_1 .modal-title').text('智販機換店修改');
         var node = $(grdU.ActiveRowTR()).prop('Record');
+
+        if (GetNodeValue(node, 'AppDate') != '') {
+            DyAlert("此單據已批核，無法修改!");
+            return
+        }
+
         $('#WhNoOut,#CkNoOut,#WhNoIn,#CkNoIn,#ExchangeDate').prop('readonly', false);
         gDocNo = GetNodeValue(node, 'DocNo');
         //alert(gDocNo);
@@ -162,15 +168,16 @@
     let btDel_Click = function (bt) {
         EditMode = "Del";
         $(bt).closest('tr').click();
-        alert(GetNodeValue(node, 'AppDate'));
-        if (GetNodeValue(node, 'AppDate') != '' ) {
-            DyAlert("此單據已批核，不可刪除!");
-            return
-        }
+        //alert(GetNodeValue(node, 'AppDate'));
+ 
 
         $('.msg-valid').hide();
         $('#modal_VIN13_1 .modal-title').text('智販機換店刪除');
         var node = $(grdU.ActiveRowTR()).prop('Record');
+       if (GetNodeValue(node, 'AppDate') != '' ) {
+            DyAlert("此單據已批核，不可刪除!");
+            return
+        }
         $('#WhNoOut,#CkNoOut,#WhNoIn,#CkNoIn,#ExchangeDate').prop('readonly', true);
         gDocNo = GetNodeValue(node, 'DocNo');
         //alert(gDocNo);
@@ -198,19 +205,19 @@
         EditMode = "App";
         //alert(EditMode);
         $(bt).closest('tr').click();
-        alert(GetNodeValue(node, 'AppDate'));
-        if (GetNodeValue(node, 'AppDate') == '' | GetNodeValue(node, 'AppDate') == null) {
-            DyAlert("此單據已批核!");
-            return
-        }
 
         $('.msg-valid').hide();
         $('#modal_VIN13_1 .modal-title').text('智販機換店批核');
         var node = $(grdU.ActiveRowTR()).prop('Record');
+        //alert(GetNodeValue(node, 'AppDate'));
+        if (GetNodeValue(node, 'AppDate') != '' ) {
+            DyAlert("此單據已批核!");
+            return
+        }
+
         $('#WhNoOut,#CkNoOut,#WhNoIn,#CkNoIn,#ExchangeDate').prop('readonly', true);
         gDocNo = GetNodeValue(node, 'DocNo');
         //alert(gDocNo);
-
         $('#WhNoOut').val(GetNodeValue(node, 'WhNoOut'));
         $('#WhOutName').text(GetNodeValue(node, 'WhOutName'));
         /*$('#WhOutName').val(GetNodeValue(node, 'WhOutName'));*/
@@ -224,7 +231,7 @@
         $('#ExchangeDate').closest('.col-4').hide();
         $('#lblExDate').text(GetNodeValue(node, 'ExchangeDate'));
         $('#lblExDate').closest('.col-3').show();
-        alert(GetNodeValue(node, 'AppDate'));
+        
         $('#modal_VIN13_1').modal('show');
     };
 
@@ -267,7 +274,6 @@
 
 
     let btCancel_click = function () {
-        //2021-04-27
         $('#modal_VIN13_1').modal('hide');
     };
 
@@ -436,12 +442,15 @@
             //alert("Del " + $('#Type_ID').val());
             PostToWebApi({ url: "api/SystemSetup/AppChgShop", data: cData, success: AfterUpdateChgShop });
         }
-        else {
+        else if (EditMode == "Del") {
             var cData = {
-                DocNo: $('#DocNo').val()
+                ChangeShopSV: [
+                    {
+                        DocNo: gDocNo
+                    }
+                ]
             }
-            //alert("Del " + $('#Type_ID').val());
-            PostToWebApi({ url: "api/SystemSetup/ChkRackUsed", data: cData, success: AfterDelChgShop });
+            PostToWebApi({ url: "api/SystemSetup/DelChgShop", data: cData, success: AfterDelChgShop });
         }
 
         return
@@ -477,73 +486,74 @@
         }
     };
 
-    let AfterChkRackUsed = function (data) {
-        if (ReturnMsg(data, 0) != "ChkRackUsedOK") {
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
-            var dtRack = data.getElementsByTagName("dtRack");
-            //alert("Rack Rows:" + dtRack.length);
 
-            if (EditMode == "Mod") {
-                //alert("Mod OldID:" + OldID);
-                if (OldID != $('#Type_ID').val()) {
-                    if (dtRack.length > 0) {
-                        DyAlert("貨倉代號已被引用，無法修改!!")
-                        return;
-                    }
-                }
+    //let AfterChkRackUsed = function (data) {
+    //    if (ReturnMsg(data, 0) != "ChkRackUsedOK") {
+    //        DyAlert(ReturnMsg(data, 1));
+    //    }
+    //    else {
+    //        var dtRack = data.getElementsByTagName("dtRack");
+    //        //alert("Rack Rows:" + dtRack.length);
+
+    //        if (EditMode == "Mod") {
+    //            //alert("Mod OldID:" + OldID);
+    //            if (OldID != $('#Type_ID').val()) {
+    //                if (dtRack.length > 0) {
+    //                    DyAlert("貨倉代號已被引用，無法修改!!")
+    //                    return;
+    //                }
+    //            }
 
 
-                var pData = {
-                    Rack: [
-                        {
-                            OldType_ID: OldID,
-                            Type_ID: $('#Type_ID').val(),
-                            Type_Name: $('#Type_Name').val(),
-                            DisplayNum: $('#DisplayNum').val()
-                        }
-                    ]
-                };
-                PostToWebApi({ url: "api/SystemSetup/UpdateRack", data: pData, success: AfterUpdateRack });
-            }
-            else if (EditMode == "Add") {
-                if (dtRack.length > 0) {
-                    DyAlert("貨倉代號已存在，無法新增!!")
-                    return;
-                }
-                var pData = {
-                    Rack: [
-                        {
-                            Type_ID: $('#Type_ID').val(),
-                            Type_Name: $('#Type_Name').val(),
-                            DisplayNum: $('#DisplayNum').val()
-                        }
-                    ]
-                };
-                PostToWebApi({ url: "api/SystemSetup/AddRack", data: pData, success: AfterAddRack });
-            }
-            else if (EditMode == "App") {
-                if (dtRack.length > 0) {
-                    DyAlert("貨倉代號已被引用，無法刪除!!")
-                    return;
-                }
+    //            var pData = {
+    //                Rack: [
+    //                    {
+    //                        OldType_ID: OldID,
+    //                        Type_ID: $('#Type_ID').val(),
+    //                        Type_Name: $('#Type_Name').val(),
+    //                        DisplayNum: $('#DisplayNum').val()
+    //                    }
+    //                ]
+    //            };
+    //            PostToWebApi({ url: "api/SystemSetup/UpdateRack", data: pData, success: AfterUpdateRack });
+    //        }
+    //        else if (EditMode == "Add") {
+    //            if (dtRack.length > 0) {
+    //                DyAlert("貨倉代號已存在，無法新增!!")
+    //                return;
+    //            }
+    //            var pData = {
+    //                Rack: [
+    //                    {
+    //                        Type_ID: $('#Type_ID').val(),
+    //                        Type_Name: $('#Type_Name').val(),
+    //                        DisplayNum: $('#DisplayNum').val()
+    //                    }
+    //                ]
+    //            };
+    //            PostToWebApi({ url: "api/SystemSetup/AddRack", data: pData, success: AfterAddRack });
+    //        }
+    //        else if (EditMode == "App") {
+    //            if (dtRack.length > 0) {
+    //                DyAlert("貨倉代號已被引用，無法刪除!!")
+    //                return;
+    //            }
 
-                var pData = {
-                    Rack: [
-                        {
-                            Type_ID: $('#Type_ID').val()
-                        }
-                    ]
-                };
+    //            var pData = {
+    //                Rack: [
+    //                    {
+    //                        Type_ID: $('#Type_ID').val()
+    //                    }
+    //                ]
+    //            };
 
-                PostToWebApi({ url: "api/SystemSetup/DelRack", data: pData, success: AfterDelRack });
-            }
+    //            PostToWebApi({ url: "api/SystemSetup/DelRack", data: pData, success: AfterDelRack });
+    //        }
 
-            //DyAlert("匯入完成!");
-            //$('#modal_VMN29').modal('hide');
-        }
-    };
+    //        //DyAlert("匯入完成!");
+    //        //$('#modal_VMN29').modal('hide');
+    //    }
+    //};
 
 
 
