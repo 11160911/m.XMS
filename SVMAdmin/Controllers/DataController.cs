@@ -173,7 +173,6 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
-
         [Route("FileUpload")]
         public ActionResult FileUpload()
         {
@@ -244,6 +243,10 @@ namespace SVMAdmin.Controllers
                 DataTable dtBGNo = PubUtility.SqlQry(sql, uu, "SYS");
                 dtBGNo.TableName = "dtBGNo";
                 ds.Tables.Add(dtBGNo);
+                ds.Tables.Add(dtBGNo);
+
+                ds.Tables.Add(dtBGNo);
+
             }
             catch (Exception err)
             {

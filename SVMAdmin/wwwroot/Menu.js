@@ -301,15 +301,15 @@
                     PageGMInvPLUSet($(".right_col"));
                 }
             }
-            else if (pg == "SysParameter") {
+            else if (pg == "VSA04P") {
                 if (window.PageParameter == undefined)
-                    $.getScript('System/Parameter.js',
+                    $.getScript('AIReports/VSA04P.js',
                         function () {
-                            PageParameter($("#app"));
+                            PageVSA04P($(".right_col"));
                         }
                     );
                 else {
-                    PageParameter($("#app"));
+                    PageVSA04P($(".right_col"));
                 }
             }
             else if (pg == "SDAccount") {
