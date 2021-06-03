@@ -5,7 +5,7 @@
     let SetSuspend = "";
     let isImport = false;
     let sSNNo = "";
-
+    let FlagT = "";
 
     let AssignVar = function () {
 
@@ -115,6 +115,9 @@
         //alert(GetNodeValue(node, 'FlagT'));
 
         if (GetNodeValue(node, 'FlagUse') == "N") {
+            $('#cbFlagT').closest('.col-2').hide();
+            $('#cbFlagNet').closest('.col-2').hide();
+            $('#btSave').hide();
             if (GetNodeValue(node, 'FlagT') == "N") {
                 $('#cbFlagT').val("異常");
                 $('#temperature').val("異常" + GetNodeValue(node, 'temperature'));
@@ -123,8 +126,19 @@
                 $('#cbFlagT').val("正常");
                 $('#temperature').val(GetNodeValue(node, 'temperature'));
             }
+            if (GetNodeValue(node, 'FlagNet') == "N") {
+                $('#cbFlagNet').val("異常");
+                $('#NetStatus').val("最後連線時間:" + GetNodeValue(node, 'LastTransDate'));
+            }
+            else {
+                $('#cbFlagNet').val("正常");
+                $('#NetStatus').val("最後連線時間:" + GetNodeValue(node, 'LastTransDate'));
+            }
         }
         else {
+            $('#cbFlagT').closest('.col-2').show();
+            $('#cbFlagNet').closest('.col-2').show();
+            $('#btSave').show();
             if (GetNodeValue(node, 'FlagT') == "N") {
                 $('#cbFlagT').val("異常");
                 $('#temperature').val(GetNodeValue(node, 'temperature'));
@@ -133,15 +147,16 @@
                 $('#cbFlagT').val("正常");
                 $('#temperature').val(GetNodeValue(node, 'temperature'));
             }
+            if (GetNodeValue(node, 'FlagNet') == "N") {
+                $('#cbFlagNet').val("異常");
+                $('#NetStatus').val("最後連線時間:" + GetNodeValue(node, 'LastTransDate'));
+            }
+            else {
+                $('#cbFlagNet').val("正常");
+                $('#NetStatus').val("最後連線時間:" + GetNodeValue(node, 'LastTransDate'));
+            }
         }
 
- 
-        //if (GetNodeValue(node, 'FlagT') == "N") {
-        //    $('#temperature').val("異常" + GetNodeValue(node, 'temperature'));
-        //}
-        //else {
-        //    $('#temperature').val(GetNodeValue(node, 'temperature'));
-        //}
         //alert(GetNodeValue(node, 'FlagUse'));
         
         if (GetNodeValue(node, 'FlagUse') == "U") {
@@ -156,14 +171,7 @@
         else {
             $('#VMStatus').val("未配置");
         }
-        //alert(GetNodeValue(node, 'FlagNet'));
-        if (GetNodeValue(node, 'FlagNet') == "N") {
-            $('#NetStatus').val("異常");
-        }
-        else {
-            $('#NetStatus').val("正常");
-        }
-
+ 
         $('#modal_VXT03_1').modal('show');
     };
 
@@ -249,21 +257,53 @@
         //    return;
         //}
 
-        var FlagT = "";
-        var FlagNet = "";
 
+        if ($('#cbFlagT').val() == "正常") {
+            FlagT = "Y";
+        }
+        else {
+            FlagT = "N";
+        }
+            
+        let FlagNet = "";
+        if ($('#cbFlagNet').val() == "正常") {
+            FlagNet = "Y";
+        }
+        else {
+            FlagNet = "N";
+        }
+        //alert(sSNNo);
+        //alert(FlagT);
+        //alert(FlagNet);
         //alert("EditMode:" + EditMode);
         var pData = {
-            SNNo: sSNNo,
-            FlagT: $('#FlagT').val(),
-            FlagNet: $('#FlagNet').val()
+            MachineList: [
+                {
+                SNNo: sSNNo,
+                FlagT: FlagT,
+                FlagNet: FlagNet
+                }
+            ]
         }
-        PostToWebApi({ url: "api/SystemSetup/UpdateMachineList", data: pData, success: AfterUpdateMachineList });
+        PostToWebApi({ url: "api/SystemSetup/UpdateVXT03", data: pData, success: AfterUpdateVXT03 });
 
         return
 
     };
 
+
+    let AfterUpdateVXT03 = function (data) {
+        if (ReturnMsg(data, 0) != "UpdateVXT03OK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            DyAlert("儲存完成!");
+
+            $('#modal_VXT03_1').modal('hide');
+            var userxml = data.getElementsByTagName('dtRack')[0];
+            grdU.RefreshRocord(grdU.ActiveRowTR(), userxml);
+        }
+    };
 
     let btCancel_click = function () {
         //2021-04-27

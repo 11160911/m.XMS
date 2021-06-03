@@ -46,8 +46,8 @@
 
     let InitModifyDeleteButton = function () {
         $('#tbVIN13_1 .fa-file-text-o').click(function () { btMod_Click(this) });
-        $('#tbVIN13_1 .fa-trash-o').click(function () { btMod_Click(this) });
-        $('#tbVIN13_1 .fa-certificate').click(function () { btMod_Click(this) });
+        $('#tbVIN13_1 .fa-trash-o').click(function () { btDel_Click(this) });
+        $('#tbVIN13_1 .fa-certificate').click(function () { btApp_Click(this) });
         //$('#tbGMMacPLUSet').find('.fa-toggle-off,.fa-toggle-on').click(function () { btSuspend_click(this) });
         //var trs = $('#tbVIN13_1 tbody tr');
         //for (var i = 0; i < trs.length; i++) {
@@ -104,13 +104,41 @@
     };
 
 
+    let btAdd_click = function () {
+        EditMode = "Add";
+        alert(EditMode);
+        //$(bt).closest('tr').click();
+        $('.msg-valid').hide();
+        $('#modal_VIN13_1 .modal-title').text('智販機換店新增');
+        //var node = $(grdU.ActiveRowTR()).prop('Record');
+        $('#WhNoOut,#CkNoOut,#WhNoIn,#CkNoIn,#ExchangeDate').prop('readonly', false);
+        gDocNo = "";
+        //alert(gDocNo);
+
+        $('#WhNoOut').val('');
+        $('#WhOutName').text('');
+        $('#CkNoOut').val('');
+
+        $('#WhNoIn').val('');
+        $('#WhInName').text('');
+        $('#CkNoIn').val('');
+
+        $('#ExchangeDate').val('');
+        $('#ExchangeDate').closest('.col-4').show();
+        $('#lblExDate').closest('.col-3').hide();
+
+        $('#modal_VIN13_1').modal('show');
+    };
+
+
+
     let btMod_Click = function (bt) {
         EditMode = "Mod";
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
-        $('#modal_VIN13_1 .modal-title').text('智販機監控查詢');
+        $('#modal_VIN13_1 .modal-title').text('智販機換店修改');
         var node = $(grdU.ActiveRowTR()).prop('Record');
-        //$('#ST_ID,#GD_NAME').prop('readonly', true);
+        $('#WhNoOut,#CkNoOut,#WhNoIn,#CkNoIn,#ExchangeDate').prop('readonly', false);
         gDocNo = GetNodeValue(node, 'DocNo');
         //alert(gDocNo);
 
@@ -124,29 +152,86 @@
         $('#CkNoIn').val(GetNodeValue(node, 'CkNoIn'));
 
         $('#ExchangeDate').val(GetNodeValue(node, 'ExchangeDate'));
+        $('#ExchangeDate').closest('.col-4').show();
+        $('#lblExDate').closest('.col-3').hide();
+
+        $('#modal_VIN13_1').modal('show');
+    };
+
+
+    let btDel_Click = function (bt) {
+        EditMode = "Del";
+        $(bt).closest('tr').click();
+        alert(GetNodeValue(node, 'AppDate'));
+        if (GetNodeValue(node, 'AppDate') != '' ) {
+            DyAlert("此單據已批核，不可刪除!");
+            return
+        }
+
+        $('.msg-valid').hide();
+        $('#modal_VIN13_1 .modal-title').text('智販機換店刪除');
+        var node = $(grdU.ActiveRowTR()).prop('Record');
+        $('#WhNoOut,#CkNoOut,#WhNoIn,#CkNoIn,#ExchangeDate').prop('readonly', true);
+        gDocNo = GetNodeValue(node, 'DocNo');
+        //alert(gDocNo);
+
+        $('#WhNoOut').val(GetNodeValue(node, 'WhNoOut'));
+        $('#WhOutName').text(GetNodeValue(node, 'WhOutName'));
+        /*$('#WhOutName').val(GetNodeValue(node, 'WhOutName'));*/
+        $('#CkNoOut').val(GetNodeValue(node, 'CkNoOut'));
+
+        $('#WhNoIn').val(GetNodeValue(node, 'WhNoIn'));
+        $('#WhInName').text(GetNodeValue(node, 'WhInName'));
+        $('#CkNoIn').val(GetNodeValue(node, 'CkNoIn'));
+
+        $('#ExchangeDate').val(GetNodeValue(node, 'ExchangeDate'));
+        $('#ExchangeDate').closest('.col-4').hide();
+        $('#lblExDate').text(GetNodeValue(node, 'ExchangeDate'));
+        $('#lblExDate').closest('.col-3').show();
 
         $('#modal_VIN13_1').modal('show');
     };
 
 
 
+    let btApp_Click = function (bt) {
+        EditMode = "App";
+        //alert(EditMode);
+        $(bt).closest('tr').click();
+        alert(GetNodeValue(node, 'AppDate'));
+        if (GetNodeValue(node, 'AppDate') == '' | GetNodeValue(node, 'AppDate') == null) {
+            DyAlert("此單據已批核!");
+            return
+        }
+
+        $('.msg-valid').hide();
+        $('#modal_VIN13_1 .modal-title').text('智販機換店批核');
+        var node = $(grdU.ActiveRowTR()).prop('Record');
+        $('#WhNoOut,#CkNoOut,#WhNoIn,#CkNoIn,#ExchangeDate').prop('readonly', true);
+        gDocNo = GetNodeValue(node, 'DocNo');
+        //alert(gDocNo);
+
+        $('#WhNoOut').val(GetNodeValue(node, 'WhNoOut'));
+        $('#WhOutName').text(GetNodeValue(node, 'WhOutName'));
+        /*$('#WhOutName').val(GetNodeValue(node, 'WhOutName'));*/
+        $('#CkNoOut').val(GetNodeValue(node, 'CkNoOut'));
+
+        $('#WhNoIn').val(GetNodeValue(node, 'WhNoIn'));
+        $('#WhInName').text(GetNodeValue(node, 'WhInName'));
+        $('#CkNoIn').val(GetNodeValue(node, 'CkNoIn'));
+
+        $('#ExchangeDate').val(GetNodeValue(node, 'ExchangeDate'));
+        $('#ExchangeDate').closest('.col-4').hide();
+        $('#lblExDate').text(GetNodeValue(node, 'ExchangeDate'));
+        $('#lblExDate').closest('.col-3').show();
+        alert(GetNodeValue(node, 'AppDate'));
+        $('#modal_VIN13_1').modal('show');
+    };
+
+
     let SearchVIN13_1 = function () {
 
         console.log("SearchVIN13_1");
-        //alert('SearchVIN13_1');
-        //alert($('#cbCK').val());
-        //if ($('#txtInvSearch').val() == "") 
-        //{            
-        //    if ($('#cbWh').val() == "" & ($('#cbCK').val() == "" | $('#cbCK').val() == null)) {
-        //        DyAlert("請選擇店及機號查詢條件!!");
-               
-        //        return;
-        //    }
-        //}
-        //else
-        //{
-
-        //}
 
         var pData = {
             WhNo: $('#cbWh').val(),
@@ -198,15 +283,7 @@
         }
     };
 
-    let cbSWh_click = function () {
-        //alert("cbS_click");
-        //if ($('#cbWh').val() == "" | $('#cbCK').val() == "") {
-        //    $('#cbLayer').val() == ""
-        //    //DyAlert("請先選擇店查詢條件!!", function () { $('#cbWh').focus() });
-        //    DyAlert("請先選擇店及機查詢條件!!");
-        //    return;
-        //}
-    };
+
 
     let GetWhDSVCkNo = function () {
 
@@ -314,9 +391,7 @@
             return;
         }
 
- 
-
-        alert("EditMode:" + EditMode);
+        //alert("EditMode:" + EditMode);
         if (EditMode == "Add") {
             var pData = {
                 WhNoOut: $('#WhNoOut').val(),
@@ -326,16 +401,20 @@
                 ExchangeDate: $('#ExchangeDate').val()
             }
             //alert("Add.." + $('#Type_ID').val());
-            PostToWebApi({ url: "api/SystemSetup/ChkRackExist", data: pData, success: AfterChkRackUsed });
+            PostToWebApi({ url: "api/SystemSetup/ChkRackExist", data: pData, success: AfterAddChgShop });
         }
         else if (EditMode == "Mod") {
             var mData = {
-                DocNo: gDocNo,
-                WhNoOut: $('#WhNoOut').val(),
-                CkNoOut: $('#CkNoOut').val(),
-                WhNoIn: $('#WhNoIn').val(),
-                CkNoIn: $('#CkNoIn').val(),
-                ExchangeDate: $('#ExchangeDate').val()
+                ChangeShopSV: [
+                    {
+                    DocNo: gDocNo,
+                    WhNoOut: $('#WhNoOut').val(),
+                    CkNoOut: $('#CkNoOut').val(),
+                    WhNoIn: $('#WhNoIn').val(),
+                    CkNoIn: $('#CkNoIn').val(),
+                    ExchangeDate: $('#ExchangeDate').val()
+                    }
+                ]
             }
             //alert("DocNo " + gDocNo);
             //alert("WhNoOut " + $('#WhNoOut').val(),);
@@ -344,14 +423,25 @@
             //alert("CkNoIn " + $('#CkNoIn').val(),);
             //alert("ExchangeDate " + $('#ExchangeDate').val(),);
 
-            PostToWebApi({ url: "api/SystemSetup/UpdateChgShop", data: mData, success: AfterChkRackUsed });
+            PostToWebApi({ url: "api/SystemSetup/UpdateChgShop", data: mData, success: AfterUpdateChgShop });
+        }
+        else if (EditMode == "App") {
+            var cData = {
+                ChangeShopSV: [
+                    {
+                        DocNo: gDocNo
+                    }
+                ]
+            }
+            //alert("Del " + $('#Type_ID').val());
+            PostToWebApi({ url: "api/SystemSetup/AppChgShop", data: cData, success: AfterUpdateChgShop });
         }
         else {
             var cData = {
                 DocNo: $('#DocNo').val()
             }
             //alert("Del " + $('#Type_ID').val());
-            PostToWebApi({ url: "api/SystemSetup/ChkRackUsed", data: cData, success: AfterChkRackUsed });
+            PostToWebApi({ url: "api/SystemSetup/ChkRackUsed", data: cData, success: AfterDelChgShop });
         }
 
         return
@@ -359,6 +449,33 @@
 
     };
 
+
+    let AfterUpdateChgShop = function (data) {
+        if (ReturnMsg(data, 0) != "UpdateChgShopOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            DyAlert("儲存完成!");
+
+            $('#modal_VIN13_1').modal('hide');
+            var userxml = data.getElementsByTagName('dtRack')[0];
+            grdU.RefreshRocord(grdU.ActiveRowTR(), userxml);
+        }
+    };
+
+
+    let AfterDelChgShop = function (data) {
+        if (ReturnMsg(data, 0) != "DelChgShopOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            DyAlert("刪除完成!");
+
+            $('#modal_VIN13_1').modal('hide');
+            //var userxml = data.getElementsByTagName('dtRack')[0];
+            grdU.DeleteRow(grdU.ActiveRowTR());
+        }
+    };
 
     let AfterChkRackUsed = function (data) {
         if (ReturnMsg(data, 0) != "ChkRackUsedOK") {
@@ -450,16 +567,14 @@
 
         $('#cbWh').change(function () { GetWhDSVCkNo(); });
         $('#cbCK').click(function () { cbCK_click(); });
-        //$('#cbSWh').click(function () { cbSWh_click(); });
         SetDateField($('#exDate')[0]);
         $('#exDate').datepicker();
 
-        //$('#btUPPic1,#btUPPic2').click(function () { UploadPicture(this); });
-        //$('#btDelete').click(function () { btDelete_click(); });
+        $('#btAdd').click(function () { btAdd_click(); });
         //$('#btImportFromiXMS').click(function () { btImportFromiXMS_click(); });
         $('#btSave').click(function () { btSave_click(); });
         $('#btCancel').click(function () { btCancel_click(); });
-        //$('.forminput input').change(function () { InputValidation(this) });
+        $('.forminput input').change(function () { InputValidation(this) });
 
         SetDateField($('#ExchangeDate')[0]);
         $('#ExchangeDate').datepicker();
@@ -478,7 +593,7 @@
         $(ip).nextAll('.msg-valid').show();
         if (str == "")
             return;
-        if ($(ip).attr('id') == "USR_CODE") {
+        if ($(ip).attr('id') == "WhNoOut") {
             var re = /^[\d|a-zA-Z]+$/;
             if (!re.test(str) | str.length < 5 | str.length > 10)
                 msg = "必須5~10碼英數字";
