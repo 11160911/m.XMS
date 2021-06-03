@@ -624,7 +624,8 @@ var InitSelectItem = function (elmSelect, xml, valField, txtField, isFirstBlank,
     $(elmSelect).empty();
     if (placeholder != null) {
         if (placeholder.length > 0) {
-            $(elmSelect).append("<option disabled selected value=''>" + placeholder + "</option>");
+            //$(elmSelect).append("<option disabled selected value=''>" + placeholder + "</option>");
+            $(elmSelect).append("<option selected value=''>" + placeholder + "</option>");
             isFirstBlank = false;
         }
     }
