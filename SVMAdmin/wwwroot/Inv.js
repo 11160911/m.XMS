@@ -48,19 +48,17 @@
         }
     }
 
-    let SearchInv = function () {
+    let SearchInv = function (ExpXls) {
 
         console.log("SearchInv");
-
-        //var e = document.getElementById("cbInv");
-        //var str = e.options[e.selectedIndex].text;
-        //console.log(str);
-        //alert(str);
-
-        //alert($('#cbInv').text())
+        ShowLoading();
+        let ToExcel = "N";
+        if (ExpXls)
+            ToExcel = "Y";
 
         if ($('#txtInvSearch').val() == "") {
             if ($('#cbWh').val() == "" & $('#cbCK').val() == "") {
+                CloseLoading();
                 DyAlert("請選擇店及機號查詢條件!!");
                 return;
             }
@@ -73,7 +71,8 @@
             KeyWord: $('#txtInvSearch').val(),
             WhNo: $('#cbWh').val(),
             CkNo: $('#cbCK').val(),
-            GDLayer: $('#cbLayer').val()
+            GDLayer: $('#cbLayer').val(),
+            ToExcel: ToExcel
         };
         PostToWebApi({ url: "api/SystemSetup/SearchInv", data: pData, success: AfterSearchInv });
     };
@@ -83,13 +82,26 @@
     };
 
     let AfterSearchInv = function (data) {
+        CloseLoading();
         if (ReturnMsg(data, 0) != "SearchInvOK") {
             DyAlert(ReturnMsg(data, 0));
             return;
         }
         else {
             var dtInv = data.getElementsByTagName('dtInv');
-            grdU.BindData(dtInv);
+            if (ReturnMsg(data, 1) == "") {
+                grdU.BindData(dtInv);
+            }
+            else //Excel
+            {
+                var url = "api/FileDownload?ID=" + EncodeSGID(ReturnMsg(data, 1));
+                url += "&CID=" + EncodeSGID(ReturnMsg(data, 2));
+                url += "&UID=" + EncodeSGID(ReturnMsg(data, 3));
+                $('#iframe_for_download').prop('src', url);
+            }
+            //var dtInv = data.getElementsByTagName('dtInv');
+            //grdU.BindData(dtInv);
+
             if (dtInv.length == 0) {
                 DyAlert("無符合資料!", BlankMode);
                 return;
@@ -256,7 +268,7 @@
         console.log("afterGetInitInv");
 
         AssignVar();
-        $('#btQueryInv').click(function () { SearchInv(); });
+        $('#btQueryInv').click(function () { SearchInv(false); });
         //var dtLayer = data.getElementsByTagName('dtLayer');
         //InitSelectItem($('#cbInv')[0], dtLayer, "Type_ID", "Type_Name", true);
         var dtInvWh = data.getElementsByTagName('dtInvWh');
@@ -270,7 +282,9 @@
         //$('#btSave').click(function () { btSave_click(); });
         //$('#btCancel').click(function () { btCancel_click(); });
         //$('.forminput input').change(function () { InputValidation(this) });
-        
+
+        $('#pgInv #btExpoInv').click(function () { SearchInv(true); });
+
         //SetPLUAutoComplete("GD_NAME");
         //SetPLUAutoComplete("GD_NO");
     };

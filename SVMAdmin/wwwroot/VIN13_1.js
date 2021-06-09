@@ -106,7 +106,7 @@
 
     let btAdd_click = function () {
         EditMode = "Add";
-        alert(EditMode);
+        //alert(EditMode);
         //$(bt).closest('tr').click();
         $('.msg-valid').hide();
         $('#modal_VIN13_1 .modal-title').text('智販機換店新增');
@@ -202,6 +202,8 @@
 
 
     let btApp_Click = function (bt) {
+        
+
         EditMode = "App";
         //alert(EditMode);
         $(bt).closest('tr').click();
@@ -324,52 +326,107 @@
 
 
 
-    //let GetSysDate = function () {
+    let GetSysDate = function () {
 
-    //    var cData = {
-    //        DocNo: $('#DocNo').val()
-    //    }
-    //    PostToWebApi({ url: "api/SystemSetup/GetSysDate", data: cData, success: AfterGetSysDate });
+        var cData = {
+            DocNo: $('#DocNo').val()
+        }
+        PostToWebApi({ url: "api/SystemSetup/GetSysDate", data: cData, success: AfterGetSysDate });
    
-    //    return;
+        //return;
 
-    //};
-
-
-    //let AfterGetSysDate = function (data) {
-    //    //alert("AfterGetSysDate");
-    //    if (ReturnMsg(data, 0) != "GetSysDateOK") {
-    //        DyAlert(ReturnMsg(data, 0));
-    //        return;
-    //    }
-    //    else {
-    //        var dtSysDate = data.getElementsByTagName('dtSysDate');
-    //        if (dtSysDate.length == 0) {
-    //            DyAlert("無符合資料!", BlankMode);
-    //            return;
-    //        }
-    //        else {
-    //            DyAlert("x資料!", BlankMode);
-    //            SysDate == dtSysDate(0);
-    //            DyAlert(SysDate, BlankMode);
-    //        }
-
-    //        //var desc = GetNodeValue(xml[0], "SysDate");
-    //        //alert("OK");
-    //        //InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true);
-    //    }
-    //};
+    };
 
 
+    let AfterGetSysDate = function (data) {
+        //alert("AfterGetSysDate");
+        if (ReturnMsg(data, 0) != "GetSysDateOK") {
+            DyAlert(ReturnMsg(data, 0));
+            return;
+        }
+        else {
+            var dtSysDate = data.getElementsByTagName('dtSysDate');
+            
+            if (dtSysDate.length == 0) {
+                DyAlert("無符合資料!", BlankMode);
+                //return;
+            }
+            else {
+                alert("AfterGetSysDate " + dtSysDate.length );
+                SysDate = dtSysDate[0];
+                //DyAlert(SysDate, BlankMode);
+            }
+
+            //var desc = GetNodeValue(xml[0], "SysDate");
+            //alert("OK");
+            //InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true);
+        }
+    };
 
 
+
+
+    let SaveData = function () {
+        //alert("EditMode:" + EditMode);
+        if (EditMode == "Add") {
+            var pData = {
+                WhNoOut: $('#WhNoOut').val(),
+                CkNoOut: $('#CkNoOut').val(),
+                WhNoIn: $('#WhNoIn').val(),
+                CkNoIn: $('#CkNoIn').val(),
+                ExchangeDate: $('#ExchangeDate').val()
+            }
+            //alert("Add.." + $('#Type_ID').val());
+            PostToWebApi({ url: "api/SystemSetup/AddChgShop", data: pData, success: AfterDelChgShop });
+        }
+        else if (EditMode == "Mod") {
+            //alert("EditMode:" + EditMode);
+            var mData = {
+                ChangeShopSV: [
+                    {
+                        DocNo: gDocNo,
+                        WhNoOut: $('#WhNoOut').val(),
+                        CkNoOut: $('#CkNoOut').val(),
+                        WhNoIn: $('#WhNoIn').val(),
+                        CkNoIn: $('#CkNoIn').val(),
+                        ExchangeDate: $('#ExchangeDate').val()
+                    }
+                ]
+            }
+  
+            PostToWebApi({ url: "api/SystemSetup/UpdateChgShop", data: mData, success: AfterUpdateChgShop });
+        }
+        else if (EditMode == "App") {
+
+            var cData = {
+                ChangeShopSV: [
+                    {
+                        DocNo: gDocNo
+                    }
+                ]
+            }
+            //alert("Del " + $('#Type_ID').val());
+            PostToWebApi({ url: "api/SystemSetup/AppChgShop", data: cData, success: AfterUpdateChgShop });
+        }
+        else if (EditMode == "Del") {
+            var cData = {
+                ChangeShopSV: [
+                    {
+                        DocNo: gDocNo
+                    }
+                ]
+            }
+            PostToWebApi({ url: "api/SystemSetup/DelChgShop", data: cData, success: AfterDelChgShop });
+        }
+
+    }
 
 
 
 
     let btSave_click = function () {
 
-        //GetSysDate();
+        GetSysDate();
         
         if ($('#WhNoOut').val() == "" | $('#WhNoOut').val() == null | $('#CkNoOut').val() == "" | $('#CkNoOut').val() == null | $('#WhNoIn').val() == "" | $('#WhNoIn').val() == null | $('#CkNoIn').val() == "" | $('#CkNoIn').val() == null | $('#ExchangeDate').val() == "" | $('#ExchangeDate').val() == null) {
             DyAlert("所有欄位都必須輸入資料!!", function () { $('#Type_ID').focus() });
@@ -396,78 +453,95 @@
             DyAlert("換店日期欄位必須輸入資料!!", function () { $('#Type_Name').focus() });
             return;
         }
+        //alert("EditMode:" + EditMode);
+        if (EditMode == "App") {
+            DyConfirm("確定要批核這筆資料嗎?", SaveData, DummyFunction);
+        }
+        else {
+            //alert("EditMode:" + EditMode);
+            SaveData();
+        }
 
         //alert("EditMode:" + EditMode);
-        if (EditMode == "Add") {
-            var pData = {
-                WhNoOut: $('#WhNoOut').val(),
-                CkNoOut: $('#CkNoOut').val(),
-                WhNoIn: $('#WhNoIn').val(),
-                CkNoIn: $('#CkNoIn').val(),
-                ExchangeDate: $('#ExchangeDate').val()
-            }
-            //alert("Add.." + $('#Type_ID').val());
-            PostToWebApi({ url: "api/SystemSetup/ChkRackExist", data: pData, success: AfterAddChgShop });
-        }
-        else if (EditMode == "Mod") {
-            var mData = {
-                ChangeShopSV: [
-                    {
-                    DocNo: gDocNo,
-                    WhNoOut: $('#WhNoOut').val(),
-                    CkNoOut: $('#CkNoOut').val(),
-                    WhNoIn: $('#WhNoIn').val(),
-                    CkNoIn: $('#CkNoIn').val(),
-                    ExchangeDate: $('#ExchangeDate').val()
-                    }
-                ]
-            }
-            //alert("DocNo " + gDocNo);
-            //alert("WhNoOut " + $('#WhNoOut').val(),);
-            //alert("CkNoOut " + $('#CkNoOut').val(),);
-            //alert("WhNoIn " + $('#WhNoIn').val(),);
-            //alert("CkNoIn " + $('#CkNoIn').val(),);
-            //alert("ExchangeDate " + $('#ExchangeDate').val(),);
+        //if (EditMode == "Add") {
+        //    var pData = {
+        //        WhNoOut: $('#WhNoOut').val(),
+        //        CkNoOut: $('#CkNoOut').val(),
+        //        WhNoIn: $('#WhNoIn').val(),
+        //        CkNoIn: $('#CkNoIn').val(),
+        //        ExchangeDate: $('#ExchangeDate').val()
+        //    }
+        //    //alert("Add.." + $('#Type_ID').val());
+        //    PostToWebApi({ url: "api/SystemSetup/AddChgShop", data: pData, success: AfterDelChgShop });
+        //}
+        //else if (EditMode == "Mod") {
+        //    var mData = {
+        //        ChangeShopSV: [
+        //            {
+        //            DocNo: gDocNo,
+        //            WhNoOut: $('#WhNoOut').val(),
+        //            CkNoOut: $('#CkNoOut').val(),
+        //            WhNoIn: $('#WhNoIn').val(),
+        //            CkNoIn: $('#CkNoIn').val(),
+        //            ExchangeDate: $('#ExchangeDate').val()
+        //            }
+        //        ]
+        //    }
+        //    //alert("DocNo " + gDocNo);
+        //    //alert("WhNoOut " + $('#WhNoOut').val(),);
+        //    //alert("CkNoOut " + $('#CkNoOut').val(),);
+        //    //alert("WhNoIn " + $('#WhNoIn').val(),);
+        //    //alert("CkNoIn " + $('#CkNoIn').val(),);
+        //    //alert("ExchangeDate " + $('#ExchangeDate').val(),);
 
-            PostToWebApi({ url: "api/SystemSetup/UpdateChgShop", data: mData, success: AfterUpdateChgShop });
-        }
-        else if (EditMode == "App") {
-            var cData = {
-                ChangeShopSV: [
-                    {
-                        DocNo: gDocNo
-                    }
-                ]
-            }
-            //alert("Del " + $('#Type_ID').val());
-            PostToWebApi({ url: "api/SystemSetup/AppChgShop", data: cData, success: AfterUpdateChgShop });
-        }
-        else if (EditMode == "Del") {
-            var cData = {
-                ChangeShopSV: [
-                    {
-                        DocNo: gDocNo
-                    }
-                ]
-            }
-            PostToWebApi({ url: "api/SystemSetup/DelChgShop", data: cData, success: AfterDelChgShop });
-        }
+        //    PostToWebApi({ url: "api/SystemSetup/UpdateChgShop", data: mData, success: AfterUpdateChgShop });
+        //}
+        //else if (EditMode == "App") {
+        //    var cData = {
+        //        ChangeShopSV: [
+        //            {
+        //                DocNo: gDocNo
+        //            }
+        //        ]
+        //    }
+        //    //alert("Del " + $('#Type_ID').val());
+        //    PostToWebApi({ url: "api/SystemSetup/AppChgShop", data: cData, success: AfterUpdateChgShop });
+        //}
+        //else if (EditMode == "Del") {
+        //    var cData = {
+        //        ChangeShopSV: [
+        //            {
+        //                DocNo: gDocNo
+        //            }
+        //        ]
+        //    }
+        //    PostToWebApi({ url: "api/SystemSetup/DelChgShop", data: cData, success: AfterDelChgShop });
+        //}
 
-        return
+        //return
 
 
     };
 
 
     let AfterUpdateChgShop = function (data) {
+        //alert("AfterUpdateChgShop:" + EditMode);
         if (ReturnMsg(data, 0) != "UpdateChgShopOK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
-            DyAlert("儲存完成!");
+
+            if (EditMode == "App") {
+                DyAlert("批核完成!");
+            }
+            else {
+                DyAlert("儲存完成!");
+            }
+
+            
 
             $('#modal_VIN13_1').modal('hide');
-            var userxml = data.getElementsByTagName('dtRack')[0];
+            var userxml = data.getElementsByTagName('dtRes')[0];
             grdU.RefreshRocord(grdU.ActiveRowTR(), userxml);
         }
     };

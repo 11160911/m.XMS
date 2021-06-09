@@ -651,7 +651,7 @@ namespace SVMAdmin.Controllers
         public ActionResult SystemSetup_SearchInv()
         {
             UserInfo uu = PubUtility.GetCurrentUser(this);
-            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SearchInvOK", "" });
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SearchInvOK", "", "", "" });
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
@@ -660,7 +660,9 @@ namespace SVMAdmin.Controllers
                 string WhNo = rq["WhNo"];
                 string CkNo = rq["CkNo"];
                 string GDLayer = rq["GDLayer"];
-                string sql = "select a.*,b.GD_SNAME,";
+                string ToExcel = rq["ToExcel"];
+                string sql = "select a.WhNo, a.CkNo, a.Layer, a.SNO, a.PLU, b.GD_SNAME, a.EffectiveDate, a.PtNum, a.DisplayNum,";
+                //string sql = "select a.*,b.GD_SNAME,";
                 sql += " cast(case when DisPlayNum>0 then Cast(Round(Cast(a.PtNum as numeric(5,1))/Cast(a.DisPlayNum as numeric(5,1))*100,0) As Int) Else 0 End As Varchar(10)) + '%' Share";
                 sql += " from InventorySV a";
                 sql += " inner join PLUSV b on a.PLU=b.GD_NO And a.CompanyCode=b.CompanyCode";
@@ -685,6 +687,36 @@ namespace SVMAdmin.Controllers
                 DataTable dtInv = PubUtility.SqlQry(sql, uu, "SYS");
                 dtInv.TableName = "dtInv";
                 ds.Tables.Add(dtInv);
+
+                if (ToExcel == "Y")
+                {
+                    //dtInv.Columns["SerNo"].SetOrdinal(0);
+                    using (OfficeOpenXml.ExcelPackage PKD = new OfficeOpenXml.ExcelPackage())
+                    {
+                        string[] heads = "店碼,機號,貨倉,貨道,商品代號,商品名稱,最近有效日,庫存量,滿倉量,庫存比".Split(",");
+
+                        OfficeOpenXml.ExcelWorksheet wsD = PKD.Workbook.Worksheets.Add("Inv");
+                        for (int i = 0; i < heads.Length; i++)
+                            wsD.Cells[1, i + 1].Value = heads[i];
+                        wsD.Cells["A2"].LoadFromDataTable(dtInv, false);
+
+                        DataTable dtF = new DataTable();
+                        dtF.Columns.Add("DataType", typeof(string));
+                        dtF.Columns.Add("FileName", typeof(string));
+                        dtF.Columns.Add("DocType", typeof(string));
+                        dtF.Columns.Add("DocImage", typeof(byte[]));
+                        DataRow dr = dtF.NewRow();
+                        dtF.Rows.Add(dr);
+                        dr["DataType"] = "Temp";
+                        dr["FileName"] = "庫存查詢_" + DateTime.Now.ToString("yyMMddHHmmss") + ".xlsx";
+                        dr["DocType"] = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        dr["DocImage"] = PKD.GetAsByteArray();
+                        dtMessage.Rows[0][1] = PubUtility.AddTable("ImageTable", dtF, uu, "SYS");
+                        dtMessage.Rows[0][2] = uu.CompanyId;
+                        dtMessage.Rows[0][3] = uu.UserID;
+                    }
+                }
+
             }
             catch (Exception err)
             {
@@ -786,6 +818,306 @@ namespace SVMAdmin.Controllers
         }
 
 
+
+
+
+
+        //2021-06-07 Larry
+        [Route("SystemSetup/GetInitVMN01")]
+        public ActionResult SystemSetup_GetInitVMN01()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetInitVMN01OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        //2021-06-07 Larry
+        [Route("SystemSetup/GetTypeData")]
+        public ActionResult SystemSetup_GetTypeData()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetTypeDataOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Type_Code = rq["Type_Code"];
+                string sql = "select * from TypeData Where CompanyCode='" + uu.CompanyId + "' And Type_Code='" + Type_Code + "' order by Type_ID";
+
+                DataTable dtTypeData = PubUtility.SqlQry(sql, uu, "SYS");
+                dtTypeData.TableName = "dtTypeData";
+                ds.Tables.Add(dtTypeData);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        //2021-06-07 Larry
+        [Route("SystemSetup/ChkTypeDataUsed")]
+        public ActionResult SystemSetup_ChkTypeDataUsed()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "ChkTypeDataUsedOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Type_ID = rq["Type_ID"];
+                string sql = "select Distinct ST_DeliArea from WarehouseSV Where CompanyCode='" + uu.CompanyId + "' And ST_DeliArea='" + Type_ID + "'";
+
+                DataTable dtChk = PubUtility.SqlQry(sql, uu, "SYS");
+                dtChk.TableName = "dtChk";
+                ds.Tables.Add(dtChk);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        //2021-06-07 Larry
+        [Route("SystemSetup/ChkTypeDataExist")]
+        public ActionResult SystemSetup_ChkTypeDataExist()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "ChkTypeDataUsedOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Type_Code = rq["Type_Code"];
+                string Type_ID = rq["Type_ID"];
+                string sql = "select * from TypeData Where CompanyCode='" + uu.CompanyId + "' And Type_Code='" + Type_Code + "' And Type_ID='" + Type_ID + "'";
+
+                DataTable dtTypeData = PubUtility.SqlQry(sql, uu, "SYS");
+                dtTypeData.TableName = "dtTypeData";
+                ds.Tables.Add(dtTypeData);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        //2021-06-07 Larry
+        [Route("SystemSetup/UpdateTypeData")]
+        public ActionResult SystemSetup_UpdateTypeData()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "UpdateTypeDataOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                DataTable dtRec = new DataTable("TypeData");
+                PubUtility.AddStringColumns(dtRec, "Type_Code,OldType_ID,Type_ID,Type_Name");
+                DataSet dsRQ = new DataSet();
+                dsRQ.Tables.Add(dtRec);
+                PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
+                DataRow dr = dtRec.Rows[0];
+
+                string sql = "";
+                using (DBOperator dbop = new DBOperator())
+                {
+                    using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required))
+                    {
+                        try
+                        {
+                            if (dr["Type_ID"].ToString() == dr["OldType_ID"].ToString())
+                            {
+                                sql = "update TypeData set ";
+                                sql += " Type_Name='" + dr["Type_Name"].ToString().SqlQuote() + "'";
+                                sql += ",ModDate=convert(char(10),getdate(),111)";
+                                sql += ",ModTime=convert(char(12),getdate(),108)";
+                                sql += ",ModUser='" + uu.UserID + "'";
+                                sql += " where CompanyCode='" + uu.CompanyId + "' And Type_Code='" + dr["Type_Code"].ToString().SqlQuote() + "' And Type_ID='" + dr["Type_ID"].ToString().SqlQuote() + "'";
+                                dbop.ExecuteSql(sql, uu, "SYS");
+                            }
+                            else
+                            {
+                                sql = "update TypeData set ";
+                                sql += " Type_ID='" + dr["Type_ID"].ToString().SqlQuote() + "'";
+                                sql += " ,Type_Name='" + dr["Type_Name"].ToString().SqlQuote() + "'";
+                                sql += " ,ModDate=convert(char(10),getdate(),111)";
+                                sql += " ,ModTime=convert(char(12),getdate(),108)";
+                                sql += " ,ModUser='" + uu.UserID + "'";
+                                sql += " where CompanyCode='" + uu.CompanyId + "' And Type_Code='" + dr["Type_Code"].ToString().SqlQuote() + "' And Type_ID='" + dr["OldType_ID"].ToString().SqlQuote() + "'";
+                                dbop.ExecuteSql(sql, uu, "SYS");
+                            }
+                            //dbop.Update("Rack", dtRec, new string[] { "Type_ID" }, uu, "SYS");
+
+                            ts.Complete();
+                        }
+                        catch (Exception err)
+                        {
+                            ts.Dispose();
+                            dbop.Dispose();
+                            throw new Exception(err.Message);
+                        }
+                        dbop.Dispose();
+                    }
+                }
+                sql = "select a.*";
+                sql += " from TypeData a";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "' And Type_Code='" + dr["Type_Code"].ToString().SqlQuote() + "' And a.Type_ID='" + dr["Type_ID"].ToString().SqlQuote() + "'";
+                DataTable dtTypeData = PubUtility.SqlQry(sql, uu, "SYS");
+                dtTypeData.TableName = "dtTypeData";
+                ds.Tables.Add(dtTypeData);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        //2021-06-07 Larry
+        [Route("SystemSetup/AddTypeData")]
+        public ActionResult SystemSetup_AddTypeData()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "AddTypeDataOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                DataTable dtRec = new DataTable("TypeData");
+                PubUtility.AddStringColumns(dtRec, "Type_Code,Type_ID,Type_Name");
+                DataSet dsRQ = new DataSet();
+                dsRQ.Tables.Add(dtRec);
+                PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
+                DataRow dr = dtRec.Rows[0];
+
+                string sql = "";
+                using (DBOperator dbop = new DBOperator())
+                {
+                    using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required))
+                    {
+                        try
+                        {
+                            //sql = "Insert Into Rack (CompanyCode, CrtUser, CrtDate, CrtTime ";
+                            //sql += " ,ModUser, ModDate, ModTime";
+                            //sql += ", Type_ID, Type_Name, DisplayNum) Values ";
+                            //sql += " ('" + uu.CompanyId + "', '" + uu.UserID + "', convert(char(10),getdate(),111), convert(char(12),getdate(),108) ";
+                            //sql += " ,'" + uu.UserID + "',convert(char(10),getdate(),111), convert(char(12),getdate(),108) ";
+                            //sql += " ,'" + dr["Type_ID"].ToString().SqlQuote() + "','" + dr["Type_Name"].ToString().SqlQuote() + "'," + dr["DisplayNum"].ToString().SqlQuote() + ")";
+                            //dbop.ExecuteSql(sql, uu, "SYS");
+                            dbop.Add("TypeData", dtRec, uu, "SYS");
+                            ts.Complete();
+                        }
+                        catch (Exception err)
+                        {
+                            ts.Dispose();
+                            dbop.Dispose();
+                            throw new Exception(err.Message);
+                        }
+                        dbop.Dispose();
+                    }
+                }
+                sql = "select a.*";
+                sql += " from TypeData a";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "' And Type_Code='" + dr["Type_Code"].ToString().SqlQuote() + "' And Type_ID='" + dr["Type_ID"].ToString().SqlQuote() + "'";
+                DataTable dtTypeData = PubUtility.SqlQry(sql, uu, "SYS");
+                dtTypeData.TableName = "dtTypeData";
+                ds.Tables.Add(dtTypeData);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        //2021-06-07 Larry
+        [Route("SystemSetup/DelTypeData")]
+        public ActionResult SystemSetup_DelTypeData()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "DelTypeDataOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                DataTable dtRec = new DataTable("TypeData");
+                PubUtility.AddStringColumns(dtRec, "Type_Code,Type_ID");
+                DataSet dsRQ = new DataSet();
+                dsRQ.Tables.Add(dtRec);
+                PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
+                DataRow dr = dtRec.Rows[0];
+
+                string sql = "";
+                using (DBOperator dbop = new DBOperator())
+                {
+                    using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required))
+                    {
+                        try
+                        {
+                            sql = "Delete From TypeData ";
+                            sql += " where CompanyCode='" + uu.CompanyId + "' And Type_Code='" + dr["Type_Code"].ToString().SqlQuote() + "' And Type_ID='" + dr["Type_ID"].ToString().SqlQuote() + "'";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+                            ts.Complete();
+                        }
+                        catch (Exception err)
+                        {
+                            ts.Dispose();
+                            dbop.Dispose();
+                            throw new Exception(err.Message);
+                        }
+                        dbop.Dispose();
+                    }
+                }
+                sql = "select a.*";
+                sql += " from TypeData a";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "' And Type_Code='" + dr["Type_Code"].ToString().SqlQuote() + "'";
+                DataTable dtTypeData = PubUtility.SqlQry(sql, uu, "SYS");
+                dtTypeData.TableName = "dtTypeData";
+                ds.Tables.Add(dtTypeData);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
         //2021-05-07 Larry
         [Route("SystemSetup/GetInitVMN29")]
         public ActionResult SystemSetup_GetInitVMN29()
@@ -882,8 +1214,6 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
-
-
 
 
         //2021-05-07 Larry
@@ -1496,7 +1826,8 @@ namespace SVMAdmin.Controllers
         public ActionResult SystemSetup_AppChgShop()
         {
             UserInfo uu = PubUtility.GetCurrentUser(this);
-            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "AppChgShopOK", "" });
+            //批核完成後，同樣執行異動完成，故回傳UpdateChgShopOK
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "UpdateChgShopOK", "" });
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
@@ -1550,9 +1881,9 @@ namespace SVMAdmin.Controllers
                 //sql = "select a.*";
                 //sql += " from ChangeShopSV a";
                 //sql += " where a.CompanyCode='" + uu.CompanyId + "' And a.DocNo='" + dr["DocNo"].ToString().SqlQuote() + "'";
-                DataTable dtRack = PubUtility.SqlQry(sql, uu, "SYS");
-                dtRack.TableName = "dtRack";
-                ds.Tables.Add(dtRack);
+                DataTable dtRes = PubUtility.SqlQry(sql, uu, "SYS");
+                dtRes.TableName = "dtRes";
+                ds.Tables.Add(dtRes);
             }
             catch (Exception err)
             {
@@ -1572,6 +1903,9 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
+
+                //string NewDocNo = GetNewDocNo(uu, "CS");
+
                 DataTable dtRec = new DataTable("ChangeShopSV");
                 PubUtility.AddStringColumns(dtRec, "Type_ID,Type_Name,DisplayNum");
                 DataSet dsRQ = new DataSet();
@@ -1579,7 +1913,7 @@ namespace SVMAdmin.Controllers
                 PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
                 DataRow dr = dtRec.Rows[0];
 
-                string NewDocNo = GetNewDocNo(uu);
+                
 
                 string sql = "";
                 using (DBOperator dbop = new DBOperator())
@@ -1623,17 +1957,37 @@ namespace SVMAdmin.Controllers
         }
 
 
-        private string GetNewDocNo(UserInfo uu)
-        {
-            string sql = "select a.*,b.Lyaers,b.Channels";
-            sql += " from MachineList a";
-            sql += " inner join";
-            sql += " (select CompanyCode,SNno,count(distinct LayerNo) as Lyaers, count(*)  as Channels";
-            sql += " from  MachineListSpec group by CompanyCode,SNno";
-            sql += " ) b on a.CompanyCode=b.CompanyCode and a.SNno=b.SNno";
-            sql += " where a.CompanyCode='" + uu.CompanyId.SqlQuote() + "'";
-            return sql;
-        }
+        //private string GetNewDocNo(UserInfo uu,String DocType)
+        //{
+
+        //    string sDocNo = "";
+        //    string sDate = "";
+        //    string sql = "select convert(char(10),getdate(),112)";
+        //    DataTable dtDate = PubUtility.SqlQry(sql, uu, "SYS");
+        //    if (dtDate.Rows.Count == 0)
+        //    {
+        //        sDocNo = "";
+        //        return sDocNo;
+        //    }
+        //    else
+        //    {
+        //        sDate = dtDate.Rows[0][0].ToString();
+        //    }
+
+        //    sql = "select * from DocumentNo a";
+        //    sql += " where a.CompanyCode='" + uu.CompanyId.SqlQuote() + "' And Initial='"+ DocType + "' And DocDate=convert(char(10),getdate(),112)";
+
+        //    DataTable dtDoc = PubUtility.SqlQry(sql, uu, "SYS");
+        //    //dtDoc.TableName = "dtDoc";
+            
+        //    if (dtDoc.Rows.Count == 0) 
+        //    {
+        //        sDocNo = DocType + "";
+        //        sql = "Insert Into ";
+        //    }
+
+        //    return sDocNo;
+        //}
 
 
         //2021-05-26 Larry

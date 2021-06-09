@@ -186,6 +186,7 @@
 
             //2021-04-29 Debug用，按F12後，在主控台內會顯示內容
             console.log(pg);
+            //alert(pg);
 
             if (pg == "GMMacPLUSet") {
                 if (window.PageGMMacPLUSet == undefined)
@@ -220,6 +221,18 @@
                     );
                 else {
                     PageInv($(".right_col"));
+                }
+            }
+
+            else if (pg == "VMN01") {
+                if (window.PageVMN01 == undefined)
+                    $.getScript('SystemSetup/VMN01.js',
+                        function () {
+                            PageVMN01($(".right_col"));
+                        }
+                    );
+                else {
+                    PageVMN01($(".right_col"));
                 }
             }
 

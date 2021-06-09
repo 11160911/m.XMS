@@ -631,6 +631,7 @@ namespace SVMAdmin
             dt.Rows.Add(new object[] { "權限管理", "Authorize", "SysSecurity", "角色權限維護", "SysSecurity", "P", "fa-cog" });
             dt.Rows.Add(new object[] { "權限管理", "Authorize", "SysChangePWD", "密碼變更作業", "SysChangePWD", "P", "fa-cog" });
 
+            dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "VMN01", "智販機類別資料維護", "VMN01", "P", "fa-cogs" });
             dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "VMN29", "貨倉類型設定", "VMN29", "P", "fa-cogs" });
             dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "MMMachineSet", "智販機設定", "MMMachineSet", "P", "fa-cogs" });
             dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "VXT03", "智販機總覽", "VXT03", "P", "fa-cogs" });
