@@ -819,3 +819,96 @@ var waitingDialog = waitingDialog || (function ($) {
     };
 
 })(jQuery);
+
+var SetCommSelectGrid = function (option) {
+    var grdP;
+    var divN = $('<div></div>');
+    divN.hide();
+    $("body").append(divN);
+    divN.load("CommSelectGridModal.html #CommSelectGridModal", null, function () { afterLoadCommSelectGridModal(this); });
+
+    let afterLoadCommSelectGridModal = function (TmpDiv) {
+        var p = $('#CommSelectGridModal').detach();
+        $("body").append(p);
+        let tbGrd = $('#CommSelectGridModal .modal-body table')[0];
+        grdP = new DynGrid(
+            {
+                table_lement: tbGrd,
+                class_collection: ["tdchk", "tdAuto", "tdAuto"],
+                fields_info: [
+                    { type: "checkbox", name: "Blank" },
+                    { type: "Text", name: option.PostDataForApi.Column[0] },
+                    { type: "Text", name: option.PostDataForApi.Column[1] }
+                ]
+            }
+        );
+        $(tbGrd).find('tbody').empty();
+        $(TmpDiv).remove();
+        $('#CommSelectGridModal .SearchCond').val(option.SearchCond);
+        $("#CommSelectGridModal .btCancel").click(function () {
+            $('#CommSelectGridModal').modal("hide");
+            setTimeout(function () {
+                $('#CommSelectGridModal').remove();
+            }, 200);
+        });
+
+        $('#CommSelectGridModal .btConfirm').click(function () {
+            let chked = $('#CommSelectGridModal .modal-body table tbody input:checked');
+            if (chked.length == 0) {
+                DyAlert("沒有選擇項目", DummyFunction);
+            }
+            else {
+                let xml = $(chked[0]).closest('tr').prop('Record');
+                option.AfterSelectData(xml);
+                $('#CommSelectGridModal').modal("hide");
+                setTimeout(function () {
+                    $('#CommSelectGridModal').remove();
+                }, 200)
+            }
+        });
+
+        $($('#CommSelectGridModal .modal-body table thead th')[1]).text(option.PostDataForApi.Caption[0]);
+        $($('#CommSelectGridModal .modal-body table thead th')[2]).text(option.PostDataForApi.Caption[1]);
+        $('#CommSelectGridModal .btConfirm').prop('disabled', true);
+
+        let icon = $('<span class="fa fa-list-alt form-control-feedback right" aria-hidden="true"></span>');
+        icon.css('cursor', 'pointer');
+
+        let InputElement = $('#' + option.InputElementsID);
+        if (!InputElement.hasClass('InputForCommSelectGrid'))
+            InputElement.addClass('InputForCommSelectGrid');
+        InputElement.after(icon);
+
+        icon.click(
+            function () {
+                $('#CommSelectGridModal .SearchCond').val(InputElement.val());
+                $('#CommSelectGridModal').modal("show");
+                PostToWebApi({ url: option.ApiForGridData, data: option.PostDataForApi, success: AfterGetDataForCSG });
+            }
+        );
+
+        let AfterGetDataForCSG = function (data) {
+            setTimeout(function () {
+                let dtCommSelResult = data.getElementsByTagName('dtCommSelResult');
+                grdP.BindData(dtCommSelResult);
+                $('#CommSelectGridModal .modal-body table tbody input:checkbox').click(
+                    function () { ControlCheck(this);}
+                );
+            }, 200);
+        }
+
+        let ControlCheck = function (chk) {
+            $('#CommSelectGridModal .btConfirm').prop('disabled', true);
+
+            let allChks = $('#CommSelectGridModal .modal-body table tbody input:checkbox');
+            if ($(chk).prop('checked')) {
+                $('#CommSelectGridModal .btConfirm').prop('disabled', false);
+                allChks.prop('checked', false);
+                $(chk).prop('checked', true);
+            }
+            else {
+                $('#CommSelectGridModal .btConfirm').prop('disabled', true);
+            }
+        }
+    }
+}

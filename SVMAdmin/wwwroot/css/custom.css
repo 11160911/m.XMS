@@ -4984,3 +4984,7 @@ ul.notifications {
     color: red;
     font-size: 0.85rem;
 }
+
+.InputForCommSelectGrid:disabled + span {
+    display: none;
+}
