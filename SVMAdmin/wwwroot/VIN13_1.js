@@ -40,9 +40,27 @@
                 //sortable: "Y"
             }
         );
-        
+
+        let csgOption = {
+            InputElementsID: "WhNoOut",
+            ApiForGridData: "api/SetCommSelectGridDefaultApi",
+            PostDataForApi: {
+                Table: "WarehouseSV",
+                Column: ["ST_ID", "ST_Sname"],
+                Caption: ["店代號", "店名稱"],
+                OrderColumn: "ST_ID",
+                Condition: "1=1",
+            },
+            AfterSelectData: AfterSelWhNoOut
+        }
+        SetCommSelectGrid(csgOption);
+
     };
 
+    let AfterSelWhNoOut = function (xml) {
+        $('#WhNoOut').val(GetNodeValue(xml, "ST_ID"));
+        $('#WhOutName').text(GetNodeValue(xml, "ST_Sname"));
+    }
 
     let InitModifyDeleteButton = function () {
         $('#tbVIN13_1 .fa-file-text-o').click(function () { btMod_Click(this) });

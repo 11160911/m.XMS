@@ -570,6 +570,38 @@ namespace SVMAdmin.Controllers
             return sql;
         }
 
+
+        [Route("SetCommSelectGridDefaultApi")]
+        public ActionResult SetCommSelectGridDefaultApi()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "CommSelectGridGetDataOK", "", "", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                HttpRequest rqf = HttpContext.Request;
+                IFormCollection rq = HttpContext.Request.Form;
+                string Table = rq["Table"];
+                string Column = rq["Column[]"];
+                string OrderColumn = rq["OrderColumn"];
+                string Condition = rq["Condition"];
+                string SearchCond = rq["SearchCond"];
+                string sql = "select " + Column + " from " + Table;
+                sql += " where 1=1 and " + Condition;
+                sql += " order by " + OrderColumn;
+                DataTable dtDS = PubUtility.SqlQry(sql, uu, "SYS");
+                dtDS.TableName = "dtCommSelResult";
+                ds.Tables.Add(dtDS);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
         [Route("FileDownload")]
         public ActionResult FileDownload()
         {
