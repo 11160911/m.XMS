@@ -455,7 +455,12 @@
             DyAlert("換店日期欄位必須輸入資料!!", function () { $('#ExchangeDate').focus() });
             return;
         }
-        
+
+        if ($('#WhNoIn').val() == $('#WhNoOut').val()) {
+            DyAlert("新智販店代號與原智販店代號不可相同!!", function () { $('#WhNoIn').focus() });
+            return;
+        }
+
         //檢查換店日期必須大於系統日
        if ($('#ExchangeDate').val() < SysDate ) {
            DyAlert("換店日期必須大於等於系統日期!!", function () { $('#ExchangeDate').focus() });
