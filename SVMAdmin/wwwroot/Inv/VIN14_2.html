@@ -1,0 +1,323 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>雲智能販賣機後台管理系統</title>
+
+    <!-- Bootstrap -->
+    <link href="../lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../lib/nprogress/nprogress.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../css/custom.css" rel="stylesheet">
+  </head>
+
+  <body class="nav-md">
+      <div class="container body">
+          <div class="main_container">
+              <div class="col-md-3 left_col">
+                  <div class="left_col scroll-view">
+                      <div class="navbar nav_title" style="border: 0;height:5px">
+
+                      </div>
+                      <!-- menu profile quick info -->
+                      <div class="profile clearfix">
+                          <img src="images/Logo4.png" style="margin-left:8px ;margin-top:3px ;width: 216px;" />
+                          <div class="clearfix"></div>
+                      </div>
+                      <!-- /menu profile quick info -->
+                      <!-- sidebar menu -->
+                      <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                          <div class="menu_section">
+                              <ul class="nav side-menu">
+                                  <li>
+                                      <a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                                      <ul class="nav child_menu">
+                                          <li><a href="index.html">Dashboard</a></li>
+                                          <li><a href="index2.html">Dashboard2</a></li>
+                                          <li><a href="index3.html">Dashboard3</a></li>
+                                      </ul>
+                                  </li>
+                                  <li>
+                                      <a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
+                                      <ul class="nav child_menu">
+                                          <li><a href="form.html">General Form</a></li>
+                                          <li><a href="form_advanced.html">Advanced Components</a></li>
+                                          <li><a href="form_validation.html">Form Validation</a></li>
+                                          <li><a href="form_wizards.html">Form Wizard</a></li>
+                                          <li><a href="form_upload.html">Form Upload</a></li>
+                                          <li><a href="form_buttons.html">Form Buttons</a></li>
+                                      </ul>
+                                  </li>
+                                  <li>
+                                      <a><i class="fa fa-desktop"></i> UI Elements <span class="fa fa-chevron-down"></span></a>
+                                      <ul class="nav child_menu">
+                                          <li><a href="general_elements.html">General Elements</a></li>
+                                          <li><a href="media_gallery.html">Media Gallery</a></li>
+                                          <li><a href="typography.html">Typography</a></li>
+                                          <li><a href="icons.html">Icons</a></li>
+                                          <li><a href="glyphicons.html">Glyphicons</a></li>
+                                          <li><a href="widgets.html">Widgets</a></li>
+                                          <li><a href="invoice.html">Invoice</a></li>
+                                          <li><a href="inbox.html">Inbox</a></li>
+                                          <li><a href="calendar.html">Calendar</a></li>
+                                      </ul>
+                                  </li>
+                                  <li>
+                                      <a><i class="fa fa-table"></i> Tables <span class="fa fa-chevron-down"></span></a>
+                                      <ul class="nav child_menu">
+                                          <li><a href="tables.html">Tables</a></li>
+                                          <li><a href="tables_dynamic.html">Table Dynamic</a></li>
+                                      </ul>
+                                  </li>
+                                  <li>
+                                      <a><i class="fa fa-bar-chart-o"></i> Data Presentation <span class="fa fa-chevron-down"></span></a>
+                                      <ul class="nav child_menu">
+                                          <li><a href="chartjs.html">Chart JS</a></li>
+                                          <li><a href="chartjs2.html">Chart JS2</a></li>
+                                          <li><a href="morisjs.html">Moris JS</a></li>
+                                          <li><a href="echarts.html">ECharts</a></li>
+                                          <li><a href="other_charts.html">Other Charts</a></li>
+                                      </ul>
+                                  </li>
+                                  <li>
+                                      <a><i class="fa fa-clone"></i>Layouts <span class="fa fa-chevron-down"></span></a>
+                                      <ul class="nav child_menu">
+                                          <li><a href="fixed_sidebar.html">Fixed Sidebar</a></li>
+                                          <li><a href="fixed_footer.html">Fixed Footer</a></li>
+                                      </ul>
+                                  </li>
+                              </ul>
+                          </div>
+
+                      </div>
+                      <!-- /sidebar menu -->
+
+
+                  </div>
+              </div>
+
+
+              <!-- page content -->
+              <div class="right_col" role="main">
+                  <div class="">
+                      <div class="page-title">
+                          <div class="title_left">
+                              <h3>Plain Page</h3>
+                          </div>
+                      </div>
+                      <div class="clearfix"></div>
+
+                      <article id="pgVIN14_2" class="row">
+
+                          <div class="modal fade" id="modal_VIN14_2">
+                              <div class="modal-dialog modal-lg">
+                                  <div class="modal-content">
+                                      <div class="modal-header">
+                                          <h4 class="modal-title">商品補貨作業</h4>
+                                      </div>
+                                      <div class="modal-body modal-tab-container">
+                                          <style>
+                                              #modal-Role .msg-valid {
+                                                  color: red;
+                                                  font-size: 0.85rem;
+                                              }
+                                          </style>
+                                          <div class="card-block forminput">
+                                              <div class="form-group row">
+                                                  <label id="MachineData" class="col-form-label col-6">1g</label>
+                                                  <!--<div class="col-9">
+                                <input id="GD_NO" type="text" readonly class="form-control" autocomplete="off" />
+                                <span class="msg-valid valid-blank"></span>
+                            </div>-->
+                                                  <label id="SeqNo" class="col-form-label col-2">1g</label>
+                                              </div>
+                                              <div class="form-group row">
+                                                  <label style="color:red" class="col-form-label col-3">貨道：</label>
+                                                  <label id="Channel" class="col-form-label col-3">a01</label>
+                                              </div>
+
+                                              <div class="form-group row">
+                                                  <label class="col-form-label col-3">照片</label>
+                                                  <div class="col-5">
+                                                      <img id="PLUPic1" style="height:150px" src="../images/No_Pic.jpg" />
+                                                      <input type="hidden" id="Photo1" />
+                                                  </div>
+                                              </div>
+
+                                              <div class="form-group row">
+                                                  <label id="GD_No" class="col-form-label col-3">品號</label>
+                                                  <label id="GD_Name" class="col-form-label col-3">簡稱</label>
+                                              </div>
+
+                                              <!--<div class="form-group row">
+                                                  
+                                              </div>-->
+
+                                              <div class="form-group row">
+                                                  <label class="col-form-label col-3">庫存/滿倉：</label>
+                                                  <label id="ShowQty" class="col-form-label col-3">8/17</label>
+                                              </div>
+
+                                              <div class="form-group row">
+                                                  <label class="col-form-label col-3">缺貨量：</label>
+                                                  <label id="ShortQty" class="col-form-label col-3">9</label>
+                                              </div>
+
+                                              <div class="form-group row">
+                                                  <label class="col-form-label col-3"> </label>
+                                                  <button id="btEqual" type="button" class="btn btn-danger">補貨量=缺貨量</button>
+                                              </div>
+
+                                              <div class="form-group row">
+                                                  <label class="col-form-label col-3">補貨量：</label>
+                                                  <div class="col-md-3">
+                                                      <input id="AdjQty" type="text" class="form-control" autocomplete="off" />
+                                                  </div>
+                                                  <!--<label id="AdjQty" class="col-form-label col-3">9</label>-->
+                                              </div>
+
+                                              <div class="form-group row">
+                                                  <label class="col-form-label col-3">最近有效日期：</label>
+                                                  <div class="col-md-3">
+                                                      <input id="ExpDate" type="text" class="form-control" autocomplete="off" />
+                                                  </div>
+                                                  <!-- <label id="ExpDate" class="col-form-label col-3">9</label>-->
+                                              </div>
+
+                                          </div>
+                                          <div class="modal-footer">
+                                              <button id="btCancel" type="button" class="btn btn-primary">取消</button>
+                                              <button id="btSave" type="button" class="btn btn-danger">儲存</button>
+
+                                          </div>
+                                      </div><!-- /.modal-content -->
+                                  </div><!-- /.modal-dialog -->
+                              </div><!-- /.modal -->
+                          </div>
+                          <!--<style>
+        #tbVIN14_2 .fa-toggle-off, #tbVIN14_2 .fa-toggle-on {
+            font-size: 28px;
+            color: lightblue;
+        }
+    </style>
+    <style>
+        #tbVIN14_2 .fa-file-text-o {
+            font-size: 28px;
+            color: lightblue;
+        }
+    </style>-->
+
+                          <style>
+                              #tbVIN14_2 .btn-outline-success {
+                                  font-size: 28px;
+                                  color: lightblue;
+                              }
+                          </style>
+
+                          <div class="col-md-12 col-sm-12 ">
+                              <div class="x_panel">
+                                  <div class="x_title">
+                                      <div class="form-group row">
+
+                                          <label class="col-form-label">店&nbsp;&nbsp;代&nbsp;&nbsp;號</label>
+                                          <div class="col-md-2">
+                                              <select id="cbWh" class="form-control">
+                                                  <option></option>
+                                              </select>
+                                          </div>
+                                          <label class="col-form-label">機&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號</label>
+                                          <div class="col-md-2">
+                                              <select id="cbCK" class="form-control">
+                                                  <option></option>
+                                              </select>
+                                          </div>
+                                          <label class="col-form-label">貨&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;倉</label>
+                                          <div class="col-md-2">
+                                              <select id="cbLayer" class="form-control">
+                                                  <option> </option>
+                                              </select>
+                                              <!--<button type="button" id="btQueryPLU" class="custom-control-inline btn btn-primary">商品查詢</button>-->
+                                              <!--<button type="button" id="btImportFromiXMS" class="custom-control-inline btn btn-warning" hidden>從iXms匯入</button>-->
+                                          </div>
+
+                                          <div class="col-md-2">
+                                              <button type="button" id="btQuery" class="custom-control-inline btn btn-primary">查詢</button>
+                                              <!--<button type="button" id="btImportFromiXMS" class="custom-control-inline btn btn-warning" hidden>從iXms匯入</button>-->
+                                          </div>
+
+
+                                      </div>
+                                      <div class="form-group row">
+                                          <label id="MachineDataM" class="col-form-label col-5"> </label>
+                                          <label class="col-form-label col-3">(商品狀態：啟用 才可補貨) </label>
+                                          <button type="button" id="btInv" class="custom-control-inline btn btn-success">確認儲存</button>
+                                          <!--<div class="col-md-9">-->
+                                          <!--<button type="button" id="btQueryPLU" class="custom-control-inline btn btn-primary">商品查詢</button>-->
+                                          <!--<button type="button" id="btImportFromiXMS" class="custom-control-inline btn btn-warning" hidden>從iXms匯入</button>-->
+                                          <!--</div>-->
+
+                                      </div>
+                                  </div>
+                                  <div class="x_content">
+                                      <table id="tbVIN14_2" class="table table-hover">
+                                          <thead>
+                                              <tr>
+                                                  <th>貨道</th>
+                                                  <th>商品名稱</th>
+                                                  <th>庫存/滿倉</th>
+                                                  <th>缺量</th>
+                                                  <th>補量</th>
+                                                  <th>最近有效日</th>
+                                                  <th>補貨</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+                                              <tr>
+                                                  <td>53425</td>
+                                                  <td>Airwaves超涼薄荷</td>
+                                                  <td>Airwaves超涼</td>
+                                                  <td>49</td>
+                                                  <td>53425</td>
+                                                  <td>啟用</td>
+                                                  <td><button type="button" id="btInv" class="custom-control-inline btn btn-outline-success">補貨</button></td>
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                  </div>
+                              </div>
+                          </div>
+
+                      </article>
+
+
+
+
+
+                  </div>
+              </div>
+              <!-- /page content -->
+
+          </div>
+      </div>
+
+      <!-- jQuery -->
+      <script src="../lib/jquery/dist/jquery.min.js"></script>
+      <!-- Bootstrap -->
+      <script src="../lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+      <!-- FastClick -->
+      <script src="../lib/fastclick/lib/fastclick.js"></script>
+      <!-- NProgress -->
+      <script src="lib/nprogress/nprogress.js"></script>
+      <!-- Custom Theme Scripts -->
+      <script src="js/custom.min.js"></script>
+  </body>
+</html>

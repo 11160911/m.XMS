@@ -646,7 +646,7 @@ namespace SVMAdmin
 
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN13_1", "換店設定", "VIN13_1", "P", "fa-th-large" });
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMPick", "商品撿貨設定", "OMPick", "P", "fa-th-large" });
-            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMFill", "商品補貨設定", "OMFill", "P", "fa-th-large" });
+            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN14_2", "商品補貨設定", "VIN14_2", "P", "fa-th-large" });
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMReturn", "商品退貨設定", "OMReturn", "P", "fa-th-large" });
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMScrap", "商品報廢設定", "OMScrap", "P", "fa-th-large" });
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMChange", "商品換貨設定", "OMChange", "P", "fa-th-large" });
