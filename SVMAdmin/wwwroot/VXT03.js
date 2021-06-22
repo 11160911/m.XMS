@@ -175,7 +175,7 @@
             NetStatus = "Y";
         else if ($('#cbNetStatus').val() == "斷線")
             NetStatus = "N";
-
+        alert($('#cbCK').val());
         var pData = {
             WhNo: $('#cbWh').val(),
             CkNo: $('#cbCK').val(),

@@ -13,6 +13,9 @@ using System.IO;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+
+
 
 namespace SVMAdmin
 {
@@ -570,6 +573,23 @@ namespace SVMAdmin
             return sql;
         }
 
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+        public static iXmsApiParameter GetiXmsApiParameter(ControllerBase CB , string CrypKey)
+        {
+            iXmsApiParameter AP = null;
+            try
+            {
+                string secKey = CrypKey;
+                //string apikey = HttpContext.Request.Headers["ParaKey"];
+                string apikey = CB.HttpContext.Request.Headers["ParaKey"];
+                string strSer = StringEncrypt.StringEncrypt.aesDecryptBase64(apikey, secKey);
+                //AP = Newtonsoft.Json.JsonConvert.DeserializeObject<iXmsApiParameter>(strSer);
+                AP = ConvertToEntity(strSer, typeof(iXmsApiParameter)) as iXmsApiParameter;
+            }
+            catch { }
+            return AP;
+        }
+
     }
 
     public static class ConstList
@@ -646,7 +666,7 @@ namespace SVMAdmin
 
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN13_1", "換店設定", "VIN13_1", "P", "fa-th-large" });
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMPick", "商品撿貨設定", "OMPick", "P", "fa-th-large" });
-            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMFill", "商品補貨設定", "OMFill", "P", "fa-th-large" });
+            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN14_2", "商品補貨設定", "VIN14_2", "P", "fa-th-large" });
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMReturn", "商品退貨設定", "OMReturn", "P", "fa-th-large" });
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMScrap", "商品報廢設定", "OMScrap", "P", "fa-th-large" });
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMChange", "商品換貨設定", "OMChange", "P", "fa-th-large" });
