@@ -55,10 +55,11 @@
             DyAlert("請選擇機號查詢條件!!");
             return;
         }
-        alert($('#cbCk').val());
+
         var pData = {
             WhNo: $('#cbWh').val(),
-            CkNo: $('#cbCK').val()
+            CkNo: $('#cbCK').val(),
+            LayerNo: $('#cbLayer').val()
         };
         PostToWebApi({ url: "api/SystemSetup/SearchVIN14_2", data: pData, success: AfterSearchVIN14_2 });
     };
@@ -126,6 +127,8 @@
         $('#ShowQty').text(GetNodeValue(node, 'ShowQty'));
         $('#ShortQty').text(GetNodeValue(node, 'ShortQty'));
 
+        $('#AdjQty').val(GetNodeValue(node, 'Qty'));
+        $('#ExpDate').val(GetNodeValue(node, 'EffectiveDate'));
 
         $('#Photo1').val(GetNodeValue(node, 'Photo1'));
         //$('#Photo2').val(GetNodeValue(node, 'Photo2'));
@@ -237,7 +240,7 @@
         }
         else {
             if ($('#cbCK').val() != "") {
-                $('#MachineDataM').text($('#cbWh').val() + $('#cbCK').val() + '機');
+                //$('#MachineDataM').text($('#cbWh').val() + $('#cbCK').val() + '機');
             }
             
         }
@@ -267,9 +270,9 @@
         
         var pData = {
             WhNo: $('#cbWh').val(),
-            CkNo: $('#cbCk').val()
+            CkNo: $('#cbCK').val()
         };
-        alert($('#cbCk').val());
+        //alert($('#cbCK').val());
         PostToWebApi({ url: "api/SystemSetup/GetWhCkLayer", data: pData, success: AfterGetLayerNo });
     };
 
@@ -312,13 +315,13 @@
         $('.forminput input').change(function () { InputValidation(this) });
         $('#cbWh').change(function () { GetWhDSVCkNo(); });
         $('#cbCK').click(function () { cbCK_click(); });
-        //$('#cbCK').change(function () { GetLayerNo(); });
+        $('#cbCK').change(function () { GetLayerNo(); });
         var dtWh = data.getElementsByTagName('dtWh');
         InitSelectItem($('#cbWh')[0], dtWh, "ST_ID", "ST_SName", true);
 
         SetDateField($('#ExpDate')[0]);
         $('#ExpDate').datepicker();
-
+        
         //SetPLUAutoComplete("GD_NAME");
         //SetPLUAutoComplete("GD_NO");
     };
@@ -338,13 +341,13 @@
             DyAlert("尚未對任何明細商品進行補貨!!")
             return;
         }
-        alert($('#cbCk').val());
+
         var pData = {
             TempDocumentSV: [
                 {
                     DocNo: gDocNo,
                     WhNo: $('#cbWh').val(),
-                    CkNo: $('#cbCk').val()
+                    CkNo: $('#cbCK').val()
                 }
             ]
         };
