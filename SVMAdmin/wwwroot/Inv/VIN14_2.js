@@ -490,8 +490,8 @@
         }
         if ($(ip).attr('id') == "AdjQty") {
             var re = /^[\d]/;
-            if (!re.test(str) | str.length < 5 | str.length > 10)
-                msg = "必須5~10碼英數字";
+            if (!re.test(str) | str.length > 3)
+                msg = "必須3碼數字";
         }
         if ($(ip).attr('id') == "USR_PWD") {
             var re = /^[\d|a-zA-Z]+$/;
@@ -521,7 +521,7 @@
                 msg = "必須50字元以內";
         }
         if (msg != "") {
-            //$(ip).val('');
+            $(ip).val('');
             $(ip).nextAll('.msg-valid').text(msg);
             $(ip).nextAll('.msg-valid').show();
         }

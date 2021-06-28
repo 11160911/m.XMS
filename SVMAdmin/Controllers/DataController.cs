@@ -1715,6 +1715,7 @@ namespace SVMAdmin.Controllers
                 string sql = "select a.*,a.WhNoOut+b.ST_SNAME WhOut,b.ST_SNAME WhOutName, a.WhNoIn+c.ST_SName WhIn,c.ST_SName WhInName,d.Man_Name";
                 sql += " ,Case When IsNull(a.AppDate,'')='' Then '未批核' Else '已批核' End AppStatus";
                 sql += " ,Case When IsNull(a.FinishDate,'')='' Then '未完成' Else '完成' End FinStatus";
+                sql += " ,c.ST_OpenDay";
                 sql += " from ChangeShopSV a";
                 sql += " inner join WarehouseSV b on a.WhNoOut=b.ST_ID And a.CompanyCode=b.CompanyCode";
                 sql += " inner join WarehouseSV c on a.WhNoIn=c.ST_ID And a.CompanyCode=c.CompanyCode";
@@ -1744,6 +1745,48 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+
+
+        ////2021-06-24 Larry
+        //[Route("SystemSetup/ChkChgShopCols")]
+        //public ActionResult SystemSetup_ChkChgShopCols()
+        //{
+        //    UserInfo uu = PubUtility.GetCurrentUser(this);
+        //    System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "ChkChgShopColsOK", "" });
+        //    DataTable dtMessage = ds.Tables["dtMessage"];
+        //    try
+        //    {
+        //        IFormCollection rq = HttpContext.Request.Form;
+        //        string WhNoOut = rq["WhNoOut"];
+        //        string CkNoOut = rq["CkNoOut"];
+        //        string WhNoIn = rq["WhNoIn"];
+        //        string CkNoIn = rq["CkNoIn"];
+        //        string ExchangeDate = rq["ExchangeDate"];
+        //        string ChkMod = rq["ChkMod"];
+
+        //        if (ChkMod=="App")
+        //        {
+
+        //        }
+        //        else
+        //        {
+
+        //        }
+
+        //        string sql = "select Distinct ChannelType from MachineListSpec Where CompanyCode='" + uu.CompanyId + "' And ChannelType='" + Type_ID + "'";
+
+        //        DataTable dtRack = PubUtility.SqlQry(sql, uu, "SYS");
+        //        dtRack.TableName = "dtRack";
+        //        ds.Tables.Add(dtRack);
+
+        //    }
+        //    catch (Exception err)
+        //    {
+        //        dtMessage.Rows[0][0] = "Exception";
+        //        dtMessage.Rows[0][1] = err.Message;
+        //    }
+        //    return PubUtility.DatasetXML(ds);
+        //}
 
 
         //2021-05-26 Larry
@@ -1904,16 +1947,14 @@ namespace SVMAdmin.Controllers
             try
             {
 
-                //string NewDocNo = GetNewDocNo(uu, "CS");
+                string DocNo = GetNewDocNo(uu, "CS", 3);
 
                 DataTable dtRec = new DataTable("ChangeShopSV");
-                PubUtility.AddStringColumns(dtRec, "Type_ID,Type_Name,DisplayNum");
+                PubUtility.AddStringColumns(dtRec, "WhNoOut,CkNoOut,WhNoIn,CkNoIn,ExchangeDate");
                 DataSet dsRQ = new DataSet();
                 dsRQ.Tables.Add(dtRec);
                 PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
                 DataRow dr = dtRec.Rows[0];
-
-                
 
                 string sql = "";
                 using (DBOperator dbop = new DBOperator())
@@ -1922,14 +1963,18 @@ namespace SVMAdmin.Controllers
                     {
                         try
                         {
-                            //sql = "Insert Into Rack (CompanyCode, CrtUser, CrtDate, CrtTime ";
-                            //sql += " ,ModUser, ModDate, ModTime";
-                            //sql += ", Type_ID, Type_Name, DisplayNum) Values ";
-                            //sql += " ('" + uu.CompanyId + "', '" + uu.UserID + "', convert(char(10),getdate(),111), convert(char(12),getdate(),108) ";
-                            //sql += " ,'" + uu.UserID + "',convert(char(10),getdate(),111), convert(char(12),getdate(),108) ";
-                            //sql += " ,'" + dr["Type_ID"].ToString().SqlQuote() + "','" + dr["Type_Name"].ToString().SqlQuote() + "'," + dr["DisplayNum"].ToString().SqlQuote() + ")";
-                            //dbop.ExecuteSql(sql, uu, "SYS");
-                            dbop.Add("Rack", dtRec, uu, "SYS");
+                            sql = "Insert Into ChangeShopSV (CompanyCode, CrtUser, CrtDate, CrtTime ";
+                            sql += ", ModUser, ModDate, ModTime ";
+                            sql += ", DocNo, DocUser, DocDate";
+                            sql += ", ExchangeDate, WhNoOut, CkNoOut "
+                                +  ", WhNoIn, CkNoIn) Values ";
+                            sql += " ('" + uu.CompanyId + "', '" + uu.UserID + "', convert(char(10),getdate(),111), convert(char(12),getdate(),108) ";
+                            sql += ", '" + uu.UserID + "', convert(char(10),getdate(),111), convert(char(12),getdate(),108) ";
+                            sql += ", '" + DocNo + "', '" + uu.UserID + "',convert(char(10),getdate(),111)+ ' ' +Substring(convert(char(12),getdate(),108),1,5) ";
+                            sql += ", '" + dr["ExchangeDate"].ToString().SqlQuote() + "','" + dr["WhNoOut"].ToString().SqlQuote() + "','" + dr["CkNoOut"].ToString().SqlQuote() + "'"
+                                 + ", '" + dr["WhNoIn"].ToString().SqlQuote() + "', '" + dr["CkNoIn"].ToString().SqlQuote() + "')";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
                             ts.Complete();
                         }
                         catch (Exception err)
@@ -1941,12 +1986,17 @@ namespace SVMAdmin.Controllers
                         dbop.Dispose();
                     }
                 }
-                sql = "select a.*";
-                sql += " from Rack a";
-                sql += " where a.CompanyCode='" + uu.CompanyId + "' And Type_ID='" + dr["Type_ID"].ToString().SqlQuote() + "'";
-                DataTable dtRack = PubUtility.SqlQry(sql, uu, "SYS");
-                dtRack.TableName = "dtRack";
-                ds.Tables.Add(dtRack);
+                sql = "select a.*,a.WhNoOut+b.ST_SNAME WhOut,b.ST_SNAME WhOutName, a.WhNoIn+c.ST_SName WhIn,c.ST_SName WhInName,d.Man_Name";
+                sql += " ,Case When IsNull(a.AppDate,'')='' Then '未批核' Else '已批核' End AppStatus";
+                sql += " ,Case When IsNull(a.FinishDate,'')='' Then '未完成' Else '完成' End FinStatus";
+                sql += " from ChangeShopSV a";
+                sql += " inner join WarehouseSV b on a.WhNoOut=b.ST_ID And a.CompanyCode=b.CompanyCode";
+                sql += " inner join WarehouseSV c on a.WhNoIn=c.ST_ID And a.CompanyCode=c.CompanyCode";
+                sql += " left  join EmployeeSV d on a.DocUser=d.Man_ID And a.CompanyCode=d.CompanyCode";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "' And a.DocNo='" + DocNo + "'";
+                DataTable dtChgShop = PubUtility.SqlQry(sql, uu, "SYS");
+                dtChgShop.TableName = "dtChgShop";
+                ds.Tables.Add(dtChgShop);
             }
             catch (Exception err)
             {
@@ -2486,7 +2536,7 @@ namespace SVMAdmin.Controllers
                 }
                 if (CheckUse == "Y")
                 {
-                    sql += " And (IsNull(ST_StopDay,'')='' or ST_StopDay>convert(char(10),getdate(),111)) ";
+                    sql += " And b.FlagUse='U' ";
                 }
 
                 sql += " Order By CkNo ";

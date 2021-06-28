@@ -6,10 +6,9 @@
     let isImport = false;
     let SysDate ;
     let gDocNo = "";
+    let CkType = "";
 
     let AssignVar = function () {
-
-        console.log("AssignVar");
 
         grdU = new DynGrid(
             {
@@ -164,16 +163,24 @@
 
         $('#WhNoOut,#CkNoOut,#WhNoIn,#CkNoIn,#ExchangeDate').prop('readonly', false);
         gDocNo = GetNodeValue(node, 'DocNo');
-        //alert(gDocNo);
+        
 
         $('#WhNoOut').val(GetNodeValue(node, 'WhNoOut'));
         $('#WhOutName').text(GetNodeValue(node, 'WhOutName'));
+
+        //alert($('#WhNoOut').val());
+
+        GetWhDSVCkNo("Out");
+
         /*$('#WhOutName').val(GetNodeValue(node, 'WhOutName'));*/
-        $('#CkNoOut').val(GetNodeValue(node, 'CkNoOut'));
+        //$('#CkNoOut').val(GetNodeValue(node, 'CkNoOut'));
 
         $('#WhNoIn').val(GetNodeValue(node, 'WhNoIn'));
         $('#WhInName').text(GetNodeValue(node, 'WhInName'));
+        //alert($('#WhNoIn').val());
+        GetWhDSVCkNo("In");
         $('#CkNoIn').val(GetNodeValue(node, 'CkNoIn'));
+        //$('#lblSTOpenDate').text(GetNodeValue(node, 'ST_OpenDay'));
 
         $('#ExchangeDate').val(GetNodeValue(node, 'ExchangeDate'));
         $('#ExchangeDate').closest('.col-4').show();
@@ -260,8 +267,6 @@
 
     let SearchVIN13_1 = function () {
 
-        console.log("SearchVIN13_1");
-
         var pData = {
             WhNo: $('#cbWh').val(),
             CkNo: $('#cbCK').val(),
@@ -313,34 +318,78 @@
 
 
 
-    let GetWhDSVCkNo = function () {
+    let GetWhDSVCkNo = function (UpType) {
 
-        console.log("GetWhDSVCkNo");
+        if (UpType == "Main") {
+            CkType = "Main";
+            console.log("GetWhDSVCkNo：Main");
+            if ($('#cbWh').val() == "") {
+                $('#cbCK').empty();
+                return;
+            }
+            else {
 
-        if ($('#cbWh').val() == "") {
-            $('#cbCK').empty();
-            return;
+            }
+            
+            var pData = {
+                WhNo: $('#cbWh').val(),
+                StopDay: 'Y',
+                CheckUse: 'Y'
+            };
+            //var pData = {
+            //    WhNo: $('#cbWh').val()
+            //};
         }
-        else {
-
+        else if (UpType == "Out") {
+            CkType = "Out";
+            console.log("GetWhDSVCkNo：Out");
+            var pData = {
+                WhNo: $('#WhNoOut').val(),
+                StopDay: 'Y',
+                CheckUse: 'Y'
+            };
+        }
+        else if (UpType == "In") {
+            CkType = "In";
+            console.log("GetWhDSVCkNo：In");
+            var pData = {
+                WhNo: $('#WhNoIn').val(),
+                StopDay: 'Y',
+                CheckUse: 'Y'
+            };
         }
 
-        var pData = {
-            WhNo: $('#cbWh').val()
-        };
-        PostToWebApi({ url: "api/SystemSetup/GetWhDSVCkNo", data: pData, success: AfterGetWhDSVCkNo });
+        PostToWebApi({ url: "api/SystemSetup/GetWhDSVCkNoWithCond", data: pData, success: AfterGetWhDSVCkNo });
+        //PostToWebApi({ url: "api/SystemSetup/GetWhDSVCkNo", data: pData, success: AfterGetWhDSVCkNo });
     };
 
 
     let AfterGetWhDSVCkNo = function (data) {
         //alert("AfterGetWhDSVCkNo");
-        if (ReturnMsg(data, 0) != "GetWhDSVCkNoOK") {
+        if (ReturnMsg(data, 0) != "GetWhDSVCkNoWithCondOK") {
             DyAlert(ReturnMsg(data, 0));
             return;
         }
+        //if (ReturnMsg(data, 0) != "GetWhDSVCkNoOK") {
+        //    DyAlert(ReturnMsg(data, 0));
+        //    return;
+        //}
         else {
-            var dtCK = data.getElementsByTagName('dtCK');
-            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true);
+            if (CkType == "Main") {
+                console.log("AfterGetWhDSVCkNo：Main");
+                var dtCK = data.getElementsByTagName('dtCK');
+                InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true);
+            }
+            else if (CkType == "Out") {
+                console.log("AfterGetWhDSVCkNo：Out");
+                var dtCK = data.getElementsByTagName('dtCK');
+                InitSelectItem($('#CkNoOut')[0], dtCK, "CKNo", "CKNo", true);
+            }
+            else if (CkType == "In") {
+                console.log("AfterGetWhDSVCkNo：In");
+                var dtCK = data.getElementsByTagName('dtCK');
+                InitSelectItem($('#CkNoIn')[0], dtCK, "CKNo", "CKNo", true);
+            }
         }
     };
 
@@ -375,27 +424,40 @@
                 SysDate = GetNodeValue(dtSysDate[0], "SysDate");
             }
 
-            //var desc = GetNodeValue(xml[0], "SysDate");
-            //alert("OK");
-            //InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true);
         }
     };
 
+    let AfterAddChgShop = function (data) {
+        if (ReturnMsg(data, 0) != "AddChgShopOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            DyAlert("新增完成!");
 
+            $('#modal_VIN13_1').modal('hide');
+            var userxml = data.getElementsByTagName('dtChgShop')[0];
+            grdU.AddNew(userxml);
+        }
+    };
 
 
     let SaveData = function () {
         //alert("EditMode:" + EditMode);
         if (EditMode == "Add") {
+
             var pData = {
-                WhNoOut: $('#WhNoOut').val(),
-                CkNoOut: $('#CkNoOut').val(),
-                WhNoIn: $('#WhNoIn').val(),
-                CkNoIn: $('#CkNoIn').val(),
-                ExchangeDate: $('#ExchangeDate').val()
+                ChangeShopSV: [
+                    {
+                        WhNoOut: $('#WhNoOut').val(),
+                        CkNoOut: $('#CkNoOut').val(),
+                        WhNoIn: $('#WhNoIn').val(),
+                        CkNoIn: $('#CkNoIn').val(),
+                        ExchangeDate: $('#ExchangeDate').val()
+                    }
+                ]
             }
             //alert("Add.." + $('#Type_ID').val());
-            PostToWebApi({ url: "api/SystemSetup/AddChgShop", data: pData, success: AfterDelChgShop });
+            PostToWebApi({ url: "api/SystemSetup/AddChgShop", data: pData, success: AfterAddChgShop });
         }
         else if (EditMode == "Mod") {
             //alert("EditMode:" + EditMode);
@@ -444,8 +506,6 @@
 
     let btSave_click = function () {
 
-        
-
         //alert("SysDate " + SysDate);
         
         if ($('#WhNoOut').val() == "" | $('#WhNoOut').val() == null | $('#CkNoOut').val() == "" | $('#CkNoOut').val() == null | $('#WhNoIn').val() == "" | $('#WhNoIn').val() == null | $('#CkNoIn').val() == "" | $('#CkNoIn').val() == null | $('#ExchangeDate').val() == "" | $('#ExchangeDate').val() == null) {
@@ -485,6 +545,17 @@
             return;
         }
 
+
+        //var pData = {
+        //        WhNoOut: $('#WhNoOut').val(),
+        //        CkNoOut: $('#CkNoOut').val(),
+        //        WhNoIn: $('#WhNoIn').val(),
+        //        CkNoIn: $('#CkNoIn').val(),
+        //        ExchangeDate: $('#ExchangeDate').val(),
+        //        ChkMod: EditMode
+        //}
+
+        //PostToWebApi({ url: "api/SystemSetup/ChkChgShopCols", data: pData, success: AfterChkChgShopCols });
 
         //alert("EditMode:" + EditMode);
         if (EditMode == "App") {
@@ -611,7 +682,6 @@
     //                }
     //            }
 
-
     //            var pData = {
     //                Rack: [
     //                    {
@@ -682,10 +752,13 @@
         //var dtS = data.getElementsByTagName('dtS');
         //InitSelectItem($('#cbSWh')[0], dtS, "ST_ID", "STName", true);
 
-        $('#cbWh').change(function () { GetWhDSVCkNo(); });
+        $('#cbWh').change(function () { GetWhDSVCkNo("Main"); });
         $('#cbCK').click(function () { cbCK_click(); });
         SetDateField($('#exDate')[0]);
         $('#exDate').datepicker();
+
+        $('#WhNoOut').change(function () { GetWhDSVCkNo("Out"); });
+        $('#WhNoIn').change(function () { GetWhDSVCkNo("In"); });
 
         $('#btAdd').click(function () { btAdd_click(); });
         //$('#btImportFromiXMS').click(function () { btImportFromiXMS_click(); });
@@ -711,23 +784,45 @@
         if (str == "")
             return;
         if ($(ip).attr('id') == "WhNoOut") {
+            $(ip).val($(ip).val().toUpperCase());
             var re = /^[\d|a-zA-Z]+$/;
-            if (!re.test(str) | str.length < 5 | str.length > 10)
-                msg = "必須5~10碼英數字";
+            if (!re.test(str) | str.length > 6)
+                msg = "必須6碼內英數字";
+            else {
+
+            }
         }
-        if ($(ip).attr('id') == "USR_PWD") {
+        if ($(ip).attr('id') == "CkNoOut") {
             var re = /^[\d|a-zA-Z]+$/;
-            if (!re.test(str) | str.length < 6 | str.length > 20)
-                msg = "必須6~20碼英數字";
+            if (!re.test(str) | str.length > 3)
+                msg = "必須3碼內英數字";
         }
-        if ($(ip).attr('id') == "USR_NAME_L") {
-            if (str.length > 10)
-                msg = "必須10字元以內";
+        if ($(ip).attr('id') == "WhNoIn") {
+            $(ip).val($(ip).val().toUpperCase());
+            var re = /^[\d|a-zA-Z]+$/;
+            if (!re.test(str) | str.length > 6)
+                msg = "必須6碼內英數字";
         }
-        if ($(ip).attr('id') == "USR_EMPNO") {
-            if (str.length > 10)
-                msg = "必須10字元以內";
+        if ($(ip).attr('id') == "CkNoIn") {
+            var re = /^[\d|a-zA-Z]+$/;
+            if (!re.test(str) | str.length > 3)
+                msg = "必須3碼內英數字";
         }
+        //if ($(ip).attr('id') == "ExchangeDate") {
+
+        //    var re = /^[\d|a-zA-Z]+$/;
+        //    if (!re.test(str) | str.length < 6 | str.length > 20)
+        //        msg = "必須3碼內英數字";
+        //}
+
+        //if ($(ip).attr('id') == "USR_NAME_L") {
+        //    if (str.length > 10)
+        //        msg = "必須10字元以內";
+        //}
+        //if ($(ip).attr('id') == "USR_EMPNO") {
+        //    if (str.length > 10)
+        //        msg = "必須10字元以內";
+        //}
         if ($(ip).attr('id') == "USR_MAIL") {
             var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             if (!re.test(str))
@@ -742,8 +837,9 @@
             if (str.length > 50)
                 msg = "必須50字元以內";
         }
+        
         if (msg != "") {
-            //$(ip).val('');
+            $(ip).val('');
             $(ip).nextAll('.msg-valid').text(msg);
             $(ip).nextAll('.msg-valid').show();
         }
