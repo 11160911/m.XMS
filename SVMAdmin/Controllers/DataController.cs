@@ -1597,6 +1597,7 @@ namespace SVMAdmin.Controllers
 
 
 
+
         //2021-05-26 Larry
         [Route("SystemSetup/GetWh")]
         public ActionResult SystemSetup_GetWh()
@@ -2118,7 +2119,7 @@ namespace SVMAdmin.Controllers
                     dbop.ExecuteSql(sql, uu, "SYS");
 
                     sql = "select a.*,a.Layer+a.Sno Channel,c.GD_SName,c.Photo1 ";
-                    sql += " , Cast(b.PtNum As VarChar(5))+'/'+Cast(b.DisplayNum As VarChar(5)) ShowQty, b.DisplayNum-b.PtNum ShortQty, Qty, d.ST_SName ";
+                    sql += " , Cast(b.PtNum As VarChar(5))+'/'+Cast(b.DisplayNum As VarChar(5)) ShowQty, b.DisplayNum-b.PtNum ShortQty, d.ST_SName, b.DisplayNum, b.PtNum ";
                     sql += " from tempdocumentsv a (Nolock) ";
                     sql += " inner join InventorySV b (Nolock) on a.WhNo=b.WhNo and a.CkNo=b.CkNo And a.Layer=b.Layer And a.Sno=b.Sno and a.CompanyCode=b.CompanyCode";
                     sql += " inner join PLUSV c (Nolock) on a.PLU=c.GD_NO and a.CompanyCode=c.CompanyCode";
@@ -2150,7 +2151,7 @@ namespace SVMAdmin.Controllers
         }
 
 
-        private string GetNewDocNo(UserInfo uu, String DocType, Int16 Digits)
+        public string GetNewDocNo(UserInfo uu, String DocType, Int16 Digits)
         {
             string sDocNo = "";
             string sDate;
@@ -2214,11 +2215,13 @@ namespace SVMAdmin.Controllers
             try
             {
                 DataTable dtTemp = new DataTable("TempDocumentSV");
-                PubUtility.AddStringColumns(dtTemp, "DocNo,SeqNo,AdjQty,ExchangeDate");
+                PubUtility.AddStringColumns(dtTemp, "DocNo,SeqNo,Qty,Qty2,ExchangeDate");
                 DataSet dsRQ = new DataSet();
                 dsRQ.Tables.Add(dtTemp);
                 PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
                 DataRow dr = dtTemp.Rows[0];
+                int Qty1 = Convert.ToInt32(dr["Qty"].ToString().SqlQuote());
+                int Qty2 = Convert.ToInt32(dr["Qty2"].ToString().SqlQuote()); ;
 
                 string sql = "";
                 using (DBOperator dbop = new DBOperator())
@@ -2229,7 +2232,9 @@ namespace SVMAdmin.Controllers
                         {
 
                             sql = "update TempDocumentSV set ";
-                            sql += " Qty=" + dr["AdjQty"].ToString().SqlQuote() + "";
+                            sql += " Qty=" + Qty1 + "";
+                            sql += ", Qty2=" + Qty2 + "";
+                            sql += ", RNum=" + (Qty2 - Qty1) + "";
                             sql += ",EffectiveDate='" + dr["ExchangeDate"].ToString().SqlQuote() + "'";
                             sql += ",ModDate=convert(char(10),getdate(),111)";
                             sql += ",ModTime=convert(char(10),getdate(),108)";
@@ -2253,7 +2258,7 @@ namespace SVMAdmin.Controllers
                 }
 
                 sql = "select a.*,a.Layer+a.Sno Channel,c.GD_SName,c.Photo1 ";
-                sql += " , Cast(b.PtNum As VarChar(5))+'/'+Cast(b.DisplayNum As VarChar(5)) ShowQty, b.DisplayNum-b.PtNum ShortQty, Qty, d.ST_SName ";
+                sql += " , Cast(b.PtNum As VarChar(5))+'/'+Cast(b.DisplayNum As VarChar(5)) ShowQty, b.DisplayNum-b.PtNum ShortQty, d.ST_SName, b.DisplayNum, b.PtNum ";
                 sql += " from tempdocumentsv a";
                 sql += " inner join InventorySV b on a.WhNo=b.WhNo and a.CkNo=b.CkNo And a.Layer=b.Layer And a.Sno=b.Sno and a.CompanyCode=b.CompanyCode";
                 sql += " inner join PLUSV c on a.PLU=c.GD_NO and a.CompanyCode=c.CompanyCode";

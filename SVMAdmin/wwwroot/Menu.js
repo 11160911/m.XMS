@@ -307,6 +307,20 @@
             }
 
 
+            else if (pg == "VIN47") {
+                
+                if (window.PageVIN47 == undefined)
+
+                    $.getScript('Inv/VIN47.js',
+                        function () {
+                            PageVIN47($(".right_col"));
+                        }
+                    );
+                else {
+                    PageVIN47($(".right_col"));
+                }
+            }
+
 
             else if (pg == "MMMachineSet") {
                 if (window.PageMMMachineSet == undefined)
