@@ -55,11 +55,8 @@
             DyAlert("請選擇機號查詢條件!!");
             return;
         }
-
         var pData = {
             WhNo: $('#cbWh').val(),
-            CkNo: $('#cbCK').val(),
-            LayerNo: $('#cbLayer').val()
         };
         PostToWebApi({ url: "api/SystemSetup/SearchVIN14_2", data: pData, success: AfterSearchVIN14_2 });
     };
@@ -172,8 +169,6 @@
                 {
                     DocNo: gDocNo,
                     SeqNo: $('#SeqNo').text(),
-                    Qty: $('#AdjQty').val(),
-                    Qty2: 0,
                     ExchangeDate: $('#ExpDate').val()
                 }
             ]
@@ -244,7 +239,6 @@
         }
         else {
             if ($('#cbCK').val() != "") {
-                //$('#MachineDataM').text($('#cbWh').val() + $('#cbCK').val() + '機');
             }
             
         }
@@ -274,9 +268,7 @@
         
         var pData = {
             WhNo: $('#cbWh').val(),
-            CkNo: $('#cbCK').val()
         };
-        //alert($('#cbCK').val());
         PostToWebApi({ url: "api/SystemSetup/GetWhCkLayer", data: pData, success: AfterGetLayerNo });
     };
 
@@ -319,7 +311,6 @@
         $('.forminput input').change(function () { InputValidation(this) });
         $('#cbWh').change(function () { GetWhDSVCkNo(); });
         $('#cbCK').click(function () { cbCK_click(); });
-        $('#cbCK').change(function () { GetLayerNo(); });
         var dtWh = data.getElementsByTagName('dtWh');
         InitSelectItem($('#cbWh')[0], dtWh, "ST_ID", "ST_SName", true);
 
@@ -347,13 +338,11 @@
             DyAlert("尚未對任何明細商品進行補貨!!")
             return;
         }
-
         var pData = {
             TempDocumentSV: [
                 {
                     DocNo: gDocNo,
                     WhNo: $('#cbWh').val(),
-                    CkNo: $('#cbCK').val()
                 }
             ]
         };
@@ -369,11 +358,6 @@
         if (ReturnMsg(data, 0) != "SaveInvOK") {
             DyAlert(ReturnMsg(data, 0));
             return;
-        }
-        else {
-            $('#btInv').prop('disabled', true);
-            //var dtCK = data.getElementsByTagName('dtCK');
-            //InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true);
         }
     };
 
@@ -497,8 +481,6 @@
         }
         if ($(ip).attr('id') == "AdjQty") {
             var re = /^[\d]/;
-            if (!re.test(str) | str.length > 3)
-                msg = "必須3碼數字";
         }
         if ($(ip).attr('id') == "USR_PWD") {
             var re = /^[\d|a-zA-Z]+$/;
@@ -528,7 +510,6 @@
                 msg = "必須50字元以內";
         }
         if (msg != "") {
-            $(ip).val('');
             $(ip).nextAll('.msg-valid').text(msg);
             $(ip).nextAll('.msg-valid').show();
         }

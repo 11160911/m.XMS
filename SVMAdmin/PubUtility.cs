@@ -13,6 +13,9 @@ using System.IO;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+
+
 
 namespace SVMAdmin
 {
@@ -568,6 +571,23 @@ namespace SVMAdmin
             strval = "(" + strval.Substring(0, strval.Length - 1) + ")";
             sql = sql.Substring(0, sql.Length - 1) + ") values " + strval;
             return sql;
+        }
+
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+        public static iXmsApiParameter GetiXmsApiParameter(ControllerBase CB , string CrypKey)
+        {
+            iXmsApiParameter AP = null;
+            try
+            {
+                string secKey = CrypKey;
+                //string apikey = HttpContext.Request.Headers["ParaKey"];
+                string apikey = CB.HttpContext.Request.Headers["ParaKey"];
+                string strSer = StringEncrypt.StringEncrypt.aesDecryptBase64(apikey, secKey);
+                //AP = Newtonsoft.Json.JsonConvert.DeserializeObject<iXmsApiParameter>(strSer);
+                AP = ConvertToEntity(strSer, typeof(iXmsApiParameter)) as iXmsApiParameter;
+            }
+            catch { }
+            return AP;
         }
 
     }

@@ -2558,6 +2558,8 @@ namespace SVMAdmin.Controllers
         }
 
 
+        //private string GetNewDocNo(UserInfo uu,String DocType)
+        //{
 
         //2021-06-21
         [Route("SystemSetup/GetWhCkLayer")]
