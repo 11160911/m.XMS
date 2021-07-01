@@ -292,22 +292,6 @@
                 }
             }
 
-            else if (pg == "VIN14_2") {
-
-                if (window.PageVIN14_2 == undefined)
-
-                    $.getScript('Inv/VIN14_2.js',
-                        function () {
-                            PageVIN14_2($(".right_col"));
-                        }
-                    );
-                else {
-                    PageVIN14_2($(".right_col"));
-                }
-            }
-
-
-
             else if (pg == "MMMachineSet") {
                 if (window.PageMMMachineSet == undefined)
                     $.getScript('SystemSetup/MMMachineSet.js',

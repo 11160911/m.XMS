@@ -116,13 +116,13 @@
                       </div>
                       <div class="clearfix"></div>
 
-                      <article id="pgVIN14_2" class="row">
+                      <article id="pgVIN47" class="row">
 
-                          <div class="modal fade" id="modal_VIN14_2">
+                          <div class="modal fade" id="modal_VIN47">
                               <div class="modal-dialog modal-lg">
                                   <div class="modal-content">
                                       <div class="modal-header">
-                                          <h4 class="modal-title">商品補貨作業</h4>
+                                          <h4 class="modal-title">商品調整作業</h4>
                                       </div>
                                       <div class="modal-body modal-tab-container">
                                           <style>
@@ -167,23 +167,24 @@
                                                   <label id="ShowQty" class="col-form-label col-3">8/17</label>
                                               </div>
 
-                                              <div class="form-group row">
+                                              <!--<div class="form-group row">
                                                   <label class="col-form-label col-3">缺貨量：</label>
                                                   <label id="ShortQty" class="col-form-label col-3">9</label>
-                                              </div>
+                                              </div>-->
 
-                                              <div class="form-group row">
+                                              <!--<div class="form-group row">
                                                   <label class="col-form-label col-3"> </label>
                                                   <button id="btEqual" type="button" class="btn btn-danger">補貨量=缺貨量</button>
-                                              </div>
+                                              </div>-->
 
                                               <div class="form-group row">
-                                                  <label class="col-form-label col-3">補貨量：</label>
+                                                  <label class="col-form-label col-3">調整後數量：</label>
                                                   <div class="col-md-3">
                                                       <input id="AdjQty" type="text" class="form-control" autocomplete="off" />
                                                       <span class="msg-valid valid-blank"></span>
                                                   </div>
-                                                  <!--<label id="AdjQty" class="col-form-label col-3">9</label>-->
+                                                  <label id="PtNum" class="col-form-label col-1">0</label>
+                                                  <label id="DisplayNum" class="col-form-label col-1">0</label>
                                               </div>
 
                                               <div class="form-group row">
@@ -205,20 +206,20 @@
                               </div><!-- /.modal -->
                           </div>
                           <!--<style>
-        #tbVIN14_2 .fa-toggle-off, #tbVIN14_2 .fa-toggle-on {
+        #tbVIN47 .fa-toggle-off, #tbVIN47 .fa-toggle-on {
             font-size: 28px;
             color: lightblue;
         }
     </style>
     <style>
-        #tbVIN14_2 .fa-file-text-o {
+        #tbVIN47 .fa-file-text-o {
             font-size: 28px;
             color: lightblue;
         }
     </style>-->
 
                           <style>
-                              #tbVIN14_2 .btn-outline-success {
+                              #tbVIN47 .btn-outline-success {
                                   font-size: 28px;
                                   color: lightblue;
                               }
@@ -241,13 +242,14 @@
                                                   <option></option>
                                               </select>
                                           </div>
-                                          <label class="col-form-label">貨&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;倉</label>
+                                          <!--<label class="col-form-label">貨&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;倉</label>
+                                          <div class="col-md-1">
                                               <select id="cbLayer" class="form-control">
                                                   <option> </option>
-                                              </select>
+                                              </select>-->
                                               <!--<button type="button" id="btQueryPLU" class="custom-control-inline btn btn-primary">商品查詢</button>-->
                                               <!--<button type="button" id="btImportFromiXMS" class="custom-control-inline btn btn-warning" hidden>從iXms匯入</button>-->
-                                          </div>
+                                          <!--</div>-->
 
                                           <div class="col-md-2">
                                               <button type="button" id="btQuery" class="custom-control-inline btn btn-primary">查詢</button>
@@ -257,7 +259,8 @@
 
                                       </div>
                                       <div class="form-group row">
-                                          <label class="col-form-label col-3">(商品狀態：啟用 才可補貨) </label>
+                                          <label id="MachineDataM" class="col-form-label col-4"> </label>
+                                          <label class="col-form-label col-3"> </label>
                                           <button type="button" id="btInv" class="custom-control-inline btn btn-success">確認儲存</button>
                                           <!--<div class="col-md-9">-->
                                           <!--<button type="button" id="btQueryPLU" class="custom-control-inline btn btn-primary">商品查詢</button>-->
@@ -267,16 +270,14 @@
                                       </div>
                                   </div>
                                   <div class="x_content">
-                                      <table id="tbVIN14_2" class="table table-hover">
+                                      <table id="tbVIN47" class="table table-hover">
                                           <thead>
                                               <tr>
                                                   <th>貨道</th>
                                                   <th>商品名稱</th>
                                                   <th>庫存/滿倉</th>
-                                                  <th>缺量</th>
-                                                  <th>補量</th>
-                                                  <th>最近有效日</th>
-                                                  <th>補貨</th>
+                                                  <th>調整後數量</th>
+                                                  <th>調整</th>
                                               </tr>
                                           </thead>
                                           <tbody>
@@ -285,9 +286,7 @@
                                                   <td>Airwaves超涼薄荷</td>
                                                   <td>Airwaves超涼</td>
                                                   <td>49</td>
-                                                  <td>53425</td>
-                                                  <td>啟用</td>
-                                                  <td><button type="button" id="btInv" class="custom-control-inline btn btn-outline-success">補貨</button></td>
+                                                  <td><button type="button" id="btInv" class="custom-control-inline btn btn-outline-success">調整</button></td>
                                               </tr>
                                           </tbody>
                                       </table>

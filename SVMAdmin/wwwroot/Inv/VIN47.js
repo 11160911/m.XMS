@@ -1,4 +1,4 @@
-﻿var PageVIN14_2 = function (ParentNode) {
+﻿var PageVIN47 = function (ParentNode) {
     let AllPages;
     let grdU;
     //let EditMode;
@@ -9,8 +9,8 @@
     let AssignVar = function () {
         grdU = new DynGrid(
             {
-                table_lement: $('#tbVIN14_2')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdColbt icon_in_td"],
+                table_lement: $('#tbVIN47')[0],
+                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdColbt icon_in_td"],
                 //class_collection: ["tdColbt icon_in_td", "tdColbt icon_in_td btsuspend", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7", "tdCol8"],
                 fields_info: [
                     //{ type: "JQ", name: "fa-file-text-o", element: '<i class="fa fa-file-text-o"></i>' },
@@ -18,9 +18,7 @@
                     { type: "Text", name: "Channel" },
                     { type: "Text", name: "GD_Sname" },
                     { type: "Text", name: "ShowQty" },
-                    { type: "Text", name: "ShortQty" },
-                    { type: "Text", name: "Qty" },
-                    { type: "Text", name: "EffectiveDate" },
+                    { type: "Text", name: "Qty2" },
                     { type: "JQ", name: "btn-outline-success", element: '<i class="btn btn-outline-success"></i>' }
                 ],
                 rows_per_page: 10,
@@ -33,16 +31,16 @@
     };
 
     let InitModifyDeleteButton = function () {
-        $('#tbVIN14_2 .btn-outline-success').click(function () { btModify_click(this) });
-        //$('#tbVIN14_2').find('.fa-toggle-off,.fa-toggle-on').click(function () { btSuspend_click(this) });
-        //var trs = $('#tbVIN14_2 tbody tr');
+        $('#tbVIN47 .btn-outline-success').click(function () { btModify_click(this) });
+        //$('#tbVIN47').find('.fa-toggle-off,.fa-toggle-on').click(function () { btSuspend_click(this) });
+        //var trs = $('#tbVIN47 tbody tr');
         //for (var i = 0; i < trs.length; i++) {
         //    var tr = trs[i];
         //    DisplaySuspend(tr);
         //}
     }
 
-    let SearchVIN14_2 = function () {
+    let SearchVIN47 = function () {
         gDocNo = '';
         isEntryQty = false;
         if (($('#cbWh').val() == "" | $('#cbWh').val() == null) ) {
@@ -55,19 +53,22 @@
             DyAlert("請選擇機號查詢條件!!");
             return;
         }
+
         var pData = {
             WhNo: $('#cbWh').val(),
+            CkNo: $('#cbCK').val(),
+            LayerNo: $('#cbLayer').val()
         };
-        PostToWebApi({ url: "api/SystemSetup/SearchVIN14_2", data: pData, success: AfterSearchVIN14_2 });
+        PostToWebApi({ url: "api/SystemSetup/SearchVIN47", data: pData, success: AfterSearchVIN47 });
     };
 
     let click_PLU = function (tr) {
 
     };
 
-    let AfterSearchVIN14_2 = function (data) {
+    let AfterSearchVIN47 = function (data) {
         
-        if (ReturnMsg(data, 0) != "SearchVIN14_2OK") {
+        if (ReturnMsg(data, 0) != "SearchVIN47OK") {
             DyAlert(ReturnMsg(data, 0));
             return;
         }
@@ -114,7 +115,7 @@
     
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
-        $('#modal_VIN14_2 .modal-title').text('商品補貨作業');
+        $('#modal_VIN47 .modal-title').text('商品調整作業');
         var node = $(grdU.ActiveRowTR()).prop('Record');
         //$('#GD_NO,#GD_NAME').prop('readonly', true);
         $('#MachineData').text(GetNodeValue(node, 'WhNo') + '店 ' + GetNodeValue(node, 'CkNo') + '機 ' + GetNodeValue(node, 'ST_SName') + GetNodeValue(node, 'CkNo') + '機 ');
@@ -127,7 +128,11 @@
         $('#ShowQty').text(GetNodeValue(node, 'ShowQty'));
         $('#ShortQty').text(GetNodeValue(node, 'ShortQty'));
 
-        $('#AdjQty').val(GetNodeValue(node, 'Qty'));
+        $('#AdjQty').val(GetNodeValue(node, 'Qty2'));
+        $('#PtNum').text(GetNodeValue(node, 'PtNum'));
+        /*alert(GetNodeValue(node, 'PtNum'));*/
+        $('#DisplayNum').text(GetNodeValue(node, 'DisplayNum'));
+        //alert(GetNodeValue(node, 'DisplayNum'));
         $('#ExpDate').val(GetNodeValue(node, 'EffectiveDate'));
 
         $('#Photo1').val(GetNodeValue(node, 'Photo1'));
@@ -139,7 +144,7 @@
         else
             $('#PLUPic1').prop('src', '../images/No_Pic.jpg');
 
-        $('#modal_VIN14_2').modal('show');
+        $('#modal_VIN47').modal('show');
     };
 
     let GetGetImage = function (elmImg, picSGID) {
@@ -150,25 +155,31 @@
 
 
     let btCancel_click = function () {
-        $('#modal_VIN14_2').modal('hide');
+        $('#modal_VIN47').modal('hide');
     };
 
     let btSave_click = function () {
 
-        if ($('#AdjQty').val() == "" | $('#AdjQty').val() == null) {
-            DyAlert("補貨量欄位必須輸入資料!!", function () { $('#AdjQty').focus() });
+        if (($('#AdjQty').val() == "" | $('#AdjQty').val() == null) & ($('#ExpDate').val() == "" | $('#ExpDate').val() == null)) {
+            DyAlert("調整量欄位必須輸入資料!!", function () { $('#AdjQty').focus() });
             return;
         }
-        if ($('#ExpDate').val() == "" | $('#ExpDate').val() == null) {
-            DyAlert("最近有效日期欄位必須輸入資料!!");
-            return;
+        if ($('#AdjQty').val() != "" & $('#AdjQty').val() != null) {
+            var DNum = parseFloat($('#DisplayNum').text());
+            var AQty = parseFloat($('#AdjQty').val());
+            if (AQty > DNum) {
+                DyAlert("調整後數量大於滿倉量，無法儲存!!");
+                return;
+            }
         }
-        //alert(gDocNo);
+
         var pData = {
             TempDocumentSV: [
                 {
                     DocNo: gDocNo,
                     SeqNo: $('#SeqNo').text(),
+                    Qty: $('#PtNum').text(),
+                    Qty2: $('#AdjQty').val(),
                     ExchangeDate: $('#ExpDate').val()
                 }
             ]
@@ -184,7 +195,7 @@
         }
         else {
             //DyAlert("儲存完成!");
-            $('#modal_VIN14_2').modal('hide');
+            $('#modal_VIN47').modal('hide');
             var userxml = data.getElementsByTagName('dtRes')[0];
             grdU.RefreshRocord(grdU.ActiveRowTR(), userxml);
             isEntryQty = true;
@@ -239,6 +250,7 @@
         }
         else {
             if ($('#cbCK').val() != "") {
+                //$('#MachineDataM').text($('#cbWh').val() + $('#cbCK').val() + '機');
             }
             
         }
@@ -268,7 +280,9 @@
         
         var pData = {
             WhNo: $('#cbWh').val(),
+            CkNo: $('#cbCK').val()
         };
+        //alert($('#cbCK').val());
         PostToWebApi({ url: "api/SystemSetup/GetWhCkLayer", data: pData, success: AfterGetLayerNo });
     };
 
@@ -297,10 +311,10 @@
         }
     };
 
-    let afterGetInitVIN14_2 = function (data) {
-        //alert("afterGetInitVIN14_2");
+    let afterGetInitVIN47 = function (data) {
+        //alert("afterGetInitVIN47");
         AssignVar();
-        $('#btQuery').click(function () { SearchVIN14_2(); });
+        $('#btQuery').click(function () { SearchVIN47(); });
         //$('#btUPPic1,#btUPPic2').click(function () { UploadPicture(this); });
         //$('#btDelete').click(function () { btDelete_click(); });
         //$('#btImportFromiXMS').click(function () { btImportFromiXMS_click(); });
@@ -311,53 +325,54 @@
         $('.forminput input').change(function () { InputValidation(this) });
         $('#cbWh').change(function () { GetWhDSVCkNo(); });
         $('#cbCK').click(function () { cbCK_click(); });
+        //$('#cbCK').change(function () { GetLayerNo(); });
         var dtWh = data.getElementsByTagName('dtWh');
         InitSelectItem($('#cbWh')[0], dtWh, "ST_ID", "ST_SName", true);
 
         SetDateField($('#ExpDate')[0]);
         $('#ExpDate').datepicker();
 
-        $('#btInv').prop('disabled', true);
+        $('#PtNum').closest('.col-1').hide();
+        $('#DisplayNum').closest('.col-1').hide();
 
+        $('#btInv').prop('disabled', true);
+        
         //SetPLUAutoComplete("GD_NAME");
         //SetPLUAutoComplete("GD_NO");
     };
 
 
     let btInv_click = function () {
-
-        //if ($('#cbWh').val() == "") {
-        //    $('#cbCK').empty();
-        //    return;
-        //}
-        //else {
-
-        //}
         
         if (isEntryQty == false) {
-            DyAlert("尚未對任何明細商品進行補貨!!")
+            DyAlert("尚未對任何明細商品進行調整!!")
             return;
         }
+
         var pData = {
             TempDocumentSV: [
                 {
                     DocNo: gDocNo,
                     WhNo: $('#cbWh').val(),
+                    CkNo: $('#cbCK').val()
                 }
             ]
         };
-        //var pData = {
-        //    DocNo: gDocNo
-        //};
-        PostToWebApi({ url: "api/SystemSetup/SaveInv", data: pData, success: AfterSaveInv });
+
+        PostToWebApi({ url: "api/SystemSetup/SaveVIN47", data: pData, success: AfterSaveInv });
     };
 
 
     let AfterSaveInv = function (data) {
         //alert("AfterGetWhDSVCkNo");
-        if (ReturnMsg(data, 0) != "SaveInvOK") {
+        if (ReturnMsg(data, 0) != "SaveVIN47OK") {
             DyAlert(ReturnMsg(data, 0));
             return;
+        }
+        else {
+            $('#btInv').prop('disabled', true);
+            //var dtCK = data.getElementsByTagName('dtCK');
+            //InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true);
         }
     };
 
@@ -481,6 +496,8 @@
         }
         if ($(ip).attr('id') == "AdjQty") {
             var re = /^[\d]/;
+            if (!re.test(str) | str.length > 3)
+                msg = "必須3碼數字";
         }
         if ($(ip).attr('id') == "USR_PWD") {
             var re = /^[\d|a-zA-Z]+$/;
@@ -510,6 +527,7 @@
                 msg = "必須50字元以內";
         }
         if (msg != "") {
+            $(ip).val('');
             $(ip).nextAll('.msg-valid').text(msg);
             $(ip).nextAll('.msg-valid').show();
         }
@@ -517,14 +535,14 @@
 
     let afterLoadPage = function () {
 
-        PostToWebApi({ url: "api/SystemSetup/GetInitVIN14_2", success: afterGetInitVIN14_2 });
-        $('#pgVIN14_2').show();
+        PostToWebApi({ url: "api/SystemSetup/GetInitVIN47", success: afterGetInitVIN47 });
+        $('#pgVIN47').show();
         
     };
 
-    if ($('#pgVIN14_2').length == 0) {
-        
-        AllPages = new LoadAllPages(ParentNode, "VIN14_2", ["pgVIN14_2"], afterLoadPage);
+    if ($('#pgVIN47').length == 0) {
+        //alert("XX");
+        AllPages = new LoadAllPages(ParentNode, "VIN47", ["pgVIN47"], afterLoadPage);
     };
 
 
