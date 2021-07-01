@@ -2397,7 +2397,7 @@ namespace SVMAdmin.Controllers
                                 sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
                                      + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
                                      + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
-                                     + ", 'TF', TH_ID, WhNoOut, SeqNo, a.PLU, IsNull(b.PtNum,0), OutNum, IsNull(b.PtNum,0)-OutNum"
+                                     + ", 'TF', TH_ID, WhNoOut, SeqNo, a.PLU, IsNull(b.PtNum,0), -1*OutNum, IsNull(b.PtNum,0)-OutNum"
                                      + ", CkNoOut, LayerOut, SnoOut "
                                      + " From (" + sqlTROut + ") a Left Join InventorySV b "
                                      + " On a.CompanyCode = b.CompanyCode And a.WhNoOut = b.WhNo and a.CkNoOut = b.CkNo "
@@ -2420,11 +2420,11 @@ namespace SVMAdmin.Controllers
                                 //沒有庫存資料-新增
                                 sql = "Insert Into InventorySV (CompanyCode, CrtUser, CrtDate, CrtTime "
                                     + ", ModUser, ModDate, ModTime "
-                                    + ", WhNo, a.PLU, Out_Date, CkNo, Layer, Sno) ";
+                                    + ", WhNo, a.PLU, Out_Date, CkNo, Layer, Sno, PtNum) ";
                                 sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
                                      + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
                                      + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
-                                     + ", WhNoOut, PLU, '" + SysDate + "', CkNoOut, LayerOut, SnoOut "
+                                     + ", WhNoOut, PLU, '" + SysDate + "', CkNoOut, LayerOut, SnoOut, -1*OutNum "
                                      + " From (" +sqlTROut+ ") a Left Join InventorySV b " 
                                      + " On a.CompanyCode = b.CompanyCode and a.WhNoOut = b.WhNo and a.CkNoOut = b.CkNo "
                                      + "and a.LayerOut=b.Layer And a.SnoOut=b.Sno And a.PLU=b.PLU "
@@ -2448,7 +2448,7 @@ namespace SVMAdmin.Controllers
                             sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
                                  + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
                                  + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
-                                 + ", 'TF', TH_ID, WhNoIn, SeqNo, a.PLU, IsNull(b.PtNum,0), InNum, IsNull(b.PtNum,0)-InNum"
+                                 + ", 'TF', TH_ID, WhNoIn, SeqNo, a.PLU, IsNull(b.PtNum,0), InNum, IsNull(b.PtNum,0)+InNum"
                                  + ", CkNoIn, LayerIn, SnoIn "
                                  + " From (" + sqlTRIn + ") a Left Join InventorySV b "
                                  + " On a.CompanyCode = b.CompanyCode And a.WhNoIn = b.WhNo and a.CkNoIn = b.CkNo "
@@ -2460,7 +2460,7 @@ namespace SVMAdmin.Controllers
                                 + "Set ModUser='" + uu.UserID + "' "
                                 + ",ModDate=convert(char(10),getdate(),111) "
                                 + ",ModTime=convert(char(8),getdate(),108) "
-                                + ",PtNum=IsNull(PtNum,0) - InNum "
+                                + ",PtNum=IsNull(PtNum,0) + InNum "
                                 + ",In_Date = Case When In_Date>'" + SysDate + "' Then In_Date Else '" + SysDate + "' End "
                                 + "From (" + sqlTRIn + ") a Inner Join InventorySV b "
                                 + "On a.CompanyCode=b.CompanyCode and a.WhNoIn=b.WhNo and a.CkNoIn=b.CkNo And a.PLU=b.PLU "
@@ -2471,11 +2471,11 @@ namespace SVMAdmin.Controllers
                             //沒有庫存資料-新增
                             sql = "Insert Into InventorySV (CompanyCode, CrtUser, CrtDate, CrtTime "
                                 + ", ModUser, ModDate, ModTime"
-                                + ", WhNo, PLU, In_Date, CkNo, Layer, Sno) ";
+                                + ", WhNo, PLU, In_Date, CkNo, Layer, Sno, PtNum) ";
                             sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
                                  + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
                                  + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
-                                 + ", WhNoIn, a.PLU, '" + SysDate + "', CkNoIn, LayerIn, SnoIn "
+                                 + ", WhNoIn, a.PLU, '" + SysDate + "', CkNoIn, LayerIn, SnoIn, InNum "
                                  + " From (" + sqlTRIn + ") a Left Join InventorySV b "
                                  + " On a.CompanyCode = b.CompanyCode and a.WhNoIn = b.WhNo and a.CkNoIn = b.CkNo "
                                  + " and a.LayerIn=b.Layer And a.SnoIn=b.Sno And a.PLU=b.PLU "

@@ -128,13 +128,14 @@
         $('#ShowQty').text(GetNodeValue(node, 'ShowQty'));
         $('#ShortQty').text(GetNodeValue(node, 'ShortQty'));
 
-        $('#AdjQty').val(GetNodeValue(node, 'Qty2'));
+        $('#AdjQty').val("");
+        //$('#AdjQty').val(GetNodeValue(node, 'Qty2'));
         $('#PtNum').text(GetNodeValue(node, 'PtNum'));
         /*alert(GetNodeValue(node, 'PtNum'));*/
         $('#DisplayNum').text(GetNodeValue(node, 'DisplayNum'));
-        //alert(GetNodeValue(node, 'DisplayNum'));
+        //alert(GetNodeValue(node, 'EffectiveDate'));
         $('#ExpDate').val(GetNodeValue(node, 'EffectiveDate'));
-
+        //alert(GetNodeValue(node, 'Photo1'));
         $('#Photo1').val(GetNodeValue(node, 'Photo1'));
         //$('#Photo2').val(GetNodeValue(node, 'Photo2'));
         $('#PLUPic1,#PLUPic2').attr('src', '../images/No_Pic.jpg');
@@ -160,8 +161,12 @@
 
     let btSave_click = function () {
 
+        //if (($('#AdjQty').val() == "" | $('#AdjQty').val() == null) ) {
+        //    DyAlert("調整量欄位不可為空白!!", function () { $('#AdjQty').focus() });
+        //    return;
+        //}
         if (($('#AdjQty').val() == "" | $('#AdjQty').val() == null) & ($('#ExpDate').val() == "" | $('#ExpDate').val() == null)) {
-            DyAlert("調整量欄位必須輸入資料!!", function () { $('#AdjQty').focus() });
+            DyAlert("調整量或最後有效日期欄位至少輸入一項資料!!", function () { $('#AdjQty').focus() });
             return;
         }
         if ($('#AdjQty').val() != "" & $('#AdjQty').val() != null) {
@@ -173,13 +178,26 @@
             }
         }
 
+        var Qty; var Qty2;
+
+        if ($('#AdjQty').val() == "" | $('#AdjQty').val() == null) {
+            //alert($('#PtNum').text());
+            Qty = 0;
+            Qty2 = 0;
+        }
+        else {
+            //alert($('#AdjQty').val());
+            Qty = $('#PtNum').text();
+            Qty2 = $('#AdjQty').val();
+        }
+        //alert(Qty2);
         var pData = {
             TempDocumentSV: [
                 {
                     DocNo: gDocNo,
                     SeqNo: $('#SeqNo').text(),
-                    Qty: $('#PtNum').text(),
-                    Qty2: $('#AdjQty').val(),
+                    Qty: Qty,
+                    Qty2: Qty2,
                     ExchangeDate: $('#ExpDate').val()
                 }
             ]
@@ -371,6 +389,7 @@
         }
         else {
             $('#btInv').prop('disabled', true);
+            DyAlert("儲存完成!!");
             //var dtCK = data.getElementsByTagName('dtCK');
             //InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true);
         }
