@@ -10,7 +10,7 @@
         grdU = new DynGrid(
             {
                 table_lement: $('#tbVIN47')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdColbt icon_in_td"],
+                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdColbt icon_in_td"],
                 //class_collection: ["tdColbt icon_in_td", "tdColbt icon_in_td btsuspend", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7", "tdCol8"],
                 fields_info: [
                     //{ type: "JQ", name: "fa-file-text-o", element: '<i class="fa fa-file-text-o"></i>' },
@@ -19,7 +19,9 @@
                     { type: "Text", name: "GD_Sname" },
                     { type: "Text", name: "ShowQty" },
                     { type: "Text", name: "Qty2" },
-                    { type: "JQ", name: "btn-outline-success", element: '<i class="btn btn-outline-success"></i>' }
+                    { type: "Text", name: "EffectiveDate" },
+                    { type: "JQ", name: "fa-tags", element: '<i class="fa fa-tags"></i>' }
+                    //{ type: "JQ", name: "btn-outline-success", element: '<i class="btn btn-outline-success"></i>' }
                 ],
                 rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -31,7 +33,8 @@
     };
 
     let InitModifyDeleteButton = function () {
-        $('#tbVIN47 .btn-outline-success').click(function () { btModify_click(this) });
+        $('#tbVIN47 .fa-tags').click(function () { btModify_click(this) });
+        //$('#tbVIN47 .btn-outline-success').click(function () { btModify_click(this) });
         //$('#tbVIN47').find('.fa-toggle-off,.fa-toggle-on').click(function () { btSuspend_click(this) });
         //var trs = $('#tbVIN47 tbody tr');
         //for (var i = 0; i < trs.length; i++) {
@@ -389,12 +392,30 @@
         }
         else {
             $('#btInv').prop('disabled', true);
-            DyAlert("儲存完成!!");
+            DyAlert("儲存過帳完成!!");
+
+            $('#btInv').prop('disabled', true);
+            var pData = {
+                DocNo: gDocNo
+            };
+            PostToWebApi({ url: "api/SystemSetup/SearchVIN47Saved", data: pData, success: AfterSearchVIN47Saved });
             //var dtCK = data.getElementsByTagName('dtCK');
             //InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true);
         }
     };
 
+
+    let AfterSearchVIN47Saved = function (data) {
+        //alert("AfterSearchVIN14_2Saved");
+        if (ReturnMsg(data, 0) != "SearchVIN47SavedOK") {
+            DyAlert(ReturnMsg(data, 0));
+            return;
+        }
+        else {
+            var dtPLU = data.getElementsByTagName('dtPLU');
+            grdU.BindData(dtPLU);
+        }
+    };
 
 
     let SetPLUAutoComplete = function (inputID, apiPath) {

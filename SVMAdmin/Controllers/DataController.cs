@@ -2099,7 +2099,7 @@ namespace SVMAdmin.Controllers
                     sql += ",Qty2,RNum, WhNo, CkNo, Layer, Sno, EffectiveDate, WorkType)";
                     sql += "select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)";
                     sql += " ,'" + DocNo + "', Cast(Row_Number() Over(Order By a.Layer,a.Sno) As int), a.PLU, 0, "
-                            + "0, 0, a.WhNo, a.CkNo, a.Layer, a.Sno,'', 'IN' ";
+                            + "0, 0, a.WhNo, a.CkNo, a.Layer, a.Sno, a.EffectiveDate, 'IN' ";
                     sql += " from InventorySV a (Nolock) ";
                     sql += " inner join PLUSV b (Nolock) on a.CompanyCode=b.CompanyCode And a.PLU=b.GD_NO";
                     sql += " where a.CompanyCode='" + uu.CompanyId + "' And b.GD_Flag1='1' ";

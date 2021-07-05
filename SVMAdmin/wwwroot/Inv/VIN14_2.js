@@ -21,7 +21,8 @@
                     { type: "Text", name: "ShortQty" },
                     { type: "Text", name: "Qty" },
                     { type: "Text", name: "EffectiveDate" },
-                    { type: "JQ", name: "btn-outline-success", element: '<i class="btn btn-outline-success"></i>' }
+                    { type: "JQ", name: "fa-tags", element: '<i class="fa fa-tags"></i>' }
+                    //{ type: "JQ", name: "btn-outline-success", element: '<i class="btn btn-outline-success"></i>' }
                 ],
                 rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -33,13 +34,9 @@
     };
 
     let InitModifyDeleteButton = function () {
-        $('#tbVIN14_2 .btn-outline-success').click(function () { btModify_click(this) });
+        $('#tbVIN14_2 .fa-tags').click(function () { btModify_click(this) });
+        //$('#tbVIN14_2 .btn-outline-success').click(function () { btModify_click(this) });
         //$('#tbVIN14_2').find('.fa-toggle-off,.fa-toggle-on').click(function () { btSuspend_click(this) });
-        //var trs = $('#tbVIN14_2 tbody tr');
-        //for (var i = 0; i < trs.length; i++) {
-        //    var tr = trs[i];
-        //    DisplaySuspend(tr);
-        //}
     }
 
     let SearchVIN14_2 = function () {
@@ -61,9 +58,11 @@
         PostToWebApi({ url: "api/SystemSetup/SearchVIN14_2", data: pData, success: AfterSearchVIN14_2 });
     };
 
+
     let click_PLU = function (tr) {
 
     };
+
 
     let AfterSearchVIN14_2 = function (data) {
         
@@ -89,22 +88,7 @@
         }
     };
 
-    let DisplaySuspend = function (tr) {
-        var trNode = $(tr).prop('Record');
-        var sp = GetNodeValue(trNode, "GD_Flag1");
-        var bts = $(tr).find('.btsuspend i');
-        bts.hide();
-        if (sp == "1")
-            $(tr).find('.btsuspend .fa-toggle-on').show();
-        else
-            $(tr).find('.btsuspend .fa-toggle-off').show();
-        var img = $(tr).prop('Photo1');
-        var imgSGID = GetNodeValue(trNode, "Photo1");
-        var url = "api/GetImage?SGID=" + EncodeSGID(imgSGID) + "&UU=" + encodeURIComponent(UU);
-        url += "&Ver=" + encodeURIComponent(new Date().toLocaleTimeString());
-        img.prop('src', url);
-    };
-
+ 
     let BlankMode = function () {
         
     };
@@ -159,6 +143,12 @@
             DyAlert("補貨量欄位必須輸入資料!!", function () { $('#AdjQty').focus() });
             return;
         }
+        else {
+            if ($('#AdjQty').val() > $('#ShortQty').text()) {
+                DyAlert("補貨量不可大於缺貨量!!", function () { $('#AdjQty').focus() });
+                return;
+            }
+        }
         if ($('#ExpDate').val() == "" | $('#ExpDate').val() == null) {
             DyAlert("最近有效日期欄位必須輸入資料!!");
             return;
@@ -169,6 +159,8 @@
                 {
                     DocNo: gDocNo,
                     SeqNo: $('#SeqNo').text(),
+                    Qty: $('#AdjQty').val(),
+                    Qty2: 0,
                     ExchangeDate: $('#ExpDate').val()
                 }
             ]
@@ -189,8 +181,6 @@
             grdU.RefreshRocord(grdU.ActiveRowTR(), userxml);
             isEntryQty = true;
             //var tr = grdU.ActiveRowTR();
-            //DisplaySuspend(tr);
-
         }
     };
 
@@ -343,6 +333,7 @@
                 {
                     DocNo: gDocNo,
                     WhNo: $('#cbWh').val(),
+                    CkNo: $('#cbCK').val()
                 }
             ]
         };
@@ -359,8 +350,40 @@
             DyAlert(ReturnMsg(data, 0));
             return;
         }
+        else {
+            DyAlert("儲存過帳完成!!");
+            $('#btInv').prop('disabled', true);
+            var pData = {
+                DocNo: gDocNo
+            };
+            PostToWebApi({ url: "api/SystemSetup/SearchVIN14_2Saved", data: pData, success: AfterSearchVIN14_2Saved });
+        }
     };
 
+
+    let AfterSearchVIN14_2Saved = function (data) {
+        //alert("AfterSearchVIN14_2Saved");
+        if (ReturnMsg(data, 0) != "SearchVIN14_2SavedOK") {
+            DyAlert(ReturnMsg(data, 0));
+            return;
+        }
+        else {
+            var dtPLU = data.getElementsByTagName('dtPLU');
+            grdU.BindData(dtPLU);
+
+            //var dtDocNo = data.getElementsByTagName('dtDocNo');
+            //gDocNo = GetNodeValue(dtDocNo[0], "DocNo");
+            ////alert(gDocNo);
+
+            //if (dtPLU.length == 0) {
+            //    DyAlert("無符合資料!", BlankMode);
+            //    return;
+            //}
+            //else {
+            //    $('#btInv').prop('disabled', false);
+            //}
+        }
+    };
 
 
     let SetPLUAutoComplete = function (inputID, apiPath) {
@@ -516,7 +539,7 @@
     }
 
     let afterLoadPage = function () {
-
+        //alert("afterLoadPage");
         PostToWebApi({ url: "api/SystemSetup/GetInitVIN14_2", success: afterGetInitVIN14_2 });
         $('#pgVIN14_2').show();
         

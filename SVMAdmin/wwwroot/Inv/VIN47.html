@@ -159,8 +159,8 @@
                                               </div>
 
                                               <!--<div class="form-group row">
-                                                  
-                                              </div>-->
+
+                        </div>-->
 
                                               <div class="form-group row">
                                                   <label class="col-form-label col-3">庫存/滿倉：</label>
@@ -168,14 +168,13 @@
                                               </div>
 
                                               <!--<div class="form-group row">
-                                                  <label class="col-form-label col-3">缺貨量：</label>
-                                                  <label id="ShortQty" class="col-form-label col-3">9</label>
-                                              </div>-->
-
+                            <label class="col-form-label col-3">缺貨量：</label>
+                            <label id="ShortQty" class="col-form-label col-3">9</label>
+                        </div>-->
                                               <!--<div class="form-group row">
-                                                  <label class="col-form-label col-3"> </label>
-                                                  <button id="btEqual" type="button" class="btn btn-danger">補貨量=缺貨量</button>
-                                              </div>-->
+                            <label class="col-form-label col-3"> </label>
+                            <button id="btEqual" type="button" class="btn btn-danger">補貨量=缺貨量</button>
+                        </div>-->
 
                                               <div class="form-group row">
                                                   <label class="col-form-label col-3">調整後數量：</label>
@@ -224,6 +223,12 @@
                                   color: lightblue;
                               }
                           </style>
+                          <style>
+                              #tbVIN47 .fa-tags {
+                                  font-size: 28px;
+                                  color: lightblue;
+                              }
+                          </style>
 
                           <div class="col-md-12 col-sm-12 ">
                               <div class="x_panel">
@@ -243,12 +248,12 @@
                                               </select>
                                           </div>
                                           <!--<label class="col-form-label">貨&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;倉</label>
-                                          <div class="col-md-1">
-                                              <select id="cbLayer" class="form-control">
-                                                  <option> </option>
-                                              </select>-->
-                                              <!--<button type="button" id="btQueryPLU" class="custom-control-inline btn btn-primary">商品查詢</button>-->
-                                              <!--<button type="button" id="btImportFromiXMS" class="custom-control-inline btn btn-warning" hidden>從iXms匯入</button>-->
+                    <div class="col-md-1">
+                        <select id="cbLayer" class="form-control">
+                            <option> </option>
+                        </select>-->
+                                          <!--<button type="button" id="btQueryPLU" class="custom-control-inline btn btn-primary">商品查詢</button>-->
+                                          <!--<button type="button" id="btImportFromiXMS" class="custom-control-inline btn btn-warning" hidden>從iXms匯入</button>-->
                                           <!--</div>-->
 
                                           <div class="col-md-2">
@@ -277,6 +282,7 @@
                                                   <th>商品名稱</th>
                                                   <th>庫存/滿倉</th>
                                                   <th>調整後數量</th>
+                                                  <th>最近有效日</th>
                                                   <th>調整</th>
                                               </tr>
                                           </thead>
@@ -286,7 +292,9 @@
                                                   <td>Airwaves超涼薄荷</td>
                                                   <td>Airwaves超涼</td>
                                                   <td>49</td>
-                                                  <td><button type="button" id="btInv" class="custom-control-inline btn btn-outline-success">調整</button></td>
+                                                  <td>Airwaves超涼</td>
+                                                  <td><span class="fa fa-tags"></span></td>
+                                                  <!--<td><button type="button" id="btInv" class="custom-control-inline btn btn-outline-success">調整</button></td>-->
                                               </tr>
                                           </tbody>
                                       </table>

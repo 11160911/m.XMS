@@ -159,8 +159,8 @@
                                               </div>
 
                                               <!--<div class="form-group row">
-                                                  
-                                              </div>-->
+
+                        </div>-->
 
                                               <div class="form-group row">
                                                   <label class="col-form-label col-3">庫存/滿倉：</label>
@@ -223,25 +223,32 @@
                                   color: lightblue;
                               }
                           </style>
+                          <style>
+                              #tbVIN14_2 .fa-tags {
+                                  font-size: 28px;
+                                  color: lightblue;
+                              }
+                          </style>
 
                           <div class="col-md-12 col-sm-12 ">
                               <div class="x_panel">
                                   <div class="x_title">
                                       <div class="form-group row">
 
-                                          <label class="col-form-label">店&nbsp;&nbsp;代&nbsp;&nbsp;號</label>
+                                          <label class="col-form-label">店&nbsp;&nbsp;代&nbsp;&nbsp;號*</label>
                                           <div class="col-md-2">
                                               <select id="cbWh" class="form-control">
                                                   <option></option>
                                               </select>
                                           </div>
-                                          <label class="col-form-label">機&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號</label>
+                                          <label class="col-form-label">機&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號*</label>
                                           <div class="col-md-2">
                                               <select id="cbCK" class="form-control">
                                                   <option></option>
                                               </select>
                                           </div>
                                           <label class="col-form-label">貨&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;倉</label>
+                                          <div class="col-md-1">
                                               <select id="cbLayer" class="form-control">
                                                   <option> </option>
                                               </select>
@@ -257,6 +264,7 @@
 
                                       </div>
                                       <div class="form-group row">
+                                          <label id="MachineDataM" class="col-form-label col-4"> </label>
                                           <label class="col-form-label col-3">(商品狀態：啟用 才可補貨) </label>
                                           <button type="button" id="btInv" class="custom-control-inline btn btn-success">確認儲存</button>
                                           <!--<div class="col-md-9">-->
@@ -287,7 +295,8 @@
                                                   <td>49</td>
                                                   <td>53425</td>
                                                   <td>啟用</td>
-                                                  <td><button type="button" id="btInv" class="custom-control-inline btn btn-outline-success">補貨</button></td>
+                                                  <td><span class="fa fa-tags"></span></td>
+                                                  <!--<td><button type="button" id="btInv" class="custom-control-inline btn btn-outline-success">補貨</button></td>-->
                                               </tr>
                                           </tbody>
                                       </table>

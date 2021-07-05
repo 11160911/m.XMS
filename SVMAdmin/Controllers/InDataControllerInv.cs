@@ -74,6 +74,47 @@ namespace SVMAdmin.Controllers
         }
 
 
+        [Route("SystemSetup/SearchVIN14_2Saved")]
+        public ActionResult SystemSetup_SearchVIN14_2Saved()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SearchVIN14_2SavedOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            using (DBOperator dbop = new DBOperator())
+                try
+                {
+                    IFormCollection rq = HttpContext.Request.Form;
+                    string DocNo = rq["DocNo"];
+
+                    string sql = "";
+
+                    sql = "select a.*,a.Layer+a.Sno Channel,c.GD_SName,c.Photo1 ";
+                    sql += " , Cast(b.PtNum As VarChar(5))+'/'+Cast(b.DisplayNum As VarChar(5)) ShowQty, b.DisplayNum-b.PtNum ShortQty, d.ST_SName, b.DisplayNum, b.PtNum ";
+                    sql += " from tempdocumentsv a (Nolock) ";
+                    sql += " inner join InventorySV b (Nolock) on a.WhNo=b.WhNo and a.CkNo=b.CkNo And a.Layer=b.Layer And a.Sno=b.Sno and a.CompanyCode=b.CompanyCode";
+                    sql += " inner join PLUSV c (Nolock) on a.PLU=c.GD_NO and a.CompanyCode=c.CompanyCode";
+                    sql += " inner join WarehouseSV d (Nolock) on a.WhNo=d.ST_ID and a.CompanyCode=d.CompanyCode";
+                    sql += " where a.CompanyCode='" + uu.CompanyId + "' ";
+                    sql += " and a.DocNo='" + DocNo + "' ";
+                    sql += " Order By a.SeqNo ";
+
+                    DataTable dtPLU = PubUtility.SqlQry(sql, uu, "SYS");
+                    dtPLU.TableName = "dtPLU";
+                    ds.Tables.Add(dtPLU);
+
+                    sql = "Delete From TempDocumentSV Where CompanyCode='" + uu.CompanyId + "' and DocNo='" + DocNo + "' ";
+                    dbop.ExecuteSql(sql, uu, "SYS");
+
+                }
+                catch (Exception err)
+                {
+                    dtMessage.Rows[0][0] = "Exception";
+                    dtMessage.Rows[0][1] = err.Message;
+                }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
 
 
         [Route("SystemSetup/GetInitVIN47")]
@@ -363,6 +404,43 @@ namespace SVMAdmin.Controllers
         }
 
 
+        [Route("SystemSetup/SearchVIN47Saved")]
+        public ActionResult SystemSetup_SearchVIN47Saved()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SearchVIN47SavedOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            using (DBOperator dbop = new DBOperator())
+                try
+                {
+                    IFormCollection rq = HttpContext.Request.Form;
+                    string DocNo = rq["DocNo"];
+
+                    string sql = "select a.*,a.Layer+a.Sno Channel,c.GD_SName,c.Photo1 ";
+                    sql += " , Cast(b.PtNum As VarChar(5))+'/'+Cast(b.DisplayNum As VarChar(5)) ShowQty, b.DisplayNum-b.PtNum ShortQty, d.ST_SName, b.DisplayNum, b.PtNum ";
+                    sql += " from tempdocumentsv a (Nolock) ";
+                    sql += " inner join InventorySV b (Nolock) on a.WhNo=b.WhNo and a.CkNo=b.CkNo And a.Layer=b.Layer And a.Sno=b.Sno and a.CompanyCode=b.CompanyCode";
+                    sql += " inner join PLUSV c (Nolock) on a.PLU=c.GD_NO and a.CompanyCode=c.CompanyCode";
+                    sql += " inner join WarehouseSV d (Nolock) on a.WhNo=d.ST_ID and a.CompanyCode=d.CompanyCode";
+                    sql += " where a.CompanyCode='" + uu.CompanyId + "' ";
+                    sql += " and a.DocNo='" + DocNo + "' ";
+                    sql += " Order By a.SeqNo ";
+
+                    DataTable dtPLU = PubUtility.SqlQry(sql, uu, "SYS");
+                    dtPLU.TableName = "dtPLU";
+                    ds.Tables.Add(dtPLU);
+
+                    sql = "Delete From TempDocumentSV Where CompanyCode='" + uu.CompanyId + "' and DocNo='" + DocNo + "' ";
+                    dbop.ExecuteSql(sql, uu, "SYS");
+
+                }
+                catch (Exception err)
+                {
+                    dtMessage.Rows[0][0] = "Exception";
+                    dtMessage.Rows[0][1] = err.Message;
+                }
+            return PubUtility.DatasetXML(ds);
+        }
 
 
 

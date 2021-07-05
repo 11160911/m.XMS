@@ -3,10 +3,11 @@
     let grdU;
     let EditMode;
     let SetSuspend = "";
-    let isImport = false;
     let SysDate ;
     let gDocNo = "";
     let CkType = "";
+    let OutCkNo = "";
+    let InCkNo = "";
 
     let AssignVar = function () {
 
@@ -65,72 +66,18 @@
         $('#tbVIN13_1 .fa-file-text-o').click(function () { btMod_Click(this) });
         $('#tbVIN13_1 .fa-trash-o').click(function () { btDel_Click(this) });
         $('#tbVIN13_1 .fa-certificate').click(function () { btApp_Click(this) });
-        //$('#tbGMMacPLUSet').find('.fa-toggle-off,.fa-toggle-on').click(function () { btSuspend_click(this) });
-        //var trs = $('#tbVIN13_1 tbody tr');
-        //for (var i = 0; i < trs.length; i++) {
-        //    var tr = trs[i];
-        //    DisplayStatus(tr);
-        //}
     }
 
-    let DisplayStatus = function (tr) {
-        var trNode = $(tr).prop('Record');
-
-        //機器狀態
-        var sp = GetNodeValue(trNode, "FlagUse");
-        //alert(sp);
-        var bts = $(tr).find('.btsuspend i');
-        //var bts = $(tr).find('i');
-        bts.hide();
-        if (sp == "U")
-            $(tr).find('.btsuspend .fa-check-circle').show();
-        else if (sp == "S")
-            $(tr).find('.btsuspend .fa-exclamation-circle').show();
-        else if (sp == "M")
-            $(tr).find('.btsuspend .fa-wrench').show();
-        else
-            $(tr).find('.btsuspend .fa-power-off').show();
-
-        //網路狀態
-        sp = GetNodeValue(trNode, "FlagNet");
-        //alert(sp);
-        bts = $(tr).find('.btNet i');
-        //var bts = $(tr).find('i');
-        bts.hide();
-        if (sp == "Y")
-            $(tr).find('.btNet .fa-check-circle').show();
-        else
-            $(tr).find('.btNet .fa-exclamation-circle').show();
-
-        //溫度狀態
-        sp = GetNodeValue(trNode, "FlagT");
-        //alert(sp);
-        bts = $(tr).find('.btT i');
-        //var bts = $(tr).find('i');
-        bts.hide();
-        if (sp == "Y")
-            $(tr).find('.btT .fa-check-circle').show();
-        else
-            $(tr).find('.btT .fa-exclamation-circle').show();
-
-        //var img = $(tr).prop('Photo1');
-        //var imgSGID = GetNodeValue(trNode, "Photo1");
-        //var url = "api/GetImage?SGID=" + EncodeSGID(imgSGID) + "&UU=" + encodeURIComponent(UU);
-        //url += "&Ver=" + encodeURIComponent(new Date().toLocaleTimeString());
-        //img.prop('src', url);
-    };
 
 
     let btAdd_click = function () {
         EditMode = "Add";
-        //alert(EditMode);
         //$(bt).closest('tr').click();
         $('.msg-valid').hide();
         $('#modal_VIN13_1 .modal-title').text('智販機換店新增');
         //var node = $(grdU.ActiveRowTR()).prop('Record');
         $('#WhNoOut,#CkNoOut,#WhNoIn,#CkNoIn,#ExchangeDate').prop('readonly', false);
-        //gDocNo = "";
-        //alert(gDocNo);
+        $('#WhNoOut,#CkNoOut,#WhNoIn,#CkNoIn,#ExchangeDate').prop('disabled', false);
 
         $('#WhNoOut').val('');
         $('#WhOutName').text('');
@@ -162,31 +109,93 @@
         }
 
         $('#WhNoOut,#CkNoOut,#WhNoIn,#CkNoIn,#ExchangeDate').prop('readonly', false);
+        $('#WhNoOut,#CkNoOut,#WhNoIn,#CkNoIn,#ExchangeDate').prop('disabled', false);
         gDocNo = GetNodeValue(node, 'DocNo');
         
 
         $('#WhNoOut').val(GetNodeValue(node, 'WhNoOut'));
         $('#WhOutName').text(GetNodeValue(node, 'WhOutName'));
 
-        //alert($('#WhNoOut').val());
-
-        GetWhDSVCkNo("Out");
-
-        /*$('#WhOutName').val(GetNodeValue(node, 'WhOutName'));*/
-        //$('#CkNoOut').val(GetNodeValue(node, 'CkNoOut'));
-
         $('#WhNoIn').val(GetNodeValue(node, 'WhNoIn'));
         $('#WhInName').text(GetNodeValue(node, 'WhInName'));
-        //alert($('#WhNoIn').val());
-        GetWhDSVCkNo("In");
-        $('#CkNoIn').val(GetNodeValue(node, 'CkNoIn'));
-        //$('#lblSTOpenDate').text(GetNodeValue(node, 'ST_OpenDay'));
 
         $('#ExchangeDate').val(GetNodeValue(node, 'ExchangeDate'));
         $('#ExchangeDate').closest('.col-4').show();
         $('#lblExDate').closest('.col-3').hide();
         GetSysDate();
-        $('#modal_VIN13_1').modal('show');
+
+        OutCkNo = GetNodeValue(node, 'CkNoOut');
+        InCkNo = GetNodeValue(node, 'CkNoIn');
+
+        GetWhOutCkNo("Out");
+
+        ////alert($('#WhNoIn').val());
+        //GetWhDSVCkNo("In");
+        //$('#CkNoIn').val(GetNodeValue(node, 'CkNoIn'));
+        ////$('#lblSTOpenDate').text(GetNodeValue(node, 'ST_OpenDay'));
+
+
+        //$('#modal_VIN13_1').modal('show');
+    };
+
+
+    let GetWhOutCkNo = function (UpType) {
+
+        CkType = "Out";
+        
+        var pData = {
+            WhNo: $('#WhNoOut').val(),
+            StopDay: 'Y',
+            CheckUse: 'Y'
+        };
+
+        PostToWebApi({ url: "api/SystemSetup/GetWhDSVCkNoWithCond", data: pData, success: AfterGetOutCkNo });
+
+    };
+
+
+    let AfterGetOutCkNo = function (data) {
+        //alert("AfterGetOutCkNo");
+        if (ReturnMsg(data, 0) != "GetWhDSVCkNoWithCondOK") {
+            DyAlert(ReturnMsg(data, 0));
+            return;
+        }
+        else {
+            var dtCK = data.getElementsByTagName('dtCK');
+            InitSelectItem($('#CkNoOut')[0], dtCK, "CKNo", "CKNo", true);
+            GetWhInCkNo("In");
+        }
+    };
+
+
+    let GetWhInCkNo = function (UpType) {
+
+        CkType = "In";
+        //alert("GetWhInCkNo：In");
+        var pData = {
+            WhNo: $('#WhNoIn').val(),
+            StopDay: 'Y',
+            CheckUse: 'Y'
+        };
+
+        PostToWebApi({ url: "api/SystemSetup/GetWhDSVCkNoWithCond", data: pData, success: AfterGetInCkNo });
+
+    };
+
+
+    let AfterGetInCkNo = function (data) {
+        //alert("AfterGetInCkNo");
+        if (ReturnMsg(data, 0) != "GetWhDSVCkNoWithCondOK") {
+            DyAlert(ReturnMsg(data, 0));
+            return;
+        }
+        else {
+            var dtCK = data.getElementsByTagName('dtCK');
+            InitSelectItem($('#CkNoIn')[0], dtCK, "CKNo", "CKNo", true);
+            $('#CkNoOut').val(OutCkNo);
+            $('#CkNoIn').val(InCkNo);
+            $('#modal_VIN13_1').modal('show');
+        }
     };
 
 
@@ -204,47 +213,10 @@
             return
         }
         $('#WhNoOut,#CkNoOut,#WhNoIn,#CkNoIn,#ExchangeDate').prop('readonly', true);
+        $('#WhNoOut,#CkNoOut,#WhNoIn,#CkNoIn,#ExchangeDate').prop('disabled', true);
         gDocNo = GetNodeValue(node, 'DocNo');
         //alert(gDocNo);
 
-        $('#WhNoOut').val(GetNodeValue(node, 'WhNoOut'));
-        $('#WhOutName').text(GetNodeValue(node, 'WhOutName'));
-        /*$('#WhOutName').val(GetNodeValue(node, 'WhOutName'));*/
-        $('#CkNoOut').val(GetNodeValue(node, 'CkNoOut'));
-
-        $('#WhNoIn').val(GetNodeValue(node, 'WhNoIn'));
-        $('#WhInName').text(GetNodeValue(node, 'WhInName'));
-        $('#CkNoIn').val(GetNodeValue(node, 'CkNoIn'));
-
-        $('#ExchangeDate').val(GetNodeValue(node, 'ExchangeDate'));
-        $('#ExchangeDate').closest('.col-4').hide();
-        $('#lblExDate').text(GetNodeValue(node, 'ExchangeDate'));
-        $('#lblExDate').closest('.col-3').show();
-
-        $('#modal_VIN13_1').modal('show');
-    };
-
-
-
-    let btApp_Click = function (bt) {
-        
-
-        EditMode = "App";
-        //alert(EditMode);
-        $(bt).closest('tr').click();
-
-        $('.msg-valid').hide();
-        $('#modal_VIN13_1 .modal-title').text('智販機換店批核');
-        var node = $(grdU.ActiveRowTR()).prop('Record');
-        //alert(GetNodeValue(node, 'AppDate'));
-        if (GetNodeValue(node, 'AppDate') != '' ) {
-            DyAlert("此單據已批核!");
-            return
-        }
-
-        $('#WhNoOut,#CkNoOut,#WhNoIn,#CkNoIn,#ExchangeDate').prop('readonly', true);
-        gDocNo = GetNodeValue(node, 'DocNo');
-        //alert(gDocNo);
         $('#WhNoOut').val(GetNodeValue(node, 'WhNoOut'));
         $('#WhOutName').text(GetNodeValue(node, 'WhOutName'));
         /*$('#WhOutName').val(GetNodeValue(node, 'WhOutName'));*/
@@ -261,7 +233,59 @@
 
         GetSysDate();
 
-        $('#modal_VIN13_1').modal('show');
+        OutCkNo = GetNodeValue(node, 'CkNoOut');
+        InCkNo = GetNodeValue(node, 'CkNoIn');
+
+        GetWhOutCkNo("Out");
+
+        //$('#modal_VIN13_1').modal('show');
+    };
+
+
+
+    let btApp_Click = function (bt) {
+
+        EditMode = "App";
+        //alert(EditMode);
+        $(bt).closest('tr').click();
+
+        $('.msg-valid').hide();
+        $('#modal_VIN13_1 .modal-title').text('智販機換店批核');
+        var node = $(grdU.ActiveRowTR()).prop('Record');
+        //alert(GetNodeValue(node, 'AppDate'));
+        if (GetNodeValue(node, 'AppDate') != '' ) {
+            DyAlert("此單據已批核!");
+            return
+        }
+
+        $('#WhNoOut,#CkNoOut,#WhNoIn,#CkNoIn,#ExchangeDate').prop('readonly', true);
+        $('#WhNoOut,#CkNoOut,#WhNoIn,#CkNoIn,#ExchangeDate').prop('disabled', true);
+        gDocNo = GetNodeValue(node, 'DocNo');
+        //alert(gDocNo);
+        $('#WhNoOut').val(GetNodeValue(node, 'WhNoOut'));
+        $('#WhOutName').text(GetNodeValue(node, 'WhOutName'));
+        
+        $('#CkNoOut').val(GetNodeValue(node, 'CkNoOut'));
+
+        $('#WhNoIn').val(GetNodeValue(node, 'WhNoIn'));
+        $('#WhInName').text(GetNodeValue(node, 'WhInName'));
+
+        $('#CkNoIn').val(GetNodeValue(node, 'CkNoIn'));
+
+        $('#ExchangeDate').val(GetNodeValue(node, 'ExchangeDate'));
+        $('#ExchangeDate').closest('.col-4').hide();
+        $('#lblExDate').text(GetNodeValue(node, 'ExchangeDate'));
+        $('#lblExDate').closest('.col-3').show();
+
+        GetSysDate();
+
+        OutCkNo = GetNodeValue(node, 'CkNoOut');
+        InCkNo = GetNodeValue(node, 'CkNoIn');
+
+        GetWhOutCkNo("Out");
+
+
+        //$('#modal_VIN13_1').modal('show');
     };
 
 
@@ -305,7 +329,6 @@
     };
 
  
-    //2021-05-07
     let cbCK_click = function () {
 
         if ($('#cbWh').val() == "") {
@@ -322,7 +345,7 @@
 
         if (UpType == "Main") {
             CkType = "Main";
-            console.log("GetWhDSVCkNo：Main");
+            
             if ($('#cbWh').val() == "") {
                 $('#cbCK').empty();
                 return;
@@ -342,7 +365,7 @@
         }
         else if (UpType == "Out") {
             CkType = "Out";
-            console.log("GetWhDSVCkNo：Out");
+            
             var pData = {
                 WhNo: $('#WhNoOut').val(),
                 StopDay: 'Y',
@@ -351,7 +374,7 @@
         }
         else if (UpType == "In") {
             CkType = "In";
-            console.log("GetWhDSVCkNo：In");
+            
             var pData = {
                 WhNo: $('#WhNoIn').val(),
                 StopDay: 'Y',
@@ -360,20 +383,16 @@
         }
 
         PostToWebApi({ url: "api/SystemSetup/GetWhDSVCkNoWithCond", data: pData, success: AfterGetWhDSVCkNo });
-        //PostToWebApi({ url: "api/SystemSetup/GetWhDSVCkNo", data: pData, success: AfterGetWhDSVCkNo });
+        
     };
 
 
     let AfterGetWhDSVCkNo = function (data) {
-        //alert("AfterGetWhDSVCkNo");
+        
         if (ReturnMsg(data, 0) != "GetWhDSVCkNoWithCondOK") {
             DyAlert(ReturnMsg(data, 0));
             return;
         }
-        //if (ReturnMsg(data, 0) != "GetWhDSVCkNoOK") {
-        //    DyAlert(ReturnMsg(data, 0));
-        //    return;
-        //}
         else {
             if (CkType == "Main") {
                 console.log("AfterGetWhDSVCkNo：Main");
@@ -757,8 +776,8 @@
         SetDateField($('#exDate')[0]);
         $('#exDate').datepicker();
 
-        $('#WhNoOut').change(function () { GetWhDSVCkNo("Out"); });
-        $('#WhNoIn').change(function () { GetWhDSVCkNo("In"); });
+        //$('#WhNoOut').change(function () { GetWhDSVCkNo("Out"); });
+        //$('#WhNoIn').change(function () { GetWhDSVCkNo("In"); });
 
         $('#btAdd').click(function () { btAdd_click(); });
         //$('#btImportFromiXMS').click(function () { btImportFromiXMS_click(); });
@@ -847,13 +866,9 @@
 
     let afterLoadPage = function () {
 
-        //alert("afterLoadPage");
-        //2021-04-27
         PostToWebApi({ url: "api/SystemSetup/GetWh", success: afterGetInitVIN13_1 });
-        //alert("PostToWebApi  api/SystemSetup/GetInitVIN13_1");
-
         $('#pgVIN13_1').show();
-        //$('#pgSysUsersEdit').hide();
+        
     };
 
     if ($('#pgVIN13_1').length == 0) {
