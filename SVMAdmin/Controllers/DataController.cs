@@ -1948,7 +1948,7 @@ namespace SVMAdmin.Controllers
             try
             {
 
-                string DocNo = GetNewDocNo(uu, "CS", 3);
+                string DocNo = PubUtility.GetNewDocNo(uu, "CS", 3);
 
                 DataTable dtRec = new DataTable("ChangeShopSV");
                 PubUtility.AddStringColumns(dtRec, "WhNoOut,CkNoOut,WhNoIn,CkNoIn,ExchangeDate");
@@ -2092,7 +2092,7 @@ namespace SVMAdmin.Controllers
                     string CkNo = rq["CkNo"];
                     string LayerNo = rq["LayerNo"];
 
-                    string DocNo = GetNewDocNo(uu, "VC", 6);
+                    string DocNo = PubUtility.GetNewDocNo(uu, "VC", 6);
 
                     string sql = "Insert Into TempDocumentSV ";
                     sql += "(CompanyCode,ModUser,ModDate,ModTime,DocNo,SeqNo,PLU,Qty";
@@ -2151,58 +2151,58 @@ namespace SVMAdmin.Controllers
         }
 
 
-        public string GetNewDocNo(UserInfo uu, String DocType, Int16 Digits)
-        {
-            string sDocNo = "";
-            string sDate;
-            string sDateWithSlash = "";
-            string sql = "";
-            sql = "select convert(char(8),getdate(),112),convert(char(10),getdate(),111)";
-            DataTable dtDate = PubUtility.SqlQry(sql, uu, "SYS");
-            if (dtDate.Rows.Count == 0)
-            {
-                sDocNo = "";
-                return sDocNo;
-            }
-            else
-            {
-                sDate = dtDate.Rows[0][0].ToString().Trim();
-                sDateWithSlash = dtDate.Rows[0][1].ToString().Trim();
-            }
+        //public string GetNewDocNo(UserInfo uu, String DocType, Int16 Digits)
+        //{
+        //    string sDocNo = "";
+        //    string sDate;
+        //    string sDateWithSlash = "";
+        //    string sql = "";
+        //    sql = "select convert(char(8),getdate(),112),convert(char(10),getdate(),111)";
+        //    DataTable dtDate = PubUtility.SqlQry(sql, uu, "SYS");
+        //    if (dtDate.Rows.Count == 0)
+        //    {
+        //        sDocNo = "";
+        //        return sDocNo;
+        //    }
+        //    else
+        //    {
+        //        sDate = dtDate.Rows[0][0].ToString().Trim();
+        //        sDateWithSlash = dtDate.Rows[0][1].ToString().Trim();
+        //    }
 
-            sql = "select SeqNo from DocumentNo a";
-            sql += " where a.CompanyCode='" + uu.CompanyId.SqlQuote() + "' And Initial='" + DocType + "' And DocDate=convert(char(8),getdate(),112)";
+        //    sql = "select SeqNo from DocumentNo a";
+        //    sql += " where a.CompanyCode='" + uu.CompanyId.SqlQuote() + "' And Initial='" + DocType + "' And DocDate=convert(char(8),getdate(),112)";
 
-            DataTable dtDoc = PubUtility.SqlQry(sql, uu, "SYS");
-            //dtDoc.TableName = "dtDoc";
+        //    DataTable dtDoc = PubUtility.SqlQry(sql, uu, "SYS");
+        //    //dtDoc.TableName = "dtDoc";
 
-            using (DBOperator dbop = new DBOperator())
+        //    using (DBOperator dbop = new DBOperator())
 
-                if (dtDoc.Rows.Count == 0)
-                {
-                    string str = new string('0', Digits) + "1";
-                    sDocNo = DocType + sDate + str.Substring(str.Length - Digits);
-                    sql = "Insert Into DocumentNo (SGID, CompanyCode, CrtUser, CrtDate, CrtTime, ModUser, ModDate, ModTime, Initial, DocDate, SeqNo) ";
-                    sql += " Select '" + uu.CompanyId.SqlQuote() + DocType + sDate + "', '" + uu.CompanyId.SqlQuote() + "'"
-                         + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
-                         + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
-                         + ", '" + DocType + "', '" + sDate + "', 1 ";
-                    dbop.ExecuteSql(sql, uu, "SYS");
-                }
-                else
-                {
-                    int SeqNo = Convert.ToInt32(dtDoc.Rows[0][0]) + 1;
+        //        if (dtDoc.Rows.Count == 0)
+        //        {
+        //            string str = new string('0', Digits) + "1";
+        //            sDocNo = DocType + sDate + str.Substring(str.Length - Digits);
+        //            sql = "Insert Into DocumentNo (SGID, CompanyCode, CrtUser, CrtDate, CrtTime, ModUser, ModDate, ModTime, Initial, DocDate, SeqNo) ";
+        //            sql += " Select '" + uu.CompanyId.SqlQuote() + DocType + sDate + "', '" + uu.CompanyId.SqlQuote() + "'"
+        //                 + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+        //                 + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+        //                 + ", '" + DocType + "', '" + sDate + "', 1 ";
+        //            dbop.ExecuteSql(sql, uu, "SYS");
+        //        }
+        //        else
+        //        {
+        //            int SeqNo = Convert.ToInt32(dtDoc.Rows[0][0]) + 1;
 
-                    sql = "Update DocumentNo Set SeqNo=" + SeqNo + " "
-                        + " ,ModUser='" + uu.UserID + "', ModDate=convert(char(10),getdate(),111), ModTime=convert(char(8),getdate(),108) "
-                        + "Where CompanyCode='" + uu.CompanyId.SqlQuote() + "' And Initial='" + DocType + "' And DocDate='" + sDate + "'";
-                    dbop.ExecuteSql(sql, uu, "SYS");
-                    string str = new string('0', Digits) + SeqNo.ToString();
-                    sDocNo = DocType + sDate + str.Substring(str.Length - Digits);
-                }
+        //            sql = "Update DocumentNo Set SeqNo=" + SeqNo + " "
+        //                + " ,ModUser='" + uu.UserID + "', ModDate=convert(char(10),getdate(),111), ModTime=convert(char(8),getdate(),108) "
+        //                + "Where CompanyCode='" + uu.CompanyId.SqlQuote() + "' And Initial='" + DocType + "' And DocDate='" + sDate + "'";
+        //            dbop.ExecuteSql(sql, uu, "SYS");
+        //            string str = new string('0', Digits) + SeqNo.ToString();
+        //            sDocNo = DocType + sDate + str.Substring(str.Length - Digits);
+        //        }
 
-            return sDocNo;
-        }
+        //    return sDocNo;
+        //}
 
 
         //2021-06-21 Larry
@@ -2295,7 +2295,7 @@ namespace SVMAdmin.Controllers
                 PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
                 DataRow dr = dtTemp.Rows[0];
 
-                string DocNo = GetNewDocNo(uu, "TH", 6);
+                string DocNo = PubUtility.GetNewDocNo(uu, "TH", 6);
 
                 string sql = "";
                 string WhNoOut = "";
