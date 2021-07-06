@@ -254,11 +254,17 @@ var DynGrid = function (option) {
         var xmlsort = $(thisXmls).clone();
         if (srot == "asc") {
             emn.addClass("fa-sort-asc");
-            xmlsort.sort(function (a, b) { return GetNodeValue(a, fdName) > GetNodeValue(b, fdName) ? 1 : -1 });
+            if (fdType == "Text")
+                xmlsort.sort(function (a, b) { return GetNodeValue(a, fdName) > GetNodeValue(b, fdName) ? 1 : -1 });
+            else if (fdType == "TextAmt")
+                xmlsort.sort(function (a, b) { return parseFloat(GetNodeValue(a, fdName)) > parseFloat(GetNodeValue(b, fdName)) ? 1 : -1 });
         }
         else {
             emn.addClass("fa-sort-desc");
-            xmlsort.sort(function (a, b) { return GetNodeValue(a, fdName) > GetNodeValue(b, fdName) ? -1 : 1 });
+            if (fdType == "Text")
+                xmlsort.sort(function (a, b) { return GetNodeValue(a, fdName) > GetNodeValue(b, fdName) ? -1 : 1 });
+            else if (fdType == "TextAmt")
+                xmlsort.sort(function (a, b) { return parseFloat(GetNodeValue(a, fdName)) > parseFloat(GetNodeValue(b, fdName)) ? -1 : 1 });
         }
         $(td).prepend(emn);
         thisBindData(xmlsort);
@@ -431,7 +437,8 @@ var DynGrid = function (option) {
             option.afterBind();
     };
 
-    this.BindData = function(data) {
+    this.BindData = function (data) {
+        ths.find('em').remove();
         thisBindData(data);
     };
 
