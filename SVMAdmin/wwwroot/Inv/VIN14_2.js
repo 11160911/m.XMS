@@ -258,6 +258,7 @@
         
         var pData = {
             WhNo: $('#cbWh').val(),
+            CkNo: $('#cbCK').val()
         };
         PostToWebApi({ url: "api/SystemSetup/GetWhCkLayer", data: pData, success: AfterGetLayerNo });
     };
@@ -301,6 +302,7 @@
         $('.forminput input').change(function () { InputValidation(this) });
         $('#cbWh').change(function () { GetWhDSVCkNo(); });
         $('#cbCK').click(function () { cbCK_click(); });
+        $('#cbCK').change(function () { GetLayerNo(); });
         var dtWh = data.getElementsByTagName('dtWh');
         InitSelectItem($('#cbWh')[0], dtWh, "ST_ID", "ST_SName", true);
 

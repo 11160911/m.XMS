@@ -74,6 +74,424 @@ namespace SVMAdmin.Controllers
         //}
 
 
+        //2021-05-26 Larry
+        [Route("SystemSetup/SearchVIN13_2")]
+        public ActionResult SystemSetup_SearchVIN13_2()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SearchVIN13_2OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+
+                string WhNo = rq["WhNo"];
+                string CkNo = rq["CkNo"];
+                string Layer = rq["Layer"];
+                string exDate = rq["exDate"];
+
+                string sql = "select a.*, a.WhNo+b.ST_SNAME WhName,c.Man_Name , d.GD_SName OldName, e.GD_SName NewName, a.Layer+Sno LayerSno ,b.ST_OpenDay ";
+                sql += " ,Case When IsNull(a.AppDate,'')='' Then '未批核' Else '已批核' End AppStatus";
+                sql += " ,Case When IsNull(a.FinishDate,'')='' Then (Case When IsNull(DefeasanceDate,'')<>'' Then '作廢' Else '未完成' End) Else '完成' End FinStatus";
+                sql += " from ChangePLUSV a";
+                sql += " inner join WarehouseSV b on a.WhNo=b.ST_ID And a.CompanyCode=b.CompanyCode";
+                sql += " left join EmployeeSV c on a.DocUser=c.Man_ID And a.CompanyCode=c.CompanyCode ";
+                sql += " left join PLUSV d on a.PLUOld=d.GD_No And a.CompanyCode=d.CompanyCode  ";
+                sql += " left join PLUSV e on a.PLUNew=e.GD_No And a.CompanyCode=e.CompanyCode ";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "'";
+                if (WhNo != "")
+                {
+                    sql += " and a.WhNo='" + WhNo + "'";
+                }
+                if (CkNo != "")
+                {
+                    sql += " and a.CkNo='" + CkNo + "'";
+                }
+                if (Layer != "")
+                {
+                    sql += " and a.Layer='" + Layer + "'";
+                }
+                if (exDate != "")
+                {
+                    sql += " and a.exchangeDate='" + exDate + "'";
+                }
+                sql += " Order By a.DocNo Desc";
+                DataTable dtInv = PubUtility.SqlQry(sql, uu, "SYS");
+                dtInv.TableName = "dtInv";
+                ds.Tables.Add(dtInv);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        //2021-05-26 Larry
+        [Route("SystemSetup/UpdateChgPLU")]
+        public ActionResult SystemSetup_UpdateChgPLU()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "UpdateChgPLUOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+
+                DataTable dtChgPLU = new DataTable("ChangePLUSV");
+                PubUtility.AddStringColumns(dtChgPLU, "DocNo,PLUNew,Num,DisplayNum,ExchangeDate");
+                DataSet dsRQ = new DataSet();
+                dsRQ.Tables.Add(dtChgPLU);
+                PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
+                DataRow dr = dtChgPLU.Rows[0];
+
+                string sql = "";
+                using (DBOperator dbop = new DBOperator())
+                {
+                    using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required))
+                    {
+                        try
+                        {
+
+                            sql = "update ChangePLUSV set ";
+                            sql += " PLUNew='" + dr["PLUNew"].ToString().SqlQuote() + "'";
+                            sql += ",Num=" + dr["Num"].ToString().SqlQuote() + "";
+                            sql += ",DisplayNum=" + dr["DisplayNum"].ToString().SqlQuote() + "";
+                            sql += ",ExchangeDate='" + dr["ExchangeDate"].ToString().SqlQuote() + "'";
+                            sql += ",ModDate=convert(char(10),getdate(),111)";
+                            sql += ",ModTime=convert(char(12),getdate(),108)";
+                            sql += ",ModUser='" + uu.UserID + "'";
+                            sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + dr["DocNo"].ToString().SqlQuote() + "'";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+                            //dbop.Update("Rack", dtRec, new string[] { "Type_ID" }, uu, "SYS");
+
+                            ts.Complete();
+                        }
+                        catch (Exception err)
+                        {
+                            ts.Dispose();
+                            dbop.Dispose();
+                            throw new Exception(err.Message);
+                        }
+                        dbop.Dispose();
+                    }
+                }
+
+                sql = "select a.*, a.WhNo+b.ST_SNAME WhName,c.Man_Name , d.GD_SName OldName, e.GD_SName NewName, a.Layer+Sno LayerSno ,b.ST_OpenDay ";
+                sql += " ,Case When IsNull(a.AppDate,'')='' Then '未批核' Else '已批核' End AppStatus";
+                sql += " ,Case When IsNull(a.FinishDate,'')='' Then (Case When IsNull(DefeasanceDate,'')<>'' Then '作廢' Else '未完成' End) Else '完成' End FinStatus";
+                sql += " from ChangePLUSV a";
+                sql += " inner join WarehouseSV b on a.WhNo=b.ST_ID And a.CompanyCode=b.CompanyCode";
+                sql += " left join EmployeeSV c on a.DocUser=c.Man_ID And a.CompanyCode=c.CompanyCode ";
+                sql += " left join PLUSV d on a.PLUOld=d.GD_No And a.CompanyCode=d.CompanyCode  ";
+                sql += " left join PLUSV e on a.PLUNew=e.GD_No And a.CompanyCode=e.CompanyCode ";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "' And a.DocNo='" + dr["DocNo"].ToString().SqlQuote() + "'";
+
+                DataTable dtRes = PubUtility.SqlQry(sql, uu, "SYS");
+                dtRes.TableName = "dtRes";
+                ds.Tables.Add(dtRes);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        //2021-05-26 Larry
+        [Route("SystemSetup/DelChgPLU")]
+        public ActionResult SystemSetup_DelChgShop()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "DelChgPLUOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                DataTable dtChgPLU = new DataTable("ChangePLUSV");
+                PubUtility.AddStringColumns(dtChgPLU, "DocNo");
+                DataSet dsRQ = new DataSet();
+                dsRQ.Tables.Add(dtChgPLU);
+                PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
+                DataRow dr = dtChgPLU.Rows[0];
+
+                string sql = "";
+                using (DBOperator dbop = new DBOperator())
+                {
+                    using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required))
+                    {
+                        try
+                        {
+
+                            sql = "Delete From ChangePLUSV ";
+                            sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + dr["DocNo"].ToString().SqlQuote() + "'";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+                            //dbop.Update("Rack", dtRec, new string[] { "Type_ID" }, uu, "SYS");
+
+                            ts.Complete();
+                        }
+                        catch (Exception err)
+                        {
+                            ts.Dispose();
+                            dbop.Dispose();
+                            throw new Exception(err.Message);
+                        }
+                        dbop.Dispose();
+                    }
+                }
+
+                sql = "select a.*, a.WhNo+b.ST_SNAME WhName,c.Man_Name , d.GD_SName OldName, e.GD_SName NewName, a.Layer+Sno LayerSno ,b.ST_OpenDay ";
+                sql += " ,Case When IsNull(a.AppDate,'')='' Then '未批核' Else '已批核' End AppStatus";
+                sql += " ,Case When IsNull(a.FinishDate,'')='' Then (Case When IsNull(DefeasanceDate,'')<>'' Then '作廢' Else '未完成' End) Else '完成' End FinStatus";
+                sql += " from ChangePLUSV a";
+                sql += " inner join WarehouseSV b on a.WhNo=b.ST_ID And a.CompanyCode=b.CompanyCode";
+                sql += " left join EmployeeSV c on a.DocUser=c.Man_ID And a.CompanyCode=c.CompanyCode ";
+                sql += " left join PLUSV d on a.PLUOld=d.GD_No And a.CompanyCode=d.CompanyCode  ";
+                sql += " left join PLUSV e on a.PLUNew=e.GD_No And a.CompanyCode=e.CompanyCode ";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "' ";
+
+                //sql = "select a.*";
+                //sql += " from ChangePLUSV a";
+                //sql += " where a.CompanyCode='" + uu.CompanyId + "' And a.DocNo='" + dr["DocNo"].ToString().SqlQuote() + "'";
+                DataTable dtRack = PubUtility.SqlQry(sql, uu, "SYS");
+                dtRack.TableName = "dtRack";
+                ds.Tables.Add(dtRack);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+
+        //2021-05-26 Larry
+        [Route("SystemSetup/AppChgPLU")]
+        public ActionResult SystemSetup_AppChgPLU()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            //批核完成後，同樣執行異動完成，故回傳UpdateChgPLUOK
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "UpdateChgPLUOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                DataTable dtChgPLU = new DataTable("ChangePLUSV");
+                PubUtility.AddStringColumns(dtChgPLU, "DocNo");
+                DataSet dsRQ = new DataSet();
+                dsRQ.Tables.Add(dtChgPLU);
+                PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
+                DataRow dr = dtChgPLU.Rows[0];
+
+                string sql = "";
+                using (DBOperator dbop = new DBOperator())
+                {
+                    using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required))
+                    {
+                        try
+                        {
+
+                            sql = "update ChangePLUSV set ";
+                            sql += " AppDate=convert(char(10),getdate(),111)";
+                            sql += ",AppUser='" + uu.UserID + "'";
+                            sql += ",ModDate=convert(char(10),getdate(),111)";
+                            sql += ",ModTime=convert(char(12),getdate(),108)";
+                            sql += ",ModUser='" + uu.UserID + "'";
+                            sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + dr["DocNo"].ToString().SqlQuote() + "'";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+                            //dbop.Update("Rack", dtRec, new string[] { "Type_ID" }, uu, "SYS");
+
+                            ts.Complete();
+                        }
+                        catch (Exception err)
+                        {
+                            ts.Dispose();
+                            dbop.Dispose();
+                            throw new Exception(err.Message);
+                        }
+                        dbop.Dispose();
+                    }
+                }
+
+                sql = "select a.*, a.WhNo+b.ST_SNAME WhName,c.Man_Name , d.GD_SName OldName, e.GD_SName NewName, a.Layer+Sno LayerSno ,b.ST_OpenDay ";
+                sql += " ,Case When IsNull(a.AppDate,'')='' Then '未批核' Else '已批核' End AppStatus";
+                sql += " ,Case When IsNull(a.FinishDate,'')='' Then (Case When IsNull(DefeasanceDate,'')<>'' Then '作廢' Else '未完成' End) Else '完成' End FinStatus";
+                sql += " from ChangePLUSV a";
+                sql += " inner join WarehouseSV b on a.WhNo=b.ST_ID And a.CompanyCode=b.CompanyCode";
+                sql += " left join EmployeeSV c on a.DocUser=c.Man_ID And a.CompanyCode=c.CompanyCode ";
+                sql += " left join PLUSV d on a.PLUOld=d.GD_No And a.CompanyCode=d.CompanyCode  ";
+                sql += " left join PLUSV e on a.PLUNew=e.GD_No And a.CompanyCode=e.CompanyCode ";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "' And a.DocNo='" + dr["DocNo"].ToString().SqlQuote() + "'";
+
+                DataTable dtRes = PubUtility.SqlQry(sql, uu, "SYS");
+                dtRes.TableName = "dtRes";
+                ds.Tables.Add(dtRes);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        //2021-05-26 Larry
+        [Route("SystemSetup/DefChgPLU")]
+        public ActionResult SystemSetup_DefChgPLU()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            //作廢完成後，同樣執行異動完成，故回傳UpdateChgPLUOK
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "UpdateChgPLUOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                DataTable dtChgPLU = new DataTable("ChangePLUSV");
+                PubUtility.AddStringColumns(dtChgPLU, "DocNo");
+                DataSet dsRQ = new DataSet();
+                dsRQ.Tables.Add(dtChgPLU);
+                PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
+                DataRow dr = dtChgPLU.Rows[0];
+
+                string sql = "";
+                using (DBOperator dbop = new DBOperator())
+                {
+                    using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required))
+                    {
+                        try
+                        {
+
+                            sql = "update ChangePLUSV set ";
+                            sql += " DefeasanceDate=convert(char(10),getdate(),111)";
+                            sql += ",Defeasance='" + uu.UserID + "'";
+                            sql += ",ModDate=convert(char(10),getdate(),111)";
+                            sql += ",ModTime=convert(char(12),getdate(),108)";
+                            sql += ",ModUser='" + uu.UserID + "'";
+                            sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + dr["DocNo"].ToString().SqlQuote() + "'";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+                            //dbop.Update("Rack", dtRec, new string[] { "Type_ID" }, uu, "SYS");
+
+                            ts.Complete();
+                        }
+                        catch (Exception err)
+                        {
+                            ts.Dispose();
+                            dbop.Dispose();
+                            throw new Exception(err.Message);
+                        }
+                        dbop.Dispose();
+                    }
+                }
+
+                sql = "select a.*, a.WhNo+b.ST_SNAME WhName,c.Man_Name , d.GD_SName OldName, e.GD_SName NewName, a.Layer+Sno LayerSno ,b.ST_OpenDay ";
+                sql += " ,Case When IsNull(a.AppDate,'')='' Then '未批核' Else '已批核' End AppStatus";
+                sql += " ,Case When IsNull(a.FinishDate,'')='' Then (Case When IsNull(DefeasanceDate,'')<>'' Then '作廢' Else '未完成' End) Else '完成' End FinStatus";
+                sql += " from ChangePLUSV a";
+                sql += " inner join WarehouseSV b on a.WhNo=b.ST_ID And a.CompanyCode=b.CompanyCode";
+                sql += " left join EmployeeSV c on a.DocUser=c.Man_ID And a.CompanyCode=c.CompanyCode ";
+                sql += " left join PLUSV d on a.PLUOld=d.GD_No And a.CompanyCode=d.CompanyCode  ";
+                sql += " left join PLUSV e on a.PLUNew=e.GD_No And a.CompanyCode=e.CompanyCode ";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "' And a.DocNo='" + dr["DocNo"].ToString().SqlQuote() + "'";
+
+                DataTable dtRes = PubUtility.SqlQry(sql, uu, "SYS");
+                dtRes.TableName = "dtRes";
+                ds.Tables.Add(dtRes);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+
+        //2021-05-26 Larry
+        [Route("SystemSetup/AddChgPLU")]
+        public ActionResult SystemSetup_AddChgPLU()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "AddChgPLUOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+
+                string DocNo = PubUtility.GetNewDocNo(uu, "CA", 3);
+
+                DataTable dtRec = new DataTable("ChangePLUSV");
+                PubUtility.AddStringColumns(dtRec, "WhNo,CkNo,Layer,Sno,OldPLU,NewPLU,Num,DisplayNum,ExchangeDate");
+                DataSet dsRQ = new DataSet();
+                dsRQ.Tables.Add(dtRec);
+                PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
+                DataRow dr = dtRec.Rows[0];
+
+                string sql = "";
+                using (DBOperator dbop = new DBOperator())
+                {
+                    using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required))
+                    {
+                        try
+                        {
+                            sql = "Insert Into ChangePLUSV (CompanyCode, CrtUser, CrtDate, CrtTime ";
+                            sql += ", ModUser, ModDate, ModTime ";
+                            sql += ", DocNo, DocUser, DocDate ";
+                            sql += ", ExchangeDate, WhNo, CkNo " 
+                                +  ", Layer, Sno "
+                                +  ", PLUOld, PLUNew, Num, DisplayNum) Values ";
+                            sql += " ('" + uu.CompanyId + "', '" + uu.UserID + "', convert(char(10),getdate(),111), convert(char(12),getdate(),108) ";
+                            sql += ", '" + uu.UserID + "', convert(char(10),getdate(),111), convert(char(12),getdate(),108) ";
+                            sql += ", '" + DocNo + "', '" + uu.UserID + "',convert(char(10),getdate(),111)+ ' ' +Substring(convert(char(12),getdate(),108),1,5) ";
+                            sql += ", '" + dr["ExchangeDate"].ToString().SqlQuote() + "','" + dr["WhNo"].ToString().SqlQuote() + "','" + dr["CkNo"].ToString().SqlQuote() + "'"
+                                + ", '" + dr["Layer"].ToString().SqlQuote() + "', '" + dr["Sno"].ToString().SqlQuote() + "'" 
+                                + ", '" + dr["OldPLU"].ToString().SqlQuote() + "', '" + dr["NewPLU"].ToString().SqlQuote() + "', " + dr["Num"].ToString().SqlQuote() + " , " + dr["DisplayNum"].ToString().SqlQuote() + ")";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+                            ts.Complete();
+                        }
+                        catch (Exception err)
+                        {
+                            ts.Dispose();
+                            dbop.Dispose();
+                            throw new Exception(err.Message);
+                        }
+                        dbop.Dispose();
+                    }
+                }
+                sql = "select a.*, a.WhNo+b.ST_SNAME WhName,c.Man_Name , d.GD_SName OldName, e.GD_SName NewName, a.Layer+Sno LayerSno ,b.ST_OpenDay ";
+                sql += " ,Case When IsNull(a.AppDate,'')='' Then '未批核' Else '已批核' End AppStatus";
+                sql += " ,Case When IsNull(a.FinishDate,'')='' Then (Case When IsNull(DefeasanceDate,'')<>'' Then '作廢' Else '未完成' End) Else '完成' End FinStatus";
+                sql += " from ChangePLUSV a";
+                sql += " inner join WarehouseSV b on a.WhNo=b.ST_ID And a.CompanyCode=b.CompanyCode";
+                sql += " left join EmployeeSV c on a.DocUser=c.Man_ID And a.CompanyCode=c.CompanyCode ";
+                sql += " left join PLUSV d on a.PLUOld=d.GD_No And a.CompanyCode=d.CompanyCode  ";
+                sql += " left join PLUSV e on a.PLUNew=e.GD_No And a.CompanyCode=e.CompanyCode ";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "' And a.DocNo='" + DocNo + "'";
+                DataTable dtChgPLU = PubUtility.SqlQry(sql, uu, "SYS");
+                dtChgPLU.TableName = "dtChgPLU";
+                ds.Tables.Add(dtChgPLU);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+
+
+
+
+
         [Route("SystemSetup/SearchVIN14_2Saved")]
         public ActionResult SystemSetup_SearchVIN14_2Saved()
         {
@@ -116,6 +534,390 @@ namespace SVMAdmin.Controllers
 
 
 
+        //2021-05-26 Larry
+        [Route("SystemSetup/SearchVIN14_4")]
+        public ActionResult SystemSetup_SearchVIN14_4()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SearchVIN14_4OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+
+                string WhNo = rq["WhNo"];
+                string CkNo = rq["CkNo"];
+                string exDate = rq["exDate"];
+                string FinStatus = rq["FinStatus"];
+
+                string sql = "select a.*,a.WhNoOut+b.ST_SNAME WhOut,b.ST_SNAME WhOutName, a.WhNoIn+c.ST_SName WhIn,c.ST_SName WhInName,d.Man_Name";
+                sql += " ,Case When IsNull(a.AppDate,'')='' Then '未批核' Else '已批核' End AppStatus";
+                sql += " ,Case When IsNull(a.FinishDate,'')='' Then '未完成' Else '完成' End FinStatus";
+                sql += " ,c.ST_OpenDay";
+                sql += " from ChangeShopSV a";
+                sql += " inner join WarehouseSV b on a.WhNoOut=b.ST_ID And a.CompanyCode=b.CompanyCode";
+                sql += " inner join WarehouseSV c on a.WhNoIn=c.ST_ID And a.CompanyCode=c.CompanyCode";
+                sql += " left  join EmployeeSV d on a.DocUser=d.Man_ID And a.CompanyCode=d.CompanyCode";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "'";
+                sql += " and IsNull(a.AppDate,'')<>''";
+                if (WhNo != "")
+                {
+                    sql += " and a.WhNoOut='" + WhNo + "'";
+                }
+                if (CkNo != "")
+                {
+                    sql += " and a.CkNoOut='" + CkNo + "'";
+                }
+                if (exDate != "")
+                {
+                    sql += " and a.exchangeDate='" + exDate + "'";
+                }
+                if (FinStatus == "Y")
+                {
+                    sql += " and IsNull(a.FinishDate,'')<>''";
+                }
+                else if (FinStatus == "N")
+                {
+                    sql += " and IsNull(a.FinishDate,'')=''";
+                }
+
+                sql += " Order By a.DocNo Desc";
+                DataTable dtInv = PubUtility.SqlQry(sql, uu, "SYS");
+                dtInv.TableName = "dtInv";
+                ds.Tables.Add(dtInv);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+
+        [Route("SystemSetup/ChkChangeShop")]
+        public ActionResult SystemSetup_ChkChangeShop()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "ChkChangeShopOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string WhNo = rq["WhNo"];
+
+                //檢查是否有調撥單未過帳
+                string sql = "Select * from TransferHSV Where CompanyCode='" + uu.CompanyId + "' ";
+                sql += " And IsNull(PostDate,'')='' ";
+                sql +=" And (WhNoOut='" + WhNo + "' Or WhNoIn='" + WhNo + "') ";
+
+                DataTable dtChkTF = PubUtility.SqlQry(sql, uu, "SYS");
+                dtChkTF.TableName = "dtChkTF";
+                ds.Tables.Add(dtChkTF);
+
+                //檢查是否有報廢單未過帳
+                sql = "Select * from UselessHSV Where CompanyCode='" + uu.CompanyId + "' ";
+                sql += " And IsNull(PostDate,'')='' ";
+                sql += " And (WhNoOut='" + WhNo + "' ) ";
+
+                DataTable dtChkUseless = PubUtility.SqlQry(sql, uu, "SYS");
+                dtChkUseless.TableName = "dtChkUseless";
+                ds.Tables.Add(dtChkUseless);
+
+                //檢查是否有調整單未過帳
+                sql = "Select * from AdjustHSV Where CompanyCode='" + uu.CompanyId + "' ";
+                sql += " And IsNull(PostDate,'')='' ";
+                sql += " And (WhNo='" + WhNo + "' ) ";
+
+                DataTable dtChkAdj = PubUtility.SqlQry(sql, uu, "SYS");
+                dtChkAdj.TableName = "dtChkAdj";
+                ds.Tables.Add(dtChkAdj);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+
+        [Route("SystemSetup/FinishChgShop")]
+        public ActionResult SystemSetup_FinishChgShop()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "FinishChgShopOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                //DataTable dtRec = new DataTable("Rack");
+                //PubUtility.AddStringColumns(dtRec, "OldType_ID,Type_ID,Type_Name,DisplayNum");
+                //DataSet dsRQ = new DataSet();
+                //dsRQ.Tables.Add(dtRec);
+                //PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
+                //DataRow dr = dtRec.Rows[0];
+
+                IFormCollection rq = HttpContext.Request.Form;
+                string DocNo = rq["DocNo"];
+                string WhNoOut = rq["WhNoOut"];
+                string CkNoOut = rq["CkNoOut"];
+                string WhNoIn = rq["WhNoIn"];
+                string CkNoIn = rq["CkNoIn"];
+
+                
+                string sql = "";
+                string SysDate = "";
+
+                string OldWareDSVIn = ""; string NewWareDSVIn = "";
+
+                sql = "select convert(char(10),getdate(),111) SysDate";
+                DataTable dtSysDate = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtSysDate.Rows.Count > 0)
+                {
+                    SysDate = dtSysDate.Rows[0][0].ToString();
+                }
+
+                sql = "select WhNoIn From WarehouseDSV (Nolock) " 
+                    + "Where CompanyCode='" + uu.CompanyId.SqlQuote() + "' And ST_ID='" + WhNoOut + "' And CkNo='" + CkNoOut + "' ";
+                DataTable dtOldWareDSVIn = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtOldWareDSVIn.Rows.Count > 0)
+                {
+                    OldWareDSVIn = dtOldWareDSVIn.Rows[0][0].ToString();
+                }
+
+                sql = "select WhNoIn From WarehouseDSV (Nolock) "
+                    + "Where CompanyCode='" + uu.CompanyId.SqlQuote() + "' And ST_ID='" + WhNoOut + "' And CkNo='" + CkNoOut + "' ";
+                DataTable dtNewWareDSVIn = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtNewWareDSVIn.Rows.Count > 0)
+                {
+                    NewWareDSVIn = dtNewWareDSVIn.Rows[0][0].ToString();
+                }
+
+                string OldDocNo = PubUtility.GetNewDocNo(uu, "TH", 6);
+                string NewDocNo = PubUtility.GetNewDocNo(uu, "TH", 6);
+
+
+                using (DBOperator dbop = new DBOperator())
+                {
+                    using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required))
+                    {
+                        try
+                        {
+
+                            //寫入調撥資料
+                            //原智販店調撥表頭
+
+                            string sCkNo = ""; string sLayer = "";
+                            if (OldWareDSVIn != WhNoOut)
+                            {
+                                sCkNo = "XX";
+                                sLayer = "";
+                            }
+                            else
+                            {
+                                sCkNo = "00";
+                                sLayer = "Z";
+                            }
+                            sql = "Insert Into TransferHSV (CompanyCode, CrtUser, CrtDate, CrtTime "
+                                + ",ModUser, ModDate, ModTime "
+                                + ",TH_ID, DocDate, WhNoOut, OutUser"
+                                + ", InDate, InUser, WhNoIn"
+                                + ",ExpressNo, ChkUser, ChkDate, "
+                                + "PostUser, PostDate, DocType"
+                                + ", CkNoOut, CkNoIn, WorkType) Values ";
+                            sql += " ('" + uu.CompanyId.SqlQuote() + "', '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                + ", '" + OldDocNo + "', convert(char(10),getdate(),111), '" + WhNoOut + "', '" + uu.UserID + "'"
+                                + ", '" + SysDate + "','" + uu.UserID + "','" + OldWareDSVIn + "'"
+                                + ", '" + DocNo + "', '" + uu.UserID + "', convert(char(10),getdate(),111)+ ' ' +Substring(convert(char(8),getdate(),108),1,5)"
+                                + ", '" + uu.UserID + "', convert(char(10),getdate(),111)+ ' ' +Substring(convert(char(8),getdate(),108),1,5),'V' "
+                                + ",'" + CkNoOut + "', '" + sCkNo + "', 'IS') ";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+                            //原智販店調撥表身
+                            sql = "Insert Into TransferDSV (CompanyCode, CrtUser, CrtDate, CrtTime, ModUser, ModDate, ModTime, " +
+                                "TH_ID, SeqNo, PLU, OutNum, InNum, " +
+                                "GD_Retail, Amt, LayerIn, SnoIn, LayerOut, EffectiveDate, SnoOut) ";
+                            sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
+                                 + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                 + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                 + ", '" + OldDocNo + "', Cast(Row_Number() Over(Order By a.Layer,a.Sno) As int), a.PLU, a.PtNum, a.PtNum"
+                                 + ", b.GD_Retail, Qty*GD_Retail, '" + sLayer + "', a.Sno, a.Layer"
+                                 + ", a.EffectiveDate, a.Sno";
+                            sql += " From InventorySV a (Nolock) ";
+                            sql += " Inner Join PLUSV b (Nolock) On a.CompanyCode=b.CompanyCode And a.PLU=b.GD_No ";
+                            //sql += " Left Join InventorySV d (Nolock) On a.CompanyCode=d.CompanyCode And a.PLU=d.PLU "
+                                //+ "And d.WhNo='" + WhNoOut + "' And d.CkNo='" + CkNoOut + "' And d.Layer='Z' ";
+                            sql += " Where a.CompanyCode='" + uu.CompanyId + "' "
+                                + "And a.WhNo='" + WhNoOut + "' And a.CkNo='" + CkNoOut + "' ";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+
+                            //新智販店調撥表頭#########
+                            if (NewWareDSVIn != WhNoIn)
+                            {
+                                sCkNo = "XX"; sLayer = "";
+                            }
+                            else
+                            {
+                                sCkNo = "00"; sLayer = "Z";
+                            }
+                            sql = "Insert Into TransferHSV (CompanyCode, CrtUser, CrtDate, CrtTime "
+                                + ",ModUser, ModDate, ModTime "
+                                + ",TH_ID, DocDate, WhNoOut, OutUser"
+                                + ", InDate, InUser, WhNoIn"
+                                + ",ExpressNo, ChkUser, ChkDate, "
+                                + "PostUser, PostDate, DocType"
+                                + ", CkNoOut, CkNoIn, WorkType) Values ";
+                            sql += " ('" + uu.CompanyId.SqlQuote() + "', '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                + ", '" + NewDocNo + "', convert(char(10),getdate(),111), '" + NewWareDSVIn + "', '" + uu.UserID + "'"
+                                + ", '" + SysDate + "','" + uu.UserID + "','" + WhNoIn + "'"
+                                + ", '" + DocNo + "', '" + uu.UserID + "', convert(char(10),getdate(),111)+ ' ' +Substring(convert(char(8),getdate(),108),1,5)"
+                                + ", '" + uu.UserID + "', convert(char(10),getdate(),111)+ ' ' +Substring(convert(char(8),getdate(),108),1,5),'V' "
+                                + ",'" + CkNoIn + "', '" + sCkNo + "', 'IS') ";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+
+
+                            ////變更庫存數量及庫存增減日
+                            ////調出方
+                            //string sqlTROut = "";
+                            //sqlTROut = "Select H.CompanyCode, H.TH_ID, H.WhNoOut, H.CkNoOut, D.LayerOut, D.SnoOut, D.SeqNo, D.PLU, D.OutNum "
+                            //    + " From TransferHSV H Inner Join TransferDSV D "
+                            //    + " On H.CompanyCode = D.CompanyCode And H.TH_ID = D.TH_ID "
+                            //    + " Where H.CompanyCode='" + uu.CompanyId + "' And H.TH_ID='" + DocNo + "' ";
+
+
+                            //    //寫入調出方jahoInvSV
+                            //    sql = "Insert Into JahoInvSV (CompanyCode, CrtUser, CrtDate, CrtTime "
+                            //        + ", ModUser, ModDate, ModTime "
+                            //        + ", DocType, DocNo, WhNo, SeqNo, PLU, Q1, Q2, Q3, CkNo, Layer, Sno) ";
+                            //    sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
+                            //         + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                            //         + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                            //         + ", 'TF', TH_ID, WhNoOut, SeqNo, a.PLU, IsNull(b.PtNum,0), -1*OutNum, IsNull(b.PtNum,0)-OutNum"
+                            //         + ", CkNoOut, LayerOut, SnoOut "
+                            //         + " From (" + sqlTROut + ") a Left Join InventorySV b "
+                            //         + " On a.CompanyCode = b.CompanyCode And a.WhNoOut = b.WhNo and a.CkNoOut = b.CkNo "
+                            //         + " and a.LayerOut=b.Layer And a.SnoOut=b.Sno And a.PLU=b.PLU ";
+                            //    dbop.ExecuteSql(sql, uu, "SYS");
+
+                            //    //已有庫存資料
+                            //    sql = "Update InventorySV "
+                            //        + "Set ModUser='" + uu.UserID + "' "
+                            //        + ",ModDate=convert(char(10),getdate(),111) "
+                            //        + ",ModTime=convert(char(8),getdate(),108) "
+                            //        + ",PtNum=IsNull(PtNum,0) - OutNum "
+                            //        + ",Out_Date = Case When Out_Date>'" + SysDate + "' Then Out_Date Else '" + SysDate + "' End "
+                            //        + "From (" + sqlTROut + ") a Inner Join InventorySV b "
+                            //        + "On a.CompanyCode=b.CompanyCode and a.WhNoOut=b.WhNo and a.CkNoOut=b.CkNo "
+                            //        + "and a.LayerOut=b.Layer And a.SnoOut=b.Sno And a.PLU=b.PLU ";
+                            //    sql += " Where b.CompanyCode='" + uu.CompanyId + "' ";
+                            //    dbop.ExecuteSql(sql, uu, "SYS");
+
+                            //    //沒有庫存資料-新增
+                            //    sql = "Insert Into InventorySV (CompanyCode, CrtUser, CrtDate, CrtTime "
+                            //        + ", ModUser, ModDate, ModTime "
+                            //        + ", WhNo, a.PLU, Out_Date, CkNo, Layer, Sno, PtNum) ";
+                            //    sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
+                            //         + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                            //         + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                            //         + ", WhNoOut, PLU, '" + SysDate + "', CkNoOut, LayerOut, SnoOut, -1*OutNum "
+                            //         + " From (" + sqlTROut + ") a Left Join InventorySV b "
+                            //         + " On a.CompanyCode = b.CompanyCode and a.WhNoOut = b.WhNo and a.CkNoOut = b.CkNo "
+                            //         + "and a.LayerOut=b.Layer And a.SnoOut=b.Sno And a.PLU=b.PLU "
+                            //         + "Where b.PLU Is Null ";
+                            //    dbop.ExecuteSql(sql, uu, "SYS");
+
+
+
+
+
+                            ////調入方
+                            //string sqlTRIn = "";
+                            //sqlTRIn = "Select H.CompanyCode, H.TH_ID, H.WhNoIn, H.CkNoIn, D.LayerIn, D.SnoIn, D.SeqNo, D.PLU, D.InNum "
+                            //    + " From TransferHSV H Inner Join TransferDSV D "
+                            //    + " On H.CompanyCode = D.CompanyCode And H.TH_ID = D.TH_ID "
+                            //    + " Where H.CompanyCode='" + uu.CompanyId + "' And H.TH_ID='" + DocNo + "' ";
+                            ////寫入調入方jahoInvSV
+                            //sql = "Insert Into JahoInvSV (CompanyCode, CrtUser, CrtDate, CrtTime "
+                            //    + ", ModUser, ModDate, ModTime "
+                            //    + ", DocType, DocNo, WhNo, SeqNo, PLU, Q1, Q2, Q3, CkNo, Layer, Sno) ";
+                            //sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
+                            //     + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                            //     + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                            //     + ", 'TF', TH_ID, WhNoIn, SeqNo, a.PLU, IsNull(b.PtNum,0), InNum, IsNull(b.PtNum,0)+InNum"
+                            //     + ", CkNoIn, LayerIn, SnoIn "
+                            //     + " From (" + sqlTRIn + ") a Left Join InventorySV b "
+                            //     + " On a.CompanyCode = b.CompanyCode And a.WhNoIn = b.WhNo and a.CkNoIn = b.CkNo "
+                            //     + " and a.LayerIn = b.Layer And a.SnoIn = b.Sno And a.PLU=b.PLU ";
+                            //dbop.ExecuteSql(sql, uu, "SYS");
+
+                            ////已有庫存資料
+                            //sql = "Update InventorySV "
+                            //    + "Set ModUser='" + uu.UserID + "' "
+                            //    + ",ModDate=convert(char(10),getdate(),111) "
+                            //    + ",ModTime=convert(char(8),getdate(),108) "
+                            //    + ",PtNum=IsNull(PtNum,0) + InNum "
+                            //    + ",In_Date = Case When In_Date>'" + SysDate + "' Then In_Date Else '" + SysDate + "' End "
+                            //    + "From (" + sqlTRIn + ") a Inner Join InventorySV b "
+                            //    + "On a.CompanyCode=b.CompanyCode and a.WhNoIn=b.WhNo and a.CkNoIn=b.CkNo And a.PLU=b.PLU "
+                            //    + "and a.LayerIn=b.Layer And a.SnoIn=b.Sno ";
+                            //sql += " Where b.CompanyCode='" + uu.CompanyId + "' ";
+                            //dbop.ExecuteSql(sql, uu, "SYS");
+
+                            ////沒有庫存資料-新增
+                            //sql = "Insert Into InventorySV (CompanyCode, CrtUser, CrtDate, CrtTime "
+                            //    + ", ModUser, ModDate, ModTime"
+                            //    + ", WhNo, PLU, In_Date, CkNo, Layer, Sno, PtNum) ";
+                            //sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
+                            //     + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                            //     + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                            //     + ", WhNoIn, a.PLU, '" + SysDate + "', CkNoIn, LayerIn, SnoIn, InNum "
+                            //     + " From (" + sqlTRIn + ") a Left Join InventorySV b "
+                            //     + " On a.CompanyCode = b.CompanyCode and a.WhNoIn = b.WhNo and a.CkNoIn = b.CkNo "
+                            //     + " and a.LayerIn=b.Layer And a.SnoIn=b.Sno And a.PLU=b.PLU "
+                            //     + "Where b.PLU Is Null ";
+                            //dbop.ExecuteSql(sql, uu, "SYS");
+
+                            ts.Complete();
+                        }
+                        catch (Exception err)
+                        {
+                            ts.Dispose();
+                            dbop.Dispose();
+                            throw new Exception(err.Message);
+                        }
+                        dbop.Dispose();
+                    }
+                }
+                sql = "select a.*,a.WhNoOut+b.ST_SNAME WhOut,b.ST_SNAME WhOutName, a.WhNoIn+c.ST_SName WhIn,c.ST_SName WhInName,d.Man_Name";
+                sql += " ,Case When IsNull(a.AppDate,'')='' Then '未批核' Else '已批核' End AppStatus";
+                sql += " ,Case When IsNull(a.FinishDate,'')='' Then '未完成' Else '完成' End FinStatus";
+                sql += " ,c.ST_OpenDay";
+                sql += " from ChangeShopSV a";
+                sql += " inner join WarehouseSV b on a.WhNoOut=b.ST_ID And a.CompanyCode=b.CompanyCode";
+                sql += " inner join WarehouseSV c on a.WhNoIn=c.ST_ID And a.CompanyCode=c.CompanyCode";
+                sql += " left  join EmployeeSV d on a.DocUser=d.Man_ID And a.CompanyCode=d.CompanyCode";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "'";
+                sql += " And a.DocNo='" + DocNo + "'";
+                DataTable dtRes = PubUtility.SqlQry(sql, uu, "SYS");
+                dtRes.TableName = "dtRes";
+                ds.Tables.Add(dtRes);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
 
         [Route("SystemSetup/GetInitVIN47")]
         public ActionResult SystemSetup_GetInitVIN47()
@@ -139,6 +941,7 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+
 
 
         [Route("SystemSetup/SearchVIN47")]

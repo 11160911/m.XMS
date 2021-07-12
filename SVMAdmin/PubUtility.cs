@@ -719,14 +719,15 @@ namespace SVMAdmin
             dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMPicVdoSet", "圖片/影片設定", "GMPicVdoSet", "P", "fa-cubes" });
             dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMMacType", "智販機類別設定", "GMMacType", "P", "fa-cubes" });
 
-            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN13_1", "換店作業", "VIN13_1", "P", "fa-th-large" });
-            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMPick", "商品撿貨作業", "OMPick", "P", "fa-th-large" });
+            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN13_1", "換店設定", "VIN13_1", "P", "fa-th-large" });
+            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN13_2", "商品換貨設定", "VIN13_2", "P", "fa-th-large" });
+            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN14_1", "商品撿貨作業", "VIN14_1", "P", "fa-th-large" });
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN14_2", "商品補貨作業", "VIN14_2", "P", "fa-th-large" });
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMReturn", "商品退貨作業", "OMReturn", "P", "fa-th-large" });
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMScrap", "商品報廢作業", "OMScrap", "P", "fa-th-large" });
-            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMChange", "商品換貨作業", "OMChange", "P", "fa-th-large" });
+            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN14_4", "換店作業", "VIN14_4", "P", "fa-th-large" });
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN47", "商品調整作業", "VIN47", "P", "fa-th-large" });
-            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMChangeGood", "換貨作業", "OMChangeGood", "P", "fa-th-large" });
+            
 
             dt.Rows.Add(new object[] { "營運分析", "SaleAnalysis", "SAReport1", "區域別銷售分析", "SAReport1", "P", "fa-file-excel-o" });
             dt.Rows.Add(new object[] { "營運分析", "SaleAnalysis", "SAReport2", "商品別銷售分析", "SAReport2", "P", "fa-file-excel-o" });

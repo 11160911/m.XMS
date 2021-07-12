@@ -280,7 +280,7 @@
 
             else if (pg == "VIN13_1") {
                 //alert("VIN13_1");
-                if (window.PageVIN13 == undefined)
+                if (window.PageVIN13_1 == undefined)
 
                     $.getScript('VIN13_1.js',
                         function () {
@@ -291,6 +291,22 @@
                     PageVIN13_1($(".right_col"));
                 }
             }
+
+
+            else if (pg == "VIN13_2") {
+                //alert("VIN13_2");
+                if (window.PageVIN13_2 == undefined)
+
+                    $.getScript('Inv/VIN13_2.js',
+                        function () {
+                            PageVIN13_2($(".right_col"));
+                        }
+                    );
+                else {
+                    PageVIN13_2($(".right_col"));
+                }
+            }
+
 
             else if (pg == "VIN14_2") {
                 //alert("VIN14_2");
@@ -303,6 +319,20 @@
                     );
                 else {
                     PageVIN14_2($(".right_col"));
+                }
+            }
+
+            else if (pg == "VIN14_4") {
+                //alert("VIN14_4");
+                if (window.PageVIN14_4 == undefined)
+
+                    $.getScript('Inv/VIN14_4.js',
+                        function () {
+                            PageVIN14_4($(".right_col"));
+                        }
+                    );
+                else {
+                    PageVIN14_4($(".right_col"));
                 }
             }
 

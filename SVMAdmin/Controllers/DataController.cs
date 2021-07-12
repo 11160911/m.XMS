@@ -2591,8 +2591,66 @@ namespace SVMAdmin.Controllers
         }
 
 
+        //2021-06-21
+        [Route("SystemSetup/GetWhCkLayerSno")]
+        public ActionResult SystemSetup_GetWhCkLayerSno()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetWhCkLayerSnoOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string WhNo = rq["WhNo"];
+                string CkNo = rq["CkNo"];
+                string LayerNo = rq["LayerNo"];
+                string sql = "select Distinct a.ChannelNo ";
+                sql += " from MachineListSpec a (NoLock) ";
+                sql += " Inner Join WarehouseDSV b (NoLock) On a.CompanyCode=b.CompanyCode And a.SNno=b.SNno ";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "' and b.ST_ID='" + WhNo + "' And b.CkNo='" + CkNo + "' And a.LayerNo='" + LayerNo + "' ";
+                sql += " Order By a.ChannelNo ";
+                DataTable dtCK = PubUtility.SqlQry(sql, uu, "SYS");
+                dtCK.TableName = "dtCK";
+                ds.Tables.Add(dtCK);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
 
 
+        //2021-06-21
+        [Route("SystemSetup/GetWhCkLayerSnoPLU")]
+        public ActionResult SystemSetup_GetWhCkLayerSnoPLU()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetWhCkLayerSnoPLUOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string WhNo = rq["WhNo"];
+                string CkNo = rq["CkNo"];
+                string LayerNo = rq["LayerNo"];
+                string Sno = rq["Sno"];
+                string sql = "select a.PLU, b.GD_SName ";
+                sql += " from InventorySV a (NoLock) ";
+                sql += " Inner Join PLUSV b (NoLock) On a.CompanyCode=b.CompanyCode And a.PLU=b.GD_No ";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "' and a.WhNo='" + WhNo + "' And a.CkNo='" + CkNo + "' And a.Layer='" + LayerNo + "' And a.SNo='" + Sno + "' ";
+                DataTable dtCK = PubUtility.SqlQry(sql, uu, "SYS");
+                dtCK.TableName = "dtCK";
+                ds.Tables.Add(dtCK);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
 
 
         //2021-05-26 Larry

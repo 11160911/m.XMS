@@ -290,7 +290,7 @@
             <div class="">
                 <div class="page-title">
                     <div class="title_left">
-                        <h3>換店設定</h3>
+                        <h3>換店作業</h3>
                     </div>
                     <!--
         <div class="title_right">
@@ -310,13 +310,13 @@
 
 
                 <!--2021-04-28-->
-                <article id="pgVIN13_2" class="row">
+                <article id="pgVIN14_4" class="row">
 
-                    <div class="modal fade" id="modal_VIN13_2">
+                    <div class="modal fade" id="modal_VIN14_4" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h4 class="modal-title">智販機換店設定</h4>
+                                    <h4 class="modal-title">智販機換店作業</h4>
                                 </div>
                                 <div class="modal-body modal-tab-container">
                                     <style>
@@ -334,111 +334,61 @@
                                     </style>
                                     <div class="card-block forminput">
                                         <div class="form-group row">
-                                            <label class="col-form-label col-3">智販店代號</label>
-                                            <div class="col-3">
-                                                <input id="WhNo" type="text" class="form-control" autocomplete="off" />
-                                                <!--<span class="msg-valid valid-blank"></span>-->
-                                            </div>
-                                            <label id="lblWhNo" class="col-form-label col-3"></label>
-                                            <label id="WhName" class="col-form-label col-3"></label>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-3">機號</label>
-
-                                            <div class="col-2">
-                                                <select id="CkNo" class="form-control">
-                                                    <option> </option>
-                                                </select>
-                                            </div>
-
-                                            <label id="lblCkNo" class="col-form-label col-3"></label>
-                                            <!--<div class="col-4">
-        <input id="CkNo" type="text" class="form-control" autocomplete="off" />-->
-                                            <!--<span class="msg-valid valid-blank"></span>-->
-                                            <!--</div>-->
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-3">貨倉</label>
-
-                                            <div class="col-2">
-                                                <select id="Layer" class="form-control">
-                                                    <option> </option>
-                                                </select>
-                                            </div>
-
-                                            <label id="lblLayer" class="col-form-label col-3"></label>
-
-
-                                            <label class="col-form-label col-3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;貨道</label>
-
-                                            <div class="col-2">
-                                                <select id="Sno" class="form-control">
-                                                    <option> </option>
-                                                </select>
-                                            </div>
-
-                                            <label id="lblSno" class="col-form-label col-3"></label>
-
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-3">原商品</label>
-                                            <label id="OldPLU" class="col-form-label col-5"></label>
-                                            <label id="lblOldPLU" class="col-form-label col-3"></label>
-                                            <!--<div class="col-4">-->
-                                            <!-- <input id="OldPLU" type="text" class="form-control" autocomplete="off" />-->
-                                            <!--<span class="msg-valid valid-blank"></span>-->
-                                            <!--</div>-->
-                                        </div>
-
-
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-3">新品號</label>
+                                            <label class="col-form-label col-3">原智販店代號</label>
                                             <div class="col-4">
-                                                <input id="NewPLU" type="text" class="form-control" autocomplete="off" />
+                                                <input id="WhNoOut" type="text" class="form-control" autocomplete="off" />
                                                 <span class="msg-valid valid-blank"></span>
                                             </div>
-                                            <label id="lblNewPLU" class="col-form-label col-2"></label>
+                                            <label id="WhOutName" class="col-form-label col-3"></label>
                                         </div>
-
-
                                         <div class="form-group row">
-                                            <label class="col-form-label col-3">新商品</label>
-                                            <label id="NewPLUName" class="col-form-label col-3"></label>
-                                        </div>
+                                            <label class="col-form-label col-3">原機號</label>
 
-
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-3">新補貨量</label>
-
-                                            <!--<div style="text-align:right"></div>-->
-
-                                            <div class="col-3">
-                                                <input id="Num" type="text" class="form-control" autocomplete="off" text-align="right"/>
-                                                <span class="msg-valid valid-blank"></span>
+                                            <div class="col-2">
+                                                <select id="CkNoOut" class="form-control">
+                                                    <option> </option>
+                                                </select>
                                             </div>
 
-
-                                            <label id="lblNum" class="col-form-label col-2"></label>
+                                            <!--<select id="CkNoOut" class="form-control">
+                                                <option> </option>
+                                            </select>-->
+                                            <!--<div class="col-4">
+                                                <input id="CkNoOut" type="text" class="form-control" autocomplete="off" />
+                                                <span class="msg-valid valid-blank"></span>
+                                            </div>-->
                                         </div>
-
                                         <div class="form-group row">
-                                            <label class="col-form-label col-3">新滿倉量</label>
-                                            <div class="col-3">
-                                                <input id="DisplayNum" type="text" class="form-control" autocomplete="off" align="right"/>
+                                            <label class="col-form-label col-3">新智販店代號</label>
+                                            <div class="col-4">
+                                                <input id="WhNoIn" type="text"  class="form-control" autocomplete="off" />
                                                 <span class="msg-valid valid-blank"></span>
                                             </div>
-                                            <label id="lblDisplayNum" class="col-form-label col-2"></label>
+                                            <label id="WhInName" class="col-form-label col-3"></label>
                                         </div>
-
                                         <div class="form-group row">
-                                            <label class="col-form-label col-3">換貨日期</label>
+                                            <label class="col-form-label col-3">新機號</label>
+
+                                            <div class="col-2">
+                                                <select id="CkNoIn" class="form-control">
+                                                    <option> </option>
+                                                </select>
+                                            </div>
+
+                                            <!--<div class="col-4">
+                                                <input id="CkNoIn" type="text" class="form-control" autocomplete="off" />
+                                                <span class="msg-valid valid-blank"></span>
+                                            </div>-->
+                                            <label id="lblSTOpenDate" class="col-form-label col-1"> </label>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-3">換店日期</label>
                                             <div class="col-4">
                                                 <input id="ExchangeDate" type="text" class="form-control" autocomplete="off" />
-                                                <!--<span class="msg-valid valid-blank"></span>-->
+                                                <span class="msg-valid valid-blank"></span>
                                             </div>
                                             <label id="lblExDate" class="col-form-label col-3"> </label>
                                         </div>
-
                                     </div>
                                     <div class="modal-footer">
                                         <button id="btCancel" type="button" class="btn btn-primary">取消</button>
@@ -455,35 +405,30 @@
 
 
                     <!--<style>
-        #tbVIN13_2 .fa-toggle-off, #tbVIN13_2 .fa-toggle-on {
+        #tbVIN14_4 .fa-toggle-off, #tbVIN14_4 .fa-toggle-on {
             font-size: 28px;
             color: lightblue;
         }
     </style>-->
-                    <style>
-                        #tbVIN13_2 .fa-certificate {
+                    <!--<style>
+                        #tbVIN14_4 .fa-certificate {
                             font-size: 28px;
                             color: green;
                         }
-                    </style>
+                    </style>-->
                     <style>
-                        #tbVIN13_2 .fa-file-text-o {
+                        #tbVIN14_4 .fa-tags {
                             font-size: 28px;
                             color: lightblue;
                         }
                     </style>
-                    <style>
-                        #tbVIN13_2 .fa-trash-o {
+                    <!--<style>
+                        #tbVIN14_4 .fa-trash-o {
                             font-size: 28px;
                             color: red;
                         }
-                    </style>
-                    <style>
-                        #tbVIN13_2 .fa-lock {
-                            font-size: 28px;
-                            color: red;
-                        }
-                    </style>
+                    </style>-->
+
 
                     <div class="col-md-12 col-sm-12 ">
                         <div class="x_panel">
@@ -491,7 +436,7 @@
                                 <div class="form-group row">
 
                                     <div class="col-2">
-                                        <label class="col-form-label">換貨日期</label>
+                                        <label class="col-form-label">換店日期</label>
                                         <input id="exDate" type="text" class="form-control" />
                                         <span class="msg-valid valid-blank"></span>
                                     </div>
@@ -503,17 +448,19 @@
                                         </select>
                                     </div>
 
-                                    <div class="col-md-2">
+                                    <div class="col-md-1">
                                         <label class="col-form-label">機&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號</label>
                                         <select id="cbCK" class="form-control">
                                             <option> </option>
                                         </select>
                                     </div>
 
-                                    <div class="col-md-2">
-                                        <label class="col-form-label">貨&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;倉</label>
-                                        <select id="cbLayer" class="form-control">
+                                    <div class="col-md-1">
+                                        <label class="col-form-label">換店狀態</label>
+                                        <select id="cbStatus" class="form-control">
                                             <option> </option>
+                                            <option>未完成</option>
+                                            <option>已完成</option>
                                         </select>
                                     </div>
 
@@ -529,51 +476,33 @@
 
 
                             <div class="x_content">
-                                <div class="form-group row">
+                                <!--<div class="form-group row">
                                     <div class="col-md-9">
                                         <button type="button" id="btAdd" class="custom-control-inline btn btn-success">新增</button>
                                     </div>
-                                </div>
+                                </div>-->
 
-                                <table id="tbVIN13_2" class="table table-hover">
+                                <table id="tbVIN14_4" class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th>修改</th>
-                                            <th>刪除</th>
-                                            <th>作廢</th>
-                                            <th>智販店</th>
-                                            <th>機號</th>
-                                            <th>貨道</th>
-                                            <th>原商品</th>
-                                            <th>新商品</th>
-                                            <th>新補貨量</th>
-                                            <th>新滿倉量</th>
-                                            <th>換貨日期</th>
-                                            <th>申請者</th>
-                                            <th>申請日期</th>
-                                            <th>批核</th>
-                                            <th>批核狀態</th>
-                                            <th>換貨狀態</th>
+                                            <th>操作</th>
+                                            <th>原智販店</th>
+                                            <th>原機號</th>
+                                            <th>新智販店</th>
+                                            <th>新機號</th>
+                                            <th>換店日期</th>
+                                            <th>換店狀態</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><span class="fa fa-file-text-o"></span></td>
-                                            <td><span class="fa fa-trash-o"></span></td>
-                                            <td><span class="fa fa-lock"></span></td>
-                                            <td>智販店</td>
-                                            <td>機號</td>
-                                            <td>貨道</td>
-                                            <td>原商品</td>
-                                            <td>新商品</td>
-                                            <td>新補貨量</td>
-                                            <td>新滿倉量</td>
-                                            <td>換貨日期</td>
-                                            <td>申請者</td>
-                                            <td>申請日期</td>
-                                            <td><span class="fa fa-certificate"></span></td>
-                                            <td>53425</td>
-                                            <td>53425</td>
+                                            <td><span class="fa fa-tags"></span></td>
+                                            <td>原智販店</td>
+                                            <td>11</td>
+                                            <td>11</td>
+                                            <td>11</td>
+                                            <td>11</td>
+                                            <td>11</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -587,14 +516,14 @@
             </div>
     </div>
     <!-- /page content -->
-                                            <!-- footer content -->
-                                            <footer>
-                                                <div class="pull-right">
+            <!-- footer content -->
+                <footer>
+                        <div class="pull-right">
                                                     
-                                                </div>
-                                                <div class="clearfix"></div>
-                                            </footer>
-                                            <!-- /footer content -->
+                        </div>
+                        <div class="clearfix"></div>
+                </footer>
+            <!-- /footer content -->
 </div>
     </div>
 
