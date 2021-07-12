@@ -925,3 +925,19 @@ var SetCommSelectGrid = function (option) {
 
 
 }
+
+var DateDiff = function (interval, objDate1, objDate2) {
+    var dtBeg = new Date(objDate1);
+    var dtEnd = new Date(objDate2);
+    if (isNaN(dtBeg)) return undefined;
+    if (isNaN(dtEnd)) return undefined;
+    switch (interval) {
+        case "s": return parseInt((dtEnd - dtBeg) / 1000);      //秒
+        case "n": return parseInt((dtEnd - dtBeg) / 60000);     //分
+        case "h": return parseInt((dtEnd - dtBeg) / 3600000);   //時
+        case "d": return parseInt((dtEnd - dtBeg) / 86400000);  //日
+        case "w": return parseInt((dtEnd - dtBeg) / (86400000 * 7));    //週
+        case "m": return (dtEnd.getMonth() + 1) + ((dtEnd.getFullYear() - this.getFullYear()) * 12) - (this.getMonth() + 1);    //月
+        case "y": return dtEnd.getFullYear() - this.getFullYear();  //年
+    }
+}
