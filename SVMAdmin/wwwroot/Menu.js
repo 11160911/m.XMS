@@ -383,6 +383,28 @@
                     PageVSA04P($(".right_col"));
                 }
             }
+            else if (pg == "VSA21P") {
+                if (window.PageParameter == undefined)
+                    $.getScript('AIReports/VSA21P.js',
+                        function () {
+                            PageVSA21P($(".right_col"));
+                        }
+                    );
+                else {
+                    PageVSA21P($(".right_col"));
+                }
+            }
+            else if (pg == "VSA21_7P") {
+                if (window.PageParameter == undefined)
+                    $.getScript('AIReports/VSA21_7P.js',
+                        function () {
+                            PageVSA21_7P($(".right_col"));
+                        }
+                    );
+                else {
+                    PageVSA21_7P($(".right_col"));
+                }
+            }
             else if (pg == "SDAccount") {
                 if (window.PageSDAccount == undefined)
                     $.getScript('MasterFile/SDAccount.js',

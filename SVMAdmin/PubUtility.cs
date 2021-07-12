@@ -723,9 +723,10 @@ namespace SVMAdmin
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN13_2", "商品換貨設定", "VIN13_2", "P", "fa-th-large" });
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN14_1", "商品撿貨作業", "VIN14_1", "P", "fa-th-large" });
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN14_2", "商品補貨作業", "VIN14_2", "P", "fa-th-large" });
-            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMReturn", "商品退貨作業", "OMReturn", "P", "fa-th-large" });
-            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMScrap", "商品報廢作業", "OMScrap", "P", "fa-th-large" });
+            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN14_3", "商品報廢/退貨作業", "VIN14_3", "P", "fa-th-large" });
+            //dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMScrap", "商品作業", "OMScrap", "P", "fa-th-large" });
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN14_4", "換店作業", "VIN14_4", "P", "fa-th-large" });
+            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN14_5", "商品換貨作業", "VIN14_5", "P", "fa-th-large" });
             dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN47", "商品調整作業", "VIN47", "P", "fa-th-large" });
             
 
@@ -733,7 +734,8 @@ namespace SVMAdmin
             dt.Rows.Add(new object[] { "營運分析", "SaleAnalysis", "SAReport2", "商品別銷售分析", "SAReport2", "P", "fa-file-excel-o" });
 
             dt.Rows.Add(new object[] { "智能報表", "AIReports", "VSA04P", "交易明細", "VSA04P", "P", "fa-file-excel-o" });
-
+            dt.Rows.Add(new object[] { "智能報表", "AIReports", "VSA21P", "商品銷售排行", "VSA21P", "P", "fa-file-excel-o" });
+            dt.Rows.Add(new object[] { "智能報表", "AIReports", "VSA21_7P", "區域銷售排行", "VSA21_7P", "P", "fa-file-excel-o" });
 
             return dt.Copy();
         }

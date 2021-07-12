@@ -2680,7 +2680,34 @@ namespace SVMAdmin.Controllers
         }
 
 
+        [Route("SystemSetup/GetQueryDays")]
+        public ActionResult SystemSetup_GetQueryDays()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetQueryDaysOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ProgramID = rq["ProgramID"];
+                string sql = "select QueryDays from CompanyPIDSV where Companycode='" + uu.CompanyId + "' and Programid='" + ProgramID.SqlQuote() + "'";
 
+                DataTable dtQueryDays = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtQueryDays.Rows.Count == 0)
+                    sql = "select QueryDays from ProgramID where Programid='" + ProgramID.SqlQuote() + "'";
+                dtQueryDays = PubUtility.SqlQry(sql, uu, "SYS");
+
+                dtQueryDays.TableName = "dtQueryDays";
+                ds.Tables.Add(dtQueryDays);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
 
 
 
