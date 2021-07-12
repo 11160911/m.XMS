@@ -28,317 +28,327 @@ namespace SVMAdmin.Controllers
                 DataTable dtD = dsS.Tables["PosSalesD"];
                 DataTable dtP = dsS.Tables["PosSalesP"];
                 DataTable dtC = dsS.Tables["Company"];
-
-                string sql = "select * from SalesH where CompanyCode='" + uu.CompanyId.SqlQuote() + "'";
-                sql += " and ShopNo='" + dtC.Rows[0]["Face_ID"].ToString().SqlQuote() + "'";
-                sql += " and OpenDate='" + dtH.Rows[0]["SalesDate"].ToString().SqlQuote() + "'";
-                sql += " and CKNo='" + dtH.Rows[0]["MachineNo"].ToString().SqlQuote() + "'";
-                sql += " and ChrNo='" + dtH.Rows[0]["TransSeq"].ToString().PadLeft(6, '0').SqlQuote() + "'";
-                DataTable dtA = PubUtility.SqlQry(sql, uu, "SYS");
-
-                sql = "select * from SalesD where 1=2";
-                DataTable dtB = PubUtility.SqlQry(sql, uu, "SYS");
-
-                sql = "select * from PaymentD where 1=2";
-                DataTable dtPD = PubUtility.SqlQry(sql, uu, "SYS");
-
-                bool isExists = true;
-                if (dtA.Rows.Count == 0)
+                bool isExists = false;
+                for (int i = 0; i < dtH.Rows.Count; i++)
                 {
-                    isExists = false;
-                    dtA.Rows.Add(dtA.NewRow());
-                    sql = "insert into xSToWConnectRecSV (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime,ShopNo,CkNo,TranDate,UPFlag)".CrLf();
-                    sql += "select '" + uu.CompanyId.SqlQuote() + "','001',Convert(varchar,getdate(),111),substring(convert(varchar,getdate(),121),12,12)".CrLf();
-                    sql += ",'001',Convert(varchar,getdate(),111),substring(convert(varchar,getdate(),121),12,12),'" + dtC.Rows[0]["Face_ID"].ToString().SqlQuote() + "'".CrLf();
-                    sql += ",'" + dtC.Rows[0]["POSID"].ToString().SqlQuote() + "','" + dtH.Rows[0]["SalesDate"].ToString().SqlQuote() + "'".CrLf();
-                    sql += ",'v'";
-                    PubUtility.ExecuteSql(sql, uu, "SYS");
-                }
+                    string sql = "select * from SalesH where CompanyCode='" + uu.CompanyId.SqlQuote() + "'";
+                    sql += " and ShopNo='" + dtC.Rows[0]["Face_ID"].ToString().SqlQuote() + "'";
+                    sql += " and OpenDate='" + dtH.Rows[i]["SalesDate"].ToString().SqlQuote() + "'";
+                    sql += " and CKNo='" + dtH.Rows[i]["MachineNo"].ToString().SqlQuote() + "'";
+                    sql += " and ChrNo='" + dtH.Rows[i]["TransSeq"].ToString().PadLeft(6, '0').SqlQuote() + "'";
+                    DataTable dtA = PubUtility.SqlQry(sql, uu, "SYS");
 
-                #region data mapping
-                DataRow drA = dtA.Rows[0];
-                drA["Status"] = "";
-                drA["operCode"] = "";
-                drA["ShopNo"] = dtC.Rows[0]["Face_ID"];
-                drA["OpenDate"] = dtH.Rows[0]["SalesDate"];
-                drA["CKNo"] = dtH.Rows[0]["MachineNo"];
-                drA["ChrNo"] = dtH.Rows[0]["TransSeq"].ToString().PadLeft(6, '0');
-                drA["OpenTime"] = dtH.Rows[0]["TransTime"];
-                drA["InvType"] = dtH.Rows[0]["TaxType"];
-                drA["Inv"] = dtH.Rows[0]["InvTYpe"];
-                drA["InvNum"] = dtH.Rows[0]["InvNum"];
-                drA["InvNo"] = dtH.Rows[0]["InvBegNo"];
-                drA["InvNoE"] = dtH.Rows[0]["InvEndNo"];
-                drA["CkerNo"] = dtH.Rows[0]["SalesMan"];
-                drA["CUID"] = dtH.Rows[0]["SerialNo"];
-                drA["IfVIP"] = dtH.Rows[0]["VIPNo"].ToString() == "" ? "0" : "1";
-                drA["VIPNo"] = dtH.Rows[0]["VIPNo"];
-                drA["InvTitle"] = dtH.Rows[0]["InvTitle"];
-                drA["InvAddress"] = dtH.Rows[0]["InvAddress"];
-                drA["PeopleNum"] = dtH.Rows[0]["Person"];
-                drA["TableNum"] = dtH.Rows[0]["TableNo"];
-                drA["SalesMan1"] = dtH.Rows[0]["Salesman1"];
-                drA["SalesMan2"] = dtH.Rows[0]["Salesman2"];
-                drA["SalesMan3"] = dtH.Rows[0]["Salesman3"];
-                drA["SalesMan4"] = dtH.Rows[0]["Salesman4"];
-                drA["SalesMan5"] = dtH.Rows[0]["Salesman5"];
-                drA["SalesMan6"] = dtH.Rows[0]["Salesman6"];
-                drA["Cash"] = dtH.Rows[0]["TotalAmt"];
-                drA["Discount"] = -1 * PubUtility.CB(dtH.Rows[0]["ItemDiscount"]) + PubUtility.CB(dtH.Rows[0]["Discount"]);
-                drA["InvCash"] = PubUtility.CB(dtH.Rows[0]["TotalAmt"]) + PubUtility.CB(dtH.Rows[0]["TaxAmt"]);
-                drA["Tax"] = dtH.Rows[0]["TaxAmt"];
-                drA["FaxCash"] = dtH.Rows[0]["TotalTax"];
-                drA["PriceDiscount"] = dtH.Rows[0]["PriceDiscount"];
-                drA["HandDiscount"] = dtH.Rows[0]["HandDiscount"];
-                drA["IfPass"] = "N";
-                drA["PassUser"] = "";
-                drA["PassDate"] = "";
-                drA["VIP_Export"] = "";
-                drA["SYSDate"] = dtH.Rows[0]["OpenDate"];
-                drA["VIP_ID2"] = "";
-                drA["IssuedCash"] = dtH.Rows[0]["IssuedCash"];
-                drA["BOpenDate"] = "";
-                drA["BCKNo"] = "";
-                drA["BChrNo"] = "";
-                drA["ComputerDate"] = dtH.Rows[0]["ModDate"];
-                drA["RndCode"] = dtH.Rows[0]["RndCode"];
-                drA["SubDiscount"] = dtH.Rows[0]["SubDiscount"];
-                drA["SubHandDiscount"] = dtH.Rows[0]["SubHandDiscount"];
-                drA["HeartCode"] = dtH.Rows[0]["HeartCode"];
-                drA["MobileCode"] = dtH.Rows[0]["MobileCode"];
-                drA["InvAmt"] = dtH.Rows[0]["InvAmt"];
-                drA["InvPrint"] = dtH.Rows[0]["InvPrint"];
-                drA["CopyPrint"] = dtH.Rows[0]["CopyPrint"];
-                drA["SeqNo"] = dtH.Rows[0]["SeqNo"];
-                drA["BComputerDate"] = "";
-                drA["BOpenTime"] = "";
-                drA["PS_NO"] = ""; // dtH.Rows[0]["PS_NO"];
-                drA["PS_Point"] = DBNull.Value; // dtH.Rows[0]["PS_Point"];
-                drA["SalesFlag"] = dtH.Rows[0]["SalesFlag"];
-                drA["DocNO_Buy"] = "";
-                drA["DocNO_Get"] = "";
-                drA["PassDateSV"] = "";
+                    sql = "select * from SalesD where 1=2";
+                    DataTable dtB = PubUtility.SqlQry(sql, uu, "SYS");
 
+                    sql = "select * from PaymentD where 1=2";
+                    DataTable dtPD = PubUtility.SqlQry(sql, uu, "SYS");
 
-                foreach (DataRow drD in dtD.Rows)
-                {
-                    DataRow drB = dtB.NewRow();
-                    drB["Status"] = drD["FlagPickup"];
-                    drB["operCode"] = "";
-                    drB["ShopNo"] = dtC.Rows[0]["Face_ID"];
-                    drB["OpenDate"] = dtH.Rows[0]["SalesDate"];
-                    drB["CkNo"] = dtH.Rows[0]["MachineNo"];
-                    drB["ChrNo"] = dtH.Rows[0]["TransSeq"].ToString().PadLeft(6, '0');
-                    drB["No"] = drD["ItemSeq"];
-                    drB["GoodsNo"] = drD["GoodsNo"];
-                    drB["Goods"] = "";
-                    drB["Unit"] = drD["Unit"];
-                    drB["Prices"] = drD["UnitPrice"];
-                    drB["Num"] = drD["SalesQty"];
-                    drB["Cash"] = PubUtility.CB(drD["SalesAmt"]) + PubUtility.CB(drD["SPDisc"]);
-                    drB["Tax"] = drD["TaxType"];
-                    drB["Discount"] = -1 * (PubUtility.CB(drD["SplitDiscount"]) + PubUtility.CB(drD["Discount"]) + PubUtility.CB(drD["SPDisc"]));
-                    string strStatus = drD["Status"].ToString();
-                    switch (strStatus)
+                    if (dtA.Rows.Count == 0)
                     {
-                        case "P":
-                            drB["ItemType"] = "1";
-                            break;
-                        case "C":
-                            drB["ItemType"] = "1";
-                            break;
-                        case "Z":
-                            drB["ItemType"] = "1";
-                            break;
-                        case "R":
-                            drB["ItemType"] = "10";
-                            break;
-                        case "G":
-                            if (PubUtility.CB(drD["SalesQty"]) < 0)
-                            {
-                                drB["ItemType"] = "10";
-                            }
-                            else
-                            {
-                                drB["ItemType"] = "2";
-                            }
-                            break;
-                        case "F":
-                            if (PubUtility.CB(drD["SalesQty"]) < 0)
-                            {
-                                drB["ItemType"] = "10";
-                            }
-                            else if (PubUtility.CB(drD["SalesQty"]) > 0 & PubUtility.CB(drB["Cash"]) == 0)
-                            {
-                                drB["ItemType"] = "2";
-                            }
-                            else
-                            {
-                                drB["ItemType"] = "1";
-                            }
-                            break;
-                        default:
-                            drB["ItemType"] = "1";
-                            break;
-                    }
-                    if (PubUtility.CB(drD["UnitPrice"]) * PubUtility.CB(drD["SalesQty"]) == 0)
-                    {
-                        drB["DiscountRate"] = 0;
-                    }
-                    else
-                    {
-                        drB["DiscountRate"] = Math.Round(PubUtility.CB(drB["Cash"]) / (PubUtility.CB(drD["UnitPrice"]) * PubUtility.CB(drD["SalesQty"])) * 100, 2, MidpointRounding.AwayFromZero);//看不懂
-                    }
-                    if (PubUtility.CB(drB["DiscountRate"]) > 100) { drB["DiscountRate"] = 100; }
-                    drB["Specialdisc"] = drD["SpecialDisc"];
-                    drB["Dpid"] = "";
-                    drB["Promoteprice"] = DBNull.Value;
-                    drB["PromoteDiscount1"] = DBNull.Value;
-                    drB["PromoteDiscount"] = DBNull.Value;
-                    drB["GD_CodeType"] = drD["ItemType"];
-                    drB["PriceDiscount"] = drD["PriceDiscount"];
-                    drB["HandDiscount"] = drD["HandDiscount"];
-                    drB["ProductSerialNo"] = drD["ProductSerialNo"];
-                    drB["HSGID"] = "";
-                    drB["issuedCash"] = DBNull.Value;
-                    drB["SubDiscount"] = drD["SubDiscount"];
-                    drB["SubHandDiscount"] = drD["SubHandDiscount"];
-                    drB["PLUType1"] = "1";
-                    drB["GiftReason"] = "";
-                    drB["Layer"] = drD["Layer"];
-                    drB["Sno"] = drD["Sno"];
-                    dtB.Rows.Add(drB);
-                }
-
-                foreach (DataRow drP in dtP.Rows)
-                {
-                    DataRow drPD = dtPD.NewRow();
-                    drPD["Status"] = "";
-                    drPD["operCode"] = "";
-                    drPD["ShopNo"] = dtC.Rows[0]["Face_ID"];
-                    drPD["OpenDate"] = dtH.Rows[0]["SalesDate"];
-                    drPD["CkNo"] = dtH.Rows[0]["MachineNo"];
-                    drPD["ChrNo"] = dtH.Rows[0]["TransSeq"].ToString().PadLeft(6, '0');
-                    drPD["Pay_ID"] = drP["PayID"];
-                    drPD["CurrencyType"] = drP["Currency"];
-                    drPD["TaxFlag"] = "N";
-                    drPD["Pay_Money"] = drP["PayAmt"];
-                    drPD["CurrencyPay_Money"] = drP["CurrencyPayAmt"];
-                    drPD["FEF"] = PubUtility.CB(drPD["Pay_Money"]) / PubUtility.CB(drPD["CurrencyPay_Money"]);
-                    drPD["HSGID"] = "";
-                    dtPD.Rows.Add(drPD);
-                }
-                #endregion
-
-                using (DBOperator dbop = new DBOperator())
-                {   //銷售回傳
-                    using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required))
-                    {
-                        try
+                        dtA.Rows.Add(dtA.NewRow());
+                        if (!isExists)
                         {
-                            sql = "delete from SalesD";
-                            sql += " where CompanyCode='" + uu.CompanyId.SqlQuote() + "'";
-                            sql += " and ShopNo='" + dtC.Rows[0]["Face_ID"].ToString().SqlQuote() + "'";
-                            sql += " and OpenDate='" + dtH.Rows[0]["SalesDate"].ToString().SqlQuote() + "'";
-                            sql += " and CKNo='" + dtH.Rows[0]["MachineNo"].ToString().SqlQuote() + "'";
-                            sql += " and ChrNo='" + dtH.Rows[0]["TransSeq"].ToString().PadLeft(6, '0').SqlQuote() + "'";
-                            dbop.ExecuteSql(sql, uu, "SYS");
-
-                            sql = "delete from PaymentD";
-                            sql += " where CompanyCode='" + uu.CompanyId.SqlQuote() + "'";
-                            sql += " and ShopNo='" + dtC.Rows[0]["Face_ID"].ToString().SqlQuote() + "'";
-                            sql += " and OpenDate='" + dtH.Rows[0]["SalesDate"].ToString().SqlQuote() + "'";
-                            sql += " and CKNo='" + dtH.Rows[0]["MachineNo"].ToString().SqlQuote() + "'";
-                            sql += " and ChrNo='" + dtH.Rows[0]["TransSeq"].ToString().PadLeft(6, '0').SqlQuote() + "'";
-                            dbop.ExecuteSql(sql, uu, "SYS");
-                            string HSGID = dbop.Add("SalesH", dtA, uu, "SYS");
-                            foreach (DataRow drB in dtB.Rows)
-                                drB["HSGID"] = HSGID;
-                            dbop.Add("SalesD", dtB, uu, "SYS");
-                            foreach (DataRow drPD in dtPD.Rows)
-                                drPD["HSGID"] = HSGID;
-                            dbop.Add("PaymentD", dtPD, uu, "SYS");
-
-                            //計算庫存
-                            string SysDate = "";
-                            sql = "select convert(char(10),getdate(),111) SysDate";
-
-                            DataTable dtSysDate = dbop.Query(sql, uu, "SYS");
-                            if (dtSysDate.Rows.Count > 0)
-                            {
-                                SysDate = dtSysDate.Rows[0][0].ToString();
-                            }
-
-                            string sqlSA = "Select H.CompanyCode, H.ShopNo, H.OpenDate, H.CkNo, H.ChrNo, D.Layer, D.Sno, D.[No], D.GoodsNo, D.Num "
-                                    + " From SalesH H (nolock) Inner Join SalesD D (nolock) "
-                                    + " On H.CompanyCode = D.CompanyCode And H.Shopno = D.Shopno and h.opendate=d.opendate and h.ckno=d.ckno and h.chrno=d.chrno "
-                                    + " Where H.CompanyCode='" + uu.CompanyId + "'";
-                            sqlSA += " and h.ShopNo='" + dtC.Rows[0]["Face_ID"].ToString().SqlQuote() + "'";
-                            sqlSA += " and h.OpenDate='" + dtH.Rows[0]["SalesDate"].ToString().SqlQuote() + "'";
-                            sqlSA += " and h.CKNo='" + dtH.Rows[0]["MachineNo"].ToString().SqlQuote() + "'";
-                            sqlSA += " and h.ChrNo='" + dtH.Rows[0]["TransSeq"].ToString().PadLeft(6, '0').SqlQuote() + "'";
-                            //寫入銷售jahoInvSV
-                            sql = "Insert Into JahoInvSV (CompanyCode, CrtUser, CrtDate, CrtTime "
-                                + ", ModUser, ModDate, ModTime "
-                                + ", DocType, DocNo, WhNo, SeqNo, PLU, Q1, Q2, Q3, CkNo, Layer, Sno) ";
-                            sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
-                                 + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
-                                 + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
-                                 + ", 'S2', OpenDate+a.Ckno+Chrno+[No], a.ShopNo, [No], a.GoodsNo, IsNull(b.PtNum,0), -1*a.Num, IsNull(b.PtNum,0)+(-1*a.Num)"
-                                 + ", a.CkNo, a.Layer, a.Sno "
-                                 + " From (" + sqlSA + ") a Left Join InventorySV b "
-                                 + "On a.CompanyCode = b.CompanyCode And a.ShopNo = b.WhNo and a.CkNo = b.CkNo "
-                                 + "and a.Layer = b.Layer And a.Sno = b.Sno And a.GoodsNo=b.PLU ";
-                            dbop.ExecuteSql(sql, uu, "SYS");
-
-                            //已有庫存資料
-                            sql = "Update InventorySV "
-                                + "Set ModUser='" + uu.UserID + "' "
-                                + ",ModDate=convert(char(10),getdate(),111) "
-                                + ",ModTime=convert(char(8),getdate(),108) "
-                                + ",PtNum=IsNull(PtNum,0) - Num "
-                                + ",StartSalesDate = Case When OpenDate<StartSalesDate Then OpenDate Else StartSalesDate End "
-                                + ",EndSalesDate = Case When OpenDate>EndSalesDate Then OpenDate Else EndSalesDate End "
-                                + "From (" + sqlSA + ") a Inner Join InventorySV b "
-                                + "On a.CompanyCode = b.CompanyCode And a.ShopNo = b.WhNo and a.CkNo = b.CkNo "
-                                + "and a.Layer = b.Layer And a.Sno = b.Sno And a.GoodsNo=b.PLU ";
-                            sql += " Where b.CompanyCode='" + uu.CompanyId + "' ";
-                            dbop.ExecuteSql(sql, uu, "SYS");
-
-                            //沒有庫存資料-新增
-                            sql = "Insert Into InventorySV (CompanyCode, CrtUser, CrtDate, CrtTime "
-                                + ", ModUser, ModDate, ModTime"
-                                + ", WhNo, PLU, CkNo, Layer, Sno, "
-                                + "StartSalesDate, EndSalesDate,PtNum) ";
-                            sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
-                                 + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
-                                 + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
-                                 + ", a.ShopNo, a.Goodsno, a.CkNo, a.Layer, a.Sno,a.OpenDate,a.OpenDate,-1*a.Num "
-                                 + " From (" + sqlSA + ") a Left Join InventorySV b "
-                                 + "On a.CompanyCode = b.CompanyCode And a.ShopNo = b.WhNo and a.CkNo = b.CkNo "
-                                 + "and a.Layer = b.Layer And a.Sno = b.Sno And a.GoodsNo=b.PLU "
-                                 + "Where b.PLU Is Null ";
-                            dbop.ExecuteSql(sql, uu, "SYS");
-
-                            sql = "Update SalesH set PassDateSV=Replace(Convert(varchar(16),getdate(),121),'-','/')";
-                            sql += " where CompanyCode='" + uu.CompanyId.SqlQuote() + "'";
-                            sql += " and ShopNo='" + dtC.Rows[0]["Face_ID"].ToString().SqlQuote() + "'";
-                            sql += " and OpenDate='" + dtH.Rows[0]["SalesDate"].ToString().SqlQuote() + "'";
-                            sql += " and CKNo='" + dtH.Rows[0]["MachineNo"].ToString().SqlQuote() + "'";
-                            sql += " and ChrNo='" + dtH.Rows[0]["TransSeq"].ToString().PadLeft(6, '0').SqlQuote() + "'";
-                            dbop.ExecuteSql(sql, uu, "SYS");
-
-                            ts.Complete();
+                            sql = "insert into xSToWConnectRecSV (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime,ShopNo,CkNo,TranDate,UPFlag)".CrLf();
+                            sql += "select '" + uu.CompanyId.SqlQuote() + "','001',Convert(varchar,getdate(),111),substring(convert(varchar,getdate(),121),12,12)".CrLf();
+                            sql += ",'001',Convert(varchar,getdate(),111),substring(convert(varchar,getdate(),121),12,12),'" + dtC.Rows[0]["Face_ID"].ToString().SqlQuote() + "'".CrLf();
+                            sql += ",'" + dtC.Rows[0]["POSID"].ToString().SqlQuote() + "','" + dtH.Rows[0]["SalesDate"].ToString().SqlQuote() + "'".CrLf();
+                            sql += ",'v'";
+                            PubUtility.ExecuteSql(sql, uu, "SYS");
+                            isExists = true;
                         }
-                        catch (Exception err)
+
+                        #region data mapping
+                        DataRow drA = dtA.Rows[0];
+                        drA["Status"] = "";
+                        drA["operCode"] = "";
+                        drA["ShopNo"] = dtC.Rows[0]["Face_ID"];
+                        drA["OpenDate"] = dtH.Rows[i]["SalesDate"];
+                        drA["CKNo"] = dtH.Rows[i]["MachineNo"];
+                        drA["ChrNo"] = dtH.Rows[i]["TransSeq"].ToString().PadLeft(6, '0');
+                        drA["OpenTime"] = dtH.Rows[i]["TransTime"];
+                        drA["InvType"] = dtH.Rows[i]["TaxType"];
+                        drA["Inv"] = dtH.Rows[i]["InvTYpe"];
+                        drA["InvNum"] = dtH.Rows[i]["InvNum"];
+                        drA["InvNo"] = dtH.Rows[i]["InvBegNo"];
+                        drA["InvNoE"] = dtH.Rows[i]["InvEndNo"];
+                        drA["CkerNo"] = dtH.Rows[i]["SalesMan"];
+                        drA["CUID"] = dtH.Rows[i]["SerialNo"];
+                        drA["IfVIP"] = dtH.Rows[i]["VIPNo"].ToString() == "" ? "0" : "1";
+                        drA["VIPNo"] = dtH.Rows[i]["VIPNo"];
+                        drA["InvTitle"] = dtH.Rows[i]["InvTitle"];
+                        drA["InvAddress"] = dtH.Rows[i]["InvAddress"];
+                        drA["PeopleNum"] = dtH.Rows[i]["Person"];
+                        drA["TableNum"] = dtH.Rows[i]["TableNo"];
+                        drA["SalesMan1"] = dtH.Rows[i]["Salesman1"];
+                        drA["SalesMan2"] = dtH.Rows[i]["Salesman2"];
+                        drA["SalesMan3"] = dtH.Rows[i]["Salesman3"];
+                        drA["SalesMan4"] = dtH.Rows[i]["Salesman4"];
+                        drA["SalesMan5"] = dtH.Rows[i]["Salesman5"];
+                        drA["SalesMan6"] = dtH.Rows[i]["Salesman6"];
+                        drA["Cash"] = dtH.Rows[i]["TotalAmt"];
+                        drA["Discount"] = -1 * PubUtility.CB(dtH.Rows[i]["ItemDiscount"]) + PubUtility.CB(dtH.Rows[i]["Discount"]);
+                        drA["InvCash"] = PubUtility.CB(dtH.Rows[i]["TotalAmt"]) + PubUtility.CB(dtH.Rows[i]["TaxAmt"]);
+                        drA["Tax"] = dtH.Rows[i]["TaxAmt"];
+                        drA["FaxCash"] = dtH.Rows[i]["TotalTax"];
+                        drA["PriceDiscount"] = dtH.Rows[i]["PriceDiscount"];
+                        drA["HandDiscount"] = dtH.Rows[i]["HandDiscount"];
+                        drA["IfPass"] = "N";
+                        drA["PassUser"] = "";
+                        drA["PassDate"] = "";
+                        drA["VIP_Export"] = "";
+                        drA["SYSDate"] = dtH.Rows[i]["OpenDate"];
+                        drA["VIP_ID2"] = "";
+                        drA["IssuedCash"] = dtH.Rows[i]["IssuedCash"];
+                        drA["BOpenDate"] = "";
+                        drA["BCKNo"] = "";
+                        drA["BChrNo"] = "";
+                        drA["ComputerDate"] = dtH.Rows[i]["ModDate"];
+                        drA["RndCode"] = dtH.Rows[i]["RndCode"];
+                        drA["SubDiscount"] = dtH.Rows[i]["SubDiscount"];
+                        drA["SubHandDiscount"] = dtH.Rows[i]["SubHandDiscount"];
+                        drA["HeartCode"] = dtH.Rows[i]["HeartCode"];
+                        drA["MobileCode"] = dtH.Rows[i]["MobileCode"];
+                        drA["InvAmt"] = dtH.Rows[i]["InvAmt"];
+                        drA["InvPrint"] = dtH.Rows[i]["InvPrint"];
+                        drA["CopyPrint"] = dtH.Rows[i]["CopyPrint"];
+                        drA["SeqNo"] = dtH.Rows[i]["SeqNo"];
+                        drA["BComputerDate"] = "";
+                        drA["BOpenTime"] = "";
+                        drA["PS_NO"] = ""; // dtH.Rows[i]["PS_NO"];
+                        drA["PS_Point"] = DBNull.Value; // dtH.Rows[i]["PS_Point"];
+                        drA["SalesFlag"] = dtH.Rows[i]["SalesFlag"];
+                        drA["DocNO_Buy"] = "";
+                        drA["DocNO_Get"] = "";
+                        drA["PassDateSV"] = "";
+
+
+                        DataTable dtDtmp = dtD.Select("SalesDate='" + dtH.Rows[i]["SalesDate"] + "' and TransSeq=" + dtH.Rows[i]["TransSeq"].ToString()).CopyToDataTable();
+                        foreach (DataRow drD in dtDtmp.Rows)
                         {
-                            ts.Dispose();
+                            DataRow drB = dtB.NewRow();
+                            drB["Status"] = drD["FlagPickup"];
+                            drB["operCode"] = "";
+                            drB["ShopNo"] = dtC.Rows[0]["Face_ID"];
+                            drB["OpenDate"] = dtH.Rows[i]["SalesDate"];
+                            drB["CkNo"] = dtH.Rows[i]["MachineNo"];
+                            drB["ChrNo"] = dtH.Rows[i]["TransSeq"].ToString().PadLeft(6, '0');
+                            drB["No"] = drD["ItemSeq"];
+                            drB["GoodsNo"] = drD["GoodsNo"];
+                            drB["Goods"] = "";
+                            drB["Unit"] = drD["Unit"];
+                            drB["Prices"] = drD["UnitPrice"];
+                            drB["Num"] = drD["SalesQty"];
+                            drB["Cash"] = PubUtility.CB(drD["SalesAmt"]) + PubUtility.CB(drD["SPDisc"]);
+                            drB["Tax"] = drD["TaxType"];
+                            drB["Discount"] = -1 * (PubUtility.CB(drD["SplitDiscount"]) + PubUtility.CB(drD["Discount"]) + PubUtility.CB(drD["SPDisc"]));
+                            string strStatus = drD["Status"].ToString();
+                            switch (strStatus)
+                            {
+                                case "P":
+                                    drB["ItemType"] = "1";
+                                    break;
+                                case "C":
+                                    drB["ItemType"] = "1";
+                                    break;
+                                case "Z":
+                                    drB["ItemType"] = "1";
+                                    break;
+                                case "R":
+                                    drB["ItemType"] = "10";
+                                    break;
+                                case "G":
+                                    if (PubUtility.CB(drD["SalesQty"]) < 0)
+                                    {
+                                        drB["ItemType"] = "10";
+                                    }
+                                    else
+                                    {
+                                        drB["ItemType"] = "2";
+                                    }
+                                    break;
+                                case "F":
+                                    if (PubUtility.CB(drD["SalesQty"]) < 0)
+                                    {
+                                        drB["ItemType"] = "10";
+                                    }
+                                    else if (PubUtility.CB(drD["SalesQty"]) > 0 & PubUtility.CB(drB["Cash"]) == 0)
+                                    {
+                                        drB["ItemType"] = "2";
+                                    }
+                                    else
+                                    {
+                                        drB["ItemType"] = "1";
+                                    }
+                                    break;
+                                default:
+                                    drB["ItemType"] = "1";
+                                    break;
+                            }
+                            if (PubUtility.CB(drD["UnitPrice"]) * PubUtility.CB(drD["SalesQty"]) == 0)
+                            {
+                                drB["DiscountRate"] = 0;
+                            }
+                            else
+                            {
+                                drB["DiscountRate"] = Math.Round((PubUtility.CB(drD["SalesAmt"]) + PubUtility.CB(drD["SPDisc"])) / (PubUtility.CB(drD["UnitPrice"]) * PubUtility.CB(drD["SalesQty"])) * 100, 2, MidpointRounding.AwayFromZero);//看不懂
+                            }
+                            if (PubUtility.CB(drB["DiscountRate"]) > 100) { drB["DiscountRate"] = 100; }
+                            drB["Specialdisc"] = drD["SpecialDisc"];
+                            drB["Dpid"] = "";
+                            drB["Promoteprice"] = DBNull.Value;
+                            drB["PromoteDiscount1"] = DBNull.Value;
+                            drB["PromoteDiscount"] = DBNull.Value;
+                            drB["GD_CodeType"] = drD["ItemType"];
+                            drB["PriceDiscount"] = drD["PriceDiscount"];
+                            drB["HandDiscount"] = drD["HandDiscount"];
+                            drB["ProductSerialNo"] = drD["ProductSerialNo"];
+                            drB["HSGID"] = "";
+                            drB["issuedCash"] = DBNull.Value;
+                            drB["SubDiscount"] = drD["SubDiscount"];
+                            drB["SubHandDiscount"] = drD["SubHandDiscount"];
+                            drB["PLUType1"] = "1";
+                            drB["GiftReason"] = "";
+                            drB["Layer"] = drD["Layer"];
+                            drB["Sno"] = drD["Sno"];
+                            dtB.Rows.Add(drB);
+                        }
+
+                        DataTable dtPtmp = dtP.Select("SalesDate='" + dtH.Rows[i]["SalesDate"] + "' and TransSeq=" + dtH.Rows[i]["TransSeq"].ToString()).CopyToDataTable();
+                        foreach (DataRow drP in dtPtmp.Rows)
+                        {
+                            DataRow drPD = dtPD.NewRow();
+                            drPD["Status"] = "";
+                            drPD["operCode"] = "";
+                            drPD["ShopNo"] = dtC.Rows[0]["Face_ID"];
+                            drPD["OpenDate"] = dtH.Rows[i]["SalesDate"];
+                            drPD["CkNo"] = dtH.Rows[i]["MachineNo"];
+                            drPD["ChrNo"] = dtH.Rows[i]["TransSeq"].ToString().PadLeft(6, '0');
+                            drPD["Pay_ID"] = drP["PayID"];
+                            drPD["CurrencyType"] = drP["Currency"];
+                            drPD["TaxFlag"] = "N";
+                            drPD["Pay_Money"] = drP["PayAmt"];
+                            drPD["CurrencyPay_Money"] = drP["CurrencyPayAmt"];
+                            drPD["FEF"] = PubUtility.CB(drPD["Pay_Money"]) / PubUtility.CB(drPD["CurrencyPay_Money"]);
+                            drPD["HSGID"] = "";
+                            dtPD.Rows.Add(drPD);
+                        }
+                        #endregion
+
+                        using (DBOperator dbop = new DBOperator())
+                        {   //銷售回傳
+                            using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required))
+                            {
+                                try
+                                {
+                                    sql = "delete from SalesD";
+                                    sql += " where CompanyCode='" + uu.CompanyId.SqlQuote() + "'";
+                                    sql += " and ShopNo='" + dtC.Rows[0]["Face_ID"].ToString().SqlQuote() + "'";
+                                    sql += " and OpenDate='" + dtH.Rows[i]["SalesDate"].ToString().SqlQuote() + "'";
+                                    sql += " and CKNo='" + dtH.Rows[i]["MachineNo"].ToString().SqlQuote() + "'";
+                                    sql += " and ChrNo='" + dtH.Rows[i]["TransSeq"].ToString().PadLeft(6, '0').SqlQuote() + "'";
+                                    dbop.ExecuteSql(sql, uu, "SYS");
+
+                                    sql = "delete from PaymentD";
+                                    sql += " where CompanyCode='" + uu.CompanyId.SqlQuote() + "'";
+                                    sql += " and ShopNo='" + dtC.Rows[0]["Face_ID"].ToString().SqlQuote() + "'";
+                                    sql += " and OpenDate='" + dtH.Rows[i]["SalesDate"].ToString().SqlQuote() + "'";
+                                    sql += " and CKNo='" + dtH.Rows[i]["MachineNo"].ToString().SqlQuote() + "'";
+                                    sql += " and ChrNo='" + dtH.Rows[i]["TransSeq"].ToString().PadLeft(6, '0').SqlQuote() + "'";
+                                    dbop.ExecuteSql(sql, uu, "SYS");
+                                    string HSGID = dbop.Add("SalesH", dtA, uu, "SYS");
+                                    foreach (DataRow drB in dtB.Rows)
+                                        drB["HSGID"] = HSGID;
+                                    dbop.Add("SalesD", dtB, uu, "SYS");
+                                    foreach (DataRow drPD in dtPD.Rows)
+                                        drPD["HSGID"] = HSGID;
+                                    dbop.Add("PaymentD", dtPD, uu, "SYS");
+
+                                    //計算庫存
+                                    string SysDate = "";
+                                    sql = "select convert(char(10),getdate(),111) SysDate";
+
+                                    DataTable dtSysDate = dbop.Query(sql, uu, "SYS");
+                                    if (dtSysDate.Rows.Count > 0)
+                                    {
+                                        SysDate = dtSysDate.Rows[0][0].ToString();
+                                    }
+
+                                    string sqlSA = "Select H.CompanyCode, H.ShopNo, H.OpenDate, H.CkNo, H.ChrNo, D.Layer, D.Sno, D.[No], D.GoodsNo, D.Num "
+                                            + " From SalesH H (nolock) Inner Join SalesD D (nolock) "
+                                            + " On H.CompanyCode = D.CompanyCode And H.Shopno = D.Shopno and h.opendate=d.opendate and h.ckno=d.ckno and h.chrno=d.chrno "
+                                            + " Where H.CompanyCode='" + uu.CompanyId + "'";
+                                    sqlSA += " and h.ShopNo='" + dtC.Rows[0]["Face_ID"].ToString().SqlQuote() + "'";
+                                    sqlSA += " and h.OpenDate='" + dtH.Rows[i]["SalesDate"].ToString().SqlQuote() + "'";
+                                    sqlSA += " and h.CKNo='" + dtH.Rows[i]["MachineNo"].ToString().SqlQuote() + "'";
+                                    sqlSA += " and h.ChrNo='" + dtH.Rows[i]["TransSeq"].ToString().PadLeft(6, '0').SqlQuote() + "'";
+                                    //寫入銷售jahoInvSV
+                                    sql = "Insert Into JahoInvSV (CompanyCode, CrtUser, CrtDate, CrtTime "
+                                        + ", ModUser, ModDate, ModTime "
+                                        + ", DocType, DocNo, WhNo, SeqNo, PLU, Q1, Q2, Q3, CkNo, Layer, Sno) ";
+                                    sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
+                                         + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                         + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                         + ", 'S2', OpenDate+a.Ckno+Chrno+[No], a.ShopNo, [No], a.GoodsNo, IsNull(b.PtNum,0), -1*a.Num, IsNull(b.PtNum,0)+(-1*a.Num)"
+                                         + ", a.CkNo, a.Layer, a.Sno "
+                                         + " From (" + sqlSA + ") a Left Join InventorySV b "
+                                         + "On a.CompanyCode = b.CompanyCode And a.ShopNo = b.WhNo and a.CkNo = b.CkNo "
+                                         + "and a.Layer = b.Layer And a.Sno = b.Sno And a.GoodsNo=b.PLU ";
+                                    dbop.ExecuteSql(sql, uu, "SYS");
+
+                                    //已有庫存資料
+                                    sql = "Update InventorySV "
+                                        + "Set ModUser='" + uu.UserID + "' "
+                                        + ",ModDate=convert(char(10),getdate(),111) "
+                                        + ",ModTime=convert(char(8),getdate(),108) "
+                                        + ",PtNum=IsNull(PtNum,0) - Num "
+                                        + ",StartSalesDate = Case When OpenDate<StartSalesDate Then OpenDate Else StartSalesDate End "
+                                        + ",EndSalesDate = Case When OpenDate>EndSalesDate Then OpenDate Else EndSalesDate End "
+                                        + "From (" + sqlSA + ") a Inner Join InventorySV b "
+                                        + "On a.CompanyCode = b.CompanyCode And a.ShopNo = b.WhNo and a.CkNo = b.CkNo "
+                                        + "and a.Layer = b.Layer And a.Sno = b.Sno And a.GoodsNo=b.PLU ";
+                                    sql += " Where b.CompanyCode='" + uu.CompanyId + "' ";
+                                    dbop.ExecuteSql(sql, uu, "SYS");
+
+                                    //沒有庫存資料-新增
+                                    sql = "Insert Into InventorySV (CompanyCode, CrtUser, CrtDate, CrtTime "
+                                        + ", ModUser, ModDate, ModTime"
+                                        + ", WhNo, PLU, CkNo, Layer, Sno, "
+                                        + "StartSalesDate, EndSalesDate,PtNum) ";
+                                    sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
+                                         + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                         + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                         + ", a.ShopNo, a.Goodsno, a.CkNo, a.Layer, a.Sno,a.OpenDate,a.OpenDate,-1*a.Num "
+                                         + " From (" + sqlSA + ") a Left Join InventorySV b "
+                                         + "On a.CompanyCode = b.CompanyCode And a.ShopNo = b.WhNo and a.CkNo = b.CkNo "
+                                         + "and a.Layer = b.Layer And a.Sno = b.Sno And a.GoodsNo=b.PLU "
+                                         + "Where b.PLU Is Null ";
+                                    dbop.ExecuteSql(sql, uu, "SYS");
+
+                                    sql = "Update SalesH set PassDateSV=Replace(Convert(varchar(16),getdate(),121),'-','/')";
+                                    sql += " where CompanyCode='" + uu.CompanyId.SqlQuote() + "'";
+                                    sql += " and ShopNo='" + dtC.Rows[0]["Face_ID"].ToString().SqlQuote() + "'";
+                                    sql += " and OpenDate='" + dtH.Rows[i]["SalesDate"].ToString().SqlQuote() + "'";
+                                    sql += " and CKNo='" + dtH.Rows[i]["MachineNo"].ToString().SqlQuote() + "'";
+                                    sql += " and ChrNo='" + dtH.Rows[i]["TransSeq"].ToString().PadLeft(6, '0').SqlQuote() + "'";
+                                    dbop.ExecuteSql(sql, uu, "SYS");
+
+                                    ts.Complete();
+                                }
+                                catch (Exception err)
+                                {
+                                    ts.Dispose();
+                                    dbop.Dispose();
+                                    throw new Exception(err.Message);
+                                }
+                            }
                             dbop.Dispose();
-                            throw new Exception(err.Message);
                         }
                     }
-                    dbop.Dispose();
+
                 }
+
+
             }
             catch (Exception err)
             {
