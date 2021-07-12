@@ -1,4 +1,4 @@
-﻿var PageVIN13_2 = function (ParentNode) {
+﻿var PageVIN14_5 = function (ParentNode) {
     let AllPages;
     let grdU;
     let EditMode;
@@ -15,7 +15,7 @@
         grdU = new DynGrid(
             {
                 //2021-04-27
-                table_lement: $('#tbVIN13_2')[0],
+                table_lement: $('#tbVIN14_5')[0],
                 class_collection: ["tdColbt icon_in_td btEdit", "tdColbt icon_in_td btDel", "tdColbt icon_in_td btDef", "tdCol4", "tdCol5", "tdCol6", "tdCol7", "tdCol8", "tdCol9", "tdCol10", "tdCol11", "tdCol12", "tdCol13", "tdColbt icon_in_td btT", "tdCol15", "tdCol16"],
                 //class_collection: ["tdColbt icon_in_td", "tdColbt icon_in_td btsuspend", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7",  "tdCol8"],
                 fields_info: [
@@ -93,10 +93,10 @@
 
 
     let InitModifyDeleteButton = function () {
-        $('#tbVIN13_2 .fa-file-text-o').click(function () { btMod_Click(this) });
-        $('#tbVIN13_2 .fa-trash-o').click(function () { btDel_Click(this) });
-        $('#tbVIN13_2 .fa-lock').click(function () { btDef_Click(this) });
-        $('#tbVIN13_2 .fa-certificate').click(function () { btApp_Click(this) });
+        $('#tbVIN14_5 .fa-file-text-o').click(function () { btMod_Click(this) });
+        $('#tbVIN14_5 .fa-trash-o').click(function () { btDel_Click(this) });
+        $('#tbVIN14_5 .fa-lock').click(function () { btDef_Click(this) });
+        $('#tbVIN14_5 .fa-certificate').click(function () { btApp_Click(this) });
      }
 
  
@@ -106,7 +106,7 @@
         //alert(EditMode);
         //$(bt).closest('tr').click();
         $('.msg-valid').hide();
-        $('#modal_VIN13_2 .modal-title').text('智販機換貨新增');
+        $('#modal_VIN14_5 .modal-title').text('智販機換貨新增');
         //var node = $(grdU.ActiveRowTR()).prop('Record');
         $('#WhNo,#CkNo,#NewPLU,#Num,#DisplayNum,#ExchangeDate').prop('readonly', false);
         //gDocNo = GetNodeValue(node, 'DocNo');
@@ -162,7 +162,7 @@
 
         //GetWhOutCkNo("Out");
 
-        $('#modal_VIN13_2').modal('show');
+        $('#modal_VIN14_5').modal('show');
     };
 
 
@@ -171,7 +171,7 @@
         EditMode = "Mod";
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
-        $('#modal_VIN13_2 .modal-title').text('智販機換貨修改');
+        $('#modal_VIN14_5 .modal-title').text('智販機換貨修改');
         var node = $(grdU.ActiveRowTR()).prop('Record');
 
         if (GetNodeValue(node, 'FinishDate') != '') {
@@ -239,7 +239,7 @@
 
         //GetWhOutCkNo("Out");
 
-        $('#modal_VIN13_2').modal('show');
+        $('#modal_VIN14_5').modal('show');
     };
 
  
@@ -250,7 +250,7 @@
         //alert(GetNodeValue(node, 'AppDate'));
 
         $('.msg-valid').hide();
-        $('#modal_VIN13_2 .modal-title').text('智販機換貨刪除');
+        $('#modal_VIN14_5 .modal-title').text('智販機換貨刪除');
         var node = $(grdU.ActiveRowTR()).prop('Record');
 
         if (GetNodeValue(node, 'FinishDate') != '') {
@@ -315,7 +315,7 @@
         $('#lblExDate').closest('.col-3').show();
         //GetSysDate();
 
-        $('#modal_VIN13_2').modal('show');
+        $('#modal_VIN14_5').modal('show');
     };
 
 
@@ -325,7 +325,7 @@
         //alert(GetNodeValue(node, 'AppDate'));
 
         $('.msg-valid').hide();
-        $('#modal_VIN13_2 .modal-title').text('智販機換貨作廢');
+        $('#modal_VIN14_5 .modal-title').text('智販機換貨作廢');
         var node = $(grdU.ActiveRowTR()).prop('Record');
         if (GetNodeValue(node, 'AppDate') == '') {
             DyAlert("此單據未批核，不可作廢!");
@@ -387,7 +387,7 @@
         $('#lblExDate').closest('.col-3').show();
         //GetSysDate();
 
-        $('#modal_VIN13_2').modal('show');
+        $('#modal_VIN14_5').modal('show');
     };
 
 
@@ -399,7 +399,7 @@
         $(bt).closest('tr').click();
 
         $('.msg-valid').hide();
-        $('#modal_VIN13_2 .modal-title').text('智販機換貨批核');
+        $('#modal_VIN14_5 .modal-title').text('智販機換貨批核');
         var node = $(grdU.ActiveRowTR()).prop('Record');
         //alert(GetNodeValue(node, 'AppDate'));
         if (GetNodeValue(node, 'AppDate') != '' ) {
@@ -455,13 +455,13 @@
         $('#lblExDate').closest('.col-3').show();
         //GetSysDate();
 
-        $('#modal_VIN13_2').modal('show');
+        $('#modal_VIN14_5').modal('show');
     };
 
 
-    let SearchVIN13_2 = function () {
+    let SearchVIN14_5 = function () {
 
-        console.log("SearchVIN13_2");
+        console.log("SearchVIN14_5");
 
         var pData = {
             WhNo: $('#cbWh').val(),
@@ -469,15 +469,15 @@
             Layer: $('#cbLayer').val(),
             exDate: $('#exDate').val()
         };
-        PostToWebApi({ url: "api/SystemSetup/SearchVIN13_2", data: pData, success: AfterSearchVIN13_2 });
+        PostToWebApi({ url: "api/SystemSetup/SearchVIN14_5", data: pData, success: AfterSearchVIN14_5 });
     };
 
     let click_PLU = function (tr) {
 
     };
 
-    let AfterSearchVIN13_2 = function (data) {
-        if (ReturnMsg(data, 0) != "SearchVIN13_2OK") {
+    let AfterSearchVIN14_5 = function (data) {
+        if (ReturnMsg(data, 0) != "SearchVIN14_5OK") {
             DyAlert(ReturnMsg(data, 0));
             return;
         }
@@ -499,7 +499,7 @@
 
 
     let btCancel_click = function () {
-        $('#modal_VIN13_2').modal('hide');
+        $('#modal_VIN14_5').modal('hide');
     };
 
  
@@ -905,7 +905,7 @@
         else {
             DyAlert("新增完成!");
 
-            $('#modal_VIN13_2').modal('hide');
+            $('#modal_VIN14_5').modal('hide');
             var userxml = data.getElementsByTagName('dtChgPLU')[0];
             grdU.AddNew(userxml);
         }
@@ -929,7 +929,7 @@
                 DyAlert("儲存完成!");
             }
 
-            $('#modal_VIN13_2').modal('hide');
+            $('#modal_VIN14_5').modal('hide');
             var userxml = data.getElementsByTagName('dtRes')[0];
             grdU.RefreshRocord(grdU.ActiveRowTR(), userxml);
         }
@@ -943,7 +943,7 @@
         else {
             DyAlert("刪除完成!");
 
-            $('#modal_VIN13_2').modal('hide');
+            $('#modal_VIN14_5').modal('hide');
             //var userxml = data.getElementsByTagName('dtRack')[0];
             grdU.DeleteRow(grdU.ActiveRowTR());
         }
@@ -953,11 +953,11 @@
  
 
     //2021-05-18
-    let afterGetInitVIN13_2 = function (data) {
+    let afterGetInitVIN14_5 = function (data) {
 
-        //alert("afterGetInitVIN13_2");
+        //alert("afterGetInitVIN14_5");
         AssignVar();
-        $('#btQuery').click(function () { SearchVIN13_2(); });
+        $('#btQuery').click(function () { SearchVIN14_5(); });
 
         var dtWh = data.getElementsByTagName('dtWh');
         InitSelectItem($('#cbWh')[0], dtWh, "ST_ID", "STName", true);
@@ -1084,12 +1084,12 @@
     }
 
     let afterLoadPage = function () {
-        PostToWebApi({ url: "api/SystemSetup/GetWh", success: afterGetInitVIN13_2 });
-        $('#pgVIN13_2').show();
+        PostToWebApi({ url: "api/SystemSetup/GetWh", success: afterGetInitVIN14_5 });
+        $('#pgVIN14_5').show();
     };
 
-    if ($('#pgVIN13_2').length == 0) {
-        AllPages = new LoadAllPages(ParentNode, "VIN13_2", ["pgVIN13_2"], afterLoadPage);
+    if ($('#pgVIN14_5').length == 0) {
+        AllPages = new LoadAllPages(ParentNode, "VIN14_5", ["pgVIN14_5"], afterLoadPage);
     };
 
 

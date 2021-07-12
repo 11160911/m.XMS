@@ -56,7 +56,19 @@
         SetCommSelectGrid(csgOption);
 
 
-
+        let csgOption2 = {
+            InputElementsID: "WhNoIn",
+            ApiForGridData: "api/SetCommSelectGridDefaultApi",
+            PostDataForApi: {
+                Table: "WarehouseSV",
+                Column: ["ST_ID", "ST_Sname"],
+                Caption: ["店代號", "店名稱"],
+                OrderColumn: "ST_ID",
+                Condition: "1=1",
+            },
+            AfterSelectData: AfterSelWhNoIn
+        }
+        SetCommSelectGrid(csgOption2);
 
 
     };
@@ -64,7 +76,75 @@
     let AfterSelWhNoOut = function (xml) {
         $('#WhNoOut').val(GetNodeValue(xml, "ST_ID"));
         $('#WhOutName').text(GetNodeValue(xml, "ST_Sname"));
+        GetModalWhDSVCkNoOut();
     }
+
+
+    let AfterSelWhNoIn = function (xml) {
+        $('#WhNoIn').val(GetNodeValue(xml, "ST_ID"));
+        $('#WhInName').text(GetNodeValue(xml, "ST_Sname"));
+        GetModalWhDSVCkNoIn();
+    }
+
+
+    let GetModalWhDSVCkNoOut = function () {
+        //alert("GetModalWhDSVCkNo");
+        if ($('#WhNoOut').val() == "") {
+            $('#CkNoOut').empty();
+            return;
+        }
+
+        var pData = {
+            WhNo: $('#WhNoOut').val(),
+            StopDay: 'Y',
+            CheckUse: 'Y'
+        };
+        PostToWebApi({ url: "api/SystemSetup/GetWhDSVCkNoWithCond", data: pData, success: AfterGetModalWhDSVCkNoOut });
+    };
+
+
+    let AfterGetModalWhDSVCkNoOut = function (data) {
+        //alert("AfterGetModalWhDSVCkNo");
+        if (ReturnMsg(data, 0) != "GetWhDSVCkNoWithCondOK") {
+            DyAlert(ReturnMsg(data, 0));
+            return;
+        }
+        else {
+            var dtCK = data.getElementsByTagName('dtCK');
+            InitSelectItem($('#CkNoOut')[0], dtCK, "CKNo", "CKNo", true);
+        }
+    };
+
+
+
+    let GetModalWhDSVCkNoIn = function () {
+        //alert("GetModalWhDSVCkNo");
+        if ($('#WhNoIn').val() == "") {
+            $('#CkNoIn').empty();
+            return;
+        }
+
+        var pData = {
+            WhNo: $('#WhNoIn').val(),
+            StopDay: 'Y',
+            CheckUse: 'Y'
+        };
+        PostToWebApi({ url: "api/SystemSetup/GetWhDSVCkNoWithCond", data: pData, success: AfterGetModalWhDSVCkNoIn });
+    };
+
+
+    let AfterGetModalWhDSVCkNoIn = function (data) {
+        //alert("AfterGetModalWhDSVCkNo");
+        if (ReturnMsg(data, 0) != "GetWhDSVCkNoWithCondOK") {
+            DyAlert(ReturnMsg(data, 0));
+            return;
+        }
+        else {
+            var dtCK = data.getElementsByTagName('dtCK');
+            InitSelectItem($('#CkNoIn')[0], dtCK, "CKNo", "CKNo", true);
+        }
+    };
+
 
     let InitModifyDeleteButton = function () {
         $('#tbVIN13_1 .fa-file-text-o').click(function () { btMod_Click(this) });
@@ -119,9 +199,11 @@
 
         $('#WhNoOut').val(GetNodeValue(node, 'WhNoOut'));
         $('#WhOutName').text(GetNodeValue(node, 'WhOutName'));
+        //$('#CkNoOut').val(GetNodeValue(node, 'CkNoOut'));
 
         $('#WhNoIn').val(GetNodeValue(node, 'WhNoIn'));
         $('#WhInName').text(GetNodeValue(node, 'WhInName'));
+        //$('#CkNoIn').val(GetNodeValue(node, 'CkNoIn'));
 
         $('#ExchangeDate').val(GetNodeValue(node, 'ExchangeDate'));
         $('#ExchangeDate').closest('.col-4').show();
@@ -196,6 +278,10 @@
         else {
             var dtCK = data.getElementsByTagName('dtCK');
             InitSelectItem($('#CkNoIn')[0], dtCK, "CKNo", "CKNo", true);
+
+            //alert(OutCkNo);
+            //alert(InCkNo);
+
             $('#CkNoOut').val(OutCkNo);
             $('#CkNoIn').val(InCkNo);
             $('#modal_VIN13_1').modal('show');
@@ -780,8 +866,8 @@
         SetDateField($('#exDate')[0]);
         $('#exDate').datepicker();
 
-        //$('#WhNoOut').change(function () { GetWhDSVCkNo("Out"); });
-        //$('#WhNoIn').change(function () { GetWhDSVCkNo("In"); });
+        $('#WhNoOut').change(function () { GetModalWhDSVCkNoOut(); });
+        $('#WhNoIn').change(function () { GetModalWhDSVCkNoIn(); });
 
         $('#btAdd').click(function () { btAdd_click(); });
         //$('#btImportFromiXMS').click(function () { btImportFromiXMS_click(); });

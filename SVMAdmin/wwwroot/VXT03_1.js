@@ -118,14 +118,16 @@
             $('#cbFlagT').closest('.col-2').hide();
             $('#cbFlagNet').closest('.col-2').hide();
             $('#btSave').hide();
-            if (GetNodeValue(node, 'FlagT') == "N") {
-                $('#cbFlagT').val("異常");
-                $('#temperature').val("異常" + GetNodeValue(node, 'temperature'));
-            }
-            else {
+
+            if (GetNodeValue(node, 'FlagT') == "Y") {
                 $('#cbFlagT').val("正常");
                 $('#temperature').val(GetNodeValue(node, 'temperature'));
             }
+            else {
+                $('#cbFlagT').val("異常");
+                $('#temperature').val("異常" + GetNodeValue(node, 'temperature'));
+            }
+
             if (GetNodeValue(node, 'FlagNet') == "N") {
                 $('#cbFlagNet').val("異常");
                 $('#NetStatus').val("最後連線時間:" + GetNodeValue(node, 'LastTransDate'));
@@ -139,13 +141,13 @@
             $('#cbFlagT').closest('.col-2').show();
             $('#cbFlagNet').closest('.col-2').show();
             $('#btSave').show();
-            if (GetNodeValue(node, 'FlagT') == "N") {
-                $('#cbFlagT').val("異常");
+            if (GetNodeValue(node, 'FlagT') == "Y") {
+                $('#cbFlagT').val("正常");
                 $('#temperature').val(GetNodeValue(node, 'temperature'));
             }
             else {
-                $('#cbFlagT').val("正常");
-                $('#temperature').val(GetNodeValue(node, 'temperature'));
+                $('#cbFlagT').val("異常");
+                $('#temperature').val("異常" + GetNodeValue(node, 'temperature'));
             }
             if (GetNodeValue(node, 'FlagNet') == "N") {
                 $('#cbFlagNet').val("異常");
