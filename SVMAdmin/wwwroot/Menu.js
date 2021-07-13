@@ -336,6 +336,22 @@
                 }
             }
 
+
+            else if (pg == "VIN14_5") {
+                //alert("VIN14_5");
+                if (window.PageVIN14_5 == undefined)
+
+                    $.getScript('Inv/VIN14_5.js',
+                        function () {
+                            PageVIN14_5($(".right_col"));
+                        }
+                    );
+                else {
+                    PageVIN14_5($(".right_col"));
+                }
+            }
+
+
             else if (pg == "VIN47") {
                 //alert("VIN47");
                 if (window.PageVIN47 == undefined)

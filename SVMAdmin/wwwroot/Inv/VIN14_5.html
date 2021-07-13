@@ -334,124 +334,94 @@
                                     </style>
                                     <div class="card-block forminput">
                                         <div class="form-group row">
-                                            <label class="col-form-label col-3">智販店代號</label>
+                                            <label class="col-form-label col-3" style="text-align: right">智販店代號</label>
+                                            <label id="lblWhNo" class="col-form-label col-3" style="text-align: left;color: blue"></label>
+                                            <label id="WhName" class="col-form-label col-3" style="text-align: left;color: blue"></label>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-3" style="text-align: right">機&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號</label>
+                                            <label id="lblCkNo" class="col-form-label col-3" style="text-align: left;color: blue"></label>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-3" style="text-align: right">貨&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;倉</label>
+                                            <label id="lblLayer" class="col-form-label col-2" style="text-align: left;color: blue"></label>
+                                            <label class="col-form-label col-3" style="text-align: right">貨&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道</label>
+                                            <label id="lblSno" class="col-form-label col-3" style="text-align: left;color: blue"></label>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-3" style="text-align: right">原&nbsp;&nbsp;商&nbsp;&nbsp;品</label>
+                                            <label id="lblOldPLU" class="col-form-label col-5" style="text-align: left;color: blue"></label>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-3"></label>
+                                            <label id="OldPLUName" class="col-form-label col-5" style="text-align: left;color: blue"></label>  
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-3" style="text-align: right">原庫存量</label>
+                                            <label id="lblPtNum" class="col-form-label col-2" style="text-align: left;color: blue"></label>
+                                            <!--<div style="text-align:right"></div>-->
+                                            <label class="col-form-label col-3" style="text-align: right">實際退貨量</label>
                                             <div class="col-3">
-                                                <input id="WhNo" type="text" class="form-control" autocomplete="off" />
-                                                <!--<span class="msg-valid valid-blank"></span>-->
-                                            </div>
-                                            <label id="lblWhNo" class="col-form-label col-3"></label>
-                                            <label id="WhName" class="col-form-label col-3"></label>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-3">機號</label>
-
-                                            <div class="col-2">
-                                                <select id="CkNo" class="form-control">
-                                                    <option> </option>
-                                                </select>
-                                            </div>
-
-                                            <label id="lblCkNo" class="col-form-label col-3"></label>
-                                            <!--<div class="col-4">
-        <input id="CkNo" type="text" class="form-control" autocomplete="off" />-->
-                                            <!--<span class="msg-valid valid-blank"></span>-->
-                                            <!--</div>-->
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-3">貨倉</label>
-
-                                            <div class="col-2">
-                                                <select id="Layer" class="form-control">
-                                                    <option> </option>
-                                                </select>
-                                            </div>
-
-                                            <label id="lblLayer" class="col-form-label col-3"></label>
-
-
-                                            <label class="col-form-label col-3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;貨道</label>
-
-                                            <div class="col-2">
-                                                <select id="Sno" class="form-control">
-                                                    <option> </option>
-                                                </select>
-                                            </div>
-
-                                            <label id="lblSno" class="col-form-label col-3"></label>
-
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-3">原商品</label>
-                                            <label id="OldPLU" class="col-form-label col-5"></label>
-                                            <label id="lblOldPLU" class="col-form-label col-3"></label>
-                                            <!--<div class="col-4">-->
-                                            <!-- <input id="OldPLU" type="text" class="form-control" autocomplete="off" />-->
-                                            <!--<span class="msg-valid valid-blank"></span>-->
-                                            <!--</div>-->
-                                        </div>
-
-
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-3">新品號</label>
-                                            <div class="col-4">
-                                                <input id="NewPLU" type="text" class="form-control" autocomplete="off" />
+                                                <input id="PtNum" type="text" class="form-control" autocomplete="off" text-align="right" />
                                                 <span class="msg-valid valid-blank"></span>
                                             </div>
-                                            <label id="lblNewPLU" class="col-form-label col-2"></label>
                                         </div>
 
 
                                         <div class="form-group row">
-                                            <label class="col-form-label col-3">新商品</label>
-                                            <label id="NewPLUName" class="col-form-label col-3"></label>
+                                            <label class="col-form-label col-3" style="text-align: right">新&nbsp;&nbsp;商&nbsp;&nbsp;品</label>
+                                            <label id="lblNewPLU" class="col-form-label col-5" style="text-align: left;color: blue"></label>
+                                            <!--<label id="NewPLUName" class="col-form-label col-3"></label>-->
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-3"></label>
+                                            <!--<label class="col-form-label col-5"></label>-->
+                                            <label id="NewPLUName" class="col-form-label col-5" style="text-align: left;color: blue"></label>
                                         </div>
 
 
                                         <div class="form-group row">
-                                            <label class="col-form-label col-3">新補貨量</label>
+                                            <label class="col-form-label col-3" style="text-align: right">新補貨量</label>
+                                            <label id="lblNum" class="col-form-label col-2" style="text-align: left;color: blue"></label>
 
                                             <!--<div style="text-align:right"></div>-->
-
+                                            <label class="col-form-label col-3" style="text-align: right">實際補貨量</label>
                                             <div class="col-3">
-                                                <input id="Num" type="text" class="form-control" autocomplete="off" text-align="right"/>
+                                                <input id="Num" type="text" class="form-control" autocomplete="off" text-align="right" />
                                                 <span class="msg-valid valid-blank"></span>
                                             </div>
+                                        </div>
 
 
-                                            <label id="lblNum" class="col-form-label col-2"></label>
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-3" style="text-align: right">換貨日期</label>
+                                            <label id="lblExDate" class="col-form-label col-3" style="text-align: left;color: blue"></label>
                                         </div>
 
                                         <div class="form-group row">
-                                            <label class="col-form-label col-3">新滿倉量</label>
-                                            <div class="col-3">
-                                                <input id="DisplayNum" type="text" class="form-control" autocomplete="off" align="right"/>
-                                                <span class="msg-valid valid-blank"></span>
-                                            </div>
-                                            <label id="lblDisplayNum" class="col-form-label col-2"></label>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-3">換貨日期</label>
+                                            <label class="col-form-label col-3" style="text-align: right">新最近有效日</label>
                                             <div class="col-4">
-                                                <input id="ExchangeDate" type="text" class="form-control" autocomplete="off" />
+                                                <input id="ExpDate" type="text" class="form-control" autocomplete="off"  style="text-align: left;color: blue"/>
                                                 <!--<span class="msg-valid valid-blank"></span>-->
                                             </div>
-                                            <label id="lblExDate" class="col-form-label col-3"> </label>
                                         </div>
 
                                     </div>
+
                                     <div class="modal-footer">
                                         <button id="btCancel" type="button" class="btn btn-primary">取消</button>
                                         <button id="btSave" type="button" class="btn btn-danger">確認</button>
                                     </div>
+
                                 </div><!-- /.modal-content -->
                             </div><!-- /.modal-dialog -->
                         </div><!-- /.modal -->
                     </div>
-
-
-
-
 
 
                     <!--<style>
@@ -529,50 +499,40 @@
 
 
                             <div class="x_content">
-                                <div class="form-group row">
+                                <!--<div class="form-group row">
                                     <div class="col-md-9">
                                         <button type="button" id="btAdd" class="custom-control-inline btn btn-success">新增</button>
                                     </div>
-                                </div>
+                                </div>-->
 
                                 <table id="tbVIN14_5" class="table table-hover">
                                     <thead>
                                         <tr>
                                             <th>修改</th>
-                                            <th>刪除</th>
-                                            <th>作廢</th>
                                             <th>智販店</th>
                                             <th>機號</th>
                                             <th>貨道</th>
                                             <th>原商品</th>
+                                            <th>退貨量</th>
                                             <th>新商品</th>
-                                            <th>新補貨量</th>
-                                            <th>新滿倉量</th>
+                                            <th>補貨量</th>
                                             <th>換貨日期</th>
-                                            <th>申請者</th>
-                                            <th>申請日期</th>
-                                            <th>批核</th>
-                                            <th>批核狀態</th>
                                             <th>換貨狀態</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td><span class="fa fa-file-text-o"></span></td>
-                                            <td><span class="fa fa-trash-o"></span></td>
-                                            <td><span class="fa fa-lock"></span></td>
                                             <td>智販店</td>
                                             <td>機號</td>
                                             <td>貨道</td>
                                             <td>原商品</td>
-                                            <td>新商品</td>
+
                                             <td>新補貨量</td>
+                                            <td>新商品</td>
+
                                             <td>新滿倉量</td>
                                             <td>換貨日期</td>
-                                            <td>申請者</td>
-                                            <td>申請日期</td>
-                                            <td><span class="fa fa-certificate"></span></td>
-                                            <td>53425</td>
                                             <td>53425</td>
                                         </tr>
                                     </tbody>

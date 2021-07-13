@@ -41,7 +41,7 @@
             let st_id = $('#selST_ID').val();
             InitSelectItem($('#selLayerNo')[0], dtMachineListSpecBlank, "LayerNo", "LayerNo", true, "請選擇貨艙代號");
             if (st_id == "") {
-                InitSelectItem($('#selCkno')[0], dtWarehouseDSV, "SNno", "CkNo", true, "請選擇機號");
+                InitSelectItem($('#selCkno')[0], dtWarehouseDSV, "CkNo", "CkNo", true, "請選擇機號");
             }
             else {
                 var pData = {
@@ -58,7 +58,7 @@
 
     let AfterGetCkNoByST_ID = function (data) {
         let dtWarehouseDSV = data.getElementsByTagName('dtWarehouseDSV');
-        InitSelectItem($('#selCkno')[0], dtWarehouseDSV, "SNno", "CkNo", true, "請選擇機號");
+        InitSelectItem($('#selCkno')[0], dtWarehouseDSV, "CkNo", "CkNo", true, "請選擇機號");
     }
 
     let SearchVSA04P = function (ExpXls) {
@@ -113,7 +113,7 @@
         var dtWarehouse = data.getElementsByTagName('dtWarehouse');
         dtWarehouseDSVBlank = data.getElementsByTagName('dtWarehouseDSV');
         InitSelectItem($('#selST_ID')[0], dtWarehouse, "ST_ID", "ST_Sname", true, "請選擇店代號");
-        InitSelectItem($('#selCkno')[0], dtWarehouseDSVBlank, "SNno", "CkNo", true, "請選擇機號");
+        InitSelectItem($('#selCkno')[0], dtWarehouseDSVBlank, "CkNo", "CkNo", true, "請選擇機號");
         AssignVar();
         return;
         

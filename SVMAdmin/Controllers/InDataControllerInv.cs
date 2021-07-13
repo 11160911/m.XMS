@@ -595,7 +595,7 @@ namespace SVMAdmin.Controllers
         }
 
 
-
+        //
         [Route("SystemSetup/ChkChangeShop")]
         public ActionResult SystemSetup_ChkChangeShop()
         {
@@ -916,6 +916,68 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+
+
+
+        [Route("SystemSetup/SearchVIN14_5")]
+        public ActionResult SystemSetup_SearchVIN14_5()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SearchVIN14_5OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+
+                string WhNo = rq["WhNo"];
+                string CkNo = rq["CkNo"];
+                string Layer = rq["Layer"];
+                string exDate = rq["exDate"];
+
+                string sql = "select a.*, a.WhNo+b.ST_SNAME WhName, c.Man_Name , d.GD_SName OldName, e.GD_SName NewName, a.Layer+a.Sno LayerSno ,b.ST_OpenDay, f.PtNum ";
+                sql += " ,Case When IsNull(a.AppDate,'')='' Then '未批核' Else '已批核' End AppStatus";
+                sql += " ,Case When IsNull(a.FinishDate,'')='' Then (Case When IsNull(DefeasanceDate,'')<>'' Then '作廢' Else '未完成' End) Else '完成' End FinStatus";
+                sql += " from ChangePLUSV a (Nolock) ";
+                sql += " inner join WarehouseSV b (Nolock) on a.WhNo=b.ST_ID And a.CompanyCode=b.CompanyCode";
+                sql += " left join EmployeeSV c (Nolock) on a.DocUser=c.Man_ID And a.CompanyCode=c.CompanyCode ";
+                sql += " left join PLUSV d (Nolock) on a.PLUOld=d.GD_No And a.CompanyCode=d.CompanyCode  ";
+                sql += " left join PLUSV e (Nolock) on a.PLUNew=e.GD_No And a.CompanyCode=e.CompanyCode ";
+                sql += " left join InventorySV f (Nolock) " 
+                    +  " on a.WhNo=f.WhNo And a.CkNo=f.CkNo And a.Layer=f.Layer And a.Sno=f.Sno And a.CompanyCode=f.CompanyCode ";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "' ";
+                sql += " And IsNull(a.FinishDate,'')='' And IsNull(a.DefeasanceDate,'')='' And IsNull(a.AppDate,'')<>'' ";
+                if (WhNo != "")
+                {
+                    sql += " and a.WhNo='" + WhNo + "'";
+                }
+                if (CkNo != "")
+                {
+                    sql += " and a.CkNo='" + CkNo + "'";
+                }
+                if (Layer != "")
+                {
+                    sql += " and a.Layer='" + Layer + "'";
+                }
+                if (exDate != "")
+                {
+                    sql += " and a.exchangeDate='" + exDate + "'";
+                }
+                sql += " Order By a.DocNo Desc";
+                DataTable dtInv = PubUtility.SqlQry(sql, uu, "SYS");
+                dtInv.TableName = "dtInv";
+                ds.Tables.Add(dtInv);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+
+
 
 
 
