@@ -464,18 +464,15 @@
             var dtChkAdj = data.getElementsByTagName('dtChkAdj');
 
             if (dtChkTF.length != 0) {
-                ChkRes += "";
+                ChkRes += "本單該店有調撥單尚未過帳!! ";
             }
-            //else {
-            //    SysDate = GetNodeValue(dtSysDate[0], "SysDate");
-            //}
 
             if (dtChkUseless.length != 0) {
-                ChkRes += "";
+                ChkRes += "本單該店有報廢單尚未過帳!! ";
             }
-
+            //alert(dtChkAdj.length);
             if (dtChkAdj.length != 0) {
-                ChkRes += "";
+                ChkRes += "本單該店有調整單尚未過帳!! ";
             }
 
             if (ChkRes != "") {
