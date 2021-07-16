@@ -54,6 +54,8 @@
         }
         var pData = {
             WhNo: $('#cbWh').val(),
+            CkNo: $('#cbCK').val(),
+            LayerNo: $('#cbLayer').val()
         };
         PostToWebApi({ url: "api/SystemSetup/SearchVIN14_2", data: pData, success: AfterSearchVIN14_2 });
     };
@@ -141,6 +143,10 @@
 
         if ($('#AdjQty').val() == "" | $('#AdjQty').val() == null) {
             DyAlert("補貨量欄位必須輸入資料!!", function () { $('#AdjQty').focus() });
+            return;
+        }
+        else if ($('#AdjQty').val() == "0") {
+            DyAlert("補貨量必須>0!!", function () { $('#AdjQty').focus() });
             return;
         }
         else {

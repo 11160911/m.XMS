@@ -443,30 +443,7 @@
 
 
     let SaveData = function () {
-        //alert("EditMode:" + EditMode);
-        //if (EditMode == "Add") {
-        //    var pData = {
-        //        ChangePLUSV: [
-        //            {
-        //               WhNo: $('#WhNo').val(),
-        //                CkNo: $('#CkNo').val(),
-        //                Layer: $('#Layer').val(),
-        //                Sno: $('#Sno').val(),
-        //                OldPLU: $('#lblOldPLU').text(),
-        //                NewPLU: $('#NewPLU').val(),
-        //                Num: $('#Num').val(),
-        //                DisplayNum: $('#DisplayNum').val(),
-        //                ExchangeDate: $('#ExchangeDate').val()
-        //            }
-        //        ]
  
-        //    }
-        //    //alert("Add.." + $('#Type_ID').val());
-        //    PostToWebApi({ url: "api/SystemSetup/AddChgPLU", data: pData, success: AfterAddChgPLU });
-        //}
-        //else
-        //if (EditMode == "Mod") {
-            //alert($('#NewPLU').val());
             var pData = {
                 ChangePLUSV: [
                     {
@@ -485,39 +462,6 @@
             }
   
         PostToWebApi({ url: "api/SystemSetup/SaveVIN14_5", data: pData, success: AfterUpdateChgPLU });
-        //}
-        //else if (EditMode == "App") {
-
-        //    var cData = {
-        //        ChangePLUSV: [
-        //            {
-        //                DocNo: gDocNo
-        //            }
-        //        ]
-        //    }
-        //    //alert("Del " + $('#Type_ID').val());
-        //    PostToWebApi({ url: "api/SystemSetup/AppChgPLU", data: cData, success: AfterUpdateChgPLU });
-        //}
-        //else if (EditMode == "Del") {
-        //    var cData = {
-        //        ChangePLUSV: [
-        //            {
-        //                DocNo: gDocNo
-        //            }
-        //        ]
-        //    }
-        //    PostToWebApi({ url: "api/SystemSetup/DelChgPLU", data: cData, success: AfterDelChgPLU });
-        //}
-        //else if (EditMode == "Def") {
-        //    var cData = {
-        //        ChangePLUSV: [
-        //            {
-        //                DocNo: gDocNo
-        //            }
-        //        ]
-        //    }
-        //    PostToWebApi({ url: "api/SystemSetup/DefChgPLU", data: cData, success: AfterUpdateChgPLU });
-        //}
 
     }
 
