@@ -2667,7 +2667,183 @@ namespace SVMAdmin.Controllers
         }
 
 
+        [Route("SystemSetup/GetInitVIN14_1P")]
+        public ActionResult GetInitVIN14_1P()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetInitVIN14_1POK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                string sql = "select whno from EmployeeSV (nolock) where companycode='" + uu.CompanyId + "' and man_id='" + uu.UserID + "' ";
+                DataTable dtShop = PubUtility.SqlQry(sql, uu, "SYS");
+                ds.Tables.Add(dtShop);
+                dtShop.TableName = "dtShop";
 
+                sql = "Select Type_ID,Type_Name from TypeData (nolock) where Companycode='" + uu.CompanyId + "' and Type_Code='DA' ";
+                DataTable dtArea = PubUtility.SqlQry(sql, uu, "SYS");
+                ds.Tables.Add(dtArea);
+                dtArea.TableName = "dtArea";
+
+                sql = "Select DocNo from PickupHSV (nolock) where Companycode='" + uu.CompanyId + "' and DocType='S' " +
+                      "and WhNoOut=(select whno from EmployeeSV (nolock) where companycode='" + uu.CompanyId + "' and man_id='" + uu.UserID + "') " +
+                      "and isnull(ChkDate,'')<>'' ";
+                DataTable dtPick = PubUtility.SqlQry(sql, uu, "SYS");
+                ds.Tables.Add(dtPick);
+                dtPick.TableName = "dtPick";
+
+
+
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        //2021-07-14 Kris
+        [Route("SystemSetup/GetVIN14_1P")]
+        public ActionResult SystemSetup_GetVIN14_1P()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetVIN14_1POK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Area = rq["Area"];
+                string Pick = rq["Pick"];
+                string DocDate = rq["DocDate"];
+
+                string sql = "Select a.DocNo,a.DocDate,sum(b.Qty)Qty From PickupHSV a (nolock) " +
+                    "left join PickupDSV b (nolock) on a.DocNo=b.DocNo and b.companycode=a.companycode " +
+                    "left join WarehouseSV c (nolock) on a.WhNoOut=c.ST_ID and c.companycode=a.companycode " +
+                    "Where a.Companycode='" + uu.CompanyId + "' " +
+                    "and a.WhNoOut=(select WhNo from EmployeeSV (nolock) where companycode='" + uu.CompanyId + "' and man_id='" + uu.UserID + "') " +
+                    "and isnull(a.ChkDate,'')<>'' and a.DocType='S' ";
+                if (Area != "")
+                    sql += "and c.ST_DeliArea='" + Area + "' ";
+                if (Pick != "")
+                    sql += "and a.DocNo='" + Pick + "' ";
+                if (DocDate != "")
+                    sql += "and a.DocDate='" + DocDate + "' ";
+                sql += "group by a.DocNo,a.DocDate ";
+                sql += "order by a.DocNo ";
+
+                DataTable dtVIN14_1P = PubUtility.SqlQry(sql, uu, "SYS");
+                dtVIN14_1P.TableName = "dtVIN14_1P";
+                ds.Tables.Add(dtVIN14_1P);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        //2021-07-15 Kris
+        [Route("SystemSetup/GetVIN14_1P_1")]
+        public ActionResult SystemSetup_GetVIN14_1P_1()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetVIN14_1P_1OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string DocNo = rq["DocNo"];
+
+                string sql = "Select a.SeqNo,a.PLU + ' ' + b.GD_Sname as GD_NO,isnull(a.Qty,0)Qty from PickupDSV a (nolock) " +
+                "left join PLUSV b(nolock) on a.PLU = b.GD_NO and b.CompanyCode = a.CompanyCode " +
+                "where a.CompanyCode = '" + uu.CompanyId + "' ";
+                if (DocNo != "")
+                    sql += "and a.DocNo='" + DocNo + "' ";
+                sql += "order by a.seqno ";
+                DataTable dtVIN14_1P_1 = PubUtility.SqlQry(sql, uu, "SYS");
+                dtVIN14_1P_1.TableName = "dtVIN14_1P_1";
+                ds.Tables.Add(dtVIN14_1P_1);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        //2021-07-15 Kris
+        [Route("SystemSetup/GetVIN14_1P_2")]
+        public ActionResult SystemSetup_GetVIN14_1P_2()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetVIN14_1P_2OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string DocNo = rq["DocNo"];
+
+                string sql = "Select a.WhNo,a.Ckno,b.ST_Sname+a.Ckno+'機' as SName,c.ST_Address,b.ST_DeliArea " +
+                "from PickupShopSV a(nolock) " +
+                "left join WarehouseSV b(nolock) on a.WhNo = b.ST_ID and b.CompanyCode = a.CompanyCode " +
+                "left join WarehouseDSV c(nolock) on a.WhNo = c.ST_ID and a.Ckno = c.CkNo and c.CompanyCode = a.CompanyCode " +
+                "where a.CompanyCode = '" + uu.CompanyId + "' ";
+                if (DocNo != "")
+                    sql += "and a.DocNo='" + DocNo + "' ";
+                sql += "order by a.whno,a.ckno ";
+                DataTable dtVIN14_1P_2 = PubUtility.SqlQry(sql, uu, "SYS");
+                dtVIN14_1P_2.TableName = "dtVIN14_1P_2";
+                ds.Tables.Add(dtVIN14_1P_2);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        //2021-07-15 Kris
+        [Route("SystemSetup/GetVIN14_1P_3")]
+        public ActionResult SystemSetup_GetVIN14_1P_3()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetVIN14_1P_3OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string DocNo = rq["DocNo"];
+
+                string sql = "select b.SeqNo,b.PLU + ' ' + c.GD_Sname as PLU,isnull(b.Qty,0)Qty, " +
+                "a.whnoin+'店 '+a.cknoin+'機 '+d.st_sname+a.cknoin as Name " +
+                "from PickupHSV a (nolock) " +
+                "left join PickupDSV b (nolock) on a.DocNo=b.DocNo and b.CompanyCode=a.CompanyCode " +
+                "left join PLUSV c(nolock) on b.PLU = c.GD_NO and c.CompanyCode = a.CompanyCode " +
+                "left join WarehouseSV d (nolock) on a.whnoin=d.st_id and d.companycode=a.CompanyCode " +
+                "where a.CompanyCode = '" + uu.CompanyId + "' ";
+                if (DocNo != "")
+                    sql += "and a.DocNo='" + DocNo + "' ";
+                sql += "order by b.seqno ";
+                DataTable dtVIN14_1P_3 = PubUtility.SqlQry(sql, uu, "SYS");
+                dtVIN14_1P_3.TableName = "dtVIN14_1P_3";
+                ds.Tables.Add(dtVIN14_1P_3);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
 
     }
 }

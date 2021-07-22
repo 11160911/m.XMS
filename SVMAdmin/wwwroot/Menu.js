@@ -421,6 +421,62 @@
                     PageVSA21_7P($(".right_col"));
                 }
             }
+            else if (pg == "VSA76_1P") {
+                if (window.PageVSA76_1P == undefined)
+                    $.getScript('VSA76_1P.js',
+                        function () {
+                            PageVSA76_1P($(".right_col"));
+                        }
+                    );
+                else {
+                    PageVSA76_1P($(".right_col"));
+                }
+            }
+            else if (pg == "VSA76P") {
+                if (window.PageVSA76P == undefined)
+                    $.getScript('VSA76P.js',
+                        function () {
+                            PageVSA76P($(".right_col"));
+                        }
+                    );
+                else {
+                    PageVSA76P($(".right_col"));
+                }
+            }
+            else if (pg == "VSA73P") {
+                if (window.PageVSA73P == undefined)
+                    $.getScript('VSA73P.js',
+                        function () {
+                            PageVSA73P($(".right_col"));
+                        }
+                    );
+                else {
+                    PageVSA73P($(".right_col"));
+                }
+            }
+            else if (pg == "VSA73_1P") {
+                if (window.PageVSA73_1P == undefined)
+                    $.getScript('VSA73_1P.js',
+                        function () {
+                            PageVSA73_1P($(".right_col"));
+                        }
+                    );
+                else {
+                    PageVSA73_1P($(".right_col"));
+                }
+            }
+            else if (pg == "VIN14_1P") {
+                if (window.PageVIN14_1P == undefined)
+                    $.getScript('VIN14_1P.js',
+                        function () {
+                            PageVIN14_1P($(".right_col"));
+                        }
+                    );
+                else {
+                    PageVIN14_1P($(".right_col"));
+                }
+            }
+            
             else if (pg == "SDAccount") {
                 if (window.PageSDAccount == undefined)
                     $.getScript('MasterFile/SDAccount.js',
