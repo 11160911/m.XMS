@@ -87,8 +87,8 @@ namespace SVMAdmin.Controllers
                         drA["SalesMan5"] = dtH.Rows[i]["Salesman5"];
                         drA["SalesMan6"] = dtH.Rows[i]["Salesman6"];
                         drA["Cash"] = dtH.Rows[i]["TotalAmt"];
-                        drA["Discount"] = -1 * PubUtility.CB(dtH.Rows[i]["ItemDiscount"]) + PubUtility.CB(dtH.Rows[i]["Discount"]);
-                        drA["InvCash"] = PubUtility.CB(dtH.Rows[i]["TotalAmt"]) + PubUtility.CB(dtH.Rows[i]["TaxAmt"]);
+                        drA["Discount"] = -1 * (PubUtility.CB(dtH.Rows[i]["ItemDiscount"]) + PubUtility.CB(dtH.Rows[i]["Discount"]));
+                        drA["InvCash"] = PubUtility.CB(dtH.Rows[i]["TotalAmt"]) - PubUtility.CB(dtH.Rows[i]["TaxAmt"]);
                         drA["Tax"] = dtH.Rows[i]["TaxAmt"];
                         drA["FaxCash"] = dtH.Rows[i]["TotalTax"];
                         drA["PriceDiscount"] = dtH.Rows[i]["PriceDiscount"];
@@ -517,6 +517,8 @@ namespace SVMAdmin.Controllers
                 DataTable dtC = dsS.Tables["Company"];
                 string LastTransDate = "";
                 string SNno = dtC.Rows[0]["SNno"].ToString();
+                string Shop = dtC.Rows[0]["Face_ID"].ToString();
+                string Ckno = dtC.Rows[0]["POSID"].ToString();
                 string sql = "select LastTransDate from WarehouseDSV where CompanyCode='" + uu.CompanyId + "'".CrLf();
                 sql += " and SNno='" + SNno.SqlQuote() + "'".CrLf();
                 DataTable dt = PubUtility.SqlQry(sql, uu, "SYS");
@@ -547,16 +549,17 @@ namespace SVMAdmin.Controllers
                 //InventorySV
                 sql = "select CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime,WhNO,PLU,PTNum,SafeNum,";
                 sql += "In_Date,Out_Date,StartSalesDate,EndSalesDate,DisPlayNum,CkNo,Layer,Sno from InventorySV (nolock) ";
-                sql += "where CompanyCode='" + uu.CompanyId + "' and ModDate+' '+ModTime>'" + LastTransDate.SqlQuote() + "'";
+                sql += "where CompanyCode='" + uu.CompanyId + "' and Whno='" + Shop.SqlQuote() + "' ";
+                sql += "and Ckno='" + Ckno.SqlQuote() + "' and ModDate+' '+ModTime>'" + LastTransDate.SqlQuote() + "'";
                 dt = PubUtility.SqlQry(sql, uu, "SYS");
                 ds.Tables.Add(dt);
-                dt.TableName = "dtInventorySV";
+                dt.TableName = "InventorySV";
                 //EmployeeSV
                 sql = "select * from EmployeeSV (nolock) ";
                 sql += "where CompanyCode='" + uu.CompanyId + "' and ModDate+' '+ModTime>'" + LastTransDate.SqlQuote() + "'";
                 dt = PubUtility.SqlQry(sql, uu, "SYS");
                 ds.Tables.Add(dt);
-                dt.TableName = "dtEmployeeSV";
+                dt.TableName = "EmployeeSV";
                 //Payment
                 sql = "select Pay_ID,Pay_Type,PayPN,IsCash,CardNoEntry,CreditCardCheck,Change,Exceed,CanUse,Pay_EType,";
                 sql += "Inv,CouponCheck,CouponValid,CouponUsed,InvBit,CouponValue,StandardCoupon,AllowPaySign,";
@@ -564,7 +567,7 @@ namespace SVMAdmin.Controllers
                 sql += "where CompanyCode='" + uu.CompanyId + "' and ModDate+' '+ModTime>'" + LastTransDate.SqlQuote() + "'";
                 dt = PubUtility.SqlQry(sql, uu, "SYS");
                 ds.Tables.Add(dt);
-                dt.TableName = "dtPayment";
+                dt.TableName = "Payment";
                 //WarehouseSV/D
                 sql = "select ST_ID,ST_Sname,ST_Name,ST_Type,Face_Tel,Face_Fax,ST_Cperson,ST_Ctel,Face_AreaMan,"
                     + "Face_Man1,ST_OpenDay,ST_StopDay,CanNotDelete,LastTransDate,InvGetQty,InvSaveQty,InvType,FlagInv,"
@@ -572,7 +575,7 @@ namespace SVMAdmin.Controllers
                 sql += " and ModDate+' '+ModTime>'" + LastTransDate.SqlQuote() + "'";
                 DataTable dtW = PubUtility.SqlQry(sql, uu, "SYS");
                 ds.Tables.Add(dtW);
-                dtW.TableName = "dtWarehouseSV";
+                dtW.TableName = "WarehouseSV";
 
                 sql = "select ST_ID,ST_Address,ST_OpenDay,ST_StopDay,CanNotDelete,LastTransDate,InvGetQty,InvSaveQty,"
                     + "InvType,CkNo,SNno,WhnoIn from WarehouseDSV where CompanyCode='" + uu.CompanyId + "'";
@@ -580,22 +583,27 @@ namespace SVMAdmin.Controllers
                 sql += " and ModDate+' '+ModTime>'" + LastTransDate.SqlQuote() + "'";
                 DataTable dtWD = PubUtility.SqlQry(sql, uu, "SYS");
                 ds.Tables.Add(dtWD);
-                dtWD.TableName = "dtWarehouseDSV";
+                dtWD.TableName = "WarehouseDSV";
                 //MachineList
                 sql = "select ModUser,ModDate,ModTime,SNno,StartDay,StopDay,Temperature,FlagT,LastTransDate,FlagNet,FlagUse,MCSeq,FlagM from MachineList where CompanyCode='" + uu.CompanyId + "'";
                 sql += " and SNno='" + SNno.SqlQuote() + "'";
                 sql += " and ModDate+' '+ModTime>'" + LastTransDate.SqlQuote() + "'";
                 DataTable dtM = PubUtility.SqlQry(sql, uu, "SYS");
                 ds.Tables.Add(dtM);
-                dtM.TableName = "dtMachineList";
+                dtM.TableName = "MachineList";
                 //Currency
                 sql = "select MID,FEF,CrtDate,CrtUser,ModDate,ModUser,PointNum1,PointNum2 from Currency where CompanyCode='" + uu.CompanyId + "'";
                 sql += " and ModDate+' '+ModTime>'" + LastTransDate.SqlQuote() + "'";
                 dt = PubUtility.SqlQry(sql, uu, "SYS");
                 ds.Tables.Add(dt);
-                dt.TableName = "dtCurrency";
+                dt.TableName = "Currency";
                 //InvdistributeSV
-
+                sql = "select Inv_YM,Inv_Head,Inv_Sno,Inv_Eno from InvdistributeSV where CompanyCode='" + uu.CompanyId + "' ";
+                sql += "and ShopNo='" + Shop.SqlQuote() + "' and Ckno='" + Ckno.SqlQuote() + "' ";
+                sql += "and isnull(AppDate,'')<>'' and left(isnull(appdate,''),16)>'" + LastTransDate.SqlQuote() + "'";
+                dt = PubUtility.SqlQry(sql, uu, "SYS");
+                ds.Tables.Add(dt);
+                dt.TableName = "InvdistributeSV";
                 //SystemCode/SystemValue/SystemParameter (保留)
 
                 //MachineErrCode (保留)
