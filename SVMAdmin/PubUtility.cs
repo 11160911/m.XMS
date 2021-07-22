@@ -736,7 +736,7 @@ namespace SVMAdmin
             dt.Rows.Add(new object[] { "智能報表", "AIReports", "VSA04P", "交易明細", "VSA04P", "P", "fa-file-excel-o" });
             dt.Rows.Add(new object[] { "智能報表", "AIReports", "VSA21P", "商品銷售排行", "VSA21P", "P", "fa-file-excel-o" });
             dt.Rows.Add(new object[] { "智能報表", "AIReports", "VSA21_7P", "區域銷售排行", "VSA21_7P", "P", "fa-file-excel-o" });
-
+            dt.Rows.Add(new object[] { "智能報表", "AIReports", "VSA76_1P", "即時銷售查詢", "VSA76_1P", "P", "fa-file-excel-o" });
             return dt.Copy();
         }
 
