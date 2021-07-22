@@ -404,7 +404,7 @@
     };
 
     if ($('#pgVSA73P').length == 0) {
-        AllPages = new LoadAllPages(ParentNode, "VSA73P", ["pgVSA73P"], afterLoadPage);
+        AllPages = new LoadAllPages(ParentNode, "AIReports/VSA73P", ["pgVSA73P"], afterLoadPage);
     };
 
     function getTodayDate() {

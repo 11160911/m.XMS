@@ -441,7 +441,7 @@
     if ($('#pgVSA76_1P').length == 0) {
         //2021-04-29 Debug用，按F12後，在主控台內會顯示aaaaaaVMN29
         //console.log("aaaaaaVMN29");
-        AllPages = new LoadAllPages(ParentNode, "VSA76_1P", ["pgVSA76_1P"], afterLoadPage);
+        AllPages = new LoadAllPages(ParentNode, "AIReports/VSA76_1P", ["pgVSA76_1P"], afterLoadPage);
     };
 
 

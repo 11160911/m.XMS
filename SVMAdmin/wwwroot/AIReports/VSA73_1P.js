@@ -387,7 +387,7 @@
     };
 
     if ($('#pgVSA73_1P').length == 0) {
-        AllPages = new LoadAllPages(ParentNode, "VSA73_1P", ["pgVSA73_1P"], afterLoadPage);
+        AllPages = new LoadAllPages(ParentNode, "AIReports/VSA73_1P", ["pgVSA73_1P"], afterLoadPage);
     };
     function getDay() {
         for (i = 1; i < 8; i++) {

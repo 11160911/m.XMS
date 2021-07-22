@@ -423,7 +423,7 @@
             }
             else if (pg == "VSA76_1P") {
                 if (window.PageVSA76_1P == undefined)
-                    $.getScript('VSA76_1P.js',
+                    $.getScript('AIReports/VSA76_1P.js',
                         function () {
                             PageVSA76_1P($(".right_col"));
                         }
@@ -434,7 +434,7 @@
             }
             else if (pg == "VSA76P") {
                 if (window.PageVSA76P == undefined)
-                    $.getScript('VSA76P.js',
+                    $.getScript('AIReports/VSA76P.js',
                         function () {
                             PageVSA76P($(".right_col"));
                         }
@@ -445,7 +445,7 @@
             }
             else if (pg == "VSA73P") {
                 if (window.PageVSA73P == undefined)
-                    $.getScript('VSA73P.js',
+                    $.getScript('AIReports/VSA73P.js',
                         function () {
                             PageVSA73P($(".right_col"));
                         }
@@ -456,7 +456,7 @@
             }
             else if (pg == "VSA73_1P") {
                 if (window.PageVSA73_1P == undefined)
-                    $.getScript('VSA73_1P.js',
+                    $.getScript('AIReports/VSA73_1P.js',
                         function () {
                             PageVSA73_1P($(".right_col"));
                         }
