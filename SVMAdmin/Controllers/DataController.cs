@@ -801,12 +801,14 @@ namespace SVMAdmin.Controllers
                 System.IO.MemoryStream ms = new System.IO.MemoryStream();
                 file.CopyTo(ms);
                 DataTable dtF = new DataTable();
+                dtF.Columns.Add("CompanyCode", typeof(string));
                 dtF.Columns.Add("DataType", typeof(string));
                 dtF.Columns.Add("FileName", typeof(string));
                 dtF.Columns.Add("DocType", typeof(string));
                 dtF.Columns.Add("DocImage", typeof(byte[]));
 
                 DataRow drF = dtF.NewRow();
+                drF["CompanyCode"] = uu.CompanyId;
                 drF["DataType"] = HttpContext.Request.Form["UploadFileType"];
                 drF["FileName"] = file.FileName;
                 drF["DocType"] = file.ContentType;

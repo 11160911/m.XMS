@@ -538,11 +538,12 @@ namespace SVMAdmin.Controllers
                 sql = "select * from PLUSV (nolock) where CompanyCode='" + uu.CompanyId + "'";
                 sql += " and ModDate+' '+ModTime>'" + LastTransDate.SqlQuote() + "'";
                 DataTable dtP = PubUtility.SqlQry(sql, uu, "SYS");
+                dtP.Columns.Remove("CompanyCode");
                 dtP.TableName = "PLUSV";
                 ds.Tables.Add(dtP);
                 //ImageTable
-                sql = "select SGID,DataType,FileName,DocType,DocImage from ImageTable (nolock) where CompanyCode='" + uu.CompanyId + "'";
-                sql += " and ModDate+' '+ModTime>'" + LastTransDate.SqlQuote() + "'";
+                sql = "select SGID,DataType,FileName,DocType,convert(varbinary,DocImage) DocImage from ImageTable (nolock) where Companycode='" + uu.CompanyId + "' ";
+                sql += "and ModDate+' '+ModTime>'" + LastTransDate.SqlQuote() + "'";
                 dt = PubUtility.SqlQry(sql, uu, "SYS");
                 dt.TableName = "ImageTable";
                 ds.Tables.Add(dt);
@@ -554,16 +555,16 @@ namespace SVMAdmin.Controllers
                 dt = PubUtility.SqlQry(sql, uu, "SYS");
                 ds.Tables.Add(dt);
                 dt.TableName = "InventorySV";
-                //EmployeeSV
-                sql = "select * from EmployeeSV (nolock) ";
-                sql += "where CompanyCode='" + uu.CompanyId + "' and ModDate+' '+ModTime>'" + LastTransDate.SqlQuote() + "'";
-                dt = PubUtility.SqlQry(sql, uu, "SYS");
-                ds.Tables.Add(dt);
-                dt.TableName = "EmployeeSV";
+                ////EmployeeSV
+                //sql = "select * from EmployeeSV (nolock) ";
+                //sql += "where CompanyCode='" + uu.CompanyId + "' and ModDate+' '+ModTime>'" + LastTransDate.SqlQuote() + "'";
+                //dt = PubUtility.SqlQry(sql, uu, "SYS");
+                //ds.Tables.Add(dt);
+                //dt.TableName = "EmployeeSV";
                 //Payment
-                sql = "select Pay_ID,Pay_Type,PayPN,IsCash,CardNoEntry,CreditCardCheck,Change,Exceed,CanUse,Pay_EType,";
-                sql += "Inv,CouponCheck,CouponValid,CouponUsed,InvBit,CouponValue,StandardCoupon,AllowPaySign,";
-                sql += "UnitAmount,AllowDelete,CouponBit,RSalesFlag,AllRSalesFlag,APPFlag, from Payment (nolock) ";
+                sql = "select Pay_ID,Pay_Type,PayPN,IsCash,CardNoEntry,CreditCardCheck,Change,Exceed,CanUse,isnull(Pay_EType,'') Pay_EType,";
+                sql += "Inv,CouponCheck,CouponValid,CouponUsed,InvBit,isnull(CouponValue,'') CouponValue,StandardCoupon,AllowPaySign,";
+                sql += "UnitAmount,AllowDelete,CouponBit,RSalesFlag,AllRSalesFlag,APPFlag from Payment (nolock) ";
                 sql += "where CompanyCode='" + uu.CompanyId + "' and ModDate+' '+ModTime>'" + LastTransDate.SqlQuote() + "'";
                 dt = PubUtility.SqlQry(sql, uu, "SYS");
                 ds.Tables.Add(dt);
@@ -597,19 +598,81 @@ namespace SVMAdmin.Controllers
                 dt = PubUtility.SqlQry(sql, uu, "SYS");
                 ds.Tables.Add(dt);
                 dt.TableName = "Currency";
-                //InvdistributeSV
-                sql = "select Inv_YM,Inv_Head,Inv_Sno,Inv_Eno from InvdistributeSV where CompanyCode='" + uu.CompanyId + "' ";
+                //SVM.InvdistributeSV-->VDMS.EInvoiceLog
+                sql = "select Inv_YM YearMonth,Inv_Head InitialChar,Inv_Sno StartNo,Inv_Eno EndNo,";
+                sql += "'HQ' MachineNo from InvdistributeSV where CompanyCode='" + uu.CompanyId + "' ";
                 sql += "and ShopNo='" + Shop.SqlQuote() + "' and Ckno='" + Ckno.SqlQuote() + "' ";
                 sql += "and isnull(AppDate,'')<>'' and left(isnull(appdate,''),16)>'" + LastTransDate.SqlQuote() + "'";
                 dt = PubUtility.SqlQry(sql, uu, "SYS");
                 ds.Tables.Add(dt);
-                dt.TableName = "InvdistributeSV";
+                dt.TableName = "EInvoiceLog";
                 //SystemCode/SystemValue/SystemParameter (保留)
 
                 //MachineErrCode (保留)
 
 
 
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SetLastTransDate")]
+        public ActionResult SetLastTransDate()
+        {
+            iXmsApiParameter AP = PubUtility.GetiXmsApiParameter(this, ConstList.ThisSiteConfig.SecurityKey);
+            UserInfo uu = AP.user;
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SetLastTransDateOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                DataSet dsM = new DataSet();
+                dsM.ReadXml(HttpContext.Request.Body);
+                DataTable dtC = dsM.Tables["Company"];
+
+                string sql = "";
+                using (DBOperator dbop = new DBOperator())
+                {   //DownLoadData完成後回寫傳輸記錄,最後傳輸日
+                    using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required))
+                    {
+                        try
+                        {
+                            sql = "select * from MachineList (nolock) where SNno='" + dtC.Rows[0]["SNno"].ToString().SqlQuote() + "'";
+                            DataTable dtR = dbop.Query(sql, uu, "SYS");
+
+                            sql = "insert into xWhNoUpdateRec (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime,WhNo,LastTransDate,NowTransDate,Ckno)".CrLf();
+                            sql += "select '" + uu.CompanyId.SqlQuote() + "','001',Convert(varchar,getdate(),111),substring(convert(varchar,getdate(),121),12,12)".CrLf();
+                            sql += ",'001',Convert(varchar,getdate(),111),substring(convert(varchar,getdate(),121),12,12),'" + dtC.Rows[0]["Face_ID"].ToString().SqlQuote() + "'".CrLf();
+                            sql += ",'" + dtR.Rows[0]["LastTransDate"].ToString().SqlQuote() + "','" + dtC.Rows[0]["LastTransDate"].ToString().SqlQuote() + "'";
+                            sql += ",'" + dtC.Rows[0]["POSID"].ToString().SqlQuote() + "'";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+                            sql = "Update WarehouseDSV Set LastTransDate='" + dtC.Rows[0]["LastTransDate"].ToString().SqlQuote() + "'";
+                            sql += ",ModUser='" + uu.UserID + "',ModDate=convert(char(10),getdate(),111),ModTime=convert(char(8),getdate(),108) ";
+                            sql += " where Companycode='" + uu.CompanyId + "' and ST_ID='" + dtC.Rows[0]["Face_ID"].ToString().SqlQuote() + "' ";
+                            sql += "and Ckno='" + dtC.Rows[0]["POSID"].ToString().SqlQuote() + "'";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+                            sql = "Update MachineList Set LastTransDate='" + dtC.Rows[0]["LastTransDate"].ToString().SqlQuote() + "'";
+                            sql += ",ModUser='" + uu.UserID + "',ModDate=convert(char(10),getdate(),111),ModTime=convert(char(8),getdate(),108) ";
+                            sql += " where SNno='" + dtC.Rows[0]["SNno"].ToString().SqlQuote() + "'";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+                            ts.Complete();
+                        }
+                        catch (Exception err)
+                        {
+                            ts.Dispose();
+                            dbop.Dispose();
+                            throw new Exception(err.Message);
+                        }
+                    }
+                    dbop.Dispose();
+                }
             }
             catch (Exception err)
             {
