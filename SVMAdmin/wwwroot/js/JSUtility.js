@@ -926,6 +926,7 @@ var SetCommSelectGrid = function (option) {
 
 }
 
+
 var DateDiff = function (interval, objDate1, objDate2) {
     var dtBeg = new Date(objDate1);
     var dtEnd = new Date(objDate2);
@@ -941,3 +942,4 @@ var DateDiff = function (interval, objDate1, objDate2) {
         case "y": return dtEnd.getFullYear() - this.getFullYear();  //年
     }
 }
+
