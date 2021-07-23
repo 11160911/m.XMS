@@ -2475,6 +2475,335 @@ namespace SVMAdmin.Controllers
         }
 
 
+        //2021-05-18 Larry
+        [Route("SystemSetup/GetInitVIV10")]
+        public ActionResult SystemSetup_GetInitVIV10()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetInitVIV10OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+
+                string SysDate = "";
+                string sql = "select convert(char(10),getdate(),111) SysDate";
+
+                DataTable dtSysDate = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtSysDate.Rows.Count > 0)
+                {
+                    SysDate = dtSysDate.Rows[0][0].ToString();
+                }
+
+                string sYYYY = PubUtility.StrLeft(SysDate, 5);
+                Int16 M = Convert.ToInt16(SysDate.Substring(5, 2));
+
+                if (M % 2 == 0)
+                {
+                    M = (short)(M - 1);
+                }
+
+                string YM = sYYYY + '/' + PubUtility.PadLeft(Convert.ToString(M), '0', 2);
+
+                sql = "select Distinct Inv_YM Inv_YM ";
+                sql += " from InvDistribute (NoLock) ";
+                sql += " Where CompanyCode='" + uu.CompanyId + "' And Inv_YM>='" + YM + "' ";
+                sql += " Order By Inv_YM ";
+
+                DataTable dtYM = PubUtility.SqlQry(sql, uu, "SYS");
+                dtYM.TableName = "dtYM";
+                ds.Tables.Add(dtYM);
+
+                sql = "select ST_ID ,ST_ID+ST_SName STName ";
+                sql += " from WarehouseSV (NoLock) ";
+                sql += " Where CompanyCode='" + uu.CompanyId + "' And ST_Type ='6'";
+                sql += " Order By ST_ID ";
+
+                DataTable dtWh = PubUtility.SqlQry(sql, uu, "SYS");
+                dtWh.TableName = "dtWh";
+                ds.Tables.Add(dtWh);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+
+        //2021-05-18 Larry
+        [Route("SystemSetup/SearchVIV10")]
+        public ActionResult SystemSetup_SearchVIV10()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SearchVIV10OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+
+                string YM = rq["YM"];
+                string WhNo = rq["WhNo"];
+
+                string sql = "select a.*,a.ShopNo+b.ST_SNAME WhName, c.Man_Name ModUserName, Cast(a.INV_ENo As Integer)-Cast(a.Inv_No As Integer) DiffQty ";
+                sql += " from InvDistribute a";
+                sql += " inner join WarehouseSV b on a.ShopNo=b.ST_ID And a.CompanyCode=b.CompanyCode";
+                sql += " inner join EmployeeSV c on a.ModUser=c.Man_ID And a.CompanyCode=c.CompanyCode";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "'";
+                if (WhNo != "")
+                {
+                    sql += " and a.ShopNo='" + WhNo + "'";
+                }
+                //if (CkNo != "")
+                //{
+                //    sql += " and b.CkNo='" + CkNo + "'";
+                //}
+                sql += " Order By a.INV_YM,a.ShopNo ";
+                DataTable dtInv = PubUtility.SqlQry(sql, uu, "SYS");
+                dtInv.TableName = "dtInv";
+                ds.Tables.Add(dtInv);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        [Route("SystemSetup/GetVIV10Detail")]
+        public ActionResult SystemSetup_GetVIV10Detail()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetVIV10DetailOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                //string CompanyCode = rq["CompanyCode"];
+                string ShopNo = rq["ShopNo"];
+                string sql = "select a.CkNo ";
+                sql += " from WarehouseDSV a (NoLock) ";
+                sql += " where CompanyCode='" + uu.CompanyId + "' and ST_ID='" + ShopNo.SqlQuote() + "'";
+                sql += " Order By CkNo ";
+
+                DataTable dtCk = PubUtility.SqlQry(sql, uu, "SYS");
+                dtCk.TableName = "CkList";
+                ds.Tables.Add(dtCk);
+
+                //sql = "select LayerNo,ChannelType,max(ChannelNo) as ChannelNo  from MachineListSpec a";
+                //sql += " where a.CompanyCode='" + CompanyCode.SqlQuote() + "'";
+                //sql += " and a.SNno='" + SNno.SqlQuote() + "'";
+                //sql += " group by LayerNo,ChannelType";
+                //sql += " order by LayerNo";
+                //DataTable MachineListSpec = PubUtility.SqlQry(sql, uu, "SYS");
+                //MachineListSpec.TableName = "MachineListSpec";
+                //ds.Tables.Add(MachineListSpec);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        [Route("SystemSetup/GetVIV10View")]
+        public ActionResult SystemSetup_GetVIV10View()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetVIV10ViewOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ShopNo = rq["ShopNo"];
+                string CkNo = rq["CkNo"];
+                string YM = rq["YM"];
+                string sql = "select a.*,a.ShopNo+b.ST_SNAME WhName, c.Man_Name AppUserName, Cast(a.INV_ENo As Integer)-Cast(a.Inv_SNo As Integer)+1 DiffQty ";
+                sql += " from InvDistributeSV a";
+                sql += " inner join WarehouseSV b on a.ShopNo=b.ST_ID And a.CompanyCode=b.CompanyCode";
+                sql += " inner join EmployeeSV c on a.AppUser=c.Man_ID And a.CompanyCode=c.CompanyCode";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "'";
+                if (ShopNo != "")
+                {
+                    sql += " and a.ShopNo='" + ShopNo + "'";
+                }
+                //sql += " and a.SNno='" + SNno.SqlQuote() + "'";
+
+                DataTable dtDtl = PubUtility.SqlQry(sql, uu, "SYS");
+                dtDtl.TableName = "dtDtl";
+                ds.Tables.Add(dtDtl);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        [Route("SystemSetup/SaveVIV10")]
+        public ActionResult SaveVIV10()
+        {
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SaveVIV10OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                UserInfo uu = PubUtility.GetCurrentUser(this);
+                DataTable dtH = new DataTable("ShopData");
+                PubUtility.AddStringColumns(dtH, "ShopNo,INV_YM,INV_Head,INV_No");
+                //dtH.Columns.Add("Temperature", typeof(double));
+
+                DataSet dsRQ = new DataSet();
+                dsRQ.Tables.Add(dtH);
+
+                DataTable dtD = new DataTable("AssignQty");
+                PubUtility.AddStringColumns(dtD, "ShopNo,CkNo");
+                dtD.Columns.Add("AssignQty", typeof(double));
+                dsRQ.Tables.Add(dtD);
+
+                PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
+
+                //dtH.Rows[0]["CompanyCode"] = uu.CompanyId;
+                //DataTable dtS = new DataTable();
+                //PubUtility.AddStringColumns(dtS, "CompanyCode,SNno,LayerNo,ChannelNo,ChannelType");
+
+                //foreach (DataRow dr in dtD.Rows)
+                //{
+                //    dr["CompanyCode"] = uu.CompanyId;
+                //    int ch = 1;
+                //    for (int i = 0; i < PubUtility.CB(dr["ChannelQty"]); i++)
+                //    {
+                //        DataRow drS = dtS.NewRow();
+                //        dtS.Rows.Add(drS);
+                //        List<string> fds = "CompanyCode,SNno,LayerNo,ChannelType".Split(',').ToList();
+                //        foreach (string fd in fds)
+                //        {
+                //            drS[fd] = dr[fd];
+                //        }
+                //        drS["ChannelNo"] = ch.ToString().PadLeft(2, '0');
+                //        ch++;
+                //    }
+                //}
+                //string EditMode = dtH.Rows[0]["EditMode"].ToString();
+                //string CompanyCode = dtH.Rows[0]["CompanyCode"].ToString();
+                //string SNno = dtH.Rows[0]["SNno"].ToString();
+                //dsRQ.Tables.Add(dtS);
+                string sql;
+                string ShopNo = ""; string INV_YM = ""; string INV_Head = ""; string INV_No = "";
+                string CkNo = "";
+                ShopNo = dtH.Rows[0]["ShopNo"].ToString();
+                INV_YM = dtH.Rows[0]["INV_YM"].ToString();
+                INV_Head = dtH.Rows[0]["INV_Head"].ToString();
+                INV_No = dtH.Rows[0]["INV_No"].ToString();
+
+                string DocNo = PubUtility.GetNewDocNo(uu, "ID", 4);
+
+                using (DBOperator dbop = new DBOperator())
+                {
+                    using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required))
+                    {
+                        try
+                        {
+                            Int32 SNo = 0;
+                            string SNoSql = "";
+                            Int32 ENo = 0;
+                            string ENoSql = "";
+                            SNo = Convert.ToInt32(INV_No) + 1;
+                            Int32 iCount = 0;
+
+                            string DtlDocNo = DocNo;
+                            foreach (DataRow dr in dtD.Rows)
+                            {
+
+                                if (Convert.ToInt32(dr["AssignQty"].ToString()) != 0)
+                                {
+
+                                    ENo = SNo + Convert.ToInt32(dr["AssignQty"].ToString()) - 1;
+
+                                    SNoSql = "Right(Cast(REPLICATE('0', 8) As varChar(8))+Cast(" + SNo + " as varchar(8)),8)";
+                                    ENoSql = "Right(Cast(REPLICATE('0', 8) As varChar(8))+Cast(" + ENo + " as varchar(8)),8)";
+
+                                    CkNo = dr["CkNo"].ToString().SqlQuote();
+
+                                    sql = "Insert Into InvDistributeSV (CompanyCode, CrtUser, CrtDate, CrtTime ";
+                                    sql += ", ModUser, ModDate, ModTime ";
+                                    sql += ", DocNo, ShopNo, INV_YM ";
+                                    sql += ", INV_Head, INV_SNo, INV_ENo "
+                                        + ", AppDate, AppUser, CkNo) Values ";
+                                    sql += " ('" + uu.CompanyId + "', '" + uu.UserID + "', convert(char(10),getdate(),111), convert(char(12),getdate(),108) ";
+                                    sql += ", '" + uu.UserID + "', convert(char(10),getdate(),111), convert(char(12),getdate(),108) ";
+                                    sql += ", '" + DtlDocNo + "', '" + ShopNo + "', '" + INV_YM + "' ";
+                                    sql += ", '" + INV_Head + "'," + SNoSql + ", " + ENoSql + ""
+                                        + ", convert(char(10),getdate(),111)+ ' ' +Substring(convert(char(12),getdate(),108),1,5), '" + uu.UserID + "','" + CkNo + "')";
+                                    dbop.ExecuteSql(sql, uu, "SYS");
+
+                                    //string sno = DtlDocNo.Substring(10, 4);
+                                    Int32 NewSno = Convert.ToInt32(DtlDocNo.Substring(10, 4)) + 1;
+
+                                    DtlDocNo = PubUtility.StrLeft(DtlDocNo, 10) + PubUtility.PadLeft(Convert.ToString(NewSno), '0', 4);
+                                    SNo += Convert.ToInt32(dr["AssignQty"].ToString());
+
+                                    iCount += 1;
+
+                                }
+
+
+
+                            }
+
+                            sql = "Update InvDistribute Set Inv_No=" + ENoSql + "";
+                            sql += ",ModDate=convert(char(10),getdate(),111)";
+                            sql += ",ModTime=convert(char(12),getdate(),108)";
+                            sql += ",ModUser='" + uu.UserID + "'";
+                            sql += "Where CompanyCode='" + uu.CompanyId + "' And ShopNo='" + ShopNo + "' ";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+                            sql = "Update DocumentNo Set SeqNo= SeqNo + " + (iCount - 1) + " ";
+                            sql += "Where CompanyCode='" + uu.CompanyId + "' And Initial='ID' And DocDate=convert(char(8),getdate(),112)";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+                            ts.Complete();
+                        }
+                        catch (Exception err)
+                        {
+                            ts.Dispose();
+                            dbop.Dispose();
+                            throw err;
+                        }
+                        dbop.Dispose();
+                    }
+                }
+
+
+
+                sql = "select a.*,a.ShopNo+b.ST_SNAME WhName, c.Man_Name ModUserName, Cast(a.INV_ENo As Integer)-Cast(a.Inv_No As Integer) DiffQty ";
+                sql += " from InvDistribute a";
+                sql += " inner join WarehouseSV b on a.ShopNo=b.ST_ID And a.CompanyCode=b.CompanyCode";
+                sql += " inner join EmployeeSV c on a.ModUser=c.Man_ID And a.CompanyCode=c.CompanyCode";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "'";
+                sql += " And a.ShopNo='" + ShopNo + "' ";
+                DataTable dtInv = PubUtility.SqlQry(sql, uu, "SYS");
+                dtInv.TableName = "dtInv";
+                ds.Tables.Add(dtInv);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+
         //2021-06-21
         [Route("SystemSetup/GetWhDSVCkNoWithCond")]
         public ActionResult SystemSetup_GetWhDSVCkNoWithCond()

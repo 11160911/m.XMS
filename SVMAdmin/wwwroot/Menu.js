@@ -366,6 +366,22 @@
                 }
             }
 
+
+            else if (pg == "VIV10") {
+                //alert("VIV10");
+                if (window.PageVIV10 == undefined)
+
+                    $.getScript('SystemSetup/VIV10.js',
+                        function () {
+                            PageVIV10($(".right_col"));
+                        }
+                    );
+                else {
+                    PageVIV10($(".right_col"));
+                }
+            }
+
+
             else if (pg == "MMMachineSet") {
                 if (window.PageMMMachineSet == undefined)
                     $.getScript('SystemSetup/MMMachineSet.js',

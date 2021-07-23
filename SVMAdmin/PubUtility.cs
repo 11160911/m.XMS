@@ -76,6 +76,29 @@ namespace SVMAdmin
         }
 
 
+        public static string PadLeft(String Str, char PadStr, Int16 Digits)
+        {
+            string sRes = new(PadStr, Digits);
+            sRes = StrRigth(sRes + Str, Digits);
+            return sRes;
+        }
+
+        public static string StrRigth(string s, int length)
+        {
+            return s.Substring(s.Length - length);
+        }
+
+        public static string StrLeft(string s, int length)
+        {
+            return s.Substring(0, length);
+        }
+
+        public static string StrMid(string s, int start, int length)
+        {
+            return s.Substring(start, length);
+        }
+
+
         public static void AppendScriptAtBodyEnd(HtmlAgilityPack.HtmlDocument doc, string srcJsFile)
         {
             HtmlAgilityPack.HtmlNode script1 = doc.CreateElement("script");
@@ -711,6 +734,7 @@ namespace SVMAdmin
             dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "MMMachineSet", "智販機設定", "MMMachineSet", "P", "fa-cogs" });
             dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "VXT03", "智販機總覽", "VXT03", "P", "fa-cogs" });
             dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "VXT03_1", "智販機監控作業", "VXT03_1", "P", "fa-cogs" });
+            dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "VIV10", "電子發票分配作業", "VIV10", "P", "fa-cogs" });
 
             dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "Inv", "庫存查詢", "Inv", "P", "fa-cubes" });
             dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMMacPLUSet", "智販機商品設定", "GMMacPLUSet", "P", "fa-cubes" });
