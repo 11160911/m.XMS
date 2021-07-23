@@ -34,6 +34,14 @@
                 sortable: "Y"
             }
         );
+        var heads = $('#tbVSA73_1P thead tr th');
+        $(heads[1]).text(Day1.substr(5, 5) + getWeek(Day1));
+        $(heads[2]).text(Day2.substr(5, 5) + getWeek(Day2));
+        $(heads[3]).text(Day3.substr(5, 5) + getWeek(Day3));
+        $(heads[4]).text(Day4.substr(5, 5) + getWeek(Day4));
+        $(heads[5]).text(Day5.substr(5, 5) + getWeek(Day5));
+        $(heads[6]).text(Day6.substr(5, 5) + getWeek(Day6));
+        $(heads[7]).text(Day7.substr(5, 5) + getWeek(Day7));
     };
 
     let InitModifyDeleteButton = function () {
@@ -411,5 +419,11 @@
             else if (i == 7)
                 Day1 = yyyy + "/" + MM + "/" + dd;
         }
+    }
+
+    function getWeek(dayValue) {
+        var day = new Date(Date.parse(dayValue.replace(/-/g, '/'))); //將日期值格式化
+        var today = new Array("(週日)", "(週一)", "(週二)", "(週三)", "(週四)", "(週五)", "(週六)");
+        return today[day.getDay()] //day.getDay();根據Date返一個星期中的某一天，其中0為星期日
     }
 }

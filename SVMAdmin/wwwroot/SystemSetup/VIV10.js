@@ -1,10 +1,10 @@
 ﻿var PageVIV10 = function (ParentNode) {
 
     let tbDetail;
-    let tbView;
+    //let tbView;
     let grdM;
     let grdV;
-    let EditMode = "";
+    //let EditMode = "";
     let ShopNo = "";
     let WhName = "";
     let QtyLeft = 0;
@@ -73,7 +73,7 @@
     let afterGetInitVIV10 = function (data) {
         AssignVar();
         tbDetail = $('#pgVIV10Detail #tbInvDtl tbody');
-        tbView = $('#pgVIV10View #tbVIV10View tbody');
+        //tbView = $('#pgVIV10View #tbVIV10View tbody');
 
         var dtYM = data.getElementsByTagName('dtYM');
         InitSelectItem($('#cbYM')[0], dtYM, "Inv_YM", "Inv_YM", true);
@@ -193,7 +193,7 @@
    
     let btModify_click = function (bt) {
         $(bt).closest('tr').click();
-        EditMode = "Modify";
+        //EditMode = "Modify";
         var node = $(grdM.ActiveRowTR()).prop('Record');
         
         ShopNo = GetNodeValue(node, 'ShopNo');
