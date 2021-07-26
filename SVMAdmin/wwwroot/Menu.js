@@ -322,6 +322,22 @@
                 }
             }
 
+
+            else if (pg == "VIN14_3") {
+                //alert("VIN14_3");
+                if (window.PageVIN14_3 == undefined)
+
+                    $.getScript('Inv/VIN14_3.js',
+                        function () {
+                            PageVIN14_3($(".right_col"));
+                        }
+                    );
+                else {
+                    PageVIN14_3($(".right_col"));
+                }
+            }
+
+
             else if (pg == "VIN14_4") {
                 //alert("VIN14_4");
                 if (window.PageVIN14_4 == undefined)
