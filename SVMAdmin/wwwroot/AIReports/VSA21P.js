@@ -42,7 +42,7 @@
                 PostToWebApi({ url: "api/SystemSetup/GetCkNoByST_ID", data: pData, success: AfterGetCkNoByST_ID });
             }
         });
-
+        AssignVarD();
         $('#pgVSA21P .fa-search').click(function () { SearchVSA21P(true); });
         //$('#btQty').click(function () { SearchVSA21P(false); });
         //$('#btAmt').click(function () { SearchVSA21P(true); });
@@ -81,7 +81,6 @@
 
 
     let btDisplay_click = function (bt) {
-        AssignVarD();
         $(bt).closest('tr').click();
         var node = $(grdU.ActiveRowTR()).prop('Record');
         $('#modal_VSA21P .modal-title').text('商品智販機銷售排行');
