@@ -150,7 +150,7 @@
             return;
         }
         else {
-            if ($('#AdjQty').val() > $('#ShortQty').text()) {
+            if (parseInt($('#AdjQty').val()) > parseInt($('#ShortQty').text())) {
                 DyAlert("補貨量不可大於缺貨量!!", function () { $('#AdjQty').focus() });
                 return;
             }

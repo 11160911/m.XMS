@@ -881,11 +881,11 @@ namespace SVMAdmin.Controllers
                                 //沒有庫存資料-新增
                                 sql = "Insert Into InventorySV (CompanyCode, CrtUser, CrtDate, CrtTime "
                                     + ", ModUser, ModDate, ModTime "
-                                    + ", WhNo, a.PLU, Out_Date, CkNo, Layer, Sno, PtNum, SafeNum, EffectiveDate ) ";
+                                    + ", WhNo, PLU, Out_Date, CkNo, Layer, Sno, PtNum, SafeNum, EffectiveDate ) ";
                                 sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
                                      + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
                                      + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
-                                     + ", WhNoOut, PLU, '" + SysDate + "', CkNoOut, LayerOut, SnoOut, -1*OutNum, 1, a.EffectiveDate "
+                                     + ", WhNoOut, a.PLU, '" + SysDate + "', CkNoOut, LayerOut, SnoOut, -1*OutNum, 1, a.EffectiveDate "
                                      + " From (" + sqlTROut + ") a Left Join InventorySV b "
                                      + " On a.CompanyCode = b.CompanyCode and a.WhNoOut = b.WhNo and a.CkNoOut = b.CkNo "
                                      + "and a.LayerOut=b.Layer And a.SnoOut=b.Sno And a.PLU=b.PLU "
@@ -957,8 +957,96 @@ namespace SVMAdmin.Controllers
                             if (dtChkQty2.Rows.Count > 0)
                             {
 
-                            }
+                                //寫入報廢資料
+                                //報廢表頭
+                                sql = "Insert Into UselessHSV (CompanyCode, CrtUser, CrtDate, CrtTime "
+                                + ",ModUser, ModDate, ModTime "
+                                + ",UH_ID, DocDate, WhNoOut, WhNoIn"
+                                + ", Memo, Man_ID "
+                                + ", ChkUser, ChkDate, PostUser, PostDate "
+                                + ", CkNoOut, CkNoIn) Values ";
+                                sql += " ('" + uu.CompanyId.SqlQuote() + "', '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                    + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                    + ", '" + uDocNo + "', convert(char(10),getdate(),111), '" + dr["WhNo"].ToString().SqlQuote() + "', 'ZZZZZZ'"
+                                    + ", convert(char(10),getdate(),111),'" + uu.UserID + "'"
+                                    + ", '" + uu.UserID + "', convert(char(10),getdate(),111)+ ' ' +Substring(convert(char(8),getdate(),108),1,5)"
+                                    + ", '" + uu.UserID + "', convert(char(10),getdate(),111)+ ' ' +Substring(convert(char(8),getdate(),108),1,5) "
+                                    + ",'" + dr["CkNo"].ToString().SqlQuote() + "', 'XX')";
+                                dbop.ExecuteSql(sql, uu, "SYS");
 
+                                //報廢表身
+                                sql = "Insert Into UselessDSV (CompanyCode, CrtUser, CrtDate, CrtTime, ModUser, ModDate, ModTime, " +
+                                    "UH_ID, SeqNo, PLU, Qty, " +
+                                    "Layer, Sno, EffectiveDate) ";
+                                sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
+                                     + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                     + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                     + ", '" + uDocNo + "', Cast(Row_Number() Over(Order By a.Layer,a.Sno) As int), a.PLU, Qty2";
+                                sql += ",a.Layer, a.Sno, a.EffectiveDate ";
+                                sql += " From TempDocumentSV a (Nolock) ";
+                                //sql += " Inner Join PLUSV b (Nolock) On a.CompanyCode=b.CompanyCode And a.PLU=b.GD_No ";
+                                //sql += " Inner Join WarehouseDSV c (Nolock) On a.CompanyCode=c.CompanyCode And a.PLU=c.GD_No ";
+                                //sql += " Left Join InventorySV d (Nolock) On a.CompanyCode=d.CompanyCode And a.PLU=d.PLU "
+                                    //+ "And d.WhNo='" + WhNoIn + "' And d.CkNo='" + CkNoIn + "' And d.Layer='" + LayerIn + "' ";
+
+                                sql += " Where a.CompanyCode='" + uu.CompanyId + "' And a.DocNo='" + dr["DocNo"].ToString().SqlQuote() + "' ";
+                                sql += " And IsNull(a.Qty2,0)>0 ";
+                                sql += " And IsNull(a.ModDate,'')<>'' ";
+                                dbop.ExecuteSql(sql, uu, "SYS");
+
+
+
+                                //報廢--變更庫存數量及庫存增減日
+                                string sqlU = "";
+                                sqlU = "Select H.CompanyCode, H.UH_ID, H.WhNoOut, H.CkNoOut, D.Layer, D.Sno, D.SeqNo, D.PLU, D.Qty, D.EffectiveDate "
+                                    + " From UselessHSV H Inner Join UselessDSV D "
+                                    + " On H.CompanyCode = D.CompanyCode And H.UH_ID = D.UH_ID "
+                                    + " Where H.CompanyCode='" + uu.CompanyId + "' And H.UH_ID='" + uDocNo + "' ";
+
+
+                                //寫入jahoInvSV
+                                sql = "Insert Into JahoInvSV (CompanyCode, CrtUser, CrtDate, CrtTime "
+                                    + ", ModUser, ModDate, ModTime "
+                                    + ", DocType, DocNo, WhNo, SeqNo, PLU, Q1, Q2, Q3, CkNo, Layer, Sno) ";
+                                sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
+                                     + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                     + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                     + ", 'U', UH_ID, WhNoOut, SeqNo, a.PLU, IsNull(b.PtNum,0), -1*Qty, IsNull(b.PtNum,0)-Qty"
+                                     + ", CkNoOut, a.Layer, a.Sno "
+                                     + " From (" + sqlU + ") a "
+                                     + " Inner Join InventorySV b On a.CompanyCode = b.CompanyCode And a.WhNoOut = b.WhNo and a.CkNoOut = b.CkNo "
+                                     + " and a.Layer=b.Layer And a.Sno=b.Sno And a.PLU=b.PLU ";
+                                dbop.ExecuteSql(sql, uu, "SYS");
+
+                                //已有庫存資料
+                                sql = "Update InventorySV "
+                                    + "Set ModUser='" + uu.UserID + "' "
+                                    + ",ModDate=convert(char(10),getdate(),111) "
+                                    + ",ModTime=convert(char(8),getdate(),108) "
+                                    + ",PtNum=IsNull(PtNum,0) - Qty "
+                                    + ",Out_Date = Case When Out_Date>'" + SysDate + "' Then Out_Date Else '" + SysDate + "' End "
+                                    + ",EffectiveDate=a.EffectiveDate "
+                                    + " From (" + sqlU + ") a "
+                                    + " Inner Join InventorySV b On a.CompanyCode=b.CompanyCode and a.WhNoOut=b.WhNo and a.CkNoOut=b.CkNo "
+                                    + " and a.Layer=b.Layer And a.Sno=b.Sno And a.PLU=b.PLU ";
+
+                                dbop.ExecuteSql(sql, uu, "SYS");
+
+                                //沒有庫存資料-新增
+                                sql = "Insert Into InventorySV (CompanyCode, CrtUser, CrtDate, CrtTime "
+                                    + ", ModUser, ModDate, ModTime "
+                                    + ", WhNo, PLU, Out_Date, CkNo, Layer, Sno, PtNum, SafeNum, EffectiveDate ) ";
+                                sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
+                                     + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                     + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                     + ", WhNoOut, a.PLU, '" + SysDate + "', CkNoOut, a.Layer, a.Sno, -1*Qty, 1, a.EffectiveDate "
+                                     + " From (" + sqlU + ") a Left Join InventorySV b "
+                                     + " On a.CompanyCode = b.CompanyCode and a.WhNoOut = b.WhNo and a.CkNoOut = b.CkNo "
+                                     + "and a.Layer=b.Layer And a.Sno=b.Sno And a.PLU=b.PLU "
+                                     + "Where b.PLU Is Null ";
+                                dbop.ExecuteSql(sql, uu, "SYS");
+
+                            }
 
 
 
@@ -974,17 +1062,6 @@ namespace SVMAdmin.Controllers
                     }
                 }
 
-                //sql = "select a.*,a.Layer+a.Sno Channel,c.GD_SName,c.Photo1 ";
-                //sql += " , Cast(b.PtNum As VarChar(5))+'/'+Cast(b.DisplayNum As VarChar(5)) ShowQty, b.DisplayNum-b.PtNum ShortQty, Qty, d.ST_SName ";
-                //sql += " from tempdocumentsv a";
-                //sql += " inner join InventorySV b on a.WhNo=b.WhNo and a.CkNo=b.CkNo And a.Layer=b.Layer And a.Sno=b.Sno and a.CompanyCode=b.CompanyCode";
-                //sql += " inner join PLUSV c on a.PLU=c.GD_NO and a.CompanyCode=c.CompanyCode";
-                //sql += " inner join WarehouseSV d on a.WhNo=d.ST_ID and a.CompanyCode=d.CompanyCode";
-                //sql += " where a.CompanyCode='" + uu.CompanyId + "' And a.DocNo='" + dr["DocNo"].ToString().SqlQuote() + "'And SeqNo=" + dr["SeqNo"].ToString().SqlQuote();
-
-                //DataTable dtRes = PubUtility.SqlQry(sql, uu, "SYS");
-                //dtRes.TableName = "dtRes";
-                //ds.Tables.Add(dtRes);
             }
             catch (Exception err)
             {
@@ -993,6 +1070,49 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+
+
+        [Route("SystemSetup/SearchVIN14_3Saved")]
+        public ActionResult SystemSetup_SearchVIN14_3Saved()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SearchVIN14_3SavedOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            using (DBOperator dbop = new DBOperator())
+                try
+                {
+                    IFormCollection rq = HttpContext.Request.Form;
+                    string DocNo = rq["DocNo"];
+
+                    string sql = "";
+
+                    sql = "select a.*,a.Layer+a.Sno Channel,c.GD_SName,c.Photo1 ";
+                    sql += " , Cast(b.PtNum As VarChar(5))+'/'+Cast(b.DisplayNum As VarChar(5)) ShowQty";
+                    sql += ", d.ST_SName, b.DisplayNum, b.PtNum ";
+                    sql += " from tempdocumentsv a (Nolock) ";
+                    sql += " inner join InventorySV b (Nolock) on a.WhNo=b.WhNo and a.CkNo=b.CkNo And a.Layer=b.Layer And a.Sno=b.Sno and a.CompanyCode=b.CompanyCode";
+                    sql += " inner join PLUSV c (Nolock) on a.PLU=c.GD_NO and a.CompanyCode=c.CompanyCode";
+                    sql += " inner join WarehouseSV d (Nolock) on a.WhNo=d.ST_ID and a.CompanyCode=d.CompanyCode";
+                    sql += " where a.CompanyCode='" + uu.CompanyId + "' ";
+                    sql += " and a.DocNo='" + DocNo + "' ";
+                    sql += " Order By a.SeqNo ";
+
+                    DataTable dtRes = PubUtility.SqlQry(sql, uu, "SYS");
+                    dtRes.TableName = "dtRes";
+                    ds.Tables.Add(dtRes);
+
+                    sql = "Delete From TempDocumentSV Where CompanyCode='" + uu.CompanyId + "' and DocNo='" + DocNo + "' ";
+                    dbop.ExecuteSql(sql, uu, "SYS");
+
+                }
+                catch (Exception err)
+                {
+                    dtMessage.Rows[0][0] = "Exception";
+                    dtMessage.Rows[0][1] = err.Message;
+                }
+            return PubUtility.DatasetXML(ds);
+        }
+
 
 
 

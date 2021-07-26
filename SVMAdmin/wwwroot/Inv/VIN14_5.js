@@ -625,6 +625,9 @@
         SetDateField($('#ExpDate')[0]);
         $('#ExpDate').datepicker();
 
+        SetDateField($('#exDate')[0]);
+        $('#exDate').datepicker();
+
         //$('#btAdd').click(function () { btAdd_click(); });
         $('#btSave').click(function () { btSave_click(); });
         $('#btCancel').click(function () { btCancel_click(); });

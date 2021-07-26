@@ -2371,11 +2371,11 @@ namespace SVMAdmin.Controllers
                                     //沒有庫存資料-新增
                                     sql = "Insert Into InventorySV (CompanyCode, CrtUser, CrtDate, CrtTime "
                                         + ", ModUser, ModDate, ModTime "
-                                        + ", WhNo, a.PLU, Out_Date, CkNo, Layer, Sno, PtNum, SafeNum ) ";
+                                        + ", WhNo, PLU, Out_Date, CkNo, Layer, Sno, PtNum, SafeNum ) ";
                                     sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
                                          + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
                                          + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
-                                         + ", WhNoOut, PLU, '" + SysDate + "', CkNoOut, LayerOut, SnoOut, -1*OutNum, 1 "
+                                         + ", WhNoOut, a.PLU, '" + SysDate + "', CkNoOut, LayerOut, SnoOut, -1*OutNum, 1 "
                                          + " From (" + sqlTROut + ") a Left Join InventorySV b "
                                          + " On a.CompanyCode = b.CompanyCode and a.WhNoOut = b.WhNo and a.CkNoOut = b.CkNo "
                                          + "and a.LayerOut=b.Layer And a.SnoOut=b.Sno And a.PLU=b.PLU "

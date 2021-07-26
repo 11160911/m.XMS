@@ -1,7 +1,7 @@
 ﻿var PageVIN14_3 = function (ParentNode) {
     let AllPages;
     let grdU;
-    //let EditMode;
+    let EditMode;
     let SetSuspend = "";
     let gDocNo = "";
     let isEntryQty = false;
@@ -85,6 +85,7 @@
             }
             else {
                 $('#btInv').prop('disabled', false);
+                EditMode = "Mod";
             }
         }
     };
@@ -96,7 +97,12 @@
 
 
     let btModify_click = function (bt) {
-    
+
+        if (EditMode != "Mod") {
+            DyAlert("資料已儲存，無法再修改!!請重新查詢。", function () { $('#uQty').focus() });
+            return
+        }
+
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         $('#modal_VIN14_3 .modal-title').text('商品退貨作業');
@@ -339,14 +345,6 @@
 
 
     let btInv_click = function () {
-
-        //if ($('#cbWh').val() == "") {
-        //    $('#cbCK').empty();
-        //    return;
-        //}
-        //else {
-
-        //}
         
         if (isEntryQty == false) {
             DyAlert("尚未對任何明細商品進行退貨!!")
@@ -364,18 +362,19 @@
         //var pData = {
         //    DocNo: gDocNo
         //};
-        PostToWebApi({ url: "api/SystemSetup/SaveInv", data: pData, success: AfterSaveInv });
+        PostToWebApi({ url: "api/SystemSetup/SaveVIN14_3", data: pData, success: AfterSaveInv });
     };
 
 
     let AfterSaveInv = function (data) {
         //alert("AfterGetWhDSVCkNo");
-        if (ReturnMsg(data, 0) != "SaveInvOK") {
+        if (ReturnMsg(data, 0) != "SaveVIN14_3OK") {
             DyAlert(ReturnMsg(data, 0));
             return;
         }
         else {
             DyAlert("儲存過帳完成!!");
+            EditMode = "Saved";
             $('#btInv').prop('disabled', true);
             var pData = {
                 DocNo: gDocNo
@@ -392,20 +391,9 @@
             return;
         }
         else {
-            var dtPLU = data.getElementsByTagName('dtPLU');
-            grdU.BindData(dtPLU);
+            var dtRes = data.getElementsByTagName('dtRes');
+            grdU.BindData(dtRes);
 
-            //var dtDocNo = data.getElementsByTagName('dtDocNo');
-            //gDocNo = GetNodeValue(dtDocNo[0], "DocNo");
-            ////alert(gDocNo);
-
-            //if (dtPLU.length == 0) {
-            //    DyAlert("無符合資料!", BlankMode);
-            //    return;
-            //}
-            //else {
-            //    $('#btInv').prop('disabled', false);
-            //}
         }
     };
 
