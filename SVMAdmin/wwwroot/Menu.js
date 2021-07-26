@@ -508,6 +508,18 @@
                     PageVIN14_1P($(".right_col"));
                 }
             }
+
+            else if (pg == "VMN02") {
+                if (window.PageVMN02 == undefined)
+                    $.getScript('VMN02.js',
+                        function () {
+                            PageVMN02($(".right_col"));
+                        }
+                    );
+                else {
+                    PageVMN02($(".right_col"));
+                }
+            }
             
             else if (pg == "SDAccount") {
                 if (window.PageSDAccount == undefined)

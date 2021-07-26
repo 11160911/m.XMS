@@ -254,7 +254,7 @@ namespace SVMAdmin.Controllers
                 }
                 sql += "group by shopno,ckno),0) as Cnt ";
                 sql += "from SalesD a (nolock) ";
-                sql += "inner join WarehouseDSV b (nolock) on a.shopno=b.ST_ID and a.CKNo=b.CkNo and b.CompanyCode=a.CompanyCode and b.whnoin in (select whno from employeeSV (nolock) where companycode='" + uu.CompanyId + "' and man_id='" + uu.UserID + "') ";
+                sql += "left join WarehouseDSV b (nolock) on a.shopno=b.ST_ID and a.CKNo=b.CkNo and b.CompanyCode=a.CompanyCode and b.whnoin in (select whno from employeeSV (nolock) where companycode='" + uu.CompanyId + "' and man_id='" + uu.UserID + "') ";
                 sql += "left join WarehouseSV c (nolock) on a.shopno=c.st_id and c.companycode=a.companycode ";
                 sql += "Where a.CompanyCode='" + uu.CompanyId + "' ";
                 if (OpenDate != "")
@@ -361,7 +361,7 @@ namespace SVMAdmin.Controllers
                 string sql = "select a.ShopNo,a.CkNo,c.ST_SName+a.CkNo+'機' as ST_SName, ";
                 sql += "CONVERT(int,sum(a.Num))Num,CONVERT(int,sum(a.cash))Cash,RANK() over(order by sum(a.cash) desc) as SeqNo ";
                 sql += "from SalesD a (nolock) ";
-                sql += "inner join WarehouseDSV b (nolock) on a.shopno=b.ST_ID and a.CKNo=b.CkNo and b.CompanyCode=a.CompanyCode and b.whnoin in (select whno from employeeSV (nolock) where companycode='" + uu.CompanyId + "' and man_id='" + uu.UserID + "') ";
+                sql += "left join WarehouseDSV b (nolock) on a.shopno=b.ST_ID and a.CKNo=b.CkNo and b.CompanyCode=a.CompanyCode and b.whnoin in (select whno from employeeSV (nolock) where companycode='" + uu.CompanyId + "' and man_id='" + uu.UserID + "') ";
                 sql += "left join WarehouseSV c (nolock) on a.shopno=c.st_id and c.companycode=a.companycode ";
                 sql += "Where a.CompanyCode='" + uu.CompanyId + "' ";
                 if (OpenDateS != "" && OpenDateE != "")
