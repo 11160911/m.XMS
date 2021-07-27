@@ -314,8 +314,19 @@
                             color: lightblue;
                             cursor: pointer;
                         }
+
                         .dispThisSetting {
                             font-size: 1.6rem;
+                        }
+                    </style>
+                    <style>
+                        #tbVSA73P th {
+                            background-color: #888888;
+                            color: #ffffff
+                        }
+
+                        #tbVSA73P td, #tbVSA73P th {
+                            white-space: nowrap
                         }
                     </style>
                     <div class="col-md-12 col-sm-12 ">
@@ -351,79 +362,74 @@
                                     </div>
                                     <i class="fa fa-search"> </i>
                                 </div>
-
-                                
-
-                                <div class="x_content">
-                                    <div class="form-group row">
-                                        <label class="col-form-label"> 銷售日期:</label>
-                                        <div class="col-md-2">
-                                            <label id="lblOpenDate" class="col-form-label" autocomplete="off"> </label>
-                                        </div>
+                            </div>
+                            <div class="x_content">
+                                <div class="form-group row">
+                                    <label class="col-form-label"> 銷售日期:</label>
+                                    <div class="col-md-2">
+                                        <label id="lblOpenDate" class="col-form-label" autocomplete="off"> </label>
                                     </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-form-label"> 店(智販群):</label>
-                                        <div class="col-md-2">
-                                            <label id="lblShopNo" class="col-form-label" autocomplete="off"> </label>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-form-label"> 機(智販機):</label>
-                                        <div class="col-md-2">
-                                            <label id="lblCkNo" class="col-form-label" autocomplete="off"> </label>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-form-label"> 商品:</label>
-                                        <div class="col-md-2">
-                                            <label id="lblGoodsNo" class="col-form-label" autocomplete="off"> </label>
-                                        </div>
-                                        <label class="col-form-label" style="position: absolute; right: 0px;color:crimson">點擊欄位標題可進行排序</label>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <div class="col-md-5">
-                                            <span class="dispThisSetting"></span>
-                                        </div>
-                                        <label class="col-form-label"> 合計:</label>
-                                        <!--<div class="col-md">
-                                            <span class="dispThisSetting"></span>
-                                        </div>-->
-                                        <div class="col-md">
-                                            <label id="lblNum" class="col-form-label" style="position: absolute; right: 65px" autocomplete="off"></label>
-                                        </div>
-                                        <!--<div class="col-md">
-                                            <span class="dispThisSetting"></span>
-                                        </div>-->
-                                        <div class="col-md">
-                                            <label id="lblCash" class="col-form-label" style="position: absolute; right: 25px" autocomplete="off"></label>
-                                        </div>
-                                    </div>
-
-                                   
-                                    <table id="tbVSA73P" class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th> 排行</th>
-                                                <th> 時段</th>
-                                                <th> 銷售量</th>
-                                                <th> 銷售金額</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td> 11</td>
-                                                <td> 11</td>
-                                                <td> 11</td>
-                                                <td> 11</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
                                 </div>
 
+                                <div class="form-group row">
+                                    <label class="col-form-label"> 店(智販群):</label>
+                                    <div class="col-md-2">
+                                        <label id="lblShopNo" class="col-form-label" autocomplete="off"> </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-form-label"> 機(智販機):</label>
+                                    <div class="col-md-2">
+                                        <label id="lblCkNo" class="col-form-label" autocomplete="off"> </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-form-label"> 商品:</label>
+                                    <div class="col-md-2">
+                                        <label id="lblGoodsNo" class="col-form-label" autocomplete="off"> </label>
+                                    </div>
+                                    <label class="col-form-label" style="position: absolute; right: 0px;color:crimson">點擊欄位標題可進行排序</label>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-md-5">
+                                        <span class="dispThisSetting"></span>
+                                    </div>
+                                    <label class="col-form-label"> 合計:</label>
+                                    <!--<div class="col-md">
+                        <span class="dispThisSetting"></span>
+                    </div>-->
+                                    <div class="col-md">
+                                        <label id="lblNum" class="col-form-label" style="position: absolute; right: 65px" autocomplete="off"></label>
+                                    </div>
+                                    <!--<div class="col-md">
+                        <span class="dispThisSetting"></span>
+                    </div>-->
+                                    <div class="col-md">
+                                        <label id="lblCash" class="col-form-label" style="position: absolute; right: 25px" autocomplete="off"></label>
+                                    </div>
+                                </div>
+
+                                <table id="tbVSA73P" class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th> 排行</th>
+                                            <th> 時段</th>
+                                            <th> 銷售量</th>
+                                            <th> 銷售金額</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td> 11</td>
+                                            <td> 11</td>
+                                            <td> 11</td>
+                                            <td> 11</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                 </article>
