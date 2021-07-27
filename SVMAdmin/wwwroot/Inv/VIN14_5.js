@@ -582,7 +582,8 @@
 
     let AfterUpdateChgPLU = function (data) {
         //alert("AfterUpdateChgPLU:" + EditMode);
-        if (ReturnMsg(data, 0) != "UpdateChgPLUOK") {
+        //alert(ReturnMsg(data, 0));
+        if (ReturnMsg(data, 0) != "SaveVIN14_5OK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {

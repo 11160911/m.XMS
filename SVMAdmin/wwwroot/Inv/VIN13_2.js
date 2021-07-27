@@ -764,7 +764,7 @@
             PostToWebApi({ url: "api/SystemSetup/AddChgPLU", data: pData, success: AfterAddChgPLU });
         }
         else if (EditMode == "Mod") {
-            alert($('#NewPLU').val());
+            //alert($('#NewPLU').val());
             var mData = {
                 ChangePLUSV: [
                     {
