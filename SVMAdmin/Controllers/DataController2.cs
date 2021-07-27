@@ -115,7 +115,7 @@ namespace SVMAdmin.Controllers
                 foreach (DataRow dr in dtD.Rows)
                 {
                     dr["CompanyCode"] = uu.CompanyId;
-                    int ch = 1;
+                    int ch = 0;
                     for (int i=0; i < PubUtility.CB( dr["ChannelQty"]); i++)
                     {
                         DataRow drS = dtS.NewRow();

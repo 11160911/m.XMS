@@ -735,6 +735,7 @@ namespace SVMAdmin
             dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "VXT03", "智販機總覽", "VXT03", "P", "fa-cogs" });
             dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "VXT03_1", "智販機監控作業", "VXT03_1", "P", "fa-cogs" });
             dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "VIV10", "電子發票分配作業", "VIV10", "P", "fa-cogs" });
+            dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "VMN02", "雲智販群設定", "VMN02", "P", "fa-cogs" });
 
             dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "Inv", "庫存查詢", "Inv", "P", "fa-cubes" });
             dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMMacPLUSet", "智販機商品設定", "GMMacPLUSet", "P", "fa-cubes" });

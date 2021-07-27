@@ -324,6 +324,16 @@
                                                 font-size: 0.85rem;
                                             }
                                         </style>
+                                        <style>
+                                            #tbVSA76_Search th {
+                                                background-color: #888888;
+                                                color: #ffffff
+                                            }
+
+                                            #tbVSA76_Search td, #tbVSA76_Search th {
+                                                white-space: nowrap
+                                            }
+                                        </style>
                                         <div class="card-block forminput">
                                             <div class="form-group row">
                                                 <!--<label class="col-form-label col-2"></label>-->
@@ -347,32 +357,36 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <table id="tbVSA76_Search" class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>交易序號</th>
-                                                    <th>銷售日期時間</th>
-                                                    <th>貨道</th>
-                                                    <th>商品名稱</th>
-                                                    <th>銷售量</th>
-                                                    <th>銷售金額</th>
-                                                    <th>付款方式</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>11</td>
-                                                    <td>11</td>
-                                                    <td>11</td>
-                                                    <td>11</td>
-                                                    <td>11</td>
-                                                    <td>11</td>
-                                                    <td>11</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        <div style="overflow:auto;min-height:400px;max-height:500px">
+                                            <table id="tbVSA76_Search" class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>交易序號</th>
+                                                        <th>銷售日期時間</th>
+                                                        <th>貨道</th>
+                                                        <th>商品名稱</th>
+                                                        <th>銷售量</th>
+                                                        <th>銷售金額</th>
+                                                        <th>付款方式</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>11</td>
+                                                        <td>11</td>
+                                                        <td>11</td>
+                                                        <td>11</td>
+                                                        <td>11</td>
+                                                        <td>11</td>
+                                                        <td>11</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        
                                         <div class="modal-footer">
                                             <!--<button id="btSave" type="button" class="btn btn-danger">儲存k</button>-->
+                                            <label class="col-form-label" style="position: absolute; left: 10px;color:crimson">點擊欄位標題可進行排序</label>
                                             <button id="btCancel" type="button" class="btn btn-primary">返回</button>
                                         </div>
                                     </div><!-- /.modal-content -->
@@ -393,6 +407,16 @@
                                 cursor: pointer;
                             }
                         </style>
+                        <style>
+                            #tbVSA76_1P th {
+                                background-color: #888888;
+                                color: #ffffff
+                            }
+
+                            #tbVSA76_1P td, #tbVSA76_1P th {
+                                white-space: nowrap
+                            }
+                        </style>
                         <div class="col-md-12 col-sm-12 ">
                             <div class="x_panel">
                                 <div class="x_title">
@@ -404,7 +428,7 @@
                                     </div>
                                 </div>
                                 <div class="x_content">
-                                    <table id="tbVSA76_1P" class="table table-hover">
+                                    <table id="tbVSA76_1P" class="table table-bordered">
                                         <thead>
                                             <tr>
                                                 <th>查詢</th>
