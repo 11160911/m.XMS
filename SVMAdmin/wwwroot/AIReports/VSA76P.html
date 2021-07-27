@@ -331,6 +331,16 @@
                                 cursor: pointer;
                             }
                         </style>
+                        <style>
+                            #tbVSA76P th {
+                                background-color: #888888;
+                                color: #ffffff
+                            }
+
+                            #tbVSA76P td, #tbVSA76P th {
+                                white-space: nowrap
+                            }
+                        </style>
 
                         <div class="modal fade" id="modal_VSA76P" data-keyboard="false" data-backdrop="static">
                             <div class="modal-dialog modal-lg">
@@ -343,6 +353,16 @@
                                             #modal-Role .msg-valid {
                                                 color: red;
                                                 font-size: 0.85rem;
+                                            }
+                                        </style>
+                                        <style>
+                                            #tbVSA76P_Search th {
+                                                background-color: #888888;
+                                                color: #ffffff
+                                            }
+
+                                            #tbVSA76P_Search td, #tbVSA76P_Search th {
+                                                white-space: nowrap
                                             }
                                         </style>
                                         <div class="card-block forminput">
@@ -368,7 +388,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <table id="tbVSA76P_Search" class="table table-hover">
+                                        <table id="tbVSA76P_Search" class="table table-bordered">
                                             <thead>
                                                 <tr>
                                                     <th>交易序號</th>
@@ -394,7 +414,8 @@
                                         </table>
                                         <div class="modal-footer">
                                             <!--<button id="btSave" type="button" class="btn btn-danger">儲存k</button>-->
-                                            <button id="btCancel" type="button" class="btn btn-primary" >返回</button>
+                                            <label class="col-form-label" style="position: absolute; left: 10px;color:crimson">點擊欄位標題可進行排序</label>
+                                            <button id="btCancel" type="button" class="btn btn-primary">返回</button>
                                         </div>
                                     </div><!-- /.modal-content -->
                                 </div><!-- /.modal-dialog -->
@@ -428,7 +449,7 @@
                                         <label class="col-form-label" style="position: absolute; right: 0px;color:crimson">點擊欄位標題可進行排序</label>
                                     </div>
                                     <!--2021-04-27-->
-                                    <table id="tbVSA76P" class="table table-hover">
+                                    <table id="tbVSA76P" class="table table-bordered">
                                         <thead>
                                             <tr>
                                                 <th>查詢</th>

@@ -8,11 +8,11 @@
     let dtWarehouseDSVBlank;
     
     let AssignVar = function () {
-        let ColClass = [];
+        //let ColClass = [];
         grdU = new DynGrid(
             {
                 table_lement: $('#tbVSA21P')[0],
-                class_collection: ColClass,
+                //class_collection: ColClass,
                 class_collection: ["tdColbt icon_in_td", "tdColbt2 label-align", "tdCol3", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align"],
                 fields_info: [
                     { type: "JQ", name: "fa-search", element: '<i class="fa fa-search"></i>' },
@@ -42,7 +42,7 @@
                 PostToWebApi({ url: "api/SystemSetup/GetCkNoByST_ID", data: pData, success: AfterGetCkNoByST_ID });
             }
         });
-
+        AssignVarD();
         $('#pgVSA21P .fa-search').click(function () { SearchVSA21P(true); });
         //$('#btQty').click(function () { SearchVSA21P(false); });
         //$('#btAmt').click(function () { SearchVSA21P(true); });
@@ -81,7 +81,6 @@
 
 
     let btDisplay_click = function (bt) {
-        AssignVarD();
         $(bt).closest('tr').click();
         var node = $(grdU.ActiveRowTR()).prop('Record');
         $('#modal_VSA21P .modal-title').text('商品智販機銷售排行');
@@ -156,7 +155,8 @@
 
     let AfterGetCkNoByST_ID = function (data) {
         let dtWarehouseDSV = data.getElementsByTagName('dtWarehouseDSV');
-        InitSelectItem($('#selCkno')[0], dtWarehouseDSV, "SNno", "CkNo", true, "請選擇機號");
+        InitSelectItem($('#selCkno')[0], dtWarehouseDSV, "CkNo", "CkNo", true, "請選擇機號");
+        $('#selCkno option[value=00]').remove();
     }
   
 
@@ -185,7 +185,7 @@
                 OpenDateS: $('#txtOpenDateS').val(),
                 OpenDateE: $('#txtOpenDateE').val(),
                 ST_ID: $('#selST_ID').val(),
-                Ckno: $('#selCkno').val(),
+                Ckno: $('#selCkno option:selected').val(),
                 KeyWord: $('#txtSalesSearch').val(),
                 SortAmt: SortAmt
             };
@@ -290,7 +290,7 @@
         var dtWarehouse = data.getElementsByTagName('dtWarehouse');
         dtWarehouseDSVBlank = data.getElementsByTagName('dtWarehouseDSV');
         InitSelectItem($('#selST_ID')[0], dtWarehouse, "ST_ID", "ST_Sname", true, "請選擇店號");
-        InitSelectItem($('#selCkno')[0], dtWarehouseDSVBlank, "SNno", "CkNo", true, "請選擇機號");
+        InitSelectItem($('#selCkno')[0], dtWarehouseDSVBlank, "CkNo", "CkNo", true, "請選擇機號");
         $('#txtOpenDateS').val(SysDate);
         $('#txtOpenDateE').val(SysDate);
         $('#lbDate').html("");

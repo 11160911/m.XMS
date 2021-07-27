@@ -311,7 +311,7 @@ namespace SVMAdmin.Controllers
                 {
                     sql += "and a.CkNo='" + CkNo + "' ";
                 }
-                sql += "order by a.chrno,a.opendate,a.opentime ";
+                sql += "order by a.opendate,a.opentime,a.chrno ";
 
                 DataTable dtSalesSearch = PubUtility.SqlQry(sql, uu, "SYS");
                 dtSalesSearch.TableName = "dtSalesSearch";
@@ -418,7 +418,7 @@ namespace SVMAdmin.Controllers
                 {
                     sql += "and a.CkNo='" + CkNo + "' ";
                 }
-                sql += "order by a.chrno,a.opendate,a.opentime ";
+                sql += "order by a.opendate,a.opentime,a.chrno ";
 
                 DataTable dtVSA76PSearch = PubUtility.SqlQry(sql, uu, "SYS");
                 dtVSA76PSearch.TableName = "dtVSA76PSearch";
