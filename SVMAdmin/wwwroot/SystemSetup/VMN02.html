@@ -316,7 +316,7 @@
                         }
                         #tbVMN02 .fa-search {
                             font-size: 28px;
-                            color: lightblue;
+                            color: green;
                             cursor: pointer;
                         }
                         #modal_VMN02_Mod .fa-search {
@@ -356,7 +356,7 @@
 
                     <div class="col-md-12 col-sm-12 ">
                         <div class="modal fade" id="modal_VMN02_Add" data-keyboard="false" data-backdrop="static">
-                            <div class="modal-dialog modal-lg">
+                            <div class="modal-dialog" style="max-width:1000px">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h4 class="modal-title">雲智販群機號新增</h4>
@@ -443,7 +443,7 @@
                         </div>
 
                         <div class="modal fade" id="modal_VMN02_Mod" data-keyboard="false" data-backdrop="static">
-                            <div class="modal-dialog modal-lg">
+                            <div class="modal-dialog" style="max-width:1000px">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h4 class="modal-title">雲智販群機號修改</h4>
@@ -540,7 +540,7 @@
                         </div>
 
                         <div class="modal fade" id="modal_VMN02_Query" data-keyboard="false" data-backdrop="static">
-                            <div class="modal-dialog modal-lg">
+                            <div class="modal-dialog" style="max-width:1000px">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h4 class="modal-title">雲智販群機號查詢</h4>
@@ -559,6 +559,7 @@
                                                     <label id="lblShop_Query" class="col-form-label" autocomplete="off"></label>
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
+                                                <label class="col-form-label" style="position: absolute; right: 20px;color:crimson">點擊欄位標題可進行排序</label>
                                             </div>
                                             <table id="tbVMN02_Query" class="table table-hover">
                                                 <thead>
@@ -598,7 +599,7 @@
                         </div>
 
                         <div class="modal fade" id="modal_VMN02_ModH" data-keyboard="false" data-backdrop="static">
-                            <div class="modal-dialog modal-lg">
+                            <div class="modal-dialog" style="max-width:1000px">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h4 class="modal-title">雲智販群機號修改</h4>
@@ -626,8 +627,8 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-form-label col-3">母&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;倉：</label>
-                                                <div class="col-2">
+                                                <label class="col-form-label col-3">母&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;倉*：</label>
+                                                <div class="col-3">
                                                     <select id="cbFlagInv_ModH" class="form-control">
                                                         <option value="Y">Y</option>
                                                         <option value="N">N</option>
@@ -639,6 +640,15 @@
                                                 <div class="col-4">
                                                     <input id="txtWhNoIn_ModH" type="text" class="form-control" autocomplete="off" />
                                                     <span class="msg-valid valid-blank"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-3">配&nbsp;&nbsp;送&nbsp;&nbsp;區*：</label>
+                                                <div class="col-3">
+                                                    <select id="cbDeliArea_ModH" class="form-control">
+                                                        <option disabled selected> 請選擇配送區</option>
+                                                        <option> </option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -660,7 +670,9 @@
                                             <option> </option>
                                         </select>
                                     </div>
-                                    <i class="fa fa-search"> </i>
+                                    <button type="button" id="btQuery" class="custom-control-inline btn btn-primary">查詢</button>
+                                    <!--<i class="fa fa-search"> </i>-->
+                                    <label class="col-form-label" style="position: absolute; right: 20px;color:crimson">點擊欄位標題可進行排序</label>
                                 </div>
                             </div>
                             <div class="x_content">
