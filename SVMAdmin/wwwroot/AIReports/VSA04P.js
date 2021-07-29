@@ -28,11 +28,11 @@
                     { type: "TextAmt", name: "Cash" },
                     { type: "Text", name: "Pay_Type" },
                     { type: "Text", name: "TranCompleted" }
-                ]
+                ],
                 //rows_per_page: 10,
                 //method_clickrow: click_PLU,
                 //afterBind: InitModifyDeleteButton,
-                //sortable: "Y"
+                sortable: "Y"
             }
         );
         SetDateField($('#txtOpenDateS')[0]);
