@@ -20,7 +20,7 @@ namespace SVMAdmin.Controllers
         [Route("Login")]
         public IActionResult Login()
         {
-            HtmlAgilityPack.HtmlDocument doc1 = LoadHtmlDoc("login.html");
+            HtmlAgilityPack.HtmlDocument doc1 = LoadHtmlDoc("login2.html");
             //PubUtility.SetCssVer(doc1, "css/custom.css");
             //PubUtility.SetScriptVer(doc1, "lib/bootstrap/dist/js/bootstrap.bundle.min.js");
             PubUtility.AppendScriptAtBodyEnd(doc1, "js/JSUtility.js");

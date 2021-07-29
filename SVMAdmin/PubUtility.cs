@@ -143,7 +143,7 @@ namespace SVMAdmin
         internal static Microsoft.AspNetCore.Mvc.ContentResult DatasetXML(DataSet ds)
         {
             System.IO.MemoryStream ms = new System.IO.MemoryStream();
-            ds.WriteXml(ms);
+            ds.WriteXml(ms,XmlWriteMode.WriteSchema);
             Microsoft.AspNetCore.Mvc.ContentResult CR = new Microsoft.AspNetCore.Mvc.ContentResult();
             CR.ContentType = "text/xml";
             CR.Content = System.Text.Encoding.UTF8.GetString(ms.ToArray());
