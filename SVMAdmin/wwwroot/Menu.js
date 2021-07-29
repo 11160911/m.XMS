@@ -511,7 +511,7 @@
 
             else if (pg == "VMN02") {
                 if (window.PageVMN02 == undefined)
-                    $.getScript('VMN02.js',
+                    $.getScript('SystemSetup/VMN02.js',
                         function () {
                             PageVMN02($(".right_col"));
                         }

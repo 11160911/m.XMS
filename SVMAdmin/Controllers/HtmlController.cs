@@ -693,7 +693,7 @@ namespace SVMAdmin.Controllers
         public IActionResult VMN02()
         {
             HtmlAgilityPack.HtmlDocument doc1 = new HtmlAgilityPack.HtmlDocument();
-            string strHtml = System.IO.File.ReadAllText(ConstList.HostEnvironment.WebRootPath + @"\VMN02.html".AdjPathByOS());
+            string strHtml = System.IO.File.ReadAllText(ConstList.HostEnvironment.WebRootPath + @"\SystemSetup\VMN02.html".AdjPathByOS());
             doc1.LoadHtml(strHtml);
 
             //Remove Node
