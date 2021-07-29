@@ -26,7 +26,7 @@
                 rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
-                //sortable: "Y"
+                sortable: "Y"
             }
         );
         

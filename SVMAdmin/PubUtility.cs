@@ -740,7 +740,7 @@ namespace SVMAdmin
             dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "Inv", "庫存查詢", "Inv", "P", "fa-cubes" });
             dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMMacPLUSet", "智販機商品設定", "GMMacPLUSet", "P", "fa-cubes" });
             dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMInvPLUSet", "貨倉商品設定", "GMInvPLUSet", "P", "fa-cubes" });
-            dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMInvoiceNoSet", "發票分配(店+機)", "GMInvoiceNoSet", "P", "fa-cubes" });
+            //dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMInvoiceNoSet", "發票分配(店+機)", "GMInvoiceNoSet", "P", "fa-cubes" });
             dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMPicVdoSet", "圖片/影片設定", "GMPicVdoSet", "P", "fa-cubes" });
             //dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMMacType", "智販機類別設定", "GMMacType", "P", "fa-cubes" });
 
