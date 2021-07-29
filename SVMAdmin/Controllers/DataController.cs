@@ -3198,6 +3198,11 @@ namespace SVMAdmin.Controllers
                 ds.Tables.Add(dtSN);
                 dtSN.TableName = "dtSN";
 
+                sql = "Select Type_ID,Type_Name from TypeData (nolock) where Companycode='" + uu.CompanyId + "' and Type_Code='DA' " +
+                "order by Type_ID ";
+                DataTable dtDeliArea = PubUtility.SqlQry(sql, uu, "SYS");
+                ds.Tables.Add(dtDeliArea);
+                dtDeliArea.TableName = "dtDeliArea";
             }
             catch (Exception err)
             {
@@ -3649,7 +3654,7 @@ namespace SVMAdmin.Controllers
             try
             {
                 DataTable dtWh = new DataTable("WarehouseSV");
-                PubUtility.AddStringColumns(dtWh, "ST_ID,FlagInv,WhNoIn,OldFlagInv");
+                PubUtility.AddStringColumns(dtWh, "ST_ID,FlagInv,WhNoIn,OldFlagInv,ST_DeliArea");
                 DataSet dsWh = new DataSet();
                 dsWh.Tables.Add(dtWh);
                 PubUtility.FillDataFromRequest(dsWh, HttpContext.Request.Form);
@@ -3802,6 +3807,7 @@ namespace SVMAdmin.Controllers
                             sql = "update WarehouseSV set ";
                             sql += "FlagInv='" + dr["FlagInv"].ToString().SqlQuote() + "',";
                             sql += "WhNoIn='" + dr["WhNoIn"].ToString().SqlQuote() + "',";
+                            sql += "ST_DeliArea='" + dr["ST_DeliArea"].ToString().SqlQuote() + "',";
                             sql += "ModDate=convert(char(10),getdate(),111),";
                             sql += "ModTime=convert(char(12),getdate(),108),";
                             sql += "ModUser='" + uu.UserID + "' ";

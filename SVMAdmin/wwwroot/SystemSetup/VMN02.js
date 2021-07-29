@@ -31,7 +31,7 @@
                 rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
-               /* sortable: "Y"*/
+                sortable: "Y"
             }
         );
 
@@ -331,6 +331,7 @@
         $('#lblSName_ModH').html(GetNodeValue(node, 'ST_Sname'));
         $('#cbFlagInv_ModH').val(GetNodeValue(node, 'FlagInv'))
         $('#txtWhNoIn_ModH').val(GetNodeValue(node, 'WhnoIn'))
+        $('#cbDeliArea_ModH').val(GetNodeValue(node, 'ST_DeliArea'))
         OldFlagInv = GetNodeValue(node, 'FlagInv')
         $('#modal_VMN02_ModH').modal('show');
     };
@@ -341,13 +342,12 @@
 
     let btSaveH_click = function (bt) {
         ShowLoading();
-        if ($('#cbFlagInv_ModH').val() == "") {
+        if ($('#cbFlagInv_ModH').val() == "" || $('#cbFlagInv_ModH').val() == null) {
             CloseLoading();
             DyAlert("請選擇母倉!!");
             return;
         }
         NewFlagInv = $('#cbFlagInv_ModH').val()
-
         if (NewFlagInv == "Y") {
             if ($('#txtWhNoIn_ModH').val() == "") {
                 CloseLoading();
@@ -371,6 +371,12 @@
                 }
             }
         }
+        if ($('#cbDeliArea_ModH').val() == "") {
+            CloseLoading();
+            DyAlert("請選擇配送區!!");
+            return;
+        }
+
         GetCheckSaveH()
     };
 
@@ -423,6 +429,7 @@
                     FlagInv: NewFlagInv,
                     WhNoIn: $('#txtWhNoIn_ModH').val(),
                     OldFlagInv: OldFlagInv,
+                    ST_DeliArea: $('#cbDeliArea_ModH').val()
                 }
             ]
         };
@@ -783,6 +790,9 @@
         var dtSN = data.getElementsByTagName('dtSN');
         InitSelectItem($('#cbSN_Add')[0], dtSN, "SNno", "SNno", true, "請選擇SN碼");
         $('#cbSN_Add').change(function () { GetMCSeq(); });
+
+        var dtDeliArea = data.getElementsByTagName('dtDeliArea');
+        InitSelectItem($('#cbDeliArea_ModH')[0], dtDeliArea, "Type_ID", "Type_Name", true, "請選擇配送區");
     };
 
     let InitFileUpload = function () {
