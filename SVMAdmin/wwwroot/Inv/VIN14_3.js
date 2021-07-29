@@ -85,7 +85,7 @@
             }
             else {
                 $('#btInv').prop('disabled', false);
-                EditMode = "Mod";
+                //EditMode = "Mod";
             }
         }
     };
@@ -98,10 +98,10 @@
 
     let btModify_click = function (bt) {
 
-        if (EditMode != "Mod") {
-            DyAlert("資料已儲存，無法再修改!!請重新查詢。", function () { $('#uQty').focus() });
-            return
-        }
+        //if (EditMode != "Mod") {
+        //    DyAlert("資料已儲存，無法再修改!!請重新查詢。", function () { $('#uQty').focus() });
+        //    return
+        //}
 
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
@@ -374,12 +374,15 @@
         }
         else {
             DyAlert("儲存過帳完成!!");
-            EditMode = "Saved";
-            $('#btInv').prop('disabled', true);
-            var pData = {
-                DocNo: gDocNo
-            };
-            PostToWebApi({ url: "api/SystemSetup/SearchVIN14_3Saved", data: pData, success: AfterSearchVIN14_3Saved });
+
+            SearchVIN14_3();
+
+            //EditMode = "Saved";
+            //$('#btInv').prop('disabled', true);
+            //var pData = {
+            //    DocNo: gDocNo
+            //};
+            //PostToWebApi({ url: "api/SystemSetup/SearchVIN14_3Saved", data: pData, success: AfterSearchVIN14_3Saved });
         }
     };
 

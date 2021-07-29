@@ -394,11 +394,15 @@
             $('#btInv').prop('disabled', true);
             DyAlert("儲存過帳完成!!");
 
-            $('#btInv').prop('disabled', true);
-            var pData = {
-                DocNo: gDocNo
-            };
-            PostToWebApi({ url: "api/SystemSetup/SearchVIN47Saved", data: pData, success: AfterSearchVIN47Saved });
+            SearchVIN47();
+
+            //$('#btInv').prop('disabled', true);
+            //var pData = {
+            //    DocNo: gDocNo
+            //};
+            //PostToWebApi({ url: "api/SystemSetup/SearchVIN47Saved", data: pData, success: AfterSearchVIN47Saved });
+
+
             //var dtCK = data.getElementsByTagName('dtCK');
             //InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true);
         }
