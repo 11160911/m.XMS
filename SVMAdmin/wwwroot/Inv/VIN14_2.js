@@ -150,7 +150,7 @@
             return;
         }
         else {
-            if ($('#AdjQty').val() > $('#ShortQty').text()) {
+            if (parseInt($('#AdjQty').val()) > parseInt($('#ShortQty').text())) {
                 DyAlert("補貨量不可大於缺貨量!!", function () { $('#AdjQty').focus() });
                 return;
             }
@@ -360,11 +360,14 @@
         }
         else {
             DyAlert("儲存過帳完成!!");
-            $('#btInv').prop('disabled', true);
-            var pData = {
-                DocNo: gDocNo
-            };
-            PostToWebApi({ url: "api/SystemSetup/SearchVIN14_2Saved", data: pData, success: AfterSearchVIN14_2Saved });
+
+            SearchVIN14_2();
+
+            //$('#btInv').prop('disabled', true);
+            //var pData = {
+            //    DocNo: gDocNo
+            //};
+            //PostToWebApi({ url: "api/SystemSetup/SearchVIN14_2Saved", data: pData, success: AfterSearchVIN14_2Saved });
         }
     };
 

@@ -40,7 +40,7 @@
         //        PostToWebApi({ url: "api/SystemSetup/GetCkNoByST_ID", data: pData, success: AfterGetCkNoByST_ID });
         //    }
         //});
-
+        AssignVarD();
         $('#pgVSA21_7P .fa-search').click(function () { SearchVSA21_7P(true); });
         //$('#btQty').click(function () { SearchVSA21_7P(false); });
         //$('#btAmt').click(function () { SearchVSA21_7P(true); });
@@ -79,7 +79,6 @@
 
 
     let btDisplay_click = function (bt) {
-        AssignVarD();
         $(bt).closest('tr').click();
         var node = $(grdU.ActiveRowTR()).prop('Record');
         $('#modal_VSA21_7P .modal-title').text('配送區智販機銷售排行');

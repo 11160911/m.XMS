@@ -542,8 +542,9 @@ namespace SVMAdmin.Controllers
                 dtP.TableName = "PLUSV";
                 ds.Tables.Add(dtP);
                 //ImageTable
-                sql = "select SGID,DataType,FileName,DocType,convert(varbinary,DocImage) DocImage from ImageTable (nolock) where Companycode='" + uu.CompanyId + "' ";
-                sql += "and ModDate+' '+ModTime>'" + LastTransDate.SqlQuote() + "'";
+                sql = "select b.SGID,b.DataType,FileName,b.DocType,DocImage from plusv a (nolock) inner join ImageTable b (nolock) ";
+                sql += "on a.CompanyCode=b.companycode and a.Photo1=b.sgid where b.Companycode='" + uu.CompanyId + "' ";
+                sql += "and b.ModDate+' '+b.ModTime>'" + LastTransDate.SqlQuote() + "'";
                 dt = PubUtility.SqlQry(sql, uu, "SYS");
                 dt.TableName = "ImageTable";
                 ds.Tables.Add(dt);
