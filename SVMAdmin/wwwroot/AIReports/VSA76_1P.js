@@ -48,7 +48,7 @@
                     { type: "TextAmt", name: "cash" },
                     { type: "Text", name: "pay_type" }
                 ],
-                rows_per_page: 5,
+                /*rows_per_page: 5,*/
                 method_clickrow: click_PLU,
                 afterBind: InitSearchButton,
                 sortable: "Y"
