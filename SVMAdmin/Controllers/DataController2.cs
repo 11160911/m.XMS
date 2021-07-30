@@ -265,7 +265,7 @@ namespace SVMAdmin.Controllers
             {
                 IFormCollection rq = HttpContext.Request.Form;
                 string ST_ID = rq["ST_ID"];
-                string sql = "Select CkNo,SNno from WarehouseDSV where Companycode='" + uu.CompanyId + "' and ST_ID='" + ST_ID.SqlQuote() + "'";
+                string sql = "Select CkNo,CkNo + '機' as CkNoName,SNno from WarehouseDSV where Companycode='" + uu.CompanyId + "' and ST_ID='" + ST_ID.SqlQuote() + "'";
                 sql += " order by CkNo";
                 DataTable dtDS = PubUtility.SqlQry(sql, uu, "SYS");
                 ds.Tables.Add(dtDS);
@@ -449,7 +449,7 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-                string sql = "Select ST_ID,ST_Sname from WarehouseSV where Companycode='" + uu.CompanyId.SqlQuote() + "' and ST_Type='6' order by ST_ID";
+                string sql = "Select ST_ID,ST_ID+ST_Sname as ST_Sname from WarehouseSV where Companycode='" + uu.CompanyId.SqlQuote() + "' and ST_Type='6' order by ST_ID";
                 DataTable dtSV = PubUtility.SqlQry(sql, uu, "SYS");
                 ds.Tables.Add(dtSV);
                 dtSV.TableName = "dtWarehouse";
@@ -502,6 +502,7 @@ namespace SVMAdmin.Controllers
                     sql += " or d.GD_Sname like ='" + Ckno.SqlQuote() + "%'";
                     sql += " or d.GD_NO like '" + Ckno.SqlQuote() + "%')";
                 }
+                sql += " order by a.OpenDate,a.OpenTime,a.ChrNo";
                 DataTable dtDS = PubUtility.SqlQry(sql, uu, "SYS");
                 dtDS.Columns.Add("SerNo", typeof(string));
 

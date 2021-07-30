@@ -41,7 +41,7 @@
         //    }
         //});
         AssignVarD();
-        $('#pgVSA21_7P .fa-search').click(function () { SearchVSA21_7P(true); });
+        $('#btQuery').click(function () { SearchVSA21_7P(true); });
         //$('#btQty').click(function () { SearchVSA21_7P(false); });
         //$('#btAmt').click(function () { SearchVSA21_7P(true); });
         return;

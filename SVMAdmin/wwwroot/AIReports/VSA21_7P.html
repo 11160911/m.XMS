@@ -240,17 +240,17 @@
 
                                     <div class="card-block forminput">
                                         <div class="form-group row">
-                                            <label class="col-form-label col-2" style="text-align:right">銷售日期：</label>
+                                            <label class="col-form-label col-2">銷售日期：</label>
                                             <label id="lbDateS" class="col-form-label col-7" style="text-align: left;color: blue">2021/06/24 ~ 2021/06/25</label>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-form-label col-2" style="text-align:right">配 送 區：</label>
+                                            <label class="col-form-label col-2">配&nbsp;&nbsp;送&nbsp;&nbsp;區：</label>
                                             <label id="lbArea" class="col-form-label col-9" style="text-align: left;color: blue">123456 糖果A</label>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-form-label col-2" style="text-align:right">總 銷 量：</label>
+                                            <label class="col-form-label col-2">總&nbsp;&nbsp;銷&nbsp;&nbsp;量：</label>
                                             <label id="lbNum" class="col-form-label col-2" style="text-align: left;color: blue">25</label>
-                                            <label class="col-form-label col-2" style="text-align:right">總 業 績：</label>
+                                            <label class="col-form-label col-2">總業績：</label>
                                             <label id="lbCash" class="col-form-label col-3" style="text-align: left;color: blue">25</label>
                                             <label class="col-form-label" style="position: absolute; right: 20px;color:crimson">點擊欄位標題可進行排序</label>
                                         </div>
@@ -332,7 +332,7 @@
                         <div class="x_panel">
                             <div class="x_title">
                                 <div class="form-group row">
-                                    <label class="col-form-label">銷售日期</label>
+                                    <label class="col-form-label">*銷售日期</label>
                                     <div class="col-md-2">
                                         <input id="txtOpenDateS" class="form-control small" type="text" autocomplete="off" />
                                     </div>
@@ -340,17 +340,20 @@
                                     <div class="col-md-2">
                                         <input id="txtOpenDateE" class="form-control small" type="text" autocomplete="off" />
                                     </div>
-                                    <i class="fa fa-search"></i>
+                                    <!--<i class="fa fa-search"></i>-->
+                                    <button type="button" id="btQuery" class="custom-control-inline btn btn-primary">查詢</button>
                                     <label id="lbDeliArea" class="col-form-label col-3" hidden>25</label>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label"></label>
+                                    <label class="col-form-label" style="position: absolute; right: 20px;color:crimson">點擊欄位標題可進行排序</label>
                                 </div>
                             </div>
 
-
                             <div class="x_content">
                                 <div class="form-group row">
-                                    <label class="col-form-label" style="text-align:right">銷售日期：</label>
-                                    <label id="lbDate" class="col-form-label" style="text-align: left;color:blue"></label>
-                                    <label class="col-form-label" style="position: absolute; right: 0px;color:crimson">點擊欄位標題可進行排序</label>
+                                    <!--<label class="col-form-label" style="text-align:right">銷售日期：</label>-->
+                                    <label id="lbDate" class="col-form-label" style="text-align: left;color:blue" hidden></label>
                                     <!--<div class="col-md-12">
         <button style="float:right" type="button" id="btAmt" class="custom-control-inline btn btn-success">依業績</button>
         <button style="float:right" type="button" id="btQty" class="custom-control-inline btn btn-success">依銷量</button>

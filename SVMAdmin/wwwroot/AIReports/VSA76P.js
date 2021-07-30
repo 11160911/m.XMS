@@ -16,10 +16,10 @@
             {
                 //2021-04-27
                 table_lement: $('#tbVSA76P')[0],
-                class_collection: ["tdColbt icon_in_td", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7 label-align", "tdCol8 label-align"],
+                class_collection: ["tdColbt icon_in_td", "tdCol3 label-align", "tdCol4", "tdCol5", "tdCol6", "tdCol7 label-align", "tdCol8 label-align"],
                 fields_info: [
                     { type: "JQ", name: "fa-search", element: '<i class="fa fa-search"></i>' },
-                    { type: "Text", name: "SeqNo" },
+                    { type: "TextAmt", name: "SeqNo" },
                     { type: "Text", name: "ShopNo" },
                     { type: "Text", name: "CkNo" },
                     { type: "Text", name: "ST_SName" },
@@ -319,7 +319,7 @@
 
         AssignVar();
         GetQueryDays();
-        $('#pgVSA76P .fa-search').click(function () { btQuery_click() });
+        $('#btQuery').click(function () { btQuery_click() });
         $('#btSave').click(function () { btSave_click(); });
         $('#btCancel').click(function () { btCancel_click(); });
         $('#btAddRack').click(function () { btAdd_click(); });

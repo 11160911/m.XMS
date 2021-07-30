@@ -9,9 +9,9 @@
             {
                 //2021-04-27
                 table_lement: $('#tbVSA73P')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align"],
+                class_collection: ["tdCol1 label-align", "tdCol2", "tdCol3 label-align", "tdCol4 label-align"],
                 fields_info: [
-                    { type: "Text", name: "SeqNo" },
+                    { type: "TextAmt", name: "SeqNo" },
                     { type: "Text", name: "part" },
                     { type: "TextAmt", name: "Num" },
                     { type: "TextAmt", name: "Cash" }
@@ -119,6 +119,8 @@
                 grdU.BindData(dtVSA73P);
             if (dtVSA73P.length == 0) {
                 //DyAlert("無符合資料!", BlankMode);
+                $('#lblNum').html("")
+                $('#lblCash').html("")
                 return;
             }
             else {
@@ -128,8 +130,8 @@
                     Num += parseFloat(GetNodeValue(dtVSA73P[i], 'Num'));
                     Cash += parseFloat(GetNodeValue(dtVSA73P[i], 'Cash'));
                 }
-                $('#lblNum').html(Num)
-                $('#lblCash').html(Cash)
+                $('#lblNum').html((Num).toLocaleString('en-US'))
+                $('#lblCash').html((Cash).toLocaleString('en-US'))
             }
         }
     };
@@ -281,7 +283,7 @@
         }
         else {
             var dtCK = data.getElementsByTagName('dtCK');
-            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true);
+            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNoName", true, "請選擇機號");
         }
     };
 
@@ -292,10 +294,10 @@
         $('#txtOpenDateE').val(SysDate)
         $('#lblOpenDate').html(SysDate + "~" + SysDate)
         AssignVar();
-        $('#pgVSA73P .fa-search').click(function () { SearchVSA73P(); });
+        $('#btQuery').click(function () { SearchVSA73P(); });
 
         var dtWarehouse = data.getElementsByTagName('dtWarehouse');
-        InitSelectItem($('#cbWh')[0], dtWarehouse, "ST_ID", "ST_Sname", true, "請選擇店代號");
+        InitSelectItem($('#cbWh')[0], dtWarehouse, "ST_ID", "ST_Sname", true, "*請選擇店代號");
         $('#cbWh').change(function () { GetWhCkNo(); });
         $('#cbCK').change(function () { cbCK_click(); });
     };

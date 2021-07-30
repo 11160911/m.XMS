@@ -51,14 +51,14 @@
             }
         });
 
-        $('#pgVSA04P .fa-search').click(function () { SearchVSA04P(false); });
+        $('#btQuery').click(function () { SearchVSA04P(false); });
         $('#pgVSA04P #btExpoVSA04P').click(function () { SearchVSA04P(true); });
         return;
     };
 
     let AfterGetCkNoByST_ID = function (data) {
         let dtWarehouseDSV = data.getElementsByTagName('dtWarehouseDSV');
-        InitSelectItem($('#selCkno')[0], dtWarehouseDSV, "CkNo", "CkNo", true, "請選擇機號");
+        InitSelectItem($('#selCkno')[0], dtWarehouseDSV, "CkNo", "CkNoName", true, "請選擇機號");
     }
 
     let SearchVSA04P = function (ExpXls) {
@@ -109,6 +109,8 @@
 
 
     let afterGetInitVSA04P = function (data) {
+        $('#txtOpenDateS').val(getTodayDate());
+        $('#txtOpenDateE').val(getTodayDate());
 
         var dtWarehouse = data.getElementsByTagName('dtWarehouse');
         dtWarehouseDSVBlank = data.getElementsByTagName('dtWarehouseDSV');
@@ -116,7 +118,6 @@
         InitSelectItem($('#selCkno')[0], dtWarehouseDSVBlank, "CkNo", "CkNo", true, "請選擇機號");
         AssignVar();
         return;
-        
     };
 
 
@@ -130,5 +131,12 @@
         AllPages = new LoadAllPages(ParentNode, "AIReports/VSA04P", ["pgVSA04P"], afterLoadPage);
     };
 
-
+    function getTodayDate() {
+        var fullDate = new Date();
+        var yyyy = fullDate.getFullYear();
+        var MM = (fullDate.getMonth() + 1) >= 10 ? (fullDate.getMonth() + 1) : ("0" + (fullDate.getMonth() + 1));
+        var dd = fullDate.getDate() < 10 ? ("0" + fullDate.getDate()) : fullDate.getDate();
+        var today = yyyy + "/" + MM + "/" + dd;
+        return today;
+    }
 }

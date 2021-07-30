@@ -43,7 +43,7 @@
             }
         });
         AssignVarD();
-        $('#pgVSA21P .fa-search').click(function () { SearchVSA21P(true); });
+        $('#btQuery').click(function () { SearchVSA21P(true); });
         //$('#btQty').click(function () { SearchVSA21P(false); });
         //$('#btAmt').click(function () { SearchVSA21P(true); });
         return;
@@ -155,7 +155,7 @@
 
     let AfterGetCkNoByST_ID = function (data) {
         let dtWarehouseDSV = data.getElementsByTagName('dtWarehouseDSV');
-        InitSelectItem($('#selCkno')[0], dtWarehouseDSV, "CkNo", "CkNo", true, "請選擇機號");
+        InitSelectItem($('#selCkno')[0], dtWarehouseDSV, "CkNo", "CkNoName", true, "請選擇機號");
         $('#selCkno option[value=00]').remove();
     }
   

@@ -121,7 +121,39 @@
                 grdU.BindData(dtVSA73_1P);
             if (dtVSA73_1P.length == 0) {
                 //DyAlert("無符合資料!", BlankMode);
+                $('#lblCash1').html("")
+                $('#lblCash2').html("")
+                $('#lblCash3').html("")
+                $('#lblCash4').html("")
+                $('#lblCash5').html("")
+                $('#lblCash6').html("")
+                $('#lblCash7').html("")
                 return;
+            }
+            else {
+                var Cash1 = 0;
+                var Cash2 = 0;
+                var Cash3 = 0;
+                var Cash4 = 0;
+                var Cash5 = 0;
+                var Cash6 = 0;
+                var Cash7 = 0;
+                for (var i = 0; i < dtVSA73_1P.length; i++) {
+                    Cash1 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'Day1'));
+                    Cash2 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'Day2'));
+                    Cash3 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'Day3'));
+                    Cash4 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'Day4'));
+                    Cash5 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'Day5'));
+                    Cash6 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'Day6'));
+                    Cash7 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'Day7'));
+                }
+                $('#lblCash1').html((Cash1).toLocaleString('en-US'))
+                $('#lblCash2').html((Cash2).toLocaleString('en-US'))
+                $('#lblCash3').html((Cash3).toLocaleString('en-US'))
+                $('#lblCash4').html((Cash4).toLocaleString('en-US'))
+                $('#lblCash5').html((Cash5).toLocaleString('en-US'))
+                $('#lblCash6').html((Cash6).toLocaleString('en-US'))
+                $('#lblCash7').html((Cash7).toLocaleString('en-US'))
             }
         }
     };
@@ -273,20 +305,25 @@
         }
         else {
             var dtCK = data.getElementsByTagName('dtCK');
-            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true);
+            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNoName", true, "請選擇機號");
         }
     };
 
     //2021-04-27
     let afterGetInitVSA73_1P = function (data) {
-        getDay();
-
+        var dtDay = data.getElementsByTagName('dtDay');
+        Day1 = GetNodeValue(dtDay[0], 'Day1');
+        Day2 = GetNodeValue(dtDay[0], 'Day2');
+        Day3 = GetNodeValue(dtDay[0], 'Day3');
+        Day4 = GetNodeValue(dtDay[0], 'Day4');
+        Day5 = GetNodeValue(dtDay[0], 'Day5');
+        Day6 = GetNodeValue(dtDay[0], 'Day6');
+        Day7 = GetNodeValue(dtDay[0], 'Day7');
         $('#lblOpenDate').html(Day1 + "~" + Day7)
         AssignVar();
-        $('#pgVSA73_1P .fa-search').click(function () { SearchVSA73_1P(); });
-
+        $('#btQuery').click(function () { SearchVSA73_1P(); });
         var dtWarehouse = data.getElementsByTagName('dtWarehouse');
-        InitSelectItem($('#cbWh')[0], dtWarehouse, "ST_ID", "ST_Sname", true, "請選擇店代號");
+        InitSelectItem($('#cbWh')[0], dtWarehouse, "ST_ID", "ST_SName", true, "*請選擇店代號");
         $('#cbWh').change(function () { GetWhCkNo(); });
         $('#cbCK').change(function () { cbCK_click(); });
     };
