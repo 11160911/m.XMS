@@ -8,7 +8,7 @@
         grdU = new DynGrid(
             {
                 table_lement: $('#tbGMMacPLUSet')[0],
-                class_collection: ["tdColbt icon_in_td", "tdColbt icon_in_td btsuspend", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7",  "tdCol8"],
+                class_collection: ["tdColbt icon_in_td", "tdColbt icon_in_td btsuspend", "tdCol3", "tdCol4", "tdCol5", "tdCol6 label-align", "tdCol7",  "tdCol8"],
                 fields_info: [
                     { type: "JQ", name: "fa-file-text-o", element: '<i class="fa fa-file-text-o"></i>' },
                     { type: "JQ", name: "fa-toggle-off", element: '<i class="fa fa-toggle-off"></i><i class="fa fa-toggle-on"></i>' },
@@ -22,7 +22,7 @@
                 rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
-                //sortable: "Y"
+                sortable: "Y"
             }
         );
         
@@ -273,10 +273,10 @@
         //$('.forminput input').change(function () { InputValidation(this) });
 
         var dtDept = data.getElementsByTagName('dtDept');
-        InitSelectItem($('#cbDept')[0], dtDept, "Type_ID", "Type_Name", true);
+        InitSelectItem($('#cbDept')[0], dtDept, "Type_ID", "Type_Name", true, "請選擇部門");
 
         var dtBGNo = data.getElementsByTagName('dtBGNo');
-        InitSelectItem($('#cbBGNo')[0], dtBGNo, "Type_ID", "Type_Name", true);
+        InitSelectItem($('#cbBGNo')[0], dtBGNo, "Type_ID", "Type_Name", true, "請選擇大類");
 
         SetPLUAutoComplete("GD_NAME");
         SetPLUAutoComplete("GD_NO");

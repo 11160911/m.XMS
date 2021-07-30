@@ -12,7 +12,7 @@
             {
                 //2021-04-27
                 table_lement: $('#tbInv')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7", "tdCol8", "tdCol9", "tdCol10"],
+                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7", "tdCol8 label-align", "tdCol9 label-align", "tdCol10"],
                 //class_collection: ["tdColbt icon_in_td", "tdColbt icon_in_td btsuspend", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7",  "tdCol8"],
                 fields_info: [
                     //{ type: "JQ", name: "fa-file-text-o", element: '<i class="fa fa-file-text-o"></i>' },
@@ -24,8 +24,8 @@
                     { type: "Text", name: "PLU" },
                     { type: "Text", name: "GD_SNAME" },
                     { type: "Text", name: "EffectiveDate" },
-                    { type: "Text", name: "PtNum" },
-                    { type: "Text", name: "DisplayNum" },
+                    { type: "TextAmt", name: "PtNum" },
+                    { type: "TextAmt", name: "DisplayNum" },
                     { type: "Text", name: "Share" }
                 ],
                 rows_per_page: 10,
@@ -257,7 +257,7 @@
         }
         else {
             var dtCK = data.getElementsByTagName('dtCK');
-            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true);
+            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true, "請選擇機號");
         }
     };
 
@@ -272,7 +272,7 @@
         //var dtLayer = data.getElementsByTagName('dtLayer');
         //InitSelectItem($('#cbInv')[0], dtLayer, "Type_ID", "Type_Name", true);
         var dtInvWh = data.getElementsByTagName('dtInvWh');
-        InitSelectItem($('#cbWh')[0], dtInvWh, "WhNo", "WhName", true);       
+        InitSelectItem($('#cbWh')[0], dtInvWh, "WhNo", "WhName", true, "請選擇店倉");       
 
         $('#cbWh').change(function () { GetWhCkNo(); });
         $('#cbCK').change(function () { cbCK_click(); });
