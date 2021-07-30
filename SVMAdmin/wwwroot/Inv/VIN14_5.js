@@ -18,7 +18,7 @@
             {
                 //2021-04-27
                 table_lement: $('#tbVIN14_5')[0],
-                class_collection: ["tdColbt icon_in_td btEdit", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7", "tdCol8", "tdCol9", "tdCol10"],
+                class_collection: ["tdColbt icon_in_td btEdit", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6 label-align", "tdCol7", "tdCol8 label-align", "tdCol9", "tdCol10"],
                 //class_collection: ["tdColbt icon_in_td", "tdColbt icon_in_td btsuspend", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7",  "tdCol8"],
                 fields_info: [
                     { type: "JQ", name: "fa-tags", element: '<i class="fa fa-tags"></i>' },
@@ -27,16 +27,16 @@
                     { type: "Text", name: "LayerSno" },
                     { type: "Text", name: "OldName" },
 
-                    { type: "Text", name: "PtNum" },
+                    { type: "TextAmt", name: "PtNum" },
                     { type: "Text", name: "NewName" },
-                    { type: "Text", name: "Num" },
+                    { type: "TextAmt", name: "Num" },
                     { type: "Text", name: "ExchangeDate" },
                     { type: "Text", name: "FinStatus" }
                 ],
                 rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
-                //sortable: "Y"
+                sortable: "Y"
             }
         );
 
@@ -364,7 +364,7 @@
         }
         else {
             var dtCK = data.getElementsByTagName('dtCK');
-            InitSelectItem($('#cbLayer')[0], dtCK, "LayerNo", "LayerNo", true);
+            InitSelectItem($('#cbLayer')[0], dtCK, "LayerNo", "LayerNo", true, "請選擇貨倉");
         }
     };
 
@@ -395,7 +395,7 @@
         }
         else {
             var dtCK = data.getElementsByTagName('dtCK');
-            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true);
+            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true, "請選擇機號");
         }
     };
 
@@ -615,7 +615,7 @@
         $('#btQuery').click(function () { SearchVIN14_5(); });
 
         var dtWh = data.getElementsByTagName('dtWh');
-        InitSelectItem($('#cbWh')[0], dtWh, "ST_ID", "STName", true);
+        InitSelectItem($('#cbWh')[0], dtWh, "ST_ID", "STName", true, "請選擇店代號");
 
         $('#cbWh').change(function () { GetWhDSVCkNo(); });
         $('#cbCK').click(function () { cbCK_click(); });

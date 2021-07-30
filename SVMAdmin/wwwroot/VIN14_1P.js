@@ -481,7 +481,7 @@
         $('#txtDocDate').val(SysDate)
 
 
-        $('#pgVIN14_1P .fa-search').click(function () { SearchVIN14_1P(); });
+        $('#btQuery').click(function () { SearchVIN14_1P(); });
         $('#btCancel_1').click(function () { btCancel_1_click(); });
         $('#btCancel_2').click(function () { btCancel_2_click(); });
         /*$('#btSave').click(function () { btSave_click(); });*/
