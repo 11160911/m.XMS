@@ -12,13 +12,13 @@
             {
                 //2021-04-27
                 table_lement: $('#tbVMN29')[0],
-                class_collection: ["tdColbt icon_in_td", "tdColbt icon_in_td btsuspend", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7",  "tdCol8"],
+                class_collection: ["tdColbt icon_in_td", "tdColbt icon_in_td btsuspend", "tdCol3", "tdCol4", "tdCol5 label-align", "tdCol6", "tdCol7",  "tdCol8"],
                 fields_info: [
                     { type: "JQ", name: "fa-file-text-o", element: '<i class="fa fa-file-text-o"></i>' },
                     { type: "JQ", name: "fa-trash-o", element: '<i class="fa fa-trash-o"></i>' },
                     { type: "Text", name: "Type_ID" },
                     { type: "Text", name: "Type_NAME" },
-                    { type: "Text", name: "DisplayNum" },
+                    { type: "TextAmt", name: "DisplayNum" },
                     { type: "Text", name: "ModUser" },
                     { type: "Text", name: "ModDate" },
                     { type: "Text", name: "ModTime" }

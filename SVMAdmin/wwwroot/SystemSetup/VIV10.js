@@ -42,7 +42,7 @@
         grdV = new DynGrid(
             {
                 table_lement: $('#tbVIV10View')[0],
-                class_collection: [ "tdCol0","tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6 text-right", "tdCol7"],
+                class_collection: ["tdCol0", "tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5 label-align", "tdCol6 text-right", "tdCol7"],
                 fields_info: [
                     { type: "Text", name: "WhName" },              
                     { type: "Text", name: "CkNo" },
