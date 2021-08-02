@@ -98,9 +98,20 @@
 
             if (dtSales.length == 0) {
                 //DyAlert("無符合資料!", BlankMode);
+                $('#lblSumNum').html("")
+                $('#lblSumCash').html("")
                 return;
             }
-
+            else {
+                var Num = 0;
+                var Cash = 0;
+                for (var i = 0; i < dtSales.length; i++) {
+                    Num += parseFloat(GetNodeValue(dtSales[i], 'Num'));
+                    Cash += parseFloat(GetNodeValue(dtSales[i], 'Cash'));
+                }
+                $('#lblSumNum').html((Num).toLocaleString('en-US'))
+                $('#lblSumCash').html((Cash).toLocaleString('en-US'))
+            }
         }
     };
 
@@ -133,6 +144,7 @@
         /*$('#ShopNo,#OpenDate,#Cash').prop('readonly', true);*/
         $('#ShopNo').html(GetNodeValue(node, 'ShopNo') + '店 ' + GetNodeValue(node, 'CkNo') + '機 ' + GetNodeValue(node, 'ST_SName'));
         $('#OpenDate').html($('#lblOpenDate').html());
+        $('#Num').html(GetNodeValue(node, 'Num'));
         $('#Cash').html(GetNodeValue(node, 'Cash'));
 
         $('#modal_VSA76').modal('show');

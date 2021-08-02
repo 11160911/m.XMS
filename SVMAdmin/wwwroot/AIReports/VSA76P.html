@@ -375,14 +375,19 @@
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-form-label col-2">銷售區間：</label>
-                                                <div class="col-9">
+                                                <div class="col-md-3">
                                                     <label id="OpenDate" class="col-form-label" style="text-align: left;color: blue" autocomplete="off"></label>
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-form-label col-2">總&nbsp;&nbsp;業&nbsp;&nbsp;績：</label>
-                                                <div class="col-9">
+                                                <label class="col-form-label col-2">總銷售量：</label>
+                                                <div class="col-md-2">
+                                                    <label id="Num" class="col-form-label" style="text-align: left;color: blue" autocomplete="off"></label>
+                                                    <span class="msg-valid valid-blank"></span>
+                                                </div>
+                                                <label class="col-form-label col-2">總銷售金額：</label>
+                                                <div class="col-md-3">
                                                     <label id="Cash" class="col-form-label" style="text-align: left;color: blue" autocomplete="off"></label>
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
@@ -442,6 +447,18 @@
                                         <!--<i class="fa fa-search"></i>-->
                                         <button type="button" id="btQuery" class="custom-control-inline btn btn-primary">查詢</button>
                                     </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-form-label">&nbsp;總銷售量：</label>
+                                        <div class="col-md-1">
+                                            <label id="lblSumNum" class="col-form-label" style="color: blue" autocomplete="off"></label>
+                                        </div>
+                                        <label class="col-form-label">總銷售金額：</label>
+                                        <div class="col-md-2">
+                                            <label id="lblSumCash" class="col-form-label" style="color: blue" autocomplete="off"></label>
+                                        </div>
+                                    </div>
+                                    
                                     <div class="form-group row">
                                         <label class="col-form-label"></label>
                                         <label class="col-form-label" style="position: absolute; right: 20px;color:crimson">點擊欄位標題可進行排序</label>
@@ -464,8 +481,8 @@
                                                 <th>店</th>
                                                 <th>機</th>
                                                 <th>智販店簡稱</th>
-                                                <th>銷量</th>
-                                                <th>業績</th>
+                                                <th>銷售量</th>
+                                                <th>銷售金額</th>
                                             </tr>
                                         </thead>
                                         <tbody>
