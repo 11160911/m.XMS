@@ -256,7 +256,7 @@
         }
         else {
             var dtCK = data.getElementsByTagName('dtCK');
-            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true, "請選擇機號");
+            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true, "*請選擇機號");
         }
     };
 
@@ -348,7 +348,7 @@
         $('#cbCK').click(function () { cbCK_click(); });
         //$('#cbCK').change(function () { GetLayerNo(); });
         var dtWh = data.getElementsByTagName('dtWh');
-        InitSelectItem($('#cbWh')[0], dtWh, "ST_ID", "ST_SName", true, "請選擇店代號");
+        InitSelectItem($('#cbWh')[0], dtWh, "ST_ID", "ST_SName", true, "*請選擇店代號");
 
         SetDateField($('#ExpDate')[0]);
         $('#ExpDate').datepicker();

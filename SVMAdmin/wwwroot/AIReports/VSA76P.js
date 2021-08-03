@@ -103,7 +103,19 @@
 
             if (dtVSA76P.length == 0) {
                 //DyAlert("無符合資料!", BlankMode);
+                $('#lblSumNum').html("")
+                $('#lblSumCash').html("")
                 return;
+            }
+            else {
+                var Num = 0;
+                var Cash = 0;
+                for (var i = 0; i < dtVSA76P.length; i++) {
+                    Num += parseFloat(GetNodeValue(dtVSA76P[i], 'Num'));
+                    Cash += parseFloat(GetNodeValue(dtVSA76P[i], 'Cash'));
+                }
+                $('#lblSumNum').html((Num).toLocaleString('en-US'))
+                $('#lblSumCash').html((Cash).toLocaleString('en-US'))
             }
 
         }
@@ -138,12 +150,12 @@
         /*$('#ShopNo,#OpenDate,#Cash').prop('readonly', true);*/
         $('#ShopNo').html(GetNodeValue(node, 'ShopNo') + '店 ' + GetNodeValue(node, 'CkNo') + '機 ' + GetNodeValue(node, 'ST_SName'));
         $('#OpenDate').html($('#lblOpenDate').html());
+        $('#Num').html(GetNodeValue(node, 'Num'));
         $('#Cash').html(GetNodeValue(node, 'Cash'));
 
         $('#modal_VSA76P').modal('show');
         setTimeout(function () { GetVSA76PSearch(); }, 500);
         
-       /* alert();*/
     };
 
     let btQuery_click = function () {

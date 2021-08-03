@@ -359,12 +359,12 @@
                                         </style>
                                         <div class="card-block forminput">
                                             <div class="form-group row">
-                                                <label class="col-form-label col-4" style="font-size: 28px">彙總撿貨商品</label>
+                                                <label class="col-form-label col-4" style="font-size: 28px;color: blue" >彙總撿貨商品</label>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-form-label col-2">撿貨單號：</label>
+                                                <label class="col-form-label col-2">撿貨單號</label>
                                                 <div class="col-9">
-                                                    <label id="lblPick_1" class="col-form-label" autocomplete="off"></label>
+                                                    <label id="lblPick_1" class="col-form-label" style="color: blue" autocomplete="off"></label>
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
                                                 <!--<div class="col-md-6">
@@ -372,9 +372,9 @@
                                                 </div>-->
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-form-label col-2">總撿貨量：</label>
+                                                <label class="col-form-label col-2">總撿貨量</label>
                                                 <div class="col-4">
-                                                    <label id="lblQty_1" class="col-form-label"></label>
+                                                    <label id="lblQty_1" class="col-form-label" style="color: blue"></label>
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
                                                 <label class="col-form-label" style="position: absolute; right: 20px;color:crimson">點擊欄位標題可進行排序</label>
@@ -397,9 +397,9 @@
                                             </tbody>
                                         </table>
                                         <div class="form-group row">
-                                            <label class="col-form-label col-2">配&nbsp;&nbsp;送&nbsp;&nbsp;區：</label>
+                                            <label class="col-form-label col-2">配&nbsp;&nbsp;送&nbsp;&nbsp;區</label>
                                             <div class="col-9">
-                                                <label id="lblArea_1" class="col-form-label" autocomplete="off"></label>
+                                                <label id="lblArea_1" class="col-form-label" style="color: blue" autocomplete="off"></label>
                                                 <span class="msg-valid valid-blank"></span>
                                             </div>
                                         </div>
@@ -444,26 +444,26 @@
                                         </style>
                                         <div class="card-block forminput">
                                             <div class="form-group row">
-                                                <label class="col-form-label col-4" style="font-size: 28px ">單機撿貨商品</label>
+                                                <label class="col-form-label col-4" style="font-size: 28px;color: blue">單機撿貨商品</label>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-form-label col-2">撿貨單號：</label>
+                                                <label class="col-form-label col-2">撿貨單號</label>
                                                 <div class="col-9">
-                                                    <label id="lblPick_2" class="col-form-label" autocomplete="off"></label>
+                                                    <label id="lblPick_2" class="col-form-label" style="color: blue" autocomplete="off"></label>
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-3">
-                                                    <label id="lblSName_2" class="col-form-label" autocomplete="off"></label>
+                                                    <label id="lblSName_2" class="col-form-label" style="color: blue" autocomplete="off"></label>
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
                                                 <div class="col-md-1">
                                                     <span class="dispThisSetting"></span>
                                                 </div>
-                                                <label class="col-form-label col-2">總待撿量：</label>
+                                                <label class="col-form-label col-2">總待撿量</label>
                                                 <div class="col-2">
-                                                    <label id="lblQty_2" class="col-form-label"></label>
+                                                    <label id="lblQty_2" class="col-form-label" style="color: blue"></label>
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
                                                 <label class="col-form-label" style="position: absolute; right: 20px;color:crimson">點擊欄位標題可進行排序</label>
@@ -521,16 +521,21 @@
                                     <div class="form-group row">
                                         <label class="col-form-label">補貨店倉：</label>
                                         <div class="col-md-2">
-                                            <label id="lblShopNo" class="col-form-label" autocomplete="off"></label>
+                                            <label id="lblShopNo" class="col-form-label" style="color: blue" autocomplete="off"></label>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-form-label">配&nbsp;&nbsp;送&nbsp;&nbsp;區：</label>
-                                        <div class="col-md-2">
-                                            <label id="lblArea" class="col-form-label" autocomplete="off"></label>
-                                        </div>
+                                        <label class="col-form-label"></label>
                                         <label class="col-form-label" style="position: absolute; right: 20px;color:crimson">點擊欄位標題可進行排序</label>
                                     </div>
+                                    
+                                    <div class="form-group row">
+                                        <!--<label class="col-form-label">配&nbsp;&nbsp;送&nbsp;&nbsp;區：</label>-->
+                                        <div class="col-md-2">
+                                            <label id="lblArea" class="col-form-label" autocomplete="off" hidden></label>
+                                        </div>
+                                    </div>
+
                                     <!--2021-04-27-->
                                     <table id="tbVIN14_1P" class="table table-hover">
                                         <thead>
