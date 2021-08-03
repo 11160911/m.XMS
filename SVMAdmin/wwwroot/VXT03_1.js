@@ -361,7 +361,7 @@
         }
         else {
             var dtCK = data.getElementsByTagName('dtCK');
-            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true, "請選擇機號");
+            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CkNoName", true, "請選擇機號");
         }
     };
 

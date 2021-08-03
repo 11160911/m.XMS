@@ -170,9 +170,8 @@
             return;
         }
         else {
-            if (DateDiff($('#txtOpenDateS').val(), $('#txtOpenDateE').val()) > QueryDays) {
-                $('#txtOpenDateS').val() == ""
-                DyAlert("銷售日期區間不可大於" + QueryDays + "天!!", function () { $('#txtOpenDateS').focus() });
+            if (DateDiff("d", $('#txtOpenDateS').val(), $('#txtOpenDateE').val()) > parseInt(QueryDays)) {
+                DyAlert("銷售日期查詢區間必須小於等於" + QueryDays + "天!!");
                 return;
             }
             $('#lblOpenDate').html($('#txtOpenDateS').val() + "~" + $('#txtOpenDateE').val())

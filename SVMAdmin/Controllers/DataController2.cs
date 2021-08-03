@@ -231,7 +231,7 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-                string sql = "Select ST_ID,ST_Sname from WarehouseSV where Companycode='" + uu.CompanyId.SqlQuote() + "' and ST_Type='6' order by ST_ID";
+                string sql = "Select ST_ID,ST_ID + ST_Sname as ST_Sname from WarehouseSV where Companycode='" + uu.CompanyId.SqlQuote() + "' and ST_Type='6' order by ST_ID";
                 DataTable dtSV = PubUtility.SqlQry(sql, uu, "SYS");
                 ds.Tables.Add(dtSV);
                 dtSV.TableName = "dtWarehouse";

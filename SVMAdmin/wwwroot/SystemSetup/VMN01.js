@@ -46,8 +46,9 @@
     }
 
     let GetTypeData = function () {
-        //let TypeCode = "";
-        TypeCode = "DA";
+        if ($('#DA').prop('checked')) {
+            TypeCode = "DA";
+        }
         var pData = {
             Type_Code: TypeCode
         };
@@ -73,7 +74,13 @@
                 //DyAlert("無符合資料!", BlankMode);
                 return;
             }
-            
+            else {
+                if (TypeCode == "DA") {
+                    var heads = $('#tbVMN01 thead tr th');
+                    $(heads[2]).text("配送代碼");
+                    $(heads[3]).text("配送名稱");
+                }
+            }
         }
     };
 

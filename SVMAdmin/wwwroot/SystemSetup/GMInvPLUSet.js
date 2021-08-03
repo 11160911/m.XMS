@@ -99,7 +99,7 @@
 
     let AfterGetCkNoByST_ID = function (data) {
         let dtWarehouseDSV = data.getElementsByTagName('dtWarehouseDSV');
-        InitSelectItem($('#selCkno')[0], dtWarehouseDSV, "SNno", "CkNo", true, "請選擇機號");
+        InitSelectItem($('#selCkno')[0], dtWarehouseDSV, "SNno", "CkNoName", true, "請選擇機號");
     }
 
     let AfterGetLayerNoBySNno = function (data) {

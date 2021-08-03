@@ -1581,7 +1581,7 @@ namespace SVMAdmin.Controllers
             {
                 IFormCollection rq = HttpContext.Request.Form;
                 string WhNo = rq["WhNo"];
-                string sql = "select a.CkNo ";
+                string sql = "select a.CkNo,a.CkNo + '機' as CkNoName ";
                 sql += " from WarehouseDSV a (NoLock) ";
                 sql += " where CompanyCode='" + uu.CompanyId + "' and ST_ID='" + WhNo + "'";
                 sql += " Order By CkNo ";
