@@ -498,9 +498,9 @@ namespace SVMAdmin.Controllers
                     sql += " and a.CKNo='" + Ckno.SqlQuote() + "'";
                 if (KeyWord != "")
                 {
-                    sql += " and (d.GD_NAME like '" + Ckno.SqlQuote() + "%'";
-                    sql += " or d.GD_Sname like ='" + Ckno.SqlQuote() + "%'";
-                    sql += " or d.GD_NO like '" + Ckno.SqlQuote() + "%')";
+                    sql += " and (d.GD_NAME like '" + KeyWord.SqlQuote() + "%'";
+                    sql += " or d.GD_Sname like '" + KeyWord.SqlQuote() + "%'";
+                    sql += " or d.GD_NO like '" + KeyWord.SqlQuote() + "%')";
                 }
                 sql += " order by a.OpenDate,a.OpenTime,a.ChrNo";
                 DataTable dtDS = PubUtility.SqlQry(sql, uu, "SYS");

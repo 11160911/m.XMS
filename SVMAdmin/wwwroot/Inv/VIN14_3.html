@@ -133,16 +133,16 @@
                                           </style>
                                           <div class="card-block forminput">
                                               <div class="form-group row">
-                                                  <label id="MachineData" class="col-form-label col-6">1g</label>
+                                                  <label id="MachineData" class="col-form-label col-6" style="color: blue">1g</label>
                                                   <!--<div class="col-9">
             <input id="GD_NO" type="text" readonly class="form-control" autocomplete="off" />
             <span class="msg-valid valid-blank"></span>
         </div>-->
-                                                  <label id="SeqNo" class="col-form-label col-2">1g</label>
+                                                  <label id="SeqNo" class="col-form-label col-2" style="color: blue">1g</label>
                                               </div>
                                               <div class="form-group row">
-                                                  <label style="color:red" class="col-form-label col-3">貨道：</label>
-                                                  <label id="Channel" class="col-form-label col-3">a01</label>
+                                                  <label style="color:red" class="col-form-label col-3">貨道</label>
+                                                  <label id="Channel" class="col-form-label col-3" style="color: blue">a01</label>
                                               </div>
 
                                               <div class="form-group row">
@@ -154,8 +154,8 @@
                                               </div>
 
                                               <div class="form-group row">
-                                                  <label id="GD_No" class="col-form-label col-3">品號</label>
-                                                  <label id="GD_Name" class="col-form-label col-3">簡稱</label>
+                                                  <label id="GD_No" class="col-form-label col-3" style="color: blue">品號</label>
+                                                  <label id="GD_Name" class="col-form-label col-3" style="color: blue">簡稱</label>
                                               </div>
 
                                               <!--<div class="form-group row">
@@ -163,12 +163,12 @@
     </div>-->
 
                                               <div class="form-group row">
-                                                  <label class="col-form-label col-3">庫存/滿倉：</label>
-                                                  <label id="ShowQty" class="col-form-label col-3">8/17</label>
+                                                  <label class="col-form-label col-3">庫存/滿倉</label>
+                                                  <label id="ShowQty" class="col-form-label col-3" style="color: blue">8/17</label>
 
                                                   <div hidden>
-                                                      <label id="lblPtNum" class="col-form-label"></label>
-                                                      <label id="lblDisplayNum" class="col-form-label"></label>
+                                                      <label id="lblPtNum" class="col-form-label" style="color: blue"></label>
+                                                      <label id="lblDisplayNum" class="col-form-label" style="color: blue"></label>
                                                   </div>
 
                                               </div>
@@ -203,7 +203,7 @@
                                               </div>
 
                                               <div class="form-group row">
-                                                  <label class="col-form-label col-3">最近有效日期：</label>
+                                                  <label class="col-form-label col-3">最近有效日期</label>
                                                   <div class="col-md-3">
                                                       <input id="ExpDate" type="text" class="form-control" autocomplete="off" />
                                                   </div>
@@ -265,7 +265,7 @@
                                           <!--<label class="col-form-label">機&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號*</label>-->
                                           <div class="col-md-2">
                                               <select id="cbCK" class="form-control">
-                                                  <option disabled selected> 請選擇機號</option>
+                                                  <option disabled selected> *請選擇機號</option>
                                                   <option></option>
                                               </select>
                                           </div>
@@ -278,6 +278,9 @@
 
                                       </div>
                                       <div class="form-group row">
+                                          <div class="col-md-5">
+
+                                          </div>
                                           <button type="button" id="btInv" class="custom-control-inline btn btn-success">確認儲存</button>
                                           <label id="MachineDataM" class="col-form-label col-4"> </label>
                                           <!--<label class="col-form-label col-3"></label>-->

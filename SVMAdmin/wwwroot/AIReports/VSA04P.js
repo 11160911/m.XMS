@@ -99,9 +99,20 @@
             }
             if (dtSalesHD.length == 0) {
                 DyAlert("無符合資料!", DummyFunction);
+                $('#lblSumNum').html("")
+                $('#lblSumCash').html("")
                 return;
             }
-
+            else {
+                var Num = 0;
+                var Cash = 0;
+                for (var i = 0; i < dtSalesHD.length; i++) {
+                    Num += parseFloat(GetNodeValue(dtSalesHD[i], 'Num'));
+                    Cash += parseFloat(GetNodeValue(dtSalesHD[i], 'Cash'));
+                }
+                $('#lblSumNum').html((Num).toLocaleString('en-US'))
+                $('#lblSumCash').html((Cash).toLocaleString('en-US'))
+            }
         }
     };
 

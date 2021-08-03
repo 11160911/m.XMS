@@ -216,7 +216,19 @@
                 //$('#btQty').prop('disabled', true);
                 //$('#btAmt').prop('disabled', true);
                 DyAlert("無符合資料!", DummyFunction);
+                $('#lblSumNum').html("")
+                $('#lblSumCash').html("")
                 return;
+            }
+            else {
+                var Num = 0;
+                var Cash = 0;
+                for (var i = 0; i < dtSalesDSV.length; i++) {
+                    Num += parseFloat(GetNodeValue(dtSalesDSV[i], 'Num'));
+                    Cash += parseFloat(GetNodeValue(dtSalesDSV[i], 'Cash'));
+                }
+                $('#lblSumNum').html((Num).toLocaleString('en-US'))
+                $('#lblSumCash').html((Cash).toLocaleString('en-US'))
             }
 
         }
