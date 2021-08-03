@@ -56,7 +56,7 @@
                     { type: "Text", name: "AppUserName" }
                 ],
                 rows_per_page: 10,
-                //method_clickrow: click_Machine,
+                method_clickrow: click_Machine,
                 afterBind: InitViewButton,
                 sortable: "Y"
             }
@@ -112,7 +112,7 @@
     }
 
     let InitViewButton = function () {
-        alert("InitViewButton");
+        //alert("InitViewButton");
         //$('#tbVIV10 .fa-tags').click(function () { btModify_click(this) });
         //$('#tbVIV10 .fa-search').click(function () { btView_click(this) });
     }
@@ -145,12 +145,18 @@
                 return;
             }
             else {
-                grdV.BindData(dtDtl);
+                
  
                 $('#pgVIV10View .x_title h4').text('發票分配明細');
                 $('#pgVIV10').hide();
                 $('#pgVIV10Detail').hide();
                 $('#pgVIV10View').show();
+
+                setTimeout(
+                    function () { grdV.BindData(dtDtl); }
+                    , 100
+                );
+                
             }
 
         }

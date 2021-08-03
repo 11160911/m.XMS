@@ -90,15 +90,40 @@
 
     let btMod_Click = function (bt) {
         EditMode = "Mod";
+        //GetSysDate();
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         $('#modal_VIN14_4 .modal-title').text('智販機換店作業');
         var node = $(grdU.ActiveRowTR()).prop('Record');
 
-        //if (GetNodeValue(node, 'AppDate') != '') {
-        //    DyAlert("此單據已批核，無法修改!");
-        //    return
-        //}
+        SysDate = getTodayDate();
+
+        if (GetNodeValue(node, 'FinishDate') != '') {
+            DyAlert("此單據已完成換店作業!");
+            return
+        }
+
+        if (GetNodeValue(node, 'OldStopDate') != '') {
+            if (GetNodeValue(node, 'ExchangeDate') < SysDate) {
+                DyAlert("換店日期必須大於等於系統日!");
+                return
+            }
+            if (GetNodeValue(node, 'ExchangeDate') < GetNodeValue(node, 'OldStopDate')) {
+                DyAlert("換店日期必須大於等於原智販店機停止營業日期!");
+                return
+            }
+        }
+        else {
+            DyAlert("進行換店作業前，原智販店機必須設定停止營業日期!");
+            return
+        }
+
+        if (GetNodeValue(node, 'NewOpenDate') != '') {
+            if (GetNodeValue(node, 'ExchangeDate') > GetNodeValue(node, 'NewOpenDate')) {
+                DyAlert("原智販店機開店日期必須小於等於換店日期!");
+                return
+            }
+        }
 
         $('#WhNoOut,#CkNoOut,#WhNoIn,#CkNoIn,#ExchangeDate').prop('readonly', false);
         $('#WhNoOut,#CkNoOut,#WhNoIn,#CkNoIn,#ExchangeDate').prop('disabled', true);
@@ -113,10 +138,13 @@
         $('#ExchangeDate').val(GetNodeValue(node, 'ExchangeDate'));
         $('#ExchangeDate').closest('.col-4').show();
         $('#lblExDate').closest('.col-3').hide();
-        GetSysDate();
+        
 
         OutCkNo = GetNodeValue(node, 'CkNoOut');
         InCkNo = GetNodeValue(node, 'CkNoIn');
+
+
+        //alert(SysDate);
 
         GetWhOutCkNo("Out");
 
@@ -133,14 +161,14 @@
             CheckUse: 'Y'
         };
 
-        PostToWebApi({ url: "api/SystemSetup/GetWhDSVCkNoWithCond", data: pData, success: AfterGetOutCkNo });
+        PostToWebApi({ url: "api/SystemSetup/GetWhDSVCkNo", data: pData, success: AfterGetOutCkNo });
 
     };
 
 
     let AfterGetOutCkNo = function (data) {
         //alert("AfterGetOutCkNo");
-        if (ReturnMsg(data, 0) != "GetWhDSVCkNoWithCondOK") {
+        if (ReturnMsg(data, 0) != "GetWhDSVCkNoOK") {
             DyAlert(ReturnMsg(data, 0));
             return;
         }
@@ -162,14 +190,14 @@
             CheckUse: 'Y'
         };
 
-        PostToWebApi({ url: "api/SystemSetup/GetWhDSVCkNoWithCond", data: pData, success: AfterGetInCkNo });
+        PostToWebApi({ url: "api/SystemSetup/GetWhDSVCkNo", data: pData, success: AfterGetInCkNo });
 
     };
 
 
     let AfterGetInCkNo = function (data) {
         //alert("AfterGetInCkNo");
-        if (ReturnMsg(data, 0) != "GetWhDSVCkNoWithCondOK") {
+        if (ReturnMsg(data, 0) != "GetWhDSVCkNoOK") {
             DyAlert(ReturnMsg(data, 0));
             return;
         }
@@ -701,6 +729,15 @@
     if ($('#pgVIN14_4').length == 0) {
         AllPages = new LoadAllPages(ParentNode, "VIN14_4", ["pgVIN14_4"], afterLoadPage);
     };
+
+    function getTodayDate() {
+        var fullDate = new Date();
+        var yyyy = fullDate.getFullYear();
+        var MM = (fullDate.getMonth() + 1) >= 10 ? (fullDate.getMonth() + 1) : ("0" + (fullDate.getMonth() + 1));
+        var dd = fullDate.getDate() < 10 ? ("0" + fullDate.getDate()) : fullDate.getDate();
+        var today = yyyy + "/" + MM + "/" + dd;
+        return today;
+    }
 
 
 }
