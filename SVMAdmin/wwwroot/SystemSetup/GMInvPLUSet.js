@@ -99,7 +99,7 @@
 
     let AfterGetCkNoByST_ID = function (data) {
         let dtWarehouseDSV = data.getElementsByTagName('dtWarehouseDSV');
-        InitSelectItem($('#selCkno')[0], dtWarehouseDSV, "SNno", "CkNo", true, "請選擇機號");
+        InitSelectItem($('#selCkno')[0], dtWarehouseDSV, "SNno", "CkNoName", true, "請選擇機號");
     }
 
     let AfterGetLayerNoBySNno = function (data) {
@@ -409,7 +409,7 @@
         InitSelectItem($('#selCkno')[0], dtWarehouseDSVBlank, "SNno", "CkNo", true, "請選擇機號");
         InitSelectItem($('#selLayerNo')[0], dtMachineListSpecBlank, "LayerNo", "LayerNo", true, "請選擇貨倉代號");
         AssignVar();
-
+        $('#btSaveNewInventorySV').prop('disabled', true);
     };
 
     let afterLoadPage = function () {

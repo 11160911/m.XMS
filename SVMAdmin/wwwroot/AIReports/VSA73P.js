@@ -4,6 +4,9 @@
     let EditMode;
     let SetSuspend = "";
     let isImport = false;
+    let QueryDays;
+
+
     let AssignVar = function () {
         grdU = new DynGrid(
             {
@@ -16,7 +19,7 @@
                     { type: "TextAmt", name: "Num" },
                     { type: "TextAmt", name: "Cash" }
                 ],
-                rows_per_page: 10,
+                //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 //afterBind: InitModifyDeleteButton,
                 sortable: "Y"
@@ -52,10 +55,9 @@
             return;
         }
         else {
-            if (DateDiff($('#txtOpenDateS').val(), $('#txtOpenDateE').val()) > 7) {
+            if (DateDiff("d", $('#txtOpenDateS').val(), $('#txtOpenDateE').val()) > parseInt(QueryDays)) {
                 CloseLoading();
-                $('#txtOpenDateS').val() == ""
-                DyAlert("銷售日期區間不可大於7天!!", function () { $('#txtOpenDateS').focus() });
+                DyAlert("銷售日期查詢區間必須小於等於" + QueryDays + "天!!");
                 return;
             }
             $('#lblOpenDate').html($('#txtOpenDateS').val() + "~" + $('#txtOpenDateE').val())
@@ -294,6 +296,7 @@
         $('#txtOpenDateE').val(SysDate)
         $('#lblOpenDate').html(SysDate + "~" + SysDate)
         AssignVar();
+        GetQueryDays();
         $('#btQuery').click(function () { SearchVSA73P(); });
 
         var dtWarehouse = data.getElementsByTagName('dtWarehouse');
@@ -417,4 +420,32 @@
         var today = yyyy + "/" + MM + "/" + dd;
         return today;
     }
+
+    let GetQueryDays = function () {
+        var qData = {
+            ProgramID: "VSA73P",
+        }
+        PostToWebApi({ url: "api/SystemSetup/GetQueryDays", data: qData, success: AfterGetQueryDays });
+    };
+
+    let AfterGetQueryDays = function (data) {
+        if (ReturnMsg(data, 0) != "GetQueryDaysOK") {
+            DyAlert(ReturnMsg(data, 0));
+            return;
+        }
+        else {
+            var dtQueryDays = data.getElementsByTagName('dtQueryDays');
+            if (dtQueryDays.length == 0) {
+                QueryDays = 90;
+                //DyAlert("無符合資料!", BlankMode);
+                //return;
+            }
+            else {
+                if (GetNodeValue(dtQueryDays[0], "QueryDays") != 0)
+                    QueryDays = GetNodeValue(dtQueryDays[0], "QueryDays");
+                else
+                    QueryDays = 90;
+            }
+        }
+    };
 }

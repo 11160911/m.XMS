@@ -679,6 +679,10 @@ namespace SVMAdmin.Controllers
                 {
                     sql += " and a.WhNo='" + WhNo + "'";
                 }
+                if (CkNo != "")
+                {
+                    sql += " and a.CkNo='" + CkNo + "'";
+                }
                 if (GDLayer != "")
                 {
                     sql += " and a.Layer='" + GDLayer + "'";
@@ -1581,7 +1585,7 @@ namespace SVMAdmin.Controllers
             {
                 IFormCollection rq = HttpContext.Request.Form;
                 string WhNo = rq["WhNo"];
-                string sql = "select a.CkNo ";
+                string sql = "select a.CkNo,a.CkNo + '機' as CkNoName ";
                 sql += " from WarehouseDSV a (NoLock) ";
                 sql += " where CompanyCode='" + uu.CompanyId + "' and ST_ID='" + WhNo + "'";
                 sql += " Order By CkNo ";
@@ -2819,7 +2823,7 @@ namespace SVMAdmin.Controllers
                 string WhNo = rq["WhNo"];
                 string StopDay = rq["StopDay"];
                 string CheckUse = rq["CheckUse"];
-                string sql = "select a.CkNo ";
+                string sql = "select a.CkNo,a.CkNo + '機' as CkNoName ";
                 sql += " from WarehouseDSV a (NoLock) ";
                 sql += " Inner Join MachineList b (NoLock) On a.CompanyCode=b.CompanyCode And a.SNno=b.SNno ";
                 sql += " where a.CompanyCode='" + uu.CompanyId + "' and ST_ID='" + WhNo + "'";

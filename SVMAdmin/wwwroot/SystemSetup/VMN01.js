@@ -46,8 +46,9 @@
     }
 
     let GetTypeData = function () {
-        //let TypeCode = "";
-        TypeCode = "DA";
+        if ($('#DA').prop('checked')) {
+            TypeCode = "DA";
+        }
         var pData = {
             Type_Code: TypeCode
         };
@@ -73,7 +74,15 @@
                 //DyAlert("無符合資料!", BlankMode);
                 return;
             }
-            
+            else {
+                if (TypeCode == "DA") {
+                    var heads = $('#tbVMN01 thead tr th');
+                    $(heads[2]).text("配送區代碼");
+                    $(heads[3]).text("配送區名稱");
+                    $('#lbType_ID').text("*配送區代碼")
+                    $('#lbType_Name').text("*配送區名稱")
+                }
+            }
         }
     };
 

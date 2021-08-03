@@ -23,7 +23,7 @@
                     { type: "JQ", name: "fa-print P1", element: '<i class="fa fa-print P1"></i>' },
                     { type: "JQ", name: "fa-print P2", element: '<i class="fa fa-print P2"></i>' }
                 ],
-                rows_per_page: 10,
+                //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitSearchButton,
                 sortable: "Y"
@@ -45,7 +45,7 @@
                     { type: "Text", name: "GD_NO" },
                     { type: "TextAmt", name: "Qty" }
                 ],
-                rows_per_page: 10,
+                //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitSearchButton,
                 sortable: "Y"
@@ -66,7 +66,7 @@
                     { type: "Text", name: "SName" },
                     { type: "Text", name: "ST_Address" }
                 ],
-                rows_per_page: 10,
+                //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitSearchButton,
                 sortable: "Y"
@@ -85,7 +85,7 @@
                     { type: "Text", name: "PLU" },
                     { type: "TextAmt", name: "Qty" }
                 ],
-                rows_per_page: 10,
+                //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitSearchButton,
                 sortable: "Y"

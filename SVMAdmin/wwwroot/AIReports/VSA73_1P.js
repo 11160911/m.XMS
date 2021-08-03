@@ -28,7 +28,7 @@
                     { type: "TextAmt", name: "Day6" },
                     { type: "TextAmt", name: "Day7" }
                 ],
-                rows_per_page: 10,
+                /*rows_per_page: 10,*/
                 method_clickrow: click_PLU,
                 //afterBind: InitModifyDeleteButton,
                 sortable: "Y"
@@ -42,6 +42,7 @@
         $(heads[5]).text(Day5.substr(5, 5) + getWeek(Day5));
         $(heads[6]).text(Day6.substr(5, 5) + getWeek(Day6));
         $(heads[7]).text(Day7.substr(5, 5) + getWeek(Day7));
+        
     };
 
     let InitModifyDeleteButton = function () {
