@@ -1252,10 +1252,24 @@ namespace SVMAdmin.Controllers
 
                 
                 string sql = "";
+                string FinishDate = "";
+
+                //先檢查是否該單據已被其他人員處理完成
+                sql = "Select IsNull(FinishDate,'') FinishDate From ChangeShopSV Where CompanyCode='" + uu.CompanyId.SqlQuote() + "' And DocNo='" + DocNo + "' ";
+                DataTable dtDoc = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtDoc.Rows.Count > 0)
+                {
+                    FinishDate = dtDoc.Rows[0][0].ToString();
+                }
+                if (FinishDate != "")
+                {
+                    dtMessage.Rows[0][0] = "Exception";
+                    dtMessage.Rows[0][1] = "單據已被其他人員處理完成";
+                    return PubUtility.DatasetXML(ds);
+                }
+
+
                 string SysDate = "";
-
-                string OldWareDSVIn = ""; string NewWareDSVIn = "";
-
                 sql = "select convert(char(10),getdate(),111) SysDate";
                 DataTable dtSysDate = PubUtility.SqlQry(sql, uu, "SYS");
                 if (dtSysDate.Rows.Count > 0)
@@ -1263,6 +1277,7 @@ namespace SVMAdmin.Controllers
                     SysDate = dtSysDate.Rows[0][0].ToString();
                 }
 
+                string OldWareDSVIn = ""; string NewWareDSVIn = "";
                 sql = "select WhNoIn From WarehouseDSV (Nolock) " 
                     + "Where CompanyCode='" + uu.CompanyId.SqlQuote() + "' And ST_ID='" + WhNoOut + "' And CkNo='" + CkNoOut + "' ";
                 DataTable dtOldWareDSVIn = PubUtility.SqlQry(sql, uu, "SYS");
@@ -1272,7 +1287,7 @@ namespace SVMAdmin.Controllers
                 }
 
                 sql = "select WhNoIn From WarehouseDSV (Nolock) "
-                    + "Where CompanyCode='" + uu.CompanyId.SqlQuote() + "' And ST_ID='" + WhNoOut + "' And CkNo='" + CkNoOut + "' ";
+                    + "Where CompanyCode='" + uu.CompanyId.SqlQuote() + "' And ST_ID='" + WhNoIn + "' And CkNo='" + CkNoIn + "' ";
                 DataTable dtNewWareDSVIn = PubUtility.SqlQry(sql, uu, "SYS");
                 if (dtNewWareDSVIn.Rows.Count > 0)
                 {

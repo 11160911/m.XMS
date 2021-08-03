@@ -389,7 +389,7 @@
             if (CkType == "Main") {
                 console.log("AfterGetWhDSVCkNo：Main");
                 var dtCK = data.getElementsByTagName('dtCK');
-                InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true);
+                InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true, "請選擇機號");
             }
             else if (CkType == "Out") {
                 console.log("AfterGetWhDSVCkNo：Out");
@@ -593,7 +593,7 @@
         $('#btQuery').click(function () { SearchVIN14_4(); });
 
         var dtWh = data.getElementsByTagName('dtWh');
-        InitSelectItem($('#cbWh')[0], dtWh, "ST_ID", "STName", true);
+        InitSelectItem($('#cbWh')[0], dtWh, "ST_ID", "STName", true, "請選擇店代號");
 
         //var dtS = data.getElementsByTagName('dtS');
         //InitSelectItem($('#cbSWh')[0], dtS, "ST_ID", "STName", true);

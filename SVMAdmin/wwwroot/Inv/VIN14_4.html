@@ -344,7 +344,7 @@
                                         <div class="form-group row">
                                             <label class="col-form-label col-3">原機號</label>
 
-                                            <div class="col-2">
+                                            <div class="col-4">
                                                 <select id="CkNoOut" class="form-control">
                                                     <option> </option>
                                                 </select>
@@ -369,7 +369,7 @@
                                         <div class="form-group row">
                                             <label class="col-form-label col-3">新機號</label>
 
-                                            <div class="col-2">
+                                            <div class="col-4">
                                                 <select id="CkNoIn" class="form-control">
                                                     <option> </option>
                                                 </select>
@@ -434,30 +434,33 @@
                         <div class="x_panel">
                             <div class="x_title">
                                 <div class="form-group row">
-
-                                    <div class="col-2">
-                                        <label class="col-form-label">換店日期</label>
+                                    <label class="col-form-label ">換店日期</label>
+                                    <div class="col-md-2">
+                                        <!--<label class="col-form-label">換店日期</label>-->
                                         <input id="exDate" type="text" class="form-control" />
                                         <span class="msg-valid valid-blank"></span>
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label class="col-form-label">店&nbsp;&nbsp;代&nbsp;&nbsp;號</label>
+                                        <!--   <label class="col-form-label">店&nbsp;&nbsp;代&nbsp;&nbsp;號</label>-->
                                         <select id="cbWh" class="form-control">
+                                            <!-- <option disabled selected> 請選擇店代號</option>-->
                                             <option> </option>
                                         </select>
                                     </div>
 
-                                    <div class="col-md-1">
-                                        <label class="col-form-label">機&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號</label>
+                                    <div class="col-md-2">
+                                        <!-- <label class="col-form-label">機&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號</label>-->
                                         <select id="cbCK" class="form-control">
+                                            <option disabled selected> 請選擇機號</option>
                                             <option> </option>
                                         </select>
                                     </div>
 
-                                    <div class="col-md-1">
-                                        <label class="col-form-label">換店狀態</label>
+                                    <div class="col-md-2">
+                                        <!--<label class="col-form-label">換店狀態</label>-->
                                         <select id="cbStatus" class="form-control">
+                                            <option disabled selected> 請換店狀態</option>
                                             <option> </option>
                                             <option>未完成</option>
                                             <option>已完成</option>
@@ -465,7 +468,7 @@
                                     </div>
 
                                     <div class="col-md-1">
-                                        <label class="col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                        <!--<label class="col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
                                         <button type="button" id="btQuery" class="custom-control-inline btn btn-primary">查詢</button>
                                         <!--<button type="button" id="btImportFromiXMS" class="custom-control-inline btn btn-warning">從iXms匯入</button>-->
                                     </div>
