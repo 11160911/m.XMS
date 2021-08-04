@@ -26,7 +26,7 @@
                     { type: "TextAmt", name: "Num" },
                     { type: "TextAmt", name: "Cash" }
                 ],
-                rows_per_page: 10,
+                //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitSearchButton,
                 sortable: "Y"
@@ -147,15 +147,18 @@
         $('#modal_VSA76P .modal-title').text('商品銷售明細查詢');
 
         var node = $(grdU.ActiveRowTR()).prop('Record');
-        /*$('#ShopNo,#OpenDate,#Cash').prop('readonly', true);*/
+        var NumD = 0;
+        var CashD = 0;
         $('#ShopNo').html(GetNodeValue(node, 'ShopNo') + '店 ' + GetNodeValue(node, 'CkNo') + '機 ' + GetNodeValue(node, 'ST_SName'));
         $('#OpenDate').html($('#lblOpenDate').html());
-        $('#Num').html(GetNodeValue(node, 'Num'));
-        $('#Cash').html(GetNodeValue(node, 'Cash'));
+
+        NumD = parseFloat(GetNodeValue(node, 'Num'))
+        CashD = parseFloat(GetNodeValue(node, 'Cash'))
+        $('#Num').html((NumD).toLocaleString('en-US'));
+        $('#Cash').html((CashD).toLocaleString('en-US'));
 
         $('#modal_VSA76P').modal('show');
         setTimeout(function () { GetVSA76PSearch(); }, 500);
-        
     };
 
     let btQuery_click = function () {

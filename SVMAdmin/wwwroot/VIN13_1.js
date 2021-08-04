@@ -34,7 +34,7 @@
                     { type: "Text", name: "FinStatus" }
 
                 ],
-                rows_per_page: 10,
+                //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
                 sortable: "Y"
@@ -487,17 +487,17 @@
             if (CkType == "Main") {
                 console.log("AfterGetWhDSVCkNo：Main");
                 var dtCK = data.getElementsByTagName('dtCK');
-                InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true, "請選擇機號");
+                InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CkNoName", true, "請選擇機號");
             }
             else if (CkType == "Out") {
                 console.log("AfterGetWhDSVCkNo：Out");
                 var dtCK = data.getElementsByTagName('dtCK');
-                InitSelectItem($('#CkNoOut')[0], dtCK, "CKNo", "CKNo", true);
+                InitSelectItem($('#CkNoOut')[0], dtCK, "CKNo", "CkNoName", true);
             }
             else if (CkType == "In") {
                 console.log("AfterGetWhDSVCkNo：In");
                 var dtCK = data.getElementsByTagName('dtCK');
-                InitSelectItem($('#CkNoIn')[0], dtCK, "CKNo", "CKNo", true);
+                InitSelectItem($('#CkNoIn')[0], dtCK, "CKNo", "CkNoName", true);
             }
         }
     };

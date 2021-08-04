@@ -19,7 +19,7 @@
                     { type: "TextAmt", name: "Num" },
                     { type: "TextAmt", name: "Cash" }
                 ],
-                rows_per_page: 10,
+                //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 //afterBind: InitModifyDeleteButton,
                 sortable: "Y"

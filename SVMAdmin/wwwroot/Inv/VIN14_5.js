@@ -33,7 +33,7 @@
                     { type: "Text", name: "ExchangeDate" },
                     { type: "Text", name: "FinStatus" }
                 ],
-                rows_per_page: 10,
+                //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
                 sortable: "Y"
@@ -395,7 +395,7 @@
         }
         else {
             var dtCK = data.getElementsByTagName('dtCK');
-            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true, "請選擇機號");
+            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CkNoName", true, "請選擇機號");
         }
     };
 

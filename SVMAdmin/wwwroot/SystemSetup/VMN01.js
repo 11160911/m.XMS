@@ -77,8 +77,10 @@
             else {
                 if (TypeCode == "DA") {
                     var heads = $('#tbVMN01 thead tr th');
-                    $(heads[2]).text("配送代碼");
-                    $(heads[3]).text("配送名稱");
+                    $(heads[2]).text("配送區代碼");
+                    $(heads[3]).text("配送區名稱");
+                    $('#lbType_ID').text("*配送區代碼")
+                    $('#lbType_Name').text("*配送區名稱")
                 }
             }
         }

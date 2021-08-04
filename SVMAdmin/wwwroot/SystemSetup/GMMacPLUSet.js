@@ -19,7 +19,7 @@
                     { type: "Image", name: "Photo1" },
                     { type: "Text", name: "GDStatus" }
                 ],
-                rows_per_page: 10,
+                //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
                 sortable: "Y"
