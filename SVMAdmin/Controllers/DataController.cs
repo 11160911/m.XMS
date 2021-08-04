@@ -1893,12 +1893,21 @@ namespace SVMAdmin.Controllers
                         {
 
                             sql = "update ChangeShopSV set ";
-                            sql += " AppDate=convert(char(10),getdate(),111)";
+                            sql += " AppDate=convert(char(10),getdate(),111)+ ' ' +Substring(convert(char(8),getdate(),108),1,5)";
                             sql += ",AppUser='" + uu.UserID + "'";
                             sql += ",ModDate=convert(char(10),getdate(),111)";
                             sql += ",ModTime=convert(char(12),getdate(),108)";
                             sql += ",ModUser='" + uu.UserID + "'";
-                            sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + dr["DocNo"].ToString().SqlQuote() + "'";
+                            sql += ",SNnoOut=W.SNno";
+                            sql += " From ChangeShopSV C Inner Join WarehouseDSV W On C.CompanyCode=W.CompanyCode And C.WhNoOut=W.ST_ID And C.CkNoOut=W.CkNo";
+                            sql += " where C.CompanyCode='" + uu.CompanyId + "' And DocNo='" + dr["DocNo"].ToString().SqlQuote() + "'";
+                            //sql = "update ChangeShopSV set ";
+                            //sql += " AppDate=convert(char(10),getdate(),111)";
+                            //sql += ",AppUser='" + uu.UserID + "'";
+                            //sql += ",ModDate=convert(char(10),getdate(),111)";
+                            //sql += ",ModTime=convert(char(12),getdate(),108)";
+                            //sql += ",ModUser='" + uu.UserID + "'";
+                            //sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + dr["DocNo"].ToString().SqlQuote() + "'";
                             dbop.ExecuteSql(sql, uu, "SYS");
 
                             //dbop.Update("Rack", dtRec, new string[] { "Type_ID" }, uu, "SYS");
