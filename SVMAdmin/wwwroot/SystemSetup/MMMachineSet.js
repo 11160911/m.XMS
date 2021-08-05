@@ -150,7 +150,7 @@
             DyAlert("有資料未填寫，請填妥以後再儲存");
             return;
         }
-        waitingDialog.show("儲存中.....");
+        ShowLoading();
         setTimeout(
             function () { SaveMachineList(); }
             ,100
@@ -191,7 +191,7 @@
 
 
     let AfterSaveMachineList = function (data) {
-        waitingDialog.hide();
+        CloseLoading();
         if (ReturnMsg(data, 0) != "SaveMachineListOK") {
             DyAlert(ReturnMsg(data, 0));
         }

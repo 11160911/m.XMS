@@ -140,7 +140,7 @@
             CkNo = GetNodeValue(dtMachineListSpec[0], "CkNo");
             LayerNo = GetNodeValue(dtMachineListSpec[0], "LayerNo");
 
-            Chans++;
+            //Chans++;
             let dispThisSetting = GetNodeValue(dtMachineListSpec[0], "ST_Sname");
             dispThisSetting += "(" + ST_ID + ")\t";
             dispThisSetting += CkNo + "機\t";
@@ -197,7 +197,7 @@
         CkNo = GetNodeValue(dtMachineListSpec[0], "CkNo");
         LayerNo = GetNodeValue(dtMachineListSpec[0], "LayerNo");
 
-        Chans++;
+        //Chans++;
         let dispThisSetting = GetNodeValue(dtMachineListSpec[0], "ST_Sname");
         dispThisSetting += "(" + ST_ID + ")\t";
         dispThisSetting += CkNo + "機\t";
