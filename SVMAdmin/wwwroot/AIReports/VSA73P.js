@@ -4,19 +4,22 @@
     let EditMode;
     let SetSuspend = "";
     let isImport = false;
+    let QueryDays;
+
+
     let AssignVar = function () {
         grdU = new DynGrid(
             {
                 //2021-04-27
                 table_lement: $('#tbVSA73P')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align"],
+                class_collection: ["tdCol1 label-align", "tdCol2", "tdCol3 label-align", "tdCol4 label-align"],
                 fields_info: [
-                    { type: "Text", name: "SeqNo" },
+                    { type: "TextAmt", name: "SeqNo" },
                     { type: "Text", name: "part" },
                     { type: "TextAmt", name: "Num" },
                     { type: "TextAmt", name: "Cash" }
                 ],
-                rows_per_page: 10,
+                //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 //afterBind: InitModifyDeleteButton,
                 sortable: "Y"
@@ -52,10 +55,9 @@
             return;
         }
         else {
-            if (DateDiff($('#txtOpenDateS').val(), $('#txtOpenDateE').val()) > 7) {
+            if (DateDiff("d", $('#txtOpenDateS').val(), $('#txtOpenDateE').val()) > parseInt(QueryDays)) {
                 CloseLoading();
-                $('#txtOpenDateS').val() == ""
-                DyAlert("銷售日期區間不可大於7天!!", function () { $('#txtOpenDateS').focus() });
+                DyAlert("銷售日期查詢區間必須小於等於" + QueryDays + "天!!");
                 return;
             }
             $('#lblOpenDate').html($('#txtOpenDateS').val() + "~" + $('#txtOpenDateE').val())
@@ -119,6 +121,8 @@
                 grdU.BindData(dtVSA73P);
             if (dtVSA73P.length == 0) {
                 //DyAlert("無符合資料!", BlankMode);
+                $('#lblNum').html("")
+                $('#lblCash').html("")
                 return;
             }
             else {
@@ -128,8 +132,8 @@
                     Num += parseFloat(GetNodeValue(dtVSA73P[i], 'Num'));
                     Cash += parseFloat(GetNodeValue(dtVSA73P[i], 'Cash'));
                 }
-                $('#lblNum').html(Num)
-                $('#lblCash').html(Cash)
+                $('#lblNum').html((Num).toLocaleString('en-US'))
+                $('#lblCash').html((Cash).toLocaleString('en-US'))
             }
         }
     };
@@ -281,7 +285,7 @@
         }
         else {
             var dtCK = data.getElementsByTagName('dtCK');
-            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true);
+            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNoName", true, "請選擇機號");
         }
     };
 
@@ -292,10 +296,11 @@
         $('#txtOpenDateE').val(SysDate)
         $('#lblOpenDate').html(SysDate + "~" + SysDate)
         AssignVar();
-        $('#pgVSA73P .fa-search').click(function () { SearchVSA73P(); });
+        GetQueryDays();
+        $('#btQuery').click(function () { SearchVSA73P(); });
 
         var dtWarehouse = data.getElementsByTagName('dtWarehouse');
-        InitSelectItem($('#cbWh')[0], dtWarehouse, "ST_ID", "ST_Sname", true, "請選擇店代號");
+        InitSelectItem($('#cbWh')[0], dtWarehouse, "ST_ID", "ST_Sname", true, "*請選擇店代號");
         $('#cbWh').change(function () { GetWhCkNo(); });
         $('#cbCK').change(function () { cbCK_click(); });
     };
@@ -415,4 +420,32 @@
         var today = yyyy + "/" + MM + "/" + dd;
         return today;
     }
+
+    let GetQueryDays = function () {
+        var qData = {
+            ProgramID: "VSA73P",
+        }
+        PostToWebApi({ url: "api/SystemSetup/GetQueryDays", data: qData, success: AfterGetQueryDays });
+    };
+
+    let AfterGetQueryDays = function (data) {
+        if (ReturnMsg(data, 0) != "GetQueryDaysOK") {
+            DyAlert(ReturnMsg(data, 0));
+            return;
+        }
+        else {
+            var dtQueryDays = data.getElementsByTagName('dtQueryDays');
+            if (dtQueryDays.length == 0) {
+                QueryDays = 90;
+                //DyAlert("無符合資料!", BlankMode);
+                //return;
+            }
+            else {
+                if (GetNodeValue(dtQueryDays[0], "QueryDays") != 0)
+                    QueryDays = GetNodeValue(dtQueryDays[0], "QueryDays");
+                else
+                    QueryDays = 90;
+            }
+        }
+    };
 }

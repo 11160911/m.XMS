@@ -22,10 +22,10 @@
                     { type: "TextAmt", name: "Num" },
                     { type: "TextAmt", name: "Cash" }
                 ],
-                    rows_per_page: 10,
+                    /*rows_per_page: 10,*/
                 //    method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
-                    sortable: "Y"
+                sortable: "Y"
             }
         );
         SetDateField($('#txtOpenDateS')[0]);
@@ -43,7 +43,7 @@
             }
         });
         AssignVarD();
-        $('#pgVSA21P .fa-search').click(function () { SearchVSA21P(true); });
+        $('#btQuery').click(function () { SearchVSA21P(true); });
         //$('#btQty').click(function () { SearchVSA21P(false); });
         //$('#btAmt').click(function () { SearchVSA21P(true); });
         return;
@@ -63,7 +63,7 @@
                     { type: "TextAmt", name: "Num" },
                     { type: "TextAmt", name: "Cash" }
                 ],
-                    rows_per_page: 10,
+                    /*rows_per_page: 10,*/
                 //    method_clickrow: click_PLU,
                 //afterBind: SearchDVSA21P(true),
                     sortable: "Y"
@@ -82,13 +82,18 @@
 
     let btDisplay_click = function (bt) {
         $(bt).closest('tr').click();
+        var NumD = 0;
+        var CashD = 0;
         var node = $(grdU.ActiveRowTR()).prop('Record');
         $('#modal_VSA21P .modal-title').text('商品智販機銷售排行');
         $('#lbDateS').html($('#lbDate').html());
         $('#lbPLU').html(GetNodeValue(node, 'PLUNAME'));
         $('#lbGDRetail').html(GetNodeValue(node, 'GD_RETAIL'));
-        $('#lbNum').html(GetNodeValue(node, 'Num'));
-        $('#lbCash').html(GetNodeValue(node, 'Cash'));
+
+        NumD = parseFloat(GetNodeValue(node, 'Num'))
+        CashD = parseFloat(GetNodeValue(node, 'Cash'))
+        $('#lbNum').html((NumD).toLocaleString('en-US'));
+        $('#lbCash').html((CashD).toLocaleString('en-US'));
         let GDNo = $('#lbPLU').html().split(" ")[0];
         $('#lbGoodsno').html(GDNo);
         $('#btBack').click(function () { btBack_click(this) });
@@ -155,7 +160,7 @@
 
     let AfterGetCkNoByST_ID = function (data) {
         let dtWarehouseDSV = data.getElementsByTagName('dtWarehouseDSV');
-        InitSelectItem($('#selCkno')[0], dtWarehouseDSV, "CkNo", "CkNo", true, "請選擇機號");
+        InitSelectItem($('#selCkno')[0], dtWarehouseDSV, "CkNo", "CkNoName", true, "請選擇機號");
         $('#selCkno option[value=00]').remove();
     }
   
@@ -216,7 +221,19 @@
                 //$('#btQty').prop('disabled', true);
                 //$('#btAmt').prop('disabled', true);
                 DyAlert("無符合資料!", DummyFunction);
+                $('#lblSumNum').html("")
+                $('#lblSumCash').html("")
                 return;
+            }
+            else {
+                var Num = 0;
+                var Cash = 0;
+                for (var i = 0; i < dtSalesDSV.length; i++) {
+                    Num += parseFloat(GetNodeValue(dtSalesDSV[i], 'Num'));
+                    Cash += parseFloat(GetNodeValue(dtSalesDSV[i], 'Cash'));
+                }
+                $('#lblSumNum').html((Num).toLocaleString('en-US'))
+                $('#lblSumCash').html((Cash).toLocaleString('en-US'))
             }
 
         }

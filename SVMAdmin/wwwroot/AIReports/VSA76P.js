@@ -16,17 +16,17 @@
             {
                 //2021-04-27
                 table_lement: $('#tbVSA76P')[0],
-                class_collection: ["tdColbt icon_in_td", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7 label-align", "tdCol8 label-align"],
+                class_collection: ["tdColbt icon_in_td", "tdCol3 label-align", "tdCol4", "tdCol5", "tdCol6", "tdCol7 label-align", "tdCol8 label-align"],
                 fields_info: [
                     { type: "JQ", name: "fa-search", element: '<i class="fa fa-search"></i>' },
-                    { type: "Text", name: "SeqNo" },
+                    { type: "TextAmt", name: "SeqNo" },
                     { type: "Text", name: "ShopNo" },
                     { type: "Text", name: "CkNo" },
                     { type: "Text", name: "ST_SName" },
                     { type: "TextAmt", name: "Num" },
                     { type: "TextAmt", name: "Cash" }
                 ],
-                rows_per_page: 10,
+                //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitSearchButton,
                 sortable: "Y"
@@ -103,7 +103,19 @@
 
             if (dtVSA76P.length == 0) {
                 //DyAlert("無符合資料!", BlankMode);
+                $('#lblSumNum').html("")
+                $('#lblSumCash').html("")
                 return;
+            }
+            else {
+                var Num = 0;
+                var Cash = 0;
+                for (var i = 0; i < dtVSA76P.length; i++) {
+                    Num += parseFloat(GetNodeValue(dtVSA76P[i], 'Num'));
+                    Cash += parseFloat(GetNodeValue(dtVSA76P[i], 'Cash'));
+                }
+                $('#lblSumNum').html((Num).toLocaleString('en-US'))
+                $('#lblSumCash').html((Cash).toLocaleString('en-US'))
             }
 
         }
@@ -135,15 +147,18 @@
         $('#modal_VSA76P .modal-title').text('商品銷售明細查詢');
 
         var node = $(grdU.ActiveRowTR()).prop('Record');
-        /*$('#ShopNo,#OpenDate,#Cash').prop('readonly', true);*/
+        var NumD = 0;
+        var CashD = 0;
         $('#ShopNo').html(GetNodeValue(node, 'ShopNo') + '店 ' + GetNodeValue(node, 'CkNo') + '機 ' + GetNodeValue(node, 'ST_SName'));
         $('#OpenDate').html($('#lblOpenDate').html());
-        $('#Cash').html(GetNodeValue(node, 'Cash'));
+
+        NumD = parseFloat(GetNodeValue(node, 'Num'))
+        CashD = parseFloat(GetNodeValue(node, 'Cash'))
+        $('#Num').html((NumD).toLocaleString('en-US'));
+        $('#Cash').html((CashD).toLocaleString('en-US'));
 
         $('#modal_VSA76P').modal('show');
         setTimeout(function () { GetVSA76PSearch(); }, 500);
-        
-       /* alert();*/
     };
 
     let btQuery_click = function () {
@@ -158,9 +173,8 @@
             return;
         }
         else {
-            if (DateDiff($('#txtOpenDateS').val(), $('#txtOpenDateE').val()) > QueryDays) {
-                $('#txtOpenDateS').val() == ""
-                DyAlert("銷售日期區間不可大於" + QueryDays + "天!!", function () { $('#txtOpenDateS').focus() });
+            if (DateDiff("d", $('#txtOpenDateS').val(), $('#txtOpenDateE').val()) > parseInt(QueryDays)) {
+                DyAlert("銷售日期查詢區間必須小於等於" + QueryDays + "天!!");
                 return;
             }
             $('#lblOpenDate').html($('#txtOpenDateS').val() + "~" + $('#txtOpenDateE').val())
@@ -319,7 +333,7 @@
 
         AssignVar();
         GetQueryDays();
-        $('#pgVSA76P .fa-search').click(function () { btQuery_click() });
+        $('#btQuery').click(function () { btQuery_click() });
         $('#btSave').click(function () { btSave_click(); });
         $('#btCancel').click(function () { btCancel_click(); });
         $('#btAddRack').click(function () { btAdd_click(); });

@@ -34,7 +34,7 @@
                 rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
-                //sortable: "Y"
+                sortable: "Y"
             }
         );
         
@@ -361,7 +361,7 @@
         }
         else {
             var dtCK = data.getElementsByTagName('dtCK');
-            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true);
+            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CkNoName", true, "請選擇機號");
         }
     };
 
@@ -375,10 +375,10 @@
         $('#btQueryVXT03_1').click(function () { SearchVXT03(); });
 
         var dtWh = data.getElementsByTagName('dtWh');
-        InitSelectItem($('#cbWh')[0], dtWh, "ST_ID", "STName", true);
+        InitSelectItem($('#cbWh')[0], dtWh, "ST_ID", "STName", true, "請選擇店代號");
 
         var dtS = data.getElementsByTagName('dtS');
-        InitSelectItem($('#cbSWh')[0], dtS, "ST_ID", "STName", true);
+        InitSelectItem($('#cbSWh')[0], dtS, "ST_ID", "STName", true, "請選擇補貨店倉");
 
         $('#cbWh').change(function () { GetWhDSVCkNo(); });
         $('#cbCK').click(function () { cbCK_click(); });

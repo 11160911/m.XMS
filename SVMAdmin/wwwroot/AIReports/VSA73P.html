@@ -333,7 +333,7 @@
                         <div class="x_panel">
                             <div class="x_title">
                                 <div class="form-group row">
-                                    <label class="col-form-label"> 銷售日期</label>
+                                    <label class="col-form-label"> *銷售日期</label>
                                     <div class="col-md-2">
                                         <input id="txtOpenDateS" class="form-control small" type="text" autocomplete="off" />
                                     </div>
@@ -344,7 +344,7 @@
                                     <!-- <label class="col-form-label" > 店</label >-->
                                     <div class="col-md-2">
                                         <select id="cbWh" class="form-control">
-                                            <option disabled selected> 請選擇店代號</option>
+                                            <option disabled selected> *請選擇店代號</option>
                                             <option> </option>
                                         </select>
                                     </div>
@@ -360,76 +360,67 @@
                                     <div class="col-md-2">
                                         <input id="txtGoodsNo" class="form-control small" type="text" autocomplete="off" />
                                     </div>
-                                    <i class="fa fa-search"> </i>
+                                    <!--<i class="fa fa-search"> </i>-->
+                                    <button type="button" id="btQuery" class="custom-control-inline btn btn-primary">查詢</button>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-form-label">&nbsp;總銷售量：</label>
+                                    <div class="col-md-1">
+                                        <label id="lblNum" class="col-form-label" style="color: blue" autocomplete="off"></label>
+                                    </div>
+                                    <label class="col-form-label">總銷售金額：</label>
+                                    <div class="col-md-2">
+                                        <label id="lblCash" class="col-form-label" style="color: blue" autocomplete="off"></label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-form-label"></label>
+                                    <label class="col-form-label" style="position: absolute; right: 20px;color:crimson">點擊欄位標題可進行排序</label>
                                 </div>
                             </div>
                             <div class="x_content">
                                 <div class="form-group row">
-                                    <label class="col-form-label"> 銷售日期:</label>
+                                    <!--<label class="col-form-label"> 銷售日期:</label>-->
                                     <div class="col-md-2">
-                                        <label id="lblOpenDate" class="col-form-label" autocomplete="off"> </label>
+                                        <label id="lblOpenDate" class="col-form-label" autocomplete="off" hidden> </label>
                                     </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-form-label"> 店(智販群):</label>
+                                    <!--<label class="col-form-label"> 店(智販群):</label>-->
                                     <div class="col-md-2">
-                                        <label id="lblShopNo" class="col-form-label" autocomplete="off"> </label>
+                                        <label id="lblShopNo" class="col-form-label" autocomplete="off" hidden> </label>
                                     </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-form-label"> 機(智販機):</label>
+                                    <!--<label class="col-form-label"> 機(智販機):</label>-->
                                     <div class="col-md-2">
-                                        <label id="lblCkNo" class="col-form-label" autocomplete="off"> </label>
+                                        <label id="lblCkNo" class="col-form-label" autocomplete="off" hidden> </label>
                                     </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-form-label"> 商品:</label>
+                                    <!--<label class="col-form-label"> 商品:</label>-->
                                     <div class="col-md-2">
-                                        <label id="lblGoodsNo" class="col-form-label" autocomplete="off"> </label>
-                                    </div>
-                                    <label class="col-form-label" style="position: absolute; right: 0px;color:crimson">點擊欄位標題可進行排序</label>
-                                </div>
-
-                                <div class="form-group row">
-                                    <div class="col-md-5">
-                                        <span class="dispThisSetting"></span>
-                                    </div>
-                                    <label class="col-form-label"> 合計:</label>
-                                    <!--<div class="col-md">
-                        <span class="dispThisSetting"></span>
-                    </div>-->
-                                    <div class="col-md">
-                                        <label id="lblNum" class="col-form-label" style="position: absolute; right: 65px" autocomplete="off"></label>
-                                    </div>
-                                    <!--<div class="col-md">
-                        <span class="dispThisSetting"></span>
-                    </div>-->
-                                    <div class="col-md">
-                                        <label id="lblCash" class="col-form-label" style="position: absolute; right: 25px" autocomplete="off"></label>
+                                        <label id="lblGoodsNo" class="col-form-label" autocomplete="off" hidden> </label>
                                     </div>
                                 </div>
 
-                                <table id="tbVSA73P" class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th> 排行</th>
-                                            <th> 時段</th>
-                                            <th> 銷售量</th>
-                                            <th> 銷售金額</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td> 11</td>
-                                            <td> 11</td>
-                                            <td> 11</td>
-                                            <td> 11</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <div style="overflow:auto;min-height:400px;max-height:600px">
+                                    <table id="tbVSA73P" class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th> 排行</th>
+                                                <th> 時段</th>
+                                                <th> 銷售量</th>
+                                                <th> 銷售金額</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td> 11</td>
+                                                <td> 11</td>
+                                                <td> 11</td>
+                                                <td> 11</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
                             </div>
                         </div>
                 </article>

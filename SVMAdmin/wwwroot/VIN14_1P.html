@@ -319,14 +319,14 @@
                         <style>
                             #tbVIN14_1P .fa-search {
                                 font-size: 28px;
-                                color: lightblue;
+                                color: green;
                                 cursor: pointer;
                             }
                         </style>
                         <style>
                             #pgVIN14_1P .fa-search {
                                 font-size: 28px;
-                                color: lightblue;
+                                color: green;
                                 cursor: pointer;
                             }
                         </style>
@@ -359,65 +359,78 @@
                                         </style>
                                         <div class="card-block forminput">
                                             <div class="form-group row">
-                                                <label class="col-form-label col-4" style="font-size: 28px">彙總撿貨商品</label>
+                                                <label class="col-form-label col-4" style="font-size: 28px;color: blue">彙總撿貨商品</label>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-form-label col-2">撿貨單號：</label>
+                                                <label class="col-form-label col-2">撿貨單號</label>
                                                 <div class="col-9">
-                                                    <label id="lblPick_1" class="col-form-label" autocomplete="off"></label>
+                                                    <label id="lblPick_1" class="col-form-label" style="color: blue" autocomplete="off"></label>
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <span class="dispThisSetting"></span>
-                                                </div>
-                                                <label class="col-form-label col-2">總撿貨量：</label>
+                                                <!--<div class="col-md-6">
+                <span class="dispThisSetting"></span>
+            </div>-->
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-2">總撿貨量</label>
                                                 <div class="col-4">
-                                                    <label id="lblQty_1" class="col-form-label" style="position: absolute; right: 20px" autocomplete="off"></label>
+                                                    <label id="lblQty_1" class="col-form-label" style="color: blue"></label>
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
+                                                <label class="col-form-label" style="position: absolute; right: 20px;color:crimson">點擊欄位標題可進行排序</label>
                                             </div>
                                         </div>
-                                        <table id="tbVIN14_1P_1" class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>序號</th>
-                                                    <th>商品名稱</th>
-                                                    <th>撿貨量</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>11</td>
-                                                    <td>11</td>
-                                                    <td>11</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+
+                                        <div style="overflow:auto;min-height:200px;max-height:250px">
+                                            <table id="tbVIN14_1P_1" class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>序號</th>
+                                                        <th>商品名稱</th>
+                                                        <th>撿貨量</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>11</td>
+                                                        <td>11</td>
+                                                        <td>11</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
                                         <div class="form-group row">
-                                            <label class="col-form-label col-2">配送區：</label>
+                                            <label class="col-form-label col-2">配&nbsp;&nbsp;送&nbsp;&nbsp;區</label>
                                             <div class="col-9">
-                                                <label id="lblArea_1" class="col-form-label" autocomplete="off"></label>
+                                                <label id="lblArea_1" class="col-form-label" style="color: blue" autocomplete="off"></label>
                                                 <span class="msg-valid valid-blank"></span>
                                             </div>
                                         </div>
-                                        <table id="tbVIN14_1P_2" class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>店代號</th>
-                                                    <th>機號</th>
-                                                    <th>智販店簡稱</th>
-                                                    <th>地址</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>11</td>
-                                                    <td>11</td>
-                                                    <td>11</td>
-                                                    <td>11</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+
+                                        <div style="overflow:auto;min-height:200px;max-height:250px">
+                                            <table id="tbVIN14_1P_2" class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>店代號</th>
+                                                        <th>機號</th>
+                                                        <th>智販店簡稱</th>
+                                                        <th>地址</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>11</td>
+                                                        <td>11</td>
+                                                        <td>11</td>
+                                                        <td>11</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        
+
                                         <div class="modal-footer">
                                             <button id="btCancel_1" type="button" class="btn btn-primary">返回</button>
                                         </div>
@@ -441,46 +454,51 @@
                                         </style>
                                         <div class="card-block forminput">
                                             <div class="form-group row">
-                                                <label class="col-form-label col-4" style="font-size: 28px ">單機撿貨商品</label>
+                                                <label class="col-form-label col-4" style="font-size: 28px;color: blue">單機撿貨商品</label>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-form-label col-2">撿貨單號：</label>
+                                                <label class="col-form-label col-2">撿貨單號</label>
                                                 <div class="col-9">
-                                                    <label id="lblPick_2" class="col-form-label" autocomplete="off"></label>
+                                                    <label id="lblPick_2" class="col-form-label" style="color: blue" autocomplete="off"></label>
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-3">
-                                                    <label id="lblSName_2" class="col-form-label" autocomplete="off"></label>
+                                                    <label id="lblSName_2" class="col-form-label" style="color: blue" autocomplete="off"></label>
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
-                                                <div class="col-md-5">
+                                                <div class="col-md-1">
                                                     <span class="dispThisSetting"></span>
                                                 </div>
-                                                <label class="col-form-label col-2">總待撿量：</label>
+                                                <label class="col-form-label col-2">總待撿量</label>
                                                 <div class="col-2">
-                                                    <label id="lblQty_2" class="col-form-label" style="position: absolute; right: 20px" autocomplete="off"></label>
+                                                    <label id="lblQty_2" class="col-form-label" style="color: blue"></label>
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
+                                                <label class="col-form-label" style="position: absolute; right: 20px;color:crimson">點擊欄位標題可進行排序</label>
                                             </div>
                                         </div>
-                                        <table id="tbVIN14_1P_3" class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>序號</th>
-                                                    <th>商品名稱</th>
-                                                    <th>待撿量</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>11</td>
-                                                    <td>11</td>
-                                                    <td>11</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+
+                                        <div style="overflow:auto;min-height:400px;max-height:500px">
+                                            <table id="tbVIN14_1P_3" class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>序號</th>
+                                                        <th>商品名稱</th>
+                                                        <th>待撿量</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>11</td>
+                                                        <td>11</td>
+                                                        <td>11</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        
                                         <div class="modal-footer">
                                             <button id="btCancel_2" type="button" class="btn btn-primary">返回</button>
                                         </div>
@@ -509,48 +527,56 @@
                                         <div class="col-md-2">
                                             <input id="txtDocDate" class="form-control small" type="text" autocomplete="off" />
                                         </div>
-                                        <i class="fa fa-search"></i>
+                                        <!--<i class="fa fa-search"></i>-->
+                                        <button type="button" id="btQuery" class="custom-control-inline btn btn-primary">查詢</button>
                                     </div>
                                 </div>
                                 <div class="x_content">
                                     <div class="form-group row">
                                         <label class="col-form-label">補貨店倉：</label>
                                         <div class="col-md-2">
-                                            <label id="lblShopNo" class="col-form-label" autocomplete="off"></label>
+                                            <label id="lblShopNo" class="col-form-label" style="color: blue" autocomplete="off"></label>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-form-label">配送區：</label>
-                                        <div class="col-md-2">
-                                            <label id="lblArea" class="col-form-label" autocomplete="off"></label>
-                                        </div>
-                                        <label class="col-form-label" style="position: absolute; right: 0px;color:crimson">點擊欄位標題可進行排序</label>
+                                        <label class="col-form-label"></label>
+                                        <label class="col-form-label" style="position: absolute; right: 20px;color:crimson">點擊欄位標題可進行排序</label>
                                     </div>
-                                    <!--2021-04-27-->
-                                    <table id="tbVIN14_1P" class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>彙總查詢</th>
-                                                <th>單機查詢</th>
-                                                <th>撿貨單號</th>
-                                                <th>單據日期</th>
-                                                <th>撿貨量</th>
-                                                <th>列印撿貨彙總單</th>
-                                                <th>列印單機撿貨單</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><span class="fa fa-search Q1"></span></td>
-                                                <td><span class="fa fa-search Q2"></span></td>
-                                                <td>11</td>
-                                                <td>11</td>
-                                                <td>11</td>
-                                                <td><span class="fa fa-print P1"></span></td>
-                                                <td><span class="fa fa-print P2"></span></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    
+                                    <div class="form-group row">
+                                        <!--<label class="col-form-label">配&nbsp;&nbsp;送&nbsp;&nbsp;區：</label>-->
+                                        <div class="col-md-2">
+                                            <label id="lblArea" class="col-form-label" autocomplete="off" hidden></label>
+                                        </div>
+                                    </div>
+
+                                    <div style="overflow:auto;min-height:400px;max-height:600px">
+                                        <table id="tbVIN14_1P" class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>彙總查詢</th>
+                                                    <th>單機查詢</th>
+                                                    <th>撿貨單號</th>
+                                                    <th>單據日期</th>
+                                                    <th>撿貨量</th>
+                                                    <th>列印撿貨彙總單</th>
+                                                    <th>列印單機撿貨單</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><span class="fa fa-search Q1"></span></td>
+                                                    <td><span class="fa fa-search Q2"></span></td>
+                                                    <td>11</td>
+                                                    <td>11</td>
+                                                    <td>11</td>
+                                                    <td><span class="fa fa-print P1"></span></td>
+                                                    <td><span class="fa fa-print P2"></span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>

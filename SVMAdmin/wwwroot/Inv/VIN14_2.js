@@ -10,7 +10,7 @@
         grdU = new DynGrid(
             {
                 table_lement: $('#tbVIN14_2')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdColbt icon_in_td"],
+                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4 label-align", "tdCol5 label-align", "tdCol6", "tdColbt icon_in_td"],
                 //class_collection: ["tdColbt icon_in_td", "tdColbt icon_in_td btsuspend", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7", "tdCol8"],
                 fields_info: [
                     //{ type: "JQ", name: "fa-file-text-o", element: '<i class="fa fa-file-text-o"></i>' },
@@ -18,16 +18,16 @@
                     { type: "Text", name: "Channel" },
                     { type: "Text", name: "GD_Sname" },
                     { type: "Text", name: "ShowQty" },
-                    { type: "Text", name: "ShortQty" },
-                    { type: "Text", name: "Qty" },
+                    { type: "TextAmt", name: "ShortQty" },
+                    { type: "TextAmt", name: "Qty" },
                     { type: "Text", name: "EffectiveDate" },
                     { type: "JQ", name: "fa-tags", element: '<i class="fa fa-tags"></i>' }
                     //{ type: "JQ", name: "btn-outline-success", element: '<i class="btn btn-outline-success"></i>' }
                 ],
-                rows_per_page: 10,
+                //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
-                //sortable: "Y"
+                sortable: "Y"
             }
         );
         
@@ -220,7 +220,7 @@
         }
         else {
             var dtCK = data.getElementsByTagName('dtCK');
-            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNo", true);
+            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CkNoName", true, "*請選擇機號");
         }
     };
 
@@ -278,7 +278,7 @@
         }
         else {
             var dtCK = data.getElementsByTagName('dtCK');
-            InitSelectItem($('#cbLayer')[0], dtCK, "LayerNo", "LayerNo", true);
+            InitSelectItem($('#cbLayer')[0], dtCK, "LayerNo", "LayerNo", true, "請選擇貨倉");
         }
     };
 
@@ -310,13 +310,11 @@
         $('#cbCK').click(function () { cbCK_click(); });
         $('#cbCK').change(function () { GetLayerNo(); });
         var dtWh = data.getElementsByTagName('dtWh');
-        InitSelectItem($('#cbWh')[0], dtWh, "ST_ID", "ST_SName", true);
+        InitSelectItem($('#cbWh')[0], dtWh, "ST_ID", "ST_SName", true, "*請選擇店代號");
 
         SetDateField($('#ExpDate')[0]);
         $('#ExpDate').datepicker();
-
         $('#btInv').prop('disabled', true);
-
         //SetPLUAutoComplete("GD_NAME");
         //SetPLUAutoComplete("GD_NO");
     };

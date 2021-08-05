@@ -20,10 +20,10 @@
                     { type: "TextAmt", name: "Num" },
                     { type: "TextAmt", name: "Cash" }
                 ],
-                    rows_per_page: 10,
+                //    rows_per_page: 10,
                 //    method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
-                    sortable: "Y"
+                sortable: "Y"
             }
         );
         SetDateField($('#txtOpenDateS')[0]);
@@ -41,7 +41,7 @@
         //    }
         //});
         AssignVarD();
-        $('#pgVSA21_7P .fa-search').click(function () { SearchVSA21_7P(true); });
+        $('#btQuery').click(function () { SearchVSA21_7P(true); });
         //$('#btQty').click(function () { SearchVSA21_7P(false); });
         //$('#btAmt').click(function () { SearchVSA21_7P(true); });
         return;
@@ -61,7 +61,7 @@
                     { type: "TextAmt", name: "Num" },
                     { type: "TextAmt", name: "Cash" }
                 ],
-                    rows_per_page: 10,
+                    /*rows_per_page: 10,*/
                 //    method_clickrow: click_PLU,
                 //afterBind: SearchDVSA21_7P(true),
                     sortable: "Y"
@@ -81,11 +81,16 @@
     let btDisplay_click = function (bt) {
         $(bt).closest('tr').click();
         var node = $(grdU.ActiveRowTR()).prop('Record');
+        var NumD = 0;
+        var CashD = 0;
         $('#modal_VSA21_7P .modal-title').text('配送區智販機銷售排行');
         $('#lbDateS').html($('#lbDate').html());
         $('#lbArea').html(GetNodeValue(node, 'ST_DeliArea') + " " + GetNodeValue(node, 'AreaNAME'));
-        $('#lbNum').html(GetNodeValue(node, 'Num'));
-        $('#lbCash').html(GetNodeValue(node, 'Cash'));
+
+        NumD = parseFloat(GetNodeValue(node, 'Num'))
+        CashD = parseFloat(GetNodeValue(node, 'Cash'))
+        $('#lbNum').html((NumD).toLocaleString('en-US'));
+        $('#lbCash').html((CashD).toLocaleString('en-US'));
         $('#lbDeliArea').html(GetNodeValue(node, 'ST_DeliArea'));
         $('#btBack').click(function () { btBack_click(this) });
         
@@ -208,9 +213,20 @@
                 //$('#btQty').prop('disabled', true);
                 //$('#btAmt').prop('disabled', true);
                 DyAlert("無符合資料!", DummyFunction);
+                $('#lblSumNum').html("")
+                $('#lblSumCash').html("")
                 return;
             }
-
+            else {
+                var Num = 0;
+                var Cash = 0;
+                for (var i = 0; i < dtSalesHSV.length; i++) {
+                    Num += parseFloat(GetNodeValue(dtSalesHSV[i], 'Num'));
+                    Cash += parseFloat(GetNodeValue(dtSalesHSV[i], 'Cash'));
+                }
+                $('#lblSumNum').html((Num).toLocaleString('en-US'))
+                $('#lblSumCash').html((Cash).toLocaleString('en-US'))
+            }
         }
     };
 

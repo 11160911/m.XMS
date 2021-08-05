@@ -188,9 +188,21 @@
                                         <div class="col-md-2">
                                             <input id="txtSalesSearch" type="text" class="form-control" />
                                         </div>
-                                        <i class="fa fa-search"></i>
+
+                                        <button type="button" id="btQuery" class="custom-control-inline btn btn-primary">查詢</button>
+                                        <!--<i class="fa fa-search"></i>-->
                                     </div>
 
+                                    <div class="form-group row">
+                                        <label class="col-form-label">總銷售量：</label>
+                                        <div class="col-md-1">
+                                            <label id="lblSumNum" class="col-form-label" style="color: blue" autocomplete="off"></label>
+                                        </div>
+                                        <label class="col-form-label">總銷售金額：</label>
+                                        <div class="col-md-2">
+                                            <label id="lblSumCash" class="col-form-label" style="color: blue" autocomplete="off"></label>
+                                        </div>
+                                    </div>
                                     <div class="form-group row">
                                         <button id="btExpoVSA04P" type="button" class="btn btn-success">匯出Excel</button>
                                         <label class="col-form-label" style="position: absolute; right: 20px;color:crimson">點擊欄位標題可進行排序</label>
@@ -198,7 +210,7 @@
                                 </div>
 
                                 <div class="x_content" >
-                                    <div style="overflow:auto;min-height:400px;max-height:500px">
+                                    <div style="overflow:auto;min-height:400px;max-height:600px">
                                         <table id="tbVSA04P" class="table table-bordered">
                                             <thead>
                                                 <tr>
