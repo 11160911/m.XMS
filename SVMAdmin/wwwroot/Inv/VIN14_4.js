@@ -133,14 +133,14 @@
             CheckUse: 'Y'
         };
 
-        PostToWebApi({ url: "api/SystemSetup/GetWhDSVCkNoWithCond", data: pData, success: AfterGetOutCkNo });
+        PostToWebApi({ url: "api/SystemSetup/GetWhDSVCkNo", data: pData, success: AfterGetOutCkNo });
 
     };
 
 
     let AfterGetOutCkNo = function (data) {
         //alert("AfterGetOutCkNo");
-        if (ReturnMsg(data, 0) != "GetWhDSVCkNoWithCondOK") {
+        if (ReturnMsg(data, 0) != "GetWhDSVCkNoOK") {
             DyAlert(ReturnMsg(data, 0));
             return;
         }
@@ -162,14 +162,14 @@
             CheckUse: 'Y'
         };
 
-        PostToWebApi({ url: "api/SystemSetup/GetWhDSVCkNoWithCond", data: pData, success: AfterGetInCkNo });
+        PostToWebApi({ url: "api/SystemSetup/GetWhDSVCkNo", data: pData, success: AfterGetInCkNo });
 
     };
 
 
     let AfterGetInCkNo = function (data) {
         //alert("AfterGetInCkNo");
-        if (ReturnMsg(data, 0) != "GetWhDSVCkNoWithCondOK") {
+        if (ReturnMsg(data, 0) != "GetWhDSVCkNoOK") {
             DyAlert(ReturnMsg(data, 0));
             return;
         }
