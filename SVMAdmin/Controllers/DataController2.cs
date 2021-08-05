@@ -204,7 +204,7 @@ namespace SVMAdmin.Controllers
                 dtMachine.TableName = "MachineList";
                 ds.Tables.Add(dtMachine);
 
-                sql = "select LayerNo,ChannelType,max(ChannelNo) as ChannelNo  from MachineListSpec a";
+                sql = "select LayerNo,ChannelType,count(ChannelNo) as ChannelNo  from MachineListSpec a";
                 sql += " where a.CompanyCode='" + CompanyCode.SqlQuote() + "'";
                 sql += " and a.SNno='" + SNno.SqlQuote() + "'";
                 sql += " group by LayerNo,ChannelType";
