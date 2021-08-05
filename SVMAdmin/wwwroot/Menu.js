@@ -192,11 +192,11 @@
                 if (window.PageGMMacPLUSet == undefined)
                     $.getScript('SystemSetup/GMMacPLUSet.js',
                         function () {
-                            PageGMMacPLUSet($(".right_col"));
+                            PageGMMacPLUSet($(".workarea"));
                         }
                     );
                 else {
-                    PageGMMacPLUSet($(".right_col"));
+                    PageGMMacPLUSet($(".workarea"));
                 }
             }
 
@@ -204,11 +204,11 @@
                 if (window.Pagetest == undefined)
                     $.getScript('test.js',
                         function () {
-                            Pagetest($(".right_col"));
+                            Pagetest($(".workarea"));
                         }
                     );
                 else {
-                    Pagetest($(".right_col"));
+                    Pagetest($(".workarea"));
                 }
             }
 
@@ -216,11 +216,11 @@
                 if (window.PageInv == undefined)
                     $.getScript('Inv.js',
                         function () {
-                            PageInv($(".right_col"));
+                            PageInv($(".workarea"));
                         }
                     );
                 else {
-                    PageInv($(".right_col"));
+                    PageInv($(".workarea"));
                 }
             }
 
@@ -228,11 +228,11 @@
                 if (window.PageVMN01 == undefined)
                     $.getScript('SystemSetup/VMN01.js',
                         function () {
-                            PageVMN01($(".right_col"));
+                            PageVMN01($(".workarea"));
                         }
                     );
                 else {
-                    PageVMN01($(".right_col"));
+                    PageVMN01($(".workarea"));
                 }
             }
 
@@ -240,11 +240,11 @@
                 if (window.PageVMN29 == undefined)
                     $.getScript('VMN29.js',
                         function () {
-                            PageVMN29($(".right_col"));
+                            PageVMN29($(".workarea"));
                         }
                     );
                 else {
-                    PageVMN29($(".right_col"));
+                    PageVMN29($(".workarea"));
                 }
             }
 
@@ -254,11 +254,11 @@
                     //alert("VXT03");
                     $.getScript('VXT03.js',
                         function () {
-                            PageVXT03($(".right_col"));
+                            PageVXT03($(".workarea"));
                         }
                     );
                 else {
-                    PageVXT03($(".right_col"));
+                    PageVXT03($(".workarea"));
                 }
             }
 
@@ -269,11 +269,11 @@
 
                     $.getScript('VXT03_1.js',
                         function () {
-                            PageVXT03_1($(".right_col"));
+                            PageVXT03_1($(".workarea"));
                         }
                     );
                 else {
-                    PageVXT03_1($(".right_col"));
+                    PageVXT03_1($(".workarea"));
                 }
             }
 
@@ -284,11 +284,11 @@
 
                     $.getScript('VIN13_1.js',
                         function () {
-                            PageVIN13_1($(".right_col"));
+                            PageVIN13_1($(".workarea"));
                         }
                     );
                 else {
-                    PageVIN13_1($(".right_col"));
+                    PageVIN13_1($(".workarea"));
                 }
             }
 
@@ -299,11 +299,11 @@
 
                     $.getScript('Inv/VIN13_2.js',
                         function () {
-                            PageVIN13_2($(".right_col"));
+                            PageVIN13_2($(".workarea"));
                         }
                     );
                 else {
-                    PageVIN13_2($(".right_col"));
+                    PageVIN13_2($(".workarea"));
                 }
             }
 
@@ -314,11 +314,11 @@
 
                     $.getScript('Inv/VIN14_2.js',
                         function () {
-                            PageVIN14_2($(".right_col"));
+                            PageVIN14_2($(".workarea"));
                         }
                     );
                 else {
-                    PageVIN14_2($(".right_col"));
+                    PageVIN14_2($(".workarea"));
                 }
             }
 
@@ -329,11 +329,11 @@
 
                     $.getScript('Inv/VIN14_3.js',
                         function () {
-                            PageVIN14_3($(".right_col"));
+                            PageVIN14_3($(".workarea"));
                         }
                     );
                 else {
-                    PageVIN14_3($(".right_col"));
+                    PageVIN14_3($(".workarea"));
                 }
             }
 
@@ -344,11 +344,11 @@
 
                     $.getScript('Inv/VIN14_4.js',
                         function () {
-                            PageVIN14_4($(".right_col"));
+                            PageVIN14_4($(".workarea"));
                         }
                     );
                 else {
-                    PageVIN14_4($(".right_col"));
+                    PageVIN14_4($(".workarea"));
                 }
             }
 
@@ -359,11 +359,11 @@
 
                     $.getScript('Inv/VIN14_5.js',
                         function () {
-                            PageVIN14_5($(".right_col"));
+                            PageVIN14_5($(".workarea"));
                         }
                     );
                 else {
-                    PageVIN14_5($(".right_col"));
+                    PageVIN14_5($(".workarea"));
                 }
             }
 
@@ -374,11 +374,11 @@
 
                     $.getScript('Inv/VIN47.js',
                         function () {
-                            PageVIN47($(".right_col"));
+                            PageVIN47($(".workarea"));
                         }
                     );
                 else {
-                    PageVIN47($(".right_col"));
+                    PageVIN47($(".workarea"));
                 }
             }
 
@@ -389,11 +389,11 @@
 
                     $.getScript('SystemSetup/VIV10.js',
                         function () {
-                            PageVIV10($(".right_col"));
+                            PageVIV10($(".workarea"));
                         }
                     );
                 else {
-                    PageVIV10($(".right_col"));
+                    PageVIV10($(".workarea"));
                 }
             }
 
@@ -402,110 +402,110 @@
                 if (window.PageMMMachineSet == undefined)
                     $.getScript('SystemSetup/MMMachineSet.js',
                         function () {
-                            PageMMMachineSet($(".right_col"));
+                            PageMMMachineSet($(".workarea"));
                         }
                     );
                 else {
-                    PageMMMachineSet($(".right_col"));
+                    PageMMMachineSet($(".workarea"));
                 }
             }
             else if (pg == "GMInvPLUSet") {
                 if (window.PageGMInvPLUSet == undefined)
                     $.getScript('SystemSetup/GMInvPLUSet.js',
                         function () {
-                            PageGMInvPLUSet($(".right_col"));
+                            PageGMInvPLUSet($(".workarea"));
                         }
                     );
                 else {
-                    PageGMInvPLUSet($(".right_col"));
+                    PageGMInvPLUSet($(".workarea"));
                 }
             }
             else if (pg == "VSA04P") {
                 if (window.PageParameter == undefined)
                     $.getScript('AIReports/VSA04P.js',
                         function () {
-                            PageVSA04P($(".right_col"));
+                            PageVSA04P($(".workarea"));
                         }
                     );
                 else {
-                    PageVSA04P($(".right_col"));
+                    PageVSA04P($(".workarea"));
                 }
             }
             else if (pg == "VSA21P") {
                 if (window.PageParameter == undefined)
                     $.getScript('AIReports/VSA21P.js',
                         function () {
-                            PageVSA21P($(".right_col"));
+                            PageVSA21P($(".workarea"));
                         }
                     );
                 else {
-                    PageVSA21P($(".right_col"));
+                    PageVSA21P($(".workarea"));
                 }
             }
             else if (pg == "VSA21_7P") {
                 if (window.PageParameter == undefined)
                     $.getScript('AIReports/VSA21_7P.js',
                         function () {
-                            PageVSA21_7P($(".right_col"));
+                            PageVSA21_7P($(".workarea"));
                         }
                     );
                 else {
-                    PageVSA21_7P($(".right_col"));
+                    PageVSA21_7P($(".workarea"));
                 }
             }
             else if (pg == "VSA76_1P") {
                 if (window.PageVSA76_1P == undefined)
                     $.getScript('AIReports/VSA76_1P.js',
                         function () {
-                            PageVSA76_1P($(".right_col"));
+                            PageVSA76_1P($(".workarea"));
                         }
                     );
                 else {
-                    PageVSA76_1P($(".right_col"));
+                    PageVSA76_1P($(".workarea"));
                 }
             }
             else if (pg == "VSA76P") {
                 if (window.PageVSA76P == undefined)
                     $.getScript('AIReports/VSA76P.js',
                         function () {
-                            PageVSA76P($(".right_col"));
+                            PageVSA76P($(".workarea"));
                         }
                     );
                 else {
-                    PageVSA76P($(".right_col"));
+                    PageVSA76P($(".workarea"));
                 }
             }
             else if (pg == "VSA73P") {
                 if (window.PageVSA73P == undefined)
                     $.getScript('AIReports/VSA73P.js',
                         function () {
-                            PageVSA73P($(".right_col"));
+                            PageVSA73P($(".workarea"));
                         }
                     );
                 else {
-                    PageVSA73P($(".right_col"));
+                    PageVSA73P($(".workarea"));
                 }
             }
             else if (pg == "VSA73_1P") {
                 if (window.PageVSA73_1P == undefined)
                     $.getScript('AIReports/VSA73_1P.js',
                         function () {
-                            PageVSA73_1P($(".right_col"));
+                            PageVSA73_1P($(".workarea"));
                         }
                     );
                 else {
-                    PageVSA73_1P($(".right_col"));
+                    PageVSA73_1P($(".workarea"));
                 }
             }
             else if (pg == "VIN14_1P") {
                 if (window.PageVIN14_1P == undefined)
                     $.getScript('VIN14_1P.js',
                         function () {
-                            PageVIN14_1P($(".right_col"));
+                            PageVIN14_1P($(".workarea"));
                         }
                     );
                 else {
-                    PageVIN14_1P($(".right_col"));
+                    PageVIN14_1P($(".workarea"));
                 }
             }
 
@@ -513,11 +513,11 @@
                 if (window.PageVMN02 == undefined)
                     $.getScript('SystemSetup/VMN02.js',
                         function () {
-                            PageVMN02($(".right_col"));
+                            PageVMN02($(".workarea"));
                         }
                     );
                 else {
-                    PageVMN02($(".right_col"));
+                    PageVMN02($(".workarea"));
                 }
             }
             
