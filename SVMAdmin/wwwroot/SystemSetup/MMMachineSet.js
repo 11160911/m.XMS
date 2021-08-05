@@ -19,7 +19,7 @@
                 rows_per_page: 10,
                 method_clickrow: click_Machine,
                 afterBind: InitModifyDeleteButton,
-                //sortable: "Y"
+                sortable: "Y"
             }
         );
 

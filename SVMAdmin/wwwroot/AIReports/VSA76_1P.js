@@ -24,7 +24,7 @@
                     { type: "TextAmt", name: "Cash" },
                     { type: "TextAmt", name: "Cnt" }
                 ],
-                rows_per_page: 10,
+                //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitSearchButton,
                 sortable: "Y"
@@ -98,9 +98,20 @@
 
             if (dtSales.length == 0) {
                 //DyAlert("無符合資料!", BlankMode);
+                $('#lblSumNum').html("")
+                $('#lblSumCash').html("")
                 return;
             }
-
+            else {
+                var Num = 0;
+                var Cash = 0;
+                for (var i = 0; i < dtSales.length; i++) {
+                    Num += parseFloat(GetNodeValue(dtSales[i], 'Num'));
+                    Cash += parseFloat(GetNodeValue(dtSales[i], 'Cash'));
+                }
+                $('#lblSumNum').html((Num).toLocaleString('en-US'))
+                $('#lblSumCash').html((Cash).toLocaleString('en-US'))
+            }
         }
     };
 
@@ -128,17 +139,19 @@
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         $('#modal_VSA76 .modal-title').text('商品銷售明細查詢');
-
         var node = $(grdU.ActiveRowTR()).prop('Record');
-        /*$('#ShopNo,#OpenDate,#Cash').prop('readonly', true);*/
+        var NumD = 0;
+        var CashD = 0;
         $('#ShopNo').html(GetNodeValue(node, 'ShopNo') + '店 ' + GetNodeValue(node, 'CkNo') + '機 ' + GetNodeValue(node, 'ST_SName'));
         $('#OpenDate').html($('#lblOpenDate').html());
-        $('#Cash').html(GetNodeValue(node, 'Cash'));
+
+        NumD = parseFloat(GetNodeValue(node, 'Num'))
+        CashD = parseFloat(GetNodeValue(node, 'Cash'))
+        $('#Num').html((NumD).toLocaleString('en-US'));
+        $('#Cash').html((CashD).toLocaleString('en-US'));
 
         $('#modal_VSA76').modal('show');
         setTimeout(function () { GetSalesSearch(); }, 500);
-        
-       /* alert();*/
     };
 
     let btDelete_click = function (bt) {

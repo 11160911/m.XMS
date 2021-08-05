@@ -339,12 +339,12 @@
                                                 <input id="WhNoOut" type="text" class="form-control" autocomplete="off" />
                                                 <span class="msg-valid valid-blank"></span>
                                             </div>
-                                            <label id="WhOutName" class="col-form-label col-3"></label>
+                                            <label id="WhOutName" class="col-form-label col-3" style="color: blue"></label>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-form-label col-3">原機號</label>
 
-                                            <div class="col-2">
+                                            <div class="col-4">
                                                 <select id="CkNoOut" class="form-control">
                                                     <option> </option>
                                                 </select>
@@ -364,12 +364,12 @@
                                                 <input id="WhNoIn" type="text"  class="form-control" autocomplete="off" />
                                                 <span class="msg-valid valid-blank"></span>
                                             </div>
-                                            <label id="WhInName" class="col-form-label col-3"></label>
+                                            <label id="WhInName" class="col-form-label col-3" style="color: blue"></label>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-form-label col-3">新機號</label>
 
-                                            <div class="col-2">
+                                            <div class="col-4">
                                                 <select id="CkNoIn" class="form-control">
                                                     <option> </option>
                                                 </select>
@@ -434,78 +434,78 @@
                         <div class="x_panel">
                             <div class="x_title">
                                 <div class="form-group row">
-
-                                    <div class="col-2">
-                                        <label class="col-form-label">換店日期</label>
+                                    <label class="col-form-label ">換店日期</label>
+                                    <div class="col-md-2">
+                                        <!--<label class="col-form-label">換店日期</label>-->
                                         <input id="exDate" type="text" class="form-control" />
                                         <span class="msg-valid valid-blank"></span>
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label class="col-form-label">店&nbsp;&nbsp;代&nbsp;&nbsp;號</label>
+                                        <!--   <label class="col-form-label">店&nbsp;&nbsp;代&nbsp;&nbsp;號</label>-->
                                         <select id="cbWh" class="form-control">
+                                            <!-- <option disabled selected> 請選擇店代號</option>-->
                                             <option> </option>
                                         </select>
                                     </div>
 
-                                    <div class="col-md-1">
-                                        <label class="col-form-label">機&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號</label>
+                                    <div class="col-md-2">
+                                        <!-- <label class="col-form-label">機&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號</label>-->
                                         <select id="cbCK" class="form-control">
+                                            <option disabled selected> 請選擇機號</option>
                                             <option> </option>
                                         </select>
                                     </div>
 
-                                    <div class="col-md-1">
-                                        <label class="col-form-label">換店狀態</label>
+                                    <div class="col-md-2">
+                                        <!--<label class="col-form-label">換店狀態</label>-->
                                         <select id="cbStatus" class="form-control">
+                                            <option disabled selected> 請選擇換店狀態</option>
                                             <option> </option>
                                             <option>未完成</option>
                                             <option>已完成</option>
                                         </select>
                                     </div>
-
-                                    <div class="col-md-1">
-                                        <label class="col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                                        <button type="button" id="btQuery" class="custom-control-inline btn btn-primary">查詢</button>
-                                        <!--<button type="button" id="btImportFromiXMS" class="custom-control-inline btn btn-warning">從iXms匯入</button>-->
-                                    </div>
-
+                                    <button type="button" id="btQuery" class="custom-control-inline btn btn-primary">查詢</button>
                                 </div>
-
                             </div>
 
 
                             <div class="x_content">
                                 <!--<div class="form-group row">
-                                    <div class="col-md-9">
-                                        <button type="button" id="btAdd" class="custom-control-inline btn btn-success">新增</button>
-                                    </div>
-                                </div>-->
+        <div class="col-md-9">
+            <button type="button" id="btAdd" class="custom-control-inline btn btn-success">新增</button>
+        </div>
+    </div>-->
 
-                                <table id="tbVIN14_4" class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>操作</th>
-                                            <th>原智販店</th>
-                                            <th>原機號</th>
-                                            <th>新智販店</th>
-                                            <th>新機號</th>
-                                            <th>換店日期</th>
-                                            <th>換店狀態</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><span class="fa fa-tags"></span></td>
-                                            <td>原智販店</td>
-                                            <td>11</td>
-                                            <td>11</td>
-                                            <td>11</td>
-                                            <td>11</td>
-                                            <td>11</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+
+                                <div style="overflow:auto;min-height:400px;max-height:600px">
+                                    <table id="tbVIN14_4" class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>操作</th>
+                                                <th>原智販店</th>
+                                                <th>原機號</th>
+                                                <th>新智販店</th>
+                                                <th>新機號</th>
+                                                <th>換店日期</th>
+                                                <th>換店狀態</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><span class="fa fa-tags"></span></td>
+                                                <td>原智販店</td>
+                                                <td>11</td>
+                                                <td>11</td>
+                                                <td>11</td>
+                                                <td>11</td>
+                                                <td>11</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
                             </div>
                         </div>
                     </div>

@@ -1133,16 +1133,21 @@ namespace SVMAdmin.Controllers
                 string exDate = rq["exDate"];
                 string FinStatus = rq["FinStatus"];
 
-                string sql = "select a.*,a.WhNoOut+b.ST_SNAME WhOut,b.ST_SNAME WhOutName, a.WhNoIn+c.ST_SName WhIn,c.ST_SName WhInName,d.Man_Name";
+                string sql = "select a.*"
+                    + " ,a.WhNoOut+b.ST_SNAME WhOut,b.ST_SNAME WhOutName, e.ST_StopDay OldStopDate, e.ST_OpenDay OldOpenDate"
+                    + " ,a.WhNoIn+c.ST_SName  WhIn, c.ST_SName WhInName,  f.ST_StopDay NewStopDate, f.ST_OpenDay NewOpenDate";
                 sql += " ,Case When IsNull(a.AppDate,'')='' Then '未批核' Else '已批核' End AppStatus";
                 sql += " ,Case When IsNull(a.FinishDate,'')='' Then '未完成' Else '完成' End FinStatus";
-                sql += " ,c.ST_OpenDay";
+                sql += " ,d.Man_Name";
                 sql += " from ChangeShopSV a";
                 sql += " inner join WarehouseSV b on a.WhNoOut=b.ST_ID And a.CompanyCode=b.CompanyCode";
-                sql += " inner join WarehouseSV c on a.WhNoIn=c.ST_ID And a.CompanyCode=c.CompanyCode";
+                sql += " inner join WarehouseSV c on a.WhNoIn =c.ST_ID And a.CompanyCode=c.CompanyCode";
                 sql += " left  join EmployeeSV d on a.DocUser=d.Man_ID And a.CompanyCode=d.CompanyCode";
+                sql += " inner join WarehouseDSV e on a.WhNoOut=e.ST_ID And a.CompanyCode=e.CompanyCode And a.CkNoOut=e.CkNo";
+                sql += " inner join WarehouseDSV f on a.WhNoIn =f.ST_ID And a.CompanyCode=f.CompanyCode And a.CkNoIn =f.CkNo";
                 sql += " where a.CompanyCode='" + uu.CompanyId + "'";
                 sql += " and IsNull(a.AppDate,'')<>''";
+                //sql += " and IsNull(a.DefeasanceDate,'')=''";
                 if (WhNo != "")
                 {
                     sql += " and a.WhNoOut='" + WhNo + "'";
@@ -1159,7 +1164,7 @@ namespace SVMAdmin.Controllers
                 {
                     sql += " and IsNull(a.FinishDate,'')<>''";
                 }
-                else if (FinStatus == "N")
+                else 
                 {
                     sql += " and IsNull(a.FinishDate,'')=''";
                 }
@@ -1236,12 +1241,6 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-                //DataTable dtRec = new DataTable("Rack");
-                //PubUtility.AddStringColumns(dtRec, "OldType_ID,Type_ID,Type_Name,DisplayNum");
-                //DataSet dsRQ = new DataSet();
-                //dsRQ.Tables.Add(dtRec);
-                //PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
-                //DataRow dr = dtRec.Rows[0];
 
                 IFormCollection rq = HttpContext.Request.Form;
                 string DocNo = rq["DocNo"];
@@ -1252,10 +1251,24 @@ namespace SVMAdmin.Controllers
 
                 
                 string sql = "";
+                string FinishDate = "";
+
+                //先檢查是否該單據已被其他人員處理完成
+                sql = "Select IsNull(FinishDate,'') FinishDate From ChangeShopSV Where CompanyCode='" + uu.CompanyId.SqlQuote() + "' And DocNo='" + DocNo + "' ";
+                DataTable dtDoc = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtDoc.Rows.Count > 0)
+                {
+                    FinishDate = dtDoc.Rows[0][0].ToString();
+                }
+                if (FinishDate != "")
+                {
+                    dtMessage.Rows[0][0] = "Exception";
+                    dtMessage.Rows[0][1] = "單據已經處理完成!!";
+                    return PubUtility.DatasetXML(ds);
+                }
+
+
                 string SysDate = "";
-
-                string OldWareDSVIn = ""; string NewWareDSVIn = "";
-
                 sql = "select convert(char(10),getdate(),111) SysDate";
                 DataTable dtSysDate = PubUtility.SqlQry(sql, uu, "SYS");
                 if (dtSysDate.Rows.Count > 0)
@@ -1263,6 +1276,7 @@ namespace SVMAdmin.Controllers
                     SysDate = dtSysDate.Rows[0][0].ToString();
                 }
 
+                string OldWareDSVIn = ""; string NewWareDSVIn = "";
                 sql = "select WhNoIn From WarehouseDSV (Nolock) " 
                     + "Where CompanyCode='" + uu.CompanyId.SqlQuote() + "' And ST_ID='" + WhNoOut + "' And CkNo='" + CkNoOut + "' ";
                 DataTable dtOldWareDSVIn = PubUtility.SqlQry(sql, uu, "SYS");
@@ -1272,15 +1286,15 @@ namespace SVMAdmin.Controllers
                 }
 
                 sql = "select WhNoIn From WarehouseDSV (Nolock) "
-                    + "Where CompanyCode='" + uu.CompanyId.SqlQuote() + "' And ST_ID='" + WhNoOut + "' And CkNo='" + CkNoOut + "' ";
+                    + "Where CompanyCode='" + uu.CompanyId.SqlQuote() + "' And ST_ID='" + WhNoIn + "' And CkNo='" + CkNoIn + "' ";
                 DataTable dtNewWareDSVIn = PubUtility.SqlQry(sql, uu, "SYS");
                 if (dtNewWareDSVIn.Rows.Count > 0)
                 {
                     NewWareDSVIn = dtNewWareDSVIn.Rows[0][0].ToString();
                 }
 
-                string OldDocNo = PubUtility.GetNewDocNo(uu, "TH", 6);
-                string NewDocNo = PubUtility.GetNewDocNo(uu, "TH", 6);
+                string BackTHID = PubUtility.GetNewDocNo(uu, "TH", 6);
+                string InTHID = PubUtility.GetNewDocNo(uu, "TH", 6);
 
 
                 using (DBOperator dbop = new DBOperator())
@@ -1289,10 +1303,9 @@ namespace SVMAdmin.Controllers
                     {
                         try
                         {
-
-                            //寫入調撥資料
-                            //原智販店調撥表頭
-
+            
+                            //###寫入調撥資料
+                            //###原智販店機## 退貨 調撥表頭 ###
                             string sCkNo = ""; string sLayer = "";
                             if (OldWareDSVIn != WhNoOut)
                             {
@@ -1313,33 +1326,134 @@ namespace SVMAdmin.Controllers
                                 + ", CkNoOut, CkNoIn, WorkType) Values ";
                             sql += " ('" + uu.CompanyId.SqlQuote() + "', '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
                                 + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
-                                + ", '" + OldDocNo + "', convert(char(10),getdate(),111), '" + WhNoOut + "', '" + uu.UserID + "'"
+                                + ", '" + BackTHID + "', convert(char(10),getdate(),111), '" + WhNoOut + "', '" + uu.UserID + "'"
                                 + ", '" + SysDate + "','" + uu.UserID + "','" + OldWareDSVIn + "'"
                                 + ", '" + DocNo + "', '" + uu.UserID + "', convert(char(10),getdate(),111)+ ' ' +Substring(convert(char(8),getdate(),108),1,5)"
                                 + ", '" + uu.UserID + "', convert(char(10),getdate(),111)+ ' ' +Substring(convert(char(8),getdate(),108),1,5),'V' "
                                 + ",'" + CkNoOut + "', '" + sCkNo + "', 'IS') ";
                             dbop.ExecuteSql(sql, uu, "SYS");
 
-                            //原智販店調撥表身
+                            //原智販店 退貨 調撥表身
                             sql = "Insert Into TransferDSV (CompanyCode, CrtUser, CrtDate, CrtTime, ModUser, ModDate, ModTime, " +
                                 "TH_ID, SeqNo, PLU, OutNum, InNum, " +
-                                "GD_Retail, Amt, LayerIn, SnoIn, LayerOut, EffectiveDate, SnoOut) ";
+                                "GD_Retail, Amt, LayerIn, SnoIn, " +
+                                "LayerOut, EffectiveDate, SnoOut) ";
                             sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
                                  + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
                                  + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
-                                 + ", '" + OldDocNo + "', Cast(Row_Number() Over(Order By a.Layer,a.Sno) As int), a.PLU, a.PtNum, a.PtNum"
-                                 + ", b.GD_Retail, Qty*GD_Retail, '" + sLayer + "', a.Sno, a.Layer"
-                                 + ", a.EffectiveDate, a.Sno";
+                                 + ", '" + BackTHID + "', Cast(Row_Number() Over(Order By a.Layer,a.Sno) As int), a.PLU, a.PtNum, a.PtNum"
+                                 + ", b.GD_Retail, a.PtNum*GD_Retail, '" + sLayer + "', a.Sno"
+                                 + ", a.Layer, '', a.Sno";
                             sql += " From InventorySV a (Nolock) ";
                             sql += " Inner Join PLUSV b (Nolock) On a.CompanyCode=b.CompanyCode And a.PLU=b.GD_No ";
                             //sql += " Left Join InventorySV d (Nolock) On a.CompanyCode=d.CompanyCode And a.PLU=d.PLU "
                                 //+ "And d.WhNo='" + WhNoOut + "' And d.CkNo='" + CkNoOut + "' And d.Layer='Z' ";
                             sql += " Where a.CompanyCode='" + uu.CompanyId + "' "
-                                + "And a.WhNo='" + WhNoOut + "' And a.CkNo='" + CkNoOut + "' ";
+                                + " And a.WhNo='" + WhNoOut + "' And a.CkNo='" + CkNoOut + "' "
+                                + " And a.PtNum<>0 ";
                             dbop.ExecuteSql(sql, uu, "SYS");
 
 
-                            //新智販店調撥表頭#########
+
+
+
+                            //變更庫存數量及庫存增減日
+                            //調出方
+                            string sqlTROut = "";
+                            sqlTROut = "Select H.CompanyCode, H.TH_ID, H.WhNoOut, H.CkNoOut, D.LayerOut, D.SnoOut, D.SeqNo, D.PLU, D.OutNum, C.DisplayNum "
+                                + " From TransferHSV H Inner Join TransferDSV D "
+                                + " On H.CompanyCode = D.CompanyCode And H.TH_ID = D.TH_ID "
+                                + " Inner Join ChangePLUSV C "
+                                + " On H.CompanyCode = C.CompanyCode And H.WhNoOut = C.WhNo And H.CkNoOut=C.CkNo And D.LayerOut=C.Layer And D.SnoOut=C.Sno "
+                                + " Where H.CompanyCode='" + uu.CompanyId + "' And H.TH_ID='" + BackTHID + "' And C.DocNo='" + DocNo + "' ";
+
+                            //if (CkNoDsv != "XX")
+                            //{
+                            //寫入調出方jahoInvSV
+                            sql = "Insert Into JahoInvSV (CompanyCode, CrtUser, CrtDate, CrtTime "
+                                + ", ModUser, ModDate, ModTime "
+                                + ", DocType, DocNo, WhNo, SeqNo, PLU, Q1, Q2, Q3, CkNo, Layer, Sno) ";
+                            sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
+                                 + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                 + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                 + ", 'TF', TH_ID, WhNoOut, SeqNo, a.PLU, IsNull(b.PtNum,0), -1*OutNum, IsNull(b.PtNum,0)-OutNum"
+                                 + ", CkNoOut, LayerOut, SnoOut "
+                                 + " From (" + sqlTROut + ") a Left Join InventorySV b "
+                                 + " On a.CompanyCode = b.CompanyCode And a.WhNoOut = b.WhNo and a.CkNoOut = b.CkNo "
+                                 + " and a.LayerOut=b.Layer And a.SnoOut=b.Sno And a.PLU=b.PLU ";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+                            //##### 退貨調出 特殊邏輯 異動調出方InventorySV
+                            //調出方異動後數量全=0，刪除所屬 InventorySV 資料              
+                            sql = "Delete From InventorySV Where CompanyCode='" + uu.CompanyId + "' "
+                                + "And WhNo='" + WhNoOut + "' And CkNo='" + CkNoOut + "' ";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+
+                            string sqlTRIn = "";
+                            ////#####退貨單 調入方 要判別是否 調入機號 != "XX" 才作
+                            if (sCkNo != "XX")
+                            {
+
+                                sqlTRIn = "Select H.CompanyCode, H.TH_ID, H.WhNoIn, H.CkNoIn, D.LayerIn, D.SnoIn, D.SeqNo, D.PLU, D.InNum, C.DisplayNum "
+                                    + " From TransferHSV H Inner Join TransferDSV D "
+                                    + " On H.CompanyCode = D.CompanyCode And H.TH_ID = D.TH_ID "
+                                    + " Inner Join ChangePLUSV C "
+                                    + " On H.CompanyCode = C.CompanyCode And H.WhNoIn = C.WhNo And H.CkNoIn=C.CkNo And D.LayerIn=C.Layer And D.SnoIn=C.Sno "
+                                    + " Where H.CompanyCode='" + uu.CompanyId + "' And H.TH_ID='" + BackTHID + "' And C.DocNo='" + DocNo + "' ";
+
+                                //寫入調入方jahoInvSV
+                                sql = "Insert Into JahoInvSV (CompanyCode, CrtUser, CrtDate, CrtTime "
+                                    + ", ModUser, ModDate, ModTime "
+                                    + ", DocType, DocNo, WhNo, SeqNo, PLU, Q1, Q2, Q3, CkNo, Layer, Sno) ";
+                                sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
+                                     + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                     + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                     + ", 'TF', TH_ID, WhNoIn, SeqNo, a.PLU, IsNull(b.PtNum,0), InNum, IsNull(b.PtNum,0)+InNum"
+                                     + ", CkNoIn, LayerIn, SnoIn "
+                                     + " From (" + sqlTRIn + ") a Left Join InventorySV b "
+                                     + " On a.CompanyCode = b.CompanyCode And a.WhNoIn = b.WhNo and a.CkNoIn = b.CkNo "
+                                     + " and a.LayerIn = b.Layer And a.SnoIn = b.Sno And a.PLU=b.PLU ";
+                                dbop.ExecuteSql(sql, uu, "SYS");
+
+                                //異動調入方InventorySV
+                                //已有庫存資料
+                                sql = "Update InventorySV "
+                                    + "Set ModUser='" + uu.UserID + "' "
+                                    + ",ModDate=convert(char(10),getdate(),111) "
+                                    + ",ModTime=convert(char(8),getdate(),108) "
+                                    + ",PtNum=IsNull(PtNum,0) + InNum "
+                                    + ",In_Date = '" + SysDate + "' "
+                                    + ",EffectiveDate = a.EffectiveDate "
+                                    + "From (" + sqlTRIn + ") a Inner Join InventorySV b "
+                                    + "On a.CompanyCode=b.CompanyCode and a.WhNoIn=b.WhNo and a.CkNoIn=b.CkNo And a.PLU=b.PLU "
+                                    + "and a.LayerIn=b.Layer And a.SnoIn=b.Sno ";
+                                sql += " Where b.CompanyCode='" + uu.CompanyId + "' ";
+                                dbop.ExecuteSql(sql, uu, "SYS");
+
+                                //沒有庫存資料-新增
+                                sql = "Insert Into InventorySV (CompanyCode, CrtUser, CrtDate, CrtTime "
+                                    + ", ModUser, ModDate, ModTime"
+                                    + ", WhNo, PLU, In_Date, CkNo, Layer, Sno, PtNum, DisplayNum, SafeNum, EffectiveDate) ";
+                                sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
+                                     + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                     + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                     + ", WhNoIn, a.PLU, '" + SysDate + "', CkNoIn, LayerIn, SnoIn, InNum, a.DisplayNum, 1, b.EffectiveDate "
+                                     + " From (" + sqlTRIn + ") a Left Join InventorySV b "
+                                     + " On a.CompanyCode = b.CompanyCode and a.WhNoIn = b.WhNo and a.CkNoIn = b.CkNo "
+                                     + " and a.LayerIn=b.Layer And a.SnoIn=b.Sno And a.PLU=b.PLU "
+                                     + "Where b.PLU Is Null ";
+                                dbop.ExecuteSql(sql, uu, "SYS");
+
+                            }
+
+
+
+
+
+
+
+                            //###新智販店## 補貨 調撥表頭#########
                             if (NewWareDSVIn != WhNoIn)
                             {
                                 sCkNo = "XX"; sLayer = "";
@@ -1357,12 +1471,36 @@ namespace SVMAdmin.Controllers
                                 + ", CkNoOut, CkNoIn, WorkType) Values ";
                             sql += " ('" + uu.CompanyId.SqlQuote() + "', '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
                                 + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
-                                + ", '" + NewDocNo + "', convert(char(10),getdate(),111), '" + NewWareDSVIn + "', '" + uu.UserID + "'"
+                                + ", '" + InTHID + "', convert(char(10),getdate(),111), '" + NewWareDSVIn + "', '" + uu.UserID + "'"
                                 + ", '" + SysDate + "','" + uu.UserID + "','" + WhNoIn + "'"
                                 + ", '" + DocNo + "', '" + uu.UserID + "', convert(char(10),getdate(),111)+ ' ' +Substring(convert(char(8),getdate(),108),1,5)"
                                 + ", '" + uu.UserID + "', convert(char(10),getdate(),111)+ ' ' +Substring(convert(char(8),getdate(),108),1,5),'V' "
-                                + ",'" + CkNoIn + "', '" + sCkNo + "', 'IS') ";
+                                + ",'" + sCkNo + "', '" + CkNoIn + "', 'IS') ";
                             dbop.ExecuteSql(sql, uu, "SYS");
+
+                            //新智販店 補貨 調撥表身
+                            //由原店+機的原庫存作業補貨資料的來源
+                            sql = "Insert Into TransferDSV (CompanyCode, CrtUser, CrtDate, CrtTime, " +
+                                "ModUser, ModDate, ModTime, " +
+                                "TH_ID, SeqNo, PLU, OutNum, InNum, " +
+                                "GD_Retail, Amt, LayerIn, SnoIn, " +
+                                "LayerOut, EffectiveDate, SnoOut) ";
+                            sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
+                                 + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                 + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
+                                 + ", '" + InTHID + "', Cast(Row_Number() Over(Order By a.Layer,a.Sno) As int), a.PLU, a.PtNum, a.PtNum"
+                                 + ", b.GD_Retail, a.PtNum*GD_Retail, a.Layer, a.Sno"
+                                 + ", '" + sLayer + "', a.EffectiveDate, a.Sno";
+                            sql += " From InventorySV a (Nolock) ";
+                            sql += " Inner Join PLUSV b (Nolock) On a.CompanyCode=b.CompanyCode And a.PLU=b.GD_No ";
+                            //sql += " Left Join InventorySV d (Nolock) On a.CompanyCode=d.CompanyCode And a.PLU=d.PLU "
+                            //+ "And d.WhNo='" + WhNoOut + "' And d.CkNo='" + CkNoOut + "' And d.Layer='Z' ";
+                            sql += " Where a.CompanyCode='" + uu.CompanyId + "' "
+                                + " And a.WhNo='" + WhNoOut + "' And a.CkNo='" + CkNoOut + "' "
+                                + " And a.PtNum<>0 ";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+
 
 
 
@@ -1466,6 +1604,28 @@ namespace SVMAdmin.Controllers
                             //     + " and a.LayerIn=b.Layer And a.SnoIn=b.Sno And a.PLU=b.PLU "
                             //     + "Where b.PLU Is Null ";
                             //dbop.ExecuteSql(sql, uu, "SYS");
+
+                            //異動新 店+機 
+                            sql = "Update WarehouseDSV Set SNno=C.SNnoOut "
+                                + " , ModUser = '" + uu.UserID + "'"
+                                + " , ModDate = convert(char(10),getdate(),111)"
+                                + " , ModTime = convert(char(8),getdate(),108)"
+                                + " From WarehouseDSV W Inner Join ChangeShopSV C "
+                                + " On W.CompanyCode=C.CompanyCode And W.ST_ID=C.WhNoIn And W.CkNo=C.CkNoIn "
+                                + " And C.CompanyCode='" + uu.CompanyId + "' And C.DocNo='" + DocNo + "' "
+                                + " Where W.CompanyCode='" + uu.CompanyId + "' And W.ST_ID='" + WhNoIn + "' And W.CkNo='" + CkNoIn + "' ";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+                            //清除原 店+機 的SNno=''
+                            sql = "Update WarehouseDSV Set SNno='' " 
+                                + "Where CompanyCode='" + uu.CompanyId + "' And ST_ID='" + WhNoOut + "' And CkNo='" + CkNoOut + "' ";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+                            //###寫入換店單 完成者及完成日期
+                            sql = "Update ChangeShopSV Set FinishUser='" + uu.UserID + "', "
+                                + "FinishDate = convert(char(10),getdate(),111)+ ' ' +Substring(convert(char(8),getdate(),108),1,5) "
+                                + "Where CompanyCode='" + uu.CompanyId.SqlQuote() + "' And DocNo='" + DocNo + "' ";
+                            dbop.ExecuteSql(sql, uu, "SYS");
 
                             ts.Complete();
                         }
@@ -2005,7 +2165,6 @@ namespace SVMAdmin.Controllers
 
                             sql = "Update ChangePLUSV Set FinishUser='" + uu.UserID + "' , "
                                 + "FinishDate=convert(char(10),getdate(),111)+ ' ' +Substring(convert(char(8),getdate(),108),1,5) "
-                                + ",ModDate=convert(char(10),getdate(),111) ,ModTime=convert(char(8),getdate(),108) "
                                 + "Where CompanyCode='" + uu.CompanyId.SqlQuote() + "' And DocNo='" + dr["DocNo"].ToString().SqlQuote() + "' ";
                             dbop.ExecuteSql(sql, uu, "SYS");
 

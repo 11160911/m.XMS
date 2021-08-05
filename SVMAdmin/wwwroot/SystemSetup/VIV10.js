@@ -34,7 +34,7 @@
                 rows_per_page: 10,
                 method_clickrow: click_Machine,
                 afterBind: InitModifyDeleteButton,
-                //sortable: "Y"
+                sortable: "Y"
             }
         );
 
@@ -42,7 +42,7 @@
         grdV = new DynGrid(
             {
                 table_lement: $('#tbVIV10View')[0],
-                class_collection: [ "tdCol0","tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6 text-right", "tdCol7"],
+                class_collection: ["tdCol0", "tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5 label-align", "tdCol6 text-right", "tdCol7"],
                 fields_info: [
                     { type: "Text", name: "WhName" },              
                     { type: "Text", name: "CkNo" },
@@ -56,9 +56,9 @@
                     { type: "Text", name: "AppUserName" }
                 ],
                 rows_per_page: 10,
-                //method_clickrow: click_Machine,
+                method_clickrow: click_Machine,
                 afterBind: InitViewButton,
-                //sortable: "Y"
+                sortable: "Y"
             }
         );
 
@@ -76,10 +76,10 @@
         //tbView = $('#pgVIV10View #tbVIV10View tbody');
 
         var dtYM = data.getElementsByTagName('dtYM');
-        InitSelectItem($('#cbYM')[0], dtYM, "Inv_YM", "Inv_YM", true);
+        InitSelectItem($('#cbYM')[0], dtYM, "Inv_YM", "Inv_YM", true, "*請選擇發票年月");
 
         var dtWh = data.getElementsByTagName('dtWh');
-        InitSelectItem($('#cbWh')[0], dtWh, "ST_ID", "STName", true);
+        InitSelectItem($('#cbWh')[0], dtWh, "ST_ID", "STName", true, "請選擇店倉");
 
         //var dtRack = data.getElementsByTagName('dtRack');
         //InitSelectItem($('.sel_Rack')[0], dtRack, "Type_ID", "Type_Name", true);
@@ -112,7 +112,7 @@
     }
 
     let InitViewButton = function () {
-        alert("InitViewButton");
+        //alert("InitViewButton");
         //$('#tbVIV10 .fa-tags').click(function () { btModify_click(this) });
         //$('#tbVIV10 .fa-search').click(function () { btView_click(this) });
     }
@@ -145,12 +145,18 @@
                 return;
             }
             else {
-                grdV.BindData(dtDtl);
+                
  
                 $('#pgVIV10View .x_title h4').text('發票分配明細');
                 $('#pgVIV10').hide();
                 $('#pgVIV10Detail').hide();
                 $('#pgVIV10View').show();
+
+                setTimeout(
+                    function () { grdV.BindData(dtDtl); }
+                    , 100
+                );
+                
             }
 
         }

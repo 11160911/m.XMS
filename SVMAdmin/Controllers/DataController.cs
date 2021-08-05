@@ -679,6 +679,10 @@ namespace SVMAdmin.Controllers
                 {
                     sql += " and a.WhNo='" + WhNo + "'";
                 }
+                if (CkNo != "")
+                {
+                    sql += " and a.CkNo='" + CkNo + "'";
+                }
                 if (GDLayer != "")
                 {
                     sql += " and a.Layer='" + GDLayer + "'";
@@ -738,7 +742,7 @@ namespace SVMAdmin.Controllers
             {
                 IFormCollection rq = HttpContext.Request.Form;
                 string WhNo = rq["WhNo"];
-                string sql = "select a.CkNo ";
+                string sql = "select a.CkNo,a.CkNo + '機' as CkNoName ";
                 sql += " from WarehouseDSV a (NoLock) ";
                 sql += " where CompanyCode='" + uu.CompanyId + "' and ST_ID='" + WhNo + "'";
                 sql += " Order By CkNo ";
@@ -1581,7 +1585,7 @@ namespace SVMAdmin.Controllers
             {
                 IFormCollection rq = HttpContext.Request.Form;
                 string WhNo = rq["WhNo"];
-                string sql = "select a.CkNo ";
+                string sql = "select a.CkNo,a.CkNo + '機' as CkNoName ";
                 sql += " from WarehouseDSV a (NoLock) ";
                 sql += " where CompanyCode='" + uu.CompanyId + "' and ST_ID='" + WhNo + "'";
                 sql += " Order By CkNo ";
@@ -1893,12 +1897,21 @@ namespace SVMAdmin.Controllers
                         {
 
                             sql = "update ChangeShopSV set ";
-                            sql += " AppDate=convert(char(10),getdate(),111)";
+                            sql += " AppDate=convert(char(10),getdate(),111)+ ' ' +Substring(convert(char(8),getdate(),108),1,5)";
                             sql += ",AppUser='" + uu.UserID + "'";
                             sql += ",ModDate=convert(char(10),getdate(),111)";
                             sql += ",ModTime=convert(char(12),getdate(),108)";
                             sql += ",ModUser='" + uu.UserID + "'";
-                            sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + dr["DocNo"].ToString().SqlQuote() + "'";
+                            sql += ",SNnoOut=W.SNno";
+                            sql += " From ChangeShopSV C Inner Join WarehouseDSV W On C.CompanyCode=W.CompanyCode And C.WhNoOut=W.ST_ID And C.CkNoOut=W.CkNo";
+                            sql += " where C.CompanyCode='" + uu.CompanyId + "' And DocNo='" + dr["DocNo"].ToString().SqlQuote() + "'";
+                            //sql = "update ChangeShopSV set ";
+                            //sql += " AppDate=convert(char(10),getdate(),111)";
+                            //sql += ",AppUser='" + uu.UserID + "'";
+                            //sql += ",ModDate=convert(char(10),getdate(),111)";
+                            //sql += ",ModTime=convert(char(12),getdate(),108)";
+                            //sql += ",ModUser='" + uu.UserID + "'";
+                            //sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + dr["DocNo"].ToString().SqlQuote() + "'";
                             dbop.ExecuteSql(sql, uu, "SYS");
 
                             //dbop.Update("Rack", dtRec, new string[] { "Type_ID" }, uu, "SYS");
@@ -2819,7 +2832,7 @@ namespace SVMAdmin.Controllers
                 string WhNo = rq["WhNo"];
                 string StopDay = rq["StopDay"];
                 string CheckUse = rq["CheckUse"];
-                string sql = "select a.CkNo ";
+                string sql = "select a.CkNo,a.CkNo + '機' as CkNoName ";
                 sql += " from WarehouseDSV a (NoLock) ";
                 sql += " Inner Join MachineList b (NoLock) On a.CompanyCode=b.CompanyCode And a.SNno=b.SNno ";
                 sql += " where a.CompanyCode='" + uu.CompanyId + "' and ST_ID='" + WhNo + "'";
@@ -3198,6 +3211,11 @@ namespace SVMAdmin.Controllers
                 ds.Tables.Add(dtSN);
                 dtSN.TableName = "dtSN";
 
+                sql = "Select Type_ID,Type_Name from TypeData (nolock) where Companycode='" + uu.CompanyId + "' and Type_Code='DA' " +
+                "order by Type_ID ";
+                DataTable dtDeliArea = PubUtility.SqlQry(sql, uu, "SYS");
+                ds.Tables.Add(dtDeliArea);
+                dtDeliArea.TableName = "dtDeliArea";
             }
             catch (Exception err)
             {
@@ -3649,7 +3667,7 @@ namespace SVMAdmin.Controllers
             try
             {
                 DataTable dtWh = new DataTable("WarehouseSV");
-                PubUtility.AddStringColumns(dtWh, "ST_ID,FlagInv,WhNoIn,OldFlagInv");
+                PubUtility.AddStringColumns(dtWh, "ST_ID,FlagInv,WhNoIn,OldFlagInv,ST_DeliArea");
                 DataSet dsWh = new DataSet();
                 dsWh.Tables.Add(dtWh);
                 PubUtility.FillDataFromRequest(dsWh, HttpContext.Request.Form);
@@ -3802,6 +3820,7 @@ namespace SVMAdmin.Controllers
                             sql = "update WarehouseSV set ";
                             sql += "FlagInv='" + dr["FlagInv"].ToString().SqlQuote() + "',";
                             sql += "WhNoIn='" + dr["WhNoIn"].ToString().SqlQuote() + "',";
+                            sql += "ST_DeliArea='" + dr["ST_DeliArea"].ToString().SqlQuote() + "',";
                             sql += "ModDate=convert(char(10),getdate(),111),";
                             sql += "ModTime=convert(char(12),getdate(),108),";
                             sql += "ModUser='" + uu.UserID + "' ";

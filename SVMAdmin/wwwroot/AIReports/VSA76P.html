@@ -327,7 +327,7 @@
                         <style>
                             #tbVSA76P .fa-search {
                                 font-size: 28px;
-                                color: lightblue;
+                                color: green;
                                 cursor: pointer;
                             }
                         </style>
@@ -369,21 +369,26 @@
                                             <div class="form-group row">
                                                 <!--<label class="col-form-label col-2"></label>-->
                                                 <div class="col-9">
-                                                    <label id="ShopNo" class="col-form-label" autocomplete="off"></label>
+                                                    <label id="ShopNo" class="col-form-label" style="text-align: left;color: blue" autocomplete="off"></label>
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-form-label col-2">銷售區間：</label>
-                                                <div class="col-9">
-                                                    <label id="OpenDate" class="col-form-label" autocomplete="off"></label>
+                                                <div class="col-md-3">
+                                                    <label id="OpenDate" class="col-form-label" style="text-align: left;color: blue" autocomplete="off"></label>
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-form-label col-2">總業績：</label>
-                                                <div class="col-9">
-                                                    <label id="Cash" class="col-form-label" autocomplete="off"></label>
+                                                <label class="col-form-label col-2">總銷售量：</label>
+                                                <div class="col-md-2">
+                                                    <label id="Num" class="col-form-label" style="text-align: left;color: blue" autocomplete="off"></label>
+                                                    <span class="msg-valid valid-blank"></span>
+                                                </div>
+                                                <label class="col-form-label col-2">總銷售金額：</label>
+                                                <div class="col-md-3">
+                                                    <label id="Cash" class="col-form-label" style="text-align: left;color: blue" autocomplete="off"></label>
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
                                                 <label class="col-form-label" style="position: absolute; right: 20px;color:crimson">點擊欄位標題可進行排序</label>
@@ -431,7 +436,7 @@
                             <div class="x_panel">
                                 <div class="x_title">
                                     <div class="form-group row">
-                                        <label class="col-form-label">銷售日期</label>
+                                        <label class="col-form-label">*銷售日期</label>
                                         <div class="col-md-2">
                                             <input id="txtOpenDateS" class="form-control small" type="text" autocomplete="off" />
                                         </div>
@@ -439,46 +444,62 @@
                                         <div class="col-md-2">
                                             <input id="txtOpenDateE" class="form-control small" type="text" autocomplete="off" />
                                         </div>
-                                        <!--<div class="col-md-2">
-                        <button                             type="button" id="btQuery" class="custom-control-inline btn btn-primary">查詢</button>
-                    </div>-->
-                                        <i class="fa fa-search"></i>
+                                        <!--<i class="fa fa-search"></i>-->
+                                        <button type="button" id="btQuery" class="custom-control-inline btn btn-primary">查詢</button>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-form-label">&nbsp;總銷售量：</label>
+                                        <div class="col-md-1">
+                                            <label id="lblSumNum" class="col-form-label" style="color: blue" autocomplete="off"></label>
+                                        </div>
+                                        <label class="col-form-label">總銷售金額：</label>
+                                        <div class="col-md-2">
+                                            <label id="lblSumCash" class="col-form-label" style="color: blue" autocomplete="off"></label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group row">
+                                        <label class="col-form-label"></label>
+                                        <label class="col-form-label" style="position: absolute; right: 20px;color:crimson">點擊欄位標題可進行排序</label>
                                     </div>
 
                                 </div>
                                 <div class="x_content">
                                     <div class="form-group row">
-                                        <label class="col-form-label">銷售日期：</label>
+                                        <!--<label class="col-form-label">銷售日期：</label>-->
                                         <div class="col-md-2">
-                                            <label id="lblOpenDate" class="col-form-label" autocomplete="off"></label>
+                                            <label id="lblOpenDate" class="col-form-label" autocomplete="off" hidden></label>
                                         </div>
-                                        <label class="col-form-label" style="position: absolute; right: 0px;color:crimson">點擊欄位標題可進行排序</label>
                                     </div>
-                                    <!--2021-04-27-->
-                                    <table id="tbVSA76P" class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>查詢</th>
-                                                <th>排行</th>
-                                                <th>店</th>
-                                                <th>機</th>
-                                                <th>智販店簡稱</th>
-                                                <th>銷量</th>
-                                                <th>業績</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><span class="fa fa-search"></span></td>
-                                                <td>11</td>
-                                                <td>11</td>
-                                                <td>11</td>
-                                                <td>11</td>
-                                                <td>11</td>
-                                                <td>11</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+
+                                    <div style="overflow:auto;min-height:400px;max-height:600px">
+                                        <table id="tbVSA76P" class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>查詢</th>
+                                                    <th>排行</th>
+                                                    <th>店</th>
+                                                    <th>機</th>
+                                                    <th>智販店簡稱</th>
+                                                    <th>銷售量</th>
+                                                    <th>銷售金額</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><span class="fa fa-search"></span></td>
+                                                    <td>11</td>
+                                                    <td>11</td>
+                                                    <td>11</td>
+                                                    <td>11</td>
+                                                    <td>11</td>
+                                                    <td>11</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
                                 </div>
                             </div>
 

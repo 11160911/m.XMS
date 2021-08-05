@@ -182,7 +182,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th>刪除</th>
-                                                            <th>貨艙序號</th>
+                                                            <th>貨倉序號</th>
                                                             <th>貨道類型</th>
                                                             <th>貨道數量</th>
                                                         </tr>
@@ -218,7 +218,7 @@
                                         </div>
                                         <div class="footer row">
                                             <div class="col-8">
-                                                <button id="btNewRack" type="button" class="btn btn-success">新增貨艙</button>
+                                                <button id="btNewRack" type="button" class="btn btn-success">新增貨倉</button>
                                             </div>
                                             <div class="col-3">
                                                 <button id="btSave" type="button" class="btn btn-danger">儲存</button>
@@ -247,10 +247,12 @@
                                         <div class="col-md-4">
                                             <input id="txtMachineSearch" type="text" class="form-control" />
                                         </div>
-                                        <div class="col-md-5">
-                                            <button type="button" id="btQueryMachine" class="custom-control-inline btn btn-primary">智販機查詢</button>
-                                            <button type="button" id="btNewMachine" class="custom-control-inline btn btn-warning">新增智販機</button>
-                                        </div>
+                                        <button type="button" id="btQueryMachine" class="custom-control-inline btn btn-primary">查詢</button>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <button type="button" id="btNewMachine" class="custom-control-inline btn btn-success">新增</button>
+                                        <label class="col-form-label" style="position: absolute; right: 20px;color:crimson">點擊欄位標題可進行排序</label>
                                     </div>
                                 </div>
                                 <div class="x_content">
@@ -261,7 +263,7 @@
                                                 <th>智販機號碼</th>
                                                 <th>啟用日期</th>
                                                 <th>停用日期</th>
-                                                <th>貨艙數量</th>
+                                                <th>貨倉數量</th>
                                                 <th>貨道數量</th>
                                                 <th>溫度設定℃</th>
                                             </tr>

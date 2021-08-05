@@ -442,7 +442,7 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-                string sql = "Select ST_ID,ST_Sname from WarehouseSV where Companycode='" + uu.CompanyId.SqlQuote() + "' and ST_Type='6' order by ST_ID";
+                string sql = "Select ST_ID,ST_ID+ST_Sname as ST_Sname from WarehouseSV where Companycode='" + uu.CompanyId.SqlQuote() + "' and ST_Type='6' order by ST_ID";
                 DataTable dtSV = PubUtility.SqlQry(sql, uu, "SYS");
                 ds.Tables.Add(dtSV);
                 dtSV.TableName = "dtWarehouse";
@@ -558,10 +558,21 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-                string sql = "Select ST_ID,ST_Sname from WarehouseSV where Companycode='" + uu.CompanyId.SqlQuote() + "' and ST_Type='6' order by ST_ID";
+                string sql = "Select ST_ID,ST_ID+ST_SName as ST_SName from WarehouseSV where Companycode='" + uu.CompanyId.SqlQuote() + "' and ST_Type='6' order by ST_ID";
                 DataTable dtSV = PubUtility.SqlQry(sql, uu, "SYS");
                 ds.Tables.Add(dtSV);
                 dtSV.TableName = "dtWarehouse";
+
+                sql = "Select convert(char,dateadd(DD,-7,getdate()),111) as Day1, ";
+                sql += "convert(char,dateadd(DD,-6,getdate()),111) as Day2, ";
+                sql += "convert(char,dateadd(DD,-5,getdate()),111) as Day3, ";
+                sql += "convert(char,dateadd(DD,-4,getdate()),111) as Day4, ";
+                sql += "convert(char,dateadd(DD,-3,getdate()),111) as Day5, ";
+                sql += "convert(char,dateadd(DD,-2,getdate()),111) as Day6, ";
+                sql += "convert(char,dateadd(DD,-1,getdate()),111) as Day7 ";
+                DataTable dtDay = PubUtility.SqlQry(sql, uu, "SYS");
+                ds.Tables.Add(dtDay);
+                dtDay.TableName = "dtDay";
             }
             catch (Exception err)
             {
