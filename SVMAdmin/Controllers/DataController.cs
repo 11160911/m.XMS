@@ -164,6 +164,14 @@ namespace SVMAdmin.Controllers
                 if (ds.Tables["dtAllFunction"] == null)
                     if (dt.DataSet == null)
                         ds.Tables.Add(dt);
+                string sql = "select a.Man_Name,b.ChineseName";
+                sql += " from EmployeeSV a";
+                sql += " left join Company b on a.CompanyCode=b.CompanyCode";
+                sql += " where a.Man_ID='" + uu.UserID + "'";
+                sql += " and a.CompanyCode='" + uu.CompanyId + "' ";
+                DataTable dtU = PubUtility.SqlQry(sql, uu, "SYS");
+                dtU.TableName = "dtEmployeeSV";
+                ds.Tables.Add(dtU);
             }
             catch (Exception err)
             {

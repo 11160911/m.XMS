@@ -44,9 +44,12 @@
             DyAlert(ReturnMsg(data, 0));
         }
         else {
+            var dtEmployeeSV = data.getElementsByTagName('dtEmployeeSV');
+            $('#navbarDropdown').text(GetNodeValue(dtEmployeeSV[0], 'ChineseName') + '-' + GetNodeValue(dtEmployeeSV[0], 'Man_Name'));
             dtFun = data.getElementsByTagName('dtAllFunction');
             SetMenu();
             init_sidebar();
+
             //init_autosize();
             //$.getScript('js/custom.js', function (data, textStatus, jqxhr) { });
 
@@ -143,8 +146,6 @@
         else {
             openCategory(catitem);
         }
-
-
     }
 
     var openCategory = function (catitem) {
@@ -169,6 +170,7 @@
     }
 
     var OpenPage = function (menuitem) {
+        menu.find('.active').removeClass('active');
         lastMenu = menuitem;
         $('article').remove();
 
