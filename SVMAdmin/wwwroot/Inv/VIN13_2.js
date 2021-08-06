@@ -107,6 +107,7 @@
         //$(bt).closest('tr').click();
         $('.msg-valid').hide();
         $('#modal_VIN13_2 .modal-title').text('智販機換貨新增');
+        $('#modal_VIN13_2 .btn-danger').text('儲存');
         //var node = $(grdU.ActiveRowTR()).prop('Record');
         $('#WhNo,#CkNo,#NewPLU,#Num,#DisplayNum,#ExchangeDate').prop('readonly', false);
         //gDocNo = GetNodeValue(node, 'DocNo');
@@ -172,6 +173,7 @@
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         $('#modal_VIN13_2 .modal-title').text('智販機換貨修改');
+        $('#modal_VIN13_2 .btn-danger').text('儲存');
         var node = $(grdU.ActiveRowTR()).prop('Record');
 
         if (GetNodeValue(node, 'FinishDate') != '') {
@@ -251,6 +253,7 @@
 
         $('.msg-valid').hide();
         $('#modal_VIN13_2 .modal-title').text('智販機換貨刪除');
+        $('#modal_VIN13_2 .btn-danger').text('刪除');
         var node = $(grdU.ActiveRowTR()).prop('Record');
 
         if (GetNodeValue(node, 'FinishDate') != '') {
@@ -326,6 +329,7 @@
 
         $('.msg-valid').hide();
         $('#modal_VIN13_2 .modal-title').text('智販機換貨作廢');
+        $('#modal_VIN13_2 .btn-danger').text('儲存');
         var node = $(grdU.ActiveRowTR()).prop('Record');
         if (GetNodeValue(node, 'AppDate') == '') {
             DyAlert("此單據未批核，不可作廢!");
@@ -400,6 +404,7 @@
 
         $('.msg-valid').hide();
         $('#modal_VIN13_2 .modal-title').text('智販機換貨批核');
+        $('#modal_VIN13_2 .btn-danger').text('儲存');
         var node = $(grdU.ActiveRowTR()).prop('Record');
         //alert(GetNodeValue(node, 'AppDate'));
         if (GetNodeValue(node, 'AppDate') != '' ) {

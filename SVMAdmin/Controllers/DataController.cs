@@ -3206,7 +3206,7 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-                string sql = "Select ST_ID,ST_Sname from WarehouseSV (nolock) " +
+                string sql = "Select ST_ID,ST_ID+ST_Sname as ST_Sname from WarehouseSV (nolock) " +
                     "where Companycode='" + uu.CompanyId + "' and ST_Type='6' " +
                     "and WhnoIn=(select whno from EmployeeSV (nolock) where companycode='" + uu.CompanyId + "' and man_id='" + uu.UserID + "') ";
                 DataTable dtWarehouse = PubUtility.SqlQry(sql, uu, "SYS");
