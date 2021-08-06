@@ -78,7 +78,6 @@
         else {
             var dtPLU = data.getElementsByTagName('dtPLU');
             grdU.BindData(dtPLU);
-
             var dtDocNo = data.getElementsByTagName('dtDocNo');
             gDocNo = GetNodeValue(dtDocNo[0], "DocNo");
             //alert(gDocNo);
@@ -122,6 +121,7 @@
         var node = $(grdU.ActiveRowTR()).prop('Record');
         //$('#GD_NO,#GD_NAME').prop('readonly', true);
         $('#MachineData').text(GetNodeValue(node, 'WhNo') + '店 ' + GetNodeValue(node, 'CkNo') + '機 ' + GetNodeValue(node, 'ST_SName') + GetNodeValue(node, 'CkNo') + '機 ');
+        $('#Channel').text(GetNodeValue(node, 'Channel'))
         $('#GD_No').text(GetNodeValue(node, 'PLU'));
         $('#GD_Name').text(GetNodeValue(node, 'GD_SName'));
         //$('#GD_Sname').val(GetNodeValue(node, 'GD_Sname'));
@@ -206,7 +206,7 @@
             ]
         };
         PostToWebApi({ url: "api/SystemSetup/UpdateTempSV", data: pData, success: AfterUpdateTempSV });
- 
+        
     };
 
 

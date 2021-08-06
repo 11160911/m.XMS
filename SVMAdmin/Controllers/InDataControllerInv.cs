@@ -2436,7 +2436,7 @@ namespace SVMAdmin.Controllers
                             //異動庫存最近有效日期
                             sqlAdj = "Select * From TempDocumentSV a (Nolock) ";
                             sqlAdj += " Where a.CompanyCode='" + uu.CompanyId + "' And a.DocNo='" + dr["DocNo"].ToString().SqlQuote() + "' ";
-                            sqlAdj += " And IsNull(RNum,0) = 0 And IsNull(EffectiveDate,'')<>''" ;
+                            sqlAdj += " And IsNull(RNum,0)<>0 And IsNull(EffectiveDate,'')<>''" ;
                             sqlAdj += " And IsNull(ModDate,'')<>'' ";
 
                             sql = "Update InventorySV "

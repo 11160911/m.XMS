@@ -55,16 +55,15 @@
         let ToExcel = "N";
         if (ExpXls)
             ToExcel = "Y";
-
-        if ($('#txtInvSearch').val() == "") {
-            if ($('#cbWh').val() == "" & $('#cbCK').val() == "") {
-                CloseLoading();
-                DyAlert("請選擇店及機號查詢條件!!");
-                return;
-            }
+        if (($('#cbWh').val() == "" | $('#cbWh').val() == null)) {
+            CloseLoading();
+            DyAlert("請選擇店查詢條件!!");
+            return;
         }
-        else {
-
+        if (($('#cbCK').val() == "" | $('#cbCK').val() == null)) {
+            CloseLoading();
+            DyAlert("請選擇機號查詢條件!!");
+            return;
         }
 
         var pData = {
@@ -101,13 +100,12 @@
             }
             //var dtInv = data.getElementsByTagName('dtInv');
             //grdU.BindData(dtInv);
-
             if (dtInv.length == 0) {
                 DyAlert("無符合資料!", BlankMode);
                 return;
             }
-            
         }
+        CloseLoading();
     };
 
     let DisplaySuspend = function (tr) {
@@ -257,7 +255,7 @@
         }
         else {
             var dtCK = data.getElementsByTagName('dtCK');
-            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNoName", true, "請選擇機號");
+            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNoName", true, "*請選擇機號");
         }
     };
 
@@ -272,7 +270,7 @@
         //var dtLayer = data.getElementsByTagName('dtLayer');
         //InitSelectItem($('#cbInv')[0], dtLayer, "Type_ID", "Type_Name", true);
         var dtInvWh = data.getElementsByTagName('dtInvWh');
-        InitSelectItem($('#cbWh')[0], dtInvWh, "WhNo", "WhName", true, "請選擇店倉");       
+        InitSelectItem($('#cbWh')[0], dtInvWh, "WhNo", "WhName", true, "*請選擇店代號");       
 
         $('#cbWh').change(function () { GetWhCkNo(); });
         $('#cbCK').change(function () { cbCK_click(); });
