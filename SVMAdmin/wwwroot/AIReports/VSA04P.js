@@ -114,6 +114,7 @@
                 $('#lblSumCash').html((Cash).toLocaleString('en-US'))
             }
         }
+        CloseLoading();
     };
 
 

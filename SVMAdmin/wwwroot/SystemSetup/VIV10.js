@@ -79,7 +79,7 @@
         InitSelectItem($('#cbYM')[0], dtYM, "Inv_YM", "Inv_YM", true, "*請選擇發票年月");
 
         var dtWh = data.getElementsByTagName('dtWh');
-        InitSelectItem($('#cbWh')[0], dtWh, "ST_ID", "STName", true, "請選擇店倉");
+        InitSelectItem($('#cbWh')[0], dtWh, "ST_ID", "STName", true, "請選擇店代號");
 
         //var dtRack = data.getElementsByTagName('dtRack');
         //InitSelectItem($('.sel_Rack')[0], dtRack, "Type_ID", "Type_Name", true);
