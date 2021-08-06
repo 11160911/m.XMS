@@ -10,9 +10,9 @@
         obSelPLUModal = new SelPLUModal();
         $('#selST_ID').change(function () {
             let st_id = $('#selST_ID').val();
-            InitSelectItem($('#selLayerNo')[0], dtMachineListSpecBlank, "LayerNo", "LayerNo", true, "請選擇貨倉代號");
+            InitSelectItem($('#selLayerNo')[0], dtMachineListSpecBlank, "LayerNo", "LayerNo", true, "*請選擇貨倉代號");
             if (st_id == "") {
-                InitSelectItem($('#selCkno')[0], dtWarehouseDSV, "SNno", "CkNo", true, "請選擇機號");
+                InitSelectItem($('#selCkno')[0], dtWarehouseDSV, "SNno", "CkNo", true, "*請選擇機號");
             }
             else {
                 var pData = {
@@ -25,7 +25,7 @@
         $('#selCkno').change(function () {
             let snno = $('#selCkno').val();
             if (snno == "") {
-                InitSelectItem($('#selLayerNo')[0], dtMachineListSpecBlank, "LayerNo", "LayerNo", true, "請選擇貨倉代號");
+                InitSelectItem($('#selLayerNo')[0], dtMachineListSpecBlank, "LayerNo", "LayerNo", true, "*請選擇貨倉代號");
             }
             else {
                 var pData = {
@@ -40,7 +40,7 @@
             let layerno = $('#selLayerNo').val();
             let snno = $('#selCkno').val();
             if (layerno == "") {
-                InitSelectItem($('#selLayerNo')[0], dtMachineListSpecBlank, "LayerNo", "LayerNo", true, "請選擇貨倉代號");
+                InitSelectItem($('#selLayerNo')[0], dtMachineListSpecBlank, "LayerNo", "LayerNo", true, "*請選擇貨倉代號");
             }
             else {
                 var pData = {
@@ -99,12 +99,12 @@
 
     let AfterGetCkNoByST_ID = function (data) {
         let dtWarehouseDSV = data.getElementsByTagName('dtWarehouseDSV');
-        InitSelectItem($('#selCkno')[0], dtWarehouseDSV, "SNno", "CkNoName", true, "請選擇機號");
+        InitSelectItem($('#selCkno')[0], dtWarehouseDSV, "SNno", "CkNoName", true, "*請選擇機號");
     }
 
     let AfterGetLayerNoBySNno = function (data) {
         let dtMachineListSpec = data.getElementsByTagName('dtMachineListSpec');
-        InitSelectItem($('#selLayerNo')[0], dtMachineListSpec, "LayerNo", "LayerNo", true, "請選擇貨倉代號");
+        InitSelectItem($('#selLayerNo')[0], dtMachineListSpec, "LayerNo", "LayerNo", true, "*請選擇貨倉代號");
     }
 
     //尚未設定InventorySV
@@ -405,9 +405,9 @@
         var dtWarehouse = data.getElementsByTagName('dtWarehouse');
         dtWarehouseDSVBlank = data.getElementsByTagName('dtWarehouseDSV');
         dtMachineListSpecBlank = data.getElementsByTagName('dtMachineListSpec');
-        InitSelectItem($('#selST_ID')[0], dtWarehouse, "ST_ID", "ST_Sname", true, "請選擇店代號");
-        InitSelectItem($('#selCkno')[0], dtWarehouseDSVBlank, "SNno", "CkNo", true, "請選擇機號");
-        InitSelectItem($('#selLayerNo')[0], dtMachineListSpecBlank, "LayerNo", "LayerNo", true, "請選擇貨倉代號");
+        InitSelectItem($('#selST_ID')[0], dtWarehouse, "ST_ID", "ST_Sname", true, "*請選擇店代號");
+        InitSelectItem($('#selCkno')[0], dtWarehouseDSVBlank, "SNno", "CkNo", true, "*請選擇機號");
+        InitSelectItem($('#selLayerNo')[0], dtMachineListSpecBlank, "LayerNo", "LayerNo", true, "*請選擇貨倉代號");
         AssignVar();
         $('#btSaveNewInventorySV').prop('disabled', true);
     };

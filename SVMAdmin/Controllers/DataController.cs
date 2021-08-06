@@ -43,23 +43,39 @@ namespace SVMAdmin.Controllers
                 uu.CompanyId = CompanyID;
 
 
+                string sql = "";
                 if (System.Environment.MachineName.ToUpper() == "ANDYNB4")
                 {
                     USERID = "008";
                     PASSWORD = "008";
+                    sql = "select CompanyCode,Man_ID,Man_Name,Password from EmployeeSV ";
+                    sql += " where CompanyCode='" + CompanyID.SqlQuote() + "'";
+                    sql += " and Man_ID='" + USERID.SqlQuote() + "'";
+                    sql += " and Password='" + PASSWORD.SqlQuote() + "'";
+                    sql += "  and Password<>''";
+                }
+                else
+                {
+                    sql = "select CompanyCode,Man_ID,Man_Name,Password from EmployeeSV ";
+                    //sql += " where CompanyCode='" + CompanyID.SqlQuote() + "'";
+                    sql += " where Man_Eaddress='" + USERID.SqlQuote() + "'";
+                    sql += " and Password='" + PASSWORD.SqlQuote() + "'";
+                    sql += "  and Password<>''";
                 }
 
-                string sql = "select Man_ID,Man_Name,Password from EmployeeSV ";
-                sql += " where CompanyCode='" + CompanyID.SqlQuote() + "'";
-                sql += " and Man_ID='" + USERID.SqlQuote() + "'";
-                sql += " and Password='" + PASSWORD.SqlQuote() + "'";
-                sql += "  and Password<>''";
                 DataTable dtTmp = PubUtility.SqlQry(sql, uu, "SYS");
+
+                if (dtTmp.Rows.Count > 0)
+                {
+                    uu.CompanyId = Convert.ToString(dtTmp.Rows[0]["CompanyCode"]);
+                    uu.UserID = Convert.ToString(dtTmp.Rows[0]["Man_ID"]);
+                }
+
                 if (dtTmp.Rows.Count == 0)
                     throw new Exception("密碼錯誤");
                 dtTmp.TableName = "dtEmployee";
                 dtTmp.Columns.Add("token", typeof(string));
-                uu.UserID = USERID;
+                //uu.UserID = USERID;
                 string token = PubUtility.GenerateJwtToken(uu);
                 dtTmp.Rows[0]["token"] = token;
 
