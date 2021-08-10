@@ -3229,12 +3229,6 @@ namespace SVMAdmin.Controllers
                 ds.Tables.Add(dtWarehouse);
                 dtWarehouse.TableName = "dtWarehouse";
 
-                sql = "Select SNno from MachineList (nolock) where Companycode='" + uu.CompanyId + "' and FlagUse='N' " +
-                "order by SNno ";
-                DataTable dtSN = PubUtility.SqlQry(sql, uu, "SYS");
-                ds.Tables.Add(dtSN);
-                dtSN.TableName = "dtSN";
-
                 sql = "Select Type_ID,Type_Name from TypeData (nolock) where Companycode='" + uu.CompanyId + "' and Type_Code='DA' " +
                 "order by Type_ID ";
                 DataTable dtDeliArea = PubUtility.SqlQry(sql, uu, "SYS");
@@ -3423,10 +3417,11 @@ namespace SVMAdmin.Controllers
                 IFormCollection rq = HttpContext.Request.Form;
                 string ShopNo = rq["ShopNo"];
 
-                string sql = "select a.CkNo,a.SNno,a.WhnoIn + b.ST_Sname as WhName, "+
+                string sql = "select a.CkNo,a.SNno," +
+                "a.WhnoIn + b.ST_Sname as WhName, "+
                 "a.ST_Address,a.InvGetQty,a.InvSaveQty,a.ST_OpenDay,a.ST_StopDay,a.QrCode "+
-                "from WarehouseDSV a(nolock) "+
-                "left join WarehouseSV b(nolock) on a.ST_ID = b.ST_ID and b.CompanyCode = a.CompanyCode and b.FlagInv='Y' "+
+                "from WarehouseDSV a (nolock) "+
+                "left join WarehouseSV b (nolock) on a.WhnoIn = b.ST_ID and b.CompanyCode = a.CompanyCode " +
                 "where a.CompanyCode='" + uu.CompanyId + "' "; 
                 if (ShopNo != "")
                     sql += "and a.ST_ID='" + ShopNo + "' ";
@@ -3621,6 +3616,7 @@ namespace SVMAdmin.Controllers
                 if (SysDate != "")
                     sql += "and ExchangeDate>='" + SysDate + "' ";
                 sql += "and isnull(AppDate,'')<>'' and isnull(FinishDate,'')='' ";
+                sql += "and isnull(DefeasanceDate,'')='' ";
                 DataTable dtChangePLU = PubUtility.SqlQry(sql, uu, "SYS");
                 ds.Tables.Add(dtChangePLU);
                 dtChangePLU.TableName = "dtChangePLU";
@@ -3632,6 +3628,7 @@ namespace SVMAdmin.Controllers
                 if (SysDate != "")
                     sql += "and ExchangeDate>='" + SysDate + "' ";
                 sql += "and isnull(AppDate,'')<>'' and isnull(FinishDate,'')='' ";
+                sql += "and isnull(DefeasanceDate,'')='' ";
                 DataTable dtChangeShop = PubUtility.SqlQry(sql, uu, "SYS");
                 ds.Tables.Add(dtChangeShop);
                 dtChangeShop.TableName = "dtChangeShop";
@@ -3868,6 +3865,29 @@ namespace SVMAdmin.Controllers
                 DataTable dtWarehouseSV = PubUtility.SqlQry(sql, uu, "SYS");
                 dtWarehouseSV.TableName = "dtWarehouseSV";
                 ds.Tables.Add(dtWarehouseSV);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        //2021-08-10 Kris
+        [Route("SystemSetup/GetVMN02SN_Add")]
+        public ActionResult GetVMN02SN_Add()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetVMN02SN_AddOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                string sql = "Select SNno from MachineList (nolock) where Companycode='" + uu.CompanyId + "' and FlagUse='N' " +
+                             "order by SNno ";
+                DataTable dtSN_Add = PubUtility.SqlQry(sql, uu, "SYS");
+                ds.Tables.Add(dtSN_Add);
+                dtSN_Add.TableName = "dtSN_Add";
             }
             catch (Exception err)
             {

@@ -13,14 +13,14 @@
         grdU = new DynGrid(
             {
                 table_lement: $('#tbVMN02')[0],
-                class_collection: ["tdColbt icon_in_td", "tdColbt icon_in_td", "tdColbt icon_in_td", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7 label-align", "tdCol8 label-align", "tdCol9", "tdColbt icon_in_td"],
+                class_collection: ["tdColbt icon_in_td", "tdColbt icon_in_td", "tdColbt icon_in_td", "tdCol2", "tdCol3", "tdCol4 label-align", "tdCol5", "tdCol6", "tdCol7 label-align", "tdCol8 label-align", "tdCol9", "tdColbt icon_in_td"],
                 fields_info: [
                     { type: "JQ", name: "fa-plus", element: '<i class="fa fa-plus"></i>' },
                     { type: "JQ", name: "fa-pencil", element: '<i class="fa fa-pencil"></i>' },
                     { type: "JQ", name: "fa-search", element: '<i class="fa fa-search"></i>' },
                     { type: "Text", name: "ST_ID" },
                     { type: "Text", name: "ST_Sname" },
-                    { type: "Text", name: "CkNo" },
+                    { type: "TextAmt", name: "CkNo" },
                     { type: "Text", name: "FlagInv" },
                     { type: "Text", name: "WhnoIn" },
                     { type: "TextAmt", name: "InvGetQty" },
@@ -472,8 +472,7 @@
             $('#lblCkNo_Add').html("0" + CkNo_1)
         else
             $('#lblCkNo_Add').html(CkNo_1)
-
-
+        GetSN_Add()
         $('#txtGetQty_Add').val(GetNodeValue(node, 'InvGetQty'))
         $('#txtSaveQty_Add').val(GetNodeValue(node, 'InvSaveQty'))
 
@@ -483,6 +482,15 @@
         $('#txtST_OpenDay_Add').val("")
         $('#modal_VMN02_Add').modal('show');
     };
+
+    let GetSN_Add = function () {
+        PostToWebApi({ url: "api/SystemSetup/GetVMN02SN_Add", success: afterGetVMN02SN_Add });
+    };
+
+    let afterGetVMN02SN_Add = function (data) {
+        var dtSN_Add = data.getElementsByTagName('dtSN_Add');
+        InitSelectItem($('#cbSN_Add')[0], dtSN_Add, "SNno", "SNno", true, "請選擇SN碼");
+    }
 
     let btModD_click = function (bt) {
         EditMode = "Mod"
@@ -680,8 +688,9 @@
         else {
             DyAlert("儲存完成!");
             $('#modal_VMN02_Mod').modal('hide');
-            var userxml = data.getElementsByTagName('dtWarehouseDSV')[0];
-            grdU.RefreshRocord(grdU.ActiveRowTR(), userxml);
+            SearchVMN02()
+            //var userxml = data.getElementsByTagName('dtWarehouseDSV')[0];
+            //grdU.RefreshRocord(grdU.ActiveRowTR(), userxml);
         }
     };
 
@@ -787,8 +796,8 @@
         var dtWarehouse = data.getElementsByTagName('dtWarehouse');
         InitSelectItem($('#cbWh')[0], dtWarehouse, "ST_ID", "ST_Sname", true, "請選擇店代號");
 
-        var dtSN = data.getElementsByTagName('dtSN');
-        InitSelectItem($('#cbSN_Add')[0], dtSN, "SNno", "SNno", true, "請選擇SN碼");
+        //var dtSN = data.getElementsByTagName('dtSN');
+        //InitSelectItem($('#cbSN_Add')[0], dtSN, "SNno", "SNno", true, "請選擇SN碼");
         $('#cbSN_Add').change(function () { GetMCSeq(); });
 
         var dtDeliArea = data.getElementsByTagName('dtDeliArea');
