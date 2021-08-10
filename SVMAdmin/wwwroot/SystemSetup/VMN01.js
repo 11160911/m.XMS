@@ -99,7 +99,7 @@
 
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
-        $('#modal_VMN01 .modal-title').text('配送區資料類型');
+        $('#modal_VMN01 .modal-title').text('配送區資料修改');
         $('#modal_VMN01 .btn-danger').text('儲存');
 
         var node = $(grdU.ActiveRowTR()).prop('Record');
