@@ -2281,8 +2281,6 @@ namespace SVMAdmin.Controllers
                         try
                         {
  
-
-
                             string sqlAdj = "";
                             //異動庫存最近有效日期
                             sqlAdj = "Select * From TempDocumentSV a (Nolock) ";
@@ -2349,14 +2347,16 @@ namespace SVMAdmin.Controllers
                                      + ", '" + DocNo + "', Cast(Row_Number() Over(Order By a.Layer,a.Sno) As int), a.PLU, Qty, Qty"
                                      + ", b.GD_Retail, Qty*GD_Retail, a.Layer, a.Sno, '" + LayerOut + "'"
                                      + ", a.EffectiveDate";
-                                if (LayerOut == "Z")
-                                {
-                                    sql += ", d.Sno ";
-                                }
-                                else
-                                {
-                                    sql += ", '' ";
-                                }
+                                //2021/08/09 調整為以 品號 寫入調出貨道
+                                sql += ", a.PLU ";
+                                //if (LayerOut == "Z")
+                                //{
+                                //    sql += ", d.Sno ";
+                                //}
+                                //else
+                                //{
+                                //    sql += ", '' ";
+                                //}
                                 sql += " From TempDocumentSV a (Nolock) ";
                                 sql += " Inner Join PLUSV b (Nolock) On a.CompanyCode=b.CompanyCode And a.PLU=b.GD_No ";
                                 //sql += " Inner Join WarehouseDSV c (Nolock) On a.CompanyCode=c.CompanyCode And a.PLU=c.GD_No ";
@@ -2364,17 +2364,30 @@ namespace SVMAdmin.Controllers
                                     + "And d.WhNo='" + WhNoOut + "' And d.CkNo='" + CkNoOut + "' And d.Layer='Z' ";
 
                                 sql += " Where a.CompanyCode='" + uu.CompanyId + "' And a.DocNo='" + dr["DocNo"].ToString().SqlQuote() + "' ";
-                                sql += " And (a.Qty>0 or (a.Qty>=0 And IsNull(a.EffectiveDate,'')<>''))";
+                                //2021/08/09 修正
+                                sql += " And IsNull(RNum,0) <> 0 ";
+                                //sql += " And (a.Qty>0 or (a.Qty>=0 And IsNull(a.EffectiveDate,'')<>''))";
+
                                 sql += " And IsNull(a.ModDate,'')<>'' ";
                                 dbop.ExecuteSql(sql, uu, "SYS");
 
                                 //變更庫存數量及庫存增減日
                                 //調出方
                                 string sqlTROut = "";
-                                sqlTROut = "Select H.CompanyCode, H.TH_ID, H.WhNoOut, H.CkNoOut, D.LayerOut, D.SnoOut, D.SeqNo, D.PLU, D.OutNum "
+
+                                ////#####特殊處理：因 補貨 調出方 非實際的機器，沒有貨倉、貨道，故必須將相同商品Group起來，並以品號作為調出的貨道
+                                sqlTROut = "Select H.CompanyCode, H.TH_ID, H.WhNoOut, H.CkNoOut, D.LayerOut, D.PLU SnoOut, "
+                                    + " Row_Number() Over(Order By H.CompanyCode, H.TH_ID, H.WhNoOut, H.CkNoOut, D.LayerOut, D.PLU) SeqNo, D.PLU, Sum(D.OutNum) OutNum "
                                     + " From TransferHSV H Inner Join TransferDSV D "
                                     + " On H.CompanyCode = D.CompanyCode And H.TH_ID = D.TH_ID "
-                                    + " Where H.CompanyCode='" + uu.CompanyId + "' And H.TH_ID='" + DocNo + "' ";
+                                    + " Where H.CompanyCode='" + uu.CompanyId + "' And H.TH_ID='" + DocNo + "' "
+                                    + " Group By H.CompanyCode, H.TH_ID, H.WhNoOut, H.CkNoOut, D.LayerOut, D.PLU ";
+
+
+                                //sqlTROut = "Select H.CompanyCode, H.TH_ID, H.WhNoOut, H.CkNoOut, D.LayerOut, D.SnoOut, D.SeqNo, D.PLU, D.OutNum "
+                                //    + " From TransferHSV H Inner Join TransferDSV D "
+                                //    + " On H.CompanyCode = D.CompanyCode And H.TH_ID = D.TH_ID "
+                                //    + " Where H.CompanyCode='" + uu.CompanyId + "' And H.TH_ID='" + DocNo + "' ";
 
                                 if (CkNoOut != "XX")
                                 {
@@ -2473,11 +2486,6 @@ namespace SVMAdmin.Controllers
                                 dbop.ExecuteSql(sql, uu, "SYS");
 
                             }
-
-
-
- 
-
 
 
 

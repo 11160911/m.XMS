@@ -819,20 +819,22 @@ namespace SVMAdmin.Controllers
                                      + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
                                      + ", '" + tDocNo + "', Cast(Row_Number() Over(Order By a.Layer,a.Sno) As int), a.PLU, Qty, Qty"
                                      + ", b.GD_Retail, Qty*GD_Retail, '" + LayerIn + "' ";
-                                if (LayerIn == "Z")
-                                {
-                                    sql += ", d.Sno ";
-                                }
-                                else
-                                {
-                                    sql += ", '' ";
-                                }
+                                //2021/08/09 調整為以 品號 寫入調入貨道
+                                sql += ", a.PLU ";
+                                //if (LayerIn == "Z")
+                                //{
+                                //    sql += ", d.Sno ";
+                                //}
+                                //else
+                                //{
+                                //    sql += ", '' ";
+                                //}
                                 sql += ",a.Layer, a.EffectiveDate, a.Sno ";
                                 sql += " From TempDocumentSV a (Nolock) ";
                                 sql += " Inner Join PLUSV b (Nolock) On a.CompanyCode=b.CompanyCode And a.PLU=b.GD_No ";
                                 //sql += " Inner Join WarehouseDSV c (Nolock) On a.CompanyCode=c.CompanyCode And a.PLU=c.GD_No ";
-                                sql += " Left Join InventorySV d (Nolock) On a.CompanyCode=d.CompanyCode And a.PLU=d.PLU "
-                                    + "And d.WhNo='" + WhNoIn + "' And d.CkNo='" + CkNoIn + "' And d.Layer='" + LayerIn + "' ";
+                                //sql += " Left Join InventorySV d (Nolock) On a.CompanyCode=d.CompanyCode And a.PLU=d.PLU "
+                                //    + "And d.WhNo='" + WhNoIn + "' And d.CkNo='" + CkNoIn + "' And d.Layer='" + LayerIn + "' ";
 
                                 sql += " Where a.CompanyCode='" + uu.CompanyId + "' And a.DocNo='" + dr["DocNo"].ToString().SqlQuote() + "' ";
                                 sql += " And IsNull(a.Qty,0)>0 ";
@@ -898,11 +900,21 @@ namespace SVMAdmin.Controllers
                                 {
 
                                     string sqlTRIn = "";
-                                    sqlTRIn = "Select H.CompanyCode, H.TH_ID, H.WhNoIn, H.CkNoIn, D.LayerIn, D.SnoIn, D.SeqNo, D.PLU, D.InNum, T.EffectiveDate "
+                                    ////#####特殊處理：因調入方非實際的機器，沒有貨倉、貨道，故必須將相同商品Group起來
+                                    sqlTRIn = "Select H.CompanyCode, H.TH_ID, H.WhNoIn, H.CkNoIn, D.LayerIn, D.PLU SnoIn"
+                                        + ", Row_Number() Over(Order By H.CompanyCode, H.TH_ID, H.WhNoIn, H.CkNoIn, D.LayerIn, D.PLU) SeqNo, D.PLU, Sum(D.InNum) InNum "
                                         + " From TransferHSV H Inner Join TransferDSV D "
                                         + " On H.CompanyCode = D.CompanyCode And H.TH_ID = D.TH_ID "
-                                        + " Inner Join TempDocumentSV T On H.CompanyCode = T.CompanyCode And H.WhNoIn=T.WhNo And H.CkNoIn=T.CkNo And D.LayerIn=T.Layer And D.SnoIn=T.Sno "
-                                        + " Where H.CompanyCode='" + uu.CompanyId + "' And H.TH_ID='" + tDocNo + "' And T.DocNo='" + dr["DocNo"].ToString().SqlQuote() + "' ";
+                                        //+ " Inner Join TempDocumentSV T On H.CompanyCode = T.CompanyCode And H.WhNoIn=T.WhNo And H.CkNoIn=T.CkNo And D.LayerIn=T.Layer And D.SnoIn=T.Sno "
+                                        + " Where H.CompanyCode='" + uu.CompanyId + "' And H.TH_ID='" + tDocNo + "' "
+                                        + " Group By  H.CompanyCode, H.TH_ID, H.WhNoIn, H.CkNoIn, D.LayerIn, D.PLU ";
+
+                                    //sqlTRIn = "Select H.CompanyCode, H.TH_ID, H.WhNoIn, H.CkNoIn, D.LayerIn, D.SnoIn, D.SeqNo, D.PLU, D.InNum, T.EffectiveDate "
+                                    //    + " From TransferHSV H Inner Join TransferDSV D "
+                                    //    + " On H.CompanyCode = D.CompanyCode And H.TH_ID = D.TH_ID "
+                                    //    + " Inner Join TempDocumentSV T On H.CompanyCode = T.CompanyCode And H.WhNoIn=T.WhNo And H.CkNoIn=T.CkNo And D.LayerIn=T.Layer And D.SnoIn=T.Sno "
+                                    //    + " Where H.CompanyCode='" + uu.CompanyId + "' And H.TH_ID='" + tDocNo + "' And T.DocNo='" + dr["DocNo"].ToString().SqlQuote() + "' ";
+                                    
                                     //寫入調入方jahoInvSV
                                     sql = "Insert Into JahoInvSV (CompanyCode, CrtUser, CrtDate, CrtTime "
                                         + ", ModUser, ModDate, ModTime "
@@ -924,7 +936,7 @@ namespace SVMAdmin.Controllers
                                         + ",ModTime=convert(char(8),getdate(),108) "
                                         + ",PtNum=IsNull(PtNum,0) + InNum "
                                         + ",In_Date = Case When In_Date>'" + SysDate + "' Then In_Date Else '" + SysDate + "' End "
-                                        + ",EffectiveDate=a.EffectiveDate "
+                                        //+ ",EffectiveDate=a.EffectiveDate "
                                         + "From (" + sqlTRIn + ") a Inner Join InventorySV b "
                                         + "On a.CompanyCode=b.CompanyCode and a.WhNoIn=b.WhNo and a.CkNoIn=b.CkNo And a.PLU=b.PLU "
                                         + "and a.LayerIn=b.Layer And a.SnoIn=b.Sno ";
@@ -938,10 +950,11 @@ namespace SVMAdmin.Controllers
                                     sql += " Select '" + uu.CompanyId.SqlQuote() + "'"
                                          + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
                                          + ", '" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(8),getdate(),108)"
-                                         + ", WhNoIn, a.PLU, '" + SysDate + "', CkNoIn, LayerIn, SnoIn, InNum, 1, a.EffectiveDate "
+                                         + ", WhNoIn, a.PLU, '" + SysDate + "', CkNoIn, LayerIn, SnoIn, InNum, 1, '' "
+                                         //+ ", WhNoIn, a.PLU, '" + SysDate + "', CkNoIn, LayerIn, SnoIn, InNum, 1, a.EffectiveDate "
                                          + " From (" + sqlTRIn + ") a Left Join InventorySV b "
                                          + " On a.CompanyCode = b.CompanyCode and a.WhNoIn = b.WhNo and a.CkNoIn = b.CkNo "
-                                         + " and a.LayerIn=b.Layer And a.SnoIn=b.Sno And a.PLU=b.PLU "
+                                         + " and a.LayerIn=b.Layer And a.SnoIn=b.Sno And a.PLU=b.PLU And b.CompanyCode='" + uu.CompanyId + "' "
                                          + "Where b.PLU Is Null ";
                                     dbop.ExecuteSql(sql, uu, "SYS");
 
@@ -1358,7 +1371,7 @@ namespace SVMAdmin.Controllers
 
 
                             //變更庫存數量及庫存增減日
-                            //調出方
+                            //退貨 調出方
                             string sqlTROut = "";
                             sqlTROut = "Select H.CompanyCode, H.TH_ID, H.WhNoOut, H.CkNoOut, D.LayerOut, D.SnoOut, D.SeqNo, D.PLU, D.OutNum, C.DisplayNum "
                                 + " From TransferHSV H Inner Join TransferDSV D "
@@ -1369,7 +1382,7 @@ namespace SVMAdmin.Controllers
 
                             //if (CkNoDsv != "XX")
                             //{
-                            //寫入調出方jahoInvSV
+                            //寫入 退貨 調出方 jahoInvSV
                             sql = "Insert Into JahoInvSV (CompanyCode, CrtUser, CrtDate, CrtTime "
                                 + ", ModUser, ModDate, ModTime "
                                 + ", DocType, DocNo, WhNo, SeqNo, PLU, Q1, Q2, Q3, CkNo, Layer, Sno) ";
@@ -1383,8 +1396,8 @@ namespace SVMAdmin.Controllers
                                  + " and a.LayerOut=b.Layer And a.SnoOut=b.Sno And a.PLU=b.PLU ";
                             dbop.ExecuteSql(sql, uu, "SYS");
 
+                            ////移至最後方，因計算過程中仍會用到這些資料
                             ////##### 退貨調出 特殊邏輯 異動調出方InventorySV
-                            ///移至最後方，因計算過程中仍會用到這些資料
                             ////調出方異動後數量全=0，刪除所屬 InventorySV 資料              
                             //sql = "Delete From InventorySV Where CompanyCode='" + uu.CompanyId + "' "
                             //    + "And WhNo='" + WhNoOut + "' And CkNo='" + CkNoOut + "' ";
