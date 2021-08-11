@@ -911,8 +911,9 @@
             DyAlert("新增完成!");
 
             $('#modal_VIN13_2').modal('hide');
-            var userxml = data.getElementsByTagName('dtChgPLU')[0];
-            grdU.AddNew(userxml);
+            SearchVIN13_2()
+            //var userxml = data.getElementsByTagName('dtChgPLU')[0];
+            //grdU.AddNew(userxml);
         }
     };
 

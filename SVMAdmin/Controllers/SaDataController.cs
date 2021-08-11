@@ -64,9 +64,9 @@ namespace SVMAdmin.Controllers
                 string Ckno = rq["Ckno"];
                 string KeyWord = rq["KeyWord"];
                 string SortAmt = rq["SortAmt"];
-                string sortcol = "cash";
+                string sortcol = "num";
                 if (SortAmt == "N")
-                    sortcol = "num";
+                    sortcol = "cash";
                 string sql = "select ROW_NUMBER() over(order by " + sortcol + " desc,goodsno) Seq".CrLf();
                 sql += ",case isnull(GD_Sname,'') when '' then GoodsNo else GoodsNo+' '+GD_Sname end PLUNAME".CrLf();
                 sql += ",CAST(GD_RETAIL as int) GD_RETAIL,Num,CAST(Cash as int) Cash from (".CrLf();
@@ -112,9 +112,9 @@ namespace SVMAdmin.Controllers
                 string OpenDateE = rq["OpenDateE"];
                 string PLU = rq["PLU"];
                 string SortAmt = rq["SortAmt"];
-                string sortcol = "cash";
+                string sortcol = "num";
                 if (SortAmt == "N")
-                    sortcol = "num";
+                    sortcol = "cash";
                 string sql = "select ROW_NUMBER() over(order by " + sortcol + " desc,shopno,ckno) Seq".CrLf();
                 sql += ",Shopno,Ckno,case isnull(ST_Sname,'') when '' then Shopno else ST_Sname+CkNo+N'機' end WhNAME".CrLf();
                 sql += ",Num,CAST(Cash as int) Cash from (".CrLf();
@@ -150,9 +150,9 @@ namespace SVMAdmin.Controllers
                 string OpenDateS = rq["OpenDateS"];
                 string OpenDateE = rq["OpenDateE"];
                 string SortAmt = rq["SortAmt"];
-                string sortcol = "cash";
+                string sortcol = "num";
                 if (SortAmt == "N")
-                    sortcol = "num";
+                    sortcol = "cash";
                 string sql = "select ROW_NUMBER() over(order by " + sortcol + " desc,ST_DeliArea) Seq".CrLf();
                 sql += ",ST_DeliArea,ISNULL([Type_Name],'') AreaName".CrLf();
                 sql += ",Num,CAST(Cash as int) Cash from (".CrLf();
@@ -189,9 +189,9 @@ namespace SVMAdmin.Controllers
                 string OpenDateE = rq["OpenDateE"];
                 string DeliArea = rq["DeliArea"];
                 string SortAmt = rq["SortAmt"];
-                string sortcol = "cash";
+                string sortcol = "num";
                 if (SortAmt == "N")
-                    sortcol = "num";
+                    sortcol = "cash";
                 string sql = "select ROW_NUMBER() over(order by " + sortcol + " desc,shopno,ckno) Seq".CrLf();
                 sql += ",Shopno,Ckno,case isnull(ST_Sname,'') when '' then Shopno else ST_Sname+CkNo+N'機' end WhNAME".CrLf();
                 sql += ",Num,CAST(Cash as int) Cash from (".CrLf();
@@ -359,7 +359,7 @@ namespace SVMAdmin.Controllers
                 string OpenDateE = rq["OpenDateE"];
 
                 string sql = "select a.ShopNo,a.CkNo,c.ST_SName+a.CkNo+'機' as ST_SName, ";
-                sql += "CONVERT(int,sum(a.Num))Num,CONVERT(int,sum(a.cash))Cash,RANK() over(order by sum(a.cash) desc) as SeqNo ";
+                sql += "CONVERT(int,sum(a.Num))Num,CONVERT(int,sum(a.cash))Cash,ROW_NUMBER() over(order by sum(a.num) desc)SeqNo ";
                 sql += "from SalesD a (nolock) ";
                 sql += "left join WarehouseDSV b (nolock) on a.shopno=b.ST_ID and a.CKNo=b.CkNo and b.CompanyCode=a.CompanyCode and b.whnoin in (select whno from employeeSV (nolock) where companycode='" + uu.CompanyId + "' and man_id='" + uu.UserID + "') ";
                 sql += "left join WarehouseSV c (nolock) on a.shopno=c.st_id and c.companycode=a.companycode ";
@@ -508,19 +508,19 @@ namespace SVMAdmin.Controllers
                                 sql += "from SalesH a (nolock) ";
                                 sql += "where a.companycode='" + uu.CompanyId + "' ";
                                 if (i < 10)
-                                    sql += "and a.opentime between '0" + i + ":00' and '0" + i + ":59' ";
+                                    sql += "and a.opentime between '0" + i + ":00:00' and '0" + i + ":59:59' ";
                                 else
-                                    sql += "and a.opentime between '" + i + ":00' and '" + i + ":59' ";
+                                    sql += "and a.opentime between '" + i + ":00:00' and '" + i + ":59:59' ";
                                 sql += ls_Cond;
                                 dbop.ExecuteSql(sql, uu, "SYS");
                             }
 
-                            sql = "select RANK() over(order by sum(a.cash) desc) as SeqNo,h.part + '點' as part, ";
+                            sql = "select ROW_NUMBER() over(order by sum(a.num) desc)SeqNo,h.part + '點' as part, ";
                             sql += "CONVERT(int,sum(a.Num))Num,CONVERT(int,sum(a.cash))Cash ";
                             sql += "from SalesD a (nolock) ";
                             sql += "left join #H h on a.shopno=h.shopno and a.opendate=h.opendate and a.ckno=h.ckno and a.chrno=h.chrno ";
                             sql += "left join WarehouseDSV b (nolock) on a.shopno=b.ST_ID and a.CKNo=b.CkNo and b.CompanyCode=a.CompanyCode and b.whnoin in (select whno from employeeSV (nolock) where companycode='" + uu.CompanyId + "' and man_id='" + uu.UserID + "') ";
-                            sql += "left join PLUSV c on a.CompanyCode=c.CompanyCode and a.GoodsNo=c.GD_NO ";
+                            sql += "left join PLUSV c (nolock) on a.CompanyCode=c.CompanyCode and a.GoodsNo=c.GD_NO ";
                             sql += "Where a.CompanyCode='" + uu.CompanyId + "' ";
                             sql += ls_Cond;
                             sql += ls_PLU;
@@ -624,7 +624,8 @@ namespace SVMAdmin.Controllers
                         try
                         {
                             string sql = "select shopno,opendate,ckno,chrno,'  ' as part, ";
-                            sql += "0 as Day1,0 as Day2,0 as Day3,0 as Day4,0 as Day5,0 as Day6, 0 as Day7 ";
+                            sql += "0 as N1,0 as C1,0 as N2,0 as C2,0 as N3,0 as C3,0 as N4,0 as C4, ";
+                            sql += "0 as N5,0 as C5,0 as N6,0 as C6,0 as N7,0 as C7 ";
                             sql += "into #H ";
                             sql += "from SalesH (nolock) where 1=0 ";
                             dbop.ExecuteSql(sql, uu, "SYS");
@@ -637,21 +638,21 @@ namespace SVMAdmin.Controllers
                                     sql += "'0" + i + "', ";
                                 else
                                     sql += "'" + i + "', ";
-                                sql += "0,0,0,0,0,0,0";
+                                sql += "0,0,0,0,0,0,0,0,0,0,0,0,0,0 ";
                                 sql += "from SalesH a (nolock) ";
                                 sql += "where a.companycode='" + uu.CompanyId + "' ";
                                 if (i < 10)
-                                    sql += "and a.opentime between '0" + i + ":00' and '0" + i + ":59' ";
+                                    sql += "and a.opentime between '0" + i + ":00:00' and '0" + i + ":59:59' ";
                                 else
-                                    sql += "and a.opentime between '" + i + ":00' and '" + i + ":59' ";
+                                    sql += "and a.opentime between '" + i + ":00:00' and '" + i + ":59:59' ";
                                 sql += ls_Cond;
                                 dbop.ExecuteSql(sql, uu, "SYS");
                             }
 
                             for (int k = 1; k < 8; k++)
                             {
-                                sql = "update #H set Day" + k + "=d.Cash from ";
-                                sql += "(select a.shopno,a.opendate,a.ckno,a.chrno,sum(a.cash)cash from SalesD a (nolock) ";
+                                sql = "update #H set N" + k + "=d.num,C" + k + "=d.cash from ";
+                                sql += "(select a.shopno,a.opendate,a.ckno,a.chrno,sum(a.num)num,sum(a.cash)cash from SalesD a (nolock) ";
                                 sql += "inner join PLUSV c (nolock) on a.GoodsNo=c.GD_NO and c.CompanyCode=a.CompanyCode ";
                                 sql += "where a.companycode='" + uu.CompanyId + "' ";
                                 sql += ls_PLU;
@@ -676,9 +677,12 @@ namespace SVMAdmin.Controllers
                             }
 
                             sql = "select a.part + '點' as part, ";
-                            sql += "CONVERT(int,sum(a.Day1))Day1,CONVERT(int,sum(a.Day2))Day2,CONVERT(int,sum(a.Day3))Day3, ";
-                            sql += "CONVERT(int,sum(a.Day4))Day4,CONVERT(int,sum(a.Day5))Day5,CONVERT(int,sum(a.Day6))Day6, ";
-                            sql += "CONVERT(int,sum(a.Day7))Day7 ";
+                            sql += "cast(sum(N1) as varchar) + '/' + cast(sum(C1) as varchar) as Day1,cast(sum(N2) as varchar) + '/' + cast(sum(C2) as varchar) as Day2, ";
+                            sql += "cast(sum(N3) as varchar) + '/' + cast(sum(C3) as varchar) as Day3,cast(sum(N4) as varchar) + '/' + cast(sum(C4) as varchar) as Day4, ";
+                            sql += "cast(sum(N5) as varchar) + '/' + cast(sum(C5) as varchar) as Day5,cast(sum(N6) as varchar) + '/' + cast(sum(C6) as varchar) as Day6, ";
+                            sql += "cast(sum(N7) as varchar) + '/' + cast(sum(C7) as varchar) as Day7, ";
+                            sql += "sum(N1)N1,sum(C1)C1,sum(N2)N2,sum(C2)C2,sum(N3)N3,sum(C3)C3,sum(N4)N4,sum(C4)C4, ";
+                            sql += "sum(N5)N5,sum(C5)C5,sum(N6)N6,sum(C6)C6,sum(N7)N7,sum(C7)C7 ";
                             sql += "from #H a Where 1=1 ";
                             sql += "group by a.part ";
                             sql += "order by a.part ";

@@ -17,16 +17,16 @@
             {
                 //2021-04-27
                 table_lement: $('#tbVSA73_1P')[0],
-                class_collection: ["tdCol1", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align"],
+                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7", "tdCol8"],
                 fields_info: [
                     { type: "Text", name: "part" },
-                    { type: "TextAmt", name: "Day1" },
-                    { type: "TextAmt", name: "Day2" },
-                    { type: "TextAmt", name: "Day3" },
-                    { type: "TextAmt", name: "Day4" },
-                    { type: "TextAmt", name: "Day5" },
-                    { type: "TextAmt", name: "Day6" },
-                    { type: "TextAmt", name: "Day7" }
+                    { type: "Text", name: "Day1" },
+                    { type: "Text", name: "Day2" },
+                    { type: "Text", name: "Day3" },
+                    { type: "Text", name: "Day4" },
+                    { type: "Text", name: "Day5" },
+                    { type: "Text", name: "Day6" },
+                    { type: "Text", name: "Day7" }
                 ],
                 /*rows_per_page: 10,*/
                 method_clickrow: click_PLU,
@@ -122,16 +122,24 @@
                 grdU.BindData(dtVSA73_1P);
             if (dtVSA73_1P.length == 0) {
                 //DyAlert("無符合資料!", BlankMode);
-                $('#lblCash1').html("")
-                $('#lblCash2').html("")
-                $('#lblCash3').html("")
-                $('#lblCash4').html("")
-                $('#lblCash5').html("")
-                $('#lblCash6').html("")
-                $('#lblCash7').html("")
+                $('#lblDay1').html("")
+                $('#lblDay2').html("")
+                $('#lblDay3').html("")
+                $('#lblDay4').html("")
+                $('#lblDay5').html("")
+                $('#lblDay6').html("")
+                $('#lblDay7').html("")
                 return;
             }
             else {
+                var Num1 = 0;
+                var Num2 = 0;
+                var Num3 = 0;
+                var Num4 = 0;
+                var Num5 = 0;
+                var Num6 = 0;
+                var Num7 = 0;
+
                 var Cash1 = 0;
                 var Cash2 = 0;
                 var Cash3 = 0;
@@ -139,22 +147,31 @@
                 var Cash5 = 0;
                 var Cash6 = 0;
                 var Cash7 = 0;
+
                 for (var i = 0; i < dtVSA73_1P.length; i++) {
-                    Cash1 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'Day1'));
-                    Cash2 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'Day2'));
-                    Cash3 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'Day3'));
-                    Cash4 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'Day4'));
-                    Cash5 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'Day5'));
-                    Cash6 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'Day6'));
-                    Cash7 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'Day7'));
+                    Num1 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'N1'));
+                    Num2 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'N2'));
+                    Num3 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'N3'));
+                    Num4 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'N4'));
+                    Num5 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'N5'));
+                    Num6 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'N6'));
+                    Num7 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'N7'));
+
+                    Cash1 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'C1'));
+                    Cash2 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'C2'));
+                    Cash3 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'C3'));
+                    Cash4 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'C4'));
+                    Cash5 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'C5'));
+                    Cash6 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'C6'));
+                    Cash7 += parseFloat(GetNodeValue(dtVSA73_1P[i], 'C7'));
                 }
-                $('#lblCash1').html((Cash1).toLocaleString('en-US'))
-                $('#lblCash2').html((Cash2).toLocaleString('en-US'))
-                $('#lblCash3').html((Cash3).toLocaleString('en-US'))
-                $('#lblCash4').html((Cash4).toLocaleString('en-US'))
-                $('#lblCash5').html((Cash5).toLocaleString('en-US'))
-                $('#lblCash6').html((Cash6).toLocaleString('en-US'))
-                $('#lblCash7').html((Cash7).toLocaleString('en-US'))
+                $('#lblDay1').html((Num1).toLocaleString('en-US') + "/" + (Cash1).toLocaleString('en-US'))
+                $('#lblDay2').html((Num2).toLocaleString('en-US') + "/" + (Cash2).toLocaleString('en-US'))
+                $('#lblDay3').html((Num3).toLocaleString('en-US') + "/" + (Cash3).toLocaleString('en-US'))
+                $('#lblDay4').html((Num4).toLocaleString('en-US') + "/" + (Cash4).toLocaleString('en-US'))
+                $('#lblDay5').html((Num5).toLocaleString('en-US') + "/" + (Cash5).toLocaleString('en-US'))
+                $('#lblDay6').html((Num6).toLocaleString('en-US') + "/" + (Cash6).toLocaleString('en-US'))
+                $('#lblDay7').html((Num7).toLocaleString('en-US') + "/" + (Cash7).toLocaleString('en-US'))
             }
         }
     };
