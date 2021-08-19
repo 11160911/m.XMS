@@ -144,13 +144,21 @@
         $('#lblNewPLU').text('');
         $('#NewPLUName').text('');
 
-        $('#Num').closest('.col-3').show();
-        $('#Num').val('');
+        $('#btminus_N').show();
+        $('#btplus_N').show();
+        $('#lblminus_N').show();
+        $('#lblplus_N').show();
+        $('#Num').closest('.col-2').show();
+        $('#Num').val(0);
         $('#lblNum').closest('.col-2').hide();
         $('#lblNum').text('');
 
-        $('#DisplayNum').closest('.col-3').show();
-        $('#DisplayNum').val('');
+        $('#btminus_D').show();
+        $('#btplus_D').show();
+        $('#lblminus_D').show();
+        $('#lblplus_D').show();
+        $('#DisplayNum').closest('.col-2').show();
+        $('#DisplayNum').val(0);
         $('#lblDisplayNum').closest('.col-2').hide();
         $('#lblDisplayNum').text('');
 
@@ -221,12 +229,20 @@
         $('#lblNewPLU').text(GetNodeValue(node, 'PLUNew'));
         $('#NewPLUName').text(GetNodeValue(node, 'NewName'));
 
-        $('#Num').closest('.col-3').show();
+        $('#btminus_N').show();
+        $('#btplus_N').show();
+        $('#lblminus_N').show();
+        $('#lblplus_N').show();
+        $('#Num').closest('.col-2').show();
         $('#Num').val(GetNodeValue(node, 'Num'));
         $('#lblNum').closest('.col-2').hide();
         $('#lblNum').text(GetNodeValue(node, 'Num'));
 
-        $('#DisplayNum').closest('.col-3').show();
+        $('#btminus_D').show();
+        $('#btplus_D').show();
+        $('#lblminus_D').show();
+        $('#lblplus_D').show();
+        $('#DisplayNum').closest('.col-2').show();
         $('#DisplayNum').val(GetNodeValue(node, 'DisplayNum'));
         $('#lblDisplayNum').closest('.col-2').hide();
         $('#lblDisplayNum').text(GetNodeValue(node, 'DisplayNum'));
@@ -302,12 +318,20 @@
         $('#lblNewPLU').text(GetNodeValue(node, 'PLUNew'));
         $('#NewPLUName').text(GetNodeValue(node, 'NewName'));
 
-        $('#Num').closest('.col-3').hide();
+        $('#btminus_N').hide();
+        $('#btplus_N').hide();
+        $('#lblminus_N').hide();
+        $('#lblplus_N').hide();
+        $('#Num').closest('.col-2').hide();
         $('#Num').val(GetNodeValue(node, 'Num'));
         $('#lblNum').closest('.col-2').show();
         $('#lblNum').text(GetNodeValue(node, 'Num'));
 
-        $('#DisplayNum').closest('.col-3').hide();
+        $('#btminus_D').hide();
+        $('#btplus_D').hide();
+        $('#lblminus_D').hide();
+        $('#lblplus_D').hide();
+        $('#DisplayNum').closest('.col-2').hide();
         $('#DisplayNum').val(GetNodeValue(node, 'DisplayNum'));
         $('#lblDisplayNum').closest('.col-2').show();
         $('#lblDisplayNum').text(GetNodeValue(node, 'DisplayNum'));
@@ -375,12 +399,21 @@
         $('#lblNewPLU').text(GetNodeValue(node, 'PLUNew'));
         $('#NewPLUName').text(GetNodeValue(node, 'NewName'));
 
-        $('#Num').closest('.col-3').hide();
+
+        $('#btminus_N').hide();
+        $('#btplus_N').hide();
+        $('#lblminus_N').hide();
+        $('#lblplus_N').hide();
+        $('#Num').closest('.col-2').hide();
         $('#Num').val(GetNodeValue(node, 'Num'));
         $('#lblNum').closest('.col-2').show();
         $('#lblNum').text(GetNodeValue(node, 'Num'));
 
-        $('#DisplayNum').closest('.col-3').hide();
+        $('#btminus_D').hide();
+        $('#btplus_D').hide();
+        $('#lblminus_D').hide();
+        $('#lblplus_D').hide();
+        $('#DisplayNum').closest('.col-2').hide();
         $('#DisplayNum').val(GetNodeValue(node, 'DisplayNum'));
         $('#lblDisplayNum').closest('.col-2').show();
         $('#lblDisplayNum').text(GetNodeValue(node, 'DisplayNum'));
@@ -444,12 +477,20 @@
         $('#lblNewPLU').text(GetNodeValue(node, 'PLUNew'));
         $('#NewPLUName').text(GetNodeValue(node, 'NewName'));
 
-        $('#Num').closest('.col-3').hide();
+        $('#btminus_N').hide();
+        $('#btplus_N').hide();
+        $('#lblminus_N').hide();
+        $('#lblplus_N').hide();
+        $('#Num').closest('.col-2').hide();
         $('#Num').val(GetNodeValue(node, 'Num'));
         $('#lblNum').closest('.col-2').show();
         $('#lblNum').text(GetNodeValue(node, 'Num'));
 
-        $('#DisplayNum').closest('.col-3').hide();
+        $('#btminus_D').hide();
+        $('#btplus_D').hide();
+        $('#lblminus_D').hide();
+        $('#lblplus_D').hide();
+        $('#DisplayNum').closest('.col-2').hide();
         $('#DisplayNum').val(GetNodeValue(node, 'DisplayNum'));
         $('#lblDisplayNum').closest('.col-2').show();
         $('#lblDisplayNum').text(GetNodeValue(node, 'DisplayNum'));
@@ -507,7 +548,61 @@
         $('#modal_VIN13_2').modal('hide');
     };
 
- 
+    let btplus_N_click = function () {
+        var Num = 0;
+        if ($('#Num').val() == "") {
+            $('#Num').val(1)
+        }
+        else {
+            Num = parseInt($('#Num').val()) + 1
+            $('#Num').val(Num)
+        }
+    };
+
+    let btminus_N_click = function () {
+        var Num = 0;
+        if ($('#Num').val() == "") {
+            $('#Num').val(0)
+        }
+        else {
+            Num = parseInt($('#Num').val()) - 1
+            if (Num < 0) {
+
+            }
+            else {
+                $('#Num').val(Num)
+            }
+        }
+    };
+
+    let btplus_D_click = function () {
+        var DisplayNum = 0;
+        if ($('#DisplayNum').val() == "") {
+            $('#DisplayNum').val(1)
+        }
+        else {
+            DisplayNum = parseInt($('#DisplayNum').val()) + 1
+            $('#DisplayNum').val(DisplayNum)
+        }
+    };
+
+    let btminus_D_click = function () {
+        var DisplayNum = 0;
+        if ($('#DisplayNum').val() == "") {
+            $('#DisplayNum').val(0)
+        }
+        else {
+            DisplayNum = parseInt($('#DisplayNum').val()) - 1
+            if (DisplayNum < 0) {
+
+            }
+            else {
+                $('#DisplayNum').val(DisplayNum)
+            }
+        }
+    };
+
+
     //2021-05-07
     let cbCK_click = function () {
 
@@ -858,6 +953,10 @@
             DyAlert("新品號欄位必須輸入資料!!", function () { $('#NewPLU').focus() });
             return;
         }
+        if ($('#lblOldPLU').html() == "" | $('#lblOldPLU').html() == null) {
+            DyAlert("原商品欄位必須輸入資料!!", function () { $('#lblOldPLU').focus() });
+            return;
+        }
         if ($('#Num').val() == "" | $('#Num').val() == null) {
             DyAlert("新補貨量欄位必須輸入資料!!", function () { $('#Num').focus() });
             return;
@@ -992,6 +1091,11 @@
 
         SetDateField($('#ExchangeDate')[0]);
         $('#ExchangeDate').datepicker();
+
+        $('#btminus_N').click(function () { btminus_N_click(); });
+        $('#btplus_N').click(function () { btplus_N_click(); });
+        $('#btminus_D').click(function () { btminus_D_click(); });
+        $('#btplus_D').click(function () { btplus_D_click(); });
 
         //SetPLUAutoComplete("GD_NAME");
         //SetPLUAutoComplete("GD_NO");

@@ -332,6 +332,19 @@
                                             font-size: 0.85rem;
                                         }
                                     </style>
+                                    <style>
+                                        #modal_VIN13_2 .fa-plus-circle {
+                                            font-size: 28px;
+                                            color: steelblue;
+                                            cursor: pointer;
+                                        }
+
+                                        #modal_VIN13_2 .fa-minus-circle {
+                                            font-size: 28px;
+                                            color: steelblue;
+                                            cursor: pointer;
+                                        }
+                                    </style>
                                     <div class="card-block forminput">
                                         <div class="form-group row">
                                             <label class="col-form-label col-3">智販店代號</label>
@@ -353,7 +366,7 @@
 
                                             <label id="lblCkNo" class="col-form-label col-3" style="color: blue"></label>
                                             <!--<div class="col-4">
-        <input id="CkNo" type="text" class="form-control" autocomplete="off" />-->
+            <input id="CkNo" type="text" class="form-control" autocomplete="off" />-->
                                             <!--<span class="msg-valid valid-blank"></span>-->
                                             <!--</div>-->
                                         </div>
@@ -411,22 +424,34 @@
                                             <label class="col-form-label col-3">新補貨量</label>
 
                                             <!--<div style="text-align:right"></div>-->
+                                            <span id="btminus_N" class="fa fa-minus-circle" style="vertical-align: middle; margin: 3px;"></span>
+                                            <label id="lblminus_N">&nbsp;&nbsp;</label>
 
-                                            <div class="col-3">
-                                                <input id="Num" type="text" class="form-control" autocomplete="off" text-align="right"/>
+                                            <div class="col-2">
+                                                <input id="Num" type="text" class="form-control" autocomplete="off" text-align="right" />
                                                 <span class="msg-valid valid-blank"></span>
                                             </div>
 
+                                            <label id="lblplus_N">&nbsp;&nbsp;</label>
+                                            <span id="btplus_N" class="fa fa-plus-circle" style="vertical-align: middle; margin: 3px;"></span>
 
                                             <label id="lblNum" class="col-form-label col-2" style="color: blue"></label>
                                         </div>
 
                                         <div class="form-group row">
                                             <label class="col-form-label col-3">新滿倉量</label>
-                                            <div class="col-3">
-                                                <input id="DisplayNum" type="text" class="form-control" autocomplete="off" align="right"/>
+
+                                            <span id="btminus_D" class="fa fa-minus-circle" style="vertical-align: middle; margin: 3px;"></span>
+                                            <label id="lblminus_D">&nbsp;&nbsp;</label>
+
+                                            <div class="col-2">
+                                                <input id="DisplayNum" type="text" class="form-control" autocomplete="off" align="right" />
                                                 <span class="msg-valid valid-blank"></span>
                                             </div>
+
+                                            <label id="lblplus_D">&nbsp;&nbsp;</label>
+                                            <span id="btplus_D" class="fa fa-plus-circle" style="vertical-align: middle; margin: 3px;"></span>
+
                                             <label id="lblDisplayNum" class="col-form-label col-2" style="color: blue"></label>
                                         </div>
 

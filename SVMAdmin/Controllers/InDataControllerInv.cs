@@ -552,8 +552,9 @@ namespace SVMAdmin.Controllers
                     }
                     dbop.ExecuteSql(sql, uu, "SYS");
 
-                    sql = "select a.*,a.Layer+a.Sno Channel,c.GD_SName,c.Photo1 ";
-                    sql += " , Cast(b.PtNum As VarChar(5))+'/'+Cast(b.DisplayNum As VarChar(5)) ShowQty, b.DisplayNum-b.PtNum ShortQty, d.ST_SName, b.DisplayNum, b.PtNum ";
+                    sql = "select a.whno,a.ckno,a.plu,a.seqno,case a.qty when 0 then '' end as Qty,a.EffectiveDate ";
+                    sql += " ,a.Layer+a.Sno Channel,c.GD_SName,c.Photo1 ";
+                    sql += " ,Cast(b.PtNum As VarChar(5))+'/'+Cast(b.DisplayNum As VarChar(5)) ShowQty, b.DisplayNum-b.PtNum ShortQty,d.ST_SName,b.DisplayNum,b.PtNum ";
                     sql += " from tempdocumentsv a (Nolock) ";
                     sql += " inner join InventorySV b (Nolock) on a.WhNo=b.WhNo and a.CkNo=b.CkNo And a.Layer=b.Layer And a.Sno=b.Sno and a.CompanyCode=b.CompanyCode";
                     sql += " inner join PLUSV c (Nolock) on a.PLU=c.GD_NO and a.CompanyCode=c.CompanyCode";
@@ -667,9 +668,11 @@ namespace SVMAdmin.Controllers
                     //}
                     dbop.ExecuteSql(sql, uu, "SYS");
 
-                    sql = "select a.*,a.Layer+a.Sno Channel,c.GD_SName,c.Photo1 ";
-                    sql += " , Cast(b.PtNum As VarChar(5))+'/'+Cast(b.DisplayNum As VarChar(5)) ShowQty";
-                    sql += ", d.ST_SName, b.DisplayNum, b.PtNum ";
+                    sql = "select a.WhNo,a.CkNo,a.PLU,a.SeqNo,a.EffectiveDate ";
+                    sql += " ,case a.Qty when 0 then '' end as Qty,case a.Qty2 when 0 then '' end as Qty2 ";
+                    sql += " ,a.Layer+a.Sno Channel,c.GD_SName,c.Photo1 ";
+                    sql += " ,Cast(b.PtNum As VarChar(5))+'/'+Cast(b.DisplayNum As VarChar(5)) ShowQty";
+                    sql += " ,d.ST_SName,b.DisplayNum,b.PtNum ";
                     sql += " from tempdocumentsv a (Nolock) ";
                     sql += " inner join InventorySV b (Nolock) on a.WhNo=b.WhNo and a.CkNo=b.CkNo And a.Layer=b.Layer And a.Sno=b.Sno and a.CompanyCode=b.CompanyCode";
                     sql += " inner join PLUSV c (Nolock) on a.PLU=c.GD_NO and a.CompanyCode=c.CompanyCode";
@@ -1913,7 +1916,7 @@ namespace SVMAdmin.Controllers
                             //變更庫存數量及庫存增減日
                             //調出方
                             string sqlTROut = "";
-                            sqlTROut = "Select H.CompanyCode, H.TH_ID, H.WhNoOut, H.CkNoOut, D.LayerOut, D.SnoOut, D.SeqNo, D.PLU, D.OutNum, C.DisplayNum "
+                            sqlTROut = "Select H.CompanyCode,H.TH_ID,H.WhNoOut,H.CkNoOut,D.LayerOut,D.SnoOut,D.SeqNo,D.PLU,D.OutNum,C.DisplayNum,D.EffectiveDate "
                                 + " From TransferHSV H Inner Join TransferDSV D "
                                 + " On H.CompanyCode = D.CompanyCode And H.TH_ID = D.TH_ID "
                                 + " Inner Join ChangePLUSV C "
@@ -1990,7 +1993,7 @@ namespace SVMAdmin.Controllers
                             if (CkNoDsv != "XX")
                             {
 
-                                sqlTRIn = "Select H.CompanyCode, H.TH_ID, H.WhNoIn, H.CkNoIn, D.LayerIn, D.SnoIn, D.SeqNo, D.PLU, D.InNum, C.DisplayNum "
+                                sqlTRIn = "Select H.CompanyCode,H.TH_ID,H.WhNoIn,H.CkNoIn,D.LayerIn,D.SnoIn,D.SeqNo,D.PLU,D.InNum,C.DisplayNum,D.EffectiveDate "
                                     + " From TransferHSV H Inner Join TransferDSV D "
                                     + " On H.CompanyCode = D.CompanyCode And H.TH_ID = D.TH_ID "
                                     + " Inner Join ChangePLUSV C "
@@ -2095,7 +2098,7 @@ namespace SVMAdmin.Controllers
                             dbop.ExecuteSql(sql, uu, "SYS");
 
                             //補貨 變更庫存數量及庫存增減日
-                            sqlTROut = "Select H.CompanyCode, H.TH_ID, H.WhNoOut, H.CkNoOut, D.LayerOut, D.SnoOut, D.SeqNo, D.PLU, D.OutNum, C.DisplayNum "
+                            sqlTROut = "Select H.CompanyCode, H.TH_ID, H.WhNoOut, H.CkNoOut, D.LayerOut, D.SnoOut, D.SeqNo, D.PLU, D.OutNum, C.DisplayNum, D.EffectiveDate "
                                 + " From TransferHSV H Inner Join TransferDSV D "
                                 + " On H.CompanyCode = D.CompanyCode And H.TH_ID = D.TH_ID "
                                 + " Inner Join ChangePLUSV C "
@@ -2157,7 +2160,7 @@ namespace SVMAdmin.Controllers
                             //#####補貨單 
                             //if (CkNoDsv != "XX")
                             //{
-                            sqlTRIn = "Select H.CompanyCode, H.TH_ID, H.WhNoIn, H.CkNoIn, D.LayerIn, D.SnoIn, D.SeqNo, D.PLU, D.InNum, C.DisplayNum "
+                            sqlTRIn = "Select H.CompanyCode, H.TH_ID, H.WhNoIn, H.CkNoIn, D.LayerIn, D.SnoIn, D.SeqNo, D.PLU, D.InNum, C.DisplayNum, D.EffectiveDate "
                                 + " From TransferHSV H Inner Join TransferDSV D "
                                 + " On H.CompanyCode = D.CompanyCode And H.TH_ID = D.TH_ID "
                                 + " Inner Join ChangePLUSV C "
@@ -2324,8 +2327,9 @@ namespace SVMAdmin.Controllers
                     }
                     dbop.ExecuteSql(sql, uu, "SYS");
 
-                    sql = "select a.*,a.Layer+a.Sno Channel,c.GD_SName,c.Photo1 ";
-                    sql += " , Cast(b.PtNum As VarChar(5))+'/'+Cast(b.DisplayNum As VarChar(5)) ShowQty, b.DisplayNum-b.PtNum ShortQty, d.ST_SName, b.DisplayNum, b.PtNum ";
+                    sql = "select a.WhNo,a.CkNo,a.PLU,a.SeqNo,case a.Qty2 when 0 then '' end as Qty2,a.EffectiveDate ";
+                    sql += " ,a.Layer+a.Sno Channel,c.GD_SName,c.Photo1 ";
+                    sql += " ,Cast(b.PtNum As VarChar(5))+'/'+Cast(b.DisplayNum As VarChar(5)) ShowQty,b.DisplayNum-b.PtNum ShortQty,d.ST_SName,b.DisplayNum,b.PtNum ";
                     sql += " from tempdocumentsv a (Nolock) ";
                     sql += " inner join InventorySV b (Nolock) on a.WhNo=b.WhNo and a.CkNo=b.CkNo And a.Layer=b.Layer And a.Sno=b.Sno and a.CompanyCode=b.CompanyCode";
                     sql += " inner join PLUSV c (Nolock) on a.PLU=c.GD_NO and a.CompanyCode=c.CompanyCode";

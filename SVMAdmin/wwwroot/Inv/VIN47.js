@@ -10,7 +10,7 @@
         grdU = new DynGrid(
             {
                 table_lement: $('#tbVIN47')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4 label-align", "tdCol5", "tdColbt icon_in_td"],
+                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdColbt icon_in_td"],
                 //class_collection: ["tdColbt icon_in_td", "tdColbt icon_in_td btsuspend", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7", "tdCol8"],
                 fields_info: [
                     //{ type: "JQ", name: "fa-file-text-o", element: '<i class="fa fa-file-text-o"></i>' },
@@ -18,7 +18,7 @@
                     { type: "Text", name: "Channel" },
                     { type: "Text", name: "GD_Sname" },
                     { type: "Text", name: "ShowQty" },
-                    { type: "TextAmt", name: "Qty2" },
+                    { type: "Text", name: "Qty2" },
                     { type: "Text", name: "EffectiveDate" },
                     { type: "JQ", name: "fa-tags", element: '<i class="fa fa-tags"></i>' }
                     //{ type: "JQ", name: "btn-outline-success", element: '<i class="btn btn-outline-success"></i>' }
@@ -137,7 +137,9 @@
         /*alert(GetNodeValue(node, 'PtNum'));*/
         $('#DisplayNum').text(GetNodeValue(node, 'DisplayNum'));
         //alert(GetNodeValue(node, 'EffectiveDate'));
-        $('#ExpDate').val(GetNodeValue(node, 'EffectiveDate'));
+        $('#ExpDate').val("");
+        $('#lblExpDate').html(GetNodeValue(node, 'EffectiveDate'));
+        $('#chkSet').prop('checked', false)
         //alert(GetNodeValue(node, 'Photo1'));
         $('#Photo1').val(GetNodeValue(node, 'Photo1'));
         //$('#Photo2').val(GetNodeValue(node, 'Photo2'));
@@ -307,6 +309,46 @@
         PostToWebApi({ url: "api/SystemSetup/GetWhCkLayer", data: pData, success: AfterGetLayerNo });
     };
 
+    let GetExpDate = function () {
+        if ($('#chkSet').prop('checked')) {
+            $('#ExpDate').val($('#lblExpDate').html());
+        }
+        else {
+            $('#ExpDate').val("");
+        }
+    };
+
+    let btplus_click = function () {
+        var AdjQty = 0;
+        if ($('#AdjQty').val() == "") {
+            $('#AdjQty').val(1)
+        }
+        else {
+            AdjQty = parseInt($('#AdjQty').val()) + 1
+            if (AdjQty > parseInt($('#DisplayNum').html())) {
+
+            }
+            else {
+                $('#AdjQty').val(AdjQty)
+            }
+        }
+    };
+
+    let btminus_click = function () {
+        var AdjQty = 0;
+        if ($('#AdjQty').val() == "") {
+            $('#AdjQty').val(0)
+        }
+        else {
+            AdjQty = parseInt($('#AdjQty').val()) - 1
+            if (AdjQty < 0) {
+
+            }
+            else {
+                $('#AdjQty').val(AdjQty)
+            }
+        }
+    };
 
     let AfterGetLayerNo = function (data) {
         //alert("AfterGetLayerNo");
@@ -346,6 +388,9 @@
         $('.forminput input').change(function () { InputValidation(this) });
         $('#cbWh').change(function () { GetWhDSVCkNo(); });
         $('#cbCK').click(function () { cbCK_click(); });
+        $('#chkSet').change(function () { GetExpDate(); });
+        $('#btminus').click(function () { btminus_click(); });
+        $('#btplus').click(function () { btplus_click(); });
         //$('#cbCK').change(function () { GetLayerNo(); });
         var dtWh = data.getElementsByTagName('dtWh');
         InitSelectItem($('#cbWh')[0], dtWh, "ST_ID", "ST_SName", true, "*請選擇店代號");

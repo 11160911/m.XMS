@@ -131,13 +131,32 @@
                                                   font-size: 0.85rem;
                                               }
                                           </style>
+                                          <style>
+                                              #chkSet.defaultCheckbox {
+                                                  width: 15px;
+                                                  height: 15px;
+                                              }
+                                          </style>
+                                          <style>
+                                              #modal_VIN14_3 .fa-plus-circle {
+                                                  font-size: 28px;
+                                                  color: steelblue;
+                                                  cursor: pointer;
+                                              }
+
+                                              #modal_VIN14_3 .fa-minus-circle {
+                                                  font-size: 28px;
+                                                  color: steelblue;
+                                                  cursor: pointer;
+                                              }
+                                          </style>
                                           <div class="card-block forminput">
                                               <div class="form-group row">
                                                   <label id="MachineData" class="col-form-label col-6" style="color: blue">1g</label>
                                                   <!--<div class="col-9">
-            <input id="GD_NO" type="text" readonly class="form-control" autocomplete="off" />
-            <span class="msg-valid valid-blank"></span>
-        </div>-->
+                <input id="GD_NO" type="text" readonly class="form-control" autocomplete="off" />
+                <span class="msg-valid valid-blank"></span>
+            </div>-->
                                                   <label id="SeqNo" class="col-form-label col-2" style="color: blue">1g</label>
                                               </div>
                                               <div class="form-group row">
@@ -160,7 +179,7 @@
 
                                               <!--<div class="form-group row">
 
-    </div>-->
+        </div>-->
 
                                               <div class="form-group row">
                                                   <label class="col-form-label col-3">庫存/滿倉</label>
@@ -182,23 +201,40 @@
                                               <div class="form-group row">
                                                   <!--<label class="col-form-label col-4"> </label>-->
                                                   <button id="btEqual" type="button" class="btn btn-danger">報廢</button>
-                                                  <label class="col-form-label col-2"> </label>
-                                                  <div class="col-md-3">
+                                                  <div class="col-md-2">
+
+                                                  </div>
+                                                  <span id="btminus_U" class="fa fa-minus-circle" style="vertical-align: middle; margin: 3px;"></span>
+                                                  <label>&nbsp;&nbsp;</label>
+
+                                                  <!--<label class="col-form-label col-2"> </label>-->
+                                                  <div class="col-md-2">
                                                       <input id="uQty" type="text" class="form-control" autocomplete="off" />
                                                       <span class="msg-valid valid-blank"></span>
                                                   </div>
+
+                                                  <label>&nbsp;&nbsp;</label>
+                                                  <span id="btplus_U" class="fa fa-plus-circle" style="vertical-align: middle; margin: 3px;"></span>
 
                                               </div>
 
                                               <div class="form-group row">
                                                   <button id="btEqual" type="button" class="btn btn-danger">退貨</button>
                                                   <!--<label class="col-form-label col-4"></label>-->
+                                                  <div class="col-md-2">
 
-                                                  <label class="col-form-label col-2"></label>
-                                                  <div class="col-md-3">
+                                                  </div>
+                                                  <span id="btminus_B" class="fa fa-minus-circle" style="vertical-align: middle; margin: 3px;"></span>
+                                                  <label>&nbsp;&nbsp;</label>
+
+                                                  <!--<label class="col-form-label col-2"></label>-->
+                                                  <div class="col-md-2">
                                                       <input id="bQty" type="text" class="form-control" autocomplete="off" />
                                                       <span class="msg-valid valid-blank"></span>
                                                   </div>
+
+                                                  <label>&nbsp;&nbsp;</label>
+                                                  <span id="btplus_B" class="fa fa-plus-circle" style="vertical-align: middle; margin: 3px;"></span>
                                                   <!--<label id="AdjQty" class="col-form-label col-3">9</label>-->
                                               </div>
 
@@ -207,6 +243,14 @@
                                                   <div class="col-md-3">
                                                       <input id="ExpDate" type="text" class="form-control" autocomplete="off" />
                                                   </div>
+
+                                                  <div align="center">
+                                                      <input type="checkbox" id="chkSet" class="defaultCheckbox" style=" display: inline-block; vertical-align: middle; margin-bottom: 3px;" />
+                                                      <label for="chkSet" style="cursor:pointer; margin:10px 0; vertical-align: middle;">&nbsp;&nbsp;同原設定</label>
+                                                      <label id="lblExpDate" class="col-form-label col-3" style="color: blue; margin: 3px 0; vertical-align: middle;"></label>
+                                                  </div>
+
+
                                                   <!-- <label id="ExpDate" class="col-form-label col-3">9</label>-->
                                               </div>
 

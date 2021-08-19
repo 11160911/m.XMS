@@ -465,7 +465,6 @@
 
     }
 
-
     let btSave_click = function () {
 
         //alert("SysDate " + SysDate);
@@ -561,11 +560,70 @@
 
     };
 
+    let btplus_P_click = function () {
+        var PtNum = 0;
+        if ($('#PtNum').val() == "") {
+            $('#PtNum').val(1)
+        }
+        else {
+            PtNum = parseInt($('#PtNum').val()) + 1
+            if (PtNum > parseInt($('#lblPtNum').html())) {
 
+            }
+            else {
+                $('#PtNum').val(PtNum)
+            }
+        }
+    };
+
+    let btminus_P_click = function () {
+        var PtNum = 0;
+        if ($('#PtNum').val() == "") {
+            $('#PtNum').val(0)
+        }
+        else {
+            PtNum = parseInt($('#PtNum').val()) - 1
+            if (PtNum < 0) {
+
+            }
+            else {
+                $('#PtNum').val(PtNum)
+            }
+        }
+    };
+
+    let btplus_N_click = function () {
+        var Num = 0;
+        if ($('#Num').val() == "") {
+            $('#Num').val(1)
+        }
+        else {
+            Num = parseInt($('#Num').val()) + 1
+            if (Num > parseInt($('#lblNum').html())) {
+
+            }
+            else {
+                $('#Num').val(Num)
+            }
+        }
+    };
+
+    let btminus_N_click = function () {
+        var Num = 0;
+        if ($('#Num').val() == "") {
+            $('#Num').val(0)
+        }
+        else {
+            Num = parseInt($('#Num').val()) - 1
+            if (Num < 0) {
+
+            }
+            else {
+                $('#Num').val(Num)
+            }
+        }
+    };
  
-
-
-
     //let AfterAddChgPLU = function (data) {
     //    if (ReturnMsg(data, 0) != "AddChgPLUOK") {
     //        DyAlert(ReturnMsg(data, 1));
@@ -578,7 +636,6 @@
     //        grdU.AddNew(userxml);
     //    }
     //};
-
 
     let AfterUpdateChgPLU = function (data) {
         //alert("AfterUpdateChgPLU:" + EditMode);
@@ -604,8 +661,6 @@
             grdU.RefreshRocord(grdU.ActiveRowTR(), userxml);
         }
     };
-
- 
 
     //2021-05-18
     let afterGetInitVIN14_5 = function (data) {
@@ -634,6 +689,10 @@
         $('#btCancel').click(function () { btCancel_click(); });
         $('.forminput input').change(function () { InputValidation(this) });
 
+        $('#btminus_P').click(function () { btminus_P_click(); });
+        $('#btplus_P').click(function () { btplus_P_click(); });
+        $('#btminus_N').click(function () { btminus_N_click(); });
+        $('#btplus_N').click(function () { btplus_N_click(); });
 
         //SetPLUAutoComplete("GD_NAME");
         //SetPLUAutoComplete("GD_NO");

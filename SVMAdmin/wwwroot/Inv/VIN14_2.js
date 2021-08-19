@@ -10,7 +10,7 @@
         grdU = new DynGrid(
             {
                 table_lement: $('#tbVIN14_2')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4 label-align", "tdCol5 label-align", "tdCol6", "tdColbt icon_in_td"],
+                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4 label-align", "tdCol5", "tdCol6", "tdColbt icon_in_td"],
                 //class_collection: ["tdColbt icon_in_td", "tdColbt icon_in_td btsuspend", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7", "tdCol8"],
                 fields_info: [
                     //{ type: "JQ", name: "fa-file-text-o", element: '<i class="fa fa-file-text-o"></i>' },
@@ -19,7 +19,7 @@
                     { type: "Text", name: "GD_Sname" },
                     { type: "Text", name: "ShowQty" },
                     { type: "TextAmt", name: "ShortQty" },
-                    { type: "TextAmt", name: "Qty" },
+                    { type: "Text", name: "Qty" },
                     { type: "Text", name: "EffectiveDate" },
                     { type: "JQ", name: "fa-tags", element: '<i class="fa fa-tags"></i>' }
                     //{ type: "JQ", name: "btn-outline-success", element: '<i class="btn btn-outline-success"></i>' }
@@ -60,11 +60,9 @@
         PostToWebApi({ url: "api/SystemSetup/SearchVIN14_2", data: pData, success: AfterSearchVIN14_2 });
     };
 
-
     let click_PLU = function (tr) {
 
     };
-
 
     let AfterSearchVIN14_2 = function (data) {
         
@@ -75,7 +73,6 @@
         else {
             var dtPLU = data.getElementsByTagName('dtPLU');
             grdU.BindData(dtPLU);
-
             var dtDocNo = data.getElementsByTagName('dtDocNo');
             gDocNo = GetNodeValue(dtDocNo[0], "DocNo");
             //alert(gDocNo);
@@ -114,9 +111,10 @@
 
         $('#ShowQty').text(GetNodeValue(node, 'ShowQty'));
         $('#ShortQty').text(GetNodeValue(node, 'ShortQty'));
-
         $('#AdjQty').val(GetNodeValue(node, 'Qty'));
-        $('#ExpDate').val(GetNodeValue(node, 'EffectiveDate'));
+        $('#ExpDate').val("");
+        $('#lblExpDate').html(GetNodeValue(node, 'EffectiveDate'))
+        $('#chkSet').prop('checked', false)
 
         $('#Photo1').val(GetNodeValue(node, 'Photo1'));
         //$('#Photo2').val(GetNodeValue(node, 'Photo2'));
@@ -243,6 +241,15 @@
         //GetLayerNo();
     };
 
+    let GetExpDate = function () {
+        if ($('#chkSet').prop('checked')) {
+            $('#ExpDate').val($('#lblExpDate').html());
+        }
+        else {
+            $('#ExpDate').val("");
+        }
+    };
+
 
     let GetLayerNo = function () {
 
@@ -296,6 +303,38 @@
         }
     };
 
+    let btplus_click = function () {
+        var AdjQty = 0;
+        if ($('#AdjQty').val() == "") {
+            $('#AdjQty').val(1)
+        }
+        else {
+            AdjQty = parseInt($('#AdjQty').val()) + 1
+            if (AdjQty > parseInt($('#ShortQty').html())) {
+
+            }
+            else {
+                $('#AdjQty').val(AdjQty)
+            }
+        }
+    };
+
+    let btminus_click = function () {
+        var AdjQty = 0;
+        if ($('#AdjQty').val() == "") {
+            $('#AdjQty').val(0)
+        }
+        else {
+            AdjQty = parseInt($('#AdjQty').val()) - 1
+            if (AdjQty < 0) {
+                
+            }
+            else {
+                $('#AdjQty').val(AdjQty)
+            }
+        }
+    };
+
     let afterGetInitVIN14_2 = function (data) {
         //alert("afterGetInitVIN14_2");
         AssignVar();
@@ -311,6 +350,9 @@
         $('#cbWh').change(function () { GetWhDSVCkNo(); });
         $('#cbCK').click(function () { cbCK_click(); });
         $('#cbCK').change(function () { GetLayerNo(); });
+        $('#btplus').click(function () { btplus_click(); });
+        $('#btminus').click(function () { btminus_click(); });
+        $('#chkSet').change(function () { GetExpDate(); });
         var dtWh = data.getElementsByTagName('dtWh');
         InitSelectItem($('#cbWh')[0], dtWh, "ST_ID", "ST_SName", true, "*請選擇店代號");
 
@@ -560,6 +602,4 @@
         
         AllPages = new LoadAllPages(ParentNode, "VIN14_2", ["pgVIN14_2"], afterLoadPage);
     };
-
-
 }

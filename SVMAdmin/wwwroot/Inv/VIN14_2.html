@@ -131,13 +131,33 @@
                                                   font-size: 0.85rem;
                                               }
                                           </style>
+
+                                          <style>
+                                              #chkSet.defaultCheckbox {
+                                                  width: 15px;
+                                                  height: 15px;
+                                              }
+                                          </style>
+
+                                          <style>
+                                              #modal_VIN14_2 .fa-plus-circle {
+                                                  font-size: 28px;
+                                                  color: steelblue;
+                                                  cursor: pointer;
+                                              }
+                                              #modal_VIN14_2 .fa-minus-circle {
+                                                  font-size: 28px;
+                                                  color: steelblue;
+                                                  cursor: pointer;
+                                              }
+                                          </style>
                                           <div class="card-block forminput">
                                               <div class="form-group row">
                                                   <label id="MachineData" class="col-form-label col-6" style="color: blue">1g</label>
                                                   <!--<div class="col-9">
-                                <input id="GD_NO" type="text" readonly class="form-control" autocomplete="off" />
-                                <span class="msg-valid valid-blank"></span>
-                            </div>-->
+                <input id="GD_NO" type="text" readonly class="form-control" autocomplete="off" />
+                <span class="msg-valid valid-blank"></span>
+            </div>-->
                                                   <label id="SeqNo" class="col-form-label col-2" style="color: blue">1g</label>
                                               </div>
                                               <div class="form-group row">
@@ -160,7 +180,7 @@
 
                                               <!--<div class="form-group row">
 
-                        </div>-->
+        </div>-->
 
                                               <div class="form-group row">
                                                   <label class="col-form-label col-3">庫存/滿倉</label>
@@ -178,18 +198,32 @@
                                               </div>
 
                                               <div class="form-group row">
-                                                  <label class="col-form-label col-3">補貨量</label>
-                                                  <div class="col-md-3">
-                                                      <input id="AdjQty" type="text" class="form-control" autocomplete="off" />
+                                                  <label class="col-form-label col-3" style="vertical-align: middle;">補貨量</label>
+
+                                                  <span id="btminus" class="fa fa-minus-circle" style="vertical-align: middle; margin: 3px;"></span>
+                                                  <label>&nbsp;&nbsp;</label>
+
+                                                  <div class="col-md-2">
+                                                      <input id="AdjQty" type="text" class="form-control" style="vertical-align: middle;" autocomplete="off" />
                                                       <span class="msg-valid valid-blank"></span>
                                                   </div>
+
+                                                  <label>&nbsp;&nbsp;</label>
+                                                  <span id="btplus" class="fa fa-plus-circle" style="vertical-align: middle; margin: 3px;"></span>
+
                                                   <!--<label id="AdjQty" class="col-form-label col-3">9</label>-->
                                               </div>
 
                                               <div class="form-group row">
                                                   <label class="col-form-label col-3">最近有效日期</label>
+                                                  <!--<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
                                                   <div class="col-md-3">
                                                       <input id="ExpDate" type="text" class="form-control" autocomplete="off" />
+                                                  </div>
+                                                  <div align="center">
+                                                      <input type="checkbox" id="chkSet" class="defaultCheckbox" style=" display: inline-block; vertical-align: middle; margin-bottom: 3px;" />
+                                                      <label for="chkSet" style="cursor:pointer; margin:10px 0; vertical-align: middle;">&nbsp;&nbsp;同原設定</label>
+                                                      <label id="lblExpDate" class="col-form-label col-3" style="color: blue; margin: 3px 0;"></label>
                                                   </div>
                                                   <!-- <label id="ExpDate" class="col-form-label col-3">9</label>-->
                                               </div>
@@ -302,7 +336,6 @@
                                                       <td>53425</td>
                                                       <td>啟用</td>
                                                       <td><span class="fa fa-tags"></span></td>
-                                                      <!--<td><button type="button" id="btInv" class="custom-control-inline btn btn-outline-success">補貨</button></td>-->
                                                   </tr>
                                               </tbody>
                                           </table>

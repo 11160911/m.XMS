@@ -332,6 +332,20 @@
                                             font-size: 0.85rem;
                                         }
                                     </style>
+                                    <style>
+                                        #modal_VIN14_5 .fa-plus-circle {
+                                            font-size: 28px;
+                                            color: steelblue;
+                                            cursor: pointer;
+                                        }
+
+                                        #modal_VIN14_5 .fa-minus-circle {
+                                            font-size: 28px;
+                                            color: steelblue;
+                                            cursor: pointer;
+                                        }
+                                    </style>
+
                                     <div class="card-block forminput">
                                         <div class="form-group row">
                                             <label class="col-form-label col-3" style="text-align: right">智販店代號</label>
@@ -358,7 +372,7 @@
 
                                         <div class="form-group row">
                                             <label class="col-form-label col-3"></label>
-                                            <label id="OldPLUName" class="col-form-label col-5" style="text-align: left;color: blue"></label>  
+                                            <label id="OldPLUName" class="col-form-label col-5" style="text-align: left;color: blue"></label>
                                         </div>
 
                                         <div class="form-group row">
@@ -366,10 +380,18 @@
                                             <label id="lblPtNum" class="col-form-label col-2" style="text-align: left;color: blue"></label>
                                             <!--<div style="text-align:right"></div>-->
                                             <label class="col-form-label col-3" style="text-align: right">實際退貨量</label>
-                                            <div class="col-3">
-                                                <input id="PtNum" type="text" class="form-control" autocomplete="off"  style="text-align: center;color: red" />
+
+                                            <span id="btminus_P" class="fa fa-minus-circle" style="vertical-align: middle; margin: 3px;"></span>
+                                            <label>&nbsp;&nbsp;</label>
+
+                                            <div class="col-2">
+                                                <input id="PtNum" type="text" class="form-control" autocomplete="off" style="text-align: center;color: red" />
                                                 <span class="msg-valid valid-blank"></span>
                                             </div>
+
+                                            <label>&nbsp;&nbsp;</label>
+                                            <span id="btplus_P" class="fa fa-plus-circle" style="vertical-align: middle; margin: 3px;"></span>
+
                                         </div>
 
 
@@ -391,10 +413,17 @@
 
                                             <!--<div style="text-align:right"></div>-->
                                             <label class="col-form-label col-3" style="text-align: right">實際補貨量</label>
-                                            <div class="col-3">
-                                                <input id="Num" type="text" class="form-control" autocomplete="off"  style="text-align: center;color: red" />
+
+                                            <span id="btminus_N" class="fa fa-minus-circle" style="vertical-align: middle; margin: 3px;"></span>
+                                            <label>&nbsp;&nbsp;</label>
+
+                                            <div class="col-2">
+                                                <input id="Num" type="text" class="form-control" autocomplete="off" style="text-align: center;color: red" />
                                                 <span class="msg-valid valid-blank"></span>
                                             </div>
+
+                                            <label>&nbsp;&nbsp;</label>
+                                            <span id="btplus_N" class="fa fa-plus-circle" style="vertical-align: middle; margin: 3px;"></span>
                                         </div>
 
 
@@ -406,7 +435,7 @@
                                         <div class="form-group row">
                                             <label class="col-form-label col-3" style="text-align: right">新最近有效日</label>
                                             <div class="col-4">
-                                                <input id="ExpDate" type="text" class="form-control" autocomplete="off"  style="text-align: left;color: red"/>
+                                                <input id="ExpDate" type="text" class="form-control" autocomplete="off" style="text-align: left;color: red" />
                                                 <!--<span class="msg-valid valid-blank"></span>-->
                                             </div>
                                         </div>

@@ -10,7 +10,7 @@
         grdU = new DynGrid(
             {
                 table_lement: $('#tbVIN14_3')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 text-right", "tdCol4 text-right", "tdCol5 text-right", "tdCol6", "tdColbt icon_in_td"],
+                class_collection: ["tdCol1", "tdCol2", "tdCol3 text-right", "tdCol4", "tdCol5", "tdCol6", "tdColbt icon_in_td"],
                 //class_collection: ["tdColbt icon_in_td", "tdColbt icon_in_td btsuspend", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7", "tdCol8"],
                 fields_info: [
                     //{ type: "JQ", name: "fa-file-text-o", element: '<i class="fa fa-file-text-o"></i>' },
@@ -18,8 +18,8 @@
                     { type: "Text", name: "Channel" },
                     { type: "Text", name: "GD_Sname" },
                     { type: "Text", name: "ShowQty" },
-                    { type: "TextAmt", name: "Qty2" },
-                    { type: "TextAmt", name: "Qty" },
+                    { type: "Text", name: "Qty2" },
+                    { type: "Text", name: "Qty" },
                     { type: "Text", name: "EffectiveDate" },
                     { type: "JQ", name: "fa-tags", element: '<i class="fa fa-tags"></i>' }
                     //{ type: "JQ", name: "btn-outline-success", element: '<i class="btn btn-outline-success"></i>' }
@@ -115,16 +115,15 @@
         //$('#GD_Sname').val(GetNodeValue(node, 'GD_Sname'));
         $('#SeqNo').text(GetNodeValue(node, 'SeqNo'));
         $('#SeqNo').closest('.col-2').hide();
-
         $('#uQty').val(GetNodeValue(node, 'Qty2'));
         $('#ShowQty').text(GetNodeValue(node, 'ShowQty'));
 
         $('#lblPtNum').text(GetNodeValue(node, 'PtNum'));
         $('#lblDisplayNum').text(GetNodeValue(node, 'DisplayNum'));
-
         $('#bQty').val(GetNodeValue(node, 'Qty'));
-
-        $('#ExpDate').val(GetNodeValue(node, 'EffectiveDate'));
+        $('#ExpDate').val("");
+        $('#chkSet').prop('checked', false)
+        $('#lblExpDate').html(GetNodeValue(node, 'EffectiveDate'));
 
         $('#Photo1').val(GetNodeValue(node, 'Photo1'));
         //$('#Photo2').val(GetNodeValue(node, 'Photo2'));
@@ -234,7 +233,6 @@
         PostToWebApi({ url: "api/SystemSetup/GetWhDSVCkNoWithCond", data: pData, success: AfterGetWhDSVCkNo });
     };
 
-
     let AfterGetWhDSVCkNo = function (data) {
         //alert("AfterGetWhDSVCkNo");
         if (ReturnMsg(data, 0) != "GetWhDSVCkNoWithCondOK") {
@@ -246,7 +244,6 @@
             InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CkNoName", true, "*請選擇機號");
         }
     };
-
 
     let cbCK_click = function () {
 
@@ -263,7 +260,6 @@
         }
         //GetLayerNo();
     };
-
 
     let GetLayerNo = function () {
 
@@ -291,6 +287,80 @@
         };
         PostToWebApi({ url: "api/SystemSetup/GetWhCkLayer", data: pData, success: AfterGetLayerNo });
     };
+
+    let GetExpDate = function () {
+        if ($('#chkSet').prop('checked')) {
+            $('#ExpDate').val($('#lblExpDate').html());
+        }
+        else {
+            $('#ExpDate').val("");
+        }
+    };
+
+    let btplus_B_click = function () {
+        var BQty = 0;
+        if ($('#bQty').val() == "") {
+            $('#bQty').val(1)
+        }
+        else {
+            BQty = parseInt($('#bQty').val()) + 1
+            if (BQty > parseInt($('#lblPtNum').html())) {
+
+            }
+            else {
+                $('#bQty').val(BQty)
+            }
+        }
+    };
+
+    let btminus_B_click = function () {
+        var BQty = 0;
+        if ($('#bQty').val() == "") {
+            $('#bQty').val(0)
+        }
+        else {
+            BQty = parseInt($('#bQty').val()) - 1
+            if (BQty < 0) {
+
+            }
+            else {
+                $('#bQty').val(BQty)
+            }
+        }
+    };
+
+    let btplus_U_click = function () {
+        var UQty = 0;
+        if ($('#uQty').val() == "") {
+            $('#uQty').val(1)
+        }
+        else {
+            UQty = parseInt($('#uQty').val()) + 1
+            if (UQty > parseInt($('#lblPtNum').html())) {
+
+            }
+            else {
+                $('#uQty').val(UQty)
+            }
+        }
+    };
+
+    let btminus_U_click = function () {
+        var UQty = 0;
+        if ($('#uQty').val() == "") {
+            $('#uQty').val(0)
+        }
+        else {
+            UQty = parseInt($('#uQty').val()) - 1
+            if (UQty < 0) {
+
+            }
+            else {
+                $('#uQty').val(UQty)
+            }
+        }
+    };
+
 
 
     let AfterGetLayerNo = function (data) {
@@ -332,6 +402,12 @@
         $('#cbWh').change(function () { GetWhDSVCkNo(); });
         $('#cbCK').click(function () { cbCK_click(); });
         $('#cbCK').change(function () { GetLayerNo(); });
+        $('#chkSet').change(function () { GetExpDate(); });
+        $('#btplus_B').click(function () { btplus_B_click(); });
+        $('#btminus_B').click(function () { btminus_B_click(); });
+        $('#btplus_U').click(function () { btplus_U_click(); });
+        $('#btminus_U').click(function () { btminus_U_click(); });
+
         var dtWh = data.getElementsByTagName('dtWh');
         InitSelectItem($('#cbWh')[0], dtWh, "ST_ID", "ST_SName", true, "*請選擇店代號");
 
