@@ -61,11 +61,13 @@ namespace SVMAdmin.Controllers
                         ndm[j].Remove();
                 }
             }
+            PubUtility.AppendCssAtHeadEnd(doc1, "lib/jsTree/themes/default/style.min.css");
 
             PubUtility.AppendScriptAtBodyEnd(doc1, "lib/jQuery-File-Upload-10.2.0/vendor/jquery.ui.widget.js");
             PubUtility.AppendScriptAtBodyEnd(doc1, "lib/jQuery-File-Upload-10.2.0/jquery.iframe-transport.js");
             PubUtility.AppendScriptAtBodyEnd(doc1, "lib/jQuery-File-Upload-10.2.0/jquery.fileupload.js");
             PubUtility.AppendScriptAtBodyEnd(doc1, "lib/jquery-ui-1.11.4/jquery-ui.min.js");
+            PubUtility.AppendScriptAtBodyEnd(doc1, "lib/jsTree/jstree.min.js");
             PubUtility.AppendScriptAtBodyEnd(doc1, "js/JSUtility.js");
             PubUtility.AppendScriptAtBodyEnd(doc1, "Menu.js");
             //PubUtility.AppendScriptAtBodyEnd(doc1, "js/custom.js");
@@ -743,7 +745,58 @@ namespace SVMAdmin.Controllers
         }
 
 
+        [Route("VPV01")]
+        public IActionResult VPV01()
+        {
+            HtmlAgilityPack.HtmlDocument doc1 = new HtmlAgilityPack.HtmlDocument();
+            string strHtml = System.IO.File.ReadAllText(ConstList.HostEnvironment.WebRootPath + @"\VPV01.html".AdjPathByOS());
+            doc1.LoadHtml(strHtml);
 
+            //Remove Node
+            string[] NodeRemove = new string[] {
+                "//script",
+                "//link"
+            };
+            for (int i = 0; i < NodeRemove.Length; i++)
+            {
+                HtmlAgilityPack.HtmlNodeCollection ndm = doc1.DocumentNode.SelectNodes(NodeRemove[i]);
+                if (ndm != null)
+                {
+                    for (int j = 0; j < ndm.Count; j++)
+                        ndm[j].Remove();
+                }
+            }
+
+            //RemoveAllChildren
+            NodeRemove = new string[] {
+                 "//ul[contains(@class,'app-menu')]",
+                 "//table[@id='tbVPV01']/tbody"
+            };
+            for (int i = 0; i < NodeRemove.Length; i++)
+            {
+                HtmlAgilityPack.HtmlNodeCollection ndm = doc1.DocumentNode.SelectNodes(NodeRemove[i]);
+                if (ndm != null)
+                {
+                    for (int j = 0; j < ndm.Count; j++)
+                        ndm[j].RemoveAllChildren();
+                }
+
+            }
+
+            HtmlAgilityPack.HtmlNode ndh = doc1.DocumentNode.SelectSingleNode("//head");
+            //PubUtility.AppendCss(ndh, "css/main.css");
+            //PubUtility.AppendCss(ndh, "css/font-awesome.css");
+
+
+            ndh = doc1.DocumentNode.SelectSingleNode("//body");
+            //PubUtility.AppendScriptAtBodyEnd(doc1, "SystemSetup/GMMacPLUSet.js");
+
+
+            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+            doc1.Save(ms);
+            strHtml = System.Text.Encoding.UTF8.GetString(ms.ToArray());
+            return Content(strHtml, "text/html", System.Text.Encoding.UTF8);
+        }
 
         private HtmlAgilityPack.HtmlDocument LoadHtmlDoc(string FileOnWebRoot)
         {
