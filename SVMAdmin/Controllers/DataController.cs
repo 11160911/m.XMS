@@ -3293,8 +3293,9 @@ namespace SVMAdmin.Controllers
 
                 string sql = "select a.ST_ID,a.ST_Sname, " +
                 "(select count(*) from WarehouseDSV b (nolock) where b.CompanyCode='" + uu.CompanyId + "' and a.ST_ID=b.ST_ID)CkNo, " +
-                "a.FlagInv,a.WhnoIn,a.InvGetQty,a.InvSaveQty,a.ST_DeliArea " +
-                "from WarehouseSV a(nolock) " +
+                "a.FlagInv,a.WhnoIn,(select ST_ID + ST_SName from WarehouseSV (nolock) where companycode='" + uu.CompanyId + "' and st_id=a.whnoin)WhNoInName, " +
+                "a.InvGetQty,a.InvSaveQty,a.ST_DeliArea " +
+                "from WarehouseSV a (nolock) " +
                 "where a.CompanyCode='" + uu.CompanyId + "' and a.ST_Type='6' ";
                 if (ShopNo != "")
                     sql += "and a.ST_ID='" + ShopNo + "' ";
@@ -3904,6 +3905,6 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
-
+        
     }
 }

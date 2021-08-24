@@ -22,7 +22,7 @@
                     { type: "Text", name: "ST_Sname" },
                     { type: "TextAmt", name: "CkNo" },
                     { type: "Text", name: "FlagInv" },
-                    { type: "Text", name: "WhnoIn" },
+                    { type: "Text", name: "WhNoInName" },
                     { type: "TextAmt", name: "InvGetQty" },
                     { type: "TextAmt", name: "InvSaveQty" },
                     { type: "Text", name: "ST_DeliArea" },
@@ -779,6 +779,114 @@
         }
     };
 
+    let btplus_G_Add_click = function () {
+        var GetQty = 0;
+        if ($('#txtGetQty_Add').val() == "") {
+            $('#txtGetQty_Add').val(1)
+        }
+        else {
+            GetQty = parseInt($('#txtGetQty_Add').val()) + 1
+            $('#txtGetQty_Add').val(GetQty)
+        }
+    };
+
+    let btminus_G_Add_click = function () {
+        var GetQty = 0;
+        if ($('#txtGetQty_Add').val() == "") {
+            $('#txtGetQty_Add').val(0)
+        }
+        else {
+            GetQty = parseInt($('#txtGetQty_Add').val()) - 1
+            if (GetQty < 0) {
+
+            }
+            else {
+                $('#txtGetQty_Add').val(GetQty)
+            }
+        }
+    };
+
+    let btplus_S_Add_click = function () {
+        var SaveQty = 0;
+        if ($('#txtSaveQty_Add').val() == "") {
+            $('#txtSaveQty_Add').val(1)
+        }
+        else {
+            SaveQty = parseInt($('#txtSaveQty_Add').val()) + 1
+            $('#txtSaveQty_Add').val(SaveQty)
+        }
+    };
+
+    let btminus_S_Add_click = function () {
+        var SaveQty = 0;
+        if ($('#txtSaveQty_Add').val() == "") {
+            $('#txtSaveQty_Add').val(0)
+        }
+        else {
+            SaveQty = parseInt($('#txtSaveQty_Add').val()) - 1
+            if (SaveQty < 0) {
+
+            }
+            else {
+                $('#txtSaveQty_Add').val(SaveQty)
+            }
+        }
+    };
+
+    let btplus_G_Mod_click = function () {
+        var GetQty = 0;
+        if ($('#txtGetQty_Mod').val() == "") {
+            $('#txtGetQty_Mod').val(1)
+        }
+        else {
+            GetQty = parseInt($('#txtGetQty_Mod').val()) + 1
+            $('#txtGetQty_Mod').val(GetQty)
+        }
+    };
+
+    let btminus_G_Mod_click = function () {
+        var GetQty = 0;
+        if ($('#txtGetQty_Mod').val() == "") {
+            $('#txtGetQty_Mod').val(0)
+        }
+        else {
+            GetQty = parseInt($('#txtGetQty_Mod').val()) - 1
+            if (GetQty < 0) {
+
+            }
+            else {
+                $('#txtGetQty_Mod').val(GetQty)
+            }
+        }
+    };
+
+    let btplus_S_Mod_click = function () {
+        var SaveQty = 0;
+        if ($('#txtSaveQty_Mod').val() == "") {
+            $('#txtSaveQty_Mod').val(1)
+        }
+        else {
+            SaveQty = parseInt($('#txtSaveQty_Mod').val()) + 1
+            $('#txtSaveQty_Mod').val(SaveQty)
+        }
+    };
+
+    let btminus_S_Mod_click = function () {
+        var SaveQty = 0;
+        if ($('#txtSaveQty_Mod').val() == "") {
+            $('#txtSaveQty_Mod').val(0)
+        }
+        else {
+            SaveQty = parseInt($('#txtSaveQty_Mod').val()) - 1
+            if (SaveQty < 0) {
+
+            }
+            else {
+                $('#txtSaveQty_Mod').val(SaveQty)
+            }
+        }
+    };
+
     let afterGetInitVMN02 = function (data) {
         AssignVar();
         $('#btQuery').click(function () { SearchVMN02(); });
@@ -792,6 +900,15 @@
         $('#btSave_ModH').click(function () { btSaveH_click(); });
         $('.forminput input').change(function () { InputValidation(this) });
 
+        $('#btminus_G_Add').click(function () { btminus_G_Add_click(); });
+        $('#btplus_G_Add').click(function () { btplus_G_Add_click(); });
+        $('#btminus_S_Add').click(function () { btminus_S_Add_click(); });
+        $('#btplus_S_Add').click(function () { btplus_S_Add_click(); });
+
+        $('#btminus_G_Mod').click(function () { btminus_G_Mod_click(); });
+        $('#btplus_G_Mod').click(function () { btplus_G_Mod_click(); });
+        $('#btminus_S_Mod').click(function () { btminus_S_Mod_click(); });
+        $('#btplus_S_Mod').click(function () { btplus_S_Mod_click(); });
 
         var dtWarehouse = data.getElementsByTagName('dtWarehouse');
         InitSelectItem($('#cbWh')[0], dtWarehouse, "ST_ID", "ST_Sname", true, "請選擇店代號");

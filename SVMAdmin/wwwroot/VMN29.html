@@ -324,27 +324,49 @@
                                                 font-size: 0.85rem;
                                             }
                                         </style>
+                                        <style>
+                                            #modal_VMN29 .fa-plus-circle {
+                                                font-size: 28px;
+                                                color: steelblue;
+                                                cursor: pointer;
+                                            }
+
+                                            #modal_VMN29 .fa-minus-circle {
+                                                font-size: 28px;
+                                                color: steelblue;
+                                                cursor: pointer;
+                                            }
+                                        </style>
+
                                         <div class="card-block forminput">
                                             <div class="form-group row">
                                                 <label class="col-form-label col-3">*貨倉代號</label>
-                                                <div class="col-9">
+                                                <div class="col-6">
                                                     <input id="Type_ID" type="text" class="form-control" autocomplete="off" />
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-form-label col-3">*貨倉名稱</label>
-                                                <div class="col-9">
+                                                <div class="col-6">
                                                     <input id="Type_Name" type="text" class="form-control" autocomplete="off" />
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-form-label col-3">*建議滿倉量</label>
-                                                <div class="col-9">
+
+                                                <span id="btminus" class="fa fa-minus-circle" style="vertical-align: middle; margin: 3px;"></span>
+                                                <label id="lblminus">&nbsp;&nbsp;</label>
+
+                                                <div class="col-2">
                                                     <input id="DisplayNum" type="text" class="form-control" autocomplete="off" />
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
+
+                                                <label id="lblplus">&nbsp;&nbsp;</label>
+                                                <span id="btplus" class="fa fa-plus-circle" style="vertical-align: middle; margin: 3px;"></span>
+
                                             </div>
                                         </div>
                                         <div class="modal-footer">

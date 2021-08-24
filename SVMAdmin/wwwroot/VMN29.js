@@ -92,12 +92,18 @@
 
         var node = $(grdU.ActiveRowTR()).prop('Record');
         $('#Type_ID,#Type_Name,#DisplayNum').prop('readonly', false);
+
+        $('#btminus').show()
+        $('#lblminus').show()
+        $('#btplus').show()
+        $('#lblplus').show()
+
         $('#Type_ID').val(GetNodeValue(node, 'Type_ID'));
         OldID = GetNodeValue(node, 'Type_ID');
         //alert(OldID)
         $('#Type_Name').val(GetNodeValue(node, 'Type_Name'));
         $('#DisplayNum').val(GetNodeValue(node, 'DisplayNum'));
-
+      
         $('#modal_VMN29').modal('show');
     };
 
@@ -113,10 +119,17 @@
 
         var node = $(grdU.ActiveRowTR()).prop('Record');
         $('#Type_ID,#Type_Name,#DisplayNum').prop('readonly', true);
+
+        $('#btminus').hide()
+        $('#lblminus').hide()
+        $('#btplus').hide()
+        $('#lblplus').hide()
+
+        
         $('#Type_ID').val(GetNodeValue(node, 'Type_ID'));
         $('#Type_Name').val(GetNodeValue(node, 'Type_Name'));
         $('#DisplayNum').val(GetNodeValue(node, 'DisplayNum'));
- 
+
         $('#modal_VMN29').modal('show');
     };
 
@@ -131,9 +144,16 @@
         $('#modal_VMN29 .btn-danger').text('儲存');
         //var node = $(grdU.ActiveRowTR()).prop('Record');
         $('#Type_ID,#Type_Name,#DisplayNum').prop('readonly', false);
+            
+        $('#btminus').show()
+        $('#lblminus').show()
+        $('#btplus').show()
+        $('#lblplus').show()
+
         $('#Type_ID').val("");
         $('#Type_Name').val("");
         $('#DisplayNum').val("");
+
         //$('#Type_ID').val(GetNodeValue(node, 'Type_ID'));
         //OldID = GetNodeValue(node, 'Type_ID');
         ////alert(OldID)
@@ -230,6 +250,33 @@
         //else
         //    PostToWebApi({ url: "api/SystemSetup/ImportPLU", data: pData, success: AfterImportPLU });
         
+    };
+
+    let btplus_click = function () {
+        var DisplayNum = 0;
+        if ($('#DisplayNum').val() == "") {
+            $('#DisplayNum').val(1)
+        }
+        else {
+            DisplayNum = parseInt($('#DisplayNum').val()) + 1
+            $('#DisplayNum').val(DisplayNum)
+        }
+    };
+
+    let btminus_click = function () {
+        var DisplayNum = 0;
+        if ($('#DisplayNum').val() == "") {
+            $('#DisplayNum').val(0)
+        }
+        else {
+            DisplayNum = parseInt($('#DisplayNum').val()) - 1
+            if (DisplayNum < 0) {
+
+            }
+            else {
+                $('#DisplayNum').val(DisplayNum)
+            }
+        }
     };
 
     let AfterChkRackUsed = function (data) {
@@ -353,6 +400,9 @@
         $('#btCancel').click(function () { btCancel_click(); });
         $('#btAddRack').click(function () { btAdd_click(); });
         $('.forminput input').change(function () { InputValidation(this) });
+
+        $('#btminus').click(function () { btminus_click(); });
+        $('#btplus').click(function () { btplus_click(); });
 
         //SetPLUAutoComplete("GD_NAME");
         //SetPLUAutoComplete("GD_NO");

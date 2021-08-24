@@ -368,6 +368,19 @@
                                                 font-size: 0.85rem;
                                             }
                                         </style>
+                                        <style>
+                                            #modal_VMN02_Add .fa-plus-circle {
+                                                font-size: 28px;
+                                                color: steelblue;
+                                                cursor: pointer;
+                                            }
+
+                                            #modal_VMN02_Add .fa-minus-circle {
+                                                font-size: 28px;
+                                                color: steelblue;
+                                                cursor: pointer;
+                                            }
+                                        </style>
                                         <div class="card-block forminput">
                                             <div class="form-group row">
                                                 <label class="col-form-label col-4">智販群店代號</label>
@@ -413,21 +426,37 @@
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-form-label col-4">*電子發票每次取號張數</label>
-                                                <div class="col-4">
+
+                                                <span id="btminus_G_Add" class="fa fa-minus-circle" style="vertical-align: middle; margin: 3px;"></span>
+                                                <label>&nbsp;&nbsp;</label>
+
+                                                <div class="col-2">
                                                     <input id="txtGetQty_Add" type="text" class="form-control" autocomplete="off" />
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
+
+                                                <label>&nbsp;&nbsp;</label>
+                                                <span id="btplus_G_Add" class="fa fa-plus-circle" style="vertical-align: middle; margin: 3px;"></span>
+
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-form-label col-4">*電子發票安全存量</label>
-                                                <div class="col-4">
+
+                                                <span id="btminus_S_Add" class="fa fa-minus-circle" style="vertical-align: middle; margin: 3px;"></span>
+                                                <label>&nbsp;&nbsp;</label>
+
+                                                <div class="col-2">
                                                     <input id="txtSaveQty_Add" type="text" class="form-control" autocomplete="off" />
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
+
+                                                <label>&nbsp;&nbsp;</label>
+                                                <span id="btplus_S_Add" class="fa fa-plus-circle" style="vertical-align: middle; margin: 3px;"></span>
+
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-form-label col-4">開店日</label>
-                                                <div class="col-4">
+                                                <div class="col-3">
                                                     <input id="txtST_OpenDay_Add" type="text" class="form-control" autocomplete="off" />
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
@@ -453,6 +482,19 @@
                                             #modal-Role .msg-valid {
                                                 color: red;
                                                 font-size: 0.85rem;
+                                            }
+                                        </style>
+                                        <style>
+                                            #modal_VMN02_Mod .fa-plus-circle {
+                                                font-size: 28px;
+                                                color: steelblue;
+                                                cursor: pointer;
+                                            }
+
+                                            #modal_VMN02_Mod .fa-minus-circle {
+                                                font-size: 28px;
+                                                color: steelblue;
+                                                cursor: pointer;
                                             }
                                         </style>
                                         <div class="card-block forminput">
@@ -503,28 +545,44 @@
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-form-label col-4">*電子發票每次取號張數</label>
-                                                <div class="col-4">
+
+                                                <span id="btminus_G_Mod" class="fa fa-minus-circle" style="vertical-align: middle; margin: 3px;"></span>
+                                                <label>&nbsp;&nbsp;</label>
+
+                                                <div class="col-2">
                                                     <input id="txtGetQty_Mod" type="text" class="form-control" autocomplete="off" />
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
+
+                                                <label>&nbsp;&nbsp;</label>
+                                                <span id="btplus_G_Mod" class="fa fa-plus-circle" style="vertical-align: middle; margin: 3px;"></span>
+
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-form-label col-4">*電子發票安全存量</label>
-                                                <div class="col-4">
+
+                                                <span id="btminus_S_Mod" class="fa fa-minus-circle" style="vertical-align: middle; margin: 3px;"></span>
+                                                <label>&nbsp;&nbsp;</label>
+
+                                                <div class="col-2">
                                                     <input id="txtSaveQty_Mod" type="text" class="form-control" autocomplete="off" />
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
+
+                                                <label>&nbsp;&nbsp;</label>
+                                                <span id="btplus_S_Mod" class="fa fa-plus-circle" style="vertical-align: middle; margin: 3px;"></span>
+
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-form-label col-4">開店日</label>
-                                                <div class="col-4">
+                                                <div class="col-3">
                                                     <input id="txtST_OpenDay_Mod" type="text" class="form-control" autocomplete="off" />
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-form-label col-4">停止營業日</label>
-                                                <div class="col-4">
+                                                <div class="col-3">
                                                     <input id="txtST_StopDay_Mod" type="text" class="form-control" autocomplete="off" />
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
@@ -637,7 +695,7 @@
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-form-label col-3">補貨店倉</label>
-                                                <div class="col-4">
+                                                <div class="col-3">
                                                     <input id="txtWhNoIn_ModH" type="text" class="form-control" autocomplete="off" />
                                                     <span class="msg-valid valid-blank"></span>
                                                 </div>
