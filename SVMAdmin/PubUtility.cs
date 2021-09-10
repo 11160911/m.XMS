@@ -726,7 +726,7 @@ namespace SVMAdmin
 
             //權限管理,智販機管理,商品管理,營運管理,營運分析
             dt.Rows.Add(new object[] { "權限管理", "Authorize", "SysUsers", "使用者維護", "SysUsers", "P", "fa-cog" });
-            dt.Rows.Add(new object[] { "權限管理", "Authorize", "SysSecurity", "角色權限維護", "SysSecurity", "P", "fa-cog" });
+            dt.Rows.Add(new object[] { "權限管理", "Authorize", "VPV01", "系統權限管理", "VPV01", "P", "fa-cog" });
             dt.Rows.Add(new object[] { "權限管理", "Authorize", "SysChangePWD", "密碼變更作業", "SysChangePWD", "P", "fa-cog" });
 
             dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "VMN01", "智販機類別資料維護", "VMN01", "P", "fa-cogs" });
