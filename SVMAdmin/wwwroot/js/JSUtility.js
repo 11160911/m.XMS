@@ -943,3 +943,55 @@ var DateDiff = function (interval, objDate1, objDate2) {
     }
 }
 
+var SetTreeField = function (id, xmlParent, xmlChild) {
+    $(id).empty();
+    let root = $('<ul></ul>');
+    $(id).append(root);
+    for (var i = 0; i < xmlParent.length; i++) {
+        let nodeA1;
+        let branch1;
+        var jid = GetNodeValue(xmlParent[i], "id");
+        var jtxt = GetNodeValue(xmlParent[i], "text");
+        //var jparent = GetNodeValue(xmlParent[i], "parent");
+        nodeA1 = $('<li id="' + jid + '">' + jtxt + '</li>');
+        root.append(nodeA1);
+        if (xmlChild != null) {
+            var li_Cnt = 0;
+            for (var j = 0; j < xmlChild.length; j++) {
+                let nodeB1;
+                var jid2 = GetNodeValue(xmlChild[j], "id");
+                var jtxt2 = GetNodeValue(xmlChild[j], "text");
+                var jparent2 = GetNodeValue(xmlChild[j], "parent");
+                if (jparent2 == jid) {
+                    if (li_Cnt == 0) {
+                        branch1 = $('<ul></ul>');
+                        nodeA1.append(branch1);
+                    }
+                    nodeB1 = $('<li id="' + jid2 + '">' + jtxt2 + '</li>');
+                    branch1.append(nodeB1);
+                    li_Cnt++;
+                }
+            }
+            li_Cnt = 0;
+        }
+
+    }
+
+}
+
+var InitCheckBoxItem = function (elmCheck, xml, valField, txtField, propName) {
+    if (elmCheck == null)
+        return;
+    $(elmCheck).empty();
+    if (xml == null)
+        return;
+    if (xml.length == 0)
+        return;
+    let ls_Name = "";
+    for (var i = 0; i < xml.length; i++) {
+        var desc = GetNodeValue(xml[i], txtField);
+        var strVal = GetNodeValue(xml[i], valField);
+        if (propName != null & propName != "") { ls_Name = "name='" + propName + "'"; };
+        $(elmCheck).append("<samp class='col-md-3'><input type='checkbox' id='chk" + i.toString() + "' " + ls_Name + " value='" + strVal + "'><label for='chk" + i.toString() + "'>" + desc + "</label></samp>");
+    }
+}
