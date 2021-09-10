@@ -4471,7 +4471,7 @@ namespace SVMAdmin.Controllers
                 }
                 else
                 { //ManEaddress
-                    sql = "select Man_Eaddress from EmployeeSV Where CompanyCode='" + uu.CompanyId + "' and Man_Eaddress='" + Setstr + "'";
+                    sql = "select Man_Eaddress from EmployeeSV (nolock) Where Man_Eaddress='" + Setstr + "'";
                 }
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtEmp";
