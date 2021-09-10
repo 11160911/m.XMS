@@ -588,7 +588,7 @@ namespace SVMAdmin.Controllers
                 string Condition = rq["Condition"];
                 string SearchCond = rq["SearchCond"];
                 string sql = "select " + Column + " from " + Table;
-                sql += " where 1=1 and " + Condition;
+                sql += " where CompanyCode='" + uu.CompanyId + "' and 1=1 and " + Condition;
                 sql += " order by " + OrderColumn;
                 DataTable dtDS = PubUtility.SqlQry(sql, uu, "SYS");
                 dtDS.TableName = "dtCommSelResult";
