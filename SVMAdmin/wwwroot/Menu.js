@@ -398,7 +398,19 @@
                     PageVIV10($(".workarea"));
                 }
             }
+            else if (pg == "VPV01") {
+                //alert("VPV01");
+                if (window.PageVPV01 == undefined)
 
+                    $.getScript('VPV01.js',
+                        function () {
+                            PageVPV01($(".workarea"));
+                        }
+                    );
+                else {
+                    PageVPV01($(".workarea"));
+                }
+            }
 
             else if (pg == "MMMachineSet") {
                 if (window.PageMMMachineSet == undefined)
