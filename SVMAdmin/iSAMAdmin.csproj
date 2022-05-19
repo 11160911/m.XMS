@@ -6,7 +6,53 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\DataController2.cs" />
+    <Compile Remove="Controllers\EDIController.cs" />
+    <Compile Remove="Controllers\HtmlController2.cs" />
+    <Compile Remove="Controllers\InDataControllerInv.cs" />
+    <Compile Remove="Controllers\InHtmlControllerInv.cs" />
+    <Compile Remove="Controllers\SaDataController.cs" />
+    <Compile Remove="Controllers\SaHtmlController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\AIReports\VSA04P.html" />
+    <Content Remove="wwwroot\AIReports\VSA04P.js" />
+    <Content Remove="wwwroot\AIReports\VSA21P.html" />
+    <Content Remove="wwwroot\AIReports\VSA21P.js" />
+    <Content Remove="wwwroot\AIReports\VSA21_7P.html" />
+    <Content Remove="wwwroot\AIReports\VSA21_7P.js" />
+    <Content Remove="wwwroot\AIReports\VSA73P.html" />
+    <Content Remove="wwwroot\AIReports\VSA73P.js" />
+    <Content Remove="wwwroot\AIReports\VSA73_1P.html" />
+    <Content Remove="wwwroot\AIReports\VSA73_1P.js" />
+    <Content Remove="wwwroot\AIReports\VSA76P.html" />
+    <Content Remove="wwwroot\AIReports\VSA76P.js" />
+    <Content Remove="wwwroot\AIReports\VSA76_1P.html" />
+    <Content Remove="wwwroot\AIReports\VSA76_1P.js" />
+    <Content Remove="wwwroot\Inv\VIN14_4.html" />
+    <Content Remove="wwwroot\Inv\VIN14_4.js" />
+    <Content Remove="wwwroot\Inv\VIN14_5.html" />
+    <Content Remove="wwwroot\Inv\VIN14_5.js" />
+    <Content Remove="wwwroot\Inv\VIN47.html" />
+    <Content Remove="wwwroot\Inv\VIN47.js" />
+    <Content Remove="wwwroot\SystemSetup\VIV10.html" />
+    <Content Remove="wwwroot\SystemSetup\VIV10.js" />
+    <Content Remove="wwwroot\SystemSetup\VMN01.html" />
+    <Content Remove="wwwroot\SystemSetup\VMN01.js" />
+    <Content Remove="wwwroot\SystemSetup\VMN02.html" />
+    <Content Remove="wwwroot\SystemSetup\VMN02.js" />
+    <Content Remove="wwwroot\VPV01.html" />
+    <Content Remove="wwwroot\VPV01.js" />
+    <Content Remove="wwwroot\VXT03.html" />
+    <Content Remove="wwwroot\VXT03.js" />
+    <Content Remove="wwwroot\VXT03_1.html" />
+    <Content Remove="wwwroot\VXT03_1.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Pages\" />
+    <Folder Include="wwwroot\AIReports\" />
   </ItemGroup>
 
   <ItemGroup>

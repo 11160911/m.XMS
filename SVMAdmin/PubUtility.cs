@@ -725,46 +725,46 @@ namespace SVMAdmin
             dt.Columns.Add("Icon", typeof(string));
 
             //權限管理,智販機管理,商品管理,營運管理,營運分析
-            dt.Rows.Add(new object[] { "權限管理", "Authorize", "SysUsers", "使用者維護", "SysUsers", "P", "fa-cog" });
-            dt.Rows.Add(new object[] { "權限管理", "Authorize", "VPV01", "系統權限管理", "VPV01", "P", "fa-cog" });
-            dt.Rows.Add(new object[] { "權限管理", "Authorize", "SysChangePWD", "密碼變更作業", "SysChangePWD", "P", "fa-cog" });
+            //dt.Rows.Add(new object[] { "權限管理", "Authorize", "SysUsers", "使用者維護", "SysUsers", "P", "fa-cog" });
+            //dt.Rows.Add(new object[] { "權限管理", "Authorize", "VPV01", "系統權限管理", "VPV01", "P", "fa-cog" });
+            //dt.Rows.Add(new object[] { "權限管理", "Authorize", "SysChangePWD", "密碼變更作業", "SysChangePWD", "P", "fa-cog" });
 
-            dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "VMN01", "智販機類別資料維護", "VMN01", "P", "fa-cogs" });
-            dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "VMN29", "貨倉類型設定", "VMN29", "P", "fa-cogs" });
-            dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "MMMachineSet", "智販機設定", "MMMachineSet", "P", "fa-cogs" });
-            dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "VXT03", "智販機總覽", "VXT03", "P", "fa-cogs" });
-            dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "VXT03_1", "智販機監控作業", "VXT03_1", "P", "fa-cogs" });
-            dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "VIV10", "電子發票分配作業", "VIV10", "P", "fa-cogs" });
-            dt.Rows.Add(new object[] { "智販機管理", "MachineManage", "VMN02", "雲智販群設定", "VMN02", "P", "fa-cogs" });
+            dt.Rows.Add(new object[] { "功能選單", "MachineManage", "VMN01", "盤點作業", "VMN01", "P", "fa-cogs" });
+            dt.Rows.Add(new object[] { "功能選單", "MachineManage", "VMN29", "條碼收集", "VMN29", "P", "fa-cogs" });
+            dt.Rows.Add(new object[] { "功能選單", "MachineManage", "MMMachineSet", "出貨/調撥", "MMMachineSet", "P", "fa-cogs" });
+            dt.Rows.Add(new object[] { "功能選單", "MachineManage", "VXT03", "單價查詢", "VXT03", "P", "fa-cogs" });
+            dt.Rows.Add(new object[] { "功能選單", "MachineManage", "VXT03_1", "上傳作業", "VXT03_1", "P", "fa-cogs" });
+            dt.Rows.Add(new object[] { "功能選單", "MachineManage", "VIV10", "清除作業", "VIV10", "P", "fa-cogs" });
+            dt.Rows.Add(new object[] { "功能選單", "MachineManage", "VMN02", "店號設定", "VMN02", "P", "fa-cogs" });
 
-            dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "Inv", "庫存查詢", "Inv", "P", "fa-cubes" });
-            dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMMacPLUSet", "智販機商品設定", "GMMacPLUSet", "P", "fa-cubes" });
-            dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMInvPLUSet", "貨倉商品設定", "GMInvPLUSet", "P", "fa-cubes" });
+            //dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "Inv", "庫存查詢", "Inv", "P", "fa-cubes" });
+            //dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMMacPLUSet", "智販機商品設定", "GMMacPLUSet", "P", "fa-cubes" });
+            //dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMInvPLUSet", "貨倉商品設定", "GMInvPLUSet", "P", "fa-cubes" });
             //dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMInvoiceNoSet", "發票分配(店+機)", "GMInvoiceNoSet", "P", "fa-cubes" });
-            dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMPicVdoSet", "圖片/影片設定", "GMPicVdoSet", "P", "fa-cubes" });
+            //dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMPicVdoSet", "圖片/影片設定", "GMPicVdoSet", "P", "fa-cubes" });
             //dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMMacType", "智販機類別設定", "GMMacType", "P", "fa-cubes" });
 
-            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN13_1", "換店設定", "VIN13_1", "P", "fa-th-large" });
-            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN13_2", "商品換貨設定", "VIN13_2", "P", "fa-th-large" });
-            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN14_1", "商品撿貨作業", "VIN14_1", "P", "fa-th-large" });
-            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN14_2", "商品補貨作業", "VIN14_2", "P", "fa-th-large" });
-            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN14_3", "商品報廢/退貨作業", "VIN14_3", "P", "fa-th-large" });
+            //dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN13_1", "換店設定", "VIN13_1", "P", "fa-th-large" });
+            //dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN13_2", "商品換貨設定", "VIN13_2", "P", "fa-th-large" });
+            //dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN14_1", "商品撿貨作業", "VIN14_1", "P", "fa-th-large" });
+            //dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN14_2", "商品補貨作業", "VIN14_2", "P", "fa-th-large" });
+            //dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN14_3", "商品報廢/退貨作業", "VIN14_3", "P", "fa-th-large" });
             //dt.Rows.Add(new object[] { "營運管理", "OperatManage", "OMScrap", "商品作業", "OMScrap", "P", "fa-th-large" });
-            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN14_4", "換店作業", "VIN14_4", "P", "fa-th-large" });
-            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN14_5", "商品換貨作業", "VIN14_5", "P", "fa-th-large" });
-            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN47", "商品調整作業", "VIN47", "P", "fa-th-large" });
-            dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN14_1P", "商品撿貨查詢", "VIN14_1P", "P", "fa-th-large" });
+            //dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN14_4", "換店作業", "VIN14_4", "P", "fa-th-large" });
+            //dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN14_5", "商品換貨作業", "VIN14_5", "P", "fa-th-large" });
+            //dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN47", "商品調整作業", "VIN47", "P", "fa-th-large" });
+            //dt.Rows.Add(new object[] { "營運管理", "OperatManage", "VIN14_1P", "商品撿貨查詢", "VIN14_1P", "P", "fa-th-large" });
 
-            dt.Rows.Add(new object[] { "營運分析", "SaleAnalysis", "SAReport1", "區域別銷售分析", "SAReport1", "P", "fa-file-excel-o" });
-            dt.Rows.Add(new object[] { "營運分析", "SaleAnalysis", "SAReport2", "商品別銷售分析", "SAReport2", "P", "fa-file-excel-o" });
+            //dt.Rows.Add(new object[] { "營運分析", "SaleAnalysis", "SAReport1", "區域別銷售分析", "SAReport1", "P", "fa-file-excel-o" });
+            //dt.Rows.Add(new object[] { "營運分析", "SaleAnalysis", "SAReport2", "商品別銷售分析", "SAReport2", "P", "fa-file-excel-o" });
 
-            dt.Rows.Add(new object[] { "智能報表", "AIReports", "VSA04P", "交易明細", "VSA04P", "P", "fa-file-excel-o" });
-            dt.Rows.Add(new object[] { "智能報表", "AIReports", "VSA21P", "商品銷售排行", "VSA21P", "P", "fa-file-excel-o" });
-            dt.Rows.Add(new object[] { "智能報表", "AIReports", "VSA21_7P", "區域銷售排行", "VSA21_7P", "P", "fa-file-excel-o" });
-            dt.Rows.Add(new object[] { "智能報表", "AIReports", "VSA76_1P", "即時銷售查詢", "VSA76_1P", "P", "fa-file-excel-o" });
-            dt.Rows.Add(new object[] { "智能報表", "AIReports", "VSA76P", "智販機銷售排行", "VSA76P", "P", "fa-file-excel-o" });
-            dt.Rows.Add(new object[] { "智能報表", "AIReports", "VSA73P", "時段銷售排行", "VSA73P", "P", "fa-file-excel-o" });
-            dt.Rows.Add(new object[] { "智能報表", "AIReports", "VSA73_1P", "7日時段統計", "VSA73_1P", "P", "fa-file-excel-o" });
+            //dt.Rows.Add(new object[] { "智能報表", "AIReports", "VSA04P", "交易明細", "VSA04P", "P", "fa-file-excel-o" });
+            //dt.Rows.Add(new object[] { "智能報表", "AIReports", "VSA21P", "商品銷售排行", "VSA21P", "P", "fa-file-excel-o" });
+            //dt.Rows.Add(new object[] { "智能報表", "AIReports", "VSA21_7P", "區域銷售排行", "VSA21_7P", "P", "fa-file-excel-o" });
+            //dt.Rows.Add(new object[] { "智能報表", "AIReports", "VSA76_1P", "即時銷售查詢", "VSA76_1P", "P", "fa-file-excel-o" });
+            //dt.Rows.Add(new object[] { "智能報表", "AIReports", "VSA76P", "智販機銷售排行", "VSA76P", "P", "fa-file-excel-o" });
+            //dt.Rows.Add(new object[] { "智能報表", "AIReports", "VSA73P", "時段銷售排行", "VSA73P", "P", "fa-file-excel-o" });
+            //dt.Rows.Add(new object[] { "智能報表", "AIReports", "VSA73_1P", "7日時段統計", "VSA73_1P", "P", "fa-file-excel-o" });
             return dt.Copy();
         }
 
