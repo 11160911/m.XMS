@@ -30,6 +30,12 @@
     <Content Remove="wwwroot\AIReports\VSA76P.js" />
     <Content Remove="wwwroot\AIReports\VSA76_1P.html" />
     <Content Remove="wwwroot\AIReports\VSA76_1P.js" />
+    <Content Remove="wwwroot\Inv\VIN13_2.html" />
+    <Content Remove="wwwroot\Inv\VIN13_2.js" />
+    <Content Remove="wwwroot\Inv\VIN14_2.html" />
+    <Content Remove="wwwroot\Inv\VIN14_2.js" />
+    <Content Remove="wwwroot\Inv\VIN14_3.html" />
+    <Content Remove="wwwroot\Inv\VIN14_3.js" />
     <Content Remove="wwwroot\Inv\VIN14_4.html" />
     <Content Remove="wwwroot\Inv\VIN14_4.js" />
     <Content Remove="wwwroot\Inv\VIN14_5.html" />
@@ -42,6 +48,12 @@
     <Content Remove="wwwroot\SystemSetup\VMN01.js" />
     <Content Remove="wwwroot\SystemSetup\VMN02.html" />
     <Content Remove="wwwroot\SystemSetup\VMN02.js" />
+    <Content Remove="wwwroot\VIN13_1.html" />
+    <Content Remove="wwwroot\VIN13_1.js" />
+    <Content Remove="wwwroot\VIN14_1P.html" />
+    <Content Remove="wwwroot\VIN14_1P.js" />
+    <Content Remove="wwwroot\VMN29.html" />
+    <Content Remove="wwwroot\VMN29.js" />
     <Content Remove="wwwroot\VPV01.html" />
     <Content Remove="wwwroot\VPV01.js" />
     <Content Remove="wwwroot\VXT03.html" />
@@ -53,6 +65,7 @@
   <ItemGroup>
     <Folder Include="Pages\" />
     <Folder Include="wwwroot\AIReports\" />
+    <Folder Include="wwwroot\Inv\" />
   </ItemGroup>
 
   <ItemGroup>
