@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace SVMAdmin.Controllers
 {
@@ -20,7 +21,24 @@ namespace SVMAdmin.Controllers
         [Route("Login")]
         public IActionResult Login()
         {
+            IQueryCollection rq = HttpContext.Request.Query;
+            string BeforeCompanyID = rq["company"];
+            string CompanyID = PubUtility.enCode170215(BeforeCompanyID);
+
             HtmlAgilityPack.HtmlDocument doc1 = LoadHtmlDoc("login2.html");
+            string [] NodeRemove = new string[] {
+                "//input[@id='CompanyID']"
+            };
+            for (int i = 0; i < NodeRemove.Length; i++)
+            {
+                HtmlAgilityPack.HtmlNodeCollection ndm = doc1.DocumentNode.SelectNodes(NodeRemove[i]);
+                if (ndm != null)
+                {
+                    for (int j = 0; j < ndm.Count; j++)
+                        ndm[j].SetAttributeValue("value",CompanyID);
+
+                }
+            }
             //PubUtility.SetCssVer(doc1, "css/custom.css");
             //PubUtility.SetScriptVer(doc1, "lib/bootstrap/dist/js/bootstrap.bundle.min.js");
             PubUtility.AppendScriptAtBodyEnd(doc1, "js/JSUtility.js");

@@ -1,6 +1,8 @@
 ﻿(function ($) {
     //"use strict";
     var Initdoc = function () {
+        $('#CompanyName').val();
+        LoginCompany();
 
         $('#btSignIn').click(function () { LoginSys(); });
 
@@ -11,6 +13,20 @@
             }
         });
     };
+
+    var LoginCompany = function () {
+        var pData = {
+            CompanyID: $('#CompanyID').val(),
+        };
+        PostToWebApi({ url: "api/GetCompanyName", data: pData, success: GetCompanySuccess, error: LoginError });
+    }
+
+    var GetCompanySuccess = function (data) {
+        if (ReturnMsg(data, 0) == "GetCompanyNameOK") {
+            var dtC = data.getElementsByTagName('dtCompanyName');
+            $('#CompanyName').text(GetNodeValue(dtC[0], 'ChineseName'));
+        }
+    }
 
     var LoginSys = function () {
         var pData = {

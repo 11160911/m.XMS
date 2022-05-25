@@ -25,6 +25,37 @@ namespace SVMAdmin.Controllers
             _hostingEnvironment = hostingEnvironment;
         }
 
+        [Route("GetCompanyName")]
+        public ActionResult GetCompanyName()
+        {
+            IFormCollection rq = HttpContext.Request.Form;
+            string BeforeCompanyID = rq["companyid"];
+
+            UserInfo uu = new UserInfo();
+            uu.UserID = "Login";
+            uu.CompanyId = BeforeCompanyID;
+
+            string sql = "";
+            sql += "Select ChineseName from CompanyWeb";
+            sql += " where CompanyCode='" + BeforeCompanyID + "'";
+
+
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetCompanyNameOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                DataTable dtTmp = PubUtility.SqlQry(sql, uu, "SYS");
+                dtTmp.TableName = "dtCompanyName";
+                ds.Tables.Add(dtTmp);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
         [Route("LoginSys")]
         public ActionResult LoginSys()
         {
@@ -33,7 +64,6 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-
                 IFormCollection rq = HttpContext.Request.Form;
                 string USERID = rq["USERID"];
                 string PASSWORD = rq["PASSWORD"];
@@ -48,7 +78,7 @@ namespace SVMAdmin.Controllers
                 {
                     USERID = "008";
                     PASSWORD = "008";
-                    sql = "select CompanyCode,Man_ID,Man_Name,Password from EmployeeSV ";
+                    sql = "select CompanyCode,Man_ID,Man_Name,Password from EmployeeWeb ";
                     sql += " where CompanyCode='" + CompanyID.SqlQuote() + "'";
                     sql += " and Man_ID='" + USERID.SqlQuote() + "'";
                     sql += " and Password='" + PASSWORD.SqlQuote() + "'";
@@ -56,10 +86,10 @@ namespace SVMAdmin.Controllers
                 }
                 else
                 {
-                    sql = "select CompanyCode,Man_ID,Man_Name,Password from EmployeeSV ";
+                    sql = "select CompanyCode,Man_ID,Man_Name,Password from EmployeeWeb ";
                     //sql += " where CompanyCode='" + CompanyID.SqlQuote() + "'";
-                    sql += " where Man_Eaddress='" + USERID.SqlQuote() + "'";
-                    sql += " and Password='" + PASSWORD.SqlQuote() + "'";
+                    sql += " where Man_ID='" + USERID.SqlQuote() + "'";
+                    sql += " and CONVERT(varchar(20),CONVERT(varbinary(60),Password))='" + PASSWORD.SqlQuote() + "'";
                     sql += "  and Password<>''";
                 }
 

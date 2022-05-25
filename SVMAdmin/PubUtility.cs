@@ -427,6 +427,55 @@ namespace SVMAdmin
             return decrypt;
         }
 
+        //加解密(ixms)
+        public static string enCode170215(String bb) 
+        {
+            string k1 = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%*";
+            string k2 = "qMd5UPwX76E4Wn9oZH8OKYTrV0aB!@#Ijtc*m2syzAiL1pFgGefDSxQv$%hbNJCRklu3";
+            string tt = bb;
+            int n6 = 68;
+            string dd = "";
+            string ch = "";
+            int i = 0; int j = 0; int ex = 0;
+            if (tt!=null)
+            {
+                if (tt.Substring(0, 2) != "n$" )
+                {
+                    for (i= 0; i < tt.Length; i++)
+                    {
+                        ch = tt.Substring(i, 1); ex = 0;
+                        for (j = 1; j < n6; j++)
+                        {
+                            if (ch == k1.Substring(j, 1))
+                            { dd = dd + k2.Substring(j, 1); }
+                            ex = 1;
+                        }
+                        if (ex == 0)
+                        {dd = dd + ch;}
+                    }
+                    return "n$" + dd;
+                }
+                else
+                {
+                    for (i = 2; i < tt.Length; i++)
+                    {
+                        ch = tt.Substring(i, 1); ex = 0;
+                        for (j = 1; j < n6 ; j++)
+                        {
+                            if (ch == k2.Substring(j, 1))
+                            { dd = dd + k1.Substring(j, 1); }
+                            ex = 1;
+                        }
+                        if (ex == 0)
+                        { dd = dd + ch; }
+                    }
+                    return dd;
+                }
+            }
+            return dd;
+        }
+      
+
         public static void SetScriptVer(HtmlAgilityPack.HtmlDocument doc, string src)
         {
             string[] xPaths = new string[] {
