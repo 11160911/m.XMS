@@ -69,7 +69,7 @@ namespace SVMAdmin.Controllers
                 string PASSWORD = rq["PASSWORD"];
                 string CompanyID = rq["CompanyID"];
                 UserInfo uu = new UserInfo();
-                uu.UserID = "Login";
+                uu.UserID = USERID;  //"Login"
                 uu.CompanyId = CompanyID;
 
 
@@ -86,7 +86,7 @@ namespace SVMAdmin.Controllers
                 }
                 else
                 {
-                    sql = "select CompanyCode,Man_ID,Man_Name,Password from EmployeeWeb ";
+                    sql = "select CompanyCode,Man_ID,Man_Name,CONVERT(varchar(20),CONVERT(varbinary(60),Password)) Password from EmployeeWeb ";
                     //sql += " where CompanyCode='" + CompanyID.SqlQuote() + "'";
                     sql += " where Man_ID='" + USERID.SqlQuote() + "'";
                     sql += " and CONVERT(varchar(20),CONVERT(varbinary(60),Password))='" + PASSWORD.SqlQuote() + "'";
