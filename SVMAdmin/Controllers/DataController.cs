@@ -210,14 +210,35 @@ namespace SVMAdmin.Controllers
                 if (ds.Tables["dtAllFunction"] == null)
                     if (dt.DataSet == null)
                         ds.Tables.Add(dt);
-                string sql = "select a.Man_Name,b.ChineseName";
-                sql += " from EmployeeSV a";
-                sql += " left join Company b on a.CompanyCode=b.CompanyCode";
+                string sql = "select a.Man_Name,b.ChineseName,a.WhNo";
+                sql += " from EmployeeWeb a";
+                sql += " left join CompanyWeb b on a.CompanyCode=b.CompanyCode";
                 sql += " where a.Man_ID='" + uu.UserID + "'";
                 sql += " and a.CompanyCode='" + uu.CompanyId + "' ";
                 DataTable dtU = PubUtility.SqlQry(sql, uu, "SYS");
-                dtU.TableName = "dtEmployeeSV";
+                dtU.TableName = "dtEmployeeWeb";
                 ds.Tables.Add(dtU);
+
+                //新增登入者的公司別,員工代碼,所屬店櫃
+                //if (dtU.Rows.Count>0)
+                //{
+                //    sql = "select *";
+                //    sql += " from ISAMShopWeb (nolock) where CompanyCode='" + uu.CompanyId + "'";
+                //    sql += " and Man_ID='" + uu.UserID + "' ";
+                //    DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                //    if (dtE.Rows.Count > 0)
+                //    {
+                //        sql = "update ISAMShopWeb set WhNo='" + dtU.Rows[0]["WhNo"].ToString() + "'";
+                //        sql += ",ModDate=Convert(varchar,getdate(),111),ModTime=Substring(Convert(varchar,getdate(),121),12,12),ModUser='Login'";
+                //        sql += " where CompanyCode='" + uu.CompanyId + "' and Man_ID='" + uu.UserID + "'";
+                //        PubUtility.ExecuteSql(sql, uu, "SYS");
+                //    }
+                //    else
+                //    {
+
+                //    }
+                //}
+
             }
             catch (Exception err)
             {

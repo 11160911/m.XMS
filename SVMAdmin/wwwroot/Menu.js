@@ -44,7 +44,7 @@
             DyAlert(ReturnMsg(data, 0));
         }
         else {
-            var dtEmployeeSV = data.getElementsByTagName('dtEmployeeSV');
+            var dtEmployeeSV = data.getElementsByTagName('dtEmployeeWeb');
             $('#navbarDropdown').text(GetNodeValue(dtEmployeeSV[0], 'ChineseName') + ' - ' + GetNodeValue(dtEmployeeSV[0], 'Man_Name'));
             dtFun = data.getElementsByTagName('dtAllFunction');
             SetMenu();
@@ -112,23 +112,34 @@
 */
             if (icat != strCat) {
                 strCat = icat;
-                var strLi = '<li><a><i class="fa ' + GetNodeValue(dtFun[i], 'icon') + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
-                strLi += '<ul class="nav child_menu">';
-                strLi += "</ul></li>";
+                //var strLi = '<li><a><i class="fa ' + GetNodeValue(dtFun[i], 'icon') + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
+                //strLi += '<ul class="nav child_menu">';
+                //strLi += "</ul></li>";
+                var strLi = '<li><a><i class="fa ' + GetNodeValue(dtFun[i], 'icon') + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' </a>';
+                strLi += "</li>";
                 licat = $(strLi);
+                var apg = licat.find('a');
+
+                apg.prop('Page', GetNodeValue(dtFun[i], "Page"));
+                apg.prop('ItemCode', GetNodeValue(dtFun[i], "ItemCode"));
+                apg.prop('Description', GetNodeValue(dtFun[i], "Description"));
+                apg.prop('SECU_PERMIT', GetNodeValue(dtFun[i], "SECU_PERMIT"));
+                apg.prop('href', '#' + GetNodeValue(dtFun[i], "Page"));
+
                 menu.append(licat);
             }
-            strLi = '<li><a href="#">' + GetNodeValue(dtFun[i], 'Description') + '</a></li>';
+            //strLi = '<li><a href="#">' + GetNodeValue(dtFun[i], 'Description') + '</a></li>';
             var liFunc = $(strLi);
-            licat.find('.child_menu').append(liFunc);
+            //licat.find('.child_menu').append(liFunc);
             var apg = liFunc.find('a');
 
+            //apg.prop('Page', GetNodeValue(dtFun[i], "Page"));
+            //apg.prop('ItemCode', GetNodeValue(dtFun[i], "ItemCode"));
+            //apg.prop('Description', GetNodeValue(dtFun[i], "Description"));
+            //apg.prop('SECU_PERMIT', GetNodeValue(dtFun[i], "SECU_PERMIT"));
+            //apg.prop('href', '#' + GetNodeValue(dtFun[i], "Page"));
             apg.click(function () { click_menu(this); });
-            apg.prop('Page', GetNodeValue(dtFun[i], "Page"));
-            apg.prop('ItemCode', GetNodeValue(dtFun[i], "ItemCode"));
-            apg.prop('Description', GetNodeValue(dtFun[i], "Description"));
-            apg.prop('SECU_PERMIT', GetNodeValue(dtFun[i], "SECU_PERMIT"));
-            apg.prop('href', '#' + GetNodeValue(dtFun[i], "Page"));
+          
 
         }
     };
@@ -202,18 +213,6 @@
                 }
             }
 
-            else if (pg == "GMMacPLUSetT") {
-                if (window.Pagetest == undefined)
-                    $.getScript('test.js',
-                        function () {
-                            Pagetest($(".workarea"));
-                        }
-                    );
-                else {
-                    Pagetest($(".workarea"));
-                }
-            }
-
             else if (pg == "Inv") {
                 if (window.PageInv == undefined)
                     $.getScript('Inv.js',
@@ -250,35 +249,6 @@
                 }
             }
 
-            else if (pg == "VXT03") {
-
-                if (window.PageVXT03 == undefined)
-                    //alert("VXT03");
-                    $.getScript('VXT03.js',
-                        function () {
-                            PageVXT03($(".workarea"));
-                        }
-                    );
-                else {
-                    PageVXT03($(".workarea"));
-                }
-            }
-
-
-            else if (pg == "VXT03_1") {
-                //alert("VXT03_1");
-                if (window.PageVXT03_1 == undefined)
-
-                    $.getScript('VXT03_1.js',
-                        function () {
-                            PageVXT03_1($(".workarea"));
-                        }
-                    );
-                else {
-                    PageVXT03_1($(".workarea"));
-                }
-            }
-
 
             else if (pg == "VIN13_1") {
                 //alert("VIN13_1");
@@ -309,7 +279,6 @@
                 }
             }
 
-
             else if (pg == "VIN14_2") {
                 //alert("VIN14_2");
                 if (window.PageVIN14_2 == undefined)
@@ -324,316 +293,6 @@
                 }
             }
 
-
-            else if (pg == "VIN14_3") {
-                //alert("VIN14_3");
-                if (window.PageVIN14_3 == undefined)
-
-                    $.getScript('Inv/VIN14_3.js',
-                        function () {
-                            PageVIN14_3($(".workarea"));
-                        }
-                    );
-                else {
-                    PageVIN14_3($(".workarea"));
-                }
-            }
-
-
-            else if (pg == "VIN14_4") {
-                //alert("VIN14_4");
-                if (window.PageVIN14_4 == undefined)
-
-                    $.getScript('Inv/VIN14_4.js',
-                        function () {
-                            PageVIN14_4($(".workarea"));
-                        }
-                    );
-                else {
-                    PageVIN14_4($(".workarea"));
-                }
-            }
-
-
-            else if (pg == "VIN14_5") {
-                //alert("VIN14_5");
-                if (window.PageVIN14_5 == undefined)
-
-                    $.getScript('Inv/VIN14_5.js',
-                        function () {
-                            PageVIN14_5($(".workarea"));
-                        }
-                    );
-                else {
-                    PageVIN14_5($(".workarea"));
-                }
-            }
-
-
-            else if (pg == "VIN47") {
-                //alert("VIN47");
-                if (window.PageVIN47 == undefined)
-
-                    $.getScript('Inv/VIN47.js',
-                        function () {
-                            PageVIN47($(".workarea"));
-                        }
-                    );
-                else {
-                    PageVIN47($(".workarea"));
-                }
-            }
-
-
-            else if (pg == "VIV10") {
-                //alert("VIV10");
-                if (window.PageVIV10 == undefined)
-
-                    $.getScript('SystemSetup/VIV10.js',
-                        function () {
-                            PageVIV10($(".workarea"));
-                        }
-                    );
-                else {
-                    PageVIV10($(".workarea"));
-                }
-            }
-            else if (pg == "VPV01") {
-                //alert("VPV01");
-                if (window.PageVPV01 == undefined)
-
-                    $.getScript('VPV01.js',
-                        function () {
-                            PageVPV01($(".workarea"));
-                        }
-                    );
-                else {
-                    PageVPV01($(".workarea"));
-                }
-            }
-
-            else if (pg == "MMMachineSet") {
-                if (window.PageMMMachineSet == undefined)
-                    $.getScript('SystemSetup/MMMachineSet.js',
-                        function () {
-                            PageMMMachineSet($(".workarea"));
-                        }
-                    );
-                else {
-                    PageMMMachineSet($(".workarea"));
-                }
-            }
-            else if (pg == "GMInvPLUSet") {
-                if (window.PageGMInvPLUSet == undefined)
-                    $.getScript('SystemSetup/GMInvPLUSet.js',
-                        function () {
-                            PageGMInvPLUSet($(".workarea"));
-                        }
-                    );
-                else {
-                    PageGMInvPLUSet($(".workarea"));
-                }
-            }
-            else if (pg == "VSA04P") {
-                if (window.PageParameter == undefined)
-                    $.getScript('AIReports/VSA04P.js',
-                        function () {
-                            PageVSA04P($(".workarea"));
-                        }
-                    );
-                else {
-                    PageVSA04P($(".workarea"));
-                }
-            }
-            else if (pg == "VSA21P") {
-                if (window.PageParameter == undefined)
-                    $.getScript('AIReports/VSA21P.js',
-                        function () {
-                            PageVSA21P($(".workarea"));
-                        }
-                    );
-                else {
-                    PageVSA21P($(".workarea"));
-                }
-            }
-            else if (pg == "VSA21_7P") {
-                if (window.PageParameter == undefined)
-                    $.getScript('AIReports/VSA21_7P.js',
-                        function () {
-                            PageVSA21_7P($(".workarea"));
-                        }
-                    );
-                else {
-                    PageVSA21_7P($(".workarea"));
-                }
-            }
-            else if (pg == "VSA76_1P") {
-                if (window.PageVSA76_1P == undefined)
-                    $.getScript('AIReports/VSA76_1P.js',
-                        function () {
-                            PageVSA76_1P($(".workarea"));
-                        }
-                    );
-                else {
-                    PageVSA76_1P($(".workarea"));
-                }
-            }
-            else if (pg == "VSA76P") {
-                if (window.PageVSA76P == undefined)
-                    $.getScript('AIReports/VSA76P.js',
-                        function () {
-                            PageVSA76P($(".workarea"));
-                        }
-                    );
-                else {
-                    PageVSA76P($(".workarea"));
-                }
-            }
-            else if (pg == "VSA73P") {
-                if (window.PageVSA73P == undefined)
-                    $.getScript('AIReports/VSA73P.js',
-                        function () {
-                            PageVSA73P($(".workarea"));
-                        }
-                    );
-                else {
-                    PageVSA73P($(".workarea"));
-                }
-            }
-            else if (pg == "VSA73_1P") {
-                if (window.PageVSA73_1P == undefined)
-                    $.getScript('AIReports/VSA73_1P.js',
-                        function () {
-                            PageVSA73_1P($(".workarea"));
-                        }
-                    );
-                else {
-                    PageVSA73_1P($(".workarea"));
-                }
-            }
-            else if (pg == "VIN14_1P") {
-                if (window.PageVIN14_1P == undefined)
-                    $.getScript('VIN14_1P.js',
-                        function () {
-                            PageVIN14_1P($(".workarea"));
-                        }
-                    );
-                else {
-                    PageVIN14_1P($(".workarea"));
-                }
-            }
-
-            else if (pg == "VMN02") {
-                if (window.PageVMN02 == undefined)
-                    $.getScript('SystemSetup/VMN02.js',
-                        function () {
-                            PageVMN02($(".workarea"));
-                        }
-                    );
-                else {
-                    PageVMN02($(".workarea"));
-                }
-            }
-            
-            else if (pg == "SDAccount") {
-                if (window.PageSDAccount == undefined)
-                    $.getScript('MasterFile/SDAccount.js',
-                        function () {
-                            PageSDAccount($("#app"), pg);
-                        }
-                    );
-                else {
-                    PageSDAccount($("#app"), pg);
-                }
-            }
-            else if (pg == "SDProductCode") {
-                if (window.PageSDProductCode == undefined)
-                    $.getScript('MasterFile/SDProductCode.js',
-                        function () {
-                            PageSDProductCode($("#app"), pg);
-                        }
-                    );
-                else {
-                    PageSDProductCode($("#app"), pg);
-                }
-            }
-            else if (pg == "SDUpload") {
-                if (window.PageSalesData == undefined)
-                    $.getScript('SalesData/SalesDataUpload.js',
-                        function () {
-                            PageSalesData($("#app"), pg);
-                        }
-                    );
-                else {
-                    PageSalesData($("#app"), pg);
-                }
-            }
-            else if (pg == "GTStore") {
-                if (window.PageGTStore == undefined)
-                    $.getScript('MasterFile/GTStore.js',
-                        function () {
-                            PageGTStore($("#app"), pg);
-                        }
-                    );
-                else {
-                    PageGTStore($("#app"), pg);
-                }
-            }
-            else if (pg == "GTSubBrand") {
-                if (window.PageGTSubBrand == undefined)
-                    $.getScript('MasterFile/GTSubBrand.js',
-                        function () {
-                            PageGTSubBrand($("#app"), pg);
-                        }
-                    );
-                else {
-                    PageGTSubBrand($("#app"), pg);
-                }
-            }
-            else if (pg == "SOUpload") {
-                if (window.PageSOUpload == undefined)
-                    $.getScript('StockOrder/SOUpload.js',
-                        function () {
-                            PageSOUpload($("#app"), pg);
-                        }
-                    );
-                else {
-                    PageSOUpload($("#app"), pg);
-                }
-            }
-            else if (pg == "SOReport1") {
-                if (window.PageSOReport1 == undefined)
-                    $.getScript('StockOrder/SOReport1.js',
-                        function () {
-                            PageSOReport1($("#app"), pg);
-                        }
-                    );
-                else {
-                    PageSOReport1($("#app"), pg);
-                }
-            }
-            else if (pg == "SOReport2") {
-                if (window.PageSOReport2 == undefined)
-                    $.getScript('StockOrder/SOReport2.js',
-                        function () {
-                            PageSOReport2($("#app"), pg);
-                        }
-                    );
-                else {
-                    PageSOReport2($("#app"), pg);
-                }
-            }
-            else if (pg == "SDReport1") {
-                if (window.PageSDReport1 == undefined)
-                    $.getScript('SalesData/SDReport1.js',
-                        function () {
-                            PageSDReport1($("#app"), pg);
-                        }
-                    );
-                else {
-                    PageSDReport1($("#app"), pg);
-                }
-            }
             else if (pg == "SysChangePWD") {
                 $('#OLD_PWD').val("");
                 $('#NEW_PWD').val("");
@@ -683,33 +342,36 @@
             $SIDEBAR_MENU.find('li ul').slideUp();
         }
 
-        $SIDEBAR_MENU.find('a').on('click', function (ev) {
-            var $li = $(this).parent();
+        $SIDEBAR_MENU.find('a').on('click', function () { click_menu(this); }
+        );
 
-            if ($li.is('.active')) {
-                $li.removeClass('active active-sm');
-                $('ul:first', $li).slideUp(function () {
-                    setContentHeight();
-                });
-            } else {
-                // prevent closing menu if we are on child menu
-                if (!$li.parent().is('.child_menu')) {
-                    openUpMenu();
-                } else {
-                    if ($BODY.is('nav-sm')) {
-                        if (!$li.parent().is('child_menu')) {
-                            openUpMenu();
-                        }
-                    }
-                }
+        //$SIDEBAR_MENU.find('a').on('click', function (ev) {
+        //    var $li = $(this).parent();
 
-                $li.addClass('active');
+        //    if ($li.is('.active')) {
+        //        $li.removeClass('active active-sm');
+        //        $('ul:first', $li).slideUp(function () {
+        //            setContentHeight();
+        //        });
+        //    } else {
+        //        // prevent closing menu if we are on child menu
+        //        if (!$li.parent().is('.child_menu')) {
+        //            openUpMenu();
+        //        } else {
+        //            if ($BODY.is('nav-sm')) {
+        //                if (!$li.parent().is('child_menu')) {
+        //                    openUpMenu();
+        //                }
+        //            }
+        //        }
 
-                $('ul:first', $li).slideDown(function () {
-                    setContentHeight();
-                });
-            }
-        });
+        //        $li.addClass('active');
+
+        //        $('ul:first', $li).slideDown(function () {
+        //            setContentHeight();
+        //        });
+        //    }
+        //});
 
         // toggle small or large menu
         $MENU_TOGGLE.on('click', function () {
@@ -728,8 +390,8 @@
             $('.dataTable').each(function () { $(this).dataTable().fnDraw(); });
         });
 
-        // check active menu
-        $SIDEBAR_MENU.find('a[href="' + CURRENT_URL + '"]').parent('li').addClass('current-page');
+        //// check active menu
+        //$SIDEBAR_MENU.find('a[href="' + CURRENT_URL + '"]').parent('li').addClass('current-page');
 
         $SIDEBAR_MENU.find('a').filter(function () {
             return this.href == CURRENT_URL;
@@ -747,7 +409,7 @@
         // fixed sidebar
         if ($.fn.mCustomScrollbar) {
             $('.menu_fixed').mCustomScrollbar({
-                autoHideScrollbar: true,
+                autoHideScrollbar: false,
                 theme: 'minimal',
                 mouseWheel: { preventDefault: true }
             });
