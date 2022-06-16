@@ -210,6 +210,13 @@ namespace SVMAdmin.Controllers
                 if (ds.Tables["dtAllFunction"] == null)
                     if (dt.DataSet == null)
                         ds.Tables.Add(dt);
+                DataTable dtC= PubUtility.SqlQry("Select CAST('' as varchar(20)) SecurityCompanyID where 1=0", uu, "SYS");
+                DataRow ldr = dtC.NewRow();
+                ldr[0]=PubUtility.enCode170215(uu.CompanyId);
+                dtC.Rows.Add(ldr);
+                dtC.TableName = "dtCompany";
+                ds.Tables.Add(dtC);
+
                 string sql = "select a.Man_Name,b.ChineseName,a.WhNo";
                 sql += " from EmployeeWeb a";
                 sql += " left join CompanyWeb b on a.CompanyCode=b.CompanyCode";
@@ -220,24 +227,28 @@ namespace SVMAdmin.Controllers
                 ds.Tables.Add(dtU);
 
                 //新增登入者的公司別,員工代碼,所屬店櫃
-                //if (dtU.Rows.Count>0)
-                //{
-                //    sql = "select *";
-                //    sql += " from ISAMShopWeb (nolock) where CompanyCode='" + uu.CompanyId + "'";
-                //    sql += " and Man_ID='" + uu.UserID + "' ";
-                //    DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
-                //    if (dtE.Rows.Count > 0)
-                //    {
-                //        sql = "update ISAMShopWeb set WhNo='" + dtU.Rows[0]["WhNo"].ToString() + "'";
-                //        sql += ",ModDate=Convert(varchar,getdate(),111),ModTime=Substring(Convert(varchar,getdate(),121),12,12),ModUser='Login'";
-                //        sql += " where CompanyCode='" + uu.CompanyId + "' and Man_ID='" + uu.UserID + "'";
-                //        PubUtility.ExecuteSql(sql, uu, "SYS");
-                //    }
-                //    else
-                //    {
-
-                //    }
-                //}
+                if (dtU.Rows.Count > 0)
+                {
+                    sql = "select *";
+                    sql += " from ISAMShopWeb (nolock) where CompanyCode='" + uu.CompanyId + "'";
+                    sql += " and Man_ID='" + uu.UserID + "' ";
+                    DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                    if (dtE.Rows.Count > 0)
+                    {
+                        sql = "update ISAMShopWeb set WhNo='" + dtU.Rows[0]["WhNo"].ToString() + "'";
+                        sql += ",ModDate=Convert(varchar,getdate(),111),ModTime=Substring(Convert(varchar,getdate(),121),12,12),ModUser='LOGIN'";
+                        sql += " where CompanyCode='" + uu.CompanyId + "' and Man_ID='" + uu.UserID + "'";
+                        PubUtility.ExecuteSql(sql, uu, "SYS");
+                    }
+                    else
+                    {
+                        sql = "Insert into ISAMShopWeb (CompanyCode,CrtUSer,CrtDate,CrtTime,ModUser,ModDate,ModTime,Man_ID,WhNo) ";
+                        sql += "values ('" + uu.CompanyId + "','LOGIN',Convert(varchar,getdate(),111),Substring(Convert(varchar,getdate(),121),12,12)";
+                        sql += ",'LOGIN',Convert(varchar,getdate(),111),Substring(Convert(varchar,getdate(),121),12,12)";
+                        sql += ",'" + uu.UserID + "','" + dtU.Rows[0]["WhNo"].ToString() + "')";
+                        PubUtility.ExecuteSql(sql, uu, "SYS");
+                    }
+                }
 
             }
             catch (Exception err)

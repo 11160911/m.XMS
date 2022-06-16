@@ -28,7 +28,8 @@
 })(jQuery, 'smartresize');
 */
 (function ($) {
-
+    var LogOutComp;
+    var LogOutTimer;
     var dtFun;
 
     var Initdoc = function () {
@@ -44,12 +45,17 @@
             DyAlert(ReturnMsg(data, 0));
         }
         else {
+            var dtCompany = data.getElementsByTagName('dtCompany');
+            LogOutComp = GetNodeValue(dtCompany[0], 'SecurityCompanyID');
+            $("a[href='Login']").attr("href", "Login?company=" + LogOutComp);
+            //alert(GetNodeValue(dtCompany[0], 'SecurityCompanyID'));
             var dtEmployeeSV = data.getElementsByTagName('dtEmployeeWeb');
             $('#navbarDropdown').text(GetNodeValue(dtEmployeeSV[0], 'ChineseName') + ' - ' + GetNodeValue(dtEmployeeSV[0], 'Man_Name'));
             dtFun = data.getElementsByTagName('dtAllFunction');
             SetMenu();
+            
             init_sidebar();
-
+                      
             //init_autosize();
             //$.getScript('js/custom.js', function (data, textStatus, jqxhr) { });
 
@@ -87,6 +93,21 @@
             });
         UU = headers.authorization;
     };
+
+    var Timerstart = function () {
+        var timer = $('#Timer');
+        var number = 600;
+        timer.text(number);
+        LogOutTimer = setInterval(function () {
+            number--;
+            if (number <= 0) {
+                number = 0;
+                window.location.href = "Login?company=" + LogOutComp;
+            }
+            timer.text(number + 0);
+           
+        }, 1000);
+    }
 
     var lastMenu = null;
 
@@ -146,7 +167,12 @@
 
     var click_menu = function (menuitem) {
         $('#FunctionDesc').text($(menuitem).prop('Description'));
+        $('#TimerLbl').hide();
+        $('#Timer').hide();
+        clearInterval(LogOutTimer);
+
         OpenPage(menuitem);
+
 
     }
 
@@ -399,6 +425,8 @@
             setContentHeight();
         }).parent().addClass('active');
 
+        Timerstart();
+
         // recompute content when resizing
         $(window).smartresize(function () {
             setContentHeight();
@@ -414,6 +442,7 @@
                 mouseWheel: { preventDefault: true }
             });
         }
+        
     }
 
     var init_autosize = function () {
