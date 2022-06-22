@@ -773,7 +773,7 @@ namespace SVMAdmin
             dt.Columns.Add("MobilePC", typeof(string));
             dt.Columns.Add("Icon", typeof(string));
 
-            dt.Rows.Add(new object[] { "盤點作業", "MachineManage", "GMMacPLUSet", "盤點作業", "GMMacPLUSet", "P", "fa-cogs" });
+            dt.Rows.Add(new object[] { "盤點作業", "MachineManage", "ISAM01", "盤點作業", "ISAM01", "P", "fa-cogs" });
             dt.Rows.Add(new object[] { "條碼收集", "GoodsManage", "Inv", "條碼收集", "Inv", "P", "fa-cubes" });
             dt.Rows.Add(new object[] { "出貨/調撥", "OperatManage", "VMN01", "出貨/調撥", "VMN01", "P", "fa-th-large" });
 

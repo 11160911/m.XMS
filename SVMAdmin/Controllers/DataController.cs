@@ -210,12 +210,6 @@ namespace SVMAdmin.Controllers
                 if (ds.Tables["dtAllFunction"] == null)
                     if (dt.DataSet == null)
                         ds.Tables.Add(dt);
-                DataTable dtC= PubUtility.SqlQry("Select CAST('' as varchar(20)) SecurityCompanyID where 1=0", uu, "SYS");
-                DataRow ldr = dtC.NewRow();
-                ldr[0]=PubUtility.enCode170215(uu.CompanyId);
-                dtC.Rows.Add(ldr);
-                dtC.TableName = "dtCompany";
-                ds.Tables.Add(dtC);
 
                 string sql = "select a.Man_Name,b.ChineseName,a.WhNo";
                 sql += " from EmployeeWeb a";
@@ -308,7 +302,7 @@ namespace SVMAdmin.Controllers
             }
         }
 
-        [Route("SystemSetup/GetInitGMMacPLUSet")]
+        [Route("SystemSetup/GetInitGMMacPLUSet")]  
         public ActionResult SystemSetup_GetInitGMMacPLUSet()
         {
             UserInfo uu = PubUtility.GetCurrentUser(this);
@@ -2584,52 +2578,20 @@ namespace SVMAdmin.Controllers
         }
 
 
-        //2021-05-18 Larry
-        [Route("SystemSetup/GetInitVIV10")]
-        public ActionResult SystemSetup_GetInitVIV10()
+        [Route("SystemSetup/GetPageInitBefore")]
+        public ActionResult SystemSetup_GetPageInitBefore()
         {
             UserInfo uu = PubUtility.GetCurrentUser(this);
-            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetInitVIV10OK", "" });
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetPageInitBeforeOK", "" });
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-
-                string SysDate = "";
-                string sql = "select convert(char(10),getdate(),111) SysDate";
-
-                DataTable dtSysDate = PubUtility.SqlQry(sql, uu, "SYS");
-                if (dtSysDate.Rows.Count > 0)
-                {
-                    SysDate = dtSysDate.Rows[0][0].ToString();
-                }
-
-                string sYYYY = PubUtility.StrLeft(SysDate, 5);
-                Int16 M = Convert.ToInt16(SysDate.Substring(5, 2));
-
-                if (M % 2 == 0)
-                {
-                    M = (short)(M - 1);
-                }
-
-                string YM = sYYYY + '/' + PubUtility.PadLeft(Convert.ToString(M), '0', 2);
-
-                sql = "select Distinct Inv_YM Inv_YM ";
-                sql += " from InvDistribute (NoLock) ";
-                sql += " Where CompanyCode='" + uu.CompanyId + "' And Inv_YM>='" + YM + "' ";
-                sql += " Order By Inv_YM ";
-
-                DataTable dtYM = PubUtility.SqlQry(sql, uu, "SYS");
-                dtYM.TableName = "dtYM";
-                ds.Tables.Add(dtYM);
-
-                sql = "select ST_ID ,ST_ID+ST_SName STName ";
-                sql += " from WarehouseSV (NoLock) ";
-                sql += " Where CompanyCode='" + uu.CompanyId + "' And ST_Type ='6'";
-                sql += " Order By ST_ID ";
-
-                DataTable dtWh = PubUtility.SqlQry(sql, uu, "SYS");
-                dtWh.TableName = "dtWh";
-                ds.Tables.Add(dtWh);
+                
+                string sql = "select Man_ID,Whno from ISAMShopWeb (nolock) ";
+                sql += "where Companycode='"+ uu.CompanyId +"' and Man_ID='"+ uu.UserID +"'";
+                DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                dtC.TableName = "dtComp";
+                ds.Tables.Add(dtC);
 
             }
             catch (Exception err)
@@ -2640,6 +2602,57 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("SystemSetup/GetWhName")]
+        public ActionResult SystemSetup_GetWhName()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetWhNameOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                string sql = "select a.WhNo,case when ST_Sname is null then '' else left(a.Whno+'      ',6)+' '+ST_SName end STName from ISAMShopWeb a (nolock) ";
+                sql += "left join WarehouseWeb c (nolock) on a.CompanyCode=c.CompanyCode and a.Whno=c.ST_ID ";
+                sql += "where a.Companycode='" + uu.CompanyId + "' and a.Man_ID='" + uu.UserID + "'";
+                DataTable dtWh = PubUtility.SqlQry(sql, uu, "SYS");
+                dtWh.TableName = "dtWh";
+                ds.Tables.Add(dtWh);
+
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        [Route("SystemSetup/GetInitISAM01")]
+        public ActionResult SystemSetup_GetInitISAM01()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetInitISAM01OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+
+                string sql = "select a.Man_ID,left(a.Man_ID+'      ',6)+' '+Man_Name ManName ,a.Whno,left(a.Whno+'      ',6)+' '+ST_SName STName from ISAMShopWeb a (nolock) ";
+                sql += "inner join EmployeeWeb b (nolock) on a.CompanyCode=b.CompanyCode and a.Man_ID=b.Man_ID ";
+                sql += "inner join WarehouseWeb c (nolock) on a.CompanyCode=c.CompanyCode and a.Whno=c.ST_ID ";
+                sql += "where a.Companycode='" + uu.CompanyId + "' and a.Man_ID='" + uu.UserID + "'";
+                DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                dtC.TableName = "dtWh";
+                ds.Tables.Add(dtC);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
 
 
         //2021-05-18 Larry

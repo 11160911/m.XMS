@@ -28,7 +28,6 @@
 })(jQuery, 'smartresize');
 */
 (function ($) {
-    var LogOutComp;
     var LogOutTimer;
     var dtFun;
 
@@ -42,13 +41,11 @@
 
     var AfterInit = function (data) {
         if (ReturnMsg(data, 0) != "GetMenuInitOK") {
-            DyAlert(ReturnMsg(data, 0));
+            DyAlert(ReturnMsg(data, 1));
         }
         else {
-            var dtCompany = data.getElementsByTagName('dtCompany');
-            LogOutComp = GetNodeValue(dtCompany[0], 'SecurityCompanyID');
-            $("a[href='Login']").attr("href", "Login?company=" + LogOutComp);
-            //alert(GetNodeValue(dtCompany[0], 'SecurityCompanyID'));
+            $("a[href='Login']").attr("href", "Login" + sessionStorage.getItem('isamcomp'));
+            //alert(sessionStorage.getItem('isamcomp'));
             var dtEmployeeSV = data.getElementsByTagName('dtEmployeeWeb');
             $('#navbarDropdown').text(GetNodeValue(dtEmployeeSV[0], 'ChineseName') + ' - ' + GetNodeValue(dtEmployeeSV[0], 'Man_Name'));
             dtFun = data.getElementsByTagName('dtAllFunction');
@@ -96,13 +93,13 @@
 
     var Timerstart = function () {
         var timer = $('#Timer');
-        var number = 600;
+        var number = 10;
         timer.text(number);
         LogOutTimer = setInterval(function () {
             number--;
             if (number <= 0) {
                 number = 0;
-                window.location.href = "Login?company=" + LogOutComp;
+                window.location.href = "Login" + sessionStorage.getItem('isamcomp');
             }
             timer.text(number + 0);
            
@@ -167,9 +164,9 @@
 
     var click_menu = function (menuitem) {
         $('#FunctionDesc').text($(menuitem).prop('Description'));
-        $('#TimerLbl').hide();
-        $('#Timer').hide();
-        clearInterval(LogOutTimer);
+        //$('#TimerLbl').hide();
+        //$('#Timer').hide();
+        TimerReset(sessionStorage.getItem('isamcomp'),"");
 
         OpenPage(menuitem);
 
@@ -227,15 +224,15 @@
             console.log(pg);
             //alert(pg);
 
-            if (pg == "GMMacPLUSet") {
-                if (window.PageGMMacPLUSet == undefined)
-                    $.getScript('SystemSetup/GMMacPLUSet.js',
+            if (pg == "ISAM01") {
+                if (window.PageISAM01 == undefined)
+                    $.getScript('SystemSetup/ISAM01.js',
                         function () {
-                            PageGMMacPLUSet($(".workarea"));
+                            PageISAM01($(".workarea"));
                         }
                     );
                 else {
-                    PageGMMacPLUSet($(".workarea"));
+                    PageISAM01($(".workarea"));
                 }
             }
 
@@ -425,8 +422,8 @@
             setContentHeight();
         }).parent().addClass('active');
 
-        Timerstart();
-
+        //Timerstart();
+        TimerReset(sessionStorage.getItem('isamcomp'));
         // recompute content when resizing
         $(window).smartresize(function () {
             setContentHeight();

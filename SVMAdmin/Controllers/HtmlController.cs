@@ -101,11 +101,11 @@ namespace SVMAdmin.Controllers
 
 
         //
-        [Route("SystemSetup/GMMacPLUSet")]
-        public IActionResult GMMacPLUSet()
+        [Route("SystemSetup/ISAM01")]
+        public IActionResult ISAM01()
         {
             HtmlAgilityPack.HtmlDocument doc1 = new HtmlAgilityPack.HtmlDocument();
-            string strHtml = System.IO.File.ReadAllText(ConstList.HostEnvironment.WebRootPath + @"\SystemSetup\GMMacPLUSet.html".AdjPathByOS());
+            string strHtml = System.IO.File.ReadAllText(ConstList.HostEnvironment.WebRootPath + @"\SystemSetup\ISAM01.html".AdjPathByOS());
             doc1.LoadHtml(strHtml);
 
             //Remove Node
@@ -126,8 +126,7 @@ namespace SVMAdmin.Controllers
             //RemoveAllChildren
             NodeRemove = new string[] {
                  "//ul[contains(@class,'app-menu')]",
-                 "//table[@id='tbGMMacPLUSet']/tbody",
-                 "//table[@id='tbSecurity']/tbody"
+                 "//table[@id='tbISAM01Mod']/tbody"
             };
             for (int i = 0; i < NodeRemove.Length; i++)
             {
