@@ -995,3 +995,28 @@ var InitCheckBoxItem = function (elmCheck, xml, valField, txtField, propName) {
         $(elmCheck).append("<samp class='col-md-3'><input type='checkbox' id='chk" + i.toString() + "' " + ls_Name + " value='" + strVal + "'><label for='chk" + i.toString() + "'>" + desc + "</label></samp>");
     }
 }
+
+var LogOutTimer;
+var TimerReset = function (searchComp,closeFlag) {
+    if (closeFlag != null) {
+        clearInterval(LogOutTimer);
+    }
+    else {
+        var pg = JSPath('JSUtility.js') + "../Menu.html";
+        var divN = $('<div></div>');
+        divN.load(pg + " #Timer", function () {
+            var timer = $('#Timer');
+            var number = 600;
+            timer.text(number);
+            LogOutTimer = setInterval(function () {
+                number--;
+                if (number <= 0) {
+                    number = 0;
+                    window.location.href = "Login" + searchComp;
+                }
+                timer.text(number + 0);
+
+            }, 1000);
+        });
+    }
+}

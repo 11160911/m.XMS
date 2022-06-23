@@ -41,7 +41,9 @@
         if (ReturnMsg(data, 0) == "LoginSysOK") {
             var dtE = data.getElementsByTagName('dtEmployee');
             var token = GetNodeValue(dtE[0], "token");
+            var companyid = window.location.search;
             sessionStorage.setItem("token", token);
+            sessionStorage.setItem("isamcomp", companyid);
             window.location.replace("menu");
         }
         else if (ReturnMsg(data, 1) == "密碼錯誤") {

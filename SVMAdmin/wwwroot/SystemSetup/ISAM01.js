@@ -1,4 +1,4 @@
-﻿var PageVIV10 = function (ParentNode) {
+﻿var PageISAM01 = function (ParentNode) {
 
     let tbDetail;
     //let tbView;
@@ -250,7 +250,7 @@
 
     }
 
-    let btSave_click = function () {
+    let btSavex_click = function () {
         var isCheck = true;
         var nullchk = $('#pgVIV10Detail .valid-blank').prev('input').filter(function () { return this.value == '' });
         if (nullchk.length > 0) {
@@ -434,14 +434,91 @@
         $('#pgVIV10View').hide();
     }
 
-    let afterLoadPage = function () {
-        PostToWebApi({ url: "api/SystemSetup/GetInitVIV10", success: afterGetInitVIV10 });
-        $('#pgVIV10').show();
-        $('#pgVIV10Detail').hide();
-        $('#pgVIV10View').hide();
+    let btSave_click = function () {
+
     };
 
-    if ($('#pgGMMacPLUSet').length == 0) {
-        AllPages = new LoadAllPages(ParentNode, "SystemSetup/VIV10", ["pgVIV10Detail", "pgVIV10", "pgVIV10View"], afterLoadPage);
+    let afterGetInitISAM01 = function (data) {
+        if (ReturnMsg(data, 0) != "GetInitISAM01OK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtISAMShop = data.getElementsByTagName('dtWh');
+            
+            //alert(GetNodeValue(dtISAMShop[0], "STName"));
+            $('#lblShop1').text(GetNodeValue(dtISAMShop[0], "STName"));
+            $('#lblManID1').text(GetNodeValue(dtISAMShop[0], "ManName"));
+            $('#pgISAM01Init').removeAttr('hidden');
+            //$('#pgISAM01Init').show();
+            $('#btSave').click(function () { btSave_click(); });
+        }
     };
+
+
+    
+
+
+
+    
+
+
+    let AfterGetWhName = function (data) {
+        if (ReturnMsg(data, 0) != "GetWhNameOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtWh = data.getElementsByTagName('dtWh');
+            //alert(GetNodeValue(dtWh[0], "ST_ID"));
+            if (GetNodeValue(dtWh[0], "STName") == "") {
+                DyAlert("請確認店櫃(" + GetNodeValue(dtWh[0], "WhNo") + ")是否為允許作業之店櫃!", BlankMode);
+                return;
+            }
+            PostToWebApi({ url: "api/SystemSetup/GetInitISAM01", success: afterGetInitISAM01 });
+        }
+    };
+
+    let afterGetPageInitBefore = function (data) {
+        //alert("99908");
+        //alert(sessionStorage.getitem("isamcomp"));
+        //TimerReset(sessionStorage.getitem("isamcomp"));
+        if (ReturnMsg(data, 0) != "GetPageInitBeforeOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtISAMWh = data.getElementsByTagName('dtComp');
+            /*alert(GetNodeValue(dtISAMWh[0], "WhNo") );*/
+            if (dtISAMWh.length == 0) {
+                DyAlert("無符合資料!", BlankMode);
+                return;
+            }
+            else if (GetNodeValue(dtISAMWh[0], "WhNo") == null | GetNodeValue(dtISAMWh[0], "WhNo") == "") {
+                DyAlert("請先至店號設定進行作業店櫃設定!", BlankMode);
+                return;
+            }
+            else if (GetNodeValue(dtISAMWh[0], "WhNo") != "") {
+                PostToWebApi({ url: "api/SystemSetup/GetWhName", success: AfterGetWhName });
+            }
+            
+        }
+    };
+
+
+    let afterLoadPage = function () {
+        TimerReset(sessionStorage.getItem('isamcomp'));
+        PostToWebApi({ url: "api/SystemSetup/GetPageInitBefore", success: afterGetPageInitBefore });
+        //$('#ISAM01btns').hide();
+        //$('#pgISAM01Init').hide();
+        //$('#pgISAM01Add').hide();
+        //$('#pgISAM01Mod').hide();
+        //$('#pgISAM01UpFtp').hide();
+        
+        
+    };
+
+
+    if ($('#pgISAM01').length == 0) {
+        AllPages = new LoadAllPages(ParentNode, "SystemSetup/ISAM01", ["ISAM01btns", "pgISAM01Init", "pgISAM01Add", "pgISAM01Mod", "pgISAM01UpFtp"], afterLoadPage);
+    };
+
+
 }
