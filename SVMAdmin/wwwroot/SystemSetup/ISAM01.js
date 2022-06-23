@@ -438,7 +438,7 @@
 
 
     let afterSearchBINWeb = function (data) {
-        beforeBtnClick();
+        ResetTimer(sessionStorage.getItem('isamcomp'));
         if (ReturnMsg(data, 0) != "SearchBINWebOK") {
             DyAlert(ReturnMsg(data, 1));
         }
@@ -469,7 +469,7 @@
             $('#btMod').click(function () { btMod_click(); });
             $('#btToFTP').click(function () { btToFTP_click(); });
             $('#btRtn').click(function () {
-                beforeBtnClick();
+                ResetTimer(sessionStorage.getItem('isamcomp'));
                 $('#ISAM01btns').hide();
                 $('#pgISAM01Init').show();
             });
@@ -502,10 +502,10 @@
 
 
 
-    var beforeBtnClick = function () {
-        TimerReset(sessionStorage.getItem('isamcomp'), "");
-        TimerReset(sessionStorage.getItem('isamcomp'));
-    };
+    //var beforeBtnClick = function () {
+    //    TimerReset(sessionStorage.getItem('isamcomp'), "");
+    //    TimerReset(sessionStorage.getItem('isamcomp'));
+    //};
 
 
     let afterGetInitISAM01 = function (data) {

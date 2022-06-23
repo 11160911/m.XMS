@@ -167,7 +167,7 @@
         //$('#TimerLbl').hide();
         //$('#Timer').hide();
         //TimerReset(sessionStorage.getItem('isamcomp'),"");
-        beforeBtnClick();
+        ResetTimer(sessionStorage.getItem('isamcomp'));
         OpenPage(menuitem);
 
 
@@ -260,6 +260,18 @@
                 }
             }
 
+            else if (pg == "ISAMWhSet") {
+                if (window.PageWhSet == undefined)
+                    $.getScript('SystemSetup/ISAMWhSet.js',
+                        function () {
+                            PageWhSet($(".workarea"));
+                        }
+                    );
+                else {
+                    PageWhSet($(".workarea"));
+                }
+            }
+
             else if (pg == "VMN29") {
                 if (window.PageVMN29 == undefined)
                     $.getScript('VMN29.js',
@@ -342,10 +354,10 @@
 
     }
 
-    var beforeBtnClick = function () {
-        TimerReset(sessionStorage.getItem('isamcomp'), "");
-        TimerReset(sessionStorage.getItem('isamcomp'));
-    };
+    //var beforeBtnClick = function () {
+    //    TimerReset(sessionStorage.getItem('isamcomp'), "");
+    //    TimerReset(sessionStorage.getItem('isamcomp'));
+    //};
 
      //Sidebar
     var init_sidebar = function () {
@@ -427,8 +439,7 @@
             setContentHeight();
         }).parent().addClass('active');
 
-        //Timerstart();
-        beforeBtnClick();
+        ResetTimer(sessionStorage.getItem('isamcomp'));
         // recompute content when resizing
         $(window).smartresize(function () {
             setContentHeight();

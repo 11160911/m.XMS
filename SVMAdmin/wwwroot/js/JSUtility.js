@@ -997,9 +997,11 @@ var InitCheckBoxItem = function (elmCheck, xml, valField, txtField, propName) {
 }
 
 var LogOutTimer;
-var TimerReset = function (searchComp,closeFlag) {
+var Timerset = function (searchComp, closeFlag) {
     if (closeFlag != null) {
-        clearInterval(LogOutTimer);
+        if (LogOutTimer != undefined) {
+            clearInterval(LogOutTimer);
+        }
     }
     else {
         var pg = JSPath('JSUtility.js') + "../Menu.html";
@@ -1007,7 +1009,7 @@ var TimerReset = function (searchComp,closeFlag) {
         divN.load(pg + " #Timer", function () {
             var timer = $('#Timer');
             var number = 600;
-            timer.text(number);
+            timer.text(number);    
             LogOutTimer = setInterval(function () {
                 number--;
                 if (number <= 0) {
@@ -1017,6 +1019,12 @@ var TimerReset = function (searchComp,closeFlag) {
                 timer.text(number + 0);
 
             }, 1000);
-        });
+        });    
     }
+}
+
+
+var ResetTimer = function (searchComp) {
+    Timerset(searchComp, "");
+    Timerset(searchComp);
 }

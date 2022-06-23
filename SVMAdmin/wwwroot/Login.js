@@ -58,7 +58,7 @@
     };
 
     var LoginError = function (data) {
-        //
+        DyAlert(ReturnMsg(data, 1));
     };
 
     Initdoc();
