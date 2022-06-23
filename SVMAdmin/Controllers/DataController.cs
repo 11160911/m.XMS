@@ -211,8 +211,8 @@ namespace SVMAdmin.Controllers
                     if (dt.DataSet == null)
                         ds.Tables.Add(dt);
                 string sql = "select a.Man_Name,b.ChineseName";
-                sql += " from EmployeeSV a";
-                sql += " left join Company b on a.CompanyCode=b.CompanyCode";
+                sql += " from EmployeeWeb a";
+                sql += " left join CompanyWeb b on a.CompanyCode=b.CompanyCode";
                 sql += " where a.Man_ID='" + uu.UserID + "'";
                 sql += " and a.CompanyCode='" + uu.CompanyId + "' ";
                 DataTable dtU = PubUtility.SqlQry(sql, uu, "SYS");

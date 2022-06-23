@@ -238,6 +238,18 @@
                 }
             }
 
+            else if (pg == "ISAMWhSet") {
+                if (window.PageWhSet == undefined)
+                    $.getScript('SystemSetup/ISAMWhSet.js',
+                        function () {
+                            PageWhSet($(".workarea"));
+                        }
+                    );
+                else {
+                    PageWhSet($(".workarea"));
+                }
+            }
+
             else if (pg == "VMN29") {
                 if (window.PageVMN29 == undefined)
                     $.getScript('VMN29.js',
