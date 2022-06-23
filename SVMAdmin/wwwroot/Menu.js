@@ -166,8 +166,8 @@
         $('#FunctionDesc').text($(menuitem).prop('Description'));
         //$('#TimerLbl').hide();
         //$('#Timer').hide();
-        TimerReset(sessionStorage.getItem('isamcomp'),"");
-
+        //TimerReset(sessionStorage.getItem('isamcomp'),"");
+        beforeBtnClick();
         OpenPage(menuitem);
 
 
@@ -342,6 +342,11 @@
 
     }
 
+    var beforeBtnClick = function () {
+        TimerReset(sessionStorage.getItem('isamcomp'), "");
+        TimerReset(sessionStorage.getItem('isamcomp'));
+    };
+
      //Sidebar
     var init_sidebar = function () {
         // TODO: This is some kind of easy fix, maybe we can improve this
@@ -423,7 +428,7 @@
         }).parent().addClass('active');
 
         //Timerstart();
-        TimerReset(sessionStorage.getItem('isamcomp'));
+        beforeBtnClick();
         // recompute content when resizing
         $(window).smartresize(function () {
             setContentHeight();

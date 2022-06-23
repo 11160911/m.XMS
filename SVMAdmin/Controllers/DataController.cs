@@ -2655,6 +2655,40 @@ namespace SVMAdmin.Controllers
         }
 
 
+        [Route("SystemSetup/SearchBINWeb")]
+        public ActionResult SystemSetup_SearchBINWeb()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SearchBINWebOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Shop = rq["Shop"];
+                string ISAMDate = rq["ISAMDate"];
+                string BinNo = rq["BinNo"];
+                
+                string sql = "select top 1 * from BINWeb (nolock) ";
+                sql += "where Companycode='" + uu.CompanyId + "' and BINStore='"+ Shop +"' and ISAMDate='"+ ISAMDate +"' and BINNO='"+ BinNo + "' and BINman='"+ uu.UserID +"'";
+                DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtC.Rows.Count == 0)
+                {
+                    sql = "select top 1 * from BINWeb (nolock) ";
+                    sql += "where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "'";
+                    dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                }
+                
+                dtC.TableName = "dtBINData";
+                ds.Tables.Add(dtC);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
         //2021-05-18 Larry
         [Route("SystemSetup/SearchVIV10")]
         public ActionResult SystemSetup_SearchVIV10()

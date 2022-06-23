@@ -11,6 +11,8 @@
     let INV_YM = ""; let INV_Head = ""; let INV_No = "";
 
     let AssignVar = function () {
+
+
         grdM = new DynGrid(
             {
                 table_lement: $('#tbVIV10')[0],
@@ -434,9 +436,77 @@
         $('#pgVIV10View').hide();
     }
 
-    let btSave_click = function () {
 
+    let afterSearchBINWeb = function (data) {
+        beforeBtnClick();
+        if (ReturnMsg(data, 0) != "SearchBINWebOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtBINData = data.getElementsByTagName('dtBINData');
+            if (dtBINData.length>0) {
+                if (GetNodeValue(dtBINData[0], "BINman") != $('#lblManID1').val().split(' ')[0]) {
+                    DyAlert("盤點人員" + GetNodeValue(dtBINData[0], "BINman") + "已建立分區" + $('#txtBinNo').val() +"之分區單!!", BlankMode);
+                    return;
+                }
+            }
+
+            //AssignVar();
+            //alert(GetNodeValue(dtISAMShop[0], "STName"));
+            $('#lblShop2').text($('#lblShop1').text());
+            $('#lblBINNo2').text($('#txtBinNo').val());
+            $('#lblDate2').text($('#txtISAMDate').val());
+            $('#pgISAM01Init').hide();
+            if ($('#ISAM01btns').attr('hidden') == undefined) {
+                $('#ISAM01btns').show();
+            }
+            else {
+                $('#ISAM01btns').removeAttr('hidden');
+            }
+            
+
+            $('#btAdd').click(function () { btAdd_click(); });
+            $('#btMod').click(function () { btMod_click(); });
+            $('#btToFTP').click(function () { btToFTP_click(); });
+            $('#btRtn').click(function () {
+                beforeBtnClick();
+                $('#ISAM01btns').hide();
+                $('#pgISAM01Init').show();
+            });
+        }
+    }
+
+
+    let btSave_click = function () {
+        if ($('#txtISAMDate').val() == "" | $('#txtISAMDate').val() == null) {
+            DyAlert("請輸入盤點日期!!",function () { $('#txtISAMDate').focus() });
+            return;
+        }
+        if ($('#txtBinNo').val() == "" | $('#txtBinNo').val() == null) {
+            DyAlert("請輸入分區代碼!!", function () { $('#txtBinNo').focus() });
+            return;
+        }
+        else {
+            if ($('#txtBinNo').val().length>10) {
+                DyAlert("分區代碼不可超過10個字元!!", function () { $('#txtBinNo').focus() });
+                return;
+            }
+        }
+        var pData = {
+            Shop: $('#lblShop1').val().split(' ')[0],
+            ISAMDate: $('#txtISAMDate').val(),
+            BinNo: $('#txtBinNo').val()
+        }
+        PostToWebApi({ url: "api/SystemSetup/SearchBINWeb", data: pData, success: afterSearchBINWeb });
     };
+
+
+
+    var beforeBtnClick = function () {
+        TimerReset(sessionStorage.getItem('isamcomp'), "");
+        TimerReset(sessionStorage.getItem('isamcomp'));
+    };
+
 
     let afterGetInitISAM01 = function (data) {
         if (ReturnMsg(data, 0) != "GetInitISAM01OK") {
@@ -444,24 +514,18 @@
         }
         else {
             var dtISAMShop = data.getElementsByTagName('dtWh');
-            
+            //AssignVar();
             //alert(GetNodeValue(dtISAMShop[0], "STName"));
             $('#lblShop1').text(GetNodeValue(dtISAMShop[0], "STName"));
             $('#lblManID1').text(GetNodeValue(dtISAMShop[0], "ManName"));
+            SetDateField($('#txtISAMDate')[0]);
             $('#pgISAM01Init').removeAttr('hidden');
             //$('#pgISAM01Init').show();
             $('#btSave').click(function () { btSave_click(); });
         }
     };
 
-
     
-
-
-
-    
-
-
     let AfterGetWhName = function (data) {
         if (ReturnMsg(data, 0) != "GetWhNameOK") {
             DyAlert(ReturnMsg(data, 1));
@@ -504,7 +568,7 @@
 
 
     let afterLoadPage = function () {
-        TimerReset(sessionStorage.getItem('isamcomp'));
+        //TimerReset(sessionStorage.getItem('isamcomp'));
         PostToWebApi({ url: "api/SystemSetup/GetPageInitBefore", success: afterGetPageInitBefore });
         //$('#ISAM01btns').hide();
         //$('#pgISAM01Init').hide();
