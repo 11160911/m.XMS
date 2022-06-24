@@ -4639,5 +4639,35 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+
+        //2022-06-17 Kris
+        [Route("SystemSetup/GetInitISAM02")]
+        public ActionResult SystemSetup_GetInitISAM02()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetInitISAM02OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                string sql = "";
+
+                sql = "Select isnull(a.WhNo,'')WhNo,isnull(b.ST_SName,'')ST_SName from ISAMShopWeb a (nolock) ";
+                sql += " left join WarehouseWeb b (nolock) on a.WhNo=b.ST_ID and b.CompanyCode=a.CompanyCode";
+                sql += " Where a.CompanyCode='" + uu.CompanyId + "' and Man_ID='" + uu.UserID + "'";
+                sql += " Order By a.WhNo ";
+
+                DataTable dtWh = PubUtility.SqlQry(sql, uu, "SYS");
+                dtWh.TableName = "dtISAM02Wh";
+                ds.Tables.Add(dtWh);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
     }
 }
