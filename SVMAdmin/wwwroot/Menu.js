@@ -167,7 +167,7 @@
         //$('#TimerLbl').hide();
         //$('#Timer').hide();
         //TimerReset(sessionStorage.getItem('isamcomp'),"");
-        ResetTimer(sessionStorage.getItem('isamcomp'));
+        Timerset(sessionStorage.getItem('isamcomp'));
         OpenPage(menuitem);
 
 
@@ -439,7 +439,7 @@
             setContentHeight();
         }).parent().addClass('active');
 
-        ResetTimer(sessionStorage.getItem('isamcomp'));
+        Timerset(sessionStorage.getItem('isamcomp'));
         // recompute content when resizing
         $(window).smartresize(function () {
             setContentHeight();
