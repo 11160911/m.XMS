@@ -4738,5 +4738,56 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+
+        //2022-07-05 Kris
+        [Route("SystemSetup/GetISAM02CollectMod_Add")]
+        public ActionResult GetISAM02CollectMod_Add()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetISAM02CollectMod_AddOK", uu.UserID });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+
+            try
+            {
+
+                IFormCollection rq = HttpContext.Request.Form;
+                string PLU = rq["PLU"];
+                string WhNo = rq["WhNo"];
+                string Qty = rq["Qty"];
+
+                string sql = "select a.*,isnull(b.GD_Name,'')GD_Name,isnull(cast(b.GD_RETAIL as int),'')GD_Retail from CollectWeb a (nolock) ";
+                sql += " left join PLUWeb b (nolock) on (a.PLU=b.GD_NO or a.PLU=b.GD_Barcode) and b.Companycode=a.Companycode ";
+                sql += " Where a.CompanyCode='" + uu.CompanyId + "' and a.WorkUser='" + uu.UserID + "' ";
+                sql += " and a.PLU='" + PLU + "' and a.WhNo='" + WhNo + "' ";
+                DataTable dtCollect = PubUtility.SqlQry(sql, uu, "SYS");
+                dtCollect.TableName = "dtCollect";
+                ds.Tables.Add(dtCollect);
+
+                //若條碼蒐集存在則將數量+1
+                if (dtCollect.Rows.Count > 0)
+                {
+                    sql = "update CollectWeb set Qty=" + Qty + "";
+                    sql += ",ModDate=Convert(varchar,getdate(),111),ModTime=Substring(Convert(varchar,getdate(),121),12,12),ModUser='" + uu.UserID + "'";
+                    sql += " where CompanyCode='" + uu.CompanyId + "' and WorkUser='" + uu.UserID + "'";
+                    sql += " and PLU='" + PLU + "' and WhNo='" + WhNo + "'";
+                    PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                }
+
+                sql = "select isnull(Sum(Qty),0)SumQty from CollectWeb (nolock) ";
+                sql += " Where CompanyCode='" + uu.CompanyId + "'";
+                sql += " and PLU='" + PLU + "' and WhNo='" + WhNo + "' ";
+                DataTable dtCollectOK = PubUtility.SqlQry(sql, uu, "SYS");
+                dtCollectOK.TableName = "dtCollectOK";
+                ds.Tables.Add(dtCollectOK);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
     }
 }
