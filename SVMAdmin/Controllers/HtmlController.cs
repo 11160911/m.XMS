@@ -761,6 +761,59 @@ namespace SVMAdmin.Controllers
             return Content(strHtml, "text/html", System.Text.Encoding.UTF8);
         }
 
+        //2022-06-17 Kris
+        [Route("ISAM02")]
+        public IActionResult ISAM02()
+        {
+            HtmlAgilityPack.HtmlDocument doc1 = new HtmlAgilityPack.HtmlDocument();
+            string strHtml = System.IO.File.ReadAllText(ConstList.HostEnvironment.WebRootPath + @"\ISAM02.html".AdjPathByOS());
+            doc1.LoadHtml(strHtml);
+
+            //Remove Node
+            string[] NodeRemove = new string[] {
+                "//script",
+                "//link"
+            };
+            for (int i = 0; i < NodeRemove.Length; i++)
+            {
+                HtmlAgilityPack.HtmlNodeCollection ndm = doc1.DocumentNode.SelectNodes(NodeRemove[i]);
+                if (ndm != null)
+                {
+                    for (int j = 0; j < ndm.Count; j++)
+                        ndm[j].Remove();
+                }
+            }
+
+            //RemoveAllChildren
+            NodeRemove = new string[] {
+                 "//ul[contains(@class,'app-menu')]",
+                 "//table[@id='tbISAM02']/tbody"
+            };
+            for (int i = 0; i < NodeRemove.Length; i++)
+            {
+                HtmlAgilityPack.HtmlNodeCollection ndm = doc1.DocumentNode.SelectNodes(NodeRemove[i]);
+                if (ndm != null)
+                {
+                    for (int j = 0; j < ndm.Count; j++)
+                        ndm[j].RemoveAllChildren();
+                }
+
+            }
+
+            HtmlAgilityPack.HtmlNode ndh = doc1.DocumentNode.SelectSingleNode("//head");
+            //PubUtility.AppendCss(ndh, "css/main.css");
+            //PubUtility.AppendCss(ndh, "css/font-awesome.css");
+
+
+            ndh = doc1.DocumentNode.SelectSingleNode("//body");
+            //PubUtility.AppendScriptAtBodyEnd(doc1, "SystemSetup/GMMacPLUSet.js");
+
+
+            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+            doc1.Save(ms);
+            strHtml = System.Text.Encoding.UTF8.GetString(ms.ToArray());
+            return Content(strHtml, "text/html", System.Text.Encoding.UTF8);
+        }
 
         [Route("VPV01")]
         public IActionResult VPV01()

@@ -328,6 +328,18 @@
                 }
             }
 
+            else if (pg == "ISAM02") {
+                if (window.PageISAM02 == undefined)
+                    $.getScript('ISAM02.js',
+                        function () {
+                            PageISAM02($(".workarea"));
+                        }
+                    );
+                else {
+                    PageISAM02($(".workarea"));
+                }
+            }
+
             else if (pg == "SysChangePWD") {
                 $('#OLD_PWD').val("");
                 $('#NEW_PWD').val("");
