@@ -1001,7 +1001,7 @@ var Timerset = function (searchComp) {
     
     //if (LogOutTimer != null) {
     //    if (LogOutTimer.length > 1) {
-            for (i = 600;i>=0 ; i--) {
+            for (i = 0;i<=10000 ; i++) {
                 clearInterval(i);
             }
     //    }
@@ -1027,7 +1027,3 @@ var Timerset = function (searchComp) {
     
 }
 
-
-//var ResetTimer = function (searchComp) {
-//    Timerset(searchComp);
-//}
