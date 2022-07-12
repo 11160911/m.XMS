@@ -997,34 +997,33 @@ var InitCheckBoxItem = function (elmCheck, xml, valField, txtField, propName) {
 }
 
 var LogOutTimer;
-var Timerset = function (searchComp, closeFlag) {
-    if (closeFlag != null) {
-        if (LogOutTimer != undefined) {
-            clearInterval(LogOutTimer);
-        }
-    }
-    else {
-        var pg = JSPath('JSUtility.js') + "../Menu.html";
-        var divN = $('<div></div>');
-        divN.load(pg + " #Timer", function () {
-            var timer = $('#Timer');
-            var number = 600;
-            timer.text(number);    
-            LogOutTimer = setInterval(function () {
-                number--;
-                if (number <= 0) {
-                    number = 0;
-                    window.location.href = "Login" + searchComp;
-                }
-                timer.text(number + 0);
+var Timerset = function (searchComp) {
+    
+    //if (LogOutTimer != null) {
+    //    if (LogOutTimer.length > 1) {
+            for (i = 0;i<=10000 ; i++) {
+                clearInterval(i);
+            }
+    //    }
+    //    //clearInterval(LogOutTimer);
+    //}
 
-            }, 1000);
-        });    
-    }
+    var pg = JSPath('JSUtility.js') + "../Menu.html";
+    var divN = $('<div></div>');
+    divN.load(pg + " #Timer", function () {
+        var timer = $('#Timer');
+        var number = 600;
+        timer.text(number);    
+        LogOutTimer = setInterval(function () {
+            number--;
+            if (number <= 0) {
+                number = 0;
+                window.location.href = "Login" + searchComp;
+            }
+            timer.text(number + 0);
+
+        }, 1000);
+    });        
+    
 }
 
-
-var ResetTimer = function (searchComp) {
-    Timerset(searchComp, "");
-    Timerset(searchComp);
-}
