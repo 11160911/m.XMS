@@ -171,26 +171,37 @@
                 </article>
 
                 <article id="ISAM01btns" hidden>
-                    <div class="form-group row col-md">
-                        <button id="btAdd" type="button" class="btn btn-primary" style="width: 80px">新增</button>
-                        <button id="btMod" type="button" class="btn btn-success" style="width: 80px">編查</button>
-                        <button id="btToFTP" type="button" class="btn btn-warning" style="color: white; width: 80px">上傳</button>
-                        <button id="btRtn" type="button" class="btn btn-secondary" style="color: white;background-color:mediumpurple;width:80px">返回</button>
-                    </div>
-                    <div class="form-group row">
-                        <div><label id="lblShop2" class="col-form-label" style="color:blue">999999 智販店</label></div>
-                        <label class="col-form-label">分區：</label>
-                        <div><label id="lblBINNo2" class="col-form-label" style="color:blue">001</label></div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label>盤點日期：</label>
-                        <label id="lblDate2" class="col-form-label" style="color:blue">2022/06/01</label>
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group row col-md">
+                            <button id="btAdd" type="button" class="btn btn-primary" style="width: 80px">新增</button>
+                            <button id="btMod" type="button" class="btn btn-success" style="width: 80px">編查</button>
+                            <button id="btToFTP" type="button" class="btn btn-warning" style="color: white; width: 80px">上傳</button>
+                            <button id="btRtn" type="button" class="btn btn-secondary" style="color: white;background-color:mediumpurple;width:80px">返回</button>
+                        </div>
+                        <div class="form-group row">
+                            <div>
+                                <label id="lblShop2" class="col-form-label" style="color:blue">999999 智販店</label>
+                            </div>
+                            <div>
+                                <label class="col-form-label">&nbsp;&nbsp;&nbsp;分區：</label>
+                            </div>
+                            <div>
+                                <label id="lblBINNo2" class="col-form-label" style="color:blue">001</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div>
+                                <label class="col-form-label">盤點日期：</label>
+                            </div>
+                            <div>
+                                <label id="lblDate2" class="col-form-label" style="color:blue">2022/06/01</label>
+                            </div>
+                        </div>
                     </div>
                 </article>
 
                 <article id="pgISAM01Add" class="row" hidden>
-                    <style>
+                    <!--<style>
                         #pgVIV10 .fa-file-text-o {
                             font-size: 28px;
                             color: lightblue;
@@ -210,7 +221,7 @@
                             font-size: 28px;
                             color: lightblue;
                         }
-                    </style>
+                    </style>-->
 
 
                     <div class="col-md-12 col-sm-12">
@@ -222,13 +233,13 @@
                                 </div>
                                 <div><label id="lblDate2" class="col-form-label">盤點日期：2022/06/01</label></div>-->
                                 <div class="form-group row">
-                                    <div><input id="txtBarcode2" type="text" class="form-control col-5" placeholder="請輸入條碼" /></div>
-                                    <div><button id="btBCSave2" type="button" class="btn btn-danger">儲存</button></div>
+                                    <div><input id="txtBarcode3" type="text" class="form-control col-5" placeholder="請輸入條碼" /></div>
+                                    <div><button id="btBCSave3" type="button" class="btn btn-danger">儲存</button></div>
                                 </div>
                                 <div class="form-group row">
-                                    <div><input id="txtQty2" type="text" class="form-control col-5" placeholder="請輸入盤點數量" /></div>
-                                    <div><button id="btKeyin" type="button" class="btn btn-warning">手動</button></div>
-                                    <div><button id="btQtySave2" type="button" class="btn btn-danger">儲存</button></div>
+                                    <div><input id="txtQty3" type="text" class="form-control col-5" placeholder="請輸入盤點數量" /></div>
+                                    <div><button id="btKeyin3" type="button" class="btn btn-warning">手動</button></div>
+                                    <div><button id="btQtySave3" type="button" class="btn btn-danger">儲存</button></div>
                                 </div>
                                 <div class="form-group row">
                                     <div><label class="col-md-5 col-form-label">單品數：</label></div>
@@ -247,9 +258,6 @@
                                     <div><label id="lblPrice" class="col-md-7 col-form-label">120</label></div>
                                 </div>
                                 <label id="lblGDName" class="col-form-label">商品名稱</label>
-                                <!--<div class="form-group row">
-                                    
-                                </div>-->
                             </div>
                             
                         </div>

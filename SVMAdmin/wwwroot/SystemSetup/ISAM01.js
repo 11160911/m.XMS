@@ -4,69 +4,63 @@
     //let tbView;
     let grdM;
     let grdV;
-    //let EditMode = "";
+    let EditMode = "";
     let ShopNo = "";
     let WhName = "";
     let QtyLeft = 0;
     let INV_YM = ""; let INV_Head = ""; let INV_No = "";
 
+    
     let AssignVar = function () {
 
 
         grdM = new DynGrid(
             {
-                table_lement: $('#tbVIV10')[0],
-                class_collection: ["tdColbt icon_in_td", "tdColbt icon_in_td", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7", "tdCol8 text-right", "tdCol9", "tdCol10"],
+                table_lement: $('#tbISAM01Mod')[0],
+                class_collection: ["tdColbt icon_in_td", "tdCol1", "tdCol2 text-right", "tdCol3 text-right"],
                 fields_info: [
-                    { type: "JQ", name: "fa-tags", element: '<i class="fa fa-tags"></i>' },
-                    { type: "JQ", name: "fa-search", element: '<i class="fa fa-search"></i>' },
-                    //{ type: "JQ", name: "fa-file-text-o", element: '<i class="fa fa-file-text-o"></i>' },
-                    { type: "Text", name: "INV_YM" },
-                    { type: "Text", name: "WhName" },
-                    { type: "Text", name: "INV_Head" },
-
-                    { type: "Text", name: "INV_SNo" },
-                    { type: "Text", name: "INV_ENo" },
-                    { type: "Text", name: "INV_No" },
-                    { type: "TextAmt", name: "DiffQty" },
-                    { type: "Text", name: "ModDate" },
-
-                    { type: "Text", name: "ModUserName" }
+                    { type: "JQ", name: "fa-trash-o", element: '<i class="fa fa-trash-o"></i>' },
+                    { type: "Text", name: "PLU" },
+                    { type: "TextAmt", name: "Qty1" },
+                    { type: "TextAmt", name: "ModQty1" }
                 ],
                 rows_per_page: 10,
-                method_clickrow: click_Machine,
-                afterBind: InitModifyDeleteButton,
-                sortable: "Y"
+                afterBind: InitDeleteButton,
+                sortable: "N"
             }
         );
-
-
-        grdV = new DynGrid(
-            {
-                table_lement: $('#tbVIV10View')[0],
-                class_collection: ["tdCol0", "tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5 label-align", "tdCol6 text-right", "tdCol7"],
-                fields_info: [
-                    { type: "Text", name: "WhName" },              
-                    { type: "Text", name: "CkNo" },
-
-                    { type: "Text", name: "INV_Head" },
-                    { type: "Text", name: "INV_SNo" },
-                    { type: "Text", name: "INV_ENo" },
-                    { type: "TextAmt", name: "DiffQty" },
-
-                    { type: "Text", name: "AppDate" },
-                    { type: "Text", name: "AppUserName" }
-                ],
-                rows_per_page: 10,
-                method_clickrow: click_Machine,
-                afterBind: InitViewButton,
-                sortable: "Y"
-            }
-        );
-
-
     };
 
+    let InitDeleteButton = function () {
+        $('#tbISAM01Mod .fa-trash-o').click(function () { btPLUDelete_click(this) });
+    }
+
+    let btPLUDelete_click = function (bt) {
+
+        $(bt).closest('tr').click();
+        //EditMode = "Modify";
+        $('.msg-valid').hide();
+        /*
+        $('#modal_VIN13_1 .modal-title').text('智販機換店刪除');
+        $('#modal_VIN13_1 .btn-danger').text('刪除');
+        var node = $(grdU.ActiveRowTR()).prop('Record');
+        if (GetNodeValue(node, 'AppDate') != '') {
+            DyAlert("此單據已批核，不可刪除!");
+            return
+        }
+        $('#WhNoOut,#CkNoOut,#WhNoIn,#CkNoIn,#ExchangeDate').prop('readonly', true);
+        $('#WhNoOut,#CkNoOut,#WhNoIn,#CkNoIn,#ExchangeDate').prop('disabled', true);
+
+        var pData = {
+            ShopNo: GetNodeValue(node, 'ShopNo'),
+            BINNo: GetNodeValue(node, 'CkNo'),
+            ISAMDate: GetNodeValue(node, 'INV_YM')
+        }
+        PostToWebApi({ url: "api/SystemSetup/ISAM01PLUDel", data: pData, success: AfterGetView });
+        */
+    };
+
+    /*
     let click_Machine = function (tr) {
 
     };
@@ -199,7 +193,7 @@
 
 
    
-    let btModify_click = function (bt) {
+    let btModifyx_click = function (bt) {
         $(bt).closest('tr').click();
         //EditMode = "Modify";
         var node = $(grdM.ActiveRowTR()).prop('Record');
@@ -435,10 +429,10 @@
         $('#pgVIV10').show();
         $('#pgVIV10View').hide();
     }
-
+    */
 
     let afterSearchBINWeb = function (data) {
-        ResetTimer(sessionStorage.getItem('isamcomp'));
+        //EditMode = "Q";
         if (ReturnMsg(data, 0) != "SearchBINWebOK") {
             DyAlert(ReturnMsg(data, 1));
         }
@@ -453,6 +447,7 @@
 
             //AssignVar();
             //alert(GetNodeValue(dtISAMShop[0], "STName"));
+            EditMode = "Q";
             $('#lblShop2').text($('#lblShop1').text());
             $('#lblBINNo2').text($('#txtBinNo').val());
             $('#lblDate2').text($('#txtISAMDate').val());
@@ -465,19 +460,122 @@
             }
             
 
-            $('#btAdd').click(function () { btAdd_click(); });
-            $('#btMod').click(function () { btMod_click(); });
-            $('#btToFTP').click(function () { btToFTP_click(); });
-            $('#btRtn').click(function () {
-                ResetTimer(sessionStorage.getItem('isamcomp'));
-                $('#ISAM01btns').hide();
-                $('#pgISAM01Init').show();
-            });
+            //$('#btAdd').click(function () { btAdd_click(); });
+            //$('#btMod').click(function () { btMod_click(); });
+            //$('#btToFTP').click(function () { btToFTP_click(); });
+            //$('#btRtn').click(function () { btRtn_click(); afterRtnclick(); });
         }
     }
 
 
+    let afterToFTPY = function () { Timerset(sessionStorage.getItem('isamcomp'));alert("ymca"); };
+    
+
+    let btToFTP_click = function () {
+        Timerset(sessionStorage.getItem('isamcomp'));
+        DyConfirm("是否要上傳" + $('#lblBINNo2').text() + "分區盤點資料？", afterToFTPY, DummyFunction);
+    };
+
+
+    let btAdd_click = function () {
+        EditMode = "A";
+        Timerset(sessionStorage.getItem('isamcomp'));
+        //$('#pgISAM01Init').hide();
+        if ($('#pgISAM01Add').attr('hidden') == undefined) {
+            $('#pgISAM01Add').show();
+        }
+        else {
+            $('#pgISAM01Add').removeAttr('hidden');
+        }
+        if ($('#pgISAM01Mod').attr('hidden') == undefined) {
+            $('#pgISAM01Mod').hide();
+        }
+        BtnSet("A");
+    };
+
+    let BtnSet = function (edit) {
+        switch (edit) {
+            case "A":
+                $('#btAdd').prop('disabled', false);
+                $('#btMod').prop('disabled', true);
+                $('#btToFTP').prop('disabled', true); //true-btn不能使用
+                break;
+            case "Q":
+                $('#btAdd').prop('disabled', false);
+                $('#btMod').prop('disabled', false);
+                $('#btToFTP').prop('disabled', false); //true-btn不能使用
+                break;
+        }
+
+        //$('#btAdd').prop('disabled', enable);
+        //$('#btMod').prop('disabled', enable);
+        //$('#btToFTP').prop('disabled', enable); //true-btn不能使用
+    };
+
+    let afterRtnclick = function () {
+        if (EditMode == "A") {
+            EditMode = "Q";
+            BtnSet(EditMode);
+        }
+    }
+
+    let btRtn_click = function () {
+        //
+
+        //alert(EditMode);
+        if (EditMode == "Q") {
+            $('#ISAM01btns').hide();
+            $('#pgISAM01Init').show();
+            $('#pgISAM01Add').hide();
+            $('#pgISAM01Mod').hide();
+            $('#pgISAM01UpFtp').hide();
+        } else if (EditMode == "A") {
+            $('#ISAM01btns').show();
+            $('#pgISAM01Init').hide();
+            $('#pgISAM01Add').hide();
+            $('#pgISAM01Mod').hide();
+            $('#pgISAM01UpFtp').hide();
+        }
+        Timerset(sessionStorage.getItem('isamcomp'));
+       
+        //switch (EditMode) {
+        //    //case "Init":
+        //    //    $('#ISAM01btns').hide();
+        //    //    $('#pgISAM01Init').show();
+        //    //    $('#pgISAM01Add').hide();
+        //    //    $('#pgISAM01Mod').hide();
+        //    //    $('#pgISAM01UpFtp').hide();
+        //    //    break;
+        //    case "Q":
+
+        //        break;
+        //    case "A":
+        //        $('#ISAM01btns').show();
+        //        $('#pgISAM01Init').hide();
+        //        $('#pgISAM01Add').hide();
+        //        $('#pgISAM01Mod').hide();
+        //        $('#pgISAM01UpFtp').hide();
+        //        EditMode = "Q";
+        //        break;
+        //    default:
+        //        break;
+        //}
+  
+
+
+        //EditMode = "Q";
+
+        //if ($('#ISAM01btns').attr('hidden') == undefined) {
+        //    $('#ISAM01btns').show();
+        //}
+        //$('#ISAM01btns').hide();
+        //$('#pgISAM01Init').show();
+        
+    };
+
+
     let btSave_click = function () {
+        Timerset(sessionStorage.getItem('isamcomp'));
         if ($('#txtISAMDate').val() == "" | $('#txtISAMDate').val() == null) {
             DyAlert("請輸入盤點日期!!",function () { $('#txtISAMDate').focus() });
             return;
@@ -501,18 +599,13 @@
     };
 
 
-
-    //var beforeBtnClick = function () {
-    //    TimerReset(sessionStorage.getItem('isamcomp'), "");
-    //    TimerReset(sessionStorage.getItem('isamcomp'));
-    //};
-
-
     let afterGetInitISAM01 = function (data) {
         if (ReturnMsg(data, 0) != "GetInitISAM01OK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
+            AssignVar();
+            EditMode = "Init";
             var dtISAMShop = data.getElementsByTagName('dtWh');
             //AssignVar();
             //alert(GetNodeValue(dtISAMShop[0], "STName"));
@@ -522,6 +615,11 @@
             $('#pgISAM01Init').removeAttr('hidden');
             //$('#pgISAM01Init').show();
             $('#btSave').click(function () { btSave_click(); });
+
+            $('#btAdd').click(function () { btAdd_click(); });
+            $('#btMod').click(function () { btMod_click(); });
+            $('#btToFTP').click(function () { btToFTP_click(); });
+            $('#btRtn').click(function () { btRtn_click(); afterRtnclick(); });
         }
     };
 
@@ -542,9 +640,6 @@
     };
 
     let afterGetPageInitBefore = function (data) {
-        //alert("99908");
-        //alert(sessionStorage.getitem("isamcomp"));
-        //TimerReset(sessionStorage.getitem("isamcomp"));
         if (ReturnMsg(data, 0) != "GetPageInitBeforeOK") {
             DyAlert(ReturnMsg(data, 1));
         }
@@ -568,7 +663,6 @@
 
 
     let afterLoadPage = function () {
-        //TimerReset(sessionStorage.getItem('isamcomp'));
         PostToWebApi({ url: "api/SystemSetup/GetPageInitBefore", success: afterGetPageInitBefore });
         //$('#ISAM01btns').hide();
         //$('#pgISAM01Init').hide();
