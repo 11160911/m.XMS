@@ -2689,6 +2689,116 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+
+
+        [Route("SystemSetup/SaveBINWeb")]
+        public ActionResult SystemSetup_SaveBINWeb()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SaveBINWebOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                Boolean lb_Insert = false;
+                string Shop = rq["Shop"];
+                string ISAMDate = rq["ISAMDate"];
+                string BinNo = rq["BinNo"];
+                string PLU = rq["Barcode"];
+                int Qty = Convert.ToInt32(rq["Qty"].ToString().SqlQuote());
+
+                string sql = "select * from BINWeb (nolock) ";
+                sql += "where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "'";
+                DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtC.Rows.Count == 0) { lb_Insert = true; } 
+                else
+                {
+                    DataRow[] dr = dtC.Select("PLU='"+ PLU +"'");
+                    if (dr.Length == 0) { lb_Insert = true; }
+                    else
+                    {
+                        sql = "Update BINWeb set Qty1=Qty1+" + Qty + ",ModDate=Convert(varchar,getdate(),111),ModTime=Substring(Convert(varchar,getdate(),121),12,12),";
+                        sql += "ISAMTime=CONVERT(varchar,getdate(),108) where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "'";
+                        sql += " and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "' and PLU='" + PLU + "'"; 
+                        PubUtility.ExecuteSql(sql, uu, "SYS");
+                    }
+
+                }
+
+                if (lb_Insert)
+                {
+                    sql = "Insert into BINWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime,BINStore,BINNO,BINman,ISAMDate,ISAMTime,SeqNo,PLU,QTY1) ";
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',Convert(varchar,getdate(),111),Substring(Convert(varchar,getdate(),121),12,12),";
+                    sql += "'" + uu.UserID + "',Convert(varchar,getdate(),111),Substring(Convert(varchar,getdate(),121),12,12),";
+                    sql += "'" + Shop + "','" + BinNo + "','" + uu.UserID + "','" + ISAMDate + "',Convert(varchar,getdate(),108),";
+                    sql += "(select isnull(max(seqno),0)+1 from BINWeb (nolock) where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and Binman='" + uu.UserID + "'),";
+                    sql += "'" + PLU + "',1 ";
+                    PubUtility.ExecuteSql(sql, uu, "SYS");
+                }
+                //Return 異動後的數量,故要重撈一次
+                //單品數
+                sql = "Select Sum(Qty1) SQ1 from BINWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and PLU='"+ PLU +"'";
+                DataTable dtSQ= PubUtility.SqlQry(sql, uu, "SYS");
+                dtSQ.TableName = "dtSQ";
+                ds.Tables.Add(dtSQ);
+                //分區總和(不看商品)
+                sql = "Select Sum(Qty1) SBQ1 from BINWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BinNo='" + BinNo + "'";
+                DataTable dtSBQ = PubUtility.SqlQry(sql, uu, "SYS");
+                dtSBQ.TableName = "dtSBQ";
+                ds.Tables.Add(dtSBQ);
+                //門市總和(不看商品)
+                sql = "Select Sum(Qty1) SWQ1 from BINWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "'";
+                DataTable dtSWQ = PubUtility.SqlQry(sql, uu, "SYS");
+                dtSWQ.TableName = "dtSWQ";
+                ds.Tables.Add(dtSWQ);
+                sql = "Select GD_Name,GD_Retail from PLUWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and GD_Barcode='" + PLU + "'";
+                DataTable dtP = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtP.Rows.Count == 0)
+                {
+                    sql = "Select GD_Name,GD_Retail from PLUWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and GD_No='" + PLU + "'";
+                    dtP = PubUtility.SqlQry(sql, uu, "SYS");
+                }
+
+                dtP.TableName = "dtPLU";
+                ds.Tables.Add(dtP);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/GetBINWebMod")]
+        public ActionResult SystemSetup_GetBINWebMod()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetBINWebModOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Shop = rq["Shop"];
+                string ISAMDate = rq["ISAMDate"];
+                string BinNo = rq["BinNo"];
+
+                string sql = "select * from BINWeb (nolock) ";
+                sql += "where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "' order by SeqNo";
+                DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+
+                dtC.TableName = "dtBin";
+                ds.Tables.Add(dtC);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
         //2021-05-18 Larry
         [Route("SystemSetup/SearchVIV10")]
         public ActionResult SystemSetup_SearchVIV10()
