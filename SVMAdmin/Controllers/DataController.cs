@@ -2799,6 +2799,43 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+
+
+        [Route("SystemSetup/GetGDName")]
+        public ActionResult SystemSetup_GetGDName()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetGDNameOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string PLU = rq["PLU"];
+              
+                string sql = "select '"+ PLU + "' PLU,GD_Name from PLUWeb (nolock) ";
+                sql += "where Companycode='" + uu.CompanyId + "' and GD_Barcode='" + PLU + "'";
+                DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+
+                if (dtC.Rows.Count == 0)
+                {
+                    sql = "select '" + PLU + "' PLU,GD_Name from PLUWeb (nolock) ";
+                    sql += "where Companycode='" + uu.CompanyId + "' and GD_No='" + PLU + "'";
+                    dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                }
+
+                dtC.TableName = "dtPLU";
+                ds.Tables.Add(dtC);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
         //2021-05-18 Larry
         [Route("SystemSetup/SearchVIV10")]
         public ActionResult SystemSetup_SearchVIV10()
