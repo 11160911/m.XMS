@@ -284,6 +284,7 @@ var DynGrid = function (option) {
             var fdinfo = fields[j];
             var fdType = fdinfo.type;
             var fdName = fdinfo.name;
+            var fdStyle = fdinfo.style;
             td.prop('FieldName', fdName);
             if (fdType == 'Blank') {
                 //do nothing
@@ -333,12 +334,18 @@ var DynGrid = function (option) {
                         td.text(str);
                     }
                 }
-
+                if (fdStyle != null) {
+                    td.attr('style', fdStyle);
+                }
                 tr.prop(fdName, td);
             }
             else if (fdType == 'TextInput') {
                 var ip = $('<input type="text" />');
                 ip.prop('FieldName', fdName);
+                if (fdStyle != null) {
+                    ip.attr('style', fdStyle);
+                }
+                
                 var ipclass = fdinfo.classname;
                 if (ipclass != null) {
                     var cls = ipclass.split(' ');
@@ -361,6 +368,9 @@ var DynGrid = function (option) {
                     jqelm.prop('checked', true);
                 else
                     jqelm.prop('checked', false);
+                if (fdStyle != null) {
+                    jqelm.attr('style', fdStyle);
+                }
                 lb.append(jqelm);
                 lb.append('<span></span>');
             }

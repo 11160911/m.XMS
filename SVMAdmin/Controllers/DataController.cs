@@ -2751,11 +2751,11 @@ namespace SVMAdmin.Controllers
                 DataTable dtSWQ = PubUtility.SqlQry(sql, uu, "SYS");
                 dtSWQ.TableName = "dtSWQ";
                 ds.Tables.Add(dtSWQ);
-                sql = "Select GD_Name,GD_Retail from PLUWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and GD_Barcode='" + PLU + "'";
+                sql = "Select '"+ PLU +"' PLU,GD_Name,GD_Retail from PLUWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and GD_Barcode='" + PLU + "'";
                 DataTable dtP = PubUtility.SqlQry(sql, uu, "SYS");
                 if (dtP.Rows.Count == 0)
                 {
-                    sql = "Select GD_Name,GD_Retail from PLUWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and GD_No='" + PLU + "'";
+                    sql = "Select '" + PLU + "' PLU,GD_Name,GD_Retail from PLUWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and GD_No='" + PLU + "'";
                     dtP = PubUtility.SqlQry(sql, uu, "SYS");
                 }
 
@@ -2784,8 +2784,13 @@ namespace SVMAdmin.Controllers
                 string ISAMDate = rq["ISAMDate"];
                 string BinNo = rq["BinNo"];
 
-                string sql = "select * from BINWeb (nolock) ";
-                sql += "where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "' order by SeqNo";
+                string sql = "set nocount on;select a.*,GD_Name into #tmpA from BINWeb a (nolock) left join PLUWeb b (nolock) ";
+                sql += "on a.companycode=b.companycode and a.PLU=b.GD_Barcode ";
+                sql += "where a.Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "';";
+                sql += "select a.PLU,a.Qty1,a.PLU+' '+case when isnull(a.GD_Name,'')='' then b.GD_Name else a.GD_Name end GD_Name from #tmpA a (nolock) left join PLUWeb b (nolock) ";
+                sql += "on a.companycode=b.companycode and a.PLU=b.GD_No order by SeqNo";
+
+
                 DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
 
                 dtC.TableName = "dtBin";
@@ -2826,6 +2831,121 @@ namespace SVMAdmin.Controllers
                 dtC.TableName = "dtPLU";
                 ds.Tables.Add(dtC);
 
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+        
+        [Route("SystemSetup/DelISAM01PLU")]
+        public ActionResult SystemSetup_DelISAM01PLU()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "DelISAM01PLUOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Shop = rq["Shop"];
+                string ISAMDate = rq["ISAMDate"];
+                string BinNo = rq["BinNo"];
+                string PLU = rq["PLU"];
+
+                string sql = "Delete from BINWeb ";
+                sql += "where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "' and PLU='"+ PLU +"'";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                sql = "set nocount on;Select ROW_NUMBER() over(order by Companycode,Binstore,binno,isamdate,seqno) NewSeq,* into #tmpA from BINWeb (nolock) ";
+                sql += "where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "';";
+                sql += "update b set SeqNo=newseq from #tmpA a inner join BINWeb b ";
+                sql += "on a.CompanyCode=b.CompanyCode and a.BINStore=b.BINStore and a.BINNO=b.BINNO and a.ISAMDate=b.ISAMDate and a.SeqNo=b.SeqNo;";
+                sql += "drop table #tmpA;";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/GetBINWebPLUMod")]
+        public ActionResult SystemSetup_GetBINWebPLUMod()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetBINWebPLUModOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Shop = rq["Shop"];
+                string ISAMDate = rq["ISAMDate"];
+                string BinNo = rq["BinNo"];
+                string PLU = rq["PLU"];
+
+                string sql = "select PLU,Qty1,PLU+' '+GD_Name GD_Name from BINWeb a (nolock) inner join PLUWeb b ";
+                sql += "on a.companycode=b.companycode and a.PLU=b.GD_Barcode ";
+                sql += "where a.Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "' and PLU='"+ PLU +"'";
+                DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+
+                if (dtC.Rows.Count == 0)
+                {
+                    sql = "select PLU,Qty1,PLU+' '+isnull(GD_Name,'') GD_Name from BINWeb a (nolock) left join PLUWeb b ";
+                    sql += "on a.companycode=b.companycode and a.PLU=b.GD_No ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "' and PLU='" + PLU + "'";
+                    dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                }
+
+                dtC.TableName = "dtPLUMod";
+                ds.Tables.Add(dtC);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/SaveISAM01PLUMod")]
+        public ActionResult SystemSetup_SaveISAM01PLUMod()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SaveISAM01PLUModOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Shop = rq["Shop"];
+                string ISAMDate = rq["ISAMDate"];
+                string BinNo = rq["BinNo"];
+                string PLU = rq["PLU"];
+                string Qty = rq["Qty"];
+
+                string sql = "Update BINWeb set Qty1=" + Qty.SqlQuote() ;
+                sql += " where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "' and PLU='" + PLU + "'";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                sql = "select PLU,Qty1,PLU+' '+GD_Name GD_Name from BINWeb a (nolock) inner join PLUWeb b ";
+                sql += "on a.companycode=b.companycode and a.PLU=b.GD_Barcode ";
+                sql += "where a.Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "' and PLU='" + PLU + "'";
+                DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+
+                if (dtC.Rows.Count == 0)
+                {
+                    sql = "select PLU,Qty1,PLU+' '+isnull(GD_Name,'') GD_Name from BINWeb a (nolock) left join PLUWeb b ";
+                    sql += "on a.companycode=b.companycode and a.PLU=b.GD_No ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "' and PLU='" + PLU + "'";
+                    dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                }
+
+                dtC.TableName = "dtBINMod";
+                ds.Tables.Add(dtC);
             }
             catch (Exception err)
             {
