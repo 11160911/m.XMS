@@ -777,6 +777,7 @@ namespace SVMAdmin
             //dt.Rows.Add(new object[] { "條碼收集", "GoodsManage", "Inv", "條碼收集", "Inv", "P", "fa-cubes" });
             dt.Rows.Add(new object[] { "條碼蒐集", "SaleAnalysis", "ISAM02", "條碼蒐集", "ISAM02", "P", "fa-cubes" });
             dt.Rows.Add(new object[] { "出貨/調撥", "OperatManage", "VMN01", "出貨/調撥", "VMN01", "P", "fa-th-large" });
+            dt.Rows.Add(new object[] { "店號設定", "MachineManage", "ISAMWHSET", "店號設定", "ISAMWHSET", "P", "fa-cogs" });
 
             //權限管理,智販機管理,商品管理,營運管理,營運分析
             //dt.Rows.Add(new object[] { "權限管理", "Authorize", "SysUsers", "使用者維護", "SysUsers", "P", "fa-cog" });
@@ -789,7 +790,6 @@ namespace SVMAdmin
             //dt.Rows.Add(new object[] { "功能選單", "MachineManage", "ISAMQPLU", "單價查詢", "ISAMQPLU", "P", "fa-cogs" });
             //dt.Rows.Add(new object[] { "功能選單", "MachineManage", "ISAMTOFTP", "上傳作業", "ISAMTOFTP", "P", "fa-cogs" });
             //dt.Rows.Add(new object[] { "功能選單", "MachineManage", "ISAMDELDATA", "清除作業", "ISAMDELDATA", "P", "fa-cogs" });
-            //dt.Rows.Add(new object[] { "功能選單", "MachineManage", "ISAMWHSET", "店號設定", "ISAMWHSET", "P", "fa-cogs" });
 
             //dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "Inv", "庫存查詢", "Inv", "P", "fa-cubes" });
             //dt.Rows.Add(new object[] { "商品管理", "GoodsManage", "GMMacPLUSet", "智販機商品設定", "GMMacPLUSet", "P", "fa-cubes" });
