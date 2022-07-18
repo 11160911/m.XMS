@@ -302,7 +302,7 @@ namespace SVMAdmin.Controllers
             }
         }
 
-        [Route("SystemSetup/GetInitGMMacPLUSet")]
+        [Route("SystemSetup/GetInitGMMacPLUSet")]  
         public ActionResult SystemSetup_GetInitGMMacPLUSet()
         {
             UserInfo uu = PubUtility.GetCurrentUser(this);
@@ -401,7 +401,7 @@ namespace SVMAdmin.Controllers
                 IFormCollection rq = HttpContext.Request.Form;
                 string GD_NO = rq["GD_NO"];
                 string SetSuspend = rq["SetSuspend"];
-                string sql = "update PLUSV set GD_Flag1='" + SetSuspend + "'";
+                string sql = "update PLUSV set GD_Flag1='"+ SetSuspend+"'";
                 sql += " where CompanyCode='" + uu.CompanyId + "' And GD_NO='" + GD_NO.SqlQuote() + "'";
                 PubUtility.ExecuteSql(sql, uu, "SYS");
                 sql = "select a.*";
@@ -455,7 +455,7 @@ namespace SVMAdmin.Controllers
                             //sql += ",Photo2='" + dr["Photo2"].ToString().SqlQuote() + "'";
                             //sql += " where GD_NO='" + dr["GD_NO"].ToString().SqlQuote() + "'";
                             //dbop.ExecuteSql(sql, uu, "SYS");
-                            dbop.Update("PLUSV", dtRec, new string[] { "CompanyCode", "GD_NO" }, uu, "SYS");
+                            dbop.Update("PLUSV", dtRec, new string[] { "CompanyCode" , "GD_NO" }, uu, "SYS");
 
                             string OldPhoto1 = dtOld.Rows[0]["Photo1"].ToString();
                             if (OldPhoto1 != "" & OldPhoto1 != dr["Photo1"].ToString())
@@ -569,7 +569,7 @@ namespace SVMAdmin.Controllers
                 dsRQ.Tables.Add(dtRec);
                 PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
                 DataRow dr = dtRec.Rows[0];
-
+                
                 string GD_NO = dtRec.Rows[0]["GD_NO"].ToString();
                 string sql = "select * from PLU ";
                 sql += " where GD_NO='" + GD_NO.SqlQuote() + "'";
@@ -618,7 +618,7 @@ namespace SVMAdmin.Controllers
                     {
                         try
                         {
-                            for (int i = dtPLUi.Columns.Count - 1; i > -1; i--)
+                            for (int i= dtPLUi.Columns.Count-1; i >-1; i--)
                             {
                                 string fname = dtPLUi.Columns[i].ColumnName;
                                 if (!dtPLU.Columns.Contains(fname))
@@ -1806,7 +1806,7 @@ namespace SVMAdmin.Controllers
                     {
                         try
                         {
-
+                        
                             sql = "update MachineList set ";
                             sql += " FlagT='" + dr["FlagT"].ToString().SqlQuote() + "'";
                             sql += ",FlagNet='" + dr["FlagNet"].ToString().SqlQuote() + "'";
@@ -2131,7 +2131,7 @@ namespace SVMAdmin.Controllers
                             sql += ", ModUser, ModDate, ModTime ";
                             sql += ", DocNo, DocUser, DocDate";
                             sql += ", ExchangeDate, WhNoOut, CkNoOut "
-                                + ", WhNoIn, CkNoIn) Values ";
+                                +  ", WhNoIn, CkNoIn) Values ";
                             sql += " ('" + uu.CompanyId + "', '" + uu.UserID + "', convert(char(10),getdate(),111), convert(char(12),getdate(),108) ";
                             sql += ", '" + uu.UserID + "', convert(char(10),getdate(),111), convert(char(12),getdate(),108) ";
                             sql += ", '" + DocNo + "', '" + uu.UserID + "',convert(char(10),getdate(),111)+ ' ' +Substring(convert(char(12),getdate(),108),1,5) ";
@@ -2206,7 +2206,7 @@ namespace SVMAdmin.Controllers
         }
 
 
-
+ 
 
 
         //public string GetNewDocNo(UserInfo uu, String DocType, Int16 Digits)
@@ -2297,7 +2297,7 @@ namespace SVMAdmin.Controllers
                             sql += ",ModDate=convert(char(10),getdate(),111)";
                             sql += ",ModTime=convert(char(10),getdate(),108)";
                             sql += ",ModUser='" + uu.UserID + "'";
-                            sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" +
+                            sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + 
                                 dr["DocNo"].ToString().SqlQuote() + "' And SeqNo=" + dr["SeqNo"].ToString().SqlQuote();
                             dbop.ExecuteSql(sql, uu, "SYS");
 
@@ -2404,7 +2404,7 @@ namespace SVMAdmin.Controllers
                     {
                         try
                         {
-
+ 
                             string sqlAdj = "";
                             //異動庫存最近有效日期
                             sqlAdj = "Select * From TempDocumentSV a (Nolock) ";
@@ -2654,9 +2654,9 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-
+                
                 string sql = "select Man_ID,Whno from ISAMShopWeb (nolock) ";
-                sql += "where Companycode='" + uu.CompanyId + "' and Man_ID='" + uu.UserID + "'";
+                sql += "where Companycode='"+ uu.CompanyId +"' and Man_ID='"+ uu.UserID +"'";
                 DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
                 dtC.TableName = "dtComp";
                 ds.Tables.Add(dtC);
@@ -2735,9 +2735,9 @@ namespace SVMAdmin.Controllers
                 string Shop = rq["Shop"];
                 string ISAMDate = rq["ISAMDate"];
                 string BinNo = rq["BinNo"];
-
+                
                 string sql = "select top 1 * from BINWeb (nolock) ";
-                sql += "where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "'";
+                sql += "where Companycode='" + uu.CompanyId + "' and BINStore='"+ Shop +"' and ISAMDate='"+ ISAMDate +"' and BINNO='"+ BinNo + "' and BINman='"+ uu.UserID +"'";
                 DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
                 if (dtC.Rows.Count == 0)
                 {
@@ -2745,7 +2745,7 @@ namespace SVMAdmin.Controllers
                     sql += "where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "'";
                     dtC = PubUtility.SqlQry(sql, uu, "SYS");
                 }
-
+                
                 dtC.TableName = "dtBINData";
                 ds.Tables.Add(dtC);
 
@@ -2778,16 +2778,16 @@ namespace SVMAdmin.Controllers
                 string sql = "select * from BINWeb (nolock) ";
                 sql += "where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "'";
                 DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
-                if (dtC.Rows.Count == 0) { lb_Insert = true; }
+                if (dtC.Rows.Count == 0) { lb_Insert = true; } 
                 else
                 {
-                    DataRow[] dr = dtC.Select("PLU='" + PLU + "'");
+                    DataRow[] dr = dtC.Select("PLU='"+ PLU +"'");
                     if (dr.Length == 0) { lb_Insert = true; }
                     else
                     {
                         sql = "Update BINWeb set Qty1=Qty1+" + Qty + ",ModDate=Convert(varchar,getdate(),111),ModTime=Substring(Convert(varchar,getdate(),121),12,12),";
                         sql += "ISAMTime=CONVERT(varchar,getdate(),108) where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "'";
-                        sql += " and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "' and PLU='" + PLU + "'";
+                        sql += " and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "' and PLU='" + PLU + "'"; 
                         PubUtility.ExecuteSql(sql, uu, "SYS");
                     }
 
@@ -2805,8 +2805,8 @@ namespace SVMAdmin.Controllers
                 }
                 //Return 異動後的數量,故要重撈一次
                 //單品數
-                sql = "Select Sum(Qty1) SQ1 from BINWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and PLU='" + PLU + "'";
-                DataTable dtSQ = PubUtility.SqlQry(sql, uu, "SYS");
+                sql = "Select Sum(Qty1) SQ1 from BINWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and PLU='"+ PLU +"'";
+                DataTable dtSQ= PubUtility.SqlQry(sql, uu, "SYS");
                 dtSQ.TableName = "dtSQ";
                 ds.Tables.Add(dtSQ);
                 //分區總和(不看商品)
@@ -2891,8 +2891,8 @@ namespace SVMAdmin.Controllers
             {
                 IFormCollection rq = HttpContext.Request.Form;
                 string PLU = rq["PLU"];
-
-                string sql = "select '" + PLU + "' PLU,GD_Name from PLUWeb (nolock) ";
+              
+                string sql = "select '"+ PLU + "' PLU,GD_Name from PLUWeb (nolock) ";
                 sql += "where Companycode='" + uu.CompanyId + "' and GD_Barcode='" + PLU + "'";
                 DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
 
@@ -3919,7 +3919,7 @@ namespace SVMAdmin.Controllers
 
                 string sql = "Select MCSeq from MachineList (nolock) where Companycode='" + uu.CompanyId + "' ";
                 if (SNno != "")
-                    sql += "and SNno='" + SNno + "' ";
+                   sql += "and SNno='" + SNno + "' ";
                 DataTable dtMCSeq = PubUtility.SqlQry(sql, uu, "SYS");
                 ds.Tables.Add(dtMCSeq);
                 dtMCSeq.TableName = "dtMCSeq";
@@ -4081,11 +4081,11 @@ namespace SVMAdmin.Controllers
                 string ShopNo = rq["ShopNo"];
 
                 string sql = "select a.CkNo,a.SNno," +
-                "a.WhnoIn + b.ST_Sname as WhName, " +
-                "a.ST_Address,a.InvGetQty,a.InvSaveQty,a.ST_OpenDay,a.ST_StopDay,a.QrCode " +
-                "from WarehouseDSV a (nolock) " +
+                "a.WhnoIn + b.ST_Sname as WhName, "+
+                "a.ST_Address,a.InvGetQty,a.InvSaveQty,a.ST_OpenDay,a.ST_StopDay,a.QrCode "+
+                "from WarehouseDSV a (nolock) "+
                 "left join WarehouseSV b (nolock) on a.WhnoIn = b.ST_ID and b.CompanyCode = a.CompanyCode " +
-                "where a.CompanyCode='" + uu.CompanyId + "' ";
+                "where a.CompanyCode='" + uu.CompanyId + "' "; 
                 if (ShopNo != "")
                     sql += "and a.ST_ID='" + ShopNo + "' ";
                 sql += "order by a.CkNo ";
@@ -4422,7 +4422,7 @@ namespace SVMAdmin.Controllers
                                     sql += "and CkNo<>'00' ";
                                     dbop.ExecuteSql(sql, uu, "SYS");
                                 }
-                                else if (dr["OldFlagInv"].ToString() == "Y" && dr["FlagInv"].ToString() == "N")
+                                else if(dr["OldFlagInv"].ToString() == "Y" && dr["FlagInv"].ToString() == "N")
                                 {
                                     //調撥表頭
                                     string TH_ID = PubUtility.GetNewDocNo(uu, "TH", 6);
@@ -4488,9 +4488,9 @@ namespace SVMAdmin.Controllers
                                     sql += "left join InventorySV i (nolock) on t.WhNoOut=i.WhNo and t.CkNoOut=i.CkNo and t.PLU=i.PLU and t.LayerOut=i.Layer and t.SnoOut=i.Sno and i.companycode='" + uu.CompanyId + "' ";
                                     sql += "where 1=1 ";
                                     dbop.ExecuteSql(sql, uu, "SYS");
-
+                                    
                                     //刪除母倉資料
-                                    sql = "Delete From WarehouseDSV where Companycode='" + uu.CompanyId + "' ";
+                                    sql = "Delete From WarehouseDSV where Companycode='" + uu.CompanyId + "' " ;
                                     sql += "and ST_ID='" + dr["ST_ID"].ToString().SqlQuote() + "' and CkNo='00' ";
                                     dbop.ExecuteSql(sql, uu, "SYS");
 
@@ -5018,7 +5018,7 @@ namespace SVMAdmin.Controllers
                 sql += "inner join CompanySIDSV c on a.CompanyCode=c.CompanyCode and b.SystemId=c.SystemId ";
                 sql += "Where a.CompanyCode='" + uu.CompanyId + "' and GroupID='" + Group.SqlQuote() + "' and isnull(b.OrderSequence,'')<>'99' ";
                 sql += "Order By c.OrderSequence,b.OrderSequence ";
-
+                
                 DataTable dtGP = PubUtility.SqlQry(sql, uu, "SYS");
                 dtGP.TableName = "dtGroupProgramID";
                 ds.Tables.Add(dtGP);
@@ -5187,5 +5187,5 @@ namespace SVMAdmin.Controllers
 
 
 
-    }
-}
+            }
+            }
