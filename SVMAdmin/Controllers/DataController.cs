@@ -1695,7 +1695,7 @@ namespace SVMAdmin.Controllers
             {
 
                 string sql = "select ST_ID ,ST_ID+ST_SName STName ";
-                sql += " from WarehouseSV (NoLock) ";
+                sql += " from WarehouseWeb (NoLock) ";
                 sql += " Where CompanyCode='" + uu.CompanyId + "' And ST_Type ='6'";
                 sql += " Order By ST_ID ";
 
