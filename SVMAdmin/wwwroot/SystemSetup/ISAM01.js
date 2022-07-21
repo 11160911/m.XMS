@@ -498,15 +498,39 @@
     };
 
 //#region 上傳
-    let afterToFTPY = function () {
-        Timerset(sessionStorage.getItem('isamcomp'));
+    let AfterAddISAMToFTPRecWeb = function (data) {
+        if (ReturnMsg(data, 0) != "AddISAMToFTPRecWebOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtBin = data.getElementsByTagName('dtRec');
+            if (dtBin.length == 0) {
+                //alert("No RowData");
+                DyAlert("待上傳記錄新增失敗，請重新上傳!");
+                return;
+            }
+            else {
+                DyAlert("待上傳記錄新增完成!");
+                return;
+            }
+        }
+    }
 
+    let CallSendToFTP = function () {
+        Timerset(sessionStorage.getItem('isamcomp'));
+        var cData = {
+            Type:"T",
+            Shop: $('#lblShop2').html().split(' ')[0],
+            ISAMDate: $('#lblDate2').html(),
+            BinNo: $('#lblBINNo2').html()
+        }
+        PostToWebApi({ url: "api/SystemSetup/AddISAMToFTPRecWeb", data: cData, success: AfterAddISAMToFTPRecWeb });
     };
 
 
     let btToFTP_click = function () {
         Timerset(sessionStorage.getItem('isamcomp'));
-        DyConfirm("是否要上傳" + $('#lblBINNo2').text() + "分區盤點資料？", afterToFTPY, DummyFunction);
+        DyConfirm("是否要上傳" + $('#lblBINNo2').text() + "分區盤點資料？", CallSendToFTP, DummyFunction);
     };
 //#endregion
 

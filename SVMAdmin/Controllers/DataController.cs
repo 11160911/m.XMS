@@ -2956,6 +2956,64 @@ namespace SVMAdmin.Controllers
         }
 
 
+        [Route("SystemSetup/AddISAMToFTPRecWeb")]
+        public ActionResult SystemSetup_AddISAMToFTPRecWeb()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "AddISAMToFTPRecWebOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Doctype = rq["Type"];
+                string Shop = rq["Shop"];
+                string Comd = "";
+
+                switch (Doctype)
+                {
+                    case "T":
+                        if (rq.Count > 1)
+                        {
+                            string ISAMDate = rq["ISAMDate"];
+                            string BinNo = rq["BinNo"];
+                            Comd = Shop + ";" + BinNo + ";" + ISAMDate + ";" + uu.UserID;  //店;分區代碼;盤點日期;登入者
+                        }
+                        else
+                        {
+                            Comd = Shop;
+                        }
+                        break;
+                    case "C":
+                        break;
+                    case "D":
+                        break;
+                    default:
+                        break;
+                }
+
+                string strDateTime = PubUtility.SqlQry("select replace(Convert(varchar,getdate(),121),'-','/')", uu, "SYS").Rows[0][0].ToString();
+                string sql = "Insert into ISAMToFTPRecWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime,DocType,WhNo,UpLoadComd) ";
+                sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "','" + strDateTime.Split(" ")[0] + "','" + strDateTime.Split(" ")[1].Substring(0, 8) + "',";
+                sql += "'" + uu.UserID + "','" + strDateTime.Split(" ")[0] + "','" + strDateTime.Split(" ")[1].Substring(0, 8) + "',";
+                sql += "'" + Doctype +"','" + Shop +"','" + Comd + "'";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                sql = "Select * from ISAMToFTPRecWeb (nolock) where Companycode='"+ uu.CompanyId +"' and CrtUser='"+ uu.UserID +"' and CrtDate='"+ strDateTime.Split(" ")[0] + "' and CrtTime='"+ strDateTime.Split(" ")[1].Substring(0, 8) + "' ";
+                sql += "and DocType='"+ Doctype +"' and WhNo='"+ Shop +"'";
+                DataTable dtFTPRec= PubUtility.SqlQry (sql, uu, "SYS");
+
+                dtFTPRec.TableName = "dtRec";
+                ds.Tables.Add(dtFTPRec);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
         //2021-05-18 Larry
         [Route("SystemSetup/SearchVIV10")]
         public ActionResult SystemSetup_SearchVIV10()
