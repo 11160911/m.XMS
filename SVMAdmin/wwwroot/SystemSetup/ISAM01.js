@@ -1,6 +1,5 @@
 ﻿var PageISAM01 = function (ParentNode) {
 
-    let tbDetail;
     let grdM;
     let EditMode = "";
     let DelPLU = "";
@@ -21,7 +20,7 @@
                     { type: "TextAmt", name: "Qty1" },
                     { type: "JQ", name: "fa-file-text-o", element: '<i class="fa fa-file-text-o"></i>' }
                 ],
-                //rows_per_page: 10,"tdCol3 text-right"
+                //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
                 sortable: "N"
@@ -685,7 +684,7 @@
 //#endregion
     
 
-    if ($('#pgISAM01').length == 0) {  //, "pgISAM01UpFtp"
+    if ($('#pgISAM01').length == 0) {  
         AllPages = new LoadAllPages(ParentNode, "SystemSetup/ISAM01", ["ISAM01btns", "pgISAM01Init", "pgISAM01Add", "pgISAM01Mod"], afterLoadPage);
     };
 
