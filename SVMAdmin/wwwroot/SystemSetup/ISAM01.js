@@ -149,30 +149,7 @@
             //var userxml = data.getElementsByTagName('dtRack')[0];
             grdM.DeleteRow(grdM.ActiveRowTR());
         }
-        //if (ReturnMsg(data, 0) != "ISAM01PLUDelOK") {
-        //    DyAlert(ReturnMsg(data, 1));
-        //}
-        //else {
-        //    alert("BINWeb.PLU is deleted");
-        //    tbDetail.empty();
-        //    var dtBin = data.getElementsByTagName('dtBin');
-        //    //grdM.BindData(dtBin);
-        //    //
-        //    if (dtBin.length == 0) {
-        //        //alert("No RowData");
-        //        DyAlert("無符合資料!");
-        //        return;
-        //    }
 
-        //    //for (var i = 0; i < dtBin.length; i++) {
-        //    //    var plu = GetNodeValue(dtBin[i], "PLU");
-        //    //    var qty = GetNodeValue(dtBin[i], "Qty1");
-        //    //    var trD = NewOneDetail(plu, qty);
-
-        //    //    tbDetail.append(trD);
-        //    //    $('#tbISAM01Mod .fa-trash-o').click(function () { btPLUDelete_click(this) });
-        //    //}
-        //}
     };
 
     let btDelSave_click = function () {
@@ -234,38 +211,17 @@
     };
 //#endregion
 
-//#region 條碼查詢
-    let AfterGetBINWebPLUMod = function (data) {
-        if (ReturnMsg(data, 0) != "GetBINWebPLUModOK") {
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
-            var dtP = data.getElementsByTagName('dtPLUMod');
-            grdM.BindData(dtP);
-            if (dtP.length == 0) {
-                //alert("No RowData");
-                DyAlert("無符合資料!");
-                return;
-            }
-        }
-        $('#txtBarcode3').val('');
-    };
 
     let btBCSave3_click = function () {
         Timerset(sessionStorage.getItem('isamcomp'));
-        if ($('#txtBarcode3').val() == "") {
-            DyAlert("請輸入條碼!");
-            return;
-        }
         var cData = {
             Shop: $('#lblShop2').html().split(' ')[0],
             ISAMDate: $('#lblDate2').html(),
             BinNo: $('#lblBINNo2').html(),
             PLU: $('#txtBarcode3').val()
         }
-        PostToWebApi({ url: "api/SystemSetup/GetBINWebPLUMod", data: cData, success: AfterGetBINWebPLUMod });
+        PostToWebApi({ url: "api/SystemSetup/GetBINWebMod", data: cData, success: afterGetBINWebMod });
     };
-//#endregion
 
     let afterGetBINWebMod = function (data) {
         if (ReturnMsg(data, 0) != "GetBINWebModOK") {
@@ -304,9 +260,6 @@
             $('#pgISAM01Add').hide();
         }
         BtnSet("M");
-
-
-
 
     };
 //#endregion
@@ -641,6 +594,9 @@
             $('#pgISAM01Init').removeAttr('hidden');
             //$('#pgISAM01Init').show();
             $('#btSave').click(function () { btSave_click(); });
+            $('#txtBinNo').keypress(function (e) {
+                if (e.which == 13) { btSave_click(); }
+            });
 
             $('#btAdd').click(function () { btAdd_click(); });
             $('#btMod').click(function () { btMod_click(); });
@@ -652,6 +608,10 @@
             $('#btBCSave1').click(function () { btBCSave1_click(); });
             $('#btKeyin1').click(function () { btKeyin1_click(); });
             $('#btQtySave1').click(function () { btQtySave1_click(); });
+            $('#txtBarcode1').keypress(function (e) {
+                if (e.which == 13) { btBCSave1_click(); }
+            });
+
 
             $('#btDelCancel').click(function () { btDelCancel_click(); });
             $('#btDelSave').click(function () { btDelSave_click(); });
@@ -660,6 +620,9 @@
             $('#btModCancel').click(function () { btModCancel_click(); });
             $('#btModSave').click(function () { btModSave_click(); });
             $('#btBCSave3').click(function () { btBCSave3_click(); });
+            $('#txtBarcode3').keypress(function (e) {
+                if (e.which == 13) { btBCSave3_click(); }
+            });
         }
     };
 
