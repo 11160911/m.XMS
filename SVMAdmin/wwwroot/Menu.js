@@ -168,6 +168,7 @@
         //$('#Timer').hide();
         //TimerReset(sessionStorage.getItem('isamcomp'),"");
         Timerset(sessionStorage.getItem('isamcomp'));
+        $MENU_TOGGLE.click();
         OpenPage(menuitem);
 
 
@@ -248,15 +249,15 @@
                 }
             }
 
-            else if (pg == "VMN01") {
-                if (window.PageVMN01 == undefined)
-                    $.getScript('SystemSetup/VMN01.js',
+            else if (pg == "ISAMToFTP") {
+                if (window.PageISAMToFTP == undefined)
+                    $.getScript('SystemSetup/ISAMToFTP.js',
                         function () {
-                            PageVMN01($(".workarea"));
+                            PageISAMToFTP($(".workarea"));
                         }
                     );
                 else {
-                    PageVMN01($(".workarea"));
+                    PageISAMToFTP($(".workarea"));
                 }
             }
 
@@ -330,7 +331,7 @@
 
             else if (pg == "ISAM02") {
                 if (window.PageISAM02 == undefined)
-                    $.getScript('ISAM02.js',
+                    $.getScript('SystemSetup/ISAM02.js',
                         function () {
                             PageISAM02($(".workarea"));
                         }

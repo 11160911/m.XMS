@@ -1,4 +1,4 @@
-﻿var PageISAM01 = function (ParentNode) {
+﻿var PageISAM02 = function (ParentNode) {
 
     let grdM;
     let EditMode = "";
@@ -12,12 +12,12 @@
 
         grdM = new DynGrid(
             {
-                table_lement: $('#tbISAM01Mod')[0],
+                table_lement: $('#tbISAM02Mod')[0],
                 class_collection: ["tdColbt icon_in_td btPLUDelete", "tdCol1", "tdCol2 label-align", "tdColbt icon_in_td btPLUMod"],
                 fields_info: [
                     { type: "JQ", name: "fa-trash-o", element: '<i class="fa fa-trash-o"></i>' },
                     { type: "Text", name: "GD_Name", style: "width:200px" },
-                    { type: "TextAmt", name: "Qty1" },
+                    { type: "TextAmt", name: "Qty" },
                     { type: "JQ", name: "fa-file-text-o", element: '<i class="fa fa-file-text-o"></i>' }
                 ],
                 //rows_per_page: 10,
@@ -34,22 +34,22 @@
     };
 
     let InitModifyDeleteButton = function () {
-        $('#tbISAM01Mod .fa-file-text-o').click(function () { btPLUMod_click(this) });
-        $('#tbISAM01Mod .fa-trash-o').click(function () { btPLUDelete_click(this) });
+        $('#tbISAM02Mod .fa-file-text-o').click(function () { btPLUMod_click(this) });
+        $('#tbISAM02Mod .fa-trash-o').click(function () { btPLUDelete_click(this) });
     }
 
 //#region 編查
 //#region 單筆修改
-    let AfterSaveISAM01PLUMod = function (data) {
-        if (ReturnMsg(data, 0) != "SaveISAM01PLUModOK") {
+    let AfterSaveISAM02PLUMod = function (data) {
+        if (ReturnMsg(data, 0) != "SaveISAM02PLUModOK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
             DyAlert("修改完成!");
 
-            $('#modal_ISAM01PLUMod').modal('hide');
-            var dtBINMod = data.getElementsByTagName('dtBINMod')[0];
-            grdM.RefreshRocord(grdM.ActiveRowTR(), dtBINMod);
+            $('#modal_ISAM02PLUMod').modal('hide');
+            var dtCollectMod = data.getElementsByTagName('dtCollectMod')[0];
+            grdM.RefreshRocord(grdM.ActiveRowTR(), dtCollectMod);
         }
 
     };
@@ -83,12 +83,12 @@
             PLU: ModPLU,
             Qty: $('#txtModQty1').val()
         }
-        PostToWebApi({ url: "api/SystemSetup/SaveISAM01PLUMod", data: cData, success: AfterSaveISAM01PLUMod });
+        PostToWebApi({ url: "api/SystemSetup/SaveISAM02PLUMod", data: cData, success: AfterSaveISAM02PLUMod });
     };
 
     let btModCancel_click = function () {
         Timerset(sessionStorage.getItem('isamcomp'));
-        $('#modal_ISAM01PLUMod').modal('hide');
+        $('#modal_ISAM02PLUMod').modal('hide');
     };
 
     let AfterGetModGDName = function (data) {
@@ -103,7 +103,7 @@
                 $('#lblModPLUName').html(GetNodeValue(dtP[0], 'GD_Name'));
                 $('#lblModQty1').html(ModPLUQty);
                 $('#txtModQty1').val(ModPLUQty);
-                $('#modal_ISAM01PLUMod').modal('show');
+                $('#modal_ISAM02PLUMod').modal('show');
             }
             else {
                 DyAlert("無符合之商品資料!");
@@ -121,11 +121,11 @@
 
 
         $('.msg-valid').hide();
-        $('#modal_ISAM01PLUMod .modal-title').text('盤點資料單筆修改');
-        //$('#modal_ISAM01Mod .btn-danger').text('刪除');
+        $('#modal_ISAM02PLUMod .modal-title').text('條碼蒐集資料單筆修改');
+        //$('#modal_ISAM02Mod .btn-danger').text('刪除');
         var node = $(grdM.ActiveRowTR()).prop('Record');
         ModPLU = GetNodeValue(node, 'PLU');
-        ModPLUQty = GetNodeValue(node, 'Qty1');
+        ModPLUQty = GetNodeValue(node, 'Qty');
         var cData = {
             Shop: $('#lblShop2').html().split(' ')[0],
             ISAMDate: $('#lblDate2').html(),
@@ -138,14 +138,14 @@
 //#endregion
 
 //#region 單筆刪除
-    let AfterDelISAM01PLU = function (data) {
-        if (ReturnMsg(data, 0) != "DelISAM01PLUOK") {
+    let AfterDelISAM02PLU = function (data) {
+        if (ReturnMsg(data, 0) != "DelISAM02PLUOK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
             DyAlert("刪除完成!");
 
-            $('#modal_ISAM01PLUDel').modal('hide');
+            $('#modal_ISAM02PLUDel').modal('hide');
             //var userxml = data.getElementsByTagName('dtRack')[0];
             grdM.DeleteRow(grdM.ActiveRowTR());
         }
@@ -156,16 +156,14 @@
         Timerset(sessionStorage.getItem('isamcomp'));
         var cData = {
             Shop: $('#lblShop2').html().split(' ')[0],
-            ISAMDate: $('#lblDate2').html(),
-            BinNo: $('#lblBINNo2').html(),
             PLU: DelPLU
         }
-        PostToWebApi({ url: "api/SystemSetup/DelISAM01PLU", data: cData, success: AfterDelISAM01PLU });
+        PostToWebApi({ url: "api/SystemSetup/DelISAM02PLU", data: cData, success: AfterDelISAM02PLU });
     };
 
     let btDelCancel_click = function () {
         Timerset(sessionStorage.getItem('isamcomp'));
-        $('#modal_ISAM01PLUDel').modal('hide');
+        $('#modal_ISAM02PLUDel').modal('hide');
     };
 
     let AfterGetGDName = function (data) {
@@ -180,7 +178,7 @@
                 $('#lblPLU').html(DelPLU);
                 $('#lblPLUName').html(GetNodeValue(dtP[0], 'GD_Name'));
                 $('#lblDelQty1').html(DelPLUQty);
-                $('#modal_ISAM01PLUDel').modal('show');
+                $('#modal_ISAM02PLUDel').modal('show');
             }
             else {
                 DyAlert("無符合之商品資料!");
@@ -195,15 +193,13 @@
         Timerset(sessionStorage.getItem('isamcomp'));
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
-        $('#modal_ISAM01PLUDel .modal-title').text('盤點資料單筆刪除');
-        //$('#modal_ISAM01Mod .btn-danger').text('刪除');
+        $('#modal_ISAM02PLUDel .modal-title').text('盤點資料單筆刪除');
+        //$('#modal_ISAM02Mod .btn-danger').text('刪除');
         var node = $(grdM.ActiveRowTR()).prop('Record');
         DelPLU = GetNodeValue(node, 'PLU');
-        DelPLUQty = GetNodeValue(node, 'Qty1');
+        DelPLUQty = GetNodeValue(node, 'Qty');
         var cData = {
             Shop: $('#lblShop2').html().split(' ')[0],
-            ISAMDate: $('#lblDate2').html(),
-            BinNo: $('#lblBINNo2').html(),
             PLU: DelPLU
         }
         PostToWebApi({ url: "api/SystemSetup/GetGDName", data: cData, success: AfterGetGDName });
@@ -220,17 +216,17 @@
             BinNo: $('#lblBINNo2').html(),
             PLU: $('#txtBarcode3').val()
         }
-        PostToWebApi({ url: "api/SystemSetup/GetBINWebMod", data: cData, success: afterGetBINWebMod });
+        PostToWebApi({ url: "api/SystemSetup/GetCollectWebMod", data: cData, success: afterGetCollectWebMod });
     };
 
-    let afterGetBINWebMod = function (data) {
-        if (ReturnMsg(data, 0) != "GetBINWebModOK") {
+    let afterGetCollectWebMod = function (data) {
+        if (ReturnMsg(data, 0) != "GetCollectWebModOK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
-            var dtBin = data.getElementsByTagName('dtBin');
-            grdM.BindData(dtBin);
-            if (dtBin.length == 0) {
+            var dtCollect = data.getElementsByTagName('dtCollect');
+            grdM.BindData(dtCollect);
+            if (dtCollect.length == 0) {
                 //alert("No RowData");
                 DyAlert("無符合資料!");
                 return;
@@ -244,20 +240,18 @@
         EditMode = "M";
         Timerset(sessionStorage.getItem('isamcomp'));
         var pData = {
-            Shop: $('#lblShop2').html().split(' ')[0],
-            ISAMDate: $('#lblDate2').html(),
-            BinNo: $('#lblBINNo2').html()
+            Shop: $('#lblShop2').html().split(' ')[0]
         }
-        PostToWebApi({ url: "api/SystemSetup/GetBINWebMod", data: pData, success: afterGetBINWebMod });
-        $('#pgISAM01Mod').show();
-        if ($('#pgISAM01Mod').attr('hidden') == undefined) {
-            $('#pgISAM01Mod').show();
+        PostToWebApi({ url: "api/SystemSetup/GetCollectWebMod", data: pData, success: afterGetCollectWebMod });
+        $('#pgISAM02Mod').show();
+        if ($('#pgISAM02Mod').attr('hidden') == undefined) {
+            $('#pgISAM02Mod').show();
         }
         else {
-            $('#pgISAM01Mod').removeAttr('hidden');
+            $('#pgISAM02Mod').removeAttr('hidden');
         }
-        if ($('#pgISAM01Add').attr('hidden') == undefined) {
-            $('#pgISAM01Add').hide();
+        if ($('#pgISAM02Add').attr('hidden') == undefined) {
+            $('#pgISAM02Add').hide();
         }
         BtnSet("M");
 
@@ -304,13 +298,11 @@
         $('#txtQty1').prop('disabled', true);
         var pData = {
             Shop: $('#lblShop2').html().split(' ')[0],
-            ISAMDate: $('#lblDate2').html(),
-            BinNo: $('#lblBINNo2').html(),
             Barcode: $('#txtBarcode1').val() == "" ? $('#lblBarcode').html() : $('#txtBarcode1').val(),
             Qty: $('#txtQty1').val()
         };
         //alert("908");
-        PostToWebApi({ url: "api/SystemSetup/SaveBINWeb", data: pData, success: afterSaveBINWeb });
+        PostToWebApi({ url: "api/SystemSetup/SaveCollectWeb", data: pData, success: afterSaveCollectWeb });
     };
 
     let btKeyin1_click = function () {
@@ -322,8 +314,9 @@
         $('#txtBarcode1').prop('disabled', true);
     };
 
-    let afterSaveBINWeb = function (data) {
-        if (ReturnMsg(data, 0) != "SaveBINWebOK") {
+    let afterSaveCollectWeb = function (data) {
+        if (ReturnMsg(data, 0) != "SaveCollectWebOK") {
+            //alert("NotOK");
             DyAlert(ReturnMsg(data, 1));
         }
         else {
@@ -333,20 +326,6 @@
             }
             else {
                 $('#lblSQty1').html('');
-            }
-            var dtSBQ = data.getElementsByTagName('dtSBQ');
-            if (dtSBQ.length > 0) {
-                $('#lblSBQty1').html(GetNodeValue(dtSBQ[0], "SBQ1"));
-            }
-            else {
-                $('#lblSBQty1').html('');
-            }
-            var dtSWQ = data.getElementsByTagName('dtSWQ');
-            if (dtSWQ.length > 0) {
-                $('#lblSWQty1').html(GetNodeValue(dtSWQ[0], "SWQ1"));
-            }
-            else {
-                $('#lblSWQty1').html('');
             }
             var dtP = data.getElementsByTagName('dtPLU');
             if (dtP.length > 0) {
@@ -392,28 +371,26 @@
         //alert($('#lblShop2').html());
         var pData = {
             Shop: $('#lblShop2').html().split(' ')[0],
-            ISAMDate: $('#lblDate2').html(),
-            BinNo: $('#lblBINNo2').html(),
             Barcode: $('#txtBarcode1').val(),
             Qty: 1
         };
         //alert("908");
-        PostToWebApi({ url: "api/SystemSetup/SaveBINWeb", data: pData, success: afterSaveBINWeb });
+        PostToWebApi({ url: "api/SystemSetup/SaveCollectWeb", data: pData, success: afterSaveCollectWeb });
     };
 
     
     let btAdd_click = function () {
         EditMode = "A";
         Timerset(sessionStorage.getItem('isamcomp'));
-        $('#pgISAM01Add').show();
-        if ($('#pgISAM01Add').attr('hidden') == undefined) {
-            $('#pgISAM01Add').show();
+        $('#pgISAM02Add').show();
+        if ($('#pgISAM02Add').attr('hidden') == undefined) {
+            $('#pgISAM02Add').show();
         }
         else {
-            $('#pgISAM01Add').removeAttr('hidden');
+            $('#pgISAM02Add').removeAttr('hidden');
         }
-        if ($('#pgISAM01Mod').attr('hidden') == undefined) {
-            $('#pgISAM01Mod').hide();
+        if ($('#pgISAM02Mod').attr('hidden') == undefined) {
+            $('#pgISAM02Mod').hide();
         }
         BtnSet("A");
         
@@ -431,8 +408,6 @@
                 $('#lblBarcode').html('');
                 $('#lblQty1').html('');
                 $('#lblSQty1').html('');
-                $('#lblSBQty1').html('');
-                $('#lblSWQty1').html('');
                 $('#lblPrice').html('');
                 $('#lblGDName').html('');
                 break;
@@ -472,10 +447,8 @@
     let CallSendToFTP = function () {
         Timerset(sessionStorage.getItem('isamcomp'));
         var cData = {
-            Type:"T",
-            Shop: $('#lblShop2').html().split(' ')[0],
-            ISAMDate: $('#lblDate2').html(),
-            BinNo: $('#lblBINNo2').html()
+            Type:"C",
+            Shop: $('#lblShop2').html().split(' ')[0]
         }
         PostToWebApi({ url: "api/SystemSetup/AddISAMToFTPRecWeb", data: cData, success: AfterAddISAMToFTPRecWeb });
     };
@@ -483,7 +456,7 @@
 
     let btToFTP_click = function () {
         Timerset(sessionStorage.getItem('isamcomp'));
-        DyConfirm("是否要上傳" + $('#lblBINNo2').text() + "分區盤點資料？", CallSendToFTP, DummyFunction);
+        DyConfirm("是否要上傳條碼蒐集資料？", CallSendToFTP, DummyFunction);
     };
 //#endregion
 
@@ -497,134 +470,57 @@
 
     let btRtn_click = function () {
         //alert(EditMode);
-        if (EditMode == "Q") {
-            $('#ISAM01btns').hide();
-            $('#pgISAM01Init').show();
-            $('#pgISAM01Add').hide();
-            $('#pgISAM01Mod').hide();
-            //$('#pgISAM01UpFtp').hide();
-        } else if (EditMode == "A" || EditMode == "M") {
-            $('#ISAM01btns').show();
-            $('#pgISAM01Init').hide();
-            $('#pgISAM01Add').hide();
-            $('#pgISAM01Mod').hide();
-            //$('#pgISAM01UpFtp').hide();
+        if (EditMode == "A" || EditMode == "M") {
+            $('#ISAM02btns').show();
+            $('#pgISAM02Add').hide();
+            $('#pgISAM02Mod').hide();
         }
         Timerset(sessionStorage.getItem('isamcomp'));
-    };
-//#endregion
-
-//#region 輸入盤點日期,分區
-    let afterSearchBINWeb = function (data) {
-        //EditMode = "Q";
-        if (ReturnMsg(data, 0) != "SearchBINWebOK") {
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
-            var dtBINData = data.getElementsByTagName('dtBINData');
-            if (dtBINData.length > 0) {
-                if (GetNodeValue(dtBINData[0], "BINman") != $('#lblManID1').html().split(' ')[0]) {
-                    DyAlert("盤點人員" + GetNodeValue(dtBINData[0], "BINman") + "已建立分區" + $('#txtBinNo').val() + "之分區單!!", BlankMode);
-                    return;
-                }
-            }
-
-            //AssignVar();
-            //alert(GetNodeValue(dtISAMShop[0], "STName"));
-            EditMode = "Q";
-            $('#lblShop2').html($('#lblShop1').html());
-            $('#lblBINNo2').html($('#txtBinNo').val());
-            $('#lblDate2').html($('#txtISAMDate').val());
-            $('#lblSWQty1title').html($('#lblShop1').html().split(' ')[0] + "門市總數：");
-            $('#lblSBQty1title').html($('#txtBinNo').val() + "分區總數：");
-            $('#lblSQty1').html('');
-            $('#lblSBQty1').html('');
-            $('#lblSWQty1').html('');
-            $('#lblPrice').html('');
-            $('#lblGDName').html("品名XXX");
-            $('#pgISAM01Init').hide();
-            if ($('#ISAM01btns').attr('hidden') == undefined) {
-                $('#ISAM01btns').show();
-            }
-            else {
-                $('#ISAM01btns').removeAttr('hidden');
-            }
-        }
-    };
-
-    let btSave_click = function () {
-        Timerset(sessionStorage.getItem('isamcomp'));
-        if ($('#txtISAMDate').val() == "" | $('#txtISAMDate').val() == null) {
-            DyAlert("請輸入盤點日期!!",function () { $('#txtISAMDate').focus() });
-            return;
-        }
-        if ($('#txtBinNo').val() == "" | $('#txtBinNo').val() == null) {
-            DyAlert("請輸入分區代碼!!", function () { $('#txtBinNo').focus() });
-            return;
-        }
-        else {
-            if ($('#txtBinNo').val().length>10) {
-                DyAlert("分區代碼不可超過10個字元!!", function () { $('#txtBinNo').focus() });
-                return;
-            }
-        }
-        var pData = {
-            Shop: $('#lblShop1').html().split(' ')[0],
-            ISAMDate: $('#txtISAMDate').val(),
-            BinNo: $('#txtBinNo').val()
-        }
-        PostToWebApi({ url: "api/SystemSetup/SearchBINWeb", data: pData, success: afterSearchBINWeb });
     };
 //#endregion
 
 //#region FormLoad
-   let afterGetInitISAM01 = function (data) {
-        if (ReturnMsg(data, 0) != "GetInitISAM01OK") {
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
-            AssignVar();
-            EditMode = "Init";
-            tbDetail = $('#pgISAM01Mod #tbISAM01Mod tbody');
-            var dtISAMShop = data.getElementsByTagName('dtWh');
-            //alert(GetNodeValue(dtISAMShop[0], "STName"));
-            $('#lblShop1').text(GetNodeValue(dtISAMShop[0], "STName"));
-            $('#lblManID1').text(GetNodeValue(dtISAMShop[0], "ManName"));
-            SetDateField($('#txtISAMDate')[0]);
-            $('#pgISAM01Init').removeAttr('hidden');
-            //$('#pgISAM01Init').show();
-            $('#btSave').click(function () { btSave_click(); });
-            $('#txtBinNo').keypress(function (e) {
-                if (e.which == 13) { btSave_click(); }
-            });
+   let afterGetInitISAM02 = function (data) {
+       AssignVar();
+       EditMode = "Q";
+       tbDetail = $('#pgISAM02Mod #tbISAM02Mod tbody');
+       
+       $('#lblShop2').html(GetNodeValue(data[0], "STName"));
+       $('#lblSQty1').html('');
+       $('#lblPrice').html('');
+       $('#lblGDName').html("品名XXX");
+       if ($('#ISAM02btns').attr('hidden') == undefined) {
+           $('#ISAM02btns').show();
+       }
+       else {
+           $('#ISAM02btns').removeAttr('hidden');
+       }
 
-            $('#btAdd').click(function () { btAdd_click(); });
-            $('#btMod').click(function () { btMod_click(); });
-            $('#btToFTP').click(function () { btToFTP_click(); });
-            $('#btRtn').click(function () { btRtn_click(); afterRtnclick(); });
+       $('#btAdd').click(function () { btAdd_click(); });
+       $('#btMod').click(function () { btMod_click(); });
+       $('#btToFTP').click(function () { btToFTP_click(); });
+       $('#btRtn').click(function () { btRtn_click(); afterRtnclick(); });
 
-            $('#txtQty1').prop('disabled', true);
-            $('#btQtySave1').prop('disabled', true);
-            $('#btBCSave1').click(function () { btBCSave1_click(); });
-            $('#btKeyin1').click(function () { btKeyin1_click(); });
-            $('#btQtySave1').click(function () { btQtySave1_click(); });
-            $('#txtBarcode1').keypress(function (e) {
-                if (e.which == 13) { btBCSave1_click(); }
-            });
+       $('#txtQty1').prop('disabled', true);
+       $('#btQtySave1').prop('disabled', true);
+       $('#btBCSave1').click(function () { btBCSave1_click(); });
+       $('#btKeyin1').click(function () { btKeyin1_click(); });
+       $('#btQtySave1').click(function () { btQtySave1_click(); });
+       $('#txtBarcode1').keypress(function (e) {
+           if (e.which == 13) { btBCSave1_click(); }
+       });
 
 
-            $('#btDelCancel').click(function () { btDelCancel_click(); });
-            $('#btDelSave').click(function () { btDelSave_click(); });
-            
+       $('#btDelCancel').click(function () { btDelCancel_click(); });
+       $('#btDelSave').click(function () { btDelSave_click(); });
 
-            $('#btModCancel').click(function () { btModCancel_click(); });
-            $('#btModSave').click(function () { btModSave_click(); });
-            $('#btBCSave3').click(function () { btBCSave3_click(); });
-            $('#txtBarcode3').keypress(function (e) {
-                if (e.which == 13) { btBCSave3_click(); }
-            });
-        }
-    };
+       $('#btModCancel').click(function () { btModCancel_click(); });
+       $('#btModSave').click(function () { btModSave_click(); });
+       $('#btBCSave3').click(function () { btBCSave3_click(); });
+       $('#txtBarcode3').keypress(function (e) {
+           if (e.which == 13) { btBCSave3_click(); }
+       });
+   };
 
     
     let AfterGetWhName = function (data) {
@@ -638,7 +534,7 @@
                 DyAlert("請確認店櫃(" + GetNodeValue(dtWh[0], "WhNo") + ")是否為允許作業之店櫃!", BlankMode);
                 return;
             }
-            PostToWebApi({ url: "api/SystemSetup/GetInitISAM01", success: afterGetInitISAM01 });
+            afterGetInitISAM02(dtWh);
         }
     };
 
@@ -671,8 +567,8 @@
 //#endregion
     
 
-    if ($('#pgISAM01').length == 0) {  
-        AllPages = new LoadAllPages(ParentNode, "SystemSetup/ISAM01", ["ISAM01btns", "pgISAM01Init", "pgISAM01Add", "pgISAM01Mod"], afterLoadPage);
+    if ($('#pgISAM02').length == 0) {  
+        AllPages = new LoadAllPages(ParentNode, "SystemSetup/ISAM02", ["ISAM02btns", "pgISAM02Add", "pgISAM02Mod"], afterLoadPage);
     };
 
 

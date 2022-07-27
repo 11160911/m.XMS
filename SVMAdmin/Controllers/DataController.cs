@@ -2940,7 +2940,7 @@ namespace SVMAdmin.Controllers
                 switch (Doctype)
                 {
                     case "T":
-                        if (rq.Count > 1)
+                        if (rq.Count > 2)
                         {
                             string ISAMDate = rq["ISAMDate"];
                             string BinNo = rq["BinNo"];
@@ -2948,12 +2948,16 @@ namespace SVMAdmin.Controllers
                         }
                         else
                         {
-                            Comd = Shop;
+                            Comd = Shop+";"+uu.UserID;
                         }
                         break;
                     case "C":
+                        Comd = Shop + ";" + uu.UserID;
                         break;
                     case "D":
+                        string DocDate = rq["DocDate"];
+                        string InShop = rq["WhNoIn"];
+                        Comd = Shop + ";" + InShop + ";" + DocDate + ";" + uu.UserID;  //出貨店碼；進貨店碼；單據日期；登入者
                         break;
                     default:
                         break;
@@ -2973,6 +2977,186 @@ namespace SVMAdmin.Controllers
                 dtFTPRec.TableName = "dtRec";
                 ds.Tables.Add(dtFTPRec);
 
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        [Route("SystemSetup/SaveCollectWeb")]
+        public ActionResult SystemSetup_SaveCollectWeb()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SaveCollectWebOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                Boolean lb_Insert = false;
+                string Shop = rq["Shop"];
+                string PLU = rq["Barcode"];
+                int Qty = Convert.ToInt32(rq["Qty"].ToString().SqlQuote());
+
+                string sql = "select * from CollectWeb (nolock) ";
+                sql += "where Companycode='" + uu.CompanyId + "' and Whno='" + Shop + "' and WorkUser='" + uu.UserID + "'";
+                DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtC.Rows.Count == 0) { lb_Insert = true; }
+                else
+                {
+                    DataRow[] dr = dtC.Select("PLU='" + PLU + "'");
+                    if (dr.Length == 0) { lb_Insert = true; }
+                    else
+                    {
+                        sql = "Update CollectWeb set Qty=Qty+" + Qty + ",ModDate=Convert(varchar,getdate(),111),ModTime=Substring(Convert(varchar,getdate(),121),12,12) ";
+                        sql += "where Companycode='" + uu.CompanyId + "' and Whno='" + Shop + "' and WorkUser='" + uu.UserID + "' and PLU='" + PLU + "'";
+                        PubUtility.ExecuteSql(sql, uu, "SYS");
+                    }
+
+                }
+
+                if (lb_Insert)
+                {
+                    sql = "Insert into CollectWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime,Whno,WorkUser,SeqNo,PLU,QTY) ";
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',Convert(varchar,getdate(),111),Substring(Convert(varchar,getdate(),121),12,12),";
+                    sql += "'" + uu.UserID + "',Convert(varchar,getdate(),111),Substring(Convert(varchar,getdate(),121),12,12),";
+                    sql += "'" + Shop + "','" + uu.UserID + "',";
+                    sql += "(select isnull(max(seqno),0)+1 from CollectWeb (nolock) where Companycode='" + uu.CompanyId + "' and Whno='" + Shop + "' and WorkUser='" + uu.UserID + "'),";
+                    sql += "'" + PLU + "',1 ";
+                    PubUtility.ExecuteSql(sql, uu, "SYS");
+                }
+                //Return 異動後的數量,故要重撈一次
+                //單品數
+                sql = "Select Sum(Qty) SQ1 from CollectWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and Whno='" + Shop + "' and PLU='" + PLU + "'";
+                DataTable dtSQ = PubUtility.SqlQry(sql, uu, "SYS");
+                dtSQ.TableName = "dtSQ";
+                ds.Tables.Add(dtSQ);
+
+                sql = "Select '" + PLU + "' PLU,GD_Name,GD_Retail from PLUWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and GD_Barcode='" + PLU + "'";
+                DataTable dtP = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtP.Rows.Count == 0)
+                {
+                    sql = "Select '" + PLU + "' PLU,GD_Name,GD_Retail from PLUWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and GD_No='" + PLU + "'";
+                    dtP = PubUtility.SqlQry(sql, uu, "SYS");
+                }
+
+                dtP.TableName = "dtPLU";
+                ds.Tables.Add(dtP);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/GetCollectWebMod")]
+        public ActionResult SystemSetup_GetCollectWebMod()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetCollectWebModOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Shop = rq["Shop"];
+                string Comd = "";
+
+                if (rq.Count > 1)
+                {
+                    string PLU = rq["PLU"];
+                    if (PLU != null && PLU != "") { Comd = " and PLU='" + PLU + "'"; }
+                }
+
+                string sql = "set nocount on;select a.*,GD_Name into #tmpA from CollectWeb a (nolock) left join PLUWeb b (nolock) ";
+                sql += "on a.companycode=b.companycode and a.PLU=b.GD_Barcode ";
+                sql += "where a.Companycode='" + uu.CompanyId + "' and Whno='" + Shop + "' and WorkUser='" + uu.UserID + "'" + Comd + ";";
+                sql += "select a.PLU,a.Qty,a.PLU+' '+case when isnull(a.GD_Name,'')='' then b.GD_Name else a.GD_Name end GD_Name from #tmpA a (nolock) left join PLUWeb b (nolock) ";
+                sql += "on a.companycode=b.companycode and a.PLU=b.GD_No order by SeqNo";
+
+
+                DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+
+                dtC.TableName = "dtCollect";
+                ds.Tables.Add(dtC);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/SaveISAM02PLUMod")]
+        public ActionResult SystemSetup_SaveISAM02PLUMod()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SaveISAM02PLUModOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Shop = rq["Shop"];
+                string PLU = rq["PLU"];
+                string Qty = rq["Qty"];
+
+                string sql = "Update CollectWeb set Qty=" + Qty.SqlQuote();
+                sql += " where Companycode='" + uu.CompanyId + "' and Whno='" + Shop + "' and WorkUser='" + uu.UserID + "' and PLU='" + PLU + "'";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                sql = "select PLU,Qty,PLU+' '+GD_Name GD_Name from CollectWeb a (nolock) inner join PLUWeb b ";
+                sql += "on a.companycode=b.companycode and a.PLU=b.GD_Barcode ";
+                sql += "where a.Companycode='" + uu.CompanyId + "' and Whno='" + Shop + "' and WorkUser='" + uu.UserID + "' and PLU='" + PLU + "'";
+                DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+
+                if (dtC.Rows.Count == 0)
+                {
+                    sql = "select PLU,Qty,PLU+' '+isnull(GD_Name,'') GD_Name from CollectWeb a (nolock) left join PLUWeb b ";
+                    sql += "on a.companycode=b.companycode and a.PLU=b.GD_No ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' and Whno='" + Shop + "' and WorkUser='" + uu.UserID + "' and PLU='" + PLU + "'";
+                    dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                }
+
+                dtC.TableName = "dtCollectMod";
+                ds.Tables.Add(dtC);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/DelISAM02PLU")]
+        public ActionResult SystemSetup_DelISAM02PLU()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "DelISAM02PLUOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Shop = rq["Shop"];
+                string PLU = rq["PLU"];
+
+                string sql = "Delete from CollectWeb ";
+                sql += "where Companycode='" + uu.CompanyId + "' and Whno='" + Shop + "' and WorkUser='" + uu.UserID + "' and PLU='" + PLU + "'";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                sql = "set nocount on;Select ROW_NUMBER() over(order by Companycode,Whno,WorkUser,seqno) NewSeq,* into #tmpA from CollectWeb (nolock) ";
+                sql += "where Companycode='" + uu.CompanyId + "' and Whno='" + Shop + "' and WorkUser='" + uu.UserID + "';";
+                sql += "update b set SeqNo=newseq from #tmpA a inner join CollectWeb b ";
+                sql += "on a.CompanyCode=b.CompanyCode and a.Whno=b.Whno and a.WorkUser=b.WorkUser and a.SeqNo=b.SeqNo;";
+                sql += "drop table #tmpA;";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
             }
             catch (Exception err)
             {
@@ -4933,154 +5117,7 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
-        //2022-06-17 Kris
-        [Route("SystemSetup/GetInitISAM02")]
-        public ActionResult SystemSetup_GetInitISAM02()
-        {
-            UserInfo uu = PubUtility.GetCurrentUser(this);
-            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetInitISAM02OK", "" });
-            DataTable dtMessage = ds.Tables["dtMessage"];
-            try
-            {
-                string sql = "";
 
-                sql = "Select isnull(a.WhNo,'')WhNo,isnull(b.ST_SName,'')ST_SName from ISAMShopWeb a (nolock) ";
-                sql += " left join WarehouseWeb b (nolock) on a.WhNo=b.ST_ID and b.CompanyCode=a.CompanyCode";
-                sql += " Where a.CompanyCode='" + uu.CompanyId + "' and Man_ID='" + uu.UserID + "'";
-                sql += " Order By a.WhNo ";
 
-                DataTable dtWh = PubUtility.SqlQry(sql, uu, "SYS");
-                dtWh.TableName = "dtISAM02Wh";
-                ds.Tables.Add(dtWh);
-
-            }
-            catch (Exception err)
-            {
-                dtMessage.Rows[0][0] = "Exception";
-                dtMessage.Rows[0][1] = err.Message;
-            }
-            return PubUtility.DatasetXML(ds);
-        }
-
-        //2022-07-04 Kris
-        [Route("SystemSetup/GetISAM02Collect_Add")]
-        public ActionResult GetISAM02Collect_Add()
-        {
-            UserInfo uu = PubUtility.GetCurrentUser(this);
-            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetISAM02Collect_AddOK", uu.UserID });
-            DataTable dtMessage = ds.Tables["dtMessage"];
-
-            try
-            {
-                //DataTable dt = ConstList.AllFunction();
-                //if (ds.Tables["dtAllFunction"] == null)
-                //    if (dt.DataSet == null)
-                //        ds.Tables.Add(dt);
-
-                IFormCollection rq = HttpContext.Request.Form;
-                string PLU = rq["PLU"];
-                string WhNo = rq["WhNo"];
-
-                string sql = "select * from CollectWeb (nolock) ";
-                sql += " Where CompanyCode='" + uu.CompanyId + "' and WorkUser='" + uu.UserID + "' ";
-                sql += " and PLU='" + PLU + "' and WhNo='" + WhNo + "' ";
-                DataTable dtCollect = PubUtility.SqlQry(sql, uu, "SYS");
-                dtCollect.TableName = "dtCollect";
-                ds.Tables.Add(dtCollect);
-
-                //若條碼蒐集存在則將數量+1
-                if (dtCollect.Rows.Count > 0)
-                {
-                    sql = "update CollectWeb set Qty=Qty+1";
-                    sql += ",ModDate=Convert(varchar,getdate(),111),ModTime=Substring(Convert(varchar,getdate(),121),12,12),ModUser='" + uu.UserID + "'";
-                    sql += " where CompanyCode='" + uu.CompanyId + "' and WorkUser='" + uu.UserID + "'";
-                    sql += " and PLU='" + PLU + "' and WhNo='" + WhNo + "'";
-                    PubUtility.ExecuteSql(sql, uu, "SYS");
-
-                }
-                //條碼蒐集不存在則新增
-                else
-                {
-                    sql = "Insert into CollectWeb (CompanyCode,CrtUSer,CrtDate,CrtTime,ModUser,ModDate,ModTime,WhNo,WorkUser,SeqNo,PLU,Qty,FTPUpDate) ";
-                    sql += "values ('" + uu.CompanyId + "','" + uu.UserID + "',Convert(varchar,getdate(),111),Substring(Convert(varchar,getdate(),121),12,12)";
-                    sql += ",'" + uu.UserID + "',Convert(varchar,getdate(),111),Substring(Convert(varchar,getdate(),121),12,12),";
-                    sql += "'" + WhNo + "','" + uu.UserID + "',1,'" + PLU + "',1,'')";
-                    PubUtility.ExecuteSql(sql, uu, "SYS");
-                }
-
-                sql = "select a.PLU,isnull(b.GD_Name,'')GD_Name,a.Qty,isnull(cast(b.GD_RETAIL as int),'')GD_Retail from CollectWeb a (nolock) ";
-                sql += " left join PLUWeb b (nolock) on (a.PLU=b.GD_NO or a.PLU=b.GD_Barcode) and b.Companycode=a.Companycode ";
-                sql += " Where a.CompanyCode='" + uu.CompanyId + "' and a.WorkUser='" + uu.UserID + "' ";
-                sql += " and a.PLU='" + PLU + "' and a.WhNo='" + WhNo + "' ";
-                DataTable dtCollectOK = PubUtility.SqlQry(sql, uu, "SYS");
-                dtCollectOK.TableName = "dtCollectOK";
-                ds.Tables.Add(dtCollectOK);
-
-                sql = "select isnull(Sum(Qty),0)SumQty from CollectWeb (nolock) ";
-                sql += " Where CompanyCode='" + uu.CompanyId + "'";
-                sql += " and PLU='" + PLU + "' and WhNo='" + WhNo + "' ";
-                DataTable dtCollectSumOK = PubUtility.SqlQry(sql, uu, "SYS");
-                dtCollectSumOK.TableName = "dtCollectSumOK";
-                ds.Tables.Add(dtCollectSumOK);
-
-            }
-            catch (Exception err)
-            {
-                dtMessage.Rows[0][0] = "Exception";
-                dtMessage.Rows[0][1] = err.Message;
-            }
-            return PubUtility.DatasetXML(ds);
-        }
-
-        //2022-07-05 Kris
-        [Route("SystemSetup/GetISAM02CollectMod_Add")]
-        public ActionResult GetISAM02CollectMod_Add()
-        {
-            UserInfo uu = PubUtility.GetCurrentUser(this);
-            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetISAM02CollectMod_AddOK", uu.UserID });
-            DataTable dtMessage = ds.Tables["dtMessage"];
-
-            try
-            {
-
-                IFormCollection rq = HttpContext.Request.Form;
-                string PLU = rq["PLU"];
-                string WhNo = rq["WhNo"];
-                string Qty = rq["Qty"];
-
-                string sql = "select a.*,isnull(b.GD_Name,'')GD_Name,isnull(cast(b.GD_RETAIL as int),'')GD_Retail from CollectWeb a (nolock) ";
-                sql += " left join PLUWeb b (nolock) on (a.PLU=b.GD_NO or a.PLU=b.GD_Barcode) and b.Companycode=a.Companycode ";
-                sql += " Where a.CompanyCode='" + uu.CompanyId + "' and a.WorkUser='" + uu.UserID + "' ";
-                sql += " and a.PLU='" + PLU + "' and a.WhNo='" + WhNo + "' ";
-                DataTable dtCollect = PubUtility.SqlQry(sql, uu, "SYS");
-                dtCollect.TableName = "dtCollect";
-                ds.Tables.Add(dtCollect);
-
-                //若條碼蒐集存在則將數量+1
-                if (dtCollect.Rows.Count > 0)
-                {
-                    sql = "update CollectWeb set Qty=" + Qty + "";
-                    sql += ",ModDate=Convert(varchar,getdate(),111),ModTime=Substring(Convert(varchar,getdate(),121),12,12),ModUser='" + uu.UserID + "'";
-                    sql += " where CompanyCode='" + uu.CompanyId + "' and WorkUser='" + uu.UserID + "'";
-                    sql += " and PLU='" + PLU + "' and WhNo='" + WhNo + "'";
-                    PubUtility.ExecuteSql(sql, uu, "SYS");
-
-                }
-
-                sql = "select isnull(Sum(Qty),0)SumQty from CollectWeb (nolock) ";
-                sql += " Where CompanyCode='" + uu.CompanyId + "'";
-                sql += " and PLU='" + PLU + "' and WhNo='" + WhNo + "' ";
-                DataTable dtCollectOK = PubUtility.SqlQry(sql, uu, "SYS");
-                dtCollectOK.TableName = "dtCollectOK";
-                ds.Tables.Add(dtCollectOK);
-
-            }
-            catch (Exception err)
-            {
-                dtMessage.Rows[0][0] = "Exception";
-                dtMessage.Rows[0][1] = err.Message;
-            }
-            return PubUtility.DatasetXML(ds);
-        }
     }
 }
