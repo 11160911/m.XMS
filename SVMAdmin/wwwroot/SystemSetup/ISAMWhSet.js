@@ -1,12 +1,11 @@
 var PageISAMWHSET = function (ParentNode) {
-    let dtWh;
-
+    let WhSt
     let AssignVar = function () {
-        alert("AssignVar");
+        //alert("ÈÄ≤ÂÖ•AssignVar");
         //$('#selST_ID').change(function () {
         //    alert("st_id");
         //    let st_id = $('#selST_ID').val();
-        //    //InitSelectItem($('#selLayerNo')[0], dtMachineListSpecBlank, "LayerNo", "LayerNo", true, "*Ω–øÔæ‹≥f≠‹•N∏π");
+        //    //InitSelectItem($('#selLayerNo')[0], dtMachineListSpecBlank, "LayerNo", "LayerNo", true, "*Ë´ãÈÅ∏ÊìáË≤®ÂÄâ‰ª£Ëôü");
         //    if (st_id == "") {
         //    }
         //    else {
@@ -19,62 +18,42 @@ var PageISAMWHSET = function (ParentNode) {
         //});
 
        //let AfterGetCkNoByST_ID = function (data) {
-       //   alert("AfterGetCkNoByST_ID");
        //    let dtWarehouseDSV = data.getElementsByTagName('dtWh');
        // }
 
       $('#btSaveISAMWH').click(function () {
-         alert("btSaveISAMWH");
-           //let records = [];
-            //let cbs = $('#ContainerChanSet .CubeChannel-1');
-            //for (let i = 0; i < cbs.length; i++) {
-                //var cb = cbs[i];
-                //if ($(cb).hasClass('CubeChannel-1_mask')) {
-                //    continue;
-                //}
-                //let rec = $(cb).prop('Record');
-                //let MachineInfo = $(cb).prop('MachineInfo');
-                //if (rec != null) {
-                //    let record = {
-                //        ST_ID: ST_ID
-                //        //PLU: GetNodeValue(rec, "GD_NO"),
-                //        //PTNum: 0,
-                //        //SafeNum: 1,
-                //        //In_Date: "",
-                //        //Out_Date: "",
-                //        //StartSalesDate: "",
-                //        //EndSalesDate: "",
-                //        //DisPlayNum: $(cb).find('.ChanQty').val(),
-                //        //CkNo: CkNo,
-                //        //Layer: LayerNo,
-                //        //Sno: GetNodeValue(MachineInfo, "ChannelNo"),
-                //        //EffectiveDate: ""
-                //    }
-                //    records.push(record);
-                //}
-            //}
-            let rec = $('#selST_ID').val();
-            var pData = {
-                InventorySV: rec
-            };
-            PostToWebApi({ url: "api/SystemSetup/SaveNewInventorySV", data: pData, success: AfterSaveNewInventorySV });
+          if ($('#selST_ID').val() != "") {
+              WhSt = $('#selST_ID option:selected').text()
+              var pData = {
+                  WHSetSV: $('#selST_ID').val()
+              };
+              PostToWebApi({ url: "api/SystemSetup/SaveST_ID", data: pData, success: AfterSaveNewInventorySV });
+         }
         });
     };
 
     let AfterSaveNewInventorySV = function (data) {
-        if (ReturnMsg(data, 0) != "SaveNewInventorySVOK") {
+        if (ReturnMsg(data, 0) != "SaveWhSetOK") {
             DyAlert(ReturnMsg(data, 0));
         }
         else {
-            DyAlert("ßπ¶®!");
+            DyAlert("ÂÆåÊàê!");
+            //alert(WhSt);
+            //$('#defWh').text(ReturnMsg(data, 1));
+            $('#defWh').text(WhSt);
         }
     }
 
     let afterGetInitWhSet = function (data) {
-        //alert("afterGetInitWhSet");
+        let dtWh;
+        let dtUserWh;
+       //alert("afterGetInitWhSet");
+        dtUserWh = data.getElementsByTagName('dtUserWh');
         dtWh = data.getElementsByTagName('dtWh');
+        $('#defWh').text(GetNodeValue(dtUserWh[0], "WhName"));
+        
         //alert("InitSelectItem");
-        InitSelectItem($('#selST_ID')[0], dtWh, "ST_ID", "STName", true, "*Ω–øÔæ‹©±•N∏π");
+        InitSelectItem($('#selST_ID')[0], dtWh, "ST_ID", "STName", true, "*Ë´ãÈÅ∏ÊìáÂ∫óÂà•" );
         AssignVar();
         //$('#btSaveISAMW').click(function () { btSave_click(); });
 
@@ -87,9 +66,9 @@ var PageISAMWHSET = function (ParentNode) {
     };
 
     if ($('#pgWhSet').length == 0) {
-        //2021-04-29 Debug•Œ°A´ˆF12´·°A¶b•D±±•x§∫∑|≈„•‹aaaaaa
+        //2021-04-29 DebugÁî®ÔºåÊåâF12ÂæåÔºåÂú®‰∏ªÊéßÂè∞ÂÖßÊúÉÈ°ØÁ§∫aaaaaa
         //console.log("aaaaaa");
         //alert("VMN01");
-        AllPages = new LoadAllPages(ParentNode, "ISAMWhSet", ["pgWhSet"], afterLoadPage);
+        AllPages = new LoadAllPages(ParentNode, "SystemSetup/ISAMWhSet", ["pgWhSet"], afterLoadPage);
     };
 }
