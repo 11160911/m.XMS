@@ -98,17 +98,18 @@
         else {
             var dtP = data.getElementsByTagName('dtPLU');
             //alert(dtP.length);
+            $('#lblModPLU').html(ModPLU);
+            $('#lblModQty1').html(ModPLUQty);
+            $('#txtModQty1').val(ModPLUQty);
             if (dtP.length > 0) {
-                $('#lblModPLU').html(ModPLU);
                 $('#lblModPLUName').html(GetNodeValue(dtP[0], 'GD_Name'));
-                $('#lblModQty1').html(ModPLUQty);
-                $('#txtModQty1').val(ModPLUQty);
-                $('#modal_ISAM01PLUMod').modal('show');
             }
             else {
-                DyAlert("無符合之商品資料!");
-                return;
+                //DyAlert("無符合之商品資料!");
+                //return;
+                $('#lblModPLUName').html('');
             }
+            $('#modal_ISAM01PLUMod').modal('show');
         }
 
         $('.msg-valid').hide();
@@ -175,17 +176,16 @@
         else {
             var dtP = data.getElementsByTagName('dtPLU');
             //alert(dtP.length);
+            $('#lblPLU').html(DelPLU);
+            $('#lblDelQty1').html(DelPLUQty);
             if (dtP.length > 0) {
                 /*DyConfirm("確定要刪除商品" + GetNodeValue(dtP[0], 'PLU') + GetNodeValue(dtP[0], 'GD_Name') + "？", afterDelPLU(GetNodeValue(dtP[0], 'PLU')), DummyFunction);*/
-                $('#lblPLU').html(DelPLU);
                 $('#lblPLUName').html(GetNodeValue(dtP[0], 'GD_Name'));
-                $('#lblDelQty1').html(DelPLUQty);
-                $('#modal_ISAM01PLUDel').modal('show');
             }
             else {
-                DyAlert("無符合之商品資料!");
-                return;
-            }
+                $('#lblPLUName').html('');
+             }
+            $('#modal_ISAM01PLUDel').modal('show');
         }
 
         $('.msg-valid').hide();
@@ -405,6 +405,11 @@
     let btAdd_click = function () {
         EditMode = "A";
         Timerset(sessionStorage.getItem('isamcomp'));
+        $('#btKeyin1').prop('disabled', false);
+        $('#btBCSave1').prop('disabled', false);
+        $('#txtBarcode1').prop('disabled', false);
+        $('#btQtySave1').prop('disabled', true);
+        $('#txtQty1').prop('disabled', true);
         $('#pgISAM01Add').show();
         if ($('#pgISAM01Add').attr('hidden') == undefined) {
             $('#pgISAM01Add').show();
@@ -524,7 +529,7 @@
             var dtBINData = data.getElementsByTagName('dtBINData');
             if (dtBINData.length > 0) {
                 if (GetNodeValue(dtBINData[0], "BINman") != $('#lblManID1').html().split(' ')[0]) {
-                    DyAlert("盤點人員" + GetNodeValue(dtBINData[0], "BINman") + "已建立分區" + $('#txtBinNo').val() + "之分區單!!", BlankMode);
+                    DyAlert("盤點人員" + GetNodeValue(dtBINData[0], "BINman") + "已建立分區" + $('#txtBinNo').val() + "之分區單!!", DummyFunction);
                     return;
                 }
             }
@@ -635,7 +640,7 @@
             var dtWh = data.getElementsByTagName('dtWh');
             //alert(GetNodeValue(dtWh[0], "ST_ID"));
             if (GetNodeValue(dtWh[0], "STName") == "") {
-                DyAlert("請確認店櫃(" + GetNodeValue(dtWh[0], "WhNo") + ")是否為允許作業之店櫃!", BlankMode);
+                DyAlert("請確認店櫃(" + GetNodeValue(dtWh[0], "WhNo") + ")是否為允許作業之店櫃!", DummyFunction);
                 return;
             }
             PostToWebApi({ url: "api/SystemSetup/GetInitISAM01", success: afterGetInitISAM01 });
@@ -650,11 +655,11 @@
             var dtISAMWh = data.getElementsByTagName('dtComp');
             //alert(GetNodeValue(dtISAMWh[0], "WhNo") );
             if (dtISAMWh.length == 0) {
-                DyAlert("無符合資料!", BlankMode);
+                DyAlert("無符合資料!", DummyFunction);
                 return;
             }
             else if (GetNodeValue(dtISAMWh[0], "WhNo") == null | GetNodeValue(dtISAMWh[0], "WhNo") == "") {
-                DyAlert("請先至店號設定進行作業店櫃設定!", BlankMode);
+                DyAlert("請先至店號設定進行作業店櫃設定!", DummyFunction);
                 return;
             }
             else if (GetNodeValue(dtISAMWh[0], "WhNo") != "") {

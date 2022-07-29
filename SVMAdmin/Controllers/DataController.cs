@@ -2732,7 +2732,7 @@ namespace SVMAdmin.Controllers
                     sql += "'" + uu.UserID + "',Convert(varchar,getdate(),111),Substring(Convert(varchar,getdate(),121),12,12),";
                     sql += "'" + Shop + "','" + BinNo + "','" + uu.UserID + "','" + ISAMDate + "',Convert(varchar,getdate(),108),";
                     sql += "(select isnull(max(seqno),0)+1 from BINWeb (nolock) where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and Binman='" + uu.UserID + "'),";
-                    sql += "'" + PLU + "',1 ";
+                    sql += "'" + PLU + "', "+ Qty.ToString() ;
                     PubUtility.ExecuteSql(sql, uu, "SYS");
                 }
                 //Return 異動後的數量,故要重撈一次
@@ -2794,7 +2794,7 @@ namespace SVMAdmin.Controllers
                 string sql = "set nocount on;select a.*,GD_Name into #tmpA from BINWeb a (nolock) left join PLUWeb b (nolock) ";
                 sql += "on a.companycode=b.companycode and a.PLU=b.GD_Barcode ";
                 sql += "where a.Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "'"+ Comd +";";
-                sql += "select a.PLU,a.Qty1,a.PLU+' '+case when isnull(a.GD_Name,'')='' then b.GD_Name else a.GD_Name end GD_Name from #tmpA a (nolock) left join PLUWeb b (nolock) ";
+                sql += "select a.PLU,a.Qty1,a.PLU+' '+case when isnull(a.GD_Name,'')='' then isnull(b.GD_Name,'') else isnull(a.GD_Name,'') end GD_Name from #tmpA a (nolock) left join PLUWeb b (nolock) ";
                 sql += "on a.companycode=b.companycode and a.PLU=b.GD_No order by SeqNo";
 
 
@@ -3025,7 +3025,7 @@ namespace SVMAdmin.Controllers
                     sql += "'" + uu.UserID + "',Convert(varchar,getdate(),111),Substring(Convert(varchar,getdate(),121),12,12),";
                     sql += "'" + Shop + "','" + uu.UserID + "',";
                     sql += "(select isnull(max(seqno),0)+1 from CollectWeb (nolock) where Companycode='" + uu.CompanyId + "' and Whno='" + Shop + "' and WorkUser='" + uu.UserID + "'),";
-                    sql += "'" + PLU + "',1 ";
+                    sql += "'" + PLU + "', " + Qty.ToString();
                     PubUtility.ExecuteSql(sql, uu, "SYS");
                 }
                 //Return 異動後的數量,故要重撈一次
@@ -3076,7 +3076,7 @@ namespace SVMAdmin.Controllers
                 string sql = "set nocount on;select a.*,GD_Name into #tmpA from CollectWeb a (nolock) left join PLUWeb b (nolock) ";
                 sql += "on a.companycode=b.companycode and a.PLU=b.GD_Barcode ";
                 sql += "where a.Companycode='" + uu.CompanyId + "' and Whno='" + Shop + "' and WorkUser='" + uu.UserID + "'" + Comd + ";";
-                sql += "select a.PLU,a.Qty,a.PLU+' '+case when isnull(a.GD_Name,'')='' then b.GD_Name else a.GD_Name end GD_Name from #tmpA a (nolock) left join PLUWeb b (nolock) ";
+                sql += "select a.PLU,a.Qty,a.PLU+' '+case when isnull(a.GD_Name,'')='' then isnull(b.GD_Name,'') else isnull(a.GD_Name,'') end GD_Name from #tmpA a (nolock) left join PLUWeb b (nolock) ";
                 sql += "on a.companycode=b.companycode and a.PLU=b.GD_No order by SeqNo";
 
 
@@ -3165,6 +3165,62 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+
+        [Route("SystemSetup/DelISAMData")]
+        public ActionResult SystemSetup_DelISAMData()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "DelISAMDataOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Shop = rq["Shop"];
+                string WorkType = rq["Type"];
+                string[] DocType = WorkType.Split(",");
+                string sql = "set nocount on;";
+
+                for (int i = 0; i < DocType.Length; i++)
+                {
+                    switch (DocType[i])
+                    {
+                        case "T":
+                            sql += "select * into #tmpT from binweb where companycode='" + uu.CompanyId + "' and binstore='" + Shop + "';";
+                            sql += "insert into binweb_old select *,replace(Convert(varchar(19), getdate(), 121), '-', '/'),'" + uu.UserID + "' from #tmpT;";
+                            sql += "delete a from binweb a inner join #tmpT b on a.companycode=b.companycode and a.binstore=b.binstore and a.binno=b.binno and a.binman=b.binman and a.isamdate = b.isamdate and a.seqno = b.seqno;";
+                            sql += "drop table #tmpT;";
+                            break;
+                        case "C":
+                            sql += "select * into #tmpC from CollectWeb where companycode='" + uu.CompanyId + "' and Whno='" + Shop + "';";
+                            sql += "insert into CollectWeb_old select *,replace(Convert(varchar(19), getdate(), 121), '-', '/'),'" + uu.UserID + "' from #tmpC;";
+                            sql += "delete a from CollectWeb a inner join #tmpC b on a.companycode=b.companycode and a.Whno=b.Whno and a.WorkUser=b.WorkUser and a.seqno=b.seqno and a.PLU=b.PLU;";
+                            sql += "drop table #tmpC;";
+                            break;
+                        case "D":
+                            sql += "select * into #tmpD from Deliveryweb where companycode='" + uu.CompanyId + "' and WhnoOut='" + Shop + "';";
+                            sql += "insert into Deliveryweb_old select *,replace(Convert(varchar(19), getdate(), 121), '-', '/'),'" + uu.UserID + "' from #tmpD;";
+                            sql += "delete a from Deliveryweb a inner join #tmpD b on a.companycode=b.companycode and a.WhnoOut=b.WhnoOut and a.DocDate=b.DocDate and a.OutUser=b.OutUser and a.WhnoIn=b.WhnoIn and a.seqno=b.seqno and a.PLU=b.PLU;";
+                            sql += "drop table #tmpD;";
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                if (sql != "")
+                {
+                    PubUtility.ExecuteSql(sql, uu, "SYS");
+                }
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
 
         //2021-05-18 Larry
         [Route("SystemSetup/SearchVIV10")]

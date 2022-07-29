@@ -263,11 +263,11 @@ namespace SVMAdmin.Controllers
 
 
         //2021-04-28
-        [Route("Inv")]
-        public IActionResult Inv()
+        [Route("SystemSetup/ISAMDelData")]
+        public IActionResult ISAMDelData()
         {
             HtmlAgilityPack.HtmlDocument doc1 = new HtmlAgilityPack.HtmlDocument();
-            string strHtml = System.IO.File.ReadAllText(ConstList.HostEnvironment.WebRootPath + @"\Inv.html".AdjPathByOS());
+            string strHtml = System.IO.File.ReadAllText(ConstList.HostEnvironment.WebRootPath + @"\SystemSetup\ISAMDelData.html".AdjPathByOS());
             doc1.LoadHtml(strHtml);
 
             //Remove Node
@@ -287,9 +287,9 @@ namespace SVMAdmin.Controllers
 
             //RemoveAllChildren
             NodeRemove = new string[] {
-                 "//ul[contains(@class,'app-menu')]",
-                 "//table[@id='tbInv']/tbody",
-                 "//table[@id='tbSecurity']/tbody"
+                 "//ul[contains(@class,'app-menu')]"
+                 //"//table[@id='tbInv']/tbody",
+                 //"//table[@id='tbSecurity']/tbody"
             };
             for (int i = 0; i < NodeRemove.Length; i++)
             {

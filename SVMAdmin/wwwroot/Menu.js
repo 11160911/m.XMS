@@ -237,15 +237,15 @@
                 }
             }
 
-            else if (pg == "Inv") {
-                if (window.PageInv == undefined)
-                    $.getScript('Inv.js',
+            else if (pg == "ISAMDelData") {
+                if (window.PageISAMDelData == undefined)
+                    $.getScript('SystemSetup/ISAMDelData.js',
                         function () {
-                            PageInv($(".workarea"));
+                            PageISAMDelData($(".workarea"));
                         }
                     );
                 else {
-                    PageInv($(".workarea"));
+                    PageISAMDelData($(".workarea"));
                 }
             }
 

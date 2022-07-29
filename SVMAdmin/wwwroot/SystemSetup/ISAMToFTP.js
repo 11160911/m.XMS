@@ -74,7 +74,7 @@
     //        var dtPLU = data.getElementsByTagName('dtPLU');
     //        grdU.BindData(dtPLU);
     //        if (dtPLU.length == 0) {
-    //            DyAlert("無符合資料!", BlankMode);
+    //            DyAlert("無符合資料!", DummyFunction);
     //            return;
     //        }
             
@@ -398,7 +398,7 @@
             var dtWh = data.getElementsByTagName('dtWh');
             //alert(GetNodeValue(dtWh[0], "ST_ID"));
             if (GetNodeValue(dtWh[0], "STName") == "") {
-                DyAlert("請確認店櫃(" + GetNodeValue(dtWh[0], "WhNo") + ")是否為允許作業之店櫃!", BlankMode);
+                DyAlert("請確認店櫃(" + GetNodeValue(dtWh[0], "WhNo") + ")是否為允許作業之店櫃!", DummyFunction);
                 return;
             }
             var whnamestr = GetNodeValue(dtWh[0], "STName");
@@ -422,11 +422,11 @@
             var dtISAMWh = data.getElementsByTagName('dtComp');
             //alert(GetNodeValue(dtISAMWh[0], "WhNo") );
             if (dtISAMWh.length == 0) {
-                DyAlert("無符合資料!", BlankMode);
+                DyAlert("無符合資料!", DummyFunction);
                 return;
             }
             else if (GetNodeValue(dtISAMWh[0], "WhNo") == null | GetNodeValue(dtISAMWh[0], "WhNo") == "") {
-                DyAlert("請先至店號設定進行作業店櫃設定!", BlankMode);
+                DyAlert("請先至店號設定進行作業店櫃設定!", DummyFunction);
                 return;
             }
             else if (GetNodeValue(dtISAMWh[0], "WhNo") != "") {
