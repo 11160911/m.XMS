@@ -1,593 +1,678 @@
-﻿
-var PageISAM02 = function (ParentNode) {
-    let AllPages;
-    let grdU;
-    let EditMode;
-    let SetSuspend = "";
-    let isImport = false;
+﻿var PageISAM03 = function (ParentNode) {
+
+    let grdM;
+    let EditMode = "";
+    let DelPLU = "";
+    let DelPLUQty;
+    let ModPLU = "";
+    let ModPLUQty;
+
+
     let AssignVar = function () {
+        //alert("AssignVar");
 
-        console.log("AssignVar");
-
-        grdU = new DynGrid(
+        grdM = new DynGrid(
             {
-                //2021-04-27
-                table_lement: $('#tbInv')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7", "tdCol8 label-align", "tdCol9 label-align", "tdCol10"],
-                //class_collection: ["tdColbt icon_in_td", "tdColbt icon_in_td btsuspend", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7",  "tdCol8"],
+                table_lement: $('#tbISAM03Mod')[0],
+                class_collection: ["tdColbt icon_in_td btPLUDelete", "tdCol1", "tdCol2 label-align", "tdColbt icon_in_td btPLUMod"],
                 fields_info: [
-                    //{ type: "JQ", name: "fa-file-text-o", element: '<i class="fa fa-file-text-o"></i>' },
-                    //{ type: "JQ", name: "fa-toggle-off", element: '<i class="fa fa-toggle-off"></i><i class="fa fa-toggle-on"></i>' },
-                    { type: "Text", name: "WhNo" },
-                    { type: "Text", name: "CkNo" },
-                    { type: "Text", name: "Layer" },
-                    { type: "Text", name: "SNO" },
-                    { type: "Text", name: "PLU" },
-                    { type: "Text", name: "GD_SNAME" },
-                    { type: "Text", name: "EffectiveDate" },
-                    { type: "TextAmt", name: "PtNum" },
-                    { type: "TextAmt", name: "DisplayNum" },
-                    { type: "Text", name: "Share" }
+                    { type: "JQ", name: "fa-trash-o", element: '<i class="fa fa-trash-o"></i>' },
+                    { type: "Text", name: "GD_Name", style: "width:200px" },
+                    { type: "TextAmt", name: "OutNum" },
+                    { type: "JQ", name: "fa-file-text-o", element: '<i class="fa fa-file-text-o"></i>' }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                //afterBind: InitModifyDeleteButton,
-                sortable: "Y"
+                afterBind: InitModifyDeleteButton,
+                sortable: "N"
             }
         );
-        
+        return;
     };
-
-    let InitModifyDeleteButton = function () {
-        //2021-04-27
-        $('#tbtest .fa-file-text-o').click(function () { btModify_click(this) });
-        $('#tbtest').find('.fa-toggle-off,.fa-toggle-on').click(function () { btSuspend_click(this) });
-        var trs = $('#tbtest tbody tr');
-        for (var i = 0; i < trs.length; i++) {
-            var tr = trs[i];
-            DisplaySuspend(tr);
-        }
-    }
-
-    let btAdd_click = function () {
-        $('#pgISAM03').show();
-        $('#pgISAM03_Add').show();
-        $('#pgISAM03_Query').hide();
-
-        $('#btQuery').prop('disabled', true)
-        $('#btUpLoad').prop('disabled', true)
-
-        $('#txtQty_Add').prop('disabled', true)
-        $('#btHand_Q_Add').prop('disabled', true)
-        $('#btYes_Q_Add').prop('disabled', true)
-
-        $('#txtBarcode_Add').val("")
-        $('#txtQty_Add').val("")
-        $('#lblQty_Add').html("")
-        $('#lblCost_Add').html("")
-        $('#lblGDName_Add').html("")
-
-
-    };
-
-    //編查
-    let btQuery_click = function () {
-        $('#pgISAM03').show();
-        $('#pgISAM03_Add').hide();
-        $('#pgISAM03_Query').show();
-
-        $('#btAdd').prop('disabled', true)
-        $('#btUpLoad').prop('disabled', true)
-
-    };
-
-    //上傳
-    let btUpLoad_click = function () {
-        $('#pgISAM03').show();
-        $('#pgISAM03_Add').hide();
-        $('#pgISAM03_Query').show();
-
-        $('#btAdd').prop('disabled', true)
-        $('#btQuery').prop('disabled', true)
-
-    };
-
-    //返回
-    let btExit_click = function () {
-        $('#pgISAM02').show();
-        $('#pgISAM02_Add').hide();
-        $('#pgISAM02_Query').hide();
-
-        $('#btAdd').prop('disabled', false)
-        $('#btQuery').prop('disabled', false)
-        $('#btUpLoad').prop('disabled', false)
-
-    };
-
-    //條碼-確認(新增)
-    let btYes_B_Add_click = function () {
-
-        if ($('#txtBarcode_Add').val() == "") {
-            DyAlert("請輸入條碼!");
-            return;
-        }
-        $('#btHand_Q_Add').prop('disabled', false)
-        //$('#btYes_Q_Add').prop('disabled', false)
-
-        var pData = {
-            PLU: $('#txtBarcode_Add').val(),
-            WhNo: $('#lblShop').html()
-        };
-
-        PostToWebApi({ url: "api/SystemSetup/GetISAM03Collect_Add", data: pData, success: AfterGetISAM03Collect_Add });
-    }
-
-    let AfterGetISAM03Collect_Add = function (data) {
-        
-        //檢查條碼蒐集是否存在，若存在則數量+1，不存在則新增
-        if (ReturnMsg(data, 0) != "GetISAM03Collect_AddOK") {
-            DyAlert(ReturnMsg(data, 0));
-            return;
-        }
-        else {
-            
-            var dtCollectOK = data.getElementsByTagName('dtCollectOK');
-            var dtCollectSumOK = data.getElementsByTagName('dtCollectSumOK');
-
-            if (dtCollectOK.length == 0) {
-                DyAlert("條碼蒐集存檔失敗，請重新確認!!");
-                return;
-            }
-            else {
-                
-                //$('#txtQty_Add').val(GetNodeValue(dtCollectOK[0], 'Qty'))
-                $('#lblQty_Add').html(GetNodeValue(dtCollectSumOK[0], 'SumQty'))
-
-                $('#lblGDName_Add').html(GetNodeValue(dtCollectOK[0], 'GD_Name'))
-                if (GetNodeValue(dtCollectOK[0], 'GD_Name') == "") {
-                    $('#lblCost_Add').html("")
-                }
-                else {
-                    $('#lblCost_Add').html(GetNodeValue(dtCollectOK[0], 'GD_Retail'))
-                }
-
-            }
-
-        }
-    };
-
-    //數量-手動(新增)
-    let btHand_Q_Add_click = function () {
-
-        $('#txtQty_Add').prop('disabled', false)
-        $('#btYes_Q_Add').prop('disabled', false)
-    }
-
-    //數量-確認(新增)
-    let btYes_Q_Add_click = function () {
-        if ($('#txtBarcode_Add').val() == "") {
-            DyAlert("請輸入條碼!");
-            return;
-        }
-
-        if ($('#txtQty_Add').val() == "") {
-            DyAlert("請輸入數量!");
-            return;
-        }
-        else {
-           
-            if (isNaN($('#txtQty_Add').val())) {
-                DyAlert("請輸入數字!");
-                return;
-            }
-            if ($('#txtQty_Add').val().indexOf(".") > 0) {
-                DyAlert("請輸入整數!");
-                return;
-            }
-          
-            if ($('#txtQty_Add').val() <= 0) {
-                DyAlert("數量需大於0!");
-                return;
-            }
-        }
-        
-        var pData = {
-            PLU: $('#txtBarcode_Add').val(),
-            WhNo: $('#lblShop').html(),
-            Qty: $('#txtQty_Add').val()
-        };
-
-        PostToWebApi({ url: "api/SystemSetup/GetISAM03CollectMod_Add", data: pData, success: AfterGetISAM03CollectMod_Add });
-
-    }
-   
-    let AfterGetISAM02CollectMod_Add = function (data) {
-
-        //開始修改條碼蒐集數量
-        if (ReturnMsg(data, 0) != "GetISAM03CollectMod_AddOK") {
-            DyAlert(ReturnMsg(data, 0));
-            return;
-        }
-        else {
-
-            var dtCollect = data.getElementsByTagName('dtCollect');
-            var dtCollectOK = data.getElementsByTagName('dtCollectOK');
-
-            if (dtCollect.length == 0) {
-                DyAlert("條碼蒐集不存在，請重新確認!!");
-                return;
-            }
-            else {
-                $('#lblQty_Add').html(GetNodeValue(dtCollectOK[0], 'SumQty'))
-                $('#lblGDName_Add').html(GetNodeValue(dtCollect[0], 'GD_Name'))
-                if (GetNodeValue(dtCollect[0], 'GD_Name') == "") {
-                    $('#lblCost_Add').html("")
-                }
-                else {
-                    $('#lblCost_Add').html(GetNodeValue(dtCollect[0], 'GD_Retail'))
-                }
-
-            }
-
-        }
-    };
-
-
-
 
     let click_PLU = function (tr) {
 
     };
 
-    //let AfterSearchInv = function (data) {
-    //    CloseLoading();
-    //    if (ReturnMsg(data, 0) != "SearchInvOK") {
-    //        DyAlert(ReturnMsg(data, 0));
-    //        return;
-    //    }
-    //    else {
-    //        var dtInv = data.getElementsByTagName('dtInv');
-    //        if (ReturnMsg(data, 1) == "") {
-    //            grdU.BindData(dtInv);
-    //        }
-    //        else //Excel
-    //        {
-    //            var url = "api/FileDownload?ID=" + EncodeSGID(ReturnMsg(data, 1));
-    //            url += "&CID=" + EncodeSGID(ReturnMsg(data, 2));
-    //            url += "&UID=" + EncodeSGID(ReturnMsg(data, 3));
-    //            $('#iframe_for_download').prop('src', url);
-    //        }
-    //        //var dtInv = data.getElementsByTagName('dtInv');
-    //        //grdU.BindData(dtInv);
-    //        if (dtInv.length == 0) {
-    //            DyAlert("無符合資料!", BlankMode);
-    //            return;
-    //        }
-    //    }
-    //    CloseLoading();
-    //};
+    let InitModifyDeleteButton = function () {
+        $('#tbISAM03Mod .fa-file-text-o').click(function () { btPLUMod_click(this) });
+        $('#tbISAM03Mod .fa-trash-o').click(function () { btPLUDelete_click(this) });
+    }
 
-    let DisplaySuspend = function (tr) {
-        var trNode = $(tr).prop('Record');
-        var sp = GetNodeValue(trNode, "GD_Flag1");
-        var bts = $(tr).find('.btsuspend i');
-        bts.hide();
-        if (sp == "S")
-            $(tr).find('.btsuspend .fa-toggle-off').show();
-        else
-            $(tr).find('.btsuspend .fa-toggle-on').show();
-        var img = $(tr).prop('Photo1');
-        var imgSGID = GetNodeValue(trNode, "Photo1");
-        var url = "api/GetImage?SGID=" + EncodeSGID(imgSGID) + "&UU=" + encodeURIComponent(UU);
-        url += "&Ver=" + encodeURIComponent(new Date().toLocaleTimeString());
-        img.prop('src', url);
+    //#region 編查
+    //#region 單筆修改
+    let AfterSaveISAM03PLUMod = function (data) {
+        if (ReturnMsg(data, 0) != "SaveISAM03PLUModOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            DyAlert("修改完成!");
+
+            $('#modal_ISAM03PLUMod').modal('hide');
+            var dtDeliveryMod = data.getElementsByTagName('dtDeliveryMod')[0];
+            grdM.RefreshRocord(grdM.ActiveRowTR(), dtDeliveryMod);
+        }
+
+    };
+
+    let btModSave_click = function () {
+        Timerset(sessionStorage.getItem('isamcomp'));
+        if ($('#txtModQty1').val() == "") {
+            DyAlert("請輸入數量!");
+            return;
+        }
+        else {
+
+            if (isNaN($('#txtModQty1').val())) {
+                DyAlert("請輸入數字!");
+                return;
+            }
+            if ($('#txtModQty1').val().indexOf(".") > 0) {
+                DyAlert("請輸入整數!");
+                return;
+            }
+
+            if ($('#txtModQty1').val() <= 0) {
+                DyAlert("數量需大於0!");
+                return;
+            }
+        }
+        var cData = {
+            WhNoOut: $('#lblWhNoOut').html().split(' ')[0],
+            DocDate: $('#lblDate2').html(),
+            WhNoIn: $('#lblWhNoIn').html().split(' ')[0],
+            PLU: ModPLU,
+            Qty: $('#txtModQty1').val()
+        }
+        PostToWebApi({ url: "api/SystemSetup/SaveISAM03PLUMod", data: cData, success: AfterSaveISAM03PLUMod });
+    };
+
+    let btModCancel_click = function () {
+        Timerset(sessionStorage.getItem('isamcomp'));
+        $('#modal_ISAM03PLUMod').modal('hide');
+    };
+
+    let AfterGetModGDName = function (data) {
+        if (ReturnMsg(data, 0) != "GetGDNameOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtP = data.getElementsByTagName('dtPLU');
+            //alert(dtP.length);
+            if (dtP.length > 0) {
+                $('#lblModPLU').html(ModPLU);
+                $('#lblModPLUName').html(GetNodeValue(dtP[0], 'GD_Name'));
+                $('#lblModQty1').html(ModPLUQty);
+                $('#txtModQty1').val(ModPLUQty);
+                $('#modal_ISAM03PLUMod').modal('show');
+            }
+            else {
+                DyAlert("無符合之商品資料!");
+                return;
+            }
+        }
+
+        $('.msg-valid').hide();
+    };
+
+    let btPLUMod_click = function (bt) {
+        Timerset(sessionStorage.getItem('isamcomp'));
+        $(bt).closest('tr').click();
+        //alert(GetNodeValue(node, 'AppDate'));
+
+
+        $('.msg-valid').hide();
+        $('#modal_ISAM03PLUMod .modal-title').text('出貨/調撥資料單筆修改');
+        //$('#modal_ISAM03Mod .btn-danger').text('刪除');
+        var node = $(grdM.ActiveRowTR()).prop('Record');
+        ModPLU = GetNodeValue(node, 'PLU');
+        ModPLUQty = GetNodeValue(node, 'OutNum');
+        var cData = {
+            PLU: ModPLU
+        }
+        PostToWebApi({ url: "api/SystemSetup/GetGDName", data: cData, success: AfterGetModGDName });
+
+    };
+    //#endregion
+
+    //#region 單筆刪除
+    let AfterDelISAM03PLU = function (data) {
+        if (ReturnMsg(data, 0) != "DelISAM03PLUOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            DyAlert("刪除完成!");
+
+            $('#modal_ISAM03PLUDel').modal('hide');
+            //var userxml = data.getElementsByTagName('dtRack')[0];
+            grdM.DeleteRow(grdM.ActiveRowTR());
+        }
+
+    };
+
+    let btDelSave_click = function () {
+        Timerset(sessionStorage.getItem('isamcomp'));
+        var cData = {
+            WhNoOut: $('#lblWhNoOut').html().split(' ')[0],
+            DocDate: $('#lblDate2').html(),
+            WhNoIn: $('#lblWhNoIn').html().split(' ')[0],
+            PLU: DelPLU
+        }
+        PostToWebApi({ url: "api/SystemSetup/DelISAM03PLU", data: cData, success: AfterDelISAM03PLU });
+    };
+
+    let btDelCancel_click = function () {
+        Timerset(sessionStorage.getItem('isamcomp'));
+        $('#modal_ISAM03PLUDel').modal('hide');
+    };
+
+    let AfterGetGDName = function (data) {
+        if (ReturnMsg(data, 0) != "GetGDNameOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtP = data.getElementsByTagName('dtPLU');
+            //alert(dtP.length);
+            if (dtP.length > 0) {
+                /*DyConfirm("確定要刪除商品" + GetNodeValue(dtP[0], 'PLU') + GetNodeValue(dtP[0], 'GD_Name') + "？", afterDelPLU(GetNodeValue(dtP[0], 'PLU')), DummyFunction);*/
+                $('#lblPLU').html(DelPLU);
+                $('#lblPLUName').html(GetNodeValue(dtP[0], 'GD_Name'));
+                $('#lblDelQty1').html(DelPLUQty);
+                $('#modal_ISAM03PLUDel').modal('show');
+            }
+            else {
+                DyAlert("無符合之商品資料!");
+                return;
+            }
+        }
+
+        $('.msg-valid').hide();
+    };
+
+    let btPLUDelete_click = function (bt) {
+       Timerset(sessionStorage.getItem('isamcomp'));
+        $(bt).closest('tr').click();
+        $('.msg-valid').hide();
+        $('#modal_ISAM03PLUDel .modal-title').text('盤點資料單筆刪除');
+        //$('#modal_ISAM03Mod .btn-danger').text('刪除');
+        var node = $(grdM.ActiveRowTR()).prop('Record');
+        DelPLU = GetNodeValue(node, 'PLU');
+        DelPLUQty = GetNodeValue(node, 'OutNum');
+        var cData = {
+            PLU: DelPLU
+        }
+        PostToWebApi({ url: "api/SystemSetup/GetGDName", data: cData, success: AfterGetGDName });
+
+    };
+    //#endregion
+
+
+    let btBCSave3_click = function () {
+        Timerset(sessionStorage.getItem('isamcomp'));
+        var cData = {
+            WhNoOut: $('#lblWhNoOut').html().split(' ')[0],
+            DocDate: $('#lblDate2').html(),
+            WhNoIn: $('#lblWhNoIn').html().split(' ')[0],
+            PLU: $('#txtBarcode3').val()
+        }
+        PostToWebApi({ url: "api/SystemSetup/GetDeliveryWebMod", data: cData, success: afterGetDeliveryWebMod });
+    };
+
+    let afterGetDeliveryWebMod = function (data) {
+        if (ReturnMsg(data, 0) != "GetDeliveryWebModOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtDelivery = data.getElementsByTagName('dtDelivery');
+            grdM.BindData(dtDelivery);
+            if (dtDelivery.length == 0) {
+                //alert("No RowData");
+                DyAlert("無符合資料!");
+                return;
+            }
+
+        }
+
+    };
+
+    let btMod_click = function () {
+        EditMode = "M";
+        Timerset(sessionStorage.getItem('isamcomp'));
+        var pData = {
+            WhNoOut: $('#lblWhNoOut').html().split(' ')[0],
+            DocDate: $('#lblDate2').html(),
+            WhNoIn: $('#lblWhNoIn').html().split(' ')[0]
+        }
+        PostToWebApi({ url: "api/SystemSetup/GetDeliveryWebMod", data: pData, success: afterGetDeliveryWebMod });
+        $('#pgISAM03Mod').show();
+        if ($('#pgISAM03Mod').attr('hidden') == undefined) {
+            $('#pgISAM03Mod').show();
+        }
+        else {
+            $('#pgISAM03Mod').removeAttr('hidden');
+        }
+        if ($('#pgISAM03Add').attr('hidden') == undefined) {
+            $('#pgISAM03Add').hide();
+        }
+        BtnSet("M");
+
+    };
+    //#endregion
+
+    //#region 新增
+    let btQtySave1_click = function () {
+        Timerset(sessionStorage.getItem('isamcomp'));
+        if ($('#txtBarcode1').val() == "" && $('#lblBarcode').html() == "") {
+            DyAlert("請輸入條碼!");
+            $('#txtQty1').val('');
+            $('#btKeyin1').prop('disabled', false);
+            $('#btBCSave1').prop('disabled', false);
+            $('#txtBarcode1').prop('disabled', false);
+            $('#btQtySave1').prop('disabled', true);
+            $('#txtQty1').prop('disabled', true);
+            return;
+        }
+        if ($('#txtQty1').val() == "") {
+            DyAlert("請輸入數量!");
+            return;
+        }
+        else {
+
+            if (isNaN($('#txtQty1').val())) {
+                DyAlert("請輸入數字!");
+                return;
+            }
+            if ($('#txtQty1').val().indexOf(".") > 0) {
+                DyAlert("請輸入整數!");
+                return;
+            }
+
+            if ($('#txtQty1').val() <= 0) {
+                DyAlert("數量需大於0!");
+                return;
+            }
+        }
+        $('#btKeyin1').prop('disabled', false);
+        $('#btBCSave1').prop('disabled', false);
+        $('#txtBarcode1').prop('disabled', false);
+        $('#btQtySave1').prop('disabled', true);
+        $('#txtQty1').prop('disabled', true);
+        var pData = {
+            WhNoOut: $('#lblWhNoOut').html().split(' ')[0],
+            WhNoIn: $('#lblWhNoIn').html().split(' ')[0],
+            DocDate: $('#lblDate2').html(),
+            Barcode: $('#txtBarcode1').val() == "" ? $('#lblBarcode').html() : $('#txtBarcode1').val(),
+            Qty: $('#txtQty1').val()
+        };
+        //alert("908");
+        PostToWebApi({ url: "api/SystemSetup/SaveDeliveryWeb", data: pData, success: afterSaveDeliveryWeb });
+    };
+
+    let btKeyin1_click = function () {
+        Timerset(sessionStorage.getItem('isamcomp'));
+        $('#btKeyin1').prop('disabled', true);
+        $('#btQtySave1').prop('disabled', false);
+        $('#txtQty1').prop('disabled', false);
+        $('#btBCSave1').prop('disabled', true);
+        $('#txtBarcode1').prop('disabled', true);
+    };
+
+    let afterSaveDeliveryWeb = function (data) {
+        if (ReturnMsg(data, 0) != "SaveDeliveryWebOK") {
+            DyAlert(ReturnMsg(data, 1));
+            $('#txtBarcode1').val('');
+        }
+        else {
+            var dtSQ = data.getElementsByTagName('dtSQ');   //單品數
+            if (dtSQ.length > 0) {
+                $('#lblSQty1').html(GetNodeValue(dtSQ[0], "SQ1"));
+            }
+            else {
+                $('#lblSQty1').html('');
+            }
+            var dtSWQ = data.getElementsByTagName('dtSWQ'); //門市總數
+            if (dtSWQ.length > 0) {
+                $('#lblSWQty1').html(GetNodeValue(dtSWQ[0], "SWQ1"));
+            }
+            else {
+                $('#lblSWQty1').html('');
+            }
+            var dtP = data.getElementsByTagName('dtPLU');
+            if (dtP.length > 0) {
+                $('#lblBarcode').html(GetNodeValue(dtP[0], "PLU"));
+                $('#txtBarcode1').val('');
+                $('#lblQty1').html($('#txtQty1').val());
+                $('#lblPrice').html(GetNodeValue(dtP[0], "GD_Retail"));
+                $('#lblGDName').html(GetNodeValue(dtP[0], "GD_Name"));
+            }
+            else {
+                if ($('#txtBarcode1').val() == "") {
+                }
+                else {
+                    $('#lblBarcode').html($('#txtBarcode1').val());
+                }
+                $('#txtBarcode1').val('');
+                $('#lblQty1').html($('#txtQty1').val());
+                $('#lblPrice').html('');
+                $('#lblGDName').html('');
+            }
+            //alert(dtBin.length);
+            //if (dtBin.length == 0) {
+            //    alert("No RowData");
+            //    DyAlert("無符合資料!", BlankMode);
+            //    return;
+            //}
+        }
+    };
+
+
+    let btBCSave1_click = function () {
+        Timerset(sessionStorage.getItem('isamcomp'));
+        if ($('#txtBarcode1').val() == "") {
+            DyAlert("請輸入條碼!");
+            return;
+        }
+        if ($('#txtBarcode1').val().trim.length > 16) {
+            DyAlert("條碼限制輸入16個字元!");
+            $('#txtBarcode1').val('');
+            return;
+        }
+        $('#txtQty1').val("1");
+        //alert($('#lblShop2').html());
+        var pData = {
+            WhNoOut: $('#lblWhNoOut').html().split(' ')[0],
+            WhNoIn: $('#lblWhNoIn').html().split(' ')[0],
+            DocDate: $('#lblDate2').html(),
+            Barcode: $('#txtBarcode1').val(),
+            Qty: 1
+        };
+        //alert("908");
+        PostToWebApi({ url: "api/SystemSetup/SaveDeliveryWeb", data: pData, success: afterSaveDeliveryWeb });
+    };
+
+
+    let btAdd_click = function () {
+        EditMode = "A";
+        Timerset(sessionStorage.getItem('isamcomp'));
+        $('#pgISAM03Add').show();
+        if ($('#pgISAM03Add').attr('hidden') == undefined) {
+            $('#pgISAM03Add').show();
+        }
+        else {
+            $('#pgISAM03Add').removeAttr('hidden');
+        }
+        if ($('#pgISAM03Mod').attr('hidden') == undefined) {
+            $('#pgISAM03Mod').hide();
+        }
+        BtnSet("A");
+
+    };
+    //#endregion
+
+    let BtnSet = function (edit) {
+        switch (edit) {
+            case "A":
+                $('#btAdd').prop('disabled', false);
+                $('#btMod').prop('disabled', true);
+                $('#btToFTP').prop('disabled', true); //true-btn不能使用
+                $('#txtBarcode1').val('');
+                $('#txtQty1').val('');
+                $('#lblBarcode').html('');
+                $('#lblQty1').html('');
+                $('#lblSQty1').html('');
+                $('#lblSBQty1').html('');
+                $('#lblSWQty1').html('');
+                $('#lblPrice').html('');
+                $('#lblGDName').html('');
+                break;
+            case "Q":
+                $('#btAdd').prop('disabled', false);
+                $('#btMod').prop('disabled', false);
+                $('#btToFTP').prop('disabled', false); //true-btn不能使用
+                break;
+            case "M":
+                $('#btAdd').prop('disabled', true);
+                $('#btMod').prop('disabled', false);
+                $('#btToFTP').prop('disabled', true); //true-btn不能使用
+                $('#txtBarcode3').val('');
+                break;
+        }
+    };
+
+    //#region 上傳
+    let AfterAddISAMToFTPRecWeb = function (data) {
+        if (ReturnMsg(data, 0) != "AddISAMToFTPRecWebOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtBin = data.getElementsByTagName('dtRec');
+            if (dtBin.length == 0) {
+                //alert("No RowData");
+                DyAlert("待上傳記錄新增失敗，請重新上傳!");
+                return;
+            }
+            else {
+                DyAlert("待上傳記錄新增完成!");
+                return;
+            }
+        }
+    }
+
+    let CallSendToFTP = function () {
+        Timerset(sessionStorage.getItem('isamcomp'));
+        var cData = {
+            Type: "D",
+            Shop: $('#lblWhNoOut').html().split(' ')[0],
+            WhNoIn: $('#lblWhNoIn').html().split(' ')[0],
+            DocDate: $('#lblDate2').html(),
+        }
+        PostToWebApi({ url: "api/SystemSetup/AddISAMToFTPRecWeb", data: cData, success: AfterAddISAMToFTPRecWeb });
+    };
+
+
+    let btToFTP_click = function () {
+        Timerset(sessionStorage.getItem('isamcomp'));
+        DyConfirm("是否要上傳出貨/調撥資料？", CallSendToFTP, DummyFunction);
+    };
+    //#endregion
+
+    //#region 返回
+    let afterRtnclick = function () {
+        if (EditMode == "A" || EditMode == "M") {
+            EditMode = "Q";
+            BtnSet(EditMode);
+        }
+    };
+
+    let btRtn_click = function () {
+        //alert(EditMode);
+        if (EditMode == "Q") {
+            $('#ISAM03btns').hide();
+            $('#pgISAM03Init').show();
+            $('#pgISAM03Add').hide();
+            $('#pgISAM03Mod').hide();
+            //$('#pgISAM03UpFtp').hide();
+        } else if (EditMode == "A" || EditMode == "M") {
+            $('#ISAM03btns').show();
+            $('#pgISAM03Init').hide();
+            $('#pgISAM03Add').hide();
+            $('#pgISAM03Mod').hide();
+            //$('#pgISAM03UpFtp').hide();
+        }
+        Timerset(sessionStorage.getItem('isamcomp'));
+    };
+    //#endregion
+
+    //#region 輸入日期,門市
+    let afterSearchDeliveryWeb = function (data) {
+        //EditMode = "Q";
+        if (ReturnMsg(data, 0) != "SearchDeliveryWebOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtDeliveryData = data.getElementsByTagName('dtDeliveryData');
+            if (dtDeliveryData.length > 0) {
+                if (GetNodeValue(dtDeliveryData[0], "OutUser") != $('#lblManID1').html().split(' ')[0]) {
+                    DyConfirm(GetNodeValue(dtDeliveryData[0], "DocDate") + "進貨店" + GetNodeValue(dtDeliveryData[0], "WhNoIn") + "出貨調撥資料已存在，\n" + "，是否建立新出貨調撥資料?", CallShowData, DummyFunction);
+                    //return;
+                }
+                else
+                {
+                    CallShowData();
+                }
+            }
+            else {
+                //AssignVar();
+                //alert(GetNodeValue(dtISAMShop[0], "STName"));
+                CallShowData();
+            }
+        }
+    };
+
+    let CallShowData = function () {
+        Timerset(sessionStorage.getItem('isamcomp'));
+        EditMode = "Q";
+        $('#lblWhNoOut').html($('#lblShop1').html());
+        $('#lblWhNoIn').html($('#selST_ID option:selected').text());
+        $('#lblDate2').html($('#txtDocDate').val());
+        $('#lblSBQty1title').html("單品數：");
+        $('#lblSWQty1title').html($('#lblShop1').html().split(' ')[0] + "門市總數：");
+        $('#lblSQty1').html('');
+        $('#lblSWQty1').html('');
+        $('#lblPrice').html('');
+        $('#lblGDName').html("品名XXX");
+        $('#pgISAM03Init').hide();
+        if ($('#ISAM03btns').attr('hidden') == undefined) {
+           $('#ISAM03btns').show();
+        }
+        else {
+            $('#ISAM03btns').removeAttr('hidden');
+        }
+    };
+
+    let btSave_click = function () {
+        Timerset(sessionStorage.getItem('isamcomp'));
+        if ($('#txtDocDate').val() == "" | $('#txtDocDate').val() == null) {
+            DyAlert("請輸入出貨/調撥日期!!", function () { $('#txtDocDate').focus() });
+            return;
+        }
+        if ($('#selST_ID').val() == "" | $('#selST_ID').val() == null) {
+            DyAlert("請選擇進貨門市!!", function () { $('#selST_ID').focus() });
+            return;
+        }
+        else {
+            //if ($('#txtBinNo').val().length>10) {
+            //    DyAlert("分區代碼不可超過10個字元!!", function () { $('#txtBinNo').focus() });
+            //    return;
+            //}
+        }
+        var pData = {
+            WhNoOut: $('#lblShop1').html().split(' ')[0],
+            DocDate: $('#txtDocDate').val(),
+            WhNoIn: $('#selST_ID').val()
+        }
+        PostToWebApi({ url: "api/SystemSetup/SearchDeliveryWeb", data: pData, success: afterSearchDeliveryWeb });
+    };
+    //#endregion
+
+    //#region FormLoad
+    let afterGetInitISAM03 = function (data) {
+        if (ReturnMsg(data, 0) != "GetInitISAM01OK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            AssignVar();
+            EditMode = "Init";
+            tbDetail = $('#pgISAM03Mod #tbISAM03Mod tbody');
+            var dtISAMShop = data.getElementsByTagName('dtWh');
+            var dtShop = data.getElementsByTagName('dtShop');
+            InitSelectItem($('#selST_ID')[0], dtShop, "ST_ID", "STName", true, "*請選擇店別");
+            //alert(GetNodeValue(dtISAMShop[0], "STName"));
+            $('#lblShop1').text(GetNodeValue(dtISAMShop[0], "STName"));
+            $('#lblManID1').text(GetNodeValue(dtISAMShop[0], "ManName"));
+            SetDateField($('#txtDocDate')[0]);
+            $('#pgISAM03Init').removeAttr('hidden');
+            //$('#pgISAM03Init').show();
+            $('#btSave').click(function () { btSave_click(); });
+
+
+            $('#btAdd').click(function () { btAdd_click(); });
+            $('#btMod').click(function () { btMod_click(); });
+            $('#btToFTP').click(function () { btToFTP_click(); });
+            $('#btRtn').click(function () { btRtn_click(); afterRtnclick(); });
+
+            $('#txtQty1').prop('disabled', true);
+            $('#btQtySave1').prop('disabled', true);
+            $('#btBCSave1').click(function () { btBCSave1_click(); });
+            $('#btKeyin1').click(function () { btKeyin1_click(); });
+            $('#btQtySave1').click(function () { btQtySave1_click(); });
+            $('#txtBarcode1').keypress(function (e) {
+                if (e.which == 13) { btBCSave1_click(); }
+            });
+
+
+            $('#btDelCancel').click(function () { btDelCancel_click(); });
+            $('#btDelSave').click(function () { btDelSave_click(); });
+
+
+            $('#btModCancel').click(function () { btModCancel_click(); });
+            $('#btModSave').click(function () { btModSave_click(); });
+            $('#btBCSave3').click(function () { btBCSave3_click(); });
+            $('#txtBarcode3').keypress(function (e) {
+                if (e.which == 13) { btBCSave3_click(); }
+            });
+        }
+    };
+
+
+    let AfterGetWhName = function (data) {
+        if (ReturnMsg(data, 0) != "GetWhNameOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtWh = data.getElementsByTagName('dtWh');
+            //alert(GetNodeValue(dtWh[0], "ST_ID"));
+            if (GetNodeValue(dtWh[0], "STName") == "") {
+                DyAlert("請確認店櫃(" + GetNodeValue(dtWh[0], "WhNo") + ")是否為允許作業之店櫃!", BlankMode);
+                return;
+            }
+            PostToWebApi({ url: "api/SystemSetup/GetInitISAM03", success: afterGetInitISAM03 });
+        }
+    };
+
+    let afterGetPageInitBefore = function (data) {
+        if (ReturnMsg(data, 0) != "GetPageInitBeforeOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtISAMWh = data.getElementsByTagName('dtComp');
+            if (dtISAMWh.length == 0) {
+                DyAlert("無符合資料!", BlankMode);
+                return;
+            }
+            else if (GetNodeValue(dtISAMWh[0], "WhNo") == null || GetNodeValue(dtISAMWh[0], "WhNo") == "") {
+                DyAlert("請先至店號設定進行作業店櫃設定!", BlankMode);
+                return;
+            }
+            else if (GetNodeValue(dtISAMWh[0], "WhNo") != "") {
+              PostToWebApi({ url: "api/SystemSetup/GetWhName", success: AfterGetWhName });
+            }
+
+        }
     };
 
     let BlankMode = function () {
-        
-    };
-
-    let btImportFromiXMS_click = function () {
-        isImport = true;
-        $('#modal_test .modal-title').text('匯入商品');
-        $('#GD_NO,#GD_NAME').prop('readonly', false);
-        $('#GD_NO').val('');
-        $('#GD_NAME').val('');
-        $('#GD_Sname').val('');
-        $('#Photo1').val('');
-        $('#Photo2').val('');
-        $('#PLUPic1,#PLUPic2').attr('src', '../images/No_Pic.jpg');
-        $('#modal_test').modal('show');
-    };
-
-    let btModify_click = function (bt) {
-        isImport = false;
-        $(bt).closest('tr').click();
-        $('.msg-valid').hide();
-        $('#modal_test .modal-title').text('商品維護');
-        var node = $(grdU.ActiveRowTR()).prop('Record');
-        $('#GD_NO,#GD_NAME').prop('readonly', true);
-        $('#GD_NO').val(GetNodeValue(node, 'GD_NO'));
-        $('#GD_NAME').val(GetNodeValue(node, 'GD_NAME'));
-        $('#GD_Sname').val(GetNodeValue(node, 'GD_Sname'));
-        $('#Photo1').val(GetNodeValue(node, 'Photo1'));
-        $('#Photo2').val(GetNodeValue(node, 'Photo2'));
-        $('#PLUPic1,#PLUPic2').attr('src', 'images/No_Pic.jpg');
-        var Photo1 = GetNodeValue(node, 'Photo1');
-        if (Photo1.length == 10)
-            GetGetImage("PLUPic1", Photo1);
-        else
-            $('#PLUPic1').prop('src', '../images/No_Pic.jpg');
-
-        var Photo2 = GetNodeValue(node, 'Photo2');
-        if (Photo2.length == 10)
-            GetGetImage("PLUPic2", Photo2); 
-        else
-            $('#PLUPic2').prop('src', '../images/No_Pic.jpg');
-        //2021-04-27
-        $('#modal_test').modal('show');
-    };
-
-    let GetGetImage = function (elmImg, picSGID) {
-        var url = "api/GetImage?SGID=" + EncodeSGID(picSGID) + "&UU=" + encodeURIComponent(UU);
-        url += "&Ver=" + encodeURIComponent(new Date().toLocaleTimeString());
-        $('#' + elmImg).prop('src', url);
-    }
-
-    let btSuspend_click = function (bt) {
-        $(bt).closest('tr').click();
-        var act = "停用";
-        SetSuspend = "S";
-        if ($(bt).hasClass('fa-toggle-off')) {
-            act = "啟用";
-            SetSuspend = "";
-        }
-        if (grdU.ActiveRowTR() == null) {
-            DyAlert("未選取欲" + act +"之PLU");
-            return;
-        }
-        DyConfirm("確定要" + act + "這筆資料嗎?", SuspendPLU, DummyFunction);
-    };
-
-    let SuspendPLU = function () {
-        var tr = grdU.ActiveRowTR();
-        var trNode = $(tr).prop('Record');
-        var pData = {
-            GD_NO: GetNodeValue(trNode, "GD_NO"),
-            SetSuspend: SetSuspend
-        };
-        PostToWebApi({ url: "api/SystemSetup/SuspendPLU", data: pData, success: AfterSuspendPLU });
-    };
-
-    let AfterSuspendPLU = function (data) {
-        if (ReturnMsg(data, 0) != "SuspendPLUOK") {
-            DyAlert(ReturnMsg(data, 0));
-        }
-        else {
-            DyAlert("完成!");
-            var userxml = data.getElementsByTagName('dtPLU')[0];
-            grdU.RefreshRocord(grdU.ActiveRowTR(), userxml);
-            var tr = grdU.ActiveRowTR();
-            DisplaySuspend(tr);
-
-        }
-    };
-
-    let btCancel_click = function () {
-        //2021-04-27
-        $('#modal_Inv').modal('hide');
-    };
-
-    //2021-05-07
-    let cbCK_click = function () {
-
-        if ($('#cbWh').val() == "") {
-            $('#cbCK').val() == ""
-            DyAlert("請先選擇店查詢條件!!");
-            return;
-        }
-    };
-
-    let GetWhCkNo = function () {
-
-        console.log("GetWhCkNo");
-
-        if ($('#cbWh').val() == "") {
-            $('#cbCK').empty();
-            return;
-        }
-        else {
-
-        }
-
-        var pData = {
-            WhNo: $('#cbWh').val()
-        };
-        PostToWebApi({ url: "api/SystemSetup/GetWhCkNo", data: pData, success: AfterGetWhCkNo });
-    };
-
-
-    let AfterGetWhCkNo = function (data) {
-        if (ReturnMsg(data, 0) != "GetWhCkNoOK") {
-            DyAlert(ReturnMsg(data, 0));
-            return;
-        }
-        else {
-            var dtCK = data.getElementsByTagName('dtCK');
-            InitSelectItem($('#cbCK')[0], dtCK, "CKNo", "CKNoName", true, "*請選擇機號");
-        }
-    };
-    
-    let afterGetInitISAM03 = function (data) {
-
-        AssignVar();
-        //選擇畫面
-        $('#btAdd').click(function () { btAdd_click(); });
-        $('#btQuery').click(function () { btQuery_click(); });
-        $('#btUpLoad').click(function () { btUpLoad_click(); });
-        $('#btExit').click(function () { btExit_click(); });
-
-        //新增畫面
-        $('#btYes_B_Add').click(function () { btYes_B_Add_click(); });
-        $('#btHand_Q_Add').click(function () { btHand_Q_Add_click(); });
-        $('#btYes_Q_Add').click(function () { btYes_Q_Add_click(); });
-
-
-
-        var dtISAM03Wh = data.getElementsByTagName('dtISAM02Wh');
-        if (GetNodeValue(dtISAM03Wh[0], 'WhNo') == "") {
-            alert("請先至店號設定進行作業店櫃設定!")
-            $('#pgISAM02').hide();
-            $('#pgISAM02_Add').hide();
-            $('#pgISAM02_Query').hide();
-            return;
-        }
-        else if (GetNodeValue(dtISAM03Wh[0], 'ST_SName') == "") {
-            alert("請確認店櫃(" + GetNodeValue(dtISAM03Wh[0], 'WhNo') + ")是否為允許作業之店櫃!")
-            $('#pgISAM02').hide();
-            $('#pgISAM02_Add').hide();
-            $('#pgISAM02_Query').hide();
-            return;
-        }
-        $('#lblShop').html(GetNodeValue(dtISAM03Wh[0], 'WhNo'));
-        $('#lblShopName').html(GetNodeValue(dtISAM03Wh[0], 'ST_SName'));
-        
-        //InitSelectItem($('#cbWh')[0], dtInvWh, "WhNo", "WhName", true, "*請選擇店代號");       
-
-        //$('#cbWh').change(function () { GetWhCkNo(); });
-        //$('#cbCK').change(function () { cbCK_click(); });
-        //$('#btUPPic1,#btUPPic2').click(function () { UploadPicture(this); });
-        //$('#btDelete').click(function () { btDelete_click(); });
-        //$('#btImportFromiXMS').click(function () { btImportFromiXMS_click(); });
-        //$('#btSave').click(function () { btSave_click(); });
-        //$('#btCancel').click(function () { btCancel_click(); });
-        //$('.forminput input').change(function () { InputValidation(this) });
-
-        $('#pgInv #btExpoInv').click(function () { SearchInv(true); });
-
-        
-        
 
     };
-
-
- 
-    let InitFileUpload = function () {
-        $('#fileupload').fileupload({
-            dataType: 'xml',
-            url: "api/FileUpload",
-            dropZone: $('#dropzone'),
-            headers: { "Authorization": "Bearer " + UU }
-        });
-
-        $('#fileupload').bind('fileuploadfail',
-            function (e, data) {
-
-            }
-        );
-
-        $('#fileupload').bind('fileuploadsubmit', function (e, data) {
-            data.formData = {
-                "UploadFileType": $('#modal-media').prop("UploadFileType"),
-                "ImgSGID": $('#' + $('#modal-media').prop("FieldName")).val()
-            };
-        });
-
-        $('#fileupload').bind('fileuploadalways', function (e, data) {
-            AfterFileUpoad(data);
-        });
-
-    };
-
-    let AfterFileUpoad = function (returndata) {
-        var data = returndata.jqXHR.responseXML;
-        if (ReturnMsg(data, 0) != "FileUploadOK") {
-            DyAlert(ReturnMsg(data, 0));
-        }
-        else {
-            $('#modal-media').modal('hide');
-            var UploadFileType = $('#modal-media').prop("UploadFileType");// "PLU+Pic1";
-            if (UploadFileType == "PLU+Pic1") {
-                GetGetImage("PLUPic1", ReturnMsg(data, 1));
-                $('#Photo1').val(ReturnMsg(data, 1));
-            }
-            if (UploadFileType == "PLU+Pic2") {
-                GetGetImage("PLUPic2", ReturnMsg(data, 1));
-                $('#Photo2').val(ReturnMsg(data, 1));
-            }
-            $('#modal-media').prop("UploadFileType", UploadFileType);
-
-        }
-
-    };
-
-
-    let InputValidation = function (ip) {
-        var str = $(ip).val();
-        var msg = "";
-        //$('.forminput .msg-valid').text('');
-        //$('.forminput .msg-valid').hide();
-        $(ip).nextAll('.msg-valid').text(msg);
-        $(ip).nextAll('.msg-valid').show();
-        if (str == "")
-            return;
-        if ($(ip).attr('id') == "USR_CODE") {
-            var re = /^[\d|a-zA-Z]+$/;
-            if (!re.test(str) | str.length < 5 | str.length > 10)
-                msg = "必須5~10碼英數字";
-        }
-        if ($(ip).attr('id') == "USR_PWD") {
-            var re = /^[\d|a-zA-Z]+$/;
-            if (!re.test(str) | str.length < 6 | str.length > 20)
-                msg = "必須6~20碼英數字";
-        }
-        if ($(ip).attr('id') == "USR_NAME_L") {
-            if (str.length > 10)
-                msg = "必須10字元以內";
-        }
-        if ($(ip).attr('id') == "USR_EMPNO") {
-            if (str.length > 10)
-                msg = "必須10字元以內";
-        }
-        if ($(ip).attr('id') == "USR_MAIL") {
-            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            if (!re.test(str))
-                msg = "e-mail格式錯誤!";
-        }
-        if ($(ip).attr('id') == "USR_MOBILE") {
-            var re = /^09\d{8}$/;
-            if (!re.test(str))
-                msg = "手機格式錯誤!";
-        }
-        if ($(ip).attr('id') == "USR_NOTE") {
-            if (str.length > 50)
-                msg = "必須50字元以內";
-        }
-        if (msg != "") {
-            //$(ip).val('');
-            $(ip).nextAll('.msg-valid').text(msg);
-            $(ip).nextAll('.msg-valid').show();
-        }
-    }
 
     let afterLoadPage = function () {
-
-        console.log("afterLoadPage");
-
-        PostToWebApi({ url: "api/SystemSetup/GetInitISAM03", success: afterGetInitISAM03 });
-
-        $('#pgISAM03').show();
-        $('#pgISAM03_Add').hide();
-        $('#pgISAM03_Query').hide();
-
-        //$('#pgSysUsersEdit').hide();
+        PostToWebApi({ url: "api/SystemSetup/GetPageInitBefore", success: afterGetPageInitBefore });
     };
+    //#endregion
+
 
     if ($('#pgISAM03').length == 0) {
-        //2021-04-29 Debug用，按F12後，在主控台內會顯示aaaaaa
-        console.log("aaaaaa");
-
-        AllPages = new LoadAllPages(ParentNode, "ISAM03", ["pgISAM03","pgISAM03_Add","pgISAM03_Query"], afterLoadPage);
+        AllPages = new LoadAllPages(ParentNode, "SystemSetup/ISAM03", ["ISAM03btns", "pgISAM03Init", "pgISAM03Add", "pgISAM03Mod"], afterLoadPage);
     };
 
 

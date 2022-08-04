@@ -775,7 +775,7 @@ namespace SVMAdmin
 
             dt.Rows.Add(new object[] { "分區盤點", "ISAM", "ISAM01", "分區盤點", "ISAM01", "P", "fa-cogs" });
             dt.Rows.Add(new object[] { "條碼蒐集", "BarcodeCollect", "ISAM02", "條碼蒐集", "ISAM02", "P", "fa-cubes" });
-            dt.Rows.Add(new object[] { "出貨/調撥", "OperatManage", "VMN01", "出貨/調撥", "VMN01", "P", "fa-th-large" });
+            dt.Rows.Add(new object[] { "出貨/調撥", "OperatManage", "ISAM03", "出貨/調撥", "ISAM03", "P", "fa-th-large" });
             dt.Rows.Add(new object[] { "店號設定", "MachineManage", "ISAMWHSET", "店號設定", "ISAMWHSET", "P", "fa-cogs" });
 
             //權限管理,智販機管理,商品管理,營運管理,營運分析

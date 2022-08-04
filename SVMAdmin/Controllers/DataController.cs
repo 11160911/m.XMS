@@ -1715,7 +1715,7 @@ namespace SVMAdmin.Controllers
                     dtISAMShop.TableName = "dtUserWh";
                     ds.Tables.Add(dtISAMShop);
                 }
-                sql = "select ST_ID ,ST_ID+ST_SName STName ";
+                sql = "select ST_ID ,ST_ID+' '+ST_SName STName ";
                 sql += " from WarehouseWeb (NoLock) ";
                 sql += " Where CompanyCode='" + uu.CompanyId + "' and ST_StopDay=''";
                 sql += " Order By ST_ID ";
@@ -3225,6 +3225,288 @@ namespace SVMAdmin.Controllers
                 sql += "on a.CompanyCode=b.CompanyCode and a.Whno=b.Whno and a.WorkUser=b.WorkUser and a.SeqNo=b.SeqNo;";
                 sql += "drop table #tmpA;";
                 PubUtility.ExecuteSql(sql, uu, "SYS");
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        [Route("SystemSetup/GetInitISAM03")]
+        public ActionResult SystemSetup_GetInitISAM03()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetInitISAM01OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+
+                string sql = "select a.Man_ID,left(a.Man_ID+'      ',6)+' '+Man_Name ManName ,a.Whno,left(a.Whno+'      ',6)+' '+ST_SName STName from ISAMShopWeb a (nolock) ";
+                sql += "inner join EmployeeWeb b (nolock) on a.CompanyCode=b.CompanyCode and a.Man_ID=b.Man_ID ";
+                sql += "inner join WarehouseWeb c (nolock) on a.CompanyCode=c.CompanyCode and a.Whno=c.ST_ID ";
+                sql += "where a.Companycode='" + uu.CompanyId + "' and a.Man_ID='" + uu.UserID + "'";
+                DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                dtC.TableName = "dtWh";
+                ds.Tables.Add(dtC);
+
+
+                sql = "select ST_ID ,ST_ID+' '+ST_SName STName ";
+                sql += " from WarehouseWeb (NoLock) ";
+                sql += " Where CompanyCode='" + uu.CompanyId + "' and ST_StopDay=''";
+                sql += " Order By ST_ID ";
+
+                DataTable dtShop = PubUtility.SqlQry(sql, uu, "SYS");
+                dtShop.TableName = "dtShop";
+                ds.Tables.Add(dtShop);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        [Route("SystemSetup/SearchDeliveryWeb")]
+        public ActionResult SystemSetup_SearchDeliveryWeb()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SearchDeliveryWebOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string WhNoOut = rq["WhNoOut"];
+                string DocDate = rq["DocDate"];
+                string WhNoIn = rq["WhNoIn"];
+
+                string sql = "select top 1 * from DeliveryWeb (nolock) ";
+                sql += "where Companycode='" + uu.CompanyId + "' and WhNoOut='" + WhNoOut + "' and DocDate='" + DocDate + "' and WhNoIn='" + WhNoIn + "' and OutUser='" + uu.UserID + "'";
+                DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtC.Rows.Count == 0)
+                {
+                    sql = "select top 1 * from DeliveryWeb (nolock) ";
+                    sql += "where Companycode='" + uu.CompanyId + "' and WhNoOut='" + WhNoOut + "' and DocDate='" + DocDate + "' and WhNoIn='" + WhNoIn + "'";
+                    dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                }
+
+                dtC.TableName = "dtDeliveryData";
+                ds.Tables.Add(dtC);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/SaveDeliveryWeb")]
+        public ActionResult SystemSetup_SaveDeliveryWeb()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SaveDeliveryWebOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                Boolean lb_Insert = false;
+                string WhNoOut = rq["WhNoOut"];
+                string DocDate = rq["DocDate"];
+                string WhNoIn = rq["WhNoIn"];
+                string PLU = rq["Barcode"];
+                int Qty = Convert.ToInt32(rq["Qty"].ToString().SqlQuote());
+
+                string sql = "select '" + PLU + "' PLU,GD_Name from PLUWeb (nolock) ";
+                sql += "where Companycode='" + uu.CompanyId + "' and GD_Barcode='" + PLU + "'";
+                DataTable dtPLU = PubUtility.SqlQry(sql, uu, "SYS");
+
+                if (dtPLU.Rows.Count == 0)
+                {
+                    sql = "select '" + PLU + "' PLU,GD_Name from PLUWeb (nolock) ";
+                    sql += "where Companycode='" + uu.CompanyId + "' and GD_No='" + PLU + "'";
+                    dtPLU = PubUtility.SqlQry(sql, uu, "SYS");
+                }
+
+                if (dtPLU.Rows.Count == 0)
+                {
+                    dtMessage.Rows[0][0] = "Exception";
+                    dtMessage.Rows[0][1] = "無符合之商品資料!";
+                    return PubUtility.DatasetXML(ds);
+                }
+
+                sql = "select * from DeliveryWeb (nolock) ";
+                sql += "where Companycode='" + uu.CompanyId + "' and WhNoOut='" + WhNoOut + "' and DocDate='" + DocDate + "' and WhNoIn='" + WhNoIn + "' and OutUser='" + uu.UserID + "'";
+                DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtC.Rows.Count == 0) { lb_Insert = true; }
+                else
+                {
+                    DataRow[] dr = dtC.Select("PLU='" + PLU + "'");
+                    if (dr.Length == 0) { lb_Insert = true; }
+                    else
+                    {
+                        sql = "Update DeliveryWeb set OutNum=OutNum+" + Qty + ",ModDate=Convert(varchar,getdate(),111),ModTime=Substring(Convert(varchar,getdate(),121),12,12)";
+                        sql += " where Companycode='" + uu.CompanyId + "' and WhNoOut='" + WhNoOut + "' and DocDate='" + DocDate + "'";
+                        sql += " and WhNoIn='" + WhNoIn + "' and OutUser='" + uu.UserID + "' and PLU='" + PLU + "'";
+                        PubUtility.ExecuteSql(sql, uu, "SYS");
+                    }
+
+                }
+
+                if (lb_Insert)
+                {
+                    sql = "Insert into DeliveryWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime,WhNoOut, DocDate, OutUser,WhNoIn, SeqNo, PLU, OutNum, FTPUpDate) ";
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',Convert(varchar,getdate(),111),Substring(Convert(varchar,getdate(),121),12,12),";
+                    sql += "'" + uu.UserID + "',Convert(varchar,getdate(),111),Substring(Convert(varchar,getdate(),121),12,12),";
+                    sql += "'" + WhNoOut + "','" + DocDate + "','" + uu.UserID + "','" + WhNoIn + "',";
+                    sql += "(select isnull(max(seqno),0)+1 from DeliveryWeb (nolock) where Companycode='" + uu.CompanyId + "' and WhNoOut='" + WhNoOut + "' and DocDate='" + DocDate + "' and WhNoIn='" + WhNoIn + "' and OutUser='" + uu.UserID + "'),";
+                    sql += "'" + PLU + "',1 ,''";
+                    PubUtility.ExecuteSql(sql, uu, "SYS");
+                }
+                //Return 異動後的數量,故要重撈一次
+                //單品數
+                sql = "Select Sum(OutNum) SQ1 from DeliveryWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and WhNoOut='" + WhNoOut + "' and DocDate='" + DocDate + "' and WhNoIn='" + WhNoIn + "' and PLU='" + PLU + "'";
+                DataTable dtSQ = PubUtility.SqlQry(sql, uu, "SYS");
+                dtSQ.TableName = "dtSQ";
+                ds.Tables.Add(dtSQ);
+                //門市總和(不看商品)
+                sql = "Select Sum(OutNum) SWQ1 from DeliveryWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and WhNoOut='" + WhNoOut + "' and DocDate='" + DocDate + "' and WhNoIn='" + WhNoIn + "' and PLU='" + PLU + "'";
+                DataTable dtSWQ = PubUtility.SqlQry(sql, uu, "SYS");
+                dtSWQ.TableName = "dtSWQ";
+                ds.Tables.Add(dtSWQ);
+                sql = "Select '" + PLU + "' PLU,GD_Name,GD_Retail from PLUWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and GD_Barcode='" + PLU + "'";
+                DataTable dtP = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtP.Rows.Count == 0)
+                {
+                    sql = "Select '" + PLU + "' PLU,GD_Name,GD_Retail from PLUWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and GD_No='" + PLU + "'";
+                    dtP = PubUtility.SqlQry(sql, uu, "SYS");
+                }
+
+                dtP.TableName = "dtPLU";
+                ds.Tables.Add(dtP);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/GetDeliveryWebMod")]
+        public ActionResult SystemSetup_GetDeliveryWebMod()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetDeliveryWebModOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string WhNoOut = rq["WhNoOut"];
+                string DocDate = rq["DocDate"];
+                string WhNoIn = rq["WhNoIn"];
+                string Comd = "";
+
+                if (rq.Count > 3)
+                {
+                    string PLU = rq["PLU"];
+                    if (PLU != null && PLU != "") { Comd = " and PLU='" + PLU + "'"; }
+                }
+
+                string sql = "set nocount on;select a.*,GD_Name into #tmpA from DeliveryWeb a (nolock) left join PLUWeb b (nolock) ";
+                sql += "on a.companycode=b.companycode and a.PLU=b.GD_Barcode ";
+                sql += "where a.Companycode='" + uu.CompanyId + "' and WhNoOut='" + WhNoOut + "' and DocDate='" + DocDate + "' and WhNoIn='" + WhNoIn + "' and OutUser='" + uu.UserID + "'" + Comd + ";";
+                sql += "select a.PLU,a.OutNum,a.PLU+' '+case when isnull(a.GD_Name,'')='' then b.GD_Name else a.GD_Name end GD_Name from #tmpA a (nolock) left join PLUWeb b (nolock) ";
+                sql += "on a.companycode=b.companycode and a.PLU=b.GD_No order by SeqNo;";
+                sql += "drop table #tmpA;";
+
+                DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+
+                dtC.TableName = "dtDelivery";
+                ds.Tables.Add(dtC);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/DelISAM03PLU")]
+        public ActionResult SystemSetup_DelISAM03PLU()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "DelISAM03PLUOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string WhNoOut = rq["WhNoOut"];
+                string DocDate = rq["DocDate"];
+                string WhNoIn = rq["WhNoIn"];
+                string PLU = rq["PLU"];
+
+                string sql = "Delete from DeliveryWeb ";
+                sql += "where Companycode='" + uu.CompanyId + "' and WhNoOut='" + WhNoOut + "' and DocDate='" + DocDate + "' and WhNoIn='" + WhNoIn + "' and OutUser='" + uu.UserID + "' and PLU='" + PLU + "'";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                sql = "set nocount on;Select ROW_NUMBER() over(order by Companycode,WhNoOut,WhNoIn,DocDate,OutUser,seqno) NewSeq,* into #tmpA from DeliveryWeb (nolock) ";
+                sql += "where Companycode='" + uu.CompanyId + "' and WhNoOut='" + WhNoOut + "' and DocDate='" + DocDate + "' and WhNoIn='" + WhNoIn + "' and OutUser='" + uu.UserID + "';";
+                sql += "update b set SeqNo=newseq from #tmpA a inner join DeliveryWeb b ";
+                sql += "on a.CompanyCode=b.CompanyCode and a.WhNoOut=b.WhNoOut and a.WhNoIn=b.WhNoIn and a.DocDate=b.DocDate and a.SeqNo=b.SeqNo and a.OutUser=b.OutUser;";
+                sql += "drop table #tmpA;";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/SaveISAM03PLUMod")]
+        public ActionResult SystemSetup_SaveISAM03PLUMod()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SaveISAM03PLUModOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string WhNoOut = rq["WhNoOut"];
+                string DocDate = rq["DocDate"];
+                string WhNoIn = rq["WhNoIn"];
+                string PLU = rq["PLU"];
+                string Qty = rq["Qty"];
+
+                string sql = "Update DeliveryWeb set OutNum=" + Qty.SqlQuote();
+                sql += " where Companycode='" + uu.CompanyId + "' and WhNoOut='" + WhNoOut + "' and DocDate='" + DocDate + "' and WhNoIn='" + WhNoIn + "' and OutUser='" + uu.UserID + "' and PLU='" + PLU + "'";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                sql = "select PLU,OutNum,PLU+' '+GD_Name GD_Name from DeliveryWeb a (nolock) inner join PLUWeb b ";
+                sql += "on a.companycode=b.companycode and a.PLU=b.GD_Barcode ";
+                sql += "where a.Companycode='" + uu.CompanyId + "' and WhNoOut='" + WhNoOut + "' and DocDate='" + DocDate + "' and WhNoIn='" + WhNoIn + "' and OutUser='" + uu.UserID + "' and PLU='" + PLU + "'";
+                DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+
+                if (dtC.Rows.Count == 0)
+                {
+                    sql = "select PLU,OutNum,PLU+' '+isnull(GD_Name,'') GD_Name from DeliveryWeb a (nolock) left join PLUWeb b ";
+                    sql += "on a.companycode=b.companycode and a.PLU=b.GD_No ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' and WhNoOut='" + WhNoOut + "' and DocDate='" + DocDate + "' and WhNoIn='" + WhNoIn + "' and OutUser='" + uu.UserID + "' and PLU='" + PLU + "'";
+                    dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                }
+
+                dtC.TableName = "dtDeliveryMod";
+                ds.Tables.Add(dtC);
             }
             catch (Exception err)
             {

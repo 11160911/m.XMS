@@ -350,7 +350,17 @@
                     PageISAM02($(".workarea"));
                 }
             }
-
+            else if (pg == "ISAM03") {
+                if (window.PageISAM03 == undefined)
+                    $.getScript('SystemSetup/ISAM03.js',
+                        function () {
+                            PageISAM03($(".workarea"));
+                        }
+                    );
+                else {
+                    PageISAM03($(".workarea"));
+                }
+            }
             else if (pg == "SysChangePWD") {
                 $('#OLD_PWD').val("");
                 $('#NEW_PWD').val("");
