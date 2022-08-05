@@ -1,72 +1,74 @@
-var PageWhSet = function (ParentNode) {
-
+var PageISAMWHSET = function (ParentNode) {
+    let WhSt
     let AssignVar = function () {
-        obSelPLUModal = new SelPLUModal();
-        $('#selST_ID').change(function () {
-            let st_id = $('#selST_ID').val();
-            InitSelectItem($('#selLayerNo')[0], dtMachineListSpecBlank, "LayerNo", "LayerNo", true, "*�п�ܳf�ܥN��");
-            if (st_id == "") {
-            }
-            else {
-                var pData = {
-                    ST_ID: st_id
-                };
-                PostToWebApi({ url: "api/SystemSetup/GetST_ID", data: pData, success: AfterGetCkNoByST_ID });
-            }
-        });
+        //alert("進入AssignVar");
+        //$('#selST_ID').change(function () {
+        //    alert("st_id");
+        //    let st_id = $('#selST_ID').val();
+        //    //InitSelectItem($('#selLayerNo')[0], dtMachineListSpecBlank, "LayerNo", "LayerNo", true, "*請選擇貨倉代號");
+        //    if (st_id == "") {
+        //    }
+        //    else {
+        //        var pData = {
+        //            ST_ID: st_id
+        //        };
+        //        //alert("PostToWebApi");
+        //        //PostToWebApi({ url: "api/SystemSetup/GetWh", data: pData, success: AfterGetCkNoByST_ID });
+        //    }
+        //});
 
-        $('#btSaveISAMWH').click(function () {
-            let records = [];
-            let cbs = $('#ContainerChanSet .CubeChannel-1');
-            for (let i = 0; i < cbs.length; i++) {
-                var cb = cbs[i];
-                if ($(cb).hasClass('CubeChannel-1_mask')) {
-                    continue;
-                }
-                let rec = $(cb).prop('Record');
-                let MachineInfo = $(cb).prop('MachineInfo');
-                if (rec != null) {
-                    //let record = {
-                    //    WhNO: ST_ID,
-                    //    PLU: GetNodeValue(rec, "GD_NO"),
-                    //    PTNum: 0,
-                    //    SafeNum: 1,
-                    //    In_Date: "",
-                    //    Out_Date: "",
-                    //    StartSalesDate: "",
-                    //    EndSalesDate: "",
-                    //    DisPlayNum: $(cb).find('.ChanQty').val(),
-                    //    CkNo: CkNo,
-                    //    Layer: LayerNo,
-                    //    Sno: GetNodeValue(MachineInfo, "ChannelNo"),
-                    //    EffectiveDate: ""
-                    //}
-                    //records.push(record);
-                }
-            }
-            var pData = {
-                InventorySV: records
-            };
-            PostToWebApi({ url: "api/SystemSetup/SaveNewInventorySV", data: pData, success: AfterSaveNewInventorySV });
+       //let AfterGetCkNoByST_ID = function (data) {
+       //    let dtWarehouseDSV = data.getElementsByTagName('dtWh');
+       // }
+
+      $('#btSaveISAMWH').click(function () {
+          if ($('#selST_ID').val() != "") {
+              WhSt = $('#selST_ID option:selected').text()
+              var pData = {
+                  WHSetSV: $('#selST_ID').val()
+              };
+              PostToWebApi({ url: "api/SystemSetup/SaveST_ID", data: pData, success: AfterSaveNewInventorySV });
+         }
         });
     };
 
+    let AfterSaveNewInventorySV = function (data) {
+        if (ReturnMsg(data, 0) != "SaveWhSetOK") {
+            DyAlert(ReturnMsg(data, 0));
+        }
+        else {
+            DyAlert("完成!");
+            //alert(WhSt);
+            //$('#defWh').text(ReturnMsg(data, 1));
+            $('#defWh').text(WhSt);
+        }
+    }
+
     let afterGetInitWhSet = function (data) {
+        let dtWh;
+        let dtUserWh;
+       //alert("afterGetInitWhSet");
+        dtUserWh = data.getElementsByTagName('dtUserWh');
+        dtWh = data.getElementsByTagName('dtWh');
+        $('#defWh').text(GetNodeValue(dtUserWh[0], "WhName"));
+        
+        //alert("InitSelectItem");
+        InitSelectItem($('#selST_ID')[0], dtWh, "ST_ID", "STName", true, "*請選擇店別" );
         AssignVar();
-        dtWarehouseDSVBlank = data.getElementsByTagName('dtWarehouseDSV');
-        InitSelectItem($('#selST_ID')[0], dtWarehouse, "ST_ID", "ST_Sname", true, "*�п�ܩ��N��");
-        $('#btSaveISAMW').click(function () { btSave_click(); });
+        //$('#btSaveISAMW').click(function () { btSave_click(); });
 
     };
 
     let afterLoadPage = function () {
         //alert("afterLoadPage");
-        PostToWebApi({ url: "api/SystemSetup/ISAMWhSet", success: afterGetInitWhSet });
+        PostToWebApi({ url: "api/SystemSetup/GetWh", success: afterGetInitWhSet });
         $('#pgWhSet').show();
     };
 
     if ($('#pgWhSet').length == 0) {
+        //2021-04-29 Debug用，按F12後，在主控台內會顯示aaaaaa
+        //console.log("aaaaaa");
         //alert("VMN01");
-        AllPages = new LoadAllPages(ParentNode, "ISAMWhSet", ["pgWhSet"], afterLoadPage);
+        AllPages = new LoadAllPages(ParentNode, "SystemSetup/ISAMWhSet", ["pgWhSet"], afterLoadPage);
     };
 }

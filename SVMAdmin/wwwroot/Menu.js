@@ -261,15 +261,15 @@
                 }
             }
 
-            else if (pg == "ISAMWhSet") {
-                if (window.PageWhSet == undefined)
+            else if (pg == "ISAMWHSET") {
+                if (window.PageISAMWHSET == undefined)
                     $.getScript('SystemSetup/ISAMWhSet.js',
                         function () {
-                            PageWhSet($(".workarea"));
+                            PageISAMWHSET($(".workarea"));
                         }
                     );
                 else {
-                    PageWhSet($(".workarea"));
+                    PageISAMWHSET($(".workarea"));
                 }
             }
 
@@ -328,7 +328,17 @@
                     PageVIN14_2($(".workarea"));
                 }
             }
-
+            else if (pg == "ISAMWHSET") {
+                if (window.PageISAMWHSET == undefined)
+                    $.getScript('SystemSetup/ISAMWhSet.js',
+                        function () {
+                            PageISAMWHSET($(".workarea"));
+                        }
+                    );
+                else {
+                    PageISAMWHSET($(".workarea"));
+                }
+            }
             else if (pg == "ISAM02") {
                 if (window.PageISAM02 == undefined)
                     $.getScript('SystemSetup/ISAM02.js',
@@ -340,7 +350,17 @@
                     PageISAM02($(".workarea"));
                 }
             }
-
+            else if (pg == "ISAM03") {
+                if (window.PageISAM03 == undefined)
+                    $.getScript('SystemSetup/ISAM03.js',
+                        function () {
+                            PageISAM03($(".workarea"));
+                        }
+                    );
+                else {
+                    PageISAM03($(".workarea"));
+                }
+            }
             else if (pg == "SysChangePWD") {
                 $('#OLD_PWD').val("");
                 $('#NEW_PWD').val("");
