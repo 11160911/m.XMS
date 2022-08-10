@@ -551,7 +551,12 @@ var DyAlert = function (txtMessage, HandlerOK) {
     var pg = JSPath('JSUtility.js') + "../DyAlert.html";
 
     var LoadPage = function () {
-        divN.load(pg + " #DyAlert_modal", function () { LoadDone(); });
+        if ($('#DyAlert_modal').length == 0) {
+            divN.load(pg + " #DyAlert_modal", function () { LoadDone(); });
+        }
+        else {
+            $('#DyAlert_modal button').click()
+        }
     };
 
     var LoadDone = function () {
@@ -560,7 +565,9 @@ var DyAlert = function (txtMessage, HandlerOK) {
         ParentNode.append(p);
         $('#DyAlert_modal').find('p[name="pMsg"]').text(txtMessage);
         $('button[name="btYes"], button[name="btNo"]').hide();
-        $('#DyAlert_modal').modal('show');
+        setTimeout(function () {
+            $('#DyAlert_modal').modal('show');
+        }, 200);
         $('#DyAlert_modal button').click(function () {
             $('#DyAlert_modal').modal('hide');
             setTimeout(function () {
