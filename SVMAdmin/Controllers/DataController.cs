@@ -3572,6 +3572,60 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+
+        [Route("SystemSetup/GetISAMQFTPRECData")]
+        public ActionResult SystemSetup_GetInitISAMQFTPREC()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetISAMQFTPRECDataOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Shop = rq["WhNo"];
+                string Edit = rq["EditMode"];
+                string DateS = "";
+                string DateE = "";
+                string sql = "";
+
+                if (rq.Count > 2)
+                {
+                    DateS = rq["DateS"];
+                    DateE = rq["DateE"];
+                }
+                else
+                {
+                    sql = "select Convert(varchar,Dateadd(d,-1,getdate()),111) DTS,Convert(varchar,getdate(),111) DTE ";
+                    DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                    dtC.TableName = "dtQDate";
+                    ds.Tables.Add(dtC);
+
+                    DateS = dtC.Rows[0][0].ToString();
+                    DateE = dtC.Rows[0][1].ToString();
+                }
+
+
+                sql = "select case DocType when 'T' then N'盤點' when 'C' then N'條碼蒐集' when 'D' then N'出貨調撥' end DocTypeDesc ,a.CrtDate,a.CrtDate+' '+a.CrtTime CrtDT,case when isnull(Man_Name,'')='' then a.CrtUser else b.Man_Name end CrtUserName,";
+                sql += "case UpdateType when 'N' then N'未上傳' when 'Y' then N'成功' when 'E' then N'異常' end UpdateTypeDesc from ISAMTOFTPRecWeb a (nolock) ";
+                sql += "left join EmployeeWeb b (nolock) on a.CompanyCode=b.CompanyCode and a.CrtUser=b.Man_ID ";
+                sql += "where a.Companycode='" + uu.CompanyId + "' and a.Whno='" + Shop + "' and a.CrtDate between '" + DateS + "' and '" + DateE + "' order by a.CompanyCode,a.CrtDate desc,a.CrtTime desc";
+                DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                dtQ.TableName = "dtQRec";
+                ds.Tables.Add(dtQ);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+
+
+
         //2021-05-18 Larry
         [Route("SystemSetup/SearchVIV10")]
         public ActionResult SystemSetup_SearchVIV10()

@@ -116,7 +116,7 @@
                     </div>
                     <div class="clearfix"></div>
 
-                    <article id="pgMMMachineSetDetail" class="row">
+                    <!--<article id="pgMMMachineSetDetail" class="row">
                         <div class="col-md-12 col-sm-12">
                             <div class="x_panel">
                                 <div class="x_title">
@@ -229,58 +229,68 @@
                                 </div>
                             </div>
                         </div>
-                    </article>
+                    </article>-->
 
-                    <article id="pgMMMachineSet" class="row">
+                    <article id="pgISAMQFTPREC" class="row">
                         <style>
-                            #pgMMMachineSet .fa-file-text-o {
+                            #tbISAMQFTPREC .fa-search {
                                 font-size: 28px;
                                 color: lightblue;
-                                cursor:pointer;
+                               /* cursor: pointer;*/
                             }
                         </style>
                         <div class="col-md-12 col-sm-12">
                             <div class="x_panel">
                                 <div class="x_title">
                                     <div class="form-group row">
-                                        <label class="col-form-label">智販機號碼</label>
-                                        <div class="col-md-4">
-                                            <input id="txtMachineSearch" type="text" class="form-control" />
+                                        <div>
+                                            <label id="lblShop2" class="col-form-label" style="color: blue; line-height: 10px;">999999 智販店</label>
                                         </div>
-                                        <button type="button" id="btQueryMachine" class="custom-control-inline btn btn-primary">查詢</button>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-2">
+                                            <input id="txtCrtDateS" class="form-control small" type="text" placeholder="請輸入建立日期起迄" autocomplete="off" />
+                                        </div>
+                                        <label class="col-form-label"> ~ </label>
+                                        <div class="col-md-2">
+                                            <input id="txtCrtDateE" class="form-control small" type="text" placeholder="請輸入建立日期起迄" autocomplete="off" />
+                                        </div>
+                                        <!--<div class="col-md-4">
+        <input id="txtMachineSearch" type="text" class="form-control" />
+    </div>
+    <button type="button" id="btQueryMachine" class="custom-control-inline btn btn-primary">查詢</button>-->
                                     </div>
 
                                     <div class="form-group row">
-                                        <button type="button" id="btNewMachine" class="custom-control-inline btn btn-success">新增</button>
-                                        <label class="col-form-label" style="position: absolute; right: 20px;color:crimson">點擊欄位標題可進行排序</label>
+                                        <button type="button" id="btQuery" class="custom-control-inline btn btn-success">查詢</button>
+                                        <!--<label class="col-form-label" style="position: absolute; right: 20px;color:crimson">點擊欄位標題可進行排序</label>-->
                                     </div>
                                 </div>
+                                
                                 <div class="x_content">
-                                    <table id="tbMMMachineSet" class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>修改</th>
-                                                <th>智販機號碼</th>
-                                                <th>啟用日期</th>
-                                                <th>停用日期</th>
-                                                <th>貨倉數量</th>
-                                                <th>貨道數量</th>
-                                                <th>溫度設定℃</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><span class="fa fa-file-text-o"></span></td>
-                                                <td><span class="fa fa-toggle-off"></span></td>
-                                                <td>2435462</td>
-                                                <td>2020/01/01</td>
-                                                <td>2025/12/31</td>
-                                                <td>5</td>
-                                                <td>30</td>
-                                                <td>5.6</td>
-                                            </tr>
-                                        </tbody>
-                                     </table>
+                                    <div style="overflow:auto;min-height:400px;max-height:500px">
+                                        <table id="tbISAMQFTPREC" class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>查詢</th>
+                                                    <th>上傳類型</th>
+                                                    <th>建立日期</th>
+                                                    <th>建立者</th>
+                                                    <th>狀態</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><span class="fa fa-search"></span></td>
+                                                    <td>盤點</td>
+                                                    <td>2020/01/01 12:10:28</td>
+                                                    <td>Nick</td>
+                                                    <td>已上傳</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                        
                                 </div>
                             </div>
                         </div>
