@@ -342,8 +342,8 @@ namespace SVMAdmin.Controllers
 
             //RemoveAllChildren
             NodeRemove = new string[] {
-                 "//ul[contains(@class,'app-menu')]"
-                 //"//table[@id='tbISAMQFTPREC']/tbody"
+                 "//ul[contains(@class,'app-menu')]",
+                 "//table[@id='tbISAMQFTPREC']/tbody"
             };
             for (int i = 0; i < NodeRemove.Length; i++)
             {
