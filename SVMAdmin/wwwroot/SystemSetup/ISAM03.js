@@ -190,7 +190,7 @@
     };
 
     let btPLUDelete_click = function (bt) {
-       Timerset(sessionStorage.getItem('isamcomp'));
+        Timerset(sessionStorage.getItem('isamcomp'));
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         $('#modal_ISAM03PLUDel .modal-title').text('盤點資料單筆刪除');
@@ -323,6 +323,7 @@
             $('#txtBarcode1').val('');
         }
         else {
+            $('#txtQty1').val("1");
             var dtSQ = data.getElementsByTagName('dtSQ');   //單品數
             if (dtSQ.length > 0) {
                 $('#lblSQty1').html(GetNodeValue(dtSQ[0], "SQ1"));
@@ -377,7 +378,7 @@
             $('#txtBarcode1').val('');
             return;
         }
-        $('#txtQty1').val("1");
+       
         //alert($('#lblShop2').html());
         var pData = {
             WhNoOut: $('#lblWhNoOut').html().split(' ')[0],
@@ -410,7 +411,8 @@
     //#endregion
 
     let BtnSet = function (edit) {
-        switch (edit) {
+        //alert(edit);
+       switch (edit) {
             case "A":
                 $('#btAdd').prop('disabled', false);
                 $('#btMod').prop('disabled', true);
@@ -423,7 +425,13 @@
                 $('#lblSBQty1').html('');
                 $('#lblSWQty1').html('');
                 $('#lblPrice').html('');
-                $('#lblGDName').html('');
+               $('#lblGDName').html('');
+
+               $('#btKeyin1').prop('disabled', false);
+               $('#btBCSave1').prop('disabled', false);
+               $('#txtBarcode1').prop('disabled', false);
+               $('#btQtySave1').prop('disabled', true);
+               $('#txtQty1').prop('disabled', true);
                 break;
             case "Q":
                 $('#btAdd').prop('disabled', false);
@@ -477,15 +485,14 @@
     //#endregion
 
     //#region 返回
-    let afterRtnclick = function () {
-        if (EditMode == "A" || EditMode == "M") {
+    let afterRtnclick = function () {    
+       if (EditMode == "A" || EditMode == "M") {
             EditMode = "Q";
             BtnSet(EditMode);
         }
     };
 
     let btRtn_click = function () {
-        //alert(EditMode);
         if (EditMode == "Q") {
             $('#ISAM03btns').hide();
             $('#pgISAM03Init').show();
@@ -513,7 +520,7 @@
             var dtDeliveryData = data.getElementsByTagName('dtDeliveryData');
             if (dtDeliveryData.length > 0) {
                 if (GetNodeValue(dtDeliveryData[0], "OutUser") != $('#lblManID1').html().split(' ')[0]) {
-                    DyConfirm(GetNodeValue(dtDeliveryData[0], "DocDate") + "進貨店" + GetNodeValue(dtDeliveryData[0], "WhNoIn") + "出貨調撥資料已存在，\n" + "，是否建立新出貨調撥資料?", CallShowData, DummyFunction);
+                    DyConfirm(GetNodeValue(dtDeliveryData[0], "DocDate") + "進貨店" + GetNodeValue(dtDeliveryData[0], "WhNoIn") + "出貨調撥資料已存在\n" + "，是否建立新出貨調撥資料?", CallShowData, DummyFunction);
                     //return;
                 }
                 else
@@ -543,7 +550,7 @@
         $('#lblGDName').html("品名XXX");
         $('#pgISAM03Init').hide();
         if ($('#ISAM03btns').attr('hidden') == undefined) {
-           $('#ISAM03btns').show();
+            $('#ISAM03btns').show();
         }
         else {
             $('#ISAM03btns').removeAttr('hidden');
@@ -561,6 +568,12 @@
             return;
         }
         else {
+            //alert($('#lblShop1').html().split(' ')[0]);
+            //alert($('#selST_ID').val());
+            if ($('#lblShop1').html().split(' ')[0] == $('#selST_ID').val()) {
+                DyAlert("出貨/調撥店櫃(" + $('#selST_ID').val() + ")不可與進貨店櫃相同!", BlankMode);
+                return;
+            }
             //if ($('#txtBinNo').val().length>10) {
             //    DyAlert("分區代碼不可超過10個字元!!", function () { $('#txtBinNo').focus() });
             //    return;
@@ -655,7 +668,7 @@
                 return;
             }
             else if (GetNodeValue(dtISAMWh[0], "WhNo") != "") {
-              PostToWebApi({ url: "api/SystemSetup/GetWhName", success: AfterGetWhName });
+                PostToWebApi({ url: "api/SystemSetup/GetWhName", success: AfterGetWhName });
             }
 
         }

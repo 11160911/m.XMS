@@ -3416,7 +3416,7 @@ namespace SVMAdmin.Controllers
                     sql += "'" + uu.UserID + "',Convert(varchar,getdate(),111),Substring(Convert(varchar,getdate(),121),12,12),";
                     sql += "'" + WhNoOut + "','" + DocDate + "','" + uu.UserID + "','" + WhNoIn + "',";
                     sql += "(select isnull(max(seqno),0)+1 from DeliveryWeb (nolock) where Companycode='" + uu.CompanyId + "' and WhNoOut='" + WhNoOut + "' and DocDate='" + DocDate + "' and WhNoIn='" + WhNoIn + "' and OutUser='" + uu.UserID + "'),";
-                    sql += "'" + PLU + "',1 ,''";
+                    sql += "'" + PLU + "'," + Qty +" ,''";
                     PubUtility.ExecuteSql(sql, uu, "SYS");
                 }
                 //Return 異動後的數量,故要重撈一次
