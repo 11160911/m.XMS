@@ -6,7 +6,7 @@
     let DelPLUQty;
     let ModPLU = "";
     let ModPLUQty;
-
+    let Q1;
 
     let AssignVar = function () {
         //alert("AssignVar");
@@ -297,12 +297,14 @@
         $('#txtBarcode1').prop('disabled', false);
         $('#btQtySave1').prop('disabled', true);
         $('#txtQty1').prop('disabled', true);
+        Q1 = $('#txtQty1').val();
+
         var pData = {
             WhNoOut: $('#lblWhNoOut').html().split(' ')[0],
             WhNoIn: $('#lblWhNoIn').html().split(' ')[0],
             DocDate: $('#lblDate2').html(),
             Barcode: $('#txtBarcode1').val() == "" ? $('#lblBarcode').html() : $('#txtBarcode1').val(),
-            Qty: $('#txtQty1').val()
+            Qty:Q1
         };
         //alert("908");
         PostToWebApi({ url: "api/SystemSetup/SaveDeliveryWeb", data: pData, success: afterSaveDeliveryWeb });
@@ -323,10 +325,11 @@
             $('#txtBarcode1').val('');
         }
         else {
-            if ($('#txtQty1').val() == "") {
-                $('#txtQty1').val("1");
-            }
-            
+            //if ($('#txtQty1').val() == "") {
+            //    $('#txtQty1').val("1");
+            //}
+            $('#txtQty1').val(Q1);
+
             var dtSQ = data.getElementsByTagName('dtSQ');   //單品數
             if (dtSQ.length > 0) {
                 $('#lblSQty1').html(GetNodeValue(dtSQ[0], "SQ1"));
@@ -381,14 +384,7 @@
             $('#txtBarcode1').val('');
             return;
         }
-        let Q1 = $('#txtQty1').val();
-        if ($('#txtQty1').val()== "") {
-            Q1 = 1;
-        }
-        else {
-            Q1 = $('#txtQty1').val();
-        }
-
+        Q1 = 1;
         //alert($('#lblShop2').html());
         var pData = {
             WhNoOut: $('#lblWhNoOut').html().split(' ')[0],
