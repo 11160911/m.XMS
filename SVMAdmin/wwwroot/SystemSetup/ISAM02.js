@@ -191,7 +191,7 @@
         Timerset(sessionStorage.getItem('isamcomp'));
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
-        $('#modal_ISAM02PLUDel .modal-title').text('盤點資料單筆刪除');
+        $('#modal_ISAM02PLUDel .modal-title').text('條碼蒐集資料單筆刪除');
         //$('#modal_ISAM02Mod .btn-danger').text('刪除');
         var node = $(grdM.ActiveRowTR()).prop('Record');
         DelPLU = GetNodeValue(node, 'PLU');
