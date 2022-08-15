@@ -318,12 +318,11 @@ namespace SVMAdmin.Controllers
         }
 
 
-        //2021-06-07 Larry
-        [Route("VMN01")]
-        public IActionResult VMN01()
+        [Route("SystemSetup/ISAMQFTPREC")]
+        public IActionResult ISAMQFTPREC()
         {
             HtmlAgilityPack.HtmlDocument doc1 = new HtmlAgilityPack.HtmlDocument();
-            string strHtml = System.IO.File.ReadAllText(ConstList.HostEnvironment.WebRootPath + @"\SystemSetup\VMN01.html".AdjPathByOS());
+            string strHtml = System.IO.File.ReadAllText(ConstList.HostEnvironment.WebRootPath + @"\SystemSetup\ISAMQFTPREC.html".AdjPathByOS());
             doc1.LoadHtml(strHtml);
 
             //Remove Node
@@ -344,7 +343,7 @@ namespace SVMAdmin.Controllers
             //RemoveAllChildren
             NodeRemove = new string[] {
                  "//ul[contains(@class,'app-menu')]",
-                 "//table[@id='tbVMN01']/tbody"
+                 "//table[@id='tbISAMQFTPREC']/tbody"
             };
             for (int i = 0; i < NodeRemove.Length; i++)
             {

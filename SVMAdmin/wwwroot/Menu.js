@@ -28,7 +28,6 @@
 })(jQuery, 'smartresize');
 */
 (function ($) {
-    var LogOutTimer;
     var dtFun;
 
     var Initdoc = function () {
@@ -273,70 +272,15 @@
                 }
             }
 
-            else if (pg == "VMN29") {
-                if (window.PageVMN29 == undefined)
-                    $.getScript('VMN29.js',
+            else if (pg == "ISAMQFTPREC") {
+                if (window.PageISAMQFTPREC == undefined)
+                    $.getScript('SystemSetup/ISAMQFTPREC.js',
                         function () {
-                            PageVMN29($(".workarea"));
+                            PageISAMQFTPREC($(".workarea"));
                         }
                     );
                 else {
-                    PageVMN29($(".workarea"));
-                }
-            }
-
-
-            else if (pg == "VIN13_1") {
-                //alert("VIN13_1");
-                if (window.PageVIN13_1 == undefined)
-
-                    $.getScript('VIN13_1.js',
-                        function () {
-                            PageVIN13_1($(".workarea"));
-                        }
-                    );
-                else {
-                    PageVIN13_1($(".workarea"));
-                }
-            }
-
-
-            else if (pg == "VIN13_2") {
-                //alert("VIN13_2");
-                if (window.PageVIN13_2 == undefined)
-
-                    $.getScript('Inv/VIN13_2.js',
-                        function () {
-                            PageVIN13_2($(".workarea"));
-                        }
-                    );
-                else {
-                    PageVIN13_2($(".workarea"));
-                }
-            }
-
-            else if (pg == "VIN14_2") {
-                //alert("VIN14_2");
-                if (window.PageVIN14_2 == undefined)
-
-                    $.getScript('Inv/VIN14_2.js',
-                        function () {
-                            PageVIN14_2($(".workarea"));
-                        }
-                    );
-                else {
-                    PageVIN14_2($(".workarea"));
-                }
-            }
-            else if (pg == "ISAMWHSET") {
-                if (window.PageISAMWHSET == undefined)
-                    $.getScript('SystemSetup/ISAMWhSet.js',
-                        function () {
-                            PageISAMWHSET($(".workarea"));
-                        }
-                    );
-                else {
-                    PageISAMWHSET($(".workarea"));
+                    PageISAMQFTPREC($(".workarea"));
                 }
             }
             else if (pg == "ISAM02") {

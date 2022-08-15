@@ -2722,7 +2722,6 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
-
         [Route("SystemSetup/SearchBINWeb")]
         public ActionResult SystemSetup_SearchBINWeb()
         {
@@ -2757,7 +2756,6 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
-
 
         [Route("SystemSetup/SaveBINWeb")]
         public ActionResult SystemSetup_SaveBINWeb()
@@ -2879,7 +2877,6 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
-
 
         [Route("SystemSetup/GetGDName")]
         public ActionResult SystemSetup_GetGDName()
@@ -3234,6 +3231,7 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+
         [Route("SystemSetup/DelISAMData")]
         public ActionResult SystemSetup_DelISAMData()
         {
@@ -3289,8 +3287,6 @@ namespace SVMAdmin.Controllers
         }
 
 
-
-
         [Route("SystemSetup/GetInitISAM03")]
         public ActionResult SystemSetup_GetInitISAM03()
         {
@@ -3325,7 +3321,6 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
-
 
         [Route("SystemSetup/SearchDeliveryWeb")]
         public ActionResult SystemSetup_SearchDeliveryWeb()
@@ -3571,6 +3566,121 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+
+
+        [Route("SystemSetup/GetISAMQFTPRECData")]
+        public ActionResult SystemSetup_GetInitISAMQFTPREC()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetISAMQFTPRECDataOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Shop = rq["WhNo"];
+                string Edit = rq["EditMode"];
+                string Comd = "";
+                string DateS = "";
+                string DateE = "";
+                string DocT = "";
+                string sql = "";
+
+                if (Edit == "Init")
+                {
+                    String[,] DocType = { {"T","盤點" },{ "C", "條碼蒐集" },{ "D", "出貨/調撥" } };
+                    sql = "select Convert(varchar(1),'') DocType,Convert(nvarchar(10),'') DocTypeDesc where 1=0";
+                    DataTable dtDoc = PubUtility.SqlQry(sql, uu, "SYS");
+                    for (int i = 0; i <= DocType.GetUpperBound(0); i++)
+                    {
+                        DataRow dr = dtDoc.NewRow();
+                        dr["DocType"] = DocType[i, 0];
+                        dr["DocTypeDesc"] = DocType[i, 1];
+                        dtDoc.Rows.Add(dr);
+                    }
+                    
+                    dtDoc.TableName = "dtDoc";
+                    ds.Tables.Add(dtDoc);
+
+                    sql = "select Convert(varchar,Dateadd(d,-1,getdate()),111) DTS,Convert(varchar,getdate(),111) DTE ";
+                    DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                    dtC.TableName = "dtQDate";
+                    ds.Tables.Add(dtC);
+
+                    DateS = dtC.Rows[0][0].ToString();
+                    DateE = dtC.Rows[0][1].ToString();
+                }
+                else
+                {
+                    DateS = rq["DateS"];
+                    DateE = rq["DateE"];
+                    DocT = rq["DocType"];
+                }
+                
+                if (DateS!="" && DateE != "")
+                {
+                    Comd = "and a.CrtDate between '" + DateS + "' and '" + DateE + "' ";
+                }
+                if (DocT != "") { Comd += "and DocType='"+ DocT + "' "; }
+
+                sql = "select case DocType when 'T' then N'盤點' when 'C' then N'條碼蒐集' when 'D' then N'出貨調撥' end DocTypeDesc ,a.CrtDate,a.CrtDate+' '+a.CrtTime CrtDT,case when isnull(Man_Name,'')='' then a.CrtUser else b.Man_Name end CrtUserName,";
+                sql += "case UpdateType when 'N' then N'未上傳' when 'Y' then N'成功' when 'E' then N'異常' end UpdateTypeDesc,a.CrtUser,DocType from ISAMTOFTPRecWeb a (nolock) ";
+                sql += "left join EmployeeWeb b (nolock) on a.CompanyCode=b.CompanyCode and a.CrtUser=b.Man_ID ";
+                sql += "where a.Companycode='" + uu.CompanyId + "' and a.Whno='" + Shop + "' "+ Comd +"order by a.CompanyCode,a.CrtDate desc,a.CrtTime desc";
+                DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                dtQ.TableName = "dtQRec";
+                ds.Tables.Add(dtQ);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/SearchISAMFTPRecDetl")]
+        public ActionResult SystemSetup_SearchISAMFTPRecDetl()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SearchISAMFTPRecDetlOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string CrtUser = rq["CrtUser"];
+                string CrtDT = rq["CrtDT"];
+                string CrtDate = CrtDT.Split(" ")[0].Trim();
+                string CrtTime = CrtDT.Split(" ")[1].Trim();
+                string DocType = rq["DocType"];
+                string Shop = rq["Shop"];
+                
+                string sql = "select case DocType when 'T' then N'盤點' when 'C' then N'條碼蒐集' when 'D' then N'出貨調撥' end DocTypeDesc ,a.CrtDate+' '+a.CrtTime CrtDT,case when isnull(Man_Name,'')='' then a.CrtUser else b.Man_Name end CrtUserName,";
+                sql += "case UpdateType when 'N' then N'未上傳' when 'Y' then N'成功' when 'E' then N'異常' end UpdateTypeDesc,FTPDate,UpLoadComd,DocType from ISAMTOFTPRecWeb a (nolock) ";
+                sql += "left join EmployeeWeb b (nolock) on a.CompanyCode=b.CompanyCode and a.CrtUser=b.Man_ID ";
+                sql += "where a.Companycode='" + uu.CompanyId + "' and a.CrtUser='"+ CrtUser + "' and a.CrtDate='" + CrtDate + "' and a.Crttime='" + CrtTime + "' and DocType='" + DocType + "' and a.Whno='" + Shop + "' ";
+                DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                dtQ.TableName = "dtRec";
+                ds.Tables.Add(dtQ);
+
+                if(DocType=="D" && dtQ.Rows[0]["UpLoadComd"].ToString().Split(";").Length>2)
+                {
+                    sql = "select left(ST_ID+'      ',6)+' '+ST_SName InSTName from WarehouseWeb c (nolock) ";
+                    sql += "where Companycode='" + uu.CompanyId + "' and ST_ID='" + dtQ.Rows[0]["UpLoadComd"].ToString().Split(";")[1] + "'";
+                    DataTable dtWh = PubUtility.SqlQry(sql, uu, "SYS");
+                    dtWh.TableName = "dtWh";
+                    ds.Tables.Add(dtWh);
+                }
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
 
         //2021-05-18 Larry
         [Route("SystemSetup/SearchVIV10")]

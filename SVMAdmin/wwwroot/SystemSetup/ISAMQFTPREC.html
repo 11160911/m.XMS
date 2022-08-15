@@ -1,0 +1,272 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>雲智能販賣機後台管理系統</title>
+
+    <!-- Bootstrap -->
+    <link href="../lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../lib/nprogress/nprogress.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../css/custom.css" rel="stylesheet">
+</head>
+
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;height:5px">
+
+                    </div>
+                    <!-- menu profile quick info -->
+                    <div class="profile clearfix">
+                        <img src="images/Logo4.png" style="margin-left:8px ;margin-top:3px ;width: 216px;" />
+                        <div class="clearfix"></div>
+                    </div>
+                    <!-- /menu profile quick info -->
+                    <!-- sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <ul class="nav side-menu">
+                                <li>
+                                    <a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="index.html">Dashboard</a></li>
+                                        <li><a href="index2.html">Dashboard2</a></li>
+                                        <li><a href="index3.html">Dashboard3</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="form.html">General Form</a></li>
+                                        <li><a href="form_advanced.html">Advanced Components</a></li>
+                                        <li><a href="form_validation.html">Form Validation</a></li>
+                                        <li><a href="form_wizards.html">Form Wizard</a></li>
+                                        <li><a href="form_upload.html">Form Upload</a></li>
+                                        <li><a href="form_buttons.html">Form Buttons</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a><i class="fa fa-desktop"></i> UI Elements <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="general_elements.html">General Elements</a></li>
+                                        <li><a href="media_gallery.html">Media Gallery</a></li>
+                                        <li><a href="typography.html">Typography</a></li>
+                                        <li><a href="icons.html">Icons</a></li>
+                                        <li><a href="glyphicons.html">Glyphicons</a></li>
+                                        <li><a href="widgets.html">Widgets</a></li>
+                                        <li><a href="invoice.html">Invoice</a></li>
+                                        <li><a href="inbox.html">Inbox</a></li>
+                                        <li><a href="calendar.html">Calendar</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a><i class="fa fa-table"></i> Tables <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="tables.html">Tables</a></li>
+                                        <li><a href="tables_dynamic.html">Table Dynamic</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a><i class="fa fa-bar-chart-o"></i> Data Presentation <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="chartjs.html">Chart JS</a></li>
+                                        <li><a href="chartjs2.html">Chart JS2</a></li>
+                                        <li><a href="morisjs.html">Moris JS</a></li>
+                                        <li><a href="echarts.html">ECharts</a></li>
+                                        <li><a href="other_charts.html">Other Charts</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a><i class="fa fa-clone"></i>Layouts <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="fixed_sidebar.html">Fixed Sidebar</a></li>
+                                        <li><a href="fixed_footer.html">Fixed Footer</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <!-- /sidebar menu -->
+
+
+                </div>
+            </div>
+
+
+            <!-- page content -->
+            <div class="right_col" role="main">
+                <div class="">
+                    <div class="page-title">
+                        <div class="title_left">
+                            <h3>Plain Page</h3>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <article id="pgISAMQFTPREC" class="row">
+                        <div class="modal fade" id="modal_ISAMFTPRecDetl" data-keyboard="false" data-backdrop="static">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">智販機換店設定</h4>
+                                    </div>
+                                    <div class="modal-body modal-tab-container">
+                                        <style>
+                                            #modal-Role .msg-valid {
+                                                color: red;
+                                                font-size: 0.85rem;
+                                            }
+                                        </style>
+                                        <div class="card-block forminput">
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-4 text-right">作業店櫃</label>
+                                                <label id="lblShop" class="col-form-label" style="text-align: left;color: blue" autocomplete="off"></label>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-4 text-right">上傳類型</label>
+                                                <label id="lblDocTP" class="col-form-label" style="text-align: left;color: blue" autocomplete="off"></label>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-4 text-right">建立時間</label>
+                                                <label id="lblCrtDT" class="col-form-label" style="text-align: left;color: blue" autocomplete="off"></label>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-4 text-right">上傳者</label>
+                                                <label id="lblCrtUser" class="col-form-label" style="text-align: left;color: blue" autocomplete="off"></label>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-4 text-right">上傳狀態</label>
+                                                <label id="lblUpType" class="col-form-label" style="text-align: left;color: blue" autocomplete="off"></label>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-4 text-right">上傳完成時間</label>
+                                                <label id="lblUpDT" class="col-form-label" style="text-align: left;color: blue" autocomplete="off"></label>
+                                            </div>
+                                            <div id="tmpgrow1" class="form-group row">
+                                                <label id="tmplbl1" class="col-form-label col-4 text-right">分區/進貨店倉</label>
+                                                <label id="lblCode1" class="col-form-label" style="text-align: left;color: blue" autocomplete="off"></label>
+                                            </div>
+                                            <div id="tmpgrow2" class="form-group row">
+                                                <label id="tmplbl2" class="col-form-label col-4 text-right">盤點/單據日期</label>
+                                                <label id="lblDocDate" class="col-form-label" style="text-align: left;color: blue" autocomplete="off"></label>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button id="btCancel" type="button" class="btn btn-primary">離開</button>
+                                            </div>
+
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                </div><!-- /.modal -->
+                            </div>
+                        </div>
+                        
+                        <style>
+                            #tbISAMQFTPREC .fa-search {
+                                font-size: 28px;
+                                color: lightblue;
+                                /* cursor: pointer;*/
+                            }
+                        </style>
+                        <div class="col-md-12 col-sm-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <div class="form-group row">
+                                        <div>
+                                            <label id="lblShop2" class="col-form-label" style="color: blue; line-height: 10px;">999999 智販店</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-2">
+                                            <input id="txtCrtDateS" class="form-control small" type="text" placeholder="請輸入建立日期起迄" autocomplete="off" />
+                                        </div>
+                                        <label class="col-form-label"> ~ </label>
+                                        <div class="col-md-2">
+                                            <input id="txtCrtDateE" class="form-control small" type="text" placeholder="請輸入建立日期起迄" autocomplete="off" />
+                                        </div>
+                                        <!--<div class="col-md-4">
+                        <input id="txtMachineSearch" type="text" class="form-control" />
+                    </div>
+                    <button type="button" id="btQueryMachine" class="custom-control-inline btn btn-primary">查詢</button>-->
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-2">
+                                            <select id="selDocType" class="form-control">
+                                                <option disabled="" selected="">請選擇上傳類型</option>
+                                                <option data-content="<span class='label label-success'>廣東省</span>">廣東省</option>
+                                                <option data-content="<span class='label label-info'>廣西省</span>">廣西省</option>
+                                                <option data-content="<span class='label label-warning'>福建省</span>">福建省</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <button type="button" id="btQuery" class="custom-control-inline btn btn-success">查詢</button>
+                                        <!--<label class="col-form-label" style="position: absolute; right: 20px;color:crimson">點擊欄位標題可進行排序</label>-->
+                                    </div>
+                                </div>
+
+                                <div class="x_content">
+                                    <div style="overflow:auto;min-height:400px;max-height:500px">
+                                        <table id="tbISAMQFTPREC" class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>查詢</th>
+                                                    <th>上傳類型</th>
+                                                    <th>建立日期</th>
+                                                    <th>建立者</th>
+                                                    <th>狀態</th>
+                                                    <th hidden>建立者</th>
+                                                    <th hidden>狀態</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><span class="fa fa-search"></span></td>
+                                                    <td>盤點</td>
+                                                    <td>2020/01/01 12:10:28</td>
+                                                    <td>Nick</td>
+                                                    <td>已上傳</td>
+                                                    <td>Nick</td>
+                                                    <td>已上傳</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </article>
+
+                </div>
+            </div>
+            <!-- /page content -->
+
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="../lib/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FastClick -->
+    <script src="../lib/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="lib/nprogress/nprogress.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="js/custom.min.js"></script>
+</body>
+</html>
