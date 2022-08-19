@@ -31,6 +31,7 @@
     var dtFun;
 
     var Initdoc = function () {
+        
         UU = sessionStorage.getItem('token');
         PostToWebApi({ url: "api/GetMenuInit", success: AfterInit, complete: GetHeads });
         
@@ -39,22 +40,26 @@
     };
 
     var AfterInit = function (data) {
+        
         if (ReturnMsg(data, 0) != "GetMenuInitOK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
-            $("a[href='Login']").attr("href", "Login" + sessionStorage.getItem('isamcomp'));
+            
+            /*$("a[href='Login']").attr("href", "Login" + sessionStorage.getItem('isamcomp'));*/
+            $("a[href='Login']").click(function () { btLogOutY_click(); });
+
+            $(window).on("beforeunload", function () {
+                LogOutX();
+            })
             //alert(sessionStorage.getItem('isamcomp'));
             var dtEmployeeSV = data.getElementsByTagName('dtEmployeeWeb');
             $('#navbarDropdown').text(GetNodeValue(dtEmployeeSV[0], 'ChineseName') + ' - ' + GetNodeValue(dtEmployeeSV[0], 'Man_Name'));
             dtFun = data.getElementsByTagName('dtAllFunction');
             SetMenu();
-            
             init_sidebar();
-                      
             //init_autosize();
             //$.getScript('js/custom.js', function (data, textStatus, jqxhr) { });
-
             return;
         }
 
@@ -78,7 +83,38 @@
 
     };
 
+    let btLogOutY_click = function () {
+        var cData = {
+        }
+        PostToWebApi({ url: "api/UpdateLogOutY", data: cData, success: AfterUpdateLogOutY });
+
+    };
+
+    let AfterUpdateLogOutY = function (data) {
+        if (ReturnMsg(data, 0) != "UpdateLogOutYOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            $("a[href='#']").attr("href", "Login" + sessionStorage.getItem('isamcomp'));
+        }
+
+    };
+
+    let LogOutX = function () {
+        var cData = {
+        }
+        PostToWebApi({ url: "api/UpdateLogOutX", data: cData, success: AfterUpdateLogOutX });
+
+    };
+
+    let AfterUpdateLogOutX = function (data) {
+        if (ReturnMsg(data, 0) != "UpdateLogOutXOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+    };
+
     var GetHeads = function (jqxhr) {
+       
         var headers = {};
         jqxhr.getAllResponseHeaders()
             .trim()
@@ -110,6 +146,7 @@
     var menu = $('#sidebar-menu .side-menu');
 
     var SetMenu = function () {
+        
         var strCat = "";
 
         for (var i = 0; i < dtFun.length; i++) {
@@ -162,10 +199,12 @@
     };
 
     var click_menu = function (menuitem) {
+        
         $('#FunctionDesc').text($(menuitem).prop('Description'));
         //$('#TimerLbl').hide();
         //$('#Timer').hide();
         //TimerReset(sessionStorage.getItem('isamcomp'),"");
+
         Timerset(sessionStorage.getItem('isamcomp'));
         $MENU_TOGGLE.click();
         OpenPage(menuitem);
@@ -183,6 +222,7 @@
     }
 
     var openCategory = function (catitem) {
+        
         $(catitem).addClass('open');
         var itemA = $(catitem).prop('CatItemA');
         $(itemA).attr('aria-expanded', 'true');
@@ -204,6 +244,7 @@
     }
 
     var OpenPage = function (menuitem) {
+        
         menu.find('.active').removeClass('active');
         lastMenu = menuitem;
         $('article').remove();
@@ -338,6 +379,7 @@
 
      //Sidebar
     var init_sidebar = function () {
+        
         // TODO: This is some kind of easy fix, maybe we can improve this
         var setContentHeight = function () {
             // reset height

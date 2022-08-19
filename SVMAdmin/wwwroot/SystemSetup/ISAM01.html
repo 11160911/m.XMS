@@ -354,6 +354,43 @@
                             font-size: 25px;
                             color: blue;
                         }
+
+
+                        #tbISAM01Mod {
+                            width: 100%;
+                        }
+
+                            #tbISAM01Mod thead, #tbISAM01Mod tbody, #tbISAM01Mod tr, #tbISAM01Mod td, #tbISAM01Modth {
+                                display: block;
+                            }
+
+                        #tbISAM01Mod tr:after {
+                            content: ' ';
+                            display: block;
+                            visibility: hidden;
+                            clear: both;
+                        }
+
+                        #tbISAM01Mod thead th {
+                            height: 50px;
+                            /*text-align: left;*/
+                        }
+
+                        #tbISAM01Mod tbody {
+                            height: 300px;
+                            overflow-y: auto;
+                        }
+
+
+                        #tbISAM01Mod thead th {
+                            width: 24.6%;
+                            float: left;
+                        }
+                        #tbISAM01Mod tbody td {
+                            width: 25%;
+                            float: left;
+                        }
+                        
                     </style>
 
                     <div class="col-md-12 col-sm-12">
@@ -367,28 +404,31 @@
                             </div>
                             <div class="card-block forminput">
                                 <div class="x_content">
-                                    <div style="overflow:auto;min-height:400px;max-height:500px">
-                                        <table id="tbISAM01Mod" class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>刪</th>
-                                                    <th>條碼</th>
-                                                    <th align="right">數量</th>
-                                                    <th align="right">修改</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td><span class="fa fa-trash-o"></span></td>
-                                                    <td>4023147812345678</td>
-                                                    <td>1</td>
-                                                    <td><span class="fa fa-file-text-o"></span></td>
-                                                    <!--<td><select class="form-select sel_Rack"><option value="A">大彈簧</option><option value="B" selected>小彈簧</option></select></td>-->
-                                                    <!--<td><input class="ChQty" type="text" value="4" /></td>-->
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <!--<div style="overflow:auto;min-height:400px;max-height:500px">
+                                        
+                                    </div>-->
+                                    <table id="tbISAM01Mod" class="table table-striped" style="width:100%">
+                                        <thead >
+                                            <tr>
+                                                <th>刪</th>
+                                                <th>條碼</th>
+                                                <th>數量</th>
+                                                <th>修改</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><span class="fa fa-trash-o"></span></td>
+                                                <td>4023147812345678</td>
+                                                <td>1</td>
+                                                <td><span></span></td>
+                                                <!--<td><select class="form-select sel_Rack"><option value="A">大彈簧</option><option value="B" selected>小彈簧</option></select></td>-->
+                                                <!--<td><input class="ChQty" type="text" value="4" /></td>-->
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+
                                 </div>
                             </div>
                             <!-- style="table-layout:auto" </div> -->

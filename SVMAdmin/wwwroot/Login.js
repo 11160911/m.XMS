@@ -4,10 +4,15 @@
         $('#CompanyName').val();
         LoginCompany();
 
-        $('#btSignIn').click(function () { LoginSys(); });
+        $('#btSignIn').click(function () {
+            $('#icrpwd').hide();
+            $('#chklogin').hide();
+            LoginSys();
+        });
 
         $('#password').keypress(function (e) {
             $('#icrpwd').hide();
+            $('#chklogin').hide();
             if (e.which == 13) {
                 LoginSys();
             }
@@ -21,7 +26,7 @@
         PostToWebApi({ url: "api/GetCompanyName", data: pData, success: GetCompanySuccess, error: LoginError });
     }
 
-    var GetCompanySuccess = function (data) {
+    var GetCompanySuccess = function (data) {``
         if (ReturnMsg(data, 0) == "GetCompanyNameOK") {
             var dtC = data.getElementsByTagName('dtCompanyName');
             $('#CompanyName').text(GetNodeValue(dtC[0], 'ChineseName'));
@@ -47,7 +52,11 @@
             window.location.replace("menu");
         }
         else if (ReturnMsg(data, 1) == "密碼錯誤") {
+            //alert("密碼錯誤 : " + ReturnMsg(data,0))
             $('#icrpwd').show();
+        }
+        else if (ReturnMsg(data, 1) == "重複登入") {
+            $('#chklogin').show();
         }
         else if (ReturnMsg(data, 0) == "Exception") {
             DyAlert(ReturnMsg(data, 1));
@@ -60,7 +69,6 @@
     var LoginError = function (data) {
         DyAlert(ReturnMsg(data, 1));
     };
-
     Initdoc();
 
 })(jQuery);

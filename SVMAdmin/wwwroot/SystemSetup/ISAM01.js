@@ -16,7 +16,7 @@
                 class_collection: ["tdColbt icon_in_td btPLUDelete", "tdCol1", "tdCol2 label-align", "tdColbt icon_in_td btPLUMod"],
                 fields_info: [
                     { type: "JQ", name: "fa-trash-o", element: '<i class="fa fa-trash-o"></i>' },
-                    { type: "Text", name: "GD_Name", style: "width:200px" },
+                    { type: "Text", name: "GD_Name" },
                     { type: "TextAmt", name: "Qty1" },
                     { type: "JQ", name: "fa-file-text-o", element: '<i class="fa fa-file-text-o"></i>' }
                 ],

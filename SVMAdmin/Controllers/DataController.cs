@@ -99,16 +99,36 @@ namespace SVMAdmin.Controllers
                 {
                     uu.CompanyId = Convert.ToString(dtTmp.Rows[0]["CompanyCode"]);
                     uu.UserID = Convert.ToString(dtTmp.Rows[0]["Man_ID"]);
+
+                    //20220817 增加檢查員工是否重複登入
+                    sql = "Select * from ISAMLoginRecWeb (nolock) ";
+                    sql += " where CompanyCode='" + uu.CompanyId + "' and Man_ID='" + uu.UserID + "' ";
+                    sql += " and isnull(LogOutType,'')= ''";
+                    DataTable dtLogin = PubUtility.SqlQry(sql, uu, "SYS");
+                    if (dtLogin.Rows.Count > 0)
+                    {
+                        throw new Exception("重複登入");
+                    }
+                    else
+                    {
+                        sql = "Insert into ISAMLoginRecWeb (CompanyCode,CrtUSer,CrtDate,CrtTime,ModUser,ModDate,ModTime,Man_ID,LogInDT,LogOutDT,LogOutType) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',Convert(varchar,getdate(),111),Substring(Convert(varchar,getdate(),121),12,12),";
+                        sql += "'" + uu.UserID + "',Convert(varchar,getdate(),111),Substring(Convert(varchar,getdate(),121),12,12),";
+                        sql += "'" + uu.UserID + "',Convert(varchar,getdate(),111) + ' ' + convert(char(12),getdate(),108),'',''";
+                        PubUtility.ExecuteSql(sql, uu, "SYS");
+                    }
                 }
 
                 if (dtTmp.Rows.Count == 0)
                     throw new Exception("密碼錯誤");
+
+                
+
                 dtTmp.TableName = "dtEmployee";
                 dtTmp.Columns.Add("token", typeof(string));
                 //uu.UserID = USERID;
                 string token = PubUtility.GenerateJwtToken(uu);
                 dtTmp.Rows[0]["token"] = token;
-
                 ds.Tables.Add(dtTmp);
             }
             catch (Exception err)
@@ -118,6 +138,7 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+
 
         [Route("LoginSysByApi")]
         public ActionResult LoginSysByApi()
@@ -5633,7 +5654,74 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        //2022/08/19 正常登出
+        [Route("UpdateLogOutY")]
+        public ActionResult UpdateLogOutY()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "UpdateLogOutYOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                //string GD_NO = rq["GD_NO"];
+                string sql = "Update ISAMLoginRecWeb set LogOutDT=Convert(varchar,getdate(),111) + ' ' + convert(char(12),getdate(),108),LogOutType='Y' where CompanyCode='" + uu.CompanyId + "' ";
+                sql += "and Man_ID='" + uu.UserID + "' and ISNULL(LogOutType,'')='' ";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
 
+        //2022/08/19 異常登出
+        [Route("UpdateLogOutX")]
+        public ActionResult UpdateLogOutX()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "UpdateLogOutXOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                //string GD_NO = rq["GD_NO"];
+                string sql = "Update ISAMLoginRecWeb set LogOutDT=Convert(varchar,getdate(),111) + ' ' + convert(char(12),getdate(),108),LogOutType='X' where CompanyCode='" + uu.CompanyId + "' ";
+                sql += "and Man_ID='" + uu.UserID + "' and ISNULL(LogOutType,'')='' ";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        //2022/08/19 倒數登出
+        [Route("js/UpdateLogOutT")]
+        public ActionResult UpdateLogOutT()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "UpdateLogOutTOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                //string GD_NO = rq["GD_NO"];
+                string sql = "Update ISAMLoginRecWeb set LogOutDT=Convert(varchar,getdate(),111) + ' ' + convert(char(12),getdate(),108),LogOutType='T' where CompanyCode='" + uu.CompanyId + "' ";
+                sql += "and Man_ID='" + uu.UserID + "' and ISNULL(LogOutType,'')='' ";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
 
     }
 }

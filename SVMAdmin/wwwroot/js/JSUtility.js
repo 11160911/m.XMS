@@ -1,4 +1,6 @@
-﻿String.prototype.padLeft = function (l, c) { return Array(l - this.length + 1).join(c || " ") + this }
+﻿
+
+String.prototype.padLeft = function (l, c) { return Array(l - this.length + 1).join(c || " ") + this }
 String.prototype.padRight = function (l, c) { return this + Array(l - this.length + 1).join(c || " ") }
 
 var DummyFunction = function () { };
@@ -543,9 +545,9 @@ var DynGrid = function (option) {
 
 }
 
-var DyAlert = function (txtMessage, HandlerOK) {
+var DyAlert = function (txtMessage, HandlerOK, txtMessage2, txtMessage3) {
     var divN = $('<div></div>');
-    
+
     $("body").append(divN);
     
     var pg = JSPath('JSUtility.js') + "../DyAlert.html";
@@ -563,8 +565,13 @@ var DyAlert = function (txtMessage, HandlerOK) {
         var ParentNode = $('body');
         var p = $('#DyAlert_modal').detach();
         ParentNode.append(p);
+        
         $('#DyAlert_modal').find('p[name="pMsg"]').text(txtMessage);
+        $('#DyAlert_modal').find('p[name="pMsg2"]').text(txtMessage2);
+        $('#DyAlert_modal').find('p[name="pMsg3"]').text(txtMessage3);
+
         $('button[name="btYes"], button[name="btNo"]').hide();
+        $('button[name="btOk"]').text("確定");
         setTimeout(function () {
             $('#DyAlert_modal').modal('show');
         }, 200);
@@ -755,16 +762,30 @@ var CalculateTime = function (sTime , eTime) {
 
 var SecToHMS = function (sec) {
     var s = sec % 60;
+    if (s < 10) { s = "0" + s }
     var min = (sec - s) / 60;
-    var m = min % 60;
-    var h = (min - m) / 60;
-    str = h + "時";
-    if (str == "0時")
+    //var m = min % 60;
+    if (min < 10) { min = "0" + min }
+
+    //var h = (min - m) / 60;
+
+    //str = h + "時";
+    //if (str == "0時")
+    //    str = "";
+    //str += m + "分";
+    //if (str == "0分")
+    //    str = "";
+    //str += s + "秒";
+
+    //str = h + ":";
+    //if (str == "0:")
+    //    str = "";
+    str = min + ":";
+    if (str == "00:")
         str = "";
-    str += m + "分";
-    if (str == "0分")
-        str = "";
-    str += s + "秒";
+    str += s;
+
+
     return str;
 }
 
@@ -1014,8 +1035,10 @@ var InitCheckBoxItem = function (elmCheck, xml, valField, txtField, propName) {
 }
 
 var LogOutTimer;
+var searchComp_1;
 var Timerset = function (searchComp) {
     
+    searchComp_1 = searchComp
     //if (LogOutTimer != null) {
     //    if (LogOutTimer.length > 1) {
             for (i = 0;i<=10000 ; i++) {
@@ -1024,23 +1047,46 @@ var Timerset = function (searchComp) {
     //    }
     //    //clearInterval(LogOutTimer);
     //}
-
     var pg = JSPath('JSUtility.js') + "../Menu.html";
     var divN = $('<div></div>');
     divN.load(pg + " #Timer", function () {
         var timer = $('#Timer');
-        var number = 600;
-        timer.text(number);    
+        var number = 50;
+        timer.text(SecToHMS(number));
+        
         LogOutTimer = setInterval(function () {
             number--;
-            if (number <= 0) {
+            if (number == 0) {
+                
                 number = 0;
-                window.location.href = "Login" + searchComp;
+
+                DyAlert("您已超過" + number / 60 + "分鐘未執行作業", function () {
+                    var cData = {
+                    }
+                    PostToWebApi({ url: "api/js/UpdateLogOutT", data: cData, success: AfterUpdateLogOutT });
+                },"系統已自動登出","請按[確定]，回到登入畫面");
+
             }
-            timer.text(number + 0);
+            if (number >= 0) {
+                //timer.text(number + 0);
+                timer.text(SecToHMS(number));
+            }
+            
 
         }, 1000);
     });        
     
 }
+
+let AfterUpdateLogOutT = function (data) {
+
+    if (ReturnMsg(data, 0) != "UpdateLogOutTOK") {
+        DyAlert(ReturnMsg(data, 1));
+    } else {
+        window.location.href = "Login" + searchComp_1;
+    }
+}
+
+
+
 
