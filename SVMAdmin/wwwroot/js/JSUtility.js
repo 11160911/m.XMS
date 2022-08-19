@@ -1051,7 +1051,7 @@ var Timerset = function (searchComp) {
     var divN = $('<div></div>');
     divN.load(pg + " #Timer", function () {
         var timer = $('#Timer');
-        var number = 50;
+        var number = 600;
         timer.text(SecToHMS(number));
         
         LogOutTimer = setInterval(function () {
