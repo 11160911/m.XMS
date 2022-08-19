@@ -172,14 +172,66 @@
                                 </div><!-- /.modal -->
                             </div>
                         </div>
-                        
+
                         <style>
-                            #tbISAMQFTPREC .fa-search {
+                            /*#tbISAMQFTPREC .fa-search {
                                 font-size: 28px;
-                                color: lightblue;
+                                color: lightblue;*/
                                 /* cursor: pointer;*/
+                            /*}*/
+
+                            #tbISAMQFTPREC .fa-trash-o {
+                                font-size: 28px;
+                                color: red;
+                            }
+
+                            #tbISAMQFTPREC .fa-file-text-o {
+                                font-size: 25px;
+                                color: blue;
+                            }
+
+
+                            #tbISAMQFTPREC {
+                                width: 100%;
+                            }
+
+                            #tbISAMQFTPREC thead, #tbISAMQFTPREC tbody, #tbISAMQFTPREC tr, #tbISAMQFTPREC td, #tbISAMQFTPRECth {
+                                display: block;
+                            }
+
+                            #tbISAMQFTPREC tr:after {
+                                content: ' ';
+                                display: block;
+                                visibility: hidden;
+                                clear: both;
+                            }
+
+                            #tbISAMQFTPREC thead th {
+                                height: 58px;
+                                /*text-align: left;*/
+                            }
+
+                            #tbISAMQFTPREC tbody {
+                                height: 300px;
+                                overflow-y: auto;
+                            }
+
+
+                            #tbISAMQFTPREC thead th {
+                                width: 20%;
+                                float: left;
+                            }
+
+                            #tbISAMQFTPREC tbody td {
+                                width: 20%;
+                                float: left;
                             }
                         </style>
+
+
+
+
+
                         <div class="col-md-12 col-sm-12">
                             <div class="x_panel">
                                 <div class="x_title">
@@ -218,33 +270,33 @@
                                 </div>
 
                                 <div class="x_content">
-                                    <div style="overflow:auto;min-height:400px;max-height:500px">
-                                        <table id="tbISAMQFTPREC" class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>查詢</th>
-                                                    <th>上傳類型</th>
-                                                    <th>建立日期</th>
-                                                    <th>建立者</th>
-                                                    <th>狀態</th>
-                                                    <th hidden>建立者</th>
-                                                    <th hidden>狀態</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td><span class="fa fa-search"></span></td>
-                                                    <td>盤點</td>
-                                                    <td>2020/01/01 12:10:28</td>
-                                                    <td>Nick</td>
-                                                    <td>已上傳</td>
-                                                    <td>Nick</td>
-                                                    <td>已上傳</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <!--<div style="overflow:auto;min-height:400px;max-height:500px">
 
+                </div>-->
+                                    <table id="tbISAMQFTPREC" class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>查詢</th>
+                                                <th>上傳類型</th>
+                                                <th>建立日期</th>
+                                                <th>建立者</th>
+                                                <th>狀態</th>
+                                                <th hidden>建立者</th>
+                                                <th hidden>狀態</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><span class="fa fa-search"></span></td>
+                                                <td>盤點</td>
+                                                <td>2020/01/01 12:10:28</td>
+                                                <td>Nick</td>
+                                                <td>已上傳</td>
+                                                <td>Nick</td>
+                                                <td>已上傳</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
