@@ -29,7 +29,7 @@
 */
 (function ($) {
     var dtFun;
-
+    
     var Initdoc = function () {
         
         UU = sessionStorage.getItem('token');
@@ -46,13 +46,15 @@
         }
         else {
             
-            /*$("a[href='Login']").attr("href", "Login" + sessionStorage.getItem('isamcomp'));*/
-            $("a[href='Login']").click(function () { btLogOutY_click(); });
+            $("a[href='Login']").attr("href", "Login" + sessionStorage.getItem('isamcomp'));
+            $('#logout').click(function () {
+                btLogOutY_click();
+            });
 
             $(window).on("beforeunload", function () {
                 LogOutX();
             })
-            //alert(sessionStorage.getItem('isamcomp'));
+            
             var dtEmployeeSV = data.getElementsByTagName('dtEmployeeWeb');
             $('#navbarDropdown').text(GetNodeValue(dtEmployeeSV[0], 'ChineseName') + ' - ' + GetNodeValue(dtEmployeeSV[0], 'Man_Name'));
             dtFun = data.getElementsByTagName('dtAllFunction');
@@ -84,6 +86,7 @@
     };
 
     let btLogOutY_click = function () {
+    
         var cData = {
         }
         PostToWebApi({ url: "api/UpdateLogOutY", data: cData, success: AfterUpdateLogOutY });
@@ -94,13 +97,10 @@
         if (ReturnMsg(data, 0) != "UpdateLogOutYOK") {
             DyAlert(ReturnMsg(data, 1));
         }
-        else {
-            $("a[href='#']").attr("href", "Login" + sessionStorage.getItem('isamcomp'));
-        }
-
     };
 
     let LogOutX = function () {
+        
         var cData = {
         }
         PostToWebApi({ url: "api/UpdateLogOutX", data: cData, success: AfterUpdateLogOutX });
@@ -108,6 +108,7 @@
     };
 
     let AfterUpdateLogOutX = function (data) {
+        
         if (ReturnMsg(data, 0) != "UpdateLogOutXOK") {
             DyAlert(ReturnMsg(data, 1));
         }
@@ -146,7 +147,6 @@
     var menu = $('#sidebar-menu .side-menu');
 
     var SetMenu = function () {
-        
         var strCat = "";
 
         for (var i = 0; i < dtFun.length; i++) {
