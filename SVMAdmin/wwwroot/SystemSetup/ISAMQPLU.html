@@ -1,0 +1,661 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>雲智能販賣機後台管理系統 </title>
+
+    <!-- Bootstrap -->
+    <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="lib/nprogress/nprogress.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="css/custom.css" rel="stylesheet">
+  </head>
+
+  <body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <!-- SideBar Menu -->
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;height:5px">
+                        <!--a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></!--a-->
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <!-- menu profile quick info -->
+                    <div class="profile clearfix">
+                        <div class="profile_pic">
+                            <!--img src="images/Logo2.png" alt="..." class="img-circle profile_img"-->
+                            <img src="images/Logo4.png" style="margin-left:8px ;margin-top:3px ;width: 216px;" />
+
+                        </div>
+                        <div class="profile_info">
+                            <!--span>Welcome,</!--span-->
+                            <!--h2>John Doe</h2-->
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <!-- /menu profile quick info -->
+
+                    <br />
+
+                    <!-- sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <h3>General</h3>
+                            <ul class="nav side-menu">
+                                <li>
+                                    <a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="index.html">Dashboard</a></li>
+                                        <li><a href="index2.html">Dashboard2</a></li>
+                                        <li><a href="index3.html">Dashboard3</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="form.html">General Form</a></li>
+                                        <li><a href="form_advanced.html">Advanced Components</a></li>
+                                        <li><a href="form_validation.html">Form Validation</a></li>
+                                        <li><a href="form_wizards.html">Form Wizard</a></li>
+                                        <li><a href="form_upload.html">Form Upload</a></li>
+                                        <li><a href="form_buttons.html">Form Buttons</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a><i class="fa fa-desktop"></i> UI Elements <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="general_elements.html">General Elements</a></li>
+                                        <li><a href="media_gallery.html">Media Gallery</a></li>
+                                        <li><a href="typography.html">Typography</a></li>
+                                        <li><a href="icons.html">Icons</a></li>
+                                        <li><a href="glyphicons.html">Glyphicons</a></li>
+                                        <li><a href="widgets.html">Widgets</a></li>
+                                        <li><a href="invoice.html">Invoice</a></li>
+                                        <li><a href="inbox.html">Inbox</a></li>
+                                        <li><a href="calendar.html">Calendar</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a><i class="fa fa-table"></i> Tables <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="tables.html">Tables</a></li>
+                                        <li><a href="tables_dynamic.html">Table Dynamic</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a><i class="fa fa-bar-chart-o"></i> Data Presentation <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="chartjs.html">Chart JS</a></li>
+                                        <li><a href="chartjs2.html">Chart JS2</a></li>
+                                        <li><a href="morisjs.html">Moris JS</a></li>
+                                        <li><a href="echarts.html">ECharts</a></li>
+                                        <li><a href="other_charts.html">Other Charts</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a><i class="fa fa-clone"></i>Layouts <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="fixed_sidebar.html">Fixed Sidebar</a></li>
+                                        <li><a href="fixed_footer.html">Fixed Footer</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="menu_section">
+                            <h3>Live On</h3>
+                            <ul class="nav side-menu">
+                                <li>
+                                    <a><i class="fa fa-bug"></i> Additional Pages <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="e_commerce.html">E-commerce</a></li>
+                                        <li><a href="projects.html">Projects</a></li>
+                                        <li><a href="project_detail.html">Project Detail</a></li>
+                                        <li><a href="contacts.html">Contacts</a></li>
+                                        <li><a href="profile.html">Profile</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a><i class="fa fa-windows"></i> Extras <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="page_403.html">403 Error</a></li>
+                                        <li><a href="page_404.html">404 Error</a></li>
+                                        <li><a href="page_500.html">500 Error</a></li>
+                                        <li><a href="plain_page.html">Plain Page</a></li>
+                                        <li><a href="login.html">Login Page</a></li>
+                                        <li><a href="pricing_tables.html">Pricing Tables</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a><i class="fa fa-sitemap"></i> Multilevel Menu <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li>
+                                            <a href="#level1_1">Level One</a>
+                                        </li>
+                                        <li>
+                                            <a>Level One<span class="fa fa-chevron-down"></span></a>
+                                            <ul class="nav child_menu">
+                                                <li class="sub_menu">
+                                                    <a href="level2.html">Level Two</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#level2_1">Level Two</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#level2_2">Level Two</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="#level1_2">Level One</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a href="javascript:void(0)"><i class="fa fa-laptop"></i> Landing Page <span class="label label-success pull-right">Coming Soon</span></a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <!-- /sidebar menu -->
+                    <!-- /menu footer buttons -->
+                    <div class="sidebar-footer hidden-small">
+                        <a data-toggle="tooltip" data-placement="top" title="Settings">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                            <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="Lock">
+                            <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                    <!-- /menu footer buttons -->
+                </div>
+            </div>
+            <!-- SideBar Menu -->
+
+            <!-- top navigation -->
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <div class="nav toggle">
+                        <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                    </div>
+                    <!--
+            <nav class="nav navbar-nav">
+                <ul class=" navbar-right">
+                    <li class="nav-item dropdown open" style="padding-left: 15px;">
+                        <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                            <img src="images/img.jpg" alt="">John Doe
+                        </a>
+                        <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="javascript:;"> Profile</a>
+                            <a class="dropdown-item" href="javascript:;">
+                                <span class="badge bg-red pull-right">50%</span>
+                                <span>Settings</span>
+                            </a>
+                            <a class="dropdown-item" href="javascript:;">Help</a>
+                            <a class="dropdown-item" href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                        </div>
+                    </li>
+
+                    <li role="presentation" class="nav-item dropdown open">
+                        <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-envelope-o"></i>
+                            <span class="badge bg-green">6</span>
+                        </a>
+                        <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
+                            <li class="nav-item">
+                                <a class="dropdown-item">
+                                    <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                                    <span>
+                                        <span>John Smith</span>
+                                        <span class="time">3 mins ago</span>
+                                    </span>
+                                    <span class="message">
+                                        Film festivals used to be do-or-die moments for movie makers. They were where...
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="dropdown-item">
+                                    <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                                    <span>
+                                        <span>John Smith</span>
+                                        <span class="time">3 mins ago</span>
+                                    </span>
+                                    <span class="message">
+                                        Film festivals used to be do-or-die moments for movie makers. They were where...
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="dropdown-item">
+                                    <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                                    <span>
+                                        <span>John Smith</span>
+                                        <span class="time">3 mins ago</span>
+                                    </span>
+                                    <span class="message">
+                                        Film festivals used to be do-or-die moments for movie makers. They were where...
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="dropdown-item">
+                                    <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                                    <span>
+                                        <span>John Smith</span>
+                                        <span class="time">3 mins ago</span>
+                                    </span>
+                                    <span class="message">
+                                        Film festivals used to be do-or-die moments for movie makers. They were where...
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <div class="text-center">
+                                    <a class="dropdown-item">
+                                        <strong>See All Alerts</strong>
+                                        <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            -->
+                </div>
+            </div>
+            <!-- /top navigation -->
+
+            <!-- page content -->
+            <div class="right_col" role="main">
+                <div class="">
+                    <div class="page-title">
+                        <div class="title_left">
+                            <h3>單價查詢</h3>
+                        </div>
+                        <!--
+        <div class="title_right">
+          <div class="col-md-5 col-sm-5   form-group pull-right top_search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+        -->
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <!--2021-04-27-->
+                    <article id="pgISAMQPLU" class="row">
+                        <style>
+                            #tbVIN14_1P .fa-file-text-o {
+                                font-size: 28px;
+                                color: lightblue;
+                                cursor: pointer;
+                            }
+                        </style>
+                        <style>
+                            #tbVIN14_1P .fa-search {
+                                font-size: 28px;
+                                color: green;
+                                cursor: pointer;
+                            }
+                        </style>
+                        <!--<style>
+                            #pgVIN14_1P .fa-search {
+                                font-size: 28px;
+                                color: green;
+                                cursor: pointer;
+                            }
+                        </style>-->
+                        <style>
+                            .dispThisSetting {
+                                font-size: 1.6rem;
+                            }
+                        </style>
+                        <style>
+                            #tbVIN14_1P .fa-print {
+                                font-size: 28px;
+                                color: lightblue;
+                                cursor: pointer;
+                            }
+                        </style>
+
+
+                        <!--<div class="modal fade" id="modal_VIN14_1P_1" data-keyboard="false" data-backdrop="static">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">智販機撿貨單查詢</h4>
+                                    </div>
+                                    <div class="modal-body modal-tab-container">
+                                        <style>
+                                            #modal-Role .msg-valid {
+                                                color: red;
+                                                font-size: 0.85rem;
+                                            }
+                                        </style>
+                                        <div class="card-block forminput">
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-4" style="font-size: 28px;color: blue">彙總撿貨商品</label>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-2">撿貨單號</label>
+                                                <div class="col-9">
+                                                    <label id="lblPick_1" class="col-form-label" style="color: blue" autocomplete="off"></label>
+                                                    <span class="msg-valid valid-blank"></span>
+                                                </div>-->
+                                                <!--<div class="col-md-6">
+                <span class="dispThisSetting"></span>
+            </div>-->
+                                            <!--</div>
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-2">總撿貨量</label>
+                                                <div class="col-4">
+                                                    <label id="lblQty_1" class="col-form-label" style="color: blue"></label>
+                                                    <span class="msg-valid valid-blank"></span>
+                                                </div>
+                                                <label class="col-form-label" style="position: absolute; right: 20px;color:crimson">點擊欄位標題可進行排序</label>
+                                            </div>
+                                        </div>
+
+                                        <div style="overflow:auto;min-height:200px;max-height:250px">
+                                            <table id="tbVIN14_1P_1" class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>序號</th>
+                                                        <th>商品名稱</th>
+                                                        <th>撿貨量</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>11</td>
+                                                        <td>11</td>
+                                                        <td>11</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-2">配&nbsp;&nbsp;送&nbsp;&nbsp;區</label>
+                                            <div class="col-9">
+                                                <label id="lblArea_1" class="col-form-label" style="color: blue" autocomplete="off"></label>
+                                                <span class="msg-valid valid-blank"></span>
+                                            </div>
+                                        </div>
+
+                                        <div style="overflow:auto;min-height:200px;max-height:250px">
+                                            <table id="tbVIN14_1P_2" class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>店代號</th>
+                                                        <th>機號</th>
+                                                        <th>智販店簡稱</th>
+                                                        <th>地址</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>11</td>
+                                                        <td>11</td>
+                                                        <td>11</td>
+                                                        <td>11</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        
+
+                                        <div class="modal-footer">
+                                            <button id="btCancel_1" type="button" class="btn btn-primary">離開</button>
+                                        </div>
+                                    </div>--><!-- /.modal-content -->
+                                <!--</div>--><!-- /.modal-dialog -->
+                            <!--</div>--><!-- /.modal -->
+                        <!--</div>-->
+
+                        <!--<div class="modal fade" id="modal_VIN14_1P_2" data-keyboard="false" data-backdrop="static">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">智販機撿貨單查詢</h4>
+                                    </div>
+                                    <div class="modal-body modal-tab-container">
+                                        <style>
+                                            #modal-Role .msg-valid {
+                                                color: red;
+                                                font-size: 0.85rem;
+                                            }
+                                        </style>
+                                        <div class="card-block forminput">
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-4" style="font-size: 28px;color: blue">單機撿貨商品</label>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-2">撿貨單號</label>
+                                                <div class="col-9">
+                                                    <label id="lblPick_2" class="col-form-label" style="color: blue" autocomplete="off"></label>
+                                                    <span class="msg-valid valid-blank"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-3">
+                                                    <label id="lblSName_2" class="col-form-label" style="color: blue" autocomplete="off"></label>
+                                                    <span class="msg-valid valid-blank"></span>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <span class="dispThisSetting"></span>
+                                                </div>
+                                                <label class="col-form-label col-2">總待撿量</label>
+                                                <div class="col-2">
+                                                    <label id="lblQty_2" class="col-form-label" style="color: blue"></label>
+                                                    <span class="msg-valid valid-blank"></span>
+                                                </div>
+                                                <label class="col-form-label" style="position: absolute; right: 20px;color:crimson">點擊欄位標題可進行排序</label>
+                                            </div>
+                                        </div>
+
+                                        <div style="overflow:auto;min-height:400px;max-height:500px">
+                                            <table id="tbVIN14_1P_3" class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>序號</th>
+                                                        <th>商品名稱</th>
+                                                        <th>待撿量</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>11</td>
+                                                        <td>11</td>
+                                                        <td>11</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        
+                                        <div class="modal-footer">
+                                            <button id="btCancel_2" type="button" class="btn btn-primary">離開</button>
+                                        </div>
+                                    </div>--><!-- /.modal-content -->
+                                <!--</div>--><!-- /.modal-dialog -->
+                            <!--</div>--><!-- /.modal -->
+                        <!--</div>-->
+
+                        <div class="col-md-12 col-sm-12 ">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <div class="form-group row">
+                                        <!--<label class="col-form-label">店倉：</label>-->
+
+                                        <div class="col-md-2">
+                                            <label id="lblShopName" class="col-form-label" style="color: blue" autocomplete="off"></label>
+                                        </div>
+
+                                        <div class="col-md-1">
+                                            <label id="lblShopNo" class="col-form-label" style="color: blue" autocomplete="off"></label>
+                                        </div>
+
+                                        <!--<div class="form-group row">
+        <label class="col-form-label">店倉：</label>
+        <div class="col-md-4">
+            <label id="lblShopNo" class="col-form-label" style="color: blue" autocomplete="off"></label>
+        </div>
+    </div>-->
+                                        <!--<div class="col-md-2">
+        <select id="cbArea" class="form-control">
+        <option disabled selected> 請選擇配送區</option>
+        <option> </option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <select id="cbPick" class="form-control">
+            <option disabled selected> 請選擇撿貨單號</option>
+            <option> </option>
+        </select>
+    </div>-->
+
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <!--<label class="col-form-label"> 單據日期</label>-->
+                                        <div class="col-md-3">
+                                            <input id="txtPLU" class="form-control small" type="text" autocomplete="off" />
+                                        </div>
+                                        <!--<i class="fa fa-search"></i>-->
+                                        <button type="button" id="btQuery" class="custom-control-inline btn btn-primary">確認</button>
+                                    </div>
+
+
+                                </div>
+                                <div class="x_content">
+
+                                    <div class="form-group row">
+                                        <label id="lblCQty" class="col-form-label">庫存數：</label>
+                                        <div class="col-md-2">
+                                            <label id="lblQty" class="col-form-label" style="color: blue" autocomplete="off"></label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label id="lblCPrice" class="col-form-label">零售價：</label>
+                                        <div class="col-md-2">
+                                            <label id="lblPrice" class="col-form-label" style="color: blue" autocomplete="off"></label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label id="lblCPrmPrice" class="col-form-label">特&nbsp;&nbsp;&nbsp;&nbsp;價：</label>
+                                        <div class="col-md-2">
+                                            <label id="lblPrmPrice" class="col-form-label" style="color: blue" autocomplete="off"></label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label id="lblCPeriod" class="col-form-label">特價期間：</label>
+                                        <div class="col-md-2">
+                                            <label id="lblPeriod" class="col-form-label" style="color: blue" autocomplete="off"></label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-2">
+                                            <label id="lblPluName" class="col-form-label" style="color: darkred" autocomplete="off"></label>
+                                        </div>
+                                    </div>
+                                    <!--<div class="form-group row">
+        <label class="col-form-label"></label>
+        <label class="col-form-label" style="position: absolute; right: 20px;color:crimson">點擊欄位標題可進行排序</label>
+    </div>-->
+                                    <!--<div class="form-group row">-->
+                                    <!--<label class="col-form-label">配&nbsp;&nbsp;送&nbsp;&nbsp;區：</label>-->
+                                    <!--<div class="col-md-2">
+            <label id="lblArea" class="col-form-label" autocomplete="off" hidden></label>
+        </div>
+    </div>-->
+                                    <!--<div style="overflow:auto;min-height:400px;max-height:600px">
+        <table id="tbVIN14_1P" class="table table-hover">
+            <thead>
+                <tr>
+                    <th>彙總查詢</th>
+                    <th>單機查詢</th>
+                    <th>撿貨單號</th>
+                    <th>單據日期</th>
+                    <th>撿貨量</th>
+                    <th>列印撿貨彙總單</th>
+                    <th>列印單機撿貨單</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="fa fa-search Q1"></span></td>
+                    <td><span class="fa fa-search Q2"></span></td>
+                    <td>11</td>
+                    <td>11</td>
+                    <td>11</td>
+                    <td><span class="fa fa-print P1"></span></td>
+                    <td><span class="fa fa-print P2"></span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>-->
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </article>
+
+
+                </div>
+    </div>
+    <!-- /page content -->
+                                            <!-- footer content -->
+                                            <!--
+    <footer>
+        <div class="pull-right">
+            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+        </div>
+        <div class="clearfix"></div>
+    </footer>
+    -->
+                                            <!-- /footer content -->
+
+                                        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+   <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FastClick -->
+    <script src="lib/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="lib/nprogress/nprogress.js"></script>
+    
+    <!-- Custom Theme Scripts -->
+    <script src="js/custom.min.js"></script>
+
+  </body>
+</html>

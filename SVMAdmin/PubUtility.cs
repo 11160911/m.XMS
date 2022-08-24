@@ -776,7 +776,7 @@ namespace SVMAdmin
             dt.Rows.Add(new object[] { "分區盤點", "ISAM", "ISAM01", "分區盤點", "ISAM01", "P", "fa-cogs" });
             dt.Rows.Add(new object[] { "條碼蒐集", "BarcodeCollect", "ISAM02", "條碼蒐集", "ISAM02", "P", "fa-cubes" });
 			dt.Rows.Add(new object[] { "出貨/調撥", "OperatManage", "ISAM03", "出貨/調撥", "ISAM03", "P", "fa-th-large" });
-            dt.Rows.Add(new object[] { "單價查詢", "PriceRequest", "Inv", "單價查詢", "Inv", "P", "fa-dollar" });
+            dt.Rows.Add(new object[] { "單價查詢", "PriceRequest", "ISAMQPLU", "單價查詢", "ISAMQPLU", "P", "fa-dollar" });
             dt.Rows.Add(new object[] { "分區盤點上傳", "MachineManage", "ISAMToFTP", "分區盤點上傳", "ISAMToFTP", "P", "fa-cloud-upload" });
             dt.Rows.Add(new object[] { "上傳查詢", "UpRecordQuery", "ISAMQFTPREC", "上傳查詢", "ISAMQFTPREC", "P", "fa-list" });
             dt.Rows.Add(new object[] { "清除作業", "GoodsManage", "ISAMDelData", "清除作業", "ISAMDelData", "P", "fa-trash-o" });

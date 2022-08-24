@@ -5030,6 +5030,96 @@ namespace SVMAdmin.Controllers
         }
 
 
+
+        //2022-07-27 Larry
+        [Route("SystemSetup/GetInitISAMQPLU")]
+        public ActionResult GetInitISAMQPLU()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetInitISAMQPLUOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                string sql = "select E.whno, W.ST_SName from ISAMShopWeb (nolock) E Left Join WarehouseWeb W On E.CompanyCode=W.CompanyCode And E.WhNo=W.ST_ID " +
+                             "where E.companycode='" + uu.CompanyId + "' and man_id='" + uu.UserID + "' ";
+                DataTable dtShop = PubUtility.SqlQry(sql, uu, "SYS");
+                ds.Tables.Add(dtShop);
+                dtShop.TableName = "dtShop";
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        //2022-07-27 Larry
+        [Route("SystemSetup/GetISAMQPLU")]
+        public ActionResult SystemSetup_GetISAMQPLU()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetISAMQPLUOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                //string Area = rq["Area"];
+                string WhNo = rq["WhNo"];
+                string PLU = rq["PLU"];
+
+                string sql = "Select a.GD_No, a.GD_Name, a.GD_Retail, IsNull(b.PTNum,0) PTNum From PluWeb a (nolock) " +
+                    "left join InventoryAtonceDWeb b (nolock) on a.GD_No=b.PLU and a.companycode=b.companycode And b.WhNo='" + WhNo + "' " +
+                    "Where a.Companycode='" + uu.CompanyId + "' ";
+                if (PLU != "")
+                    sql += "and (a.GD_No='" + PLU + "' Or a.GD_Barcode='" + PLU + "') ";
+                sql += "order by a.GD_No ";
+
+                DataTable dtQPLU = PubUtility.SqlQry(sql, uu, "SYS");
+                dtQPLU.TableName = "dtQPLU";
+                ds.Tables.Add(dtQPLU);
+
+                sql = "Select CompanyCode, PP_No, StartDate, EndDate, ApproveDate From PromotePriceHWeb (Nolock) " +
+                     "Where CompanyCode='" + uu.CompanyId + "' And WhNoFlag='Y' And IsNull(ApproveDate,'')<>'' And IsNull(DefeasanceDate,'')='' " +
+                     "Union " +
+                     "Select H.CompanyCode, H.PP_No, H.StartDate, H.EndDate, H.ApproveDate " +
+                     "From PromotePriceHWeb H (Nolock) Inner Join PromotePriceShopWeb S (Nolock) On H.CompanyCode=S.CompanyCode And H.PP_No=S.PP_No " +
+                     "Where H.CompanyCode='" + uu.CompanyId + "' And WhNoFlag='N' And IsNull(ApproveDate,'')<>'' And IsNull(DefeasanceDate,'')='' And S.WhNo='" + WhNo + "'";
+
+                //取得促銷資料
+                if (dtQPLU.Rows.Count > 0)
+
+                {
+                    sql = "Select H.*, D.Promote From (" +
+                       sql + ") H " +
+                       "Inner Join PromotePriceDWeb D (Nolock) " +
+                       "On H.CompanyCode=D.CompanyCode And H.PP_No=D.PP_No " +
+                       "Where D.PLU='" + dtQPLU.Rows[0]["GD_No"] + "'" +
+                       "Order By ApproveDate Desc ";
+                }
+
+                else
+                {
+                    sql = "Select H.CompanyCode, H.PP_No, H.StartDate, H.EndDate, H.ApproveDate, D.Promote " +
+                        "From PromotePriceHWeb H (Nolock) Inner Join PromotePriceDWeb D (Nolock) On H.CompanyCode=D.CompanyCode And H.PP_No=D.PP_No Where 1=2";
+                }
+
+                DataTable dtPrm = PubUtility.SqlQry(sql, uu, "SYS");
+                dtPrm.TableName = "dtPrm";
+                ds.Tables.Add(dtPrm);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+
         [Route("SystemSetup/GetTreeData")]
         public ActionResult SystemSetup_GetTreeData()
         {

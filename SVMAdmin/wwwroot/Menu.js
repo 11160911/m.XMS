@@ -346,6 +346,22 @@
                     PageISAM03($(".workarea"));
                 }
             }
+
+            //2022-07-27 larry
+            else if (pg == "ISAMQPLU") {
+                //alert("ISAMQPLU");
+                if (window.PageISAMQPLU == undefined)
+
+                    $.getScript('SystemSetup/ISAMQPLU.js',
+                        function () {
+                            PageISAMQPLU($(".workarea"));
+                        }
+                    );
+                else {
+                    PageISAMQPLU($(".workarea"));
+                }
+            }
+
             else if (pg == "SysChangePWD") {
                 $('#OLD_PWD').val("");
                 $('#NEW_PWD').val("");
