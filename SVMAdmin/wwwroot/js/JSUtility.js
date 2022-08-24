@@ -1051,6 +1051,7 @@ var Timerset = function (searchComp) {
     var divN = $('<div></div>');
     divN.load(pg + " #Timer", function () {
         var timer = $('#Timer');
+        var ShowNumber = 600;
         var number = 600;
         timer.text(SecToHMS(number));
         
@@ -1060,7 +1061,7 @@ var Timerset = function (searchComp) {
                 
                 number = 0;
 
-                DyAlert("您已超過" + number / 60 + "分鐘未執行作業", function () {
+                DyAlert("您已超過" + ShowNumber / 60 + "分鐘未執行作業", function () {
                     var cData = {
                     }
                     PostToWebApi({ url: "api/js/UpdateLogOutT", data: cData, success: AfterUpdateLogOutT });
