@@ -156,9 +156,9 @@
                                         <label>盤點人員：</label>
                                         <label id="lblManID1"  style="color:blue">000000 王小明</label>
                                     </div>
-                                    <div><input id="txtISAMDate" class="form-control small col-5" type="text" placeholder="請輸入盤點日期" autocomplete="off" /></div>
+                                    <div><input id="txtISAMDate" class="form-control small col-8" type="text" placeholder="請輸入盤點日期" autocomplete="off" /></div>
                                     <label></label>
-                                    <div><input id="txtBinNo" type="text" class="form-control col-5" placeholder="請輸入分區代碼" autocomplete="off" /></div>
+                                    <div><input id="txtBinNo" type="text" class="form-control col-8" placeholder="請輸入分區代碼" autocomplete="off" /></div>
                                     <div><label></label></div>
                                     <div><button id="btSave" type="button" class="btn btn-danger">確認</button></div>
                                 </div>
@@ -173,10 +173,10 @@
                 <article id="ISAM01btns" hidden>
                     <div class="col-md-12 col-sm-12">
                         <div class="form-group row col-md">
-                            <button id="btAdd" type="button" class="btn btn-primary" style="width: 80px">新增</button>
-                            <button id="btMod" type="button" class="btn btn-success" style="width: 80px">編查</button>
-                            <button id="btToFTP" type="button" class="btn btn-warning" style="color: white; width: 80px">上傳</button>
-                            <button id="btRtn" type="button" class="btn btn-secondary" style="color: white;background-color:mediumpurple;width:80px">返回</button>
+                            <button id="btAdd" type="button" class="btn btn-primary" style="width: 55px;font-size:14px">新增</button>
+                            <button id="btMod" type="button" class="btn btn-success" style="width: 55px; font-size: 14px">編查</button>
+                            <button id="btToFTP" type="button" class="btn btn-warning" style="color: white; width: 55px; font-size: 14px">上傳</button>
+                            <button id="btRtn" type="button" class="btn btn-secondary" style="color: white; background-color: mediumpurple; width: 55px; font-size: 14px">返回</button>
                         </div>
                         <div class="form-group row">
                             <div>
@@ -205,12 +205,12 @@
                         <div class="x_panel">
                             <div class="x_title">
                                 <div class="form-group row">
-                                    <div><input id="txtBarcode1" type="text" class="form-control" placeholder="請輸入條碼" autocomplete="off" /></div>
+                                    <div><input id="txtBarcode1" type="text" class="form-control" style="width:170px" placeholder="請輸入條碼" autocomplete="off" /></div>
                                     <label>&nbsp;</label>
                                     <div><button id="btBCSave1" type="button" class="btn btn-primary">確認</button></div>
                                 </div>
                                 <div class="form-group row">
-                                    <div><input id="txtQty1" type="text" class="form-control" placeholder="請輸入盤點數量" autocomplete="off" /></div>
+                                    <div><input id="txtQty1" type="text" class="form-control"  style="width:170px" placeholder="請輸入盤點數量" autocomplete="off" /></div>
                                     <label>&nbsp;</label>
                                     <div><button id="btKeyin1" type="button" class="btn btn-warning">手動</button></div>
                                     <div><button id="btQtySave1" type="button" class="btn btn-primary">確認</button></div>
@@ -283,7 +283,7 @@
                                             <label id="lblModQty1" class="col-form-label" style="color:blue">7</label>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-form-label col-3 text-right">修改後數量</label>
+                                            <label class="col-form-label col-4 text-right">修改後數量</label>
                                             <input id="txtModQty1" type="text" class="form-control" style="text-align:right;width:80px" autocomplete="off"></input>
                                         </div>
                                         <div class="modal-footer">
@@ -387,7 +387,7 @@
                             float: left;
                         }
                         #tbISAM01Mod tbody td {
-                            width: 25%;
+                            width: 24%;
                             float: left;
                         }
                         
@@ -397,7 +397,7 @@
                         <div class="x_panel">
                             <div class="x_title">
                                 <div class="form-group row">
-                                    <div><input id="txtBarcode3" type="text" class="form-control" placeholder="請輸入條碼" autocomplete="off" /></div>
+                                    <div><input id="txtBarcode3" type="text" class="form-control" style="width:170px" placeholder="請輸入條碼" autocomplete="off" /></div>
                                     <label>&nbsp;</label>
                                     <div><button id="btBCSave3" type="button" class="btn btn-primary">查詢</button></div>
                                 </div>
@@ -407,7 +407,7 @@
                                     <!--<div style="overflow:auto;min-height:400px;max-height:500px">
                                         
                                     </div>-->
-                                    <table id="tbISAM01Mod" class="table table-striped" style="width:100%">
+                                    <table id="tbISAM01Mod" class="table table-striped">
                                         <thead >
                                             <tr>
                                                 <th>刪</th>
