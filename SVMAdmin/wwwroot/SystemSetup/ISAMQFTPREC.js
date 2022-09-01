@@ -10,12 +10,12 @@
                 class_collection: ["tdColbt icon_in_td", "tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6"],
                 fields_info: [
                     { type: "JQ", name: "fa-search", element: '<i class="fa fa-search"></i>' },
-                    { type: "Text", name: "DocTypeDesc" },
-                    { type: "Text", name: "CrtDT" },
-                    { type: "Text", name: "CrtUserName" },
-                    { type: "Text", name: "UpdateTypeDesc" },
-                    { type: "Text", name: "CrtUser" },
-                    { type: "Text", name: "DocType" }],
+                    { type: "Text", name: "DocTypeDesc"  },
+                    { type: "Text", name: "CrtDT", style: "word-wrap:break-word;word-break:break-all" },
+                    { type: "Text", name: "CrtUserName"},
+                    { type: "Text", name: "UpdateTypeDesc"},
+                    { type: "Text", name: "CrtUser"},
+                    { type: "Text", name: "DocType"}],
                 //rows_per_page: 10,
                 method_clickrow: click_Machine,
                 afterBind: InitModifyDeleteButton
