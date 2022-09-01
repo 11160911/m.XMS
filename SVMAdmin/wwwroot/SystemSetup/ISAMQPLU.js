@@ -312,8 +312,8 @@
                     $('#lblPeriod').html(GetNodeValue(dtPrm[0], 'StartDate') + '~' + GetNodeValue(dtPrm[0], 'EndDate'));
                 }
                 else {
-                    $('#lblPrmPrice').html("-");
-                    $('#lblPeriod').html("-");
+                    $('#lblPrmPrice').html("");
+                    $('#lblPeriod').html("");
                 }
 
             }
