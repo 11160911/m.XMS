@@ -16,8 +16,8 @@
                 class_collection: ["tdColbt icon_in_td btPLUDelete", "tdCol1", "tdCol2 label-align", "tdColbt icon_in_td btPLUMod"],
                 fields_info: [
                     { type: "JQ", name: "fa-trash-o", element: '<i class="fa fa-trash-o"></i>' },
-                    { type: "Text", name: "GD_Name", style: "width:40%;word-wrap:break-word;word-break:break-all" },
-                    { type: "TextAmt", name: "Qty1", style: "text-align:right"},
+                    { type: "Text", name: "GD_Name", style: "width:46%" },
+                    { type: "TextAmt", name: "Qty1", style: "width:18%;text-align:right"},
                     { type: "JQ", name: "fa-file-text-o", element: '<i class="fa fa-file-text-o"></i>' }
                 ],
                 //rows_per_page: 10,

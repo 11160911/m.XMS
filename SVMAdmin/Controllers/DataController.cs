@@ -3162,7 +3162,7 @@ namespace SVMAdmin.Controllers
                 string sql = "set nocount on;select a.*,GD_Name into #tmpA from CollectWeb a (nolock) left join PLUWeb b (nolock) ";
                 sql += "on a.companycode=b.companycode and a.PLU=b.GD_Barcode ";
                 sql += "where a.Companycode='" + uu.CompanyId + "' and Whno='" + Shop + "' and WorkUser='" + uu.UserID + "'" + Comd + ";";
-                sql += "select a.PLU,a.Qty,a.PLU+' '+case when isnull(a.GD_Name,'')='' then isnull(b.GD_Name,'') else isnull(a.GD_Name,'') end GD_Name from #tmpA a (nolock) left join PLUWeb b (nolock) ";
+                sql += "select a.PLU,a.Qty,a.PLU + ' ' + case when isnull(a.GD_Name,'')='' then isnull(b.GD_Name,'') else isnull(a.GD_Name,'') end GD_Name from #tmpA a (nolock) left join PLUWeb b (nolock) ";
                 sql += "on a.companycode=b.companycode and a.PLU=b.GD_No order by SeqNo";
 
 

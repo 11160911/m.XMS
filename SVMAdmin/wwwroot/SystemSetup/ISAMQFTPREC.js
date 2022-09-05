@@ -11,7 +11,7 @@
                 fields_info: [
                     { type: "JQ", name: "fa-search", element: '<i class="fa fa-search"></i>' },
                     { type: "Text", name: "DocTypeDesc", style:"width:20%"  },
-                    { type: "Text", name: "CrtDT", style: "width:25%;word-wrap:break-word;word-break:break-all" },
+                    { type: "Text", name: "CrtDT", style: "width:25%" },
                     { type: "Text", name: "CrtUserName", style: "width:20%"},
                     { type: "Text", name: "UpdateTypeDesc", style: "width:20%"},
                     { type: "Text", name: "CrtUser"},
