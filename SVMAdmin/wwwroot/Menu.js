@@ -29,6 +29,7 @@
 */
 (function ($) {
     var dtFun;
+    var LogOut = false;
     
     var Initdoc = function () {
         
@@ -47,12 +48,17 @@
         else {
             
             $("a[href='Login']").attr("href", "Login" + sessionStorage.getItem('isamcomp'));
+
             $('#logout').click(function () {
                 btLogOutY_click();
             });
 
             $(window).on("beforeunload", function () {
-                LogOutX();
+                if (LogOut == true) {
+                } else {
+                    LogOutX();
+                }
+               
             })
             
             var dtEmployeeSV = data.getElementsByTagName('dtEmployeeWeb');
@@ -96,6 +102,8 @@
     let AfterUpdateLogOutY = function (data) {
         if (ReturnMsg(data, 0) != "UpdateLogOutYOK") {
             DyAlert(ReturnMsg(data, 1));
+        } else {
+            LogOut = true
         }
     };
 
