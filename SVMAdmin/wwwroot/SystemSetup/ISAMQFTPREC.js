@@ -86,6 +86,7 @@ let btCancel_click = function () {
    
         
     let btDetail_click = function (bt) {
+        ChkLogOut(sessionStorage.getItem('isamcomp'));
         Timerset(sessionStorage.getItem('isamcomp'));
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
@@ -114,6 +115,8 @@ let btCancel_click = function () {
     }
 
     let btQuery_click = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'));
+
         if (($('#txtCrtDateS').val() != "" && $('#txtCrtDateE').val() == "") || ($('#txtCrtDateS').val() == "" && $('#txtCrtDateE').val() != "")) {
             DyAlert("請輸入建立日期起迄!");
             return;
