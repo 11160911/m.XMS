@@ -71,7 +71,7 @@ namespace SVMAdmin.Controllers
                 UserInfo uu = new UserInfo();
                 uu.UserID = USERID;  //"Login"
                 uu.CompanyId = CompanyID;
-
+                DataTable ldt_Date = PubUtility.SqlQry("Select convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12)", uu, "SYS");
 
                 string sql = "";
                 if (System.Environment.MachineName.ToUpper() == "ANDYNB4")
@@ -103,18 +103,22 @@ namespace SVMAdmin.Controllers
                     //20220817 增加檢查員工是否重複登入
                     sql = "Select * from ISAMLoginRecWeb (nolock) ";
                     sql += " where CompanyCode='" + uu.CompanyId + "' and Man_ID='" + uu.UserID + "' ";
-                    sql += " and isnull(LogOutType,'')= ''";
+                    sql += " and isnull(LogOutType,'')=''";
                     DataTable dtLogin = PubUtility.SqlQry(sql, uu, "SYS");
                     if (dtLogin.Rows.Count > 0)
                     {
-                        throw new Exception("重複登入");
+                        sql = "Update ISAMLoginRecWeb Set LogOutType='X' Where Companycode='" + uu.CompanyId + "' ";
+                        sql += "and Man_ID='" + uu.UserID + "' ";
+                        sql += "and isnull(LogOutType,'')='' ";
+                        PubUtility.ExecuteSql(sql, uu, "SYS");
+                        throw new Exception("二次登入");
                     }
                     else
                     {
                         sql = "Insert into ISAMLoginRecWeb (CompanyCode,CrtUSer,CrtDate,CrtTime,ModUser,ModDate,ModTime,Man_ID,LogInDT,LogOutDT,LogOutType) ";
-                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',Convert(varchar,getdate(),111),Substring(Convert(varchar,getdate(),121),12,12),";
-                        sql += "'" + uu.UserID + "',Convert(varchar,getdate(),111),Substring(Convert(varchar,getdate(),121),12,12),";
-                        sql += "'" + uu.UserID + "',Convert(varchar,getdate(),111) + ' ' + convert(char(12),getdate(),108),'',''";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "','" + ldt_Date.Rows[0][0].ToString() + "','" + ldt_Date.Rows[0][1].ToString() + "',";
+                        sql += "'" + uu.UserID + "','" + ldt_Date.Rows[0][0].ToString() + "','" + ldt_Date.Rows[0][1].ToString() + "',";
+                        sql += "'" + uu.UserID + "','" + ldt_Date.Rows[0][0].ToString() + "' + ' ' + left('" + ldt_Date.Rows[0][1].ToString() + "',8),'',''";
                         PubUtility.ExecuteSql(sql, uu, "SYS");
                     }
                 }
@@ -122,14 +126,19 @@ namespace SVMAdmin.Controllers
                 if (dtTmp.Rows.Count == 0)
                     throw new Exception("密碼錯誤");
 
-                
-
                 dtTmp.TableName = "dtEmployee";
                 dtTmp.Columns.Add("token", typeof(string));
                 //uu.UserID = USERID;
                 string token = PubUtility.GenerateJwtToken(uu);
                 dtTmp.Rows[0]["token"] = token;
                 ds.Tables.Add(dtTmp);
+
+                sql = "Select * from ISAMLoginRecWeb (nolock) Where Companycode='" + uu.CompanyId + "' ";
+                sql += "and Man_ID='" + uu.UserID + "' ";
+                sql += "and LoginDT='" + ldt_Date.Rows[0][0].ToString() + "' + ' ' + left('" + ldt_Date.Rows[0][1].ToString() + "',8) ";
+                DataTable dt = PubUtility.SqlQry(sql, uu, "SYS");
+                dt.TableName = "dtLogin";
+                ds.Tables.Add(dt);
             }
             catch (Exception err)
             {
@@ -5804,6 +5813,33 @@ namespace SVMAdmin.Controllers
                 string sql = "Update ISAMLoginRecWeb set LogOutDT=Convert(varchar,getdate(),111) + ' ' + convert(char(12),getdate(),108),LogOutType='T' where CompanyCode='" + uu.CompanyId + "' ";
                 sql += "and Man_ID='" + uu.UserID + "' and ISNULL(LogOutType,'')='' ";
                 PubUtility.ExecuteSql(sql, uu, "SYS");
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        //2022/10/24 檢查登出狀態
+        [Route("js/ChkLogOut")]
+        public ActionResult ChkLogOut()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "ChkLogOutOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string LoginDT = rq["LoginDT"];
+
+                string sql = "select * from ISAMLoginRecWeb (nolock) Where Companycode='" + uu.CompanyId + "' ";
+                sql += "and Man_ID='" + uu.UserID + "' and LoginDT='" + LoginDT + "' ";
+                DataTable dtLogin = PubUtility.SqlQry(sql, uu, "SYS");
+                dtLogin.TableName = "dtLogin";
+                ds.Tables.Add(dtLogin);
+
             }
             catch (Exception err)
             {

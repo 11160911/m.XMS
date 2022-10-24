@@ -1089,5 +1089,30 @@ let AfterUpdateLogOutT = function (data) {
 }
 
 
+var searchComp_LogOut;
+//檢查登出狀態
+var ChkLogOut = function (searchComp) {
+    searchComp_LogOut = searchComp
+    var LoginDT = sessionStorage.getItem('LoginDT');
+    var cData = {
+        LoginDT: LoginDT
+    }
+    PostToWebApi({ url: "api/js/ChkLogOut", data: cData, success: AfterChkLogOut });
+}
+
+var AfterChkLogOut = function (data) {
+    if (ReturnMsg(data, 0) != "ChkLogOutOK") {
+        DyAlert(ReturnMsg(data, 1));
+    }
+    else {
+        var dtLogin = data.getElementsByTagName('dtLogin');
+        if (GetNodeValue(dtLogin[0], "LogOutType") != "") {
+            window.location.href = "Login" + searchComp_LogOut;
+        }
+    }
+
+}
+
+
 
 

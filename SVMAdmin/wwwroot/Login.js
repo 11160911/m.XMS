@@ -7,12 +7,14 @@
         $('#btSignIn').click(function () {
             $('#icrpwd').hide();
             $('#chklogin').hide();
+            $('#doublelogin').hide();
             LoginSys();
         });
 
         $('#password').keypress(function (e) {
             $('#icrpwd').hide();
             $('#chklogin').hide();
+            $('#doublelogin').hide();
             if (e.which == 13) {
                 LoginSys();
             }
@@ -45,10 +47,13 @@
     var LoginSuccess = function (data) {
         if (ReturnMsg(data, 0) == "LoginSysOK") {
             var dtE = data.getElementsByTagName('dtEmployee');
+            var dtL = data.getElementsByTagName('dtLogin');
             var token = GetNodeValue(dtE[0], "token");
             var companyid = window.location.search;
+            var logindt = GetNodeValue(dtL[0], "LoginDT");
             sessionStorage.setItem("token", token);
             sessionStorage.setItem("isamcomp", companyid);
+            sessionStorage.setItem("LoginDT", logindt)
             window.location.replace("menu");
         }
         else if (ReturnMsg(data, 1) == "密碼錯誤") {
@@ -57,6 +62,9 @@
         }
         else if (ReturnMsg(data, 1) == "重複登入") {
             $('#chklogin').show();
+        }
+        else if (ReturnMsg(data, 1) == "二次登入") {
+            $('#doublelogin').show();
         }
         else if (ReturnMsg(data, 0) == "Exception") {
             DyAlert(ReturnMsg(data, 1));

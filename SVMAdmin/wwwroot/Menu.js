@@ -49,18 +49,22 @@
             
             $("a[href='Login']").attr("href", "Login" + sessionStorage.getItem('isamcomp'));
 
+            $('#navbarDropdown').click(function () {
+                ChkLogOut(sessionStorage.getItem('isamcomp'))
+            });
+
             $('#logout').click(function () {
                 btLogOutY_click();
             });
 
-            $(window).on("beforeunload", function () {
-                if (LogOut == true) {
-                } else {
-                    LogOutX();
-                }
+            //$(window).on("beforeunload", function () {
+            //    if (LogOut == true) {
+            //    } else {
+            //        LogOutX();
+            //    }
                
-            })
-            
+            //})
+
             var dtEmployeeSV = data.getElementsByTagName('dtEmployeeWeb');
             $('#navbarDropdown').text(GetNodeValue(dtEmployeeSV[0], 'ChineseName') + ' - ' + GetNodeValue(dtEmployeeSV[0], 'Man_Name'));
             dtFun = data.getElementsByTagName('dtAllFunction');
@@ -425,7 +429,10 @@
             $SIDEBAR_MENU.find('li ul').slideUp();
         }
 
-        $SIDEBAR_MENU.find('a').on('click', function () { click_menu(this); }
+        $SIDEBAR_MENU.find('a').on('click', function () {
+            ChkLogOut(sessionStorage.getItem('isamcomp'))
+            click_menu(this);
+        }
         );
 
         //$SIDEBAR_MENU.find('a').on('click', function (ev) {
@@ -458,6 +465,7 @@
 
         // toggle small or large menu
         $MENU_TOGGLE.on('click', function () {
+            ChkLogOut(sessionStorage.getItem('isamcomp'))
             if ($BODY.hasClass('nav-md')) {
                 $SIDEBAR_MENU.find('li.active ul').hide();
                 $SIDEBAR_MENU.find('li.active').addClass('active-sm').removeClass('active');
