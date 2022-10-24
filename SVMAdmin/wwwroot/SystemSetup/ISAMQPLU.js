@@ -258,6 +258,8 @@
     };
 
     let SearchISAMQPLU = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'))
+
         ShowLoading();
         if ($('#txtPLU').val() == "" || $('#txtPLU').val() == null)
             {
