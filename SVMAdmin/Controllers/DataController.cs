@@ -5763,9 +5763,9 @@ namespace SVMAdmin.Controllers
             try
             {
                 IFormCollection rq = HttpContext.Request.Form;
-                //string GD_NO = rq["GD_NO"];
+                string LoginDT = rq["LoginDT"];
                 string sql = "Update ISAMLoginRecWeb set LogOutDT=Convert(varchar,getdate(),111) + ' ' + convert(char(12),getdate(),108),LogOutType='Y' where CompanyCode='" + uu.CompanyId + "' ";
-                sql += "and Man_ID='" + uu.UserID + "' and ISNULL(LogOutType,'')='' ";
+                sql += "and Man_ID='" + uu.UserID + "' and ISNULL(LogOutType,'')='' and LoginDT='" + LoginDT + "' ";
                 PubUtility.ExecuteSql(sql, uu, "SYS");
             }
             catch (Exception err)
@@ -5809,9 +5809,9 @@ namespace SVMAdmin.Controllers
             try
             {
                 IFormCollection rq = HttpContext.Request.Form;
-                //string GD_NO = rq["GD_NO"];
+                string LoginDT = rq["LoginDT"];
                 string sql = "Update ISAMLoginRecWeb set LogOutDT=Convert(varchar,getdate(),111) + ' ' + convert(char(12),getdate(),108),LogOutType='T' where CompanyCode='" + uu.CompanyId + "' ";
-                sql += "and Man_ID='" + uu.UserID + "' and ISNULL(LogOutType,'')='' ";
+                sql += "and Man_ID='" + uu.UserID + "' and ISNULL(LogOutType,'')='' and LoginDT='" + LoginDT + "' ";
                 PubUtility.ExecuteSql(sql, uu, "SYS");
             }
             catch (Exception err)

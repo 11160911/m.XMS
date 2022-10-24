@@ -96,8 +96,9 @@
     };
 
     let btLogOutY_click = function () {
-    
+        var LoginDT = sessionStorage.getItem('LoginDT');
         var cData = {
+            LoginDT: LoginDT
         }
         PostToWebApi({ url: "api/UpdateLogOutY", data: cData, success: AfterUpdateLogOutY });
 

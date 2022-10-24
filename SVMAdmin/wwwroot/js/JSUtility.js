@@ -1037,7 +1037,7 @@ var InitCheckBoxItem = function (elmCheck, xml, valField, txtField, propName) {
 var LogOutTimer;
 var searchComp_1;
 var Timerset = function (searchComp) {
-    
+    var LoginDT = sessionStorage.getItem('LoginDT');
     searchComp_1 = searchComp
     //if (LogOutTimer != null) {
     //    if (LogOutTimer.length > 1) {
@@ -1063,6 +1063,7 @@ var Timerset = function (searchComp) {
 
                 DyAlert("您已超過" + ShowNumber / 60 + "分鐘未執行作業", function () {
                     var cData = {
+                        LoginDT: LoginDT
                     }
                     PostToWebApi({ url: "api/js/UpdateLogOutT", data: cData, success: AfterUpdateLogOutT });
                 },"系統已自動登出","請按[確定]，回到登入畫面");
