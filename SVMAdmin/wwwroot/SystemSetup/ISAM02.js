@@ -55,6 +55,7 @@
     };
 
     let btModSave_click = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'))
         Timerset(sessionStorage.getItem('isamcomp'));
         if ($('#txtModQty1').val() == "") {
             DyAlert("請輸入數量!");
@@ -87,6 +88,7 @@
     };
 
     let btModCancel_click = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'))
         Timerset(sessionStorage.getItem('isamcomp'));
         $('#modal_ISAM02PLUMod').modal('hide');
     };
@@ -114,6 +116,8 @@
     };
 
     let btPLUMod_click = function (bt) {
+        ChkLogOut(sessionStorage.getItem('isamcomp'));
+
         Timerset(sessionStorage.getItem('isamcomp'));
         $(bt).closest('tr').click();
         //alert(GetNodeValue(node, 'AppDate'));
@@ -152,6 +156,7 @@
     };
 
     let btDelSave_click = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'))
         Timerset(sessionStorage.getItem('isamcomp'));
         var cData = {
             Shop: $('#lblShop2').html().split(' ')[0],
@@ -161,6 +166,7 @@
     };
 
     let btDelCancel_click = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'))
         Timerset(sessionStorage.getItem('isamcomp'));
         $('#modal_ISAM02PLUDel').modal('hide');
     };
@@ -188,6 +194,7 @@
     };
 
     let btPLUDelete_click = function (bt) {
+        ChkLogOut(sessionStorage.getItem('isamcomp'));
         Timerset(sessionStorage.getItem('isamcomp'));
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
@@ -207,6 +214,7 @@
 
 
     let btBCSave3_click = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'))
         Timerset(sessionStorage.getItem('isamcomp'));
         var cData = {
             Shop: $('#lblShop2').html().split(' ')[0],
@@ -235,6 +243,8 @@
     };
 
     let btMod_click = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'))
+
         EditMode = "M";
         Timerset(sessionStorage.getItem('isamcomp'));
         var pData = {
@@ -258,6 +268,7 @@
 
 //#region 新增
     let btQtySave1_click = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'))
         Timerset(sessionStorage.getItem('isamcomp'));
         if ($('#txtBarcode1').val() == "" && $('#lblBarcode').html()=="") {
             DyAlert("請輸入條碼!");
@@ -304,6 +315,7 @@
     };
 
     let btKeyin1_click = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'))
         Timerset(sessionStorage.getItem('isamcomp'));
         $('#btKeyin1').prop('disabled', true);
         $('#btQtySave1').prop('disabled', false);
@@ -355,6 +367,7 @@
 
 
     let btBCSave1_click = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'))
         Timerset(sessionStorage.getItem('isamcomp'));
         if ($('#txtBarcode1').val() == "") {
             DyAlert("請輸入條碼!");
@@ -378,6 +391,8 @@
 
     
     let btAdd_click = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'))
+
         EditMode = "A";
         Timerset(sessionStorage.getItem('isamcomp'));
         $('#btKeyin1').prop('disabled', false);
@@ -458,6 +473,7 @@
 
 
     let btToFTP_click = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'))
         Timerset(sessionStorage.getItem('isamcomp'));
         DyConfirm("是否要上傳條碼蒐集資料？", CallSendToFTP, DummyFunction);
     };
@@ -472,6 +488,7 @@
     };
 
     let btRtn_click = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'))
         //alert(EditMode);
         if (EditMode == "A" || EditMode == "M") {
             $('#ISAM02btns').show();
