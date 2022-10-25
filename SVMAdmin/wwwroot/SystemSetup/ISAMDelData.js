@@ -13,6 +13,7 @@
     }
 
     let CallDelISAMData = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'));
         Timerset(sessionStorage.getItem('isamcomp'));
         var cData = {
             Type: EditMode,
@@ -22,18 +23,21 @@
     };
 
     let btAll_click = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'));
         Timerset(sessionStorage.getItem('isamcomp'));
         EditMode = "T,C,D";
         DyConfirm("確認要清除全部資料？  一但確認，將清除本作業店櫃所有盤點、條碼蒐集、出貨/調撥資料!!", CallDelISAMData, DummyFunction);
     }
 
     let btDelivery_click = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'));
         Timerset(sessionStorage.getItem('isamcomp'));
         EditMode = "D";
         DyConfirm("確認要清除出貨/調撥資料？  一但確認，將清除本作業店櫃所有出貨/調撥資料!!", CallDelISAMData, DummyFunction);
     }
 
     let btCollect_click = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'));
         Timerset(sessionStorage.getItem('isamcomp'));
         EditMode = "C";
         DyConfirm("確認要清除條碼蒐集資料？  一但確認，將清除本作業店櫃所有條碼蒐集資料!!", CallDelISAMData, DummyFunction);
@@ -41,6 +45,7 @@
 
 
     let btBIN_click = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'));
         Timerset(sessionStorage.getItem('isamcomp'));
         EditMode = "T";
         DyConfirm("確認要清除盤點資料？  一但確認，將清除本作業店櫃所有盤點資料!!", CallDelISAMData, DummyFunction);
