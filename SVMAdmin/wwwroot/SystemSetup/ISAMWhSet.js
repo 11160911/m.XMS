@@ -21,7 +21,8 @@ var PageISAMWHSET = function (ParentNode) {
        //    let dtWarehouseDSV = data.getElementsByTagName('dtWh');
        // }
 
-      $('#btSaveISAMWH').click(function () {
+        $('#btSaveISAMWH').click(function () {
+           ChkLogOut(sessionStorage.getItem('isamcomp'));
           if ($('#selST_ID').val() != "") {
               WhSt = $('#selST_ID option:selected').text()
               var pData = {
