@@ -487,6 +487,7 @@
     }
 
     let CallSendToFTP = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'));
         Timerset(sessionStorage.getItem('isamcomp'));
         var cData = {
             Type:"T",
