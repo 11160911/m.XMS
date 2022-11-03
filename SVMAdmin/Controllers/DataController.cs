@@ -87,10 +87,10 @@ namespace SVMAdmin.Controllers
                 else
                 {
                     sql = "select CompanyCode,Man_ID,Man_Name,CONVERT(varchar(20),CONVERT(varbinary(60),Password)) Password from EmployeeWeb ";
-                    //sql += " where CompanyCode='" + CompanyID.SqlQuote() + "'";
-                    sql += " where Man_ID='" + USERID.SqlQuote() + "'";
+                    sql += " where CompanyCode='" + CompanyID.SqlQuote() + "'";
+                    sql += " and Man_ID='" + USERID.SqlQuote() + "'";
                     sql += " and CONVERT(varchar(20),CONVERT(varbinary(60),Password))='" + PASSWORD.SqlQuote() + "'";
-                    sql += "  and Password<>''";
+                    sql += " and Password<>''";
                 }
 
                 DataTable dtTmp = PubUtility.SqlQry(sql, uu, "SYS");
