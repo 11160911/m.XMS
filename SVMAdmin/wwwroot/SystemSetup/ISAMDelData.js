@@ -1,7 +1,15 @@
 ﻿var PageISAMDelData = function (ParentNode) {
 
     let EditMode = "";
-    
+
+    let ChkLogOut_1 = function (AfterChkLogOut_1) {
+        var LoginDT = sessionStorage.getItem('LoginDT');
+        var cData = {
+            LoginDT: LoginDT
+        }
+        PostToWebApi({ url: "api/js/ChkLogOut", data: cData, success: AfterChkLogOut_1 });
+    };
+
     let AfterDelISAMData = function (data) {
         if (ReturnMsg(data, 0) != "DelISAMDataOK") {
             DyAlert(ReturnMsg(data, 1));
@@ -13,13 +21,27 @@
     }
 
     let CallDelISAMData = function () {
-        ChkLogOut(sessionStorage.getItem('isamcomp'));
-        Timerset(sessionStorage.getItem('isamcomp'));
-        var cData = {
-            Type: EditMode,
-            Shop: $('#lblShop2').html().split(' ')[0]
+        ChkLogOut_1(CallDelISAMData_1);
+    };
+
+    let CallDelISAMData_1 = function (data) {
+        if (ReturnMsg(data, 0) != "ChkLogOutOK") {
+            DyAlert(ReturnMsg(data, 1));
         }
-        PostToWebApi({ url: "api/SystemSetup/DelISAMData", data: cData, success: AfterDelISAMData });
+        else {
+            var dtLogin = data.getElementsByTagName('dtLogin');
+            if (GetNodeValue(dtLogin[0], "LogOutType") != "") {
+                window.location.href = "Login" + sessionStorage.getItem('isamcomp');
+            }
+            else {
+                Timerset(sessionStorage.getItem('isamcomp'));
+                var cData = {
+                    Type: EditMode,
+                    Shop: $('#lblShop2').html().split(' ')[0]
+                }
+                PostToWebApi({ url: "api/SystemSetup/DelISAMData", data: cData, success: AfterDelISAMData });
+            }
+        }
     };
 
     let btAll_click = function () {
