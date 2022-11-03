@@ -362,6 +362,14 @@
 
     //};
 
+    let ChkLogOut_1 = function (AfterChkLogOut_1) {
+        var LoginDT = sessionStorage.getItem('LoginDT');
+        var cData = {
+            LoginDT: LoginDT
+        }
+        PostToWebApi({ url: "api/js/ChkLogOut", data: cData, success: AfterChkLogOut_1 });
+    };
+
     let AfterAddISAMToFTPRecWeb = function (data) {
         if (ReturnMsg(data, 0) != "AddISAMToFTPRecWebOK") {
             DyAlert(ReturnMsg(data, 1));
@@ -382,13 +390,27 @@
 
 
     let CallSendToFTP = function () {
-        ChkLogOut(sessionStorage.getItem('isamcomp'));
-        Timerset(sessionStorage.getItem('isamcomp'));
+        ChkLogOut_1(CallSendToFTP_1);
+    };
+
+    let CallSendToFTP_1 = function (data) {
+        if (ReturnMsg(data, 0) != "ChkLogOutOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtLogin = data.getElementsByTagName('dtLogin');
+            if (GetNodeValue(dtLogin[0], "LogOutType") != "") {
+                window.location.href = "Login" + sessionStorage.getItem('isamcomp');
+            }
+            else {
+Timerset(sessionStorage.getItem('isamcomp'));
         var cData = {
             Type: "T",
             Shop: $('#lblShop2').html().split(' ')[0]
         }
         PostToWebApi({ url: "api/SystemSetup/AddISAMToFTPRecWeb", data: cData, success: AfterAddISAMToFTPRecWeb });
+            }
+        }
     };
 
     let AfterGetWhName = function (data) {
