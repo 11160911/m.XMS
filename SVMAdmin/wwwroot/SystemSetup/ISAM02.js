@@ -38,6 +38,14 @@
         $('#tbISAM02Mod .fa-trash-o').click(function () { btPLUDelete_click(this) });
     }
 
+    let ChkLogOut_1 = function (AfterChkLogOut_1) {
+        var LoginDT = sessionStorage.getItem('LoginDT');
+        var cData = {
+            LoginDT: LoginDT
+        }
+        PostToWebApi({ url: "api/js/ChkLogOut", data: cData, success: AfterChkLogOut_1 });
+    };
+
 //#region 編查
 //#region 單筆修改
     let AfterSaveISAM02PLUMod = function (data) {
@@ -55,7 +63,19 @@
     };
 
     let btModSave_click = function () {
-        ChkLogOut(sessionStorage.getItem('isamcomp'))
+        ChkLogOut_1(btModSave_click_1)
+    };
+
+    let btModSave_click_1 = function (data) {
+        if (ReturnMsg(data, 0) != "ChkLogOutOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtLogin = data.getElementsByTagName('dtLogin');
+            if (GetNodeValue(dtLogin[0], "LogOutType") != "") {
+                window.location.href = "Login" + sessionStorage.getItem('isamcomp');
+            }
+            else {
         Timerset(sessionStorage.getItem('isamcomp'));
         if ($('#txtModQty1').val() == "") {
             DyAlert("請輸入數量!");
@@ -85,9 +105,12 @@
             Qty: $('#txtModQty1').val()
         }
         PostToWebApi({ url: "api/SystemSetup/SaveISAM02PLUMod", data: cData, success: AfterSaveISAM02PLUMod });
+            }
+        }
     };
 
     let btModCancel_click = function () {
+        //*
         ChkLogOut(sessionStorage.getItem('isamcomp'))
         Timerset(sessionStorage.getItem('isamcomp'));
         $('#modal_ISAM02PLUMod').modal('hide');
@@ -116,8 +139,8 @@
     };
 
     let btPLUMod_click = function (bt) {
+        //*
         ChkLogOut(sessionStorage.getItem('isamcomp'));
-
         Timerset(sessionStorage.getItem('isamcomp'));
         $(bt).closest('tr').click();
         //alert(GetNodeValue(node, 'AppDate'));
@@ -156,16 +179,31 @@
     };
 
     let btDelSave_click = function () {
-        ChkLogOut(sessionStorage.getItem('isamcomp'))
-        Timerset(sessionStorage.getItem('isamcomp'));
-        var cData = {
-            Shop: $('#lblShop2').html().split(' ')[0],
-            PLU: DelPLU
+        ChkLogOut_1(btDelSave_click_1)
+    };
+
+    let btDelSave_click_1 = function (data) {
+        if (ReturnMsg(data, 0) != "ChkLogOutOK") {
+            DyAlert(ReturnMsg(data, 1));
         }
-        PostToWebApi({ url: "api/SystemSetup/DelISAM02PLU", data: cData, success: AfterDelISAM02PLU });
+        else {
+            var dtLogin = data.getElementsByTagName('dtLogin');
+            if (GetNodeValue(dtLogin[0], "LogOutType") != "") {
+                window.location.href = "Login" + sessionStorage.getItem('isamcomp');
+            }
+            else {
+                Timerset(sessionStorage.getItem('isamcomp'));
+                var cData = {
+                    Shop: $('#lblShop2').html().split(' ')[0],
+                    PLU: DelPLU
+                }
+                PostToWebApi({ url: "api/SystemSetup/DelISAM02PLU", data: cData, success: AfterDelISAM02PLU });
+            }
+        }
     };
 
     let btDelCancel_click = function () {
+        //*
         ChkLogOut(sessionStorage.getItem('isamcomp'))
         Timerset(sessionStorage.getItem('isamcomp'));
         $('#modal_ISAM02PLUDel').modal('hide');
@@ -194,6 +232,7 @@
     };
 
     let btPLUDelete_click = function (bt) {
+        //*
         ChkLogOut(sessionStorage.getItem('isamcomp'));
         Timerset(sessionStorage.getItem('isamcomp'));
         $(bt).closest('tr').click();
@@ -214,6 +253,7 @@
 
 
     let btBCSave3_click = function () {
+        //*
         ChkLogOut(sessionStorage.getItem('isamcomp'))
         Timerset(sessionStorage.getItem('isamcomp'));
         var cData = {
@@ -243,6 +283,7 @@
     };
 
     let btMod_click = function () {
+        //*
         ChkLogOut(sessionStorage.getItem('isamcomp'))
 
         EditMode = "M";
@@ -268,9 +309,21 @@
 
 //#region 新增
     let btQtySave1_click = function () {
-        ChkLogOut(sessionStorage.getItem('isamcomp'))
-        Timerset(sessionStorage.getItem('isamcomp'));
-        if ($('#txtBarcode1').val() == "" && $('#lblBarcode').html()=="") {
+        ChkLogOut_1(btQtySave1_click_1)
+    };
+
+    let btQtySave1_click_1 = function (data) {
+        if (ReturnMsg(data, 0) != "ChkLogOutOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtLogin = data.getElementsByTagName('dtLogin');
+            if (GetNodeValue(dtLogin[0], "LogOutType") != "") {
+                window.location.href = "Login" + sessionStorage.getItem('isamcomp');
+            }
+            else {
+ Timerset(sessionStorage.getItem('isamcomp'));
+        if ($('#txtBarcode1').val() == "" && $('#lblBarcode').html() == "") {
             DyAlert("請輸入條碼!");
             $('#txtQty1').val('');
             $('#btKeyin1').prop('disabled', false);
@@ -310,11 +363,14 @@
             Barcode: $('#txtBarcode1').val() == "" ? $('#lblBarcode').html() : $('#txtBarcode1').val(),
             Qty: $('#txtQty1').val()
         };
-        //alert("908");
         PostToWebApi({ url: "api/SystemSetup/SaveCollectWeb", data: pData, success: afterSaveCollectWeb });
+            }
+        }
     };
 
+
     let btKeyin1_click = function () {
+        //*
         ChkLogOut(sessionStorage.getItem('isamcomp'))
         Timerset(sessionStorage.getItem('isamcomp'));
         $('#btKeyin1').prop('disabled', true);
@@ -367,30 +423,43 @@
 
 
     let btBCSave1_click = function () {
-        ChkLogOut(sessionStorage.getItem('isamcomp'))
-        Timerset(sessionStorage.getItem('isamcomp'));
+        ChkLogOut_1(btBCSave1_click_1)
+    };
+
+    let btBCSave1_click_1 = function (data) {
+        if (ReturnMsg(data, 0) != "ChkLogOutOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtLogin = data.getElementsByTagName('dtLogin');
+            if (GetNodeValue(dtLogin[0], "LogOutType") != "") {
+                window.location.href = "Login" + sessionStorage.getItem('isamcomp');
+            }
+            else {
+Timerset(sessionStorage.getItem('isamcomp'));
         if ($('#txtBarcode1').val() == "") {
             DyAlert("請輸入條碼!");
             return;
         }
-        if ($('#txtBarcode1').val().trim.length>16) {
+        if ($('#txtBarcode1').val().trim.length > 16) {
             DyAlert("條碼限制輸入16個字元!");
             $('#txtBarcode1').val('');
             return;
         }
         $('#txtQty1').val("1");
-        //alert($('#lblShop2').html());
         var pData = {
             Shop: $('#lblShop2').html().split(' ')[0],
             Barcode: $('#txtBarcode1').val(),
             Qty: 1
         };
-        //alert("908");
         PostToWebApi({ url: "api/SystemSetup/SaveCollectWeb", data: pData, success: afterSaveCollectWeb });
+            }
+        }
     };
 
     
     let btAdd_click = function () {
+        //*
         ChkLogOut(sessionStorage.getItem('isamcomp'))
 
         EditMode = "A";
@@ -463,17 +532,32 @@
     }
 
     let CallSendToFTP = function () {
-        ChkLogOut(sessionStorage.getItem('isamcomp'));
-        Timerset(sessionStorage.getItem('isamcomp'));
+        ChkLogOut_1(CallSendToFTP_1);
+    };
+
+    let CallSendToFTP_1 = function (data) {
+        if (ReturnMsg(data, 0) != "ChkLogOutOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtLogin = data.getElementsByTagName('dtLogin');
+            if (GetNodeValue(dtLogin[0], "LogOutType") != "") {
+                window.location.href = "Login" + sessionStorage.getItem('isamcomp');
+            }
+            else {
+Timerset(sessionStorage.getItem('isamcomp'));
         var cData = {
-            Type:"C",
+            Type: "C",
             Shop: $('#lblShop2').html().split(' ')[0]
         }
         PostToWebApi({ url: "api/SystemSetup/AddISAMToFTPRecWeb", data: cData, success: AfterAddISAMToFTPRecWeb });
+            }
+        }
     };
 
 
     let btToFTP_click = function () {
+        //*
         ChkLogOut(sessionStorage.getItem('isamcomp'))
         Timerset(sessionStorage.getItem('isamcomp'));
         DyConfirm("是否要上傳條碼蒐集資料？", CallSendToFTP, DummyFunction);
@@ -489,6 +573,7 @@
     };
 
     let btRtn_click = function () {
+        //*
         ChkLogOut(sessionStorage.getItem('isamcomp'))
         //alert(EditMode);
         if (EditMode == "A" || EditMode == "M") {
