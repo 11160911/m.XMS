@@ -505,7 +505,8 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 $('#btAdd').prop('disabled', false);
                 $('#btMod').prop('disabled', true);
                 $('#btToFTP').prop('disabled', true); //true-btn不能使用
-                $('#txtBarcode1').val('');
+               $('#txtBarcode1').val('');
+               $('#txtBarcode1').focus();
                 $('#txtQty1').val('');
                 $('#lblBarcode').html('');
                 $('#lblQty1').html('');
