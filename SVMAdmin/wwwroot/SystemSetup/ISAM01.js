@@ -274,6 +274,8 @@ Timerset(sessionStorage.getItem('isamcomp'));
     let afterGetBINWebMod = function (data) {
         if (ReturnMsg(data, 0) != "GetBINWebModOK") {
             DyAlert(ReturnMsg(data, 1));
+            $('#txtBarcode3').val('');
+            $('#txtBarcode3').focus();
         }
         else {
             var dtBin = data.getElementsByTagName('dtBin');
@@ -281,8 +283,12 @@ Timerset(sessionStorage.getItem('isamcomp'));
             if (dtBin.length == 0) {
                 //alert("No RowData");
                 DyAlert("無符合資料!");
+                $('#txtBarcode3').val('');
+                $('#txtBarcode3').focus();
                 return;
             }
+            $('#txtBarcode3').val('');
+            $('#txtBarcode3').focus();
 
         }
 
