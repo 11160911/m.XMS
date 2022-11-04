@@ -252,6 +252,10 @@ Timerset(sessionStorage.getItem('isamcomp'));
     };
     //#endregion
 
+    let txtBarcode3_ini = function () {
+        $('#txtBarcode3').val('');
+        $('#txtBarcode3').focus();
+    }
 
     let btBCSave3_click = function () {
         //*
@@ -268,22 +272,17 @@ Timerset(sessionStorage.getItem('isamcomp'));
 
     let afterGetDeliveryWebMod = function (data) {
         if (ReturnMsg(data, 0) != "GetDeliveryWebModOK") {
-            DyAlert(ReturnMsg(data, 1));
-            $('#txtBarcode3').val('');
-            $('#txtBarcode3').focus();
+            DyAlert(ReturnMsg(data, 1), txtBarcode3_ini);
         }
         else {
             var dtDelivery = data.getElementsByTagName('dtDelivery');
             grdM.BindData(dtDelivery);
             if (dtDelivery.length == 0) {
                 //alert("No RowData");
-                DyAlert("無符合資料!");
-                $('#txtBarcode3').val('');
-                $('#txtBarcode3').focus();
+                DyAlert("無符合資料!", txtBarcode3_ini);
                 return;
             }
-            $('#txtBarcode3').val('');
-            $('#txtBarcode3').focus();
+            txtBarcode3_ini();
         }
 
     };
