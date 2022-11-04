@@ -5078,7 +5078,7 @@ namespace SVMAdmin.Controllers
                 string WhNo = rq["WhNo"];
                 string PLU = rq["PLU"];
 
-                string sql = "Select a.GD_No, a.GD_Name, a.GD_Retail, IsNull(b.PTNum,0) PTNum From PluWeb a (nolock) " +
+                string sql = "Select a.GD_No,a.GD_Barcode,a.GD_Name,a.GD_Retail,IsNull(b.PTNum,0) PTNum From PluWeb a (nolock) " +
                     "left join InventoryAtonceDWeb b (nolock) on a.GD_No=b.PLU and a.companycode=b.companycode And b.WhNo='" + WhNo + "' " +
                     "Where a.Companycode='" + uu.CompanyId + "' ";
                 if (PLU != "")
