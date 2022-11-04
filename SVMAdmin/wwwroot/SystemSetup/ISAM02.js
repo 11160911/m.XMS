@@ -251,6 +251,10 @@
     };
 //#endregion
 
+    let txtBarcode3_ini = function () {
+        $('#txtBarcode3').val('');
+        $('#txtBarcode3').focus();
+    }
 
     let btBCSave3_click = function () {
         //*
@@ -267,23 +271,18 @@
 
     let afterGetCollectWebMod = function (data) {
         if (ReturnMsg(data, 0) != "GetCollectWebModOK") {
-            DyAlert(ReturnMsg(data, 1));
-            $('#txtBarcode3').val('');
-            $('#txtBarcode3').focus();
+            DyAlert(ReturnMsg(data, 1), txtBarcode3_ini);
+            
         }
         else {
             var dtCollect = data.getElementsByTagName('dtCollect');
             grdM.BindData(dtCollect);
             if (dtCollect.length == 0) {
                 //alert("No RowData");
-                DyAlert("無符合資料!");
-                $('#txtBarcode3').val('');
-                $('#txtBarcode3').focus();
+                DyAlert("無符合資料!", txtBarcode3_ini);
                 return;
             }
-            $('#txtBarcode3').val('');
-            $('#txtBarcode3').focus();
-
+            txtBarcode3_ini();
         }
 
     };
