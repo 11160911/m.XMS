@@ -207,7 +207,8 @@
 
 
         if (GetNodeValue(dtShop[0], 'WhNo') == "") {
-            
+
+            $('#lblBarcode').hide();
             $('#txtPLU').hide();
             $('#btQuery').hide();
             $('#lblCPrice').hide();
@@ -220,7 +221,8 @@
             return;
         }
         else if (GetNodeValue(dtShop[0], 'ST_SName') == "") {
-            
+
+            $('#lblBarcode').hide();
             $('#txtPLU').hide();
             $('#btQuery').hide();
             $('#lblCPrice').hide();
@@ -248,25 +250,23 @@
         $('#txtPLU').keypress(function (e) {
             //$('#icrpwd').hide();
             if (e.which == 13) {
-                SearchISAMQPLU(); e
+                SearchISAMQPLU();
             }
         });
-
-
         $('#txtPLU').focus();
-
     };
+
+    let txtPLU_ini = function () {
+        $('#txtPLU').val('');
+        $('#txtPLU').focus();
+    }
 
     let SearchISAMQPLU = function () {
         ChkLogOut(sessionStorage.getItem('isamcomp'))
-
-        ShowLoading();
         if ($('#txtPLU').val() == "" || $('#txtPLU').val() == null)
             {
-            CloseLoading();
-            DyAlert("請先輸入查詢條件!!");
+            DyAlert("請先輸入查詢條件!!", txtPLU_ini);
             }
-            //$('#lblArea').html("")
         else
             //$('#lblArea').html($('#cbArea').val())
             GetISAMQPLU()
@@ -282,27 +282,24 @@
     };
 
     let AfterGetISAMQPLU = function (data) {
-        CloseLoading();
-        //alert("AfterGetVIN14_1P");
         if (ReturnMsg(data, 0) != "GetISAMQPLUOK") {
-            DyAlert(ReturnMsg(data, 0));
+            DyAlert(ReturnMsg(data, 0), txtPLU_ini);
             return;
         }
         else {
             var dtQPLU = data.getElementsByTagName('dtQPLU');
-            //grdU.BindData(dtQPLU);
-            //alert("ggg");
             if (dtQPLU.length == 0) {
-                //alert("AfterGetISAMQPLU");
+                $('#lblBarcode').html("");
                 $('#lblPrice').html("");
                 $('#lblPluName').html("");
                 $('#lblQty').html("");
                 $('#lblPrmPrice').html("");
                 $('#lblPeriod').html("");
-                DyAlert("無符合資料!", BlankMode);
+                DyAlert("無符合資料!", txtPLU_ini);
                 return;
             }
             else {
+                $('#lblBarcode').html(GetNodeValue(dtQPLU[0], 'GD_Barcode'));
                 $('#lblPrice').html(parseInt(GetNodeValue(dtQPLU[0], 'GD_Retail')));
                 $('#lblPluName').html(GetNodeValue(dtQPLU[0], 'GD_Name'));
                 $('#lblQty').html(GetNodeValue(dtQPLU[0], 'PTNum'));
@@ -317,7 +314,7 @@
                     $('#lblPrmPrice').html("");
                     $('#lblPeriod').html("");
                 }
-
+                txtPLU_ini()
             }
         }
     };
