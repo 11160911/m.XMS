@@ -2787,6 +2787,36 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("SystemSetup/ChkSaveBINWeb")]
+        public ActionResult SystemSetup_ChkSaveBINWeb()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "ChkSaveBINWebOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Shop = rq["Shop"];
+                string ISAMDate = rq["ISAMDate"];
+                string BinNo = rq["BinNo"];
+                string PLU = rq["Barcode"];
+                int Qty = Convert.ToInt32(rq["Qty"].ToString().SqlQuote());
+
+                string sql = "select Sum(Qty1)SumQty from BINWeb (nolock) ";
+                sql += "where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and PLU='" + PLU + "'";
+                DataTable dt = PubUtility.SqlQry(sql, uu, "SYS");
+                dt.TableName = "dtBIN";
+                ds.Tables.Add(dt);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
         [Route("SystemSetup/SaveBINWeb")]
         public ActionResult SystemSetup_SaveBINWeb()
         {
@@ -2832,8 +2862,8 @@ namespace SVMAdmin.Controllers
                     PubUtility.ExecuteSql(sql, uu, "SYS");
                 }
                 //Return 異動後的數量,故要重撈一次
-                //單品數
-                sql = "Select Sum(Qty1) SQ1 from BINWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and PLU='"+ PLU +"'";
+                //分區單品數
+                sql = "Select Sum(Qty1) SQ1 from BINWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BinNo='" + BinNo + "' and PLU='"+ PLU +"'";
                 DataTable dtSQ= PubUtility.SqlQry(sql, uu, "SYS");
                 dtSQ.TableName = "dtSQ";
                 ds.Tables.Add(dtSQ);
@@ -2891,7 +2921,7 @@ namespace SVMAdmin.Controllers
                 sql += "on a.companycode=b.companycode and a.PLU=b.GD_Barcode ";
                 sql += "where a.Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "'"+ Comd +";";
                 sql += "select a.PLU,a.Qty1,a.PLU+' '+case when isnull(a.GD_Name,'')='' then isnull(b.GD_Name,'') else isnull(a.GD_Name,'') end GD_Name from #tmpA a (nolock) left join PLUWeb b (nolock) ";
-                sql += "on a.companycode=b.companycode and a.PLU=b.GD_No order by SeqNo";
+                sql += "on a.companycode=b.companycode and a.PLU=b.GD_No order by SeqNo desc";
 
 
                 DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");

@@ -96,6 +96,11 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 DyAlert("數量需大於0!");
                 return;
             }
+
+            if ($('#txtModQty1').val() > 99999) {
+                DyAlert("數量不可大於99999!");
+                return;
+            }
         }
         var cData = {
             Shop: $('#lblShop2').html().split(' ')[0],
@@ -338,11 +343,11 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 if ($('#txtBarcode1').val() == "" && $('#lblBarcode').html() == "") {
                     DyAlert("請輸入條碼!");
                     $('#txtQty1').val('');
-                    $('#btKeyin1').prop('disabled', false);
-                    $('#btBCSave1').prop('disabled', false);
-                    $('#txtBarcode1').prop('disabled', false);
-                    $('#btQtySave1').prop('disabled', true);
-                    $('#txtQty1').prop('disabled', true);
+                    //$('#btKeyin1').prop('disabled', false);
+                    //$('#btBCSave1').prop('disabled', false);
+                    //$('#txtBarcode1').prop('disabled', false);
+                    //$('#btQtySave1').prop('disabled', true);
+                    //$('#txtQty1').prop('disabled', true);
                     return;
                 }
                 if ($('#txtQty1').val() == "") {
@@ -365,11 +370,11 @@ Timerset(sessionStorage.getItem('isamcomp'));
                         return;
                     }
                 }
-                $('#btKeyin1').prop('disabled', false);
-                $('#btBCSave1').prop('disabled', false);
-                $('#txtBarcode1').prop('disabled', false);
-                $('#btQtySave1').prop('disabled', true);
-                $('#txtQty1').prop('disabled', true);
+                //$('#btKeyin1').prop('disabled', false);
+                //$('#btBCSave1').prop('disabled', false);
+                //$('#txtBarcode1').prop('disabled', false);
+                //$('#btQtySave1').prop('disabled', true);
+                //$('#txtQty1').prop('disabled', true);
                 var pData = {
                     Shop: $('#lblShop2').html().split(' ')[0],
                     ISAMDate: $('#lblDate2').html(),
@@ -377,7 +382,6 @@ Timerset(sessionStorage.getItem('isamcomp'));
                     Barcode: $('#txtBarcode1').val() == "" ? $('#lblBarcode').html() : $('#txtBarcode1').val(),
                     Qty: $('#txtQty1').val()
                 };
-                //alert("908");
                 PostToWebApi({ url: "api/SystemSetup/SaveBINWeb", data: pData, success: afterSaveBINWeb });
             }
         }
@@ -387,16 +391,16 @@ Timerset(sessionStorage.getItem('isamcomp'));
         //*
         ChkLogOut(sessionStorage.getItem('isamcomp'))
         Timerset(sessionStorage.getItem('isamcomp'));
-        $('#btKeyin1').prop('disabled', true);
-        $('#btQtySave1').prop('disabled', false);
-        $('#txtQty1').prop('disabled', false);
-        $('#btBCSave1').prop('disabled', true);
-        $('#txtBarcode1').prop('disabled', true);
+        //$('#btKeyin1').prop('disabled', true);
+        //$('#btQtySave1').prop('disabled', false);
+        //$('#txtQty1').prop('disabled', false);
+        //$('#btBCSave1').prop('disabled', true);
+        //$('#txtBarcode1').prop('disabled', true);
     };
 
     let afterSaveBINWeb = function (data) {
         if (ReturnMsg(data, 0) != "SaveBINWebOK") {
-            DyAlert(ReturnMsg(data, 1));
+            DyAlert(ReturnMsg(data, 1),txtBarcode1_ini);
         }
         else {
             var dtSQ = data.getElementsByTagName('dtSQ');
@@ -420,15 +424,19 @@ Timerset(sessionStorage.getItem('isamcomp'));
             else {
                 $('#lblSWQty1').html('');
             }
+
             var dtP = data.getElementsByTagName('dtPLU');
             if (dtP.length > 0) {
+                
                 $('#lblBarcode').html(GetNodeValue(dtP[0], "PLU"));
                 $('#txtBarcode1').val('');
                 $('#lblQty1').html($('#txtQty1').val());
-                $('#lblPrice').html(GetNodeValue(dtP[0], "GD_Retail"));
+                $('#lblPrice').html(parseInt(GetNodeValue(dtP[0], "GD_Retail")));
                 $('#lblGDName').html(GetNodeValue(dtP[0], "GD_Name"));
+                $('#txtQty1').val('1');
             }
             else {
+                
                 if ($('#txtBarcode1').val() == "") {
                 }
                 else {
@@ -438,6 +446,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 $('#lblQty1').html($('#txtQty1').val());
                 $('#lblPrice').html('');
                 $('#lblGDName').html('');
+                $('#txtQty1').val('1');
             }
             //alert(dtBin.length);
             //if (dtBin.length == 0) {
@@ -448,6 +457,15 @@ Timerset(sessionStorage.getItem('isamcomp'));
         }
     };
 
+    let txtBarcode1_ini = function () {
+        $('#txtBarcode1').val('');
+        $('#txtBarcode1').focus();
+    }
+
+    let txtQty1_ini = function () {
+        $('#txtQty1').val('');
+        $('#txtQty1').focus();
+    }
 
     let btBCSave1_click = function () {
         ChkLogOut_1(btBCSave1_click_1)
@@ -456,7 +474,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
     let btBCSave1_click_1 = function (data) {
 
         if (ReturnMsg(data, 0) != "ChkLogOutOK") {
-            DyAlert(ReturnMsg(data, 1));
+            DyAlert(ReturnMsg(data, 1), txtBarcode1_ini);
         }
         else {
             var dtLogin = data.getElementsByTagName('dtLogin');
@@ -466,27 +484,80 @@ Timerset(sessionStorage.getItem('isamcomp'));
             else {
 Timerset(sessionStorage.getItem('isamcomp'));
             if ($('#txtBarcode1').val() == "") {
-                DyAlert("請輸入條碼!");
+                DyAlert("請輸入條碼!", txtBarcode1_ini);
                 return;
-            }
-            if ($('#txtBarcode1').val().trim.length > 16) {
-                DyAlert("條碼限制輸入16個字元!");
-                $('#txtBarcode1').val('');
+                }
+
+            if ($('#txtBarcode1').val().length > 16) {
+                DyAlert("條碼限制輸入16個字元!", txtBarcode1_ini);
                 return;
+                }
+
+            if ($('#txtQty1').val() == "") {
+                $('#txtQty1').val("1");
             }
-            $('#txtQty1').val("1");
-            //alert($('#lblShop2').html());
-            var pData = {
-                Shop: $('#lblShop2').html().split(' ')[0],
-                ISAMDate: $('#lblDate2').html(),
-                BinNo: $('#lblBINNo2').html(),
-                Barcode: $('#txtBarcode1').val(),
-                Qty: 1
-            };
-            //alert("908");
-            PostToWebApi({ url: "api/SystemSetup/SaveBINWeb", data: pData, success: afterSaveBINWeb });
+            else {
+                    if (isNaN($('#txtQty1').val())) {
+                        DyAlert("請輸入數字!", txtQty1_ini );
+                        return;
+                    }
+                    if ($('#txtQty1').val().indexOf(".") > 0) {
+                        DyAlert("請輸入整數!", txtQty1_ini);
+                        return;
+                    }
+                    //if ($('#txtQty1').val() <= 0) {
+                    //    DyAlert("數量需大於0!", txtBarcode1_ini);
+                    //    return;
+                    //}
+                    if ($('#txtQty1').val() > 9999 || $('#txtQty1').val() < -9999) {
+                        DyAlert("數量需介於-9999~9999之間!", txtQty1_ini);
+                        return;
+                    }
+                }
+                var pData = {
+                    Shop: $('#lblShop2').html().split(' ')[0],
+                    ISAMDate: $('#lblDate2').html(),
+                    BinNo: $('#lblBINNo2').html(),
+                    Barcode: $('#txtBarcode1').val(),
+                    Qty: $('#txtQty1').val()
+                };
+                PostToWebApi({ url: "api/SystemSetup/ChkSaveBINWeb", data: pData, success: afterChkSaveBINWeb });
             }
         }
+    }
+
+    let afterChkSaveBINWeb = function (data) {
+        if (ReturnMsg(data, 0) != "ChkSaveBINWebOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtBIN = data.getElementsByTagName('dtBIN');
+            if (dtBIN.length == 0) {
+                if ($('#txtQty1').val() < 0) {
+                    DyAlert("單品總數需大於0!", txtQty1_ini);
+                    return;
+                }
+            }
+            else {
+                if (parseInt(GetNodeValue(dtBIN[0], "SumQty")) + parseInt($('#txtQty1').val()) > 99999) {
+                    DyAlert("單品總數不可大於99999!", txtQty1_ini);
+                    return;
+                }
+                if (parseInt(GetNodeValue(dtBIN[0], "SumQty")) + parseInt($('#txtQty1').val()) < 0) {
+                    DyAlert("單品總數需大於0!", txtQty1_ini);
+                    return;
+                }
+                var pData = {
+                    Shop: $('#lblShop2').html().split(' ')[0],
+                    ISAMDate: $('#lblDate2').html(),
+                    BinNo: $('#lblBINNo2').html(),
+                    Barcode: $('#txtBarcode1').val(),
+                    Qty: $('#txtQty1').val()
+                };
+                PostToWebApi({ url: "api/SystemSetup/SaveBINWeb", data: pData, success: afterSaveBINWeb });
+            }
+        }
+        
     }
     
     let btAdd_click = function () {
@@ -494,11 +565,11 @@ Timerset(sessionStorage.getItem('isamcomp'));
         ChkLogOut(sessionStorage.getItem('isamcomp'));
         EditMode = "A";
         Timerset(sessionStorage.getItem('isamcomp'));
-        $('#btKeyin1').prop('disabled', false);
-        $('#btBCSave1').prop('disabled', false);
-        $('#txtBarcode1').prop('disabled', false);
-        $('#btQtySave1').prop('disabled', true);
-        $('#txtQty1').prop('disabled', true);
+        //$('#btKeyin1').prop('disabled', false);
+        //$('#btBCSave1').prop('disabled', false);
+        //$('#txtBarcode1').prop('disabled', false);
+        //$('#btQtySave1').prop('disabled', true);
+        //$('#txtQty1').prop('disabled', true);
         $('#pgISAM01Add').show();
         if ($('#pgISAM01Add').attr('hidden') == undefined) {
             $('#pgISAM01Add').show();
@@ -522,7 +593,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 $('#btToFTP').prop('disabled', true); //true-btn不能使用
                 $('#txtBarcode1').val('');
                 $('#txtBarcode1').focus();
-                $('#txtQty1').val('');
+                $('#txtQty1').val('1');
                 $('#lblBarcode').html('');
                 $('#lblQty1').html('');
                 $('#lblSQty1').html('');
@@ -652,6 +723,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#lblSWQty1title').html($('#lblShop1').html().split(' ')[0] + "門市總數：");
             $('#lblSBQty1title').html($('#txtBinNo').val() + "分區總數：");
             $('#lblSQty1').html('');
+            $('#lblSQty1title').html($('#txtBinNo').val() + "分區單品總數：");
             $('#lblSBQty1').html('');
             $('#lblSWQty1').html('');
             $('#lblPrice').html('');
@@ -719,8 +791,8 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#btToFTP').click(function () { btToFTP_click(); });
             $('#btRtn').click(function () { btRtn_click(); afterRtnclick(); });
 
-            $('#txtQty1').prop('disabled', true);
-            $('#btQtySave1').prop('disabled', true);
+            //$('#txtQty1').prop('disabled', true);
+            //$('#btQtySave1').prop('disabled', true);
             $('#btBCSave1').click(function () { btBCSave1_click(); });
             $('#btKeyin1').click(function () { btKeyin1_click(); });
             $('#btQtySave1').click(function () { btQtySave1_click(); });
