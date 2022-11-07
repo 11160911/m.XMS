@@ -467,7 +467,7 @@
                     return;
                 }
 
-                if ($('#txtQty1').val() == "") {
+                if ($('#txtQty1').val() == "" || $('#txtQty1').val() == "0") {
                     $('#txtQty1').val("1");
                 }
                 else {
