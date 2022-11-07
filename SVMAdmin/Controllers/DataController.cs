@@ -3111,6 +3111,31 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("SystemSetup/ChkSaveCollectWeb")]
+        public ActionResult SystemSetup_ChkSaveCollectWeb()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "ChkSaveCollectWebOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Shop = rq["Shop"];
+                string PLU = rq["Barcode"];
+
+                string sql = "Select Sum(Qty) SumQty from CollectWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and Whno='" + Shop + "' and PLU='" + PLU + "'";
+                DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                dtC.TableName = "dtC";
+                ds.Tables.Add(dtC);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
 
         [Route("SystemSetup/SaveCollectWeb")]
         public ActionResult SystemSetup_SaveCollectWeb()
@@ -3202,7 +3227,7 @@ namespace SVMAdmin.Controllers
                 sql += "on a.companycode=b.companycode and a.PLU=b.GD_Barcode ";
                 sql += "where a.Companycode='" + uu.CompanyId + "' and Whno='" + Shop + "' and WorkUser='" + uu.UserID + "'" + Comd + ";";
                 sql += "select a.PLU,a.Qty,a.PLU + ' ' + case when isnull(a.GD_Name,'')='' then isnull(b.GD_Name,'') else isnull(a.GD_Name,'') end GD_Name from #tmpA a (nolock) left join PLUWeb b (nolock) ";
-                sql += "on a.companycode=b.companycode and a.PLU=b.GD_No order by SeqNo";
+                sql += "on a.companycode=b.companycode and a.PLU=b.GD_No order by SeqNo desc";
 
 
                 DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
