@@ -3442,6 +3442,34 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("SystemSetup/ChkSaveDeliveryWeb")]
+        public ActionResult SystemSetup_ChkSaveDeliveryWeb()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "ChkSaveDeliveryWebOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string WhNoOut = rq["WhNoOut"];
+                string WhNoIn = rq["WhNoIn"];
+                string DocDate = rq["DocDate"];
+                string PLU = rq["Barcode"];
+
+                string sql = "Select Sum(OutNum) SumQty from DeliveryWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and WhNoOut='" + WhNoOut + "' and DocDate='" + DocDate + "' and WhNoIn='" + WhNoIn + "' and PLU='" + PLU + "'";
+                DataTable dtD = PubUtility.SqlQry(sql, uu, "SYS");
+                dtD.TableName = "dtD";
+                ds.Tables.Add(dtD);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
         [Route("SystemSetup/SaveDeliveryWeb")]
         public ActionResult SystemSetup_SaveDeliveryWeb()
         {
