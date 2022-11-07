@@ -402,7 +402,7 @@
     let afterSaveCollectWeb = function (data) {
         
         if (ReturnMsg(data, 0) != "SaveCollectWebOK") {
-            DyAlert(ReturnMsg(data, 1));
+            DyAlert(ReturnMsg(data, 1), txtBarcode1_ini);
         }
         else {
             var dtSQ = data.getElementsByTagName('dtSQ');
@@ -433,12 +433,6 @@
                 $('#lblGDName').html('');
                 $('#txtQty1').val('1');
             }
-            //alert(dtBin.length);
-            //if (dtBin.length == 0) {
-            //    alert("No RowData");
-            //    DyAlert("無符合資料!", DummyFunction);
-            //    return;
-            //}
         }
     };
 
