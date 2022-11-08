@@ -3587,7 +3587,7 @@ namespace SVMAdmin.Controllers
                 sql += "on a.companycode=b.companycode and a.PLU=b.GD_Barcode ";
                 sql += "where a.Companycode='" + uu.CompanyId + "' and WhNoOut='" + WhNoOut + "' and DocDate='" + DocDate + "' and WhNoIn='" + WhNoIn + "' and OutUser='" + uu.UserID + "'" + Comd + ";";
                 sql += "select a.PLU,a.OutNum,a.PLU+' '+case when isnull(a.GD_Name,'')='' then b.GD_Name else a.GD_Name end GD_Name from #tmpA a (nolock) left join PLUWeb b (nolock) ";
-                sql += "on a.companycode=b.companycode and a.PLU=b.GD_No order by SeqNo;";
+                sql += "on a.companycode=b.companycode and a.PLU=b.GD_No order by SeqNo desc;";
                 sql += "drop table #tmpA;";
 
                 DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
