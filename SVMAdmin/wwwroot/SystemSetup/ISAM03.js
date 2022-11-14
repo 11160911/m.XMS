@@ -603,16 +603,19 @@ Timerset(sessionStorage.getItem('isamcomp'));
             DyAlert(ReturnMsg(data, 1));
         }
         else {
-            var dtBin = data.getElementsByTagName('dtRec');
-            if (dtBin.length == 0) {
-                //alert("No RowData");
-                DyAlert("待上傳記錄新增失敗，請重新上傳!");
-                return;
+            if (ReturnMsg(data, 1) == "FTP") {
+                DyAlert("FTP設定有誤，請重新確認!")
             }
-            else {
-                DyAlert("待上傳記錄新增完成!");
-                return;
+            else if (ReturnMsg(data, 1) == "上傳記錄") {
+                DyAlert("待上傳記錄新增失敗，請重新上傳!")
             }
+            else if (ReturnMsg(data, 1) == "上傳資料") {
+                DyAlert("無上傳資料，請重新確認!")
+            }
+            else if (ReturnMsg(data, 1) == "上傳檔案") {
+                DyAlert("待上傳檔案不存在，請重新確認!")
+            }
+            DyAlert("上傳成功!")
         }
     }
 
