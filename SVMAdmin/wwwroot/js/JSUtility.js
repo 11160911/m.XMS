@@ -606,6 +606,10 @@ var DyConfirm = function (txtMessage, HandlerYes, HandlerNo) {
         $('button[name="btOk"]').hide();
         $('#DyAlert_modal .modal-header').css('background-color', '#f19149');
         $('button[name="btYes"]').css('background-color', '#f19149');
+
+        $('button[name="btYes"]').text('是');
+        $('button[name="btNo"]').text('否');
+        
         $('#DyAlert_modal').modal('show');
         $('#DyAlert_modal button').click(function () {
             $('#DyAlert_modal').modal('hide');

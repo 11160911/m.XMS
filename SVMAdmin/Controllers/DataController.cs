@@ -3062,46 +3062,144 @@ namespace SVMAdmin.Controllers
                 string Shop = rq["Shop"];
                 string Comd = "";
 
-                switch (Doctype)
+                string sql = "";
+                string FPIP = "";
+                string FPID = "";
+                string FPPWD = "";
+                string ls_Date = "";
+                string ls_Time = "";
+                string filename = "";
+                string printstr = "";
+
+                //取FTP位址
+                sql = "Select * From FTPDataWeb (nolock) Where worktype='2' and TypeName in (Select CompanyCode from CompanyWeb (nolock) where isnull(ISAMFlag,'')='Y') and TypeName='" + uu.CompanyId + "'";
+                DataTable dtA = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtA.Rows.Count > 0)
                 {
-                    case "T":
-                        if (rq.Count > 2)
-                        {
-                            string ISAMDate = rq["ISAMDate"];
-                            string BinNo = rq["BinNo"];
-                            Comd = Shop + ";" + BinNo + ";" + ISAMDate + ";" + uu.UserID;  //店;分區代碼;盤點日期;登入者
+                    FPIP = dtA.Rows[0]["FTPIP"].ToString().SqlQuote();
+                    FPID = PubUtility.enCode170215(dtA.Rows[0]["FTPID"].ToString().SqlQuote());
+                    FPPWD = PubUtility.enCode170215(dtA.Rows[0]["FTPPWD"].ToString().SqlQuote());
+                    ls_Date = PubUtility.SqlQry("Select convert(char(10),getdate(),111)", uu, "SYS").Rows[0][0].ToString().SqlQuote();
+                    ls_Time = PubUtility.SqlQry("Select right(convert(varchar, getdate(), 121),12)", uu, "SYS").Rows[0][0].ToString().SqlQuote();
+                    if (!System.IO.Directory.Exists(PubUtility.UpLoadFiles.FTPFilePath)) { System.IO.Directory.CreateDirectory(PubUtility.UpLoadFiles.FTPFilePath); }
+                    if (!System.IO.Directory.Exists(PubUtility.UpLoadFiles.FTPFilePath + "\\BackUp" + "\\" + uu.CompanyId + "\\" + ls_Date.Replace("/",""))) { System.IO.Directory.CreateDirectory(PubUtility.UpLoadFiles.FTPFilePath + "\\BackUp" + "\\" + uu.CompanyId + "\\" + ls_Date.Replace("/","")); }
+
+                    switch (Doctype)
+                    {
+                        case "T":
+                            filename = ls_Time.Replace(":","").Replace(".","") + "TAKE3.dat";
+                            if (rq.Count > 2)
+                            {
+                                string ISAMDate = rq["ISAMDate"];
+                                string BinNo = rq["BinNo"];
+                                Comd = Shop + ";" + BinNo + ";" + ISAMDate + ";" + uu.UserID;  //店;分區代碼;盤點日期;登入者
+                            }
+                            else
+                            {
+                                Comd = Shop + ";" + uu.UserID;
+                            }
+                            break;
+                        case "C":
+                            filename = ls_Time.Replace(":", "").Replace(".", "") + "_" + uu.UserID + "_Collect3.dat";
+                            Comd = Shop + ";" + uu.UserID;
+                            break;
+                        case "D":
+                            filename = ls_Time.Replace(":", "").Replace(".", "") + "_" + uu.UserID + "_Deliv3.dat";
+                            string DocDate = rq["DocDate"];
+                            string InShop = rq["WhNoIn"];
+                            Comd = Shop + ";" + InShop + ";" + DocDate + ";" + uu.UserID;  //出貨店碼；進貨店碼；單據日期；登入者
+                            break;
+                        default:
+                            break;
+                    }
+
+                    sql = "Insert into ISAMToFTPRecWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime,DocType,WhNo,UpLoadComd) ";
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "','" + ls_Date + "','" + ls_Time + "',";
+                    sql += "'" + uu.UserID + "','" + ls_Date + "','" + ls_Time + "',";
+                    sql += "'" + Doctype + "','" + Shop + "','" + Comd + "'";
+                    PubUtility.ExecuteSql(sql, uu, "SYS");
+
+
+                    sql = "Select * from ISAMToFTPRecWeb (nolock) where Companycode='" + uu.CompanyId + "' and CrtUser='" + uu.UserID + "' and CrtDate='" + ls_Date + "' and CrtTime='" + ls_Time + "' ";
+                    sql += "and DocType='" + Doctype + "' and WhNo='" + Shop + "' and updatetype='N'";
+                    DataTable dtFTPRec = PubUtility.SqlQry(sql, uu, "SYS");
+
+                    if (dtFTPRec.Rows.Count > 0) {
+                        //店號(6)、BIN(3)、條碼(16)、數量(6)、盤點人員 (6)、盤點日(8)、時間 HHMMSS(6)
+                        if (Doctype == "T") {
+
+                            if (rq.Count > 2) {
+                                sql = "select * into #tmpA from BINWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and BINNo='" + rq["BinNo"] + "' and ISAMDate='" + rq["ISAMDate"] + "'; ";
+                            }
+                            else {
+                                sql = "select * into #tmpA from BINWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and BINStore='" + Shop + "'; ";
+                            }
+
+                            sql += "update b set FTPUpDate='" + ls_Date + "' + ' ' + left('" + ls_Time + "',8) from #tmpA a inner join BINWeb b (nolock) on a.CompanyCode=b.CompanyCode and a.BINStore=b.BINStore and a.BINNO=b.BINNO and a.ISAMDate=b.ISAMDate and a.BINMan=b.BINMan and a.SeqNo=b.SeqNo; ";
+                            sql += "Select left(BINStore+SPACE(6),6)+left(BINNo+SPACE(3),3)+left(PLU+SPACE(16),16)+right(SPACE(6)+convert(varchar,Qty1),6)+left(BINMan+SPACE(6),6)+Replace(ISAMDate,'/','')+Replace(ISAMTime,':','') A1 from #tmpA order by ISAMDate,BINNo,BINMan,Seqno; ";
                         }
-                        else
-                        {
-                            Comd = Shop+";"+uu.UserID;
+                        //條碼(16)、數量(6)
+                        else if (Doctype == "C") {
+                            sql = "select * into #tmpA from CollectWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and Whno='" + Shop + "' and WorkUser='" + uu.UserID + "'; ";
+                            sql += "update b set FTPUpDate='" + ls_Date + "' + ' ' + left('" + ls_Time + "',8) from #tmpA a inner join CollectWeb b (nolock) on a.CompanyCode=b.CompanyCode and a.Whno=b.Whno and a.Workuser=b.Workuser and a.PLU=b.PLU; ";
+                            sql += "Select left(PLU+SPACE(16),16)+right(SPACE(6)+convert(varchar,Qty),6) A1 from #tmpA order by Seqno; ";
                         }
-                        break;
-                    case "C":
-                        Comd = Shop + ";" + uu.UserID;
-                        break;
-                    case "D":
-                        string DocDate = rq["DocDate"];
-                        string InShop = rq["WhNoIn"];
-                        Comd = Shop + ";" + InShop + ";" + DocDate + ";" + uu.UserID;  //出貨店碼；進貨店碼；單據日期；登入者
-                        break;
-                    default:
-                        break;
+                        //出貨倉庫(6)、補貨倉庫(6)、條碼(16)、出貨數量 (6)、員工(6)、出貨日(8)
+                        else if (Doctype == "D") {
+                            sql = "select * into #tmpA from DeliveryWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and WhnoOut='" + Shop + "' and WhnoIn='" + rq["WhNoIn"] + "' and DocDate='" + rq["DocDate"] + "' and OutUser='" + uu.UserID + "'; ";
+                            sql += "update b set FTPUpDate='" + ls_Date + "' + ' ' + left('" + ls_Time + "',8) from #tmpA a inner join DeliveryWeb b (nolock) on a.CompanyCode=b.CompanyCode and a.WhnoOut=b.WhnoOut and a.WhnoIn=b.WhnoIn and a.DocDate=b.DocDate and a.OutUser=b.OutUser and a.SeqNo=b.SeqNo; ";
+                            sql += "Select left(WhnoOut+SPACE(6),6)+left(WhnoIn+SPACE(6),6)+left(PLU+SPACE(16),16)+right(SPACE(6)+convert(varchar,OutNum),6)+left(OutUser+SPACE(6),6)+Replace(DocDate,'/','') A1 from #tmpA order by Seqno; ";
+                        }
+                        DataTable dtA1 = PubUtility.SqlQry(sql, uu, "SYS");
+                        if (dtA1.Rows.Count > 0)
+                        {
+                            for (int i = 0; i <= dtA1.Rows.Count - 1; i++) {
+                                System.IO.File.AppendAllText(PubUtility.UpLoadFiles.FTPFilePath + "\\" + filename, dtA1.Rows[i]["A1"].ToString() + "\r\n");
+                            }
+
+                            if (System.IO.File.Exists(PubUtility.UpLoadFiles.FTPFilePath + "\\" + filename))
+                            {
+                                if (PubUtility.UpLoadFiles.MakeDir(FPIP, FPID, FPPWD, uu.CompanyId))
+                                {
+                                    PubUtility.UpLoadFiles.MakeDir(FPIP + "/" + uu.CompanyId, FPID, FPPWD, Shop);
+                                }
+
+
+                                if (PubUtility.UpLoadFiles.UploadFile(FPIP + "/" + uu.CompanyId + "/" + Shop, FPID, FPPWD, PubUtility.UpLoadFiles.FTPFilePath + "\\" + filename))
+                                {
+
+                                    sql = "UpDate ISAMTOFTPRecWeb set UpDateType='Y',FTPDate='" + ls_Date + "' + ' ' + left('" + ls_Time + "',8),FileName='" + filename + "' ";
+                                    sql += "where CompanyCode='" + uu.CompanyId + "' and CrtUser='" + uu.UserID + "' and CrtDate='" + ls_Date + "' and CrtTime='" + ls_Time + "' ";
+                                    sql += "and DocType='" + Doctype + "' and Whno='" + Shop + "' ";
+                                    PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                                    if (PubUtility.UpLoadFiles.RemoteFtpDirExists(FPIP + "/" + uu.CompanyId + "/" + Shop, FPID, FPPWD, filename))
+                                    {
+                                        System.IO.File.Move(PubUtility.UpLoadFiles.FTPFilePath + "\\" + filename, PubUtility.UpLoadFiles.FTPFilePath + "\\BackUp\\" + "\\" + uu.CompanyId + "\\" + ls_Date.Replace("/", "") + "\\" + filename);
+                                    }
+                                }
+                            }
+                            else {
+                                sql = "UpDate ISAMTOFTPRecWeb set UpDateType='E',ModDate=Convert(varchar,getdate(),111),ModTime=substring(Convert(varchar,getdate(),121),12,12) ";
+                                sql += "where CompanyCode='" + uu.CompanyId + "' and CrtUser='" + uu.UserID + "' and CrtDate='" + ls_Date + "' and CrtTime='" + ls_Time + "' ";
+                                sql += "and DocType='" + Doctype + "' and Whno='" + Shop + "' ";
+                                PubUtility.ExecuteSql(sql, uu, "SYS");
+                                throw new Exception("上傳檔案");
+                            }
+                            
+                        }
+                        else {
+                            throw new Exception("上傳資料");
+                        }
+                    }
+                    else {
+                        throw new Exception("上傳記錄");
+                    }
                 }
-
-                string strDateTime = PubUtility.SqlQry("select replace(Convert(varchar,getdate(),121),'-','/')", uu, "SYS").Rows[0][0].ToString();
-                string sql = "Insert into ISAMToFTPRecWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime,DocType,WhNo,UpLoadComd) ";
-                sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "','" + strDateTime.Split(" ")[0] + "','" + strDateTime.Split(" ")[1].Substring(0, 8) + "',";
-                sql += "'" + uu.UserID + "','" + strDateTime.Split(" ")[0] + "','" + strDateTime.Split(" ")[1].Substring(0, 8) + "',";
-                sql += "'" + Doctype +"','" + Shop +"','" + Comd + "'";
-                PubUtility.ExecuteSql(sql, uu, "SYS");
-
-                sql = "Select * from ISAMToFTPRecWeb (nolock) where Companycode='"+ uu.CompanyId +"' and CrtUser='"+ uu.UserID +"' and CrtDate='"+ strDateTime.Split(" ")[0] + "' and CrtTime='"+ strDateTime.Split(" ")[1].Substring(0, 8) + "' ";
-                sql += "and DocType='"+ Doctype +"' and WhNo='"+ Shop +"'";
-                DataTable dtFTPRec= PubUtility.SqlQry (sql, uu, "SYS");
-
-                dtFTPRec.TableName = "dtRec";
-                ds.Tables.Add(dtFTPRec);
-
+                else
+                {
+                    throw new Exception("FTP");
+                }
             }
             catch (Exception err)
             {
@@ -5931,6 +6029,81 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+
+
+        //[Route("SystemSetup/FTPUpload")]
+        //public ActionResult SystemSetup_FTPUpload()
+        //{
+        //    UserInfo uu = PubUtility.GetCurrentUser(this);
+        //    System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "FTPUploadOK", uu.UserID });
+        //    DataTable dtMessage = ds.Tables["dtMessage"];
+        //    try
+        //    {
+        //        IFormCollection rq = HttpContext.Request.Form;
+        //        string Shop = rq["Shop"];
+        //        string Type = rq["Type"];
+
+        //        string sql = "";
+        //        string FPIP = "";
+        //        string FPID = "";
+        //        string FPPWD = "";
+        //        string ls_Date = "";
+        //        string ls_Time = "";
+        //        string filename = "";
+        //        string printstr = "";
+
+        //        //取FTP位址
+        //        sql = "Select * From FTPDataWeb (nolock) Where worktype='2' and TypeName in (Select CompanyCode from CompanyWeb (nolock) where isnull(ISAMFlag,'')='Y') and TypeName='" + uu.CompanyId + "'" ;
+        //        DataTable dtA = PubUtility.SqlQry(sql, uu, "SYS");
+        //        if (dtA.Rows.Count > 0)
+        //        {
+        //            FPID = dtA.Rows[0]["FTPIP"].ToString().SqlQuote();
+        //            FPID = PubUtility.enCode170215(dtA.Rows[0]["FTPID"].ToString().SqlQuote());
+        //            FPPWD = PubUtility.enCode170215(dtA.Rows[0]["FTPPWD"].ToString().SqlQuote());
+        //            ls_Date = PubUtility.SqlQry("Select convert(char(10),getdate(),111)", uu, "SYS").Rows[0][0].ToString().SqlQuote();
+        //            ls_Time = PubUtility.SqlQry("Select right(convert(varchar, getdate(), 121),12)", uu, "SYS").Rows[0][0].ToString().SqlQuote();
+        //            if (!System.IO.Directory.Exists(PubUtility.UpLoadFiles.FTPFilePath)) { System.IO.Directory.CreateDirectory(PubUtility.UpLoadFiles.FTPFilePath); }
+        //            if (!System.IO.Directory.Exists(PubUtility.UpLoadFiles.FTPFilePath + "\\BackUp" + "\\" + uu.CompanyId + "\\" + ls_Date)) { System.IO.Directory.CreateDirectory(PubUtility.UpLoadFiles.FTPFilePath + "\\BackUp" + "\\" + uu.CompanyId + "\\" + ls_Date); }
+
+
+
+        //            if (Type == "T")
+        //            {
+        //                filename = ls_Time + "TAKE3.dat";
+        //            }
+        //            else if (Type == "C") {
+        //                filename = ls_Time + "TAKE3.dat";
+        //            }
+        //            else if (Type == "D")
+        //            {
+        //                filename = ls_Time + "TAKE3.dat";
+        //            }
+        //            System.IO.File.AppendAllText(PubUtility.UpLoadFiles.FTPFilePath + "\\" + filename, printstr);
+        //            if (System.IO.File.Exists(PubUtility.UpLoadFiles.FTPFilePath + "\\" + filename))
+        //            {
+        //                PubUtility.UpLoadFiles.UploadFile(FPIP, FPID, FPPWD, PubUtility.UpLoadFiles.FTPFilePath + "\\" + filename);
+        //                if (PubUtility.UpLoadFiles.RemoteFtpDirExists(FPIP, FPID, FPPWD, filename))
+        //                {
+        //                    System.IO.File.Move(PubUtility.UpLoadFiles.FTPFilePath + "\\" + filename, PubUtility.UpLoadFiles.FTPFilePath + "\\BackUp\\" + filename);
+        //                }
+        //            }
+        //            if (PubUtility.UpLoadFiles.MakeDir(FPIP, FPID, FPPWD, uu.CompanyId))
+        //            {
+        //                PubUtility.UpLoadFiles.MakeDir(FPIP, FPID, FPPWD, uu.CompanyId + "/" + Shop);
+        //            }
+        //        }
+        //        else {
+        //            throw new Exception("FTP位址");
+        //        }
+                
+        //    }
+        //    catch (Exception err)
+        //    {
+        //        dtMessage.Rows[0][0] = "Exception";
+        //        dtMessage.Rows[0][1] = err.Message;
+        //    }
+        //    return PubUtility.DatasetXML(ds);
+        //}
 
     }
 }

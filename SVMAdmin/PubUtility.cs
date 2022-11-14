@@ -717,6 +717,458 @@ namespace SVMAdmin
             return AP;
         }
 
+        public static class UpLoadFiles
+        {
+            public static string FTPFilePath = ConstList.ThisSiteConfig.LogPath.Replace("Log", "FTPFile").Trim();
+            //private static string FTPIP = ConstList.ThisSiteConfig.Companys
+            //            .Where<Config.Company>(C => C.CompanyID == "OK").ToList()[0].FTPIP ;
+            //private static string FTPID = PubUtility.enCode170215(ConstList.ThisSiteConfig.Companys
+            //            .Where<Config.Company>(C => C.CompanyID == "OK").ToList()[0].FTPID);
+            //private static string FTPPWD = PubUtility.enCode170215(ConstList.ThisSiteConfig.Companys
+            //    .Where<Config.Company>(C => C.CompanyID == "OK").ToList()[0].FTPPWD);
+            public static string FTPIP = "";//FTP的服务器地址，格式为ftp://192.168.1.234:8021/。ip地址和端口换成自己的，这些建议写在配置文件中，方便修改
+            public static string FTPID = "";//FTP服务器的用户名
+            public static string FTPPWD = "";//FTP服务器的密码
+
+            #region 本地文件上传到FTP服务器
+            /// <summary>
+            /// 上传文件到远程ftp
+            /// </summary>
+            /// <param name="ftpPath">ftp上的文件路径</param>
+            /// <param name="path">本地的文件目录</param>
+            /// <param name="id">文件名</param>
+            /// <returns></returns>
+            public static bool UploadFile(string fpip, string fpid, string fppwd, string filepath)
+            {
+                FTPIP = fpip;
+                FTPID = fpid;
+                FTPPWD = fppwd;
+                //string erroinfo = "";
+                FileInfo f = new FileInfo(filepath);
+                string a = "ftp://" + FTPIP;
+                if (PubUtility.StrRigth(a, 1) != "/")
+                {
+                    a = a + "/";
+                }
+                try
+                {
+                    string FileName = "";
+                    FileName = f.Name;
+
+                    if (FileName.IndexOf("TAKE3") > -1)
+                    {
+                    }
+                    else {
+                        FileName = FileName.Split("_")[FileName.Split("_").GetUpperBound(0)];
+                    }
+
+
+                    FtpWebRequest reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri(a + FileName));
+                    reqFtp.UseBinary = true;
+                    reqFtp.UsePassive = false; //false-PORT主動模式
+                    reqFtp.Credentials = new NetworkCredential(FTPID, FTPPWD);
+                    reqFtp.KeepAlive = false;
+                    reqFtp.Method = WebRequestMethods.Ftp.UploadFile;
+                    reqFtp.ContentLength = f.Length;
+                    int buffLength = 1024;
+                    byte[] buff = new byte[buffLength];
+                    int contentLen;
+                    FileStream fs = f.OpenRead();
+
+                    Stream strm = reqFtp.GetRequestStream();
+                    contentLen = fs.Read(buff, 0, buffLength);
+                    while (contentLen != 0)
+                    {
+                        strm.Write(buff, 0, contentLen);
+                        contentLen = fs.Read(buff, 0, buffLength);
+                    }
+                    strm.Close();
+                    fs.Close();
+                    //erroinfo = "完成";
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    //erroinfo = string.Format("因{0},无法完成上传", ex.Message);
+                    throw new Exception(string.Format("因{0},檔案無法完成上傳", ex.Message));
+                    //return false;
+                }
+            }
+            #endregion
+
+            #region 从ftp服务器下载文件
+            //private delegate void updateui(long rowCount, int i, ProgressBar PB);
+            //public static void upui(long rowCount, int i, ProgressBar PB)
+            //{
+            //    try
+            //    {
+            //        PB.Value = i;
+            //    }
+            //    catch { }
+            //}
+            //////上面的代码实现了从ftp服务器下载文件的功能
+            //public static Stream Download(string ftpfilepath)
+            //{
+            //    Stream ftpStream = null;
+            //    FtpWebResponse response = null;
+            //    try
+            //    {
+            //        ftpfilepath = ftpfilepath.Replace("\\", "/");
+            //        string url = FTPIP + ftpfilepath;
+            //        FtpWebRequest reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri(url));
+            //        reqFtp.UseBinary = true;
+            //        reqFtp.UsePassive = false; //false-PORT主動模式
+            //        reqFtp.Credentials = new NetworkCredential(FTPID, FTPPWD);
+            //        response = (FtpWebResponse)reqFtp.GetResponse();
+            //        ftpStream = response.GetResponseStream();
+            //    }
+            //    catch (Exception ee)
+            //    {
+            //        if (response != null)
+            //        {
+            //            response.Close();
+            //        }
+            //        MessageBox.Show("文件读取出错，请确认FTP服务器服务开启并存在该文件");
+            //    }
+            //    return ftpStream;
+            //}
+
+
+
+
+            ///// <summary>
+            ///// 从ftp服务器下载文件的功能
+            ///// </summary>
+            ///// <param name="ftpfilepath">ftp下载的地址</param>
+            ///// <param name="filePath">存放到本地的路径</param>
+            ///// <param name="fileName">保存的文件名称</param>
+            ///// <returns></returns>
+            //public static bool Download(string ftpfilepath, string filePath, string fileName)
+            //{
+            //    try
+            //    {
+            //        filePath = filePath.Replace("我的电脑\\", "");
+            //        String onlyFileName = Path.GetFileName(fileName);
+            //        string newFileName = filePath + onlyFileName;
+            //        if (File.Exists(newFileName))
+            //        {
+            //            //errorinfo = string.Format("本地文件{0}已存在,无法下载", newFileName);                   
+            //            File.Delete(newFileName);
+            //            //return false;
+            //        }
+            //        ftpfilepath = ftpfilepath.Replace("\\", "/");
+            //        string url = FTPIP + ftpfilepath;
+            //        FtpWebRequest reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri(url));
+            //        reqFtp.UseBinary = true;
+            //        reqFtp.UsePassive = false; //false-PORT主動模式
+            //        reqFtp.Credentials = new NetworkCredential(FTPID, FTPPWD);
+            //        FtpWebResponse response = (FtpWebResponse)reqFtp.GetResponse();
+            //        Stream ftpStream = response.GetResponseStream();
+            //        long cl = response.ContentLength;
+            //        int bufferSize = 2048;
+            //        int readCount;
+            //        byte[] buffer = new byte[bufferSize];
+            //        readCount = ftpStream.Read(buffer, 0, bufferSize);
+            //        FileStream outputStream = new FileStream(newFileName, FileMode.Create);
+            //        while (readCount > 0)
+            //        {
+            //            outputStream.Write(buffer, 0, readCount);
+            //            readCount = ftpStream.Read(buffer, 0, bufferSize);
+            //        }
+            //        ftpStream.Close();
+            //        outputStream.Close();
+            //        response.Close();
+            //        return true;
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        //errorinfo = string.Format("因{0},无法下载", ex.Message);
+            //        return false;
+            //    }
+            //}
+            ////
+            ///// <summary>
+            ///// 从ftp服务器下载文件的功能----带进度条
+            ///// </summary>
+            ///// <param name="ftpfilepath">ftp下载的地址</param>
+            ///// <param name="filePath">保存本地的地址</param>
+            ///// <param name="fileName">保存的名字</param>
+            ///// <param name="pb">进度条引用</param>
+            ///// <returns></returns>
+            //public static bool Download(string ftpfilepath, string filePath, string fileName, ProgressBar pb)
+            //{
+            //    FtpWebRequest reqFtp = null;
+            //    FtpWebResponse response = null;
+            //    Stream ftpStream = null;
+            //    FileStream outputStream = null;
+            //    try
+            //    {
+            //        filePath = filePath.Replace("我的电脑\\", "");
+            //        String onlyFileName = Path.GetFileName(fileName);
+            //        string newFileName = filePath + onlyFileName;
+            //        if (File.Exists(newFileName))
+            //        {
+            //            try
+            //            {
+            //                File.Delete(newFileName);
+            //            }
+            //            catch { }
+
+            //        }
+            //        ftpfilepath = ftpfilepath.Replace("\\", "/");
+            //        string url = FTPIP + ftpfilepath;
+            //        reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri(url));
+            //        reqFtp.UseBinary = true;
+            //        reqFtp.UsePassive = false; //false-PORT主動模式
+            //        reqFtp.Credentials = new NetworkCredential(FTPID, FTPPWD);
+            //        response = (FtpWebResponse)reqFtp.GetResponse();
+            //        ftpStream = response.GetResponseStream();
+            //        long cl = GetFileSize(url);
+            //        int bufferSize = 2048;
+            //        int readCount;
+            //        byte[] buffer = new byte[bufferSize];
+            //        readCount = ftpStream.Read(buffer, 0, bufferSize);
+            //        outputStream = new FileStream(newFileName, FileMode.Create);
+
+            //        float percent = 0;
+            //        while (readCount > 0)
+            //        {
+            //            outputStream.Write(buffer, 0, readCount);
+            //            readCount = ftpStream.Read(buffer, 0, bufferSize);
+            //            percent = (float)outputStream.Length / (float)cl * 100;
+            //            if (percent <= 100)
+            //            {
+            //                if (pb != null)
+            //                {
+            //                    pb.Invoke(new updateui(upui), new object[] { cl, (int)percent, pb });
+            //                }
+            //            }
+            //            // pb.Invoke(new updateui(upui), new object[] { cl, outputStream.Length, pb });
+
+            //        }
+
+            //        //MessageBoxEx.Show("Download0");
+            //        return true;
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        //errorinfo = string.Format("因{0},无法下载", ex.Message);
+            //        //MessageBoxEx.Show("Download00");
+            //        return false;
+            //    }
+            //    finally
+            //    {
+            //        //MessageBoxEx.Show("Download2");
+            //        if (reqFtp != null)
+            //        {
+            //            reqFtp.Abort();
+            //        }
+            //        if (response != null)
+            //        {
+            //            response.Close();
+            //        }
+            //        if (ftpStream != null)
+            //        {
+            //            ftpStream.Close();
+            //        }
+            //        if (outputStream != null)
+            //        {
+            //            outputStream.Close();
+            //        }
+            //    }
+            //}
+            #endregion
+
+            #region 获得文件的大小
+            ///// <summary>
+            ///// 获得文件大小
+            ///// </summary>
+            ///// <param name="url">FTP文件的完全路径</param>
+            ///// <returns></returns>
+            //public static long GetFileSize(string url)
+            //{
+
+            //    long fileSize = 0;
+            //    try
+            //    {
+            //        FtpWebRequest reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri(url));
+            //        reqFtp.UseBinary = true;
+            //        reqFtp.UsePassive = false; //false-PORT主動模式
+            //        reqFtp.Credentials = new NetworkCredential(FTPID, FTPPWD);
+            //        reqFtp.Method = WebRequestMethods.Ftp.GetFileSize;
+            //        FtpWebResponse response = (FtpWebResponse)reqFtp.GetResponse();
+            //        fileSize = response.ContentLength;
+
+            //        response.Close();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        MessageBox.Show(ex.Message);
+            //    }
+            //    return fileSize;
+            //}
+            #endregion
+
+            #region FTP新建資料夾
+            /// <summary>
+            ///在ftp服务器上创建文件目录
+            /// </summary>
+            /// <param name="dirName">文件目录</param>
+            /// <returns></returns>
+            public static bool MakeDir(string fpip, string fpid, string fppwd, string dirName)
+            {
+                FTPIP = fpip;
+                FTPID = fpid;
+                FTPPWD = fppwd;
+                //string erroinfo = "";
+                try
+                {
+                    bool b = false;
+                    b = RemoteFtpDirExists(FTPIP, FTPID, FTPPWD, dirName);
+
+                    if (b)
+                    {
+                        return true;
+                    }
+                    string a = "ftp://" + FTPIP;
+                    if (a.Substring(a.Length - 1, 1) != "/")
+                    {
+                        a = a + "/";
+                    }
+                    string url = a + dirName;
+                    FtpWebRequest reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri(url));
+                    reqFtp.UseBinary = true;
+                    reqFtp.UsePassive = false; //false-PORT主動模式
+                                               // reqFtp.KeepAlive = false;
+                    reqFtp.Method = WebRequestMethods.Ftp.MakeDirectory;
+                    reqFtp.Credentials = new NetworkCredential(FTPID, FTPPWD);
+                    FtpWebResponse response = (FtpWebResponse)reqFtp.GetResponse();
+                    response.Close();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(string.Format("因{0},FTP資料夾無法建立", ex.Message));
+                    //return false;
+                }
+
+            }
+            #endregion
+
+            #region FTP資料夾/檔案是否存在
+            /// <summary>
+            /// 取得ftp上的文件目录List
+            /// </summary>
+            /// <param name="path"></param> 
+            /// <returns></returns>
+            public static bool RemoteFtpDirExists(string fpip, string fpid, string fppwd, string path)
+            {
+                FTPIP = fpip;
+                FTPID = fpid;
+                FTPPWD = fppwd;
+                string a = "";
+                a = "ftp://" + FTPIP;
+                if (a.Substring(a.Length - 1, 1) != "/")
+                {
+                    a = a + "/";
+                }
+
+                if (path.IndexOf("TAKE3") > -1)
+                {
+                }
+                else
+                {
+                    path = path.Split("_")[path.Split("_").GetUpperBound(0)];
+                }
+
+
+                try
+                {
+                    FtpWebRequest reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri(a));
+                    reqFtp.UseBinary = true;
+                    reqFtp.UsePassive = false; //false-PORT主動模式
+                    reqFtp.Credentials = new NetworkCredential(FTPID, FTPPWD);
+                    reqFtp.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
+                    FtpWebResponse resFtp = null;
+                    StringBuilder result = new StringBuilder();
+
+                    resFtp = (FtpWebResponse)reqFtp.GetResponse();
+                    StreamReader reader = new StreamReader(resFtp.GetResponseStream(), Encoding.Default);
+                    string line = reader.ReadLine();
+                    int fileCnt = 0;
+                    int gotfile = 0;
+                    while (line != null)
+                    {
+                        //result.Append(line);
+                        //result.Append("\n");
+                        fileCnt += 1;
+                        string file = line.Split(" ")[line.Split(" ").GetUpperBound(0)];
+                        if (file.ToLower() == path.ToLower())
+                        {
+                            gotfile = 1;
+                            break;
+                        }
+
+                        line = reader.ReadLine();
+                    }
+                    // to remove the trailing '\n'
+                    //result.Remove(result.ToString().LastIndexOf('\n'), 1);
+                    reader.Close();
+                    resFtp.Close();
+                    //return result.ToString().Split('\n');
+                    if (fileCnt == 0) { return false; }
+                    if (gotfile == 0)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("檢查資料夾/檔案是否存在失敗。原因： " + ex.Message);
+                    //return false;
+                }
+            }
+            #endregion
+
+            #region 从ftp服务器删除文件的功能
+            ///// <summary>
+            ///// 从ftp服务器删除文件的功能
+            ///// </summary>
+            ///// <param name="fileName"></param>
+            ///// <returns></returns>
+            //public static bool DeleteFile(string fpip, string fpid, string fppwd, string fileName)
+            //{
+            //    try
+            //    {
+            //        FTPIP = fpip;
+            //        FTPID = fpid;
+            //        FTPPWD = fppwd;
+            //        string url = FTPIP + fileName;
+            //        FtpWebRequest reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri(url));
+            //        reqFtp.UseBinary = true;
+            //        reqFtp.UsePassive = false; //false-PORT主動模式
+            //        reqFtp.KeepAlive = false;
+            //        reqFtp.Method = WebRequestMethods.Ftp.DeleteFile;
+            //        reqFtp.Credentials = new NetworkCredential(FTPID, FTPPWD);
+            //        FtpWebResponse response = (FtpWebResponse)reqFtp.GetResponse();
+            //        response.Close();
+            //        return true;
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        throw new Exception(string.Format("因{0},FTP檔案無法刪除", ex.Message));
+            //        //return false;
+            //    }
+            //}
+            #endregion
+        }
+
     }
 
     public static class ConstList
