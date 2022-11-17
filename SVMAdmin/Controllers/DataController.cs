@@ -3159,13 +3159,14 @@ namespace SVMAdmin.Controllers
 
                             if (System.IO.File.Exists(PubUtility.UpLoadFiles.FTPFilePath + "\\" + filename))
                             {
-                                if (PubUtility.UpLoadFiles.MakeDir(FPIP, FPID, FPPWD, uu.CompanyId))
-                                {
-                                    PubUtility.UpLoadFiles.MakeDir(FPIP + "/" + uu.CompanyId, FPID, FPPWD, Shop);
-                                }
+                                //if (PubUtility.UpLoadFiles.MakeDir(FPIP, FPID, FPPWD, uu.CompanyId))
+                                //{
+                                //    PubUtility.UpLoadFiles.MakeDir(FPIP + "/" + uu.CompanyId, FPID, FPPWD, Shop);
+                                //}
+                                PubUtility.UpLoadFiles.MakeDir(FPIP, FPID, FPPWD, Shop);
 
 
-                                if (PubUtility.UpLoadFiles.UploadFile(FPIP + "/" + uu.CompanyId + "/" + Shop, FPID, FPPWD, PubUtility.UpLoadFiles.FTPFilePath + "\\" + filename))
+                                if (PubUtility.UpLoadFiles.UploadFile(FPIP + "/" + Shop, FPID, FPPWD, PubUtility.UpLoadFiles.FTPFilePath + "\\" + filename))
                                 {
 
                                     sql = "UpDate ISAMTOFTPRecWeb set UpDateType='Y',FTPDate='" + ls_Date + "' + ' ' + left('" + ls_Time + "',8),FileName='" + filename + "' ";
@@ -3173,7 +3174,7 @@ namespace SVMAdmin.Controllers
                                     sql += "and DocType='" + Doctype + "' and Whno='" + Shop + "' ";
                                     PubUtility.ExecuteSql(sql, uu, "SYS");
 
-                                    if (PubUtility.UpLoadFiles.RemoteFtpDirExists(FPIP + "/" + uu.CompanyId + "/" + Shop, FPID, FPPWD, filename))
+                                    if (PubUtility.UpLoadFiles.RemoteFtpDirExists(FPIP + "/" + Shop, FPID, FPPWD, filename))
                                     {
                                         System.IO.File.Move(PubUtility.UpLoadFiles.FTPFilePath + "\\" + filename, PubUtility.UpLoadFiles.FTPFilePath + "\\BackUp\\" + "\\" + uu.CompanyId + "\\" + ls_Date.Replace("/", "") + "\\" + filename);
                                     }
