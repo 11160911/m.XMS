@@ -583,9 +583,6 @@
 //#region 上傳
     let AfterAddISAMToFTPRecWeb = function (data) {
         if (ReturnMsg(data, 0) != "AddISAMToFTPRecWebOK") {
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
             if (ReturnMsg(data, 1) == "FTP") {
                 DyAlert("FTP設定有誤，請重新確認!")
             }
@@ -598,6 +595,11 @@
             else if (ReturnMsg(data, 1) == "上傳檔案") {
                 DyAlert("待上傳檔案不存在，請重新確認!")
             }
+            else {
+                DyAlert(ReturnMsg(data, 1));
+            }
+        }
+        else {
             DyAlert("上傳成功!")
         }
     }
