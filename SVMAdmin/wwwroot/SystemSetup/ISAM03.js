@@ -98,8 +98,8 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 return;
             }
 
-            if ($('#txtModQty1').val() > 99999) {
-                DyAlert("數量不可大於99999!");
+            if ($('#txtModQty1').val() > 999999) {
+                DyAlert("數量不可大於999999!");
                 return;
             }
         }
@@ -518,8 +518,8 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 }
             }
             else {
-                if (parseInt(GetNodeValue(dtD[0], "SumQty")) + parseInt($('#txtQty1').val()) > 99999) {
-                    DyAlert("單品數不可大於99999!", txtQty1_ini);
+                if (parseInt(GetNodeValue(dtD[0], "SumQty")) + parseInt($('#txtQty1').val()) > 999999) {
+                    DyAlert("單品數不可大於999999!", txtQty1_ini);
                     return;
                 }
                 if (parseInt(GetNodeValue(dtD[0], "SumQty")) + parseInt($('#txtQty1').val()) < 0) {
