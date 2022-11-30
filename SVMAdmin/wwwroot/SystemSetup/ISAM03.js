@@ -431,7 +431,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 $('#lblQty1').html($('#txtQty1').val());
                 $('#lblPrice').html(parseInt(GetNodeValue(dtP[0], "GD_Retail")));
                 $('#lblGDName').html(GetNodeValue(dtP[0], "GD_Name"));
-                $('#txtQty1').val('1');
+                $('#txtQty1').val("");
             }
             else {
                 if ($('#txtBarcode1').val() == "") {
@@ -443,7 +443,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 $('#lblQty1').html($('#txtQty1').val());
                 $('#lblPrice').html('');
                 $('#lblGDName').html('');
-                $('#txtQty1').val('1');
+                $('#txtQty1').val("");
             }
         }
     };
@@ -568,7 +568,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 $('#btToFTP').prop('disabled', true); //true-btn不能使用
                $('#txtBarcode1').val('');
                $('#txtBarcode1').focus();
-                $('#txtQty1').val('1');
+                $('#txtQty1').val("");
                 $('#lblBarcode').html('');
                 $('#lblQty1').html('');
                 $('#lblSQty1').html('');
