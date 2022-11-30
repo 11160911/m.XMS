@@ -350,12 +350,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                     //$('#txtQty1').prop('disabled', true);
                     return;
                 }
-                if ($('#txtQty1').val() == "") {
-                    DyAlert("請輸入數量!");
-                    return;
-                }
-                else {
-
+                if ($('#txtQty1').val() != "") {
                     if (isNaN($('#txtQty1').val())) {
                         DyAlert("請輸入數字!");
                         return;
@@ -370,6 +365,10 @@ Timerset(sessionStorage.getItem('isamcomp'));
                         return;
                     }
                 }
+                else {
+                    $('#txtQty1').val() == "1"
+                }
+               
                 //$('#btKeyin1').prop('disabled', false);
                 //$('#btBCSave1').prop('disabled', false);
                 //$('#txtBarcode1').prop('disabled', false);
@@ -433,7 +432,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 $('#lblQty1').html($('#txtQty1').val());
                 $('#lblPrice').html(parseInt(GetNodeValue(dtP[0], "GD_Retail")));
                 $('#lblGDName').html(GetNodeValue(dtP[0], "GD_Name"));
-                $('#txtQty1').val('1');
+                $('#txtQty1').val("");
             }
             else {
                 
@@ -446,7 +445,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 $('#lblQty1').html($('#txtQty1').val());
                 $('#lblPrice').html('');
                 $('#lblGDName').html('');
-                $('#txtQty1').val('1');
+                $('#txtQty1').val("");
             }
             //alert(dtBin.length);
             //if (dtBin.length == 0) {
@@ -593,7 +592,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 $('#btToFTP').prop('disabled', true); //true-btn不能使用
                 $('#txtBarcode1').val('');
                 $('#txtBarcode1').focus();
-                $('#txtQty1').val('1');
+                $('#txtQty1').val("");
                 $('#lblBarcode').html('');
                 $('#lblQty1').html('');
                 $('#lblSQty1').html('');
