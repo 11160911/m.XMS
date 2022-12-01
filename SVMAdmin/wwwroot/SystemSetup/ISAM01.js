@@ -16,8 +16,8 @@
                 class_collection: ["tdColbt icon_in_td btPLUDelete", "tdCol1", "tdCol2 label-align", "tdColbt icon_in_td btPLUMod"],
                 fields_info: [
                     { type: "JQ", name: "fa-trash-o", element: '<i class="fa fa-trash-o"></i>' },
-                    { type: "Text", name: "GD_Name", style: "width:46%" },
-                    { type: "TextAmt", name: "Qty1", style: "width:18%;text-align:right"},
+                    { type: "Text", name: "GD_Name", style: "width:48%;font-size:14px" },
+                    { type: "TextAmt", name: "Qty1", style: "width:24%;text-align:right;font-size:14px"},
                     { type: "JQ", name: "fa-file-text-o", element: '<i class="fa fa-file-text-o"></i>' }
                 ],
                 //rows_per_page: 10,
@@ -291,6 +291,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
             if (dtBin.length == 0) {
                 //alert("No RowData");
                 DyAlert("無符合資料!", txtBarcode3_ini);
+                $(".modal-backdrop").remove();
                 return;
             }
             txtBarcode3_ini()
@@ -484,11 +485,13 @@ Timerset(sessionStorage.getItem('isamcomp'));
 Timerset(sessionStorage.getItem('isamcomp'));
             if ($('#txtBarcode1').val() == "") {
                 DyAlert("請輸入條碼!", txtBarcode1_ini);
+                $(".modal-backdrop").remove();
                 return;
                 }
 
             if ($('#txtBarcode1').val().length > 16) {
                 DyAlert("條碼限制輸入16個字元!", txtBarcode1_ini);
+                $(".modal-backdrop").remove();
                 return;
                 }
 
@@ -747,16 +750,19 @@ Timerset(sessionStorage.getItem('isamcomp'));
         ChkLogOut(sessionStorage.getItem('isamcomp'));
         Timerset(sessionStorage.getItem('isamcomp'));
         if ($('#txtISAMDate').val() == "" | $('#txtISAMDate').val() == null) {
-            DyAlert("請輸入盤點日期!!",function () { $('#txtISAMDate').focus() });
+            DyAlert("請輸入盤點日期!!", function () { $('#txtISAMDate').focus() });
+            $(".modal-backdrop").remove();
             return;
         }
         if ($('#txtBinNo').val() == "" | $('#txtBinNo').val() == null) {
             DyAlert("請輸入分區代碼!!", function () { $('#txtBinNo').focus() });
+            $(".modal-backdrop").remove();
             return;
         }
         else {
             if ($('#txtBinNo').val().length>10) {
                 DyAlert("分區代碼不可超過10個字元!!", function () { $('#txtBinNo').focus() });
+                $(".modal-backdrop").remove();
                 return;
             }
         }

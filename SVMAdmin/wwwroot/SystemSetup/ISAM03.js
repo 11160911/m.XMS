@@ -17,8 +17,8 @@
                 class_collection: ["tdColbt icon_in_td btPLUDelete", "tdCol1", "tdCol2 label-align", "tdColbt icon_in_td btPLUMod"],
                 fields_info: [
                     { type: "JQ", name: "fa-trash-o", element: '<i class="fa fa-trash-o"></i>' },
-                    { type: "Text", name: "GD_Name", style: "width:46%"},
-                    { type: "TextAmt", name: "OutNum", style: "width:18%;text-align:right" },
+                    { type: "Text", name: "GD_Name", style: "width:48%;font-size:14px"},
+                    { type: "TextAmt", name: "OutNum", style: "width:24%;text-align:right;font-size:14px" },
                     { type: "JQ", name: "fa-file-text-o", element: '<i class="fa fa-file-text-o"></i>' }
                 ],
                 //rows_per_page: 10,
@@ -285,6 +285,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
             if (dtDelivery.length == 0) {
                 //alert("No RowData");
                 DyAlert("無符合資料!", txtBarcode3_ini);
+                $(".modal-backdrop").remove();
                 return;
             }
             txtBarcode3_ini();
@@ -466,11 +467,12 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 Timerset(sessionStorage.getItem('isamcomp'));
                 if ($('#txtBarcode1').val() == "") {
                     DyAlert("請輸入條碼!", txtBarcode1_ini);
+                    $(".modal-backdrop").remove();
                     return;
                 }
                 if ($('#txtBarcode1').val().length > 16) {
                     DyAlert("條碼限制輸入16個字元!", txtBarcode1_ini);
-                    $('#txtBarcode1').val('');
+                    $(".modal-backdrop").remove();
                     return;
                 }
                 if ($('#txtQty1').val() == "" || $('#txtQty1').val() == "0") {
@@ -479,10 +481,12 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 else {
                     if (isNaN($('#txtQty1').val())) {
                         DyAlert("請輸入數字!", txtQty1_ini);
+                        $(".modal-backdrop").remove();
                         return;
                     }
                     if ($('#txtQty1').val().indexOf(".") > 0) {
                         DyAlert("請輸入整數!", txtQty1_ini);
+                        $(".modal-backdrop").remove();
                         return;
                     }
                     //if ($('#txtQty1').val() <= 0) {
@@ -491,6 +495,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                     //}
                     if ($('#txtQty1').val() > 9999 || $('#txtQty1').val() < -9999) {
                         DyAlert("數量需介於-9999~9999之間!", txtQty1_ini);
+                        $(".modal-backdrop").remove();
                         return;
                     }
                 }
@@ -514,16 +519,19 @@ Timerset(sessionStorage.getItem('isamcomp'));
             if (dtD.length == 0) {
                 if ($('#txtQty1').val() < 0) {
                     DyAlert("單品數需大於0!", txtQty1_ini);
+                    $(".modal-backdrop").remove();
                     return;
                 }
             }
             else {
                 if (parseInt(GetNodeValue(dtD[0], "SumQty")) + parseInt($('#txtQty1').val()) > 999999) {
                     DyAlert("單品數不可大於999999!", txtQty1_ini);
+                    $(".modal-backdrop").remove();
                     return;
                 }
                 if (parseInt(GetNodeValue(dtD[0], "SumQty")) + parseInt($('#txtQty1').val()) < 0) {
                     DyAlert("單品數需大於0!", txtQty1_ini);
+                    $(".modal-backdrop").remove();
                     return;
                 }
 
