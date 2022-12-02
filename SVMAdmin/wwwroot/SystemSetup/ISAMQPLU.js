@@ -248,11 +248,9 @@
         $('.forminput input').change(function () { InputValidation(this) });
 
         $('#txtPLU').keypress(function (e) {
-            //$('#icrpwd').hide();
-            if (e.which == 13) {
-                SearchISAMQPLU();
-            }
+            if (e.which == 13) { SearchISAMQPLU(); }
         });
+
         $('#txtPLU').focus();
     };
 
@@ -263,13 +261,14 @@
 
     let SearchISAMQPLU = function () {
         ChkLogOut(sessionStorage.getItem('isamcomp'))
-        if ($('#txtPLU').val() == "" || $('#txtPLU').val() == null)
-            {
+        if ($('#txtPLU').val() == "" || $('#txtPLU').val() == null) {
             DyAlert("請先輸入查詢條件!!", txtPLU_ini);
-            }
-        else
-            //$('#lblArea').html($('#cbArea').val())
+            $(".modal-backdrop").remove();
+        }
+        else {
             GetISAMQPLU()
+        }
+           
     };
 
     let GetISAMQPLU = function () {
