@@ -827,10 +827,10 @@
 .nav-sm .hidden-small {
   visibility: hidden; }
 
-.nav-sm .container.body .right_col {
+/*.nav-sm .container.body .right_col {
   padding: 10px 20px;
   margin-left: 70px;
-  z-index: 2; }
+  z-index: 2; }*/
 
 .nav-sm .navbar.nav_title {
   width: 70px; }

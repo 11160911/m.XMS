@@ -57,6 +57,10 @@
                 btLogOutY_click();
             });
 
+            $('.right_col').mousedown(function (e) {
+                Sidebar_Close();
+            })
+
             //$(window).on("beforeunload", function () {
             //    if (LogOut == true) {
             //    } else {
@@ -481,6 +485,13 @@
 
             $('.dataTable').each(function () { $(this).dataTable().fnDraw(); });
         });
+
+        this.Sidebar_Close = function () {
+            if ($BODY.hasClass('nav-md')) {
+            } else {
+                $BODY.toggleClass('nav-md nav-sm');
+            }
+        }
 
         //// check active menu
         //$SIDEBAR_MENU.find('a[href="' + CURRENT_URL + '"]').parent('li').addClass('current-page');
