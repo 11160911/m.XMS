@@ -53,9 +53,97 @@
               </div>
           </div>
           <div class="login_wrapper">
+              <div class="modal fade" id="modal_SeSetting" data-keyboard="false" data-backdrop="static">
+                  <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h4 class="modal-title">系統設定</h4>
+                          </div>
+                          <div class="modal-body modal-tab-container">
+                              <style>
+                                  #modal-Role .msg-valid {
+                                      color: red;
+                                      font-size: 0.85rem;
+                                  }
+                              </style>
+                              <style>
+                                  #modal-content .col-form-label {
+                                      text-align: center;
+                                      color: red;
+                                      font-size: 0.85rem;
+                                  }
+                              </style>
+                              <div class="card-block forminput">
+                                  <div class="form-group row">
+                                      <div class="col-4">
+                                          <input id="SeID" type="text" class="form-control" placeholder="帳號" autocomplete="off" />
+                                          <span class="msg-valid valid-blank"></span>
+                                      </div>
+                                  </div>
+                                  <div class="form-group row">
+                                      <div class="col-4">
+                                          <input id="SePWD" type="password" class="form-control" placeholder="密碼" autocomplete="off" />
+                                          <span class="msg-valid valid-blank"></span>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="modal-footer">
+                                  <button id="SebtCancel" type="button" class="btn btn-round btn-primary">取消</button>
+                                  <button id="SebtSave" type="button" class="btn btn-round btn-danger">確定</button>
+                              </div>
+                          </div> <!--/.modal-content-->
+                      </div> <!--/.modal-dialog-->
+                  </div> <!--/.modal-->
+              </div>
+              <div class="modal fade" id="modal_SetKey" data-keyboard="false" data-backdrop="static">
+                  <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h4 class="modal-title">系統設定</h4>
+                          </div>
+                          <div class="modal-body modal-tab-container">
+                              <style>
+                                  #modal-Role .msg-valid {
+                                      color: red;
+                                      font-size: 0.85rem;
+                                  }
+                              </style>
+                              <style>
+                                  #modal-content .col-form-label {
+                                      text-align: center;
+                                      color: red;
+                                      font-size: 0.85rem;
+                                  }
+                              </style>
+                              <div class="card-block forminput">
+                                  <div class="form-group row">
+                                      <label class="col-form-label col-3">原始金鑰</label>
+                                      <div class="col-4">
+                                          <input id="oldCookie" type="password" class="form-control" autocomplete="off" readonly />
+                                          <span class="msg-valid valid-blank"></span>
+                                      </div>
+                                  </div>
+                                  <div class="form-group row">
+                                      <label class="col-form-label col-3">新金鑰</label>
+                                      <div class="col-4">
+                                          <input id="newCookie" type="password" class="form-control" autocomplete="off" />
+                                          <span class="msg-valid valid-blank"></span>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="modal-footer">
+                                  <button id="btCancel" type="button" class="btn btn-round btn-primary">取消</button>
+                                  <button id="btSave" type="button" class="btn btn-round btn-danger">儲存</button>
+                              </div>
+                          </div> <!--/.modal-content-->
+                      </div> <!--/.modal-dialog-->
+                  </div> <!--/.modal-->
+              </div>
+
+
               <div class="animate form login_form">
                   <section class="login_content2">
-                      <form>
+                      <form id="frmLogin" hidden>
                           <div style="text-align:center;margin-top:120px;">
                               <!-- <img src="images/iSam-logo透明板.png" style="width:200px;" / >-->
                               <label style="font-size:35px;color:white"> 雲端盤點管理系統</label>
@@ -96,50 +184,75 @@
                               <div class="clearfix"> </div>
                               <br />
                               <div style="text-align:center">
-                                  <p style="font-size:14px;color:white"> ©2022 世代流通資訊股份有限公司 版權所有</p>
+                                  <p style="font-size:14px;color:white"> ©2023 世代流通資訊股份有限公司 版權所有</p>
                               </div>
                           </div>
                       </form>
-                            </section >
-                            </div >
 
-                            <div id="register" class="animate form registration_form" >
-                            <section class="login_content" >
-                            <form >
-                            <h1 > Create Account</h1 >
-                            <div >
-                            <input type="text" class="form-control" placeholder="Username" required="" / >
-                            </div >
-                            <div >
-                            <input type="email" class="form-control" placeholder="Email" required="" / >
-                            </div >
-                            <div >
-                            <input type="password" class="form-control" placeholder="Password" required="" / >
-                            </div >
-                            <div >
-                            <a class="btn btn-default submit" href="#" > Submit</a >
-                            </div >
+                      <style>
+                          #frmChkBeforeLogin:hover > #SystemSetup, #SystemSetup:focus {
+                              cursor: default !important;
+                          }
+                      </style>
+                      <form id="frmChkBeforeLogin" style="position: relative;top: 130px; ">
+                          <button type="button" id="SystemSetup" class="btn-ms" style="position: absolute; top: 20px; left: 178px; background:transparent;border-width:0px;outline:none;  "></button>
+                          <!--<input type="file" id="filepathPC" />-->
+                          <div style=" background-color: white; width: 280px; display:block ; margin:auto ;  height: 276px; border: 3px; border-style: ridge">
+                              <textarea id="checklist" type="text" style=" background-color:white;color:black;resize: none;border:0px;font-size: 16px;width:255px;height:205px" class="form-control" disabled></textarea>
+                              <div id="chkerrbtndiv" style="text-align: center; margin-top: 15px;" hidden>
+                                  <button id="btnChkOK" type="button" class="btn btn-round" style="color: white; background-color: gray; width: 180px;">確定</button>
+                              </div>
 
-                            <div class="clearfix" > </div >
+                          </div>
+                          <div class="separator" style="margin-left: auto; margin-right: auto; display: block; width: 295px; ">
+                              <div class="clearfix"> </div>
+                              <!--<br  margin: auto;/>-->
+                              <div style="text-align:center">
+                                  <p style="color: white; font-size: 14px"> ©2023 世代流通資訊股份有限公司 版權所有</p>
+                              </div>
+                          </div>
 
-                            <div class="separator" >
-                            <p class="change_link" >
-                            Already a member ?
-                            <a href="#signin" class="to_register" > Log in </a >
-                            </p >
+                      </form>
+                  </section>
+              </div>
 
-                            <div class="clearfix" > </div >
-                            <br / >
+              <div id="register" class="animate form registration_form">
+                  <section class="login_content">
+                      <form>
+                          <h1> Create Account</h1>
+                          <div>
+                              <input type="text" class="form-control" placeholder="Username" required="" />
+                          </div>
+                          <div>
+                              <input type="email" class="form-control" placeholder="Email" required="" />
+                          </div>
+                          <div>
+                              <input type="password" class="form-control" placeholder="Password" required="" />
+                          </div>
+                          <div>
+                              <a class="btn btn-default submit" href="#"> Submit</a>
+                          </div>
 
-                            <div >
-                            <h1 > <i class="fa fa-paw" > </i > Gentelella Alela!</h1 >
-                            <p > ©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p >
-                            </div >
-                            </div >
-                            </form >
-                            </section >
-                            </div >
-                            </div >
+                          <div class="clearfix"> </div>
+
+                          <div class="separator">
+                              <p class="change_link">
+                                  Already a member ?
+                                  <a href="#signin" class="to_register"> Log in </a>
+                              </p>
+
+                              <div class="clearfix"> </div>
+                              <br />
+
+                              <div>
+                                  <h1> <i class="fa fa-paw"> </i> Gentelella Alela!</h1>
+                                  <p> ©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+                              </div>
+                          </div>
+                      </form>
+                  </section>
+              </div>
+          </div>
                             </div >
                             <!-- jQuery -->
                             <script src="lib/jquery/dist/jquery.min.js" > </script >

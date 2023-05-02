@@ -25,6 +25,105 @@ namespace SVMAdmin.Controllers
             _hostingEnvironment = hostingEnvironment;
         }
 
+        //2023/04/28 新增登入前金鑰設定
+        [Route("GetkeyData")]
+        public ActionResult GetkeyData()
+        {
+            IFormCollection rq = HttpContext.Request.Form;
+            string keyData = rq["keyData"];
+            string CompanyID = rq["CompanyID"];
+            string RealData = PubUtility.enCode170215(keyData);
+            string Company = RealData.Split("@@")[0].Trim();
+            string ckno = RealData.Split("@@")[1].Substring(0,2);
+
+            UserInfo uu = new UserInfo();
+            uu.UserID = "Login";
+            uu.CompanyId = CompanyID;
+
+            string sql = "";
+            //sql += "Select ST_ID+' '+ST_Sname ShopName,ST_SName from WarehouseWeb (nolock)";
+            //sql += " where CompanyCode='" + uu.CompanyId + "' and ST_ID='" + shop + "'";
+
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetkeyDataOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                DataTable dtkey = PubUtility.SqlQry("Select '" + RealData + "' Realkey,Replace(Convert(varchar(19),getdate(),121),'-','/') SysDT,convert(varchar,getdate(),111) SysDate", uu, "SYS");
+                dtkey.TableName = "dtkey";
+                ds.Tables.Add(dtkey);
+
+                //DataTable dtTmp = PubUtility.SqlQry(sql, uu, "SYS");
+                //dtTmp.TableName = "dtWh";
+                //ds.Tables.Add(dtTmp);
+
+                sql = "Select *,convert(varchar,getdate(),111) SysDate from ISAMCKNO (nolock) where Companycode='" + uu.CompanyId + "' and ckno='" + ckno + "' ";
+                DataTable dtCkno = PubUtility.SqlQry(sql, uu, "SYS");
+                dtCkno.TableName = "dtCkno";
+                ds.Tables.Add(dtCkno);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        //2023/04/28 新增登入前金鑰設定
+        [Route("ChkkeyData")]
+        public ActionResult ChkkeyData()
+        {
+            IFormCollection rq = HttpContext.Request.Form;
+            string keyData = rq["keyData"];
+            string CompanyID = rq["CompanyID"];
+            string RealData = PubUtility.enCode170215(keyData);
+            //string Company = RealData.Split("@@")[0].Trim();
+            //string ckno = RealData.Split("@@")[1].Substring(0, 2);
+
+            UserInfo uu = new UserInfo();
+            uu.UserID = "Login";
+            uu.CompanyId = CompanyID;
+
+            string sql = "";
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "ChkkeyDataOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                sql = "Select *,isnull(RegisterDate,'')RDate from ISAMCKNO (nolock) where Companycode='" + uu.CompanyId + "' and keydata='" + RealData + "' ";
+                DataTable dtCkno = PubUtility.SqlQry(sql, uu, "SYS");
+                dtCkno.TableName = "dtCkno";
+                ds.Tables.Add(dtCkno);
+
+                if (dtCkno.Rows.Count > 0)
+                {
+                    if (dtCkno.Rows[0]["RDate"].ToString() == "")
+                    {
+                        sql = "Update ISAMCKNO Set RegisterDate=convert(varchar,getdate(),111) Where Companycode='" + uu.CompanyId + "' ";
+                        sql += "and keydata='" + RealData + "' ";
+                        PubUtility.ExecuteSql(sql, uu, "SYS");
+                    }
+                    else {
+                        throw new Exception("此金鑰資料已被註冊，請重新確認!");
+                    }
+                }
+                else {
+                    throw new Exception("此金鑰資料未設定，請重新確認!");
+                }
+
+                sql = "Select * from ISAMCKNO (nolock) where Companycode='" + uu.CompanyId + "' and keydata='" + RealData + "' ";
+                DataTable dtCkno1 = PubUtility.SqlQry(sql, uu, "SYS");
+                dtCkno1.TableName = "dtCkno1";
+                ds.Tables.Add(dtCkno1);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
         [Route("GetCompanyName")]
         public ActionResult GetCompanyName()
         {
