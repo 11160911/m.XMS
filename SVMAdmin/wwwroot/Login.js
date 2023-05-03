@@ -91,6 +91,10 @@
             }
             localStorage.setItem("MCkey", $('#newCookie').val());
         } else {
+            if ($('#newCookie').val() == "" | $('#newCookie').val() == null) {
+                DyAlert("新金鑰欄位必須輸入資料!!", function () { $('#newCookie').focus() });
+                return;
+            }
             localStorage.removeItem('MCkey');
             localStorage.setItem("MCkey", $('#newCookie').val());
         }
@@ -163,48 +167,58 @@
                     blLoginchk = false;
                 } else {
                     if (GetNodeValue(dtCk[0], 'KeyData') != GetNodeValue(dtkey[0], 'Realkey')) {
-                        
                         blLoginchk = false;
                     } else {
                         //$('#Shop').html(GetNodeValue(dtWh[0], 'ShopName'));
                         //$('#ckno').html(GetNodeValue(dtWh[0], 'ckno'));
                         //sessionStorage.setItem("ST_SName", GetNodeValue(dtWh[0], "ST_SName"));
-                        $.getJSON("https://api.ipify.org?format=jsonp&callback=?",
-                            function (json) {
-                                tmpIPdata = json.ip;
-                            }
-                        );
+                        //$.getJSON("https://api.ipify.org?format=jsonp&callback=?",
+                        //    function (json) {
+                        //        tmpIPdata = json.ip;
+                        //    }
+                        //);
                         SysDate = GetNodeValue(dtkey[0], 'SysDate');
                     }
                 }
             }
         }
 
-        setTimeout(function () {
-            if (!blLoginchk) {
-                
-                chkStr = "盤點系統啟動中…………\n\n金鑰錯誤，無法登入!";
-                $('#checklist').text(chkStr);
-                $('#btnChkOK').hide();
-                if ($('#chkerrbtndiv').attr('hidden') == undefined) {
-                    $('#chkerrbtndiv').show();
-                }
-                else {
-                    $('#chkerrbtndiv').removeAttr('hidden');
-                }
-            } else {
-                Checkmpckno(dtCk);
+        if (!blLoginchk) {
+            chkStr = "盤點系統啟動中…………\n\n金鑰錯誤，無法登入!";
+            $('#checklist').text(chkStr);
+            $('#btnChkOK').hide();
+            if ($('#chkerrbtndiv').attr('hidden') == undefined) {
+                $('#chkerrbtndiv').show();
             }
-        }, 3500);
-
-        
+            else {
+                $('#chkerrbtndiv').removeAttr('hidden');
+            }
+        } else {
+            Checkmpckno(dtCk);
+        }
+        //setTimeout(function () {
+        //    if (!blLoginchk) {
+                
+        //        chkStr = "盤點系統啟動中…………\n\n金鑰錯誤，無法登入!";
+        //        $('#checklist').text(chkStr);
+        //        $('#btnChkOK').hide();
+        //        if ($('#chkerrbtndiv').attr('hidden') == undefined) {
+        //            $('#chkerrbtndiv').show();
+        //        }
+        //        else {
+        //            $('#chkerrbtndiv').removeAttr('hidden');
+        //        }
+        //    } else {
+        //        Checkmpckno(dtCk);
+        //    }
+        //}, 3500);
     }
 
     var Checkmpckno = function (data) {
-        if (GetNodeValue(data[0], 'IP') != tmpIPdata) {
-            blLoginchk = false;
-            chkStr = "盤點系統啟動中…………\n\nIP錯誤，無法登入!";
-        }
+        //if (GetNodeValue(data[0], 'IP') != tmpIPdata) {
+        //    blLoginchk = false;
+        //    chkStr = "盤點系統啟動中…………\n\nIP錯誤，無法登入!";
+        //}
         if (blLoginchk) {
             if (GetNodeValue(data[0], 'Status') != "1") {
                 blLoginchk = false;
