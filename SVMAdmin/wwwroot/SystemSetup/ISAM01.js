@@ -760,8 +760,8 @@ Timerset(sessionStorage.getItem('isamcomp'));
             return;
         }
         else {
-            if ($('#txtBinNo').val().length>10) {
-                DyAlert("分區代碼不可超過10個字元!!", function () { $('#txtBinNo').focus() });
+            if ($('#txtBinNo').val().length>3) {
+                DyAlert("分區代碼不可超過3個字元!!", function () { $('#txtBinNo').focus() });
                 $(".modal-backdrop").remove();
                 return;
             }

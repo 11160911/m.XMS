@@ -550,7 +550,7 @@ var DyAlert = function (txtMessage, HandlerOK, txtMessage2, txtMessage3) {
 
     $("body").append(divN);
     
-    var pg = JSPath('JSUtility.js') + "../DyAlert.html";
+    var pg = JSPath('JSUtility.js') + "../DyAlert1.html";
 
     var LoadPage = function () {
         if ($('#DyAlert_modal').length == 0) {
@@ -592,7 +592,7 @@ var DyConfirm = function (txtMessage, HandlerYes, HandlerNo) {
 
     $("body").append(divN);
 
-    var pg = JSPath('JSUtility.js') + "../DyAlert.html";
+    var pg = JSPath('JSUtility.js') + "../DyAlert1.html";
 
     var LoadPage = function () {
         divN.load(pg + " #DyAlert_modal", function () { LoadDone(); });
