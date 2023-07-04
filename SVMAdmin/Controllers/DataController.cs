@@ -2942,8 +2942,8 @@ namespace SVMAdmin.Controllers
                     if (dr.Length == 0) { lb_Insert = true; }
                     else
                     {
-                        sql = "Update BINWeb set Qty1=Qty1+" + Qty + ",ModDate=Convert(varchar,getdate(),111),ModTime=Substring(Convert(varchar,getdate(),121),12,12),";
-                        sql += "ISAMTime=CONVERT(varchar,getdate(),108) where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "'";
+                        sql = "Update BINWeb set Qty1=Qty1+" + Qty + ",ModDate=Convert(varchar,getdate(),111),ModTime=Substring(Convert(varchar,getdate(),121),12,12)";
+                        sql += " where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "'";
                         sql += " and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "' and PLU='" + PLU + "'"; 
                         PubUtility.ExecuteSql(sql, uu, "SYS");
                     }
