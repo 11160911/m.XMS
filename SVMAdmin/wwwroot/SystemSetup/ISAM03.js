@@ -571,9 +571,12 @@ Timerset(sessionStorage.getItem('isamcomp'));
         //alert(edit);
        switch (edit) {
             case "A":
-                $('#btAdd').prop('disabled', false);
-                $('#btMod').prop('disabled', true);
-                $('#btToFTP').prop('disabled', true); //true-btn不能使用
+               $('#btAdd').prop('disabled', false);
+               document.getElementById("btAdd").style.background = "blue";
+               $('#btMod').prop('disabled', true);
+               document.getElementById("btMod").style.background = 'gray';
+               $('#btToFTP').prop('disabled', true); //true-btn不能使用
+               document.getElementById("btToFTP").style.background = 'gray';
                $('#txtBarcode1').val('');
                $('#txtBarcode1').focus();
                 $('#txtQty1').val("");
@@ -592,14 +595,20 @@ Timerset(sessionStorage.getItem('isamcomp'));
                //$('#txtQty1').prop('disabled', true);
                 break;
             case "Q":
-                $('#btAdd').prop('disabled', false);
-                $('#btMod').prop('disabled', false);
-                $('#btToFTP').prop('disabled', false); //true-btn不能使用
+               $('#btAdd').prop('disabled', false);
+               document.getElementById("btAdd").style.background = "blue";
+               $('#btMod').prop('disabled', false);
+               document.getElementById("btMod").style.background = "Green";
+               $('#btToFTP').prop('disabled', false); //true-btn不能使用
+               document.getElementById("btToFTP").style.background = "gold";
                 break;
             case "M":
-                $('#btAdd').prop('disabled', true);
-                $('#btMod').prop('disabled', false);
-                $('#btToFTP').prop('disabled', true); //true-btn不能使用
+               $('#btAdd').prop('disabled', true);
+               document.getElementById("btAdd").style.background = 'gray';
+               $('#btMod').prop('disabled', false);
+               document.getElementById("btMod").style.background = "Green";
+               $('#btToFTP').prop('disabled', true); //true-btn不能使用
+               document.getElementById("btToFTP").style.background = 'gray';
                 $('#txtBarcode3').val('');
                 break;
         }
@@ -675,6 +684,14 @@ Timerset(sessionStorage.getItem('isamcomp'));
     let btRtn_click = function () {
         //*
         ChkLogOut(sessionStorage.getItem('isamcomp'));
+
+        $('#btAdd').prop('disabled', false);
+        document.getElementById("btAdd").style.background = "blue";
+        $('#btMod').prop('disabled', false);
+        document.getElementById("btMod").style.background = "green";
+        $('#btToFTP').prop('disabled', false);
+        document.getElementById("btToFTP").style.background = "gold";
+
         if (EditMode == "Q") {
             $('#ISAM03btns').hide();
             $('#pgISAM03Init').show();
