@@ -3526,6 +3526,7 @@ namespace SVMAdmin.Controllers
                 IFormCollection rq = HttpContext.Request.Form;
                 string Shop = rq["Shop"];
                 string WorkType = rq["Type"];
+                string DelType = rq["DelType"];
                 string[] DocType = WorkType.Split(",");
                 string sql = "set nocount on;";
 
@@ -3533,22 +3534,54 @@ namespace SVMAdmin.Controllers
                 {
                     switch (DocType[i])
                     {
-                        case "T":
-                            sql += "select * into #tmpT from binweb where companycode='" + uu.CompanyId + "' and binstore='" + Shop + "';";
+                        //盤點資料清除(本店)
+                        case "T":   
+                            sql += "select * into #tmpT from binweb (nolock) where companycode='" + uu.CompanyId + "' and binstore='" + Shop + "'";
+                            if (DelType == "E") {
+                                sql += " and binman='" + uu.UserID + "'";
+                            }
+                            sql += ";";
                             sql += "insert into binweb_old select *,replace(Convert(varchar(19), getdate(), 121), '-', '/'),'" + uu.UserID + "' from #tmpT;";
-                            sql += "delete a from binweb a inner join #tmpT b on a.companycode=b.companycode and a.binstore=b.binstore and a.binno=b.binno and a.binman=b.binman and a.isamdate = b.isamdate and a.seqno = b.seqno;";
+                            sql += "delete from binweb where companycode='" + uu.CompanyId + "' and binstore='" + Shop + "'";
+                            if (DelType == "E")
+                            {
+                                sql += " and binman='" + uu.UserID + "'";
+                            }
+                            sql += ";";
                             sql += "drop table #tmpT;";
                             break;
+                        //條碼蒐集資料清除(本店)
                         case "C":
-                            sql += "select * into #tmpC from CollectWeb where companycode='" + uu.CompanyId + "' and Whno='" + Shop + "';";
+                            sql += "select * into #tmpC from CollectWeb (nolock) where companycode='" + uu.CompanyId + "' and Whno='" + Shop + "'";
+                            if (DelType == "E")
+                            {
+                                sql += " and workuser='" + uu.UserID + "'";
+                            }
+                            sql += ";";
                             sql += "insert into CollectWeb_old select *,replace(Convert(varchar(19), getdate(), 121), '-', '/'),'" + uu.UserID + "' from #tmpC;";
-                            sql += "delete a from CollectWeb a inner join #tmpC b on a.companycode=b.companycode and a.Whno=b.Whno and a.WorkUser=b.WorkUser and a.seqno=b.seqno and a.PLU=b.PLU;";
+                            sql += "delete from CollectWeb where companycode='" + uu.CompanyId + "' and Whno='" + Shop + "'";
+                            if (DelType == "E")
+                            {
+                                sql += " and workuser='" + uu.UserID + "'";
+                            }
+                            sql += ";";
                             sql += "drop table #tmpC;";
                             break;
+                        //出貨/調撥資料清除(本店)
                         case "D":
-                            sql += "select * into #tmpD from Deliveryweb where companycode='" + uu.CompanyId + "' and WhnoOut='" + Shop + "';";
+                            sql += "select * into #tmpD from Deliveryweb (nolock) where companycode='" + uu.CompanyId + "' and WhnoOut='" + Shop + "'";
+                            if (DelType == "E")
+                            {
+                                sql += " and outuser='" + uu.UserID + "'";
+                            }
+                            sql += ";";
                             sql += "insert into Deliveryweb_old select *,replace(Convert(varchar(19), getdate(), 121), '-', '/'),'" + uu.UserID + "' from #tmpD;";
-                            sql += "delete a from Deliveryweb a inner join #tmpD b on a.companycode=b.companycode and a.WhnoOut=b.WhnoOut and a.DocDate=b.DocDate and a.OutUser=b.OutUser and a.WhnoIn=b.WhnoIn and a.seqno=b.seqno and a.PLU=b.PLU;";
+                            sql += "delete from Deliveryweb where companycode='" + uu.CompanyId + "' and WhnoOut='" + Shop + "'";
+                            if (DelType == "E")
+                            {
+                                sql += " and outuser='" + uu.UserID + "'";
+                            }
+                            sql += ";";
                             sql += "drop table #tmpD;";
                             break;
                         default:

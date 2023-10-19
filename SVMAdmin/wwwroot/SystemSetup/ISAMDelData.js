@@ -1,6 +1,7 @@
 ﻿var PageISAMDelData = function (ParentNode) {
 
     let EditMode = "";
+    let DelType = "";
 
     let ChkLogOut_1 = function (AfterChkLogOut_1) {
         var LoginDT = sessionStorage.getItem('LoginDT');
@@ -37,7 +38,8 @@
                 Timerset(sessionStorage.getItem('isamcomp'));
                 var cData = {
                     Type: EditMode,
-                    Shop: $('#lblShop2').html().split(' ')[0]
+                    Shop: $('#lblShop2').html().split(' ')[0],
+                    DelType: DelType
                 }
                 PostToWebApi({ url: "api/SystemSetup/DelISAMData", data: cData, success: AfterDelISAMData });
             }
@@ -48,6 +50,7 @@
         ChkLogOut(sessionStorage.getItem('isamcomp'));
         Timerset(sessionStorage.getItem('isamcomp'));
         EditMode = "T,C,D";
+        DelType = "";
         DyConfirm("確認要清除全部資料？  一但確認，將清除本作業店櫃所有盤點、條碼蒐集、出貨/調撥資料!!", CallDelISAMData, DummyFunction);
     }
 
@@ -55,22 +58,48 @@
         ChkLogOut(sessionStorage.getItem('isamcomp'));
         Timerset(sessionStorage.getItem('isamcomp'));
         EditMode = "D";
+        DelType = "";
         DyConfirm("確認要清除出貨/調撥資料？  一但確認，將清除本作業店櫃所有出貨/調撥資料!!", CallDelISAMData, DummyFunction);
+    }
+
+    let btDelivery_E_click = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'));
+        Timerset(sessionStorage.getItem('isamcomp'));
+        EditMode = "D";
+        DelType = "E";
+        DyConfirm("確認要清除出貨/調撥資料？  一但確認，將清除本作業店櫃人員所有出貨/調撥資料!!", CallDelISAMData, DummyFunction);
     }
 
     let btCollect_click = function () {
         ChkLogOut(sessionStorage.getItem('isamcomp'));
         Timerset(sessionStorage.getItem('isamcomp'));
         EditMode = "C";
+        DelType = "";
         DyConfirm("確認要清除條碼蒐集資料？  一但確認，將清除本作業店櫃所有條碼蒐集資料!!", CallDelISAMData, DummyFunction);
     }
 
+    let btCollect_E_click = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'));
+        Timerset(sessionStorage.getItem('isamcomp'));
+        EditMode = "C";
+        DelType = "E";
+        DyConfirm("確認要清除條碼蒐集資料？  一但確認，將清除本作業店櫃人員所有條碼蒐集資料!!", CallDelISAMData, DummyFunction);
+    }
 
     let btBIN_click = function () {
         ChkLogOut(sessionStorage.getItem('isamcomp'));
         Timerset(sessionStorage.getItem('isamcomp'));
         EditMode = "T";
+        DelType = "";
         DyConfirm("確認要清除盤點資料？  一但確認，將清除本作業店櫃所有盤點資料!!", CallDelISAMData, DummyFunction);
+    }
+
+    let btBIN_E_click = function () {
+        ChkLogOut(sessionStorage.getItem('isamcomp'));
+        Timerset(sessionStorage.getItem('isamcomp'));
+        EditMode = "T";
+        DelType = "E";
+        DyConfirm("確認要清除盤點資料？  一但確認，將清除本作業店櫃人員所有盤點資料!!", CallDelISAMData, DummyFunction);
     }
 
 
@@ -91,6 +120,10 @@
         $('#btBIN').click(function () { btBIN_click(); });
         $('#btCollect').click(function () { btCollect_click(); });
         $('#btDelivery').click(function () { btDelivery_click(); });
+
+        $('#btBIN_E').click(function () { btBIN_E_click(); });
+        $('#btCollect_E').click(function () { btCollect_E_click(); });
+        $('#btDelivery_E').click(function () { btDelivery_E_click(); });
         $('#btAll').click(function () { btAll_click(); });
 
     };
