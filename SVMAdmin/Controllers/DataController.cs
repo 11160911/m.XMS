@@ -5405,10 +5405,12 @@ namespace SVMAdmin.Controllers
 
                 sql = "Select CompanyCode, PP_No, StartDate, EndDate, ApproveDate From PromotePriceHWeb (Nolock) " +
                      "Where CompanyCode='" + uu.CompanyId + "' And WhNoFlag='Y' And IsNull(ApproveDate,'')<>'' And IsNull(DefeasanceDate,'')='' " +
+                     "and convert(char(10),getdate(),111) between StartDate and EndDate " +
                      "Union " +
                      "Select H.CompanyCode, H.PP_No, H.StartDate, H.EndDate, H.ApproveDate " +
                      "From PromotePriceHWeb H (Nolock) Inner Join PromotePriceShopWeb S (Nolock) On H.CompanyCode=S.CompanyCode And H.PP_No=S.PP_No " +
-                     "Where H.CompanyCode='" + uu.CompanyId + "' And WhNoFlag='N' And IsNull(ApproveDate,'')<>'' And IsNull(DefeasanceDate,'')='' And S.WhNo='" + WhNo + "'";
+                     "Where H.CompanyCode='" + uu.CompanyId + "' And WhNoFlag='N' And IsNull(ApproveDate,'')<>'' And IsNull(DefeasanceDate,'')='' And S.WhNo='" + WhNo + "' " +
+                     "and convert(char(10),getdate(),111) between StartDate and EndDate ";
 
                 //取得促銷資料
                 if (dtQPLU.Rows.Count > 0)
