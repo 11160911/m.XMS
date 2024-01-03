@@ -765,7 +765,7 @@ namespace SVMAdmin
 
                     FtpWebRequest reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri(a + FileName));
                     reqFtp.UseBinary = true;
-                    reqFtp.UsePassive = false; //false-PORT主動模式
+                    reqFtp.UsePassive = true; //false-PORT主動模式
                     reqFtp.Credentials = new NetworkCredential(FTPID, FTPPWD);
                     reqFtp.KeepAlive = false;
                     reqFtp.Method = WebRequestMethods.Ftp.UploadFile;
@@ -1038,7 +1038,7 @@ namespace SVMAdmin
                     string url = a + dirName;
                     FtpWebRequest reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri(url));
                     reqFtp.UseBinary = true;
-                    reqFtp.UsePassive = false; //false-PORT主動模式
+                    reqFtp.UsePassive = true; //false-PORT主動模式
                                                // reqFtp.KeepAlive = false;
                     reqFtp.Method = WebRequestMethods.Ftp.MakeDirectory;
                     reqFtp.Credentials = new NetworkCredential(FTPID, FTPPWD);
@@ -1086,7 +1086,7 @@ namespace SVMAdmin
                 {
                     FtpWebRequest reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri(a));
                     reqFtp.UseBinary = true;
-                    reqFtp.UsePassive = false; //false-PORT主動模式
+                    reqFtp.UsePassive = true; //false-PORT主動模式
                     reqFtp.Credentials = new NetworkCredential(FTPID, FTPPWD);
                     reqFtp.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
                     FtpWebResponse resFtp = null;
