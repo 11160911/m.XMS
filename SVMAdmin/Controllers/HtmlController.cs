@@ -101,11 +101,11 @@ namespace SVMAdmin.Controllers
 
 
         //
-        [Route("SystemSetup/ISAM01")]
-        public IActionResult ISAM01()
+        [Route("SystemSetup/mXMS01")]
+        public IActionResult mXMS01()
         {
             HtmlAgilityPack.HtmlDocument doc1 = new HtmlAgilityPack.HtmlDocument();
-            string strHtml = System.IO.File.ReadAllText(ConstList.HostEnvironment.WebRootPath + @"\SystemSetup\ISAM01.html".AdjPathByOS());
+            string strHtml = System.IO.File.ReadAllText(ConstList.HostEnvironment.WebRootPath + @"\SystemSetup\mXMS01.html".AdjPathByOS());
             doc1.LoadHtml(strHtml);
 
             //Remove Node
@@ -126,7 +126,7 @@ namespace SVMAdmin.Controllers
             //RemoveAllChildren
             NodeRemove = new string[] {
                  "//ul[contains(@class,'app-menu')]",
-                 "//table[@id='tbISAM01Mod']/tbody"
+                 "//table[@id='tbmXMS01Mod']/tbody"
             };
             for (int i = 0; i < NodeRemove.Length; i++)
             {

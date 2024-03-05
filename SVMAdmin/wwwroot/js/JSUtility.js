@@ -1055,8 +1055,8 @@ var Timerset = function (searchComp) {
     var divN = $('<div></div>');
     divN.load(pg + " #Timer", function () {
         var timer = $('#Timer');
-        var ShowNumber = 600;
-        var number = 600;
+        var ShowNumber = 6000;
+        var number = 6000;
         timer.text(SecToHMS(number));
         
         LogOutTimer = setInterval(function () {
@@ -1066,10 +1066,7 @@ var Timerset = function (searchComp) {
                 number = 0;
 
                 DyAlert("您已超過" + ShowNumber / 60 + "分鐘未執行作業", function () {
-                    var cData = {
-                        LoginDT: LoginDT
-                    }
-                    PostToWebApi({ url: "api/js/UpdateLogOutT", data: cData, success: AfterUpdateLogOutT });
+                    window.location.href = "Login" + searchComp_1;
                 },"系統已自動登出","請按[確定]，回到登入畫面");
 
             }
@@ -1084,14 +1081,6 @@ var Timerset = function (searchComp) {
     
 }
 
-let AfterUpdateLogOutT = function (data) {
-
-    if (ReturnMsg(data, 0) != "UpdateLogOutTOK") {
-        DyAlert(ReturnMsg(data, 1));
-    } else {
-        window.location.href = "Login" + searchComp_1;
-    }
-}
 
 
 var searchComp_LogOut;

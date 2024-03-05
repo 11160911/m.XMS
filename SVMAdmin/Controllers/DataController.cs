@@ -135,7 +135,7 @@ namespace SVMAdmin.Controllers
             uu.CompanyId = BeforeCompanyID;
 
             string sql = "";
-            sql += "Select ChineseName from CompanyWeb";
+            sql += "Select ChineseName from Company";
             sql += " where CompanyCode='" + BeforeCompanyID + "'";
 
 
@@ -185,11 +185,11 @@ namespace SVMAdmin.Controllers
                 }
                 else
                 {
-                    sql = "select CompanyCode,Man_ID,Man_Name,CONVERT(varchar(20),CONVERT(varbinary(60),Password)) Password from EmployeeWeb ";
+                    sql = "select * from Employee (nolock) ";
                     sql += " where CompanyCode='" + CompanyID.SqlQuote() + "'";
                     sql += " and Man_ID='" + USERID.SqlQuote() + "'";
-                    sql += " and CONVERT(varchar(20),CONVERT(varbinary(60),Password))='" + PASSWORD.SqlQuote() + "'";
-                    sql += " and Password<>''";
+                    sql += " and isnull(Password,'')='" + PASSWORD.SqlQuote() + "'";
+                    sql += " and isnull(Password,'')<>''";
                 }
 
                 DataTable dtTmp = PubUtility.SqlQry(sql, uu, "SYS");
@@ -198,28 +198,6 @@ namespace SVMAdmin.Controllers
                 {
                     uu.CompanyId = Convert.ToString(dtTmp.Rows[0]["CompanyCode"]);
                     uu.UserID = Convert.ToString(dtTmp.Rows[0]["Man_ID"]);
-
-                    //20220817 增加檢查員工是否重複登入
-                    sql = "Select * from ISAMLoginRecWeb (nolock) ";
-                    sql += " where CompanyCode='" + uu.CompanyId + "' and Man_ID='" + uu.UserID + "' ";
-                    sql += " and isnull(LogOutType,'')=''";
-                    DataTable dtLogin = PubUtility.SqlQry(sql, uu, "SYS");
-                    if (dtLogin.Rows.Count > 0)
-                    {
-                        sql = "Update ISAMLoginRecWeb Set LogOutType='X' Where Companycode='" + uu.CompanyId + "' ";
-                        sql += "and Man_ID='" + uu.UserID + "' ";
-                        sql += "and isnull(LogOutType,'')='' ";
-                        PubUtility.ExecuteSql(sql, uu, "SYS");
-                        throw new Exception("二次登入");
-                    }
-                    else
-                    {
-                        sql = "Insert into ISAMLoginRecWeb (CompanyCode,CrtUSer,CrtDate,CrtTime,ModUser,ModDate,ModTime,Man_ID,LogInDT,LogOutDT,LogOutType) ";
-                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "','" + ldt_Date.Rows[0][0].ToString() + "','" + ldt_Date.Rows[0][1].ToString() + "',";
-                        sql += "'" + uu.UserID + "','" + ldt_Date.Rows[0][0].ToString() + "','" + ldt_Date.Rows[0][1].ToString() + "',";
-                        sql += "'" + uu.UserID + "','" + ldt_Date.Rows[0][0].ToString() + "' + ' ' + left('" + ldt_Date.Rows[0][1].ToString() + "',8),'',''";
-                        PubUtility.ExecuteSql(sql, uu, "SYS");
-                    }
                 }
 
                 if (dtTmp.Rows.Count == 0)
@@ -231,13 +209,6 @@ namespace SVMAdmin.Controllers
                 string token = PubUtility.GenerateJwtToken(uu);
                 dtTmp.Rows[0]["token"] = token;
                 ds.Tables.Add(dtTmp);
-
-                sql = "Select * from ISAMLoginRecWeb (nolock) Where Companycode='" + uu.CompanyId + "' ";
-                sql += "and Man_ID='" + uu.UserID + "' ";
-                sql += "and LoginDT='" + ldt_Date.Rows[0][0].ToString() + "' + ' ' + left('" + ldt_Date.Rows[0][1].ToString() + "',8) ";
-                DataTable dt = PubUtility.SqlQry(sql, uu, "SYS");
-                dt.TableName = "dtLogin";
-                ds.Tables.Add(dt);
             }
             catch (Exception err)
             {
@@ -340,39 +311,15 @@ namespace SVMAdmin.Controllers
                     if (dt.DataSet == null)
                         ds.Tables.Add(dt);
 
-                string sql = "select a.Man_Name,b.ChineseName,a.WhNo";
-                sql += " from EmployeeWeb a";
-                sql += " left join CompanyWeb b on a.CompanyCode=b.CompanyCode";
+                string sql = "select a.Man_Name,b.ChineseName,a.WhNo,c.ST_SName";
+                sql += " from Employee a (nolock) ";
+                sql += " left join Company b (nolock) on a.CompanyCode=b.CompanyCode";
+                sql += " left join Warehouse c (nolock) on a.WhNo=c.ST_ID and c.CompanyCode=a.CompanyCode ";
                 sql += " where a.Man_ID='" + uu.UserID + "'";
                 sql += " and a.CompanyCode='" + uu.CompanyId + "' ";
                 DataTable dtU = PubUtility.SqlQry(sql, uu, "SYS");
-                dtU.TableName = "dtEmployeeWeb";
+                dtU.TableName = "dtEmployee";
                 ds.Tables.Add(dtU);
-
-                //新增登入者的公司別,員工代碼,所屬店櫃
-                if (dtU.Rows.Count > 0)
-                {
-                    sql = "select *";
-                    sql += " from ISAMShopWeb (nolock) where CompanyCode='" + uu.CompanyId + "'";
-                    sql += " and Man_ID='" + uu.UserID + "' ";
-                    DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
-                    if (dtE.Rows.Count > 0)
-                    {
-                        sql = "update ISAMShopWeb set WhNo='" + dtU.Rows[0]["WhNo"].ToString() + "'";
-                        sql += ",ModDate=Convert(varchar,getdate(),111),ModTime=Substring(Convert(varchar,getdate(),121),12,12),ModUser='LOGIN'";
-                        sql += " where CompanyCode='" + uu.CompanyId + "' and Man_ID='" + uu.UserID + "'";
-                        PubUtility.ExecuteSql(sql, uu, "SYS");
-                    }
-                    else
-                    {
-                        sql = "Insert into ISAMShopWeb (CompanyCode,CrtUSer,CrtDate,CrtTime,ModUser,ModDate,ModTime,Man_ID,WhNo) ";
-                        sql += "values ('" + uu.CompanyId + "','LOGIN',Convert(varchar,getdate(),111),Substring(Convert(varchar,getdate(),121),12,12)";
-                        sql += ",'LOGIN',Convert(varchar,getdate(),111),Substring(Convert(varchar,getdate(),121),12,12)";
-                        sql += ",'" + uu.UserID + "','" + dtU.Rows[0]["WhNo"].ToString() + "')";
-                        PubUtility.ExecuteSql(sql, uu, "SYS");
-                    }
-                }
-
             }
             catch (Exception err)
             {
@@ -2784,11 +2731,19 @@ namespace SVMAdmin.Controllers
             try
             {
                 
-                string sql = "select Man_ID,Whno from ISAMShopWeb (nolock) ";
-                sql += "where Companycode='"+ uu.CompanyId +"' and Man_ID='"+ uu.UserID +"'";
-                DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
-                dtC.TableName = "dtComp";
-                ds.Tables.Add(dtC);
+                string sql = "select a.Man_ID,a.Whno,b.st_sname from Employee a (nolock) ";
+                sql += "left join warehouse b (nolock) on a.whno=b.st_id and b.companycode=a.companycode ";
+                sql += "where a.Companycode='"+ uu.CompanyId +"' and a.Man_ID='"+ uu.UserID +"'";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+
+                sql = "select '' as ID,'' as Name,0 as cash,0 as Num,0 as cnt,0 as cashcnt ";
+                sql += "from SalesH h(nolock) ";
+                sql += "where 1=2 ";
+                DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                dtQ.TableName = "dtQ";
+                ds.Tables.Add(dtQ);
 
             }
             catch (Exception err)
@@ -6165,6 +6120,519 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("Query1")]
+        public ActionResult SystemSetup_Query1()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "Query1OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string OpenDateS = rq["OpenDateS"];
+                string OpenDateE = rq["OpenDateE"];
+                string Shop = rq["Shop"];
+                string Type = rq["Type"];
+
+                string sql = "";
+
+                string sql1 = "select ShopNo, OpenDate, CkNo, ChrNo, sum(Cash)Cash,SUM(Num)Num into #SD ";
+                sql1 += "from SalesD (nolock) ";
+                sql1 += "where CompanyCode='" + uu.CompanyId + "' ";
+                sql1 += "and OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
+                if (Shop != "")
+                {
+                    sql1 += "and ShopNo='" + Shop + "' ";
+                }
+                sql1 += "group by ShopNo,OpenDate,CkNo,ChrNo; ";
+
+                if (Type == "A") {
+                    sql = "select w.ST_placeID as ID,t.Type_Name as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql += "from SalesH h(nolock) ";
+                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
+                    sql += "inner join warehouse w(nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode ";
+                    sql += "inner join TypeData t(nolock) on w.ST_placeID = t.Type_ID and t.Type_Code = 'A' and t.CompanyCode = h.CompanyCode ";
+                    sql += "where h.CompanyCode='" + uu.CompanyId + "' "  ;
+                    sql += "group by w.ST_placeID,t.Type_Name ";
+                    sql += "order by w.ST_placeID ";
+                    DataTable dtQ = PubUtility.SqlQry(sql1+sql, uu, "SYS");
+                    dtQ.TableName = "dtQ";
+                    ds.Tables.Add(dtQ);
+
+                    sql = "select w.ST_placeID as ID,t.Type_Name as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql += "from SalesH h(nolock) ";
+                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
+                    sql += "inner join warehouse w(nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode ";
+                    sql += "inner join TypeData t(nolock) on w.ST_placeID = t.Type_ID and t.Type_Code = 'A' and t.CompanyCode = h.CompanyCode ";
+                    sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                    sql += "group by w.ST_placeID,t.Type_Name ";
+                    sql += "order by w.ST_placeID ";
+                    DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                    dtV.TableName = "dtV";
+                    ds.Tables.Add(dtV);
+                }
+                else if (Type == "S") {
+                    sql = "select h.ShopNo as ID,w.st_sname as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql += "from SalesH h(nolock) ";
+                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
+                    sql += "inner join warehouse w (nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode ";
+                    sql += "where h.CompanyCode='" + uu.CompanyId + "' ";
+                    sql += "group by h.ShopNo,w.st_sname ";
+                    sql += "order by h.ShopNo ";
+                    DataTable dtQ = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                    dtQ.TableName = "dtQ";
+                    ds.Tables.Add(dtQ);
+
+                    sql = "select h.ShopNo as ID,w.st_sname as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql += "from SalesH h(nolock) ";
+                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
+                    sql += "inner join warehouse w (nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode ";
+                    sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                    sql += "group by h.ShopNo,w.st_sname ";
+                    sql += "order by h.ShopNo ";
+                    DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                    dtV.TableName = "dtV";
+                    ds.Tables.Add(dtV);
+                }
+                else if (Type == "D")
+                {
+                    sql = "select h.OpenDate as ID,h.OpenDate as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql += "from SalesH h(nolock) ";
+                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
+                    sql += "where h.CompanyCode='" + uu.CompanyId + "' ";
+                    sql += "group by h.OpenDate ";
+                    sql += "order by h.OpenDate ";
+                    DataTable dtQ = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                    dtQ.TableName = "dtQ";
+                    ds.Tables.Add(dtQ);
+
+                    sql = "select h.OpenDate as ID,h.OpenDate as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql += "from SalesH h(nolock) ";
+                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
+                    sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                    sql += "group by h.OpenDate ";
+                    sql += "order by h.OpenDate ";
+                    DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                    dtV.TableName = "dtV";
+                    ds.Tables.Add(dtV);
+                }
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("Query_Area_Step1")]
+        public ActionResult SystemSetup_Query_Area_Step1()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "Query_Area_Step1OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string OpenDateS = rq["OpenDateS"];
+                string OpenDateE = rq["OpenDateE"];
+                string Shop = rq["Shop"];
+                string Area = rq["Area"];
+                string Type_Step1 = rq["Type_Step1"];
+
+                string sql = "";
+
+                string sql1 = "select ShopNo, OpenDate, CkNo, ChrNo, sum(Cash)Cash,SUM(Num)Num into #SD ";
+                sql1 += "from SalesD (nolock) ";
+                sql1 += "where CompanyCode='" + uu.CompanyId + "' ";
+                sql1 += "and OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
+                if (Shop != "")
+                {
+                    sql1 += "and ShopNo='" + Shop + "' ";
+                }
+                sql1 += "group by ShopNo,OpenDate,CkNo,ChrNo; ";
+
+                if (Type_Step1 == "S")
+                {
+                    sql = "select h.ShopNo as ID,w.st_sname as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql += "from SalesH h(nolock) ";
+                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
+                    sql += "inner join warehouse w (nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode and w.ST_placeID='" + Area + "' ";
+                    sql += "where h.CompanyCode='" + uu.CompanyId + "' ";
+                    sql += "group by h.ShopNo,w.st_sname ";
+                    sql += "order by h.ShopNo ";
+                    DataTable dtQ = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                    dtQ.TableName = "dtQ";
+                    ds.Tables.Add(dtQ);
+
+                    sql = "select h.ShopNo as ID,w.st_sname as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql += "from SalesH h(nolock) ";
+                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
+                    sql += "inner join warehouse w (nolock) on h.ShopNo=w.ST_ID and w.CompanyCode=h.CompanyCode and w.ST_placeID='" + Area + "' ";
+                    sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                    sql += "group by h.ShopNo,w.st_sname ";
+                    sql += "order by h.ShopNo ";
+                    DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                    dtV.TableName = "dtV";
+                    ds.Tables.Add(dtV);
+                }
+                else if (Type_Step1 == "D")
+                {
+                    sql = "select h.OpenDate as ID,h.OpenDate as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql += "from SalesH h(nolock) ";
+                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
+                    sql += "inner join warehouse w (nolock) on h.ShopNo=w.ST_ID and w.CompanyCode=h.CompanyCode and w.ST_placeID='" + Area + "' ";
+                    sql += "where h.CompanyCode='" + uu.CompanyId + "' ";
+                    sql += "group by h.OpenDate ";
+                    sql += "order by h.OpenDate ";
+                    DataTable dtQ = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                    dtQ.TableName = "dtQ";
+                    ds.Tables.Add(dtQ);
+
+                    sql = "select h.OpenDate as ID,h.OpenDate as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql += "from SalesH h(nolock) ";
+                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
+                    sql += "inner join warehouse w (nolock) on h.ShopNo=w.ST_ID and w.CompanyCode=h.CompanyCode and w.ST_placeID='" + Area + "' ";
+                    sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                    sql += "group by h.OpenDate ";
+                    sql += "order by h.OpenDate ";
+                    DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                    dtV.TableName = "dtV";
+                    ds.Tables.Add(dtV);
+                }
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("Query_Area_Shop_Step2")]
+        public ActionResult SystemSetup_Query_Area_Shop_Step2()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "Query_Area_Shop_Step2OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string OpenDateS = rq["OpenDateS"];
+                string OpenDateE = rq["OpenDateE"];
+                string Area = rq["Area"];
+                string Shop = rq["Shop"];
+              
+                string sql = "";
+
+                string sql1 = "select ShopNo, OpenDate, CkNo, ChrNo, sum(Cash)Cash,SUM(Num)Num into #SD ";
+                sql1 += "from SalesD (nolock) ";
+                sql1 += "where CompanyCode='" + uu.CompanyId + "' ";
+                sql1 += "and OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
+                if (Shop != "")
+                {
+                    sql1 += "and ShopNo='" + Shop + "' ";
+                }
+                sql1 += "group by ShopNo,OpenDate,CkNo,ChrNo; ";
+
+                sql = "select h.OpenDate as ID,h.OpenDate as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                sql += "from SalesH h(nolock) ";
+                sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
+                sql += "inner join warehouse w (nolock) on h.ShopNo=w.ST_ID and w.CompanyCode=h.CompanyCode and w.ST_placeID='" + Area + "' ";
+                sql += "where h.CompanyCode='" + uu.CompanyId + "' ";
+                sql += "group by h.OpenDate ";
+                sql += "order by h.OpenDate ";
+                DataTable dtQ = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                dtQ.TableName = "dtQ";
+                ds.Tables.Add(dtQ);
+
+                sql = "select h.OpenDate as ID,h.OpenDate as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                sql += "from SalesH h(nolock) ";
+                sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
+                sql += "inner join warehouse w (nolock) on h.ShopNo=w.ST_ID and w.CompanyCode=h.CompanyCode and w.ST_placeID='" + Area + "' ";
+                sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                sql += "group by h.OpenDate ";
+                sql += "order by h.OpenDate ";
+                DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                dtV.TableName = "dtV";
+                ds.Tables.Add(dtV);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("Query_Area_Date_Step2")]
+        public ActionResult SystemSetup_Query_Area_Date_Step2()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "Query_Area_Date_Step2OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string OpenDate = rq["OpenDate"];
+                string Area = rq["Area"];
+                string Date = rq["Date"];
+                string Shop = rq["Shop"];
+
+                string sql = "";
+
+                string sql1 = "select ShopNo, OpenDate, CkNo, ChrNo, sum(Cash)Cash,SUM(Num)Num into #SD ";
+                sql1 += "from SalesD (nolock) ";
+                sql1 += "where CompanyCode='" + uu.CompanyId + "' ";
+                sql1 += "and OpenDate='" + OpenDate + "' ";
+                if (Shop != "")
+                {
+                    sql1 += "and ShopNo='" + Shop + "' ";
+                }
+                sql1 += "group by ShopNo,OpenDate,CkNo,ChrNo; ";
+
+                sql = "select h.ShopNo as ID,w.st_sname as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                sql += "from SalesH h(nolock) ";
+                sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
+                sql += "inner join warehouse w (nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode and w.ST_placeID='" + Area + "' ";
+                sql += "where h.CompanyCode='" + uu.CompanyId + "' ";
+                sql += "group by h.ShopNo,w.st_sname ";
+                sql += "order by h.ShopNo ";
+                DataTable dtQ = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                dtQ.TableName = "dtQ";
+                ds.Tables.Add(dtQ);
+
+                sql = "select h.ShopNo as ID,w.st_sname as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                sql += "from SalesH h(nolock) ";
+                sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
+                sql += "inner join warehouse w (nolock) on h.ShopNo=w.ST_ID and w.CompanyCode=h.CompanyCode and w.ST_placeID='" + Area + "' ";
+                sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                sql += "group by h.ShopNo,w.st_sname ";
+                sql += "order by h.ShopNo ";
+                DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                dtV.TableName = "dtV";
+                ds.Tables.Add(dtV);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("Query_Shop_Step1")]
+        public ActionResult SystemSetup_Query_Shop_Step1()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "Query_Shop_Step1OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string OpenDateS = rq["OpenDateS"];
+                string OpenDateE = rq["OpenDateE"];
+                string Shop = rq["Shop"];
+
+                string sql = "";
+
+                string sql1 = "select ShopNo, OpenDate, CkNo, ChrNo, sum(Cash)Cash,SUM(Num)Num into #SD ";
+                sql1 += "from SalesD (nolock) ";
+                sql1 += "where CompanyCode='" + uu.CompanyId + "' ";
+                sql1 += "and OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
+                if (Shop != "")
+                {
+                    sql1 += "and ShopNo='" + Shop + "' ";
+                }
+                sql1 += "group by ShopNo,OpenDate,CkNo,ChrNo; ";
+
+                sql = "select h.OpenDate as ID,h.OpenDate as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                sql += "from SalesH h(nolock) ";
+                sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
+                sql += "inner join warehouse w (nolock) on h.ShopNo=w.ST_ID and w.CompanyCode=h.CompanyCode ";
+                sql += "where h.CompanyCode='" + uu.CompanyId + "' ";
+                sql += "group by h.OpenDate ";
+                sql += "order by h.OpenDate ";
+                DataTable dtQ = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                dtQ.TableName = "dtQ";
+                ds.Tables.Add(dtQ);
+
+                sql = "select h.OpenDate as ID,h.OpenDate as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                sql += "from SalesH h(nolock) ";
+                sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
+                sql += "inner join warehouse w (nolock) on h.ShopNo=w.ST_ID and w.CompanyCode=h.CompanyCode ";
+                sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                sql += "group by h.OpenDate ";
+                sql += "order by h.OpenDate ";
+                DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                dtV.TableName = "dtV";
+                ds.Tables.Add(dtV);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("Query_Date_Step1")]
+        public ActionResult SystemSetup_Query_Date_Step1()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "Query_Date_Step1OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string OpenDateS = rq["OpenDateS"];
+                string OpenDateE = rq["OpenDateE"];
+                string Shop = rq["Shop"];
+                string Date = rq["Date"];
+                string Type_Step1 = rq["Type_Step1"];
+
+                string sql = "";
+
+                string sql1 = "select ShopNo, OpenDate, CkNo, ChrNo, sum(Cash)Cash,SUM(Num)Num into #SD ";
+                sql1 += "from SalesD (nolock) ";
+                sql1 += "where CompanyCode='" + uu.CompanyId + "' ";
+                sql1 += "and OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
+                if (Shop != "")
+                {
+                    sql1 += "and ShopNo='" + Shop + "' ";
+                }
+                if (Date != "")
+                {
+                    sql1 += "and OpenDate='" + Date + "' ";
+                }
+                sql1 += "group by ShopNo,OpenDate,CkNo,ChrNo; ";
+
+                if (Type_Step1 == "A")
+                {
+                    sql = "select w.ST_placeID as ID,t.Type_Name as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql += "from SalesH h(nolock) ";
+                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
+                    sql += "inner join warehouse w(nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode ";
+                    sql += "inner join TypeData t(nolock) on w.ST_placeID = t.Type_ID and t.Type_Code = 'A' and t.CompanyCode = h.CompanyCode ";
+                    sql += "where h.CompanyCode='" + uu.CompanyId + "' ";
+                    sql += "group by w.ST_placeID,t.Type_Name ";
+                    sql += "order by w.ST_placeID ";
+                    DataTable dtQ = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                    dtQ.TableName = "dtQ";
+                    ds.Tables.Add(dtQ);
+
+                    sql = "select w.ST_placeID as ID,t.Type_Name as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql += "from SalesH h(nolock) ";
+                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
+                    sql += "inner join warehouse w(nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode ";
+                    sql += "inner join TypeData t(nolock) on w.ST_placeID = t.Type_ID and t.Type_Code = 'A' and t.CompanyCode = h.CompanyCode ";
+                    sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                    sql += "group by w.ST_placeID,t.Type_Name ";
+                    sql += "order by w.ST_placeID ";
+                    DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                    dtV.TableName = "dtV";
+                    ds.Tables.Add(dtV);
+                }
+                else if (Type_Step1 == "S")
+                {
+                    sql = "select h.ShopNo as ID,w.st_sname as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql += "from SalesH h(nolock) ";
+                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
+                    sql += "inner join warehouse w (nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode ";
+                    sql += "where h.CompanyCode='" + uu.CompanyId + "' ";
+                    sql += "group by h.ShopNo,w.st_sname ";
+                    sql += "order by h.ShopNo ";
+                    DataTable dtQ = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                    dtQ.TableName = "dtQ";
+                    ds.Tables.Add(dtQ);
+
+                    sql = "select h.ShopNo as ID,w.st_sname as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql += "from SalesH h(nolock) ";
+                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
+                    sql += "inner join warehouse w (nolock) on h.ShopNo=w.ST_ID and w.CompanyCode=h.CompanyCode ";
+                    sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                    sql += "group by h.ShopNo,w.st_sname ";
+                    sql += "order by h.ShopNo ";
+                    DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                    dtV.TableName = "dtV";
+                    ds.Tables.Add(dtV);
+                }
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("Query_Date_Area_Step2")]
+        public ActionResult SystemSetup_Query_Date_Area_Step2()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "Query_Date_Area_Step2OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string OpenDateS = rq["OpenDateS"];
+                string OpenDateE = rq["OpenDateE"];
+                string Shop = rq["Shop"];
+                string Date = rq["Date"];
+                string Area = rq["Area"];
+
+                string sql = "";
+
+                string sql1 = "select ShopNo, OpenDate, CkNo, ChrNo, sum(Cash)Cash,SUM(Num)Num into #SD ";
+                sql1 += "from SalesD (nolock) ";
+                sql1 += "where CompanyCode='" + uu.CompanyId + "' ";
+                sql1 += "and OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
+                if (Shop != "")
+                {
+                    sql1 += "and ShopNo='" + Shop + "' ";
+                }
+                if (Date != "")
+                {
+                    sql1 += "and OpenDate='" + Date + "' ";
+                }
+                sql1 += "group by ShopNo,OpenDate,CkNo,ChrNo; ";
+
+                sql = "select h.ShopNo as ID,w.st_sname as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                sql += "from SalesH h(nolock) ";
+                sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
+                sql += "inner join warehouse w (nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode and w.ST_PlaceID='" + Area + "' ";
+                sql += "where h.CompanyCode='" + uu.CompanyId + "' ";
+                sql += "group by h.ShopNo,w.st_sname ";
+                sql += "order by h.ShopNo ";
+                DataTable dtQ = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                dtQ.TableName = "dtQ";
+                ds.Tables.Add(dtQ);
+
+                sql = "select h.ShopNo as ID,w.st_sname as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                sql += "from SalesH h(nolock) ";
+                sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
+                sql += "inner join warehouse w (nolock) on h.ShopNo=w.ST_ID and w.CompanyCode=h.CompanyCode and w.ST_PlaceID='" + Area + "' ";
+                sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                sql += "group by h.ShopNo,w.st_sname ";
+                sql += "order by h.ShopNo ";
+                DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                dtV.TableName = "dtV";
+                ds.Tables.Add(dtV);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
 
         //[Route("SystemSetup/FTPUpload")]
         //public ActionResult SystemSetup_FTPUpload()
@@ -6230,7 +6698,7 @@ namespace SVMAdmin.Controllers
         //        else {
         //            throw new Exception("FTP位址");
         //        }
-                
+
         //    }
         //    catch (Exception err)
         //    {

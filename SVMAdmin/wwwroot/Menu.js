@@ -49,33 +49,15 @@
             
             $("a[href='Login']").attr("href", "Login" + sessionStorage.getItem('isamcomp'));
 
-            $('#navbarDropdown').click(function () {
-                ChkLogOut(sessionStorage.getItem('isamcomp'))
-            });
-
-            $('#logout').click(function () {
-                btLogOutY_click();
-            });
-
             $('.right_col').mousedown(function (e) {
                 Sidebar_Close();
             })
 
-            //$(window).on("beforeunload", function () {
-            //    if (LogOut == true) {
-            //    } else {
-            //        LogOutX();
-            //    }
-               
-            //})
-
-            var dtEmployeeSV = data.getElementsByTagName('dtEmployeeWeb');
-            $('#navbarDropdown').text(GetNodeValue(dtEmployeeSV[0], 'ChineseName') + ' - ' + GetNodeValue(dtEmployeeSV[0], 'Man_Name'));
+            var dtEmployeeSV = data.getElementsByTagName('dtEmployee');
+            $('#navbarDropdown').text(GetNodeValue(dtEmployeeSV[0], 'ST_SName') + ' - ' + GetNodeValue(dtEmployeeSV[0], 'Man_Name'));
             dtFun = data.getElementsByTagName('dtAllFunction');
             SetMenu();
             init_sidebar();
-            //init_autosize();
-            //$.getScript('js/custom.js', function (data, textStatus, jqxhr) { });
             return;
         }
 
@@ -97,23 +79,6 @@
         }
 
 
-    };
-
-    let btLogOutY_click = function () {
-        var LoginDT = sessionStorage.getItem('LoginDT');
-        var cData = {
-            LoginDT: LoginDT
-        }
-        PostToWebApi({ url: "api/UpdateLogOutY", data: cData, success: AfterUpdateLogOutY });
-
-    };
-
-    let AfterUpdateLogOutY = function (data) {
-        if (ReturnMsg(data, 0) != "UpdateLogOutYOK") {
-            DyAlert(ReturnMsg(data, 1));
-        } else {
-            LogOut = true
-        }
     };
 
     let LogOutX = function () {
@@ -282,15 +247,15 @@
             console.log(pg);
             //alert(pg);
 
-            if (pg == "ISAM01") {
-                if (window.PageISAM01 == undefined)
-                    $.getScript('SystemSetup/ISAM01.js',
+            if (pg == "mXMS01") {
+                if (window.PagemXMS01 == undefined)
+                    $.getScript('SystemSetup/mXMS01.js',
                         function () {
-                            PageISAM01($(".workarea"));
+                            PagemXMS01($(".workarea"));
                         }
                     );
                 else {
-                    PageISAM01($(".workarea"));
+                    PagemXMS01($(".workarea"));
                 }
             }
 
@@ -435,42 +400,13 @@
         }
 
         $SIDEBAR_MENU.find('a').on('click', function () {
-            ChkLogOut(sessionStorage.getItem('isamcomp'))
+            //ChkLogOut(sessionStorage.getItem('isamcomp'))
             click_menu(this);
         }
         );
 
-        //$SIDEBAR_MENU.find('a').on('click', function (ev) {
-        //    var $li = $(this).parent();
-
-        //    if ($li.is('.active')) {
-        //        $li.removeClass('active active-sm');
-        //        $('ul:first', $li).slideUp(function () {
-        //            setContentHeight();
-        //        });
-        //    } else {
-        //        // prevent closing menu if we are on child menu
-        //        if (!$li.parent().is('.child_menu')) {
-        //            openUpMenu();
-        //        } else {
-        //            if ($BODY.is('nav-sm')) {
-        //                if (!$li.parent().is('child_menu')) {
-        //                    openUpMenu();
-        //                }
-        //            }
-        //        }
-
-        //        $li.addClass('active');
-
-        //        $('ul:first', $li).slideDown(function () {
-        //            setContentHeight();
-        //        });
-        //    }
-        //});
-
-        // toggle small or large menu
         $MENU_TOGGLE.on('click', function () {
-            ChkLogOut(sessionStorage.getItem('isamcomp'))
+            //ChkLogOut(sessionStorage.getItem('isamcomp'))
             if ($BODY.hasClass('nav-md')) {
                 $SIDEBAR_MENU.find('li.active ul').hide();
                 $SIDEBAR_MENU.find('li.active').addClass('active-sm').removeClass('active');

@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <AssemblyName>iSAMAdmin</AssemblyName>
+    <AssemblyName>m.XMS</AssemblyName>
+    <RootNamespace>m.XMS</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
