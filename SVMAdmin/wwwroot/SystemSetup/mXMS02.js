@@ -1,7 +1,6 @@
 ﻿var PagemXMS01 = function (ParentNode) {
 
     let grdM;
-    let grdM_Shop;
     let grdM_Area_Step1;
     let grdM_Area_Shop_Step2;
     let grdM_Area_Date_Step2;
@@ -42,30 +41,6 @@
             }
         );
 
-        grdM_Shop = new DynGrid(
-            {
-                table_lement: $('#tbSales_Shop')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6", "tdCol7", "tdCol8 label-align", "tdCol9 label-align", "tdCol10 label-align", "tdCol11"],
-                fields_info: [
-                    { type: "Text", name: "ID1", style: "" },
-                    { type: "Text", name: "Name1", style: "" },
-                    { type: "TextAmt", name: "Cash1", style: "" },
-                    { type: "TextAmt", name: "Cnt1", style: "" },
-                    { type: "TextAmt", name: "CashCnt1", style: "" },
-                    { type: "Text", name: "ID2", style: "" },
-                    { type: "Text", name: "Name2", style: "" },
-                    { type: "TextAmt", name: "Cash2", style: "" },
-                    { type: "TextAmt", name: "Cnt2", style: "" },
-                    { type: "TextAmt", name: "CashCnt2", style: "" },
-                    { type: "Text", name: "VIPPercent", style: "" }
-                ],
-                //rows_per_page: 10,
-                method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton_Shop,
-                sortable: "N"
-            }
-        );
-
         grdM_Area_Step1 = new DynGrid(
             {
                 table_lement: $('#tbSales_Area_Step1')[0],
@@ -90,6 +65,7 @@
             }
         );
 
+
         grdM_Area_Shop_Step2 = new DynGrid(
             {
                 table_lement: $('#tbSales_Area_Shop_Step2')[0],
@@ -113,6 +89,7 @@
                 sortable: "N"
             }
         );
+
 
         grdM_Area_Date_Step2 = new DynGrid(
             {
@@ -222,12 +199,10 @@
         //$('#tbISAM01Mod .fa-trash-o').click(function () { btPLUDelete_click(this) });
     }
 
-    let InitModifyDeleteButton_Shop = function () {
-    }
-
     let InitModifyDeleteButton_Area_Step1 = function () {
         $('#tbSales_Area_Step1 tbody tr td').click(function () { Area_Step1_click(this) });
     }
+
 
     let InitModifyDeleteButton_Area_Shop_Step2 = function () {
    
@@ -257,27 +232,23 @@
             $('#lblOpenDate_Area_Step1').html($('#OpenDateS').val() + "~" + $('#OpenDateE').val());
             $('#lblArea_Step1').html(GetNodeValue(node, 'ID1') + " " + GetNodeValue(node, 'Name1'));
             $('#rdoShop_Area_Step1').prop('checked', true);
-            $('#modal_Area_Step1').modal('show');
-            setTimeout(function () {
-                Query_Area_Step1_click();
-            }, 500);
+            Query_Area_Step1_click();
+            //$('#modal_Area_Step1').modal('show');
         }
         else if ($('#rdoShop').prop('checked')) {
             $('#lblOpenDate_Shop_Step1').html($('#OpenDateS').val() + "~" + $('#OpenDateE').val());
             $('#lblShop_Step1').html(GetNodeValue(node, 'ID1') + " " + GetNodeValue(node, 'Name1'));
-            $('#modal_Shop_Step1').modal('show');
-            setTimeout(function () {
-                Query_Shop_Step1_click();
-            }, 500);
+            Query_Shop_Step1_click();
+            //$('#modal_Shop_Step1').modal('show');
         }
         else if ($('#rdoDate').prop('checked')) {
             $('#lblOpenDate_Date_Step1').html($('#OpenDateS').val() + "~" + $('#OpenDateE').val());
             $('#lblDate_Step1').html(GetNodeValue(node, 'ID1'));
             $('#rdoArea_Date_Step1').prop('checked', true);
-            $('#modal_Date_Step1').modal('show');
-            setTimeout(function () {
-                Query_Date_Step1_click();
-            }, 500);
+            Query_Date_Step1_click();
+            //setTimeout(function () {
+            //    $('#modal_Date_Step1').modal('show');
+            //}, 500);
         }
     };
 
@@ -289,19 +260,15 @@
 
         if ($('#rdoShop_Area_Step1').prop('checked')) {
             $('#lblOpenDate_Area_Shop_Step2').html($('#lblOpenDate_Area_Step1').html());
-            $('#lblArea_Shop_Step2').html($('#lblArea_Step1').html() + '-' + GetNodeValue(node, 'ID1') + ' ' + GetNodeValue(node, 'Name1'));
-            $('#modal_Area_Shop_Step2').modal('show');
-            setTimeout(function () {
-                Query_Area_Shop_Step2_click();
-            }, 500);
+            $('#lblArea_Shop_Step2').html($('#lblArea_Step1').html() + ";" + GetNodeValue(node, 'ID1') + " " + GetNodeValue(node, 'Name1'));
+            Query_Area_Shop_Step2_click();
+            //$('#modal_Area_Shop_Step2').modal('show');
         }
         else if ($('#rdoDate_Area_Step1').prop('checked')) {
             $('#lblOpenDate_Area_Date_Step2').html($('#lblOpenDate_Area_Step1').html());
-            $('#lblArea_Date_Step2').html($('#lblArea_Step1').html() + '-' + GetNodeValue(node, 'ID1'));
-            $('#modal_Area_Date_Step2').modal('show');
-            setTimeout(function () {
-                Query_Area_Date_Step2_click();
-            }, 500);
+            $('#lblArea_Date_Step2').html($('#lblArea_Step1').html() + ";" + GetNodeValue(node, 'ID1'));
+            Query_Area_Date_Step2_click();
+            //$('#modal_Area_Date_Step2').modal('show');
         }
     };
 
@@ -312,18 +279,12 @@
 
         if ($('#rdoArea_Date_Step1').prop('checked')) {
             $('#lblOpenDate_Date_Area_Step2').html($('#lblOpenDate_Date_Step1').html());
-            $('#lblDate_Area_Step2').html($('#lblDate_Step1').html() + '-' + GetNodeValue(node, 'ID1') + ' ' + GetNodeValue(node, 'Name1'));
-            $('#modal_Date_Area_Step2').modal('show');
-            setTimeout(function () {
-                Query_Date_Area_Step2_click();
-            }, 500);
+            $('#lblDate_Area_Step2').html($('#lblDate_Step1').html() + ";" + GetNodeValue(node, 'ID1') + " " + GetNodeValue(node, 'Name1'));
+            Query_Date_Area_Step2_click();
+            //$('#modal_Date_Area_Step2').modal('show');
         }
         else if ($('#rdoShop_Date_Step1').prop('checked')) {
         }
-    };
-
-    let btExit_Shop_click = function (bt) {
-        $('#modal_Shop').modal('hide');
     };
 
     let btExit_Area_Step1_click = function (bt) {
@@ -1081,82 +1042,25 @@ Timerset(sessionStorage.getItem('isamcomp'));
 
         ShowLoading();
 
-        if ($('#txtShop1').val() == "") {
-            var Type = "";
-            if ($('#rdoArea').prop('checked')) {
-                Type = "A";
-            }
-            else if ($('#rdoShop').prop('checked')) {
-                Type = "S";
-            }
-            else if ($('#rdoDate').prop('checked')) {
-                Type = "D";
-            }
-
-            var pData = {
-                OpenDateS: $('#OpenDateS').val(),
-                OpenDateE: $('#OpenDateE').val(),
-                Type: Type
-            }
-            PostToWebApi({ url: "api/Query1", data: pData, success: afterQuery1 });
+        var Type = "";
+        if ($('#rdoArea').prop('checked')) {
+            Type = "A";
         }
-        else {
-            var pData = {
-                Shop: $('#txtShop1').val()
-            }
-            PostToWebApi({ url: "api/ChkQuery1_Shop", data: pData, success: afterChkQuery1_Shop });
+        else if ($('#rdoShop').prop('checked')) {
+            Type = "S";
         }
-    };
-
-    let afterChkQuery1_Shop = function (data) {
-        if (ReturnMsg(data, 0) != "ChkQuery1_ShopOK") {
-            CloseLoading();
-            DyAlert(ReturnMsg(data, 1));
+        else if ($('#rdoDate').prop('checked')) {
+            Type = "D";
         }
-        else {
-            var dtW = data.getElementsByTagName('dtW');
-            if (dtW.length == 0) {
-                DyAlert("無符合店櫃資料，請重新確認!");
-                $(".modal-backdrop").remove();
-                return;
-            }
 
-            $('#lblOpenDate_Shop').html($('#OpenDateS').val() + "~" + $('#OpenDateE').val());
-            $('#lblShop').html(GetNodeValue(dtW[0], "st_placeid") + ' ' + GetNodeValue(dtW[0], "type_name") + '-' + GetNodeValue(dtW[0], "st_id") + ' ' + GetNodeValue(dtW[0], "st_sname"));
-            $('#modal_Shop').modal('show');
-            setTimeout(function () {
-                Query1_Shop_click();
-            }, 500);
-        }
-    };
-
-    let Query1_Shop_click = function () {
         var pData = {
             OpenDateS: $('#OpenDateS').val(),
             OpenDateE: $('#OpenDateE').val(),
-            Shop: $('#txtShop1').val()
+            Shop: $('#txtShop1').val().split(' ')[0],
+            Type: Type
         }
-        PostToWebApi({ url: "api/Query1_Shop", data: pData, success: afterQuery1_Shop });
+        PostToWebApi({ url: "api/Query1", data: pData, success: afterQuery1 });
     };
-
-    let afterQuery1_Shop = function (data) {
-        CloseLoading();
-        if (ReturnMsg(data, 0) != "Query1_ShopOK") {
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
-            var dtQ = data.getElementsByTagName('dtQ');
-            grdM_Shop.BindData(dtQ);
-
-            if (dtQ.length == 0) {
-                DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
-                return;
-            }
-        }
-    };
-
-
 
     let afterQuery1 = function (data) {
         CloseLoading();
@@ -1235,7 +1139,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 return;
             }
             else {
-                /*$('#modal_Area_Step1').modal('show');*/
+                $('#modal_Area_Step1').modal('show');
             }
 
         }
@@ -1243,8 +1147,8 @@ Timerset(sessionStorage.getItem('isamcomp'));
 
     let Query_Area_Shop_Step2_click = function () {
         ShowLoading();
-        var Area = $('#lblArea_Shop_Step2').html().split('-')[0].split(' ')[0];
-        var Shop = $('#lblArea_Shop_Step2').html().split('-')[1].split(' ')[0];
+        var Area = $('#lblArea_Shop_Step2').html().split(';')[0].split(' ')[0];
+        var Shop = $('#lblArea_Shop_Step2').html().split(';')[1].split(' ')[0];
 
         var pData = {
             OpenDateS: $('#lblOpenDate_Area_Shop_Step2').html().split('~')[0],
@@ -1271,15 +1175,15 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 return;
             }
             else {
-                //$('#modal_Area_Shop_Step2').modal('show');
+                $('#modal_Area_Shop_Step2').modal('show');
             }
         }
     };
 
     let Query_Area_Date_Step2_click = function () {
         ShowLoading();
-        var Area = $('#lblArea_Date_Step2').html().split('-')[0].split(' ')[0];
-        var Date = $('#lblArea_Date_Step2').html().split('-')[1];
+        var Area = $('#lblArea_Date_Step2').html().split(';')[0].split(' ')[0];
+        var Date = $('#lblArea_Date_Step2').html().split(';')[1];
 
         var pData = {
             OpenDate: Date,
@@ -1304,7 +1208,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 return;
             }
             else {
-                /*$('#modal_Area_Date_Step2').modal('show');*/
+                $('#modal_Area_Date_Step2').modal('show');
             }
         }
     };
@@ -1334,7 +1238,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 return;
             }
             else {
-                /*$('#modal_Shop_Step1').modal('show');*/
+                $('#modal_Shop_Step1').modal('show');
             }
 
         }
@@ -1384,7 +1288,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 return;
             }
             else {
-                /*$('#modal_Date_Step1').modal('show');*/
+                $('#modal_Date_Step1').modal('show');
             }
 
         }
@@ -1395,8 +1299,8 @@ Timerset(sessionStorage.getItem('isamcomp'));
         var pData = {
             OpenDateS: $('#lblOpenDate_Date_Area_Step2').html().split('~')[0],
             OpenDateE: $('#lblOpenDate_Date_Area_Step2').html().split('~')[1],
-            Date: $('#lblDate_Area_Step2').html().split('-')[0],
-            Area: $('#lblDate_Area_Step2').html().split('-')[1].split(' ')[0]
+            Date: $('#lblDate_Area_Step2').html().split(';')[0],
+            Area: $('#lblDate_Area_Step2').html().split(';')[1].split(' ')[0]
         }
         PostToWebApi({ url: "api/Query_Date_Area_Step2", data: pData, success: afterQuery_Date_Area_Step2 });
     };
@@ -1415,7 +1319,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 return;
             }
             else {
-              /*  $('#modal_Date_Area_Step2').modal('show');*/
+                $('#modal_Date_Area_Step2').modal('show');
             }
 
         }
@@ -1437,31 +1341,23 @@ Timerset(sessionStorage.getItem('isamcomp'));
 
            $('#Query1').click(function () { Query1_click(this) });
 
-           $('#btExit_Shop').click(function () { btExit_Shop_click(this) });
-
-           //$('#Query_Area_Step1').click(function () { Query_Area_Step1_click(this) });
+           $('#Query_Area_Step1').click(function () { Query_Area_Step1_click(this) });
            $('#btExit_Area_Step1').click(function () { btExit_Area_Step1_click(this) });
-           $('#rdoShop_Area_Step1').change(function () { Query_Area_Step1_click(this) });
-           $('#rdoDate_Area_Step1').change(function () { Query_Area_Step1_click(this) });
 
-           //$('#Query_Area_Shop_Step2').click(function () { Query_Area_Shop_Step2_click(this) });
+           $('#Query_Area_Shop_Step2').click(function () { Query_Area_Shop_Step2_click(this) });
            $('#btExit_Area_Shop_Step2').click(function () { btExit_Area_Shop_Step2_click(this) });
 
-           //$('#Query_Area_Date_Step2').click(function () { Query_Area_Date_Step2_click(this) });
+           $('#Query_Area_Date_Step2').click(function () { Query_Area_Date_Step2_click(this) });
            $('#btExit_Area_Date_Step2').click(function () { btExit_Area_Date_Step2_click(this) });
 
-           //$('#Query_Shop_Step1').click(function () { Query_Shop_Step1_click(this) });
+           $('#Query_Shop_Step1').click(function () { Query_Shop_Step1_click(this) });
            $('#btExit_Shop_Step1').click(function () { btExit_Shop_Step1_click(this) });
 
-           //$('#Query_Date_Step1').click(function () { Query_Date_Step1_click(this) });
+           $('#Query_Date_Step1').click(function () { Query_Date_Step1_click(this) });
            $('#btExit_Date_Step1').click(function () { btExit_Date_Step1_click(this) });
-           $('#rdoArea_Date_Step1').change(function () { Query_Date_Step1_click(this) });
-           $('#rdoShop_Date_Step1').change(function () { Query_Date_Step1_click(this) });
 
-           //$('#Query_Date_Area_Step2').click(function () { Query_Date_Area_Step2_click(this) });
+           $('#Query_Date_Area_Step2').click(function () { Query_Date_Area_Step2_click(this) });
            $('#btExit_Date_Area_Step2').click(function () { btExit_Date_Area_Step2_click(this) });
-
-           
 
            var dtQ = data.getElementsByTagName('dtQ');
            grdM.BindData(dtQ);

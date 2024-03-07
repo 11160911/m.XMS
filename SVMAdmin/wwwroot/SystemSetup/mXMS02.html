@@ -133,6 +133,7 @@
                                     font-size: 12px;
                                     padding: 3px;
                                 }
+
                             </style>
 
                             <div class="form-group row" style="margin-left:8px;margin-top:5px">
@@ -147,9 +148,9 @@
                                 <label style="margin-top: 5px; color: black; ">店&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;別：</label>
                                 <input id="txtShop1" type="text" style="color:blue;height:30px" />
                                 <!--<button id="btShop1" type="button" style="width: 30px; height: 30px; background-color: gainsboro; color:  dimgray; border-radius: 3px; border: 0px;font-size:10px;margin-left:1px ">
-                    <i class="fa fa-ellipsis-h">
-                    </i>
-                </button>-->
+            <i class="fa fa-ellipsis-h">
+            </i>
+        </button>-->
                             </div>
 
                             <div class="form-group row" style="margin-left:8px">
@@ -168,7 +169,7 @@
                                 <div class="x_content">
                                     <label style="margin-top: 10px; margin-left: 70px;color:red">總交易</label>
                                     <label style="margin-top: 10px; margin-left: 90px; color: red ">會員交易</label>
-
+                                    
                                     <div style="overflow: auto; height: 350px;">
                                         <table id="tbSales1" class="table table-bordered" style="width:100%">
                                             <thead>
@@ -177,17 +178,21 @@
                                                     <th style="background-color: orange">區課</th>
                                                     <th style="background-color: orange ">營業額</th>
                                                     <th style="background-color: orange ">筆數</th>
-                                                    <th style="background-color: orange ">客單</th>
+                                                    <th style="background-color: orange ">客單價</th>
                                                     <th style="display: none "></th>
                                                     <th style="display: none">區課</th>
                                                     <th style="background-color: orange">營業額</th>
                                                     <th style="background-color: orange">筆數</th>
-                                                    <th style="background-color: orange">客單</th>
-                                                    <th style="background-color: orange">佔比</th>
+                                                    <th style="background-color: orange">客單價</th>
+                                                    <th style="background-color: orange">占比</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
+                                                    <td><span class="fa fa-trash-o"></span></td>
+                                                    <td>4023147812345678</td>
+                                                    <td>1</td>
+                                                    <td><span></span></td>
                                                 </tr>
                                             </tbody>
 
@@ -198,76 +203,6 @@
 
                         </div>
                     </div>
-
-                    <div class="modal fade" id="modal_Shop" data-keyboard="false" data-backdrop="static">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 560px; background-image: url(images/Web底圖-地球-2.png); background-size: contain ">
-                                <style>
-                                    #tbSales_Shop thead tr th {
-                                        font-size: 14px;
-                                        padding: 3px;
-                                    }
-
-                                    #tbSales_Shop tbody tr td {
-                                        font-size: 12px;
-                                        padding: 3px;
-                                    }
-                                </style>
-
-                                <div class="modal-header">
-                                    <h4 class="modal-title" style="width: 100%; text-align: center;color:black"></h4>
-                                </div>
-
-                                <div class="modal-body modal-tab-container" style="padding:8px">
-
-                                    <div class="form-group row" style="width: 100%;margin-left:5px ">
-                                        <label style="margin-top:5px;color:black">日期區間：</label>
-                                        <label id="lblOpenDate_Shop" style="font-size: 16px;color:red;margin-top:5px "></label>
-                                        <button id="btExit_Shop" type="button" class="" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 5px;margin-left:3px ">回上頁</button>
-                                    </div>
-
-                                    <div class="form-group row" style="width: 100%;margin-left:5px ">
-                                        <label id="lblShop" style="font-size: 16px;color:red "></label>
-                                    </div>
-
-                                    <div class="card-block forminput">
-                                        <div class="x_content">
-                                            <label style="margin-top: 10px; margin-left: 70px;color:red">總交易</label>
-                                            <label style="margin-top: 10px; margin-left: 90px; color: red ">會員交易</label>
-
-                                            <div style="overflow: auto; height: 280px;">
-                                                <table id="tbSales_Shop" class="table table-bordered" style="width:100%">
-                                                    <thead>
-                                                        <tr>
-                                                            <th style="display: none "></th>
-                                                            <th style="background-color: orange">日期</th>
-                                                            <th style="background-color: orange ">營業額</th>
-                                                            <th style="background-color: orange ">筆數</th>
-                                                            <th style="background-color: orange ">客單</th>
-                                                            <th style="display: none "></th>
-                                                            <th style="display: none">日期</th>
-                                                            <th style="background-color: orange">營業額</th>
-                                                            <th style="background-color: orange">筆數</th>
-                                                            <th style="background-color: orange">客單</th>
-                                                            <th style="background-color: orange">佔比</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                        </tr>
-                                                    </tbody>
-
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-
 
                     <div class="modal fade" id="modal_Area_Step1" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
@@ -301,7 +236,7 @@
 
                                         <input id="rdoDate_Area_Step1" type="radio" name="Step1" value="1" style="vertical-align: middle; margin-top: 2px; width: 20px; height: 20px; list-style: none; text-align: left; margin-left:8px ">
                                         <label for="rdoDate_Area_Step1" style="color: black; vertical-align: middle; margin-top: 2px; list-style: none; text-align: left; ">&ensp;日期</label>
-                                        <!--<i id="Query_Area_Step1" class="fa fa-search" style="font-size: 1.5rem; margin-left: 150px; color: green"></i>-->
+                                        <i id="Query_Area_Step1" class="fa fa-search" style="font-size: 1.5rem; margin-left: 150px; color: green"></i>
                                     </div>
 
                                     <div class="form-group row" style="width: 100%;margin-left:5px ">
@@ -322,24 +257,28 @@
                                                             <th style="background-color: orange">區課</th>
                                                             <th style="background-color: orange ">營業額</th>
                                                             <th style="background-color: orange ">筆數</th>
-                                                            <th style="background-color: orange ">客單</th>
+                                                            <th style="background-color: orange ">客單價</th>
                                                             <th style="display: none "></th>
                                                             <th style="display: none">區課</th>
                                                             <th style="background-color: orange">營業額</th>
                                                             <th style="background-color: orange">筆數</th>
-                                                            <th style="background-color: orange">客單</th>
-                                                            <th style="background-color: orange">佔比</th>
+                                                            <th style="background-color: orange">客單價</th>
+                                                            <th style="background-color: orange">占比</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
+                                                            <td><span class="fa fa-trash-o"></span></td>
+                                                            <td>4023147812345678</td>
+                                                            <td>1</td>
+                                                            <td><span></span></td>
                                                         </tr>
                                                     </tbody>
 
                                                 </table>
                                             </div>
+                                            </div>
                                         </div>
-                                    </div>
                                 </div>
 
                             </div>
@@ -360,7 +299,7 @@
                                         padding: 3px;
                                     }
                                 </style>
-
+                                
                                 <div class="modal-header">
                                     <h4 class="modal-title" style="width: 100%; text-align: center;color:black"></h4>
                                 </div>
@@ -374,7 +313,7 @@
 
                                     <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 0px; margin-top: 0px; margin-left: 5px ">
                                         <label id="lblArea_Shop_Step2" style="font-size: 16px;color:red "></label>
-                                        <!--<i id="Query_Area_Shop_Step2" class="fa fa-search" style="font-size: 1.5rem; margin-left: 80px; color: green"></i>-->
+                                        <i id="Query_Area_Shop_Step2" class="fa fa-search" style="font-size: 1.5rem; margin-left: 80px; color: green"></i>
                                     </div>
 
                                     <div class="card-block forminput">
@@ -389,25 +328,29 @@
                                                             <th style="background-color: orange">日期</th>
                                                             <th style="background-color: orange ">營業額</th>
                                                             <th style="background-color: orange ">筆數</th>
-                                                            <th style="background-color: orange ">客單</th>
+                                                            <th style="background-color: orange ">客單價</th>
                                                             <th style="display: none "></th>
                                                             <th style="display: none">區課</th>
                                                             <th style="background-color: orange">營業額</th>
                                                             <th style="background-color: orange">筆數</th>
-                                                            <th style="background-color: orange">客單</th>
-                                                            <th style="background-color: orange">佔比</th>
+                                                            <th style="background-color: orange">客單價</th>
+                                                            <th style="background-color: orange">占比</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
+                                                            <td><span class="fa fa-trash-o"></span></td>
+                                                            <td>4023147812345678</td>
+                                                            <td>1</td>
+                                                            <td><span></span></td>
                                                         </tr>
                                                     </tbody>
 
                                                 </table>
                                             </div>
 
+                                            </div>
                                         </div>
-                                    </div>
                                 </div>
 
                             </div>
@@ -428,7 +371,7 @@
                                         padding: 3px;
                                     }
                                 </style>
-
+                                
                                 <div class="modal-header">
                                     <h4 class="modal-title" style="width: 100%; text-align: center;color:black"></h4>
                                 </div>
@@ -441,7 +384,7 @@
                                     </div>
                                     <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 0px; margin-top: 0px; margin-left: 5px ">
                                         <label id="lblArea_Date_Step2" style="font-size: 16px;color:red "></label>
-                                        <!--<i id="Query_Area_Date_Step2" class="fa fa-search" style="font-size: 1.5rem; margin-left: 80px; color: green"></i>-->
+                                        <i id="Query_Area_Date_Step2" class="fa fa-search" style="font-size: 1.5rem; margin-left: 80px; color: green"></i>
                                     </div>
 
                                     <div class="card-block forminput">
@@ -456,26 +399,30 @@
                                                             <th style="background-color: orange">店別</th>
                                                             <th style="background-color: orange ">營業額</th>
                                                             <th style="background-color: orange ">筆數</th>
-                                                            <th style="background-color: orange ">客單</th>
+                                                            <th style="background-color: orange ">客單價</th>
                                                             <th style="display: none "></th>
                                                             <th style="display: none">店別</th>
                                                             <th style="background-color: orange">營業額</th>
                                                             <th style="background-color: orange">筆數</th>
-                                                            <th style="background-color: orange">客單</th>
-                                                            <th style="background-color: orange">佔比</th>
+                                                            <th style="background-color: orange">客單價</th>
+                                                            <th style="background-color: orange">占比</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
+                                                            <td><span class="fa fa-trash-o"></span></td>
+                                                            <td>4023147812345678</td>
+                                                            <td>1</td>
+                                                            <td><span></span></td>
                                                         </tr>
                                                     </tbody>
 
                                                 </table>
                                             </div>
+                                                
 
-
+                                            </div>
                                         </div>
-                                    </div>
                                 </div>
 
                             </div>
@@ -509,7 +456,7 @@
 
                                     <div class="form-group row" style="width: 100%; margin-left: 5px ">
                                         <label id="lblShop_Step1" style="font-size: 16px;color:red "></label>
-                                        <!--<i id="Query_Shop_Step1" class="fa fa-search" style="font-size: 1.5rem; margin-left: 160px; color: green"></i>-->
+                                        <i id="Query_Shop_Step1" class="fa fa-search" style="font-size: 1.5rem; margin-left: 160px; color: green"></i>
                                     </div>
 
                                     <div class="card-block forminput">
@@ -524,25 +471,29 @@
                                                             <th style="background-color: orange">日期</th>
                                                             <th style="background-color: orange ">營業額</th>
                                                             <th style="background-color: orange ">筆數</th>
-                                                            <th style="background-color: orange ">客單</th>
+                                                            <th style="background-color: orange ">客單價</th>
                                                             <th style="display: none "></th>
                                                             <th style="display: none">日期</th>
                                                             <th style="background-color: orange">營業額</th>
                                                             <th style="background-color: orange">筆數</th>
-                                                            <th style="background-color: orange">客單</th>
-                                                            <th style="background-color: orange">佔比</th>
+                                                            <th style="background-color: orange">客單價</th>
+                                                            <th style="background-color: orange">占比</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
+                                                            <td><span class="fa fa-trash-o"></span></td>
+                                                            <td>4023147812345678</td>
+                                                            <td>1</td>
+                                                            <td><span></span></td>
                                                         </tr>
                                                     </tbody>
 
                                                 </table>
                                             </div>
 
+                                            </div>
                                         </div>
-                                    </div>
                                 </div>
 
                             </div>
@@ -581,7 +532,7 @@
 
                                         <input id="rdoShop_Date_Step1" type="radio" name="Step1" value="1" style="vertical-align: middle; margin-top: 2px; width: 20px; height: 20px; list-style: none; text-align: left; margin-left:8px ">
                                         <label for="rdoShop_Date_Step1" style="color: black; vertical-align: middle; margin-top: 2px; list-style: none; text-align: left; ">&ensp;店別</label>
-                                        <!--<i id="Query_Date_Step1" class="fa fa-search" style="font-size: 1.5rem; margin-left: 120px; color: green"></i>-->
+                                        <i id="Query_Date_Step1" class="fa fa-search" style="font-size: 1.5rem; margin-left: 120px; color: green"></i>
                                     </div>
 
                                     <div class="form-group row" style="width: 100%; margin-left: 5px ">
@@ -600,24 +551,28 @@
                                                             <th style="background-color: orange">區課</th>
                                                             <th style="background-color: orange ">營業額</th>
                                                             <th style="background-color: orange ">筆數</th>
-                                                            <th style="background-color: orange ">客單</th>
+                                                            <th style="background-color: orange ">客單價</th>
                                                             <th style="display: none "></th>
                                                             <th style="display: none">區課</th>
                                                             <th style="background-color: orange">營業額</th>
                                                             <th style="background-color: orange">筆數</th>
-                                                            <th style="background-color: orange">客單</th>
-                                                            <th style="background-color: orange">佔比</th>
+                                                            <th style="background-color: orange">客單價</th>
+                                                            <th style="background-color: orange">占比</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
+                                                            <td><span class="fa fa-trash-o"></span></td>
+                                                            <td>4023147812345678</td>
+                                                            <td>1</td>
+                                                            <td><span></span></td>
                                                         </tr>
                                                     </tbody>
 
                                                 </table>
                                             </div>
+                                            </div>
                                         </div>
-                                    </div>
                                 </div>
 
                             </div>
@@ -638,7 +593,7 @@
                                         padding: 3px;
                                     }
                                 </style>
-
+                                
                                 <div class="modal-header">
                                     <h4 class="modal-title" style="width: 100%; text-align: center;color:black"></h4>
                                 </div>
@@ -652,7 +607,7 @@
 
                                     <div class="form-group row" style="width: 100%;margin-left:5px ">
                                         <label id="lblDate_Area_Step2" style="font-size: 16px;color:red "></label>
-                                        <!--<i id="Query_Date_Area_Step2" class="fa fa-search" style="font-size: 1.5rem; margin-left: 80px; color: green"></i>-->
+                                        <i id="Query_Date_Area_Step2" class="fa fa-search" style="font-size: 1.5rem; margin-left: 80px; color: green"></i>
                                     </div>
 
                                     <div class="card-block forminput">
@@ -667,25 +622,29 @@
                                                             <th style="background-color: orange">店別</th>
                                                             <th style="background-color: orange ">營業額</th>
                                                             <th style="background-color: orange ">筆數</th>
-                                                            <th style="background-color: orange ">客單</th>
+                                                            <th style="background-color: orange ">客單價</th>
                                                             <th style="display: none "></th>
                                                             <th style="display: none">店別</th>
                                                             <th style="background-color: orange">營業額</th>
                                                             <th style="background-color: orange">筆數</th>
-                                                            <th style="background-color: orange">客單</th>
-                                                            <th style="background-color: orange">佔比</th>
+                                                            <th style="background-color: orange">客單價</th>
+                                                            <th style="background-color: orange">占比</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
+                                                            <td><span class="fa fa-trash-o"></span></td>
+                                                            <td>4023147812345678</td>
+                                                            <td>1</td>
+                                                            <td><span></span></td>
                                                         </tr>
                                                     </tbody>
 
                                                 </table>
                                             </div>
-
+                                                
+                                            </div>
                                         </div>
-                                    </div>
                                 </div>
 
                             </div>

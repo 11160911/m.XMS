@@ -6131,91 +6131,188 @@ namespace SVMAdmin.Controllers
                 IFormCollection rq = HttpContext.Request.Form;
                 string OpenDateS = rq["OpenDateS"];
                 string OpenDateE = rq["OpenDateE"];
-                string Shop = rq["Shop"];
                 string Type = rq["Type"];
 
                 string sql = "";
 
-                string sql1 = "select ShopNo, OpenDate, CkNo, ChrNo, sum(Cash)Cash,SUM(Num)Num into #SD ";
-                sql1 += "from SalesD (nolock) ";
-                sql1 += "where CompanyCode='" + uu.CompanyId + "' ";
-                sql1 += "and OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
-                if (Shop != "")
-                {
-                    sql1 += "and ShopNo='" + Shop + "' ";
-                }
-                sql1 += "group by ShopNo,OpenDate,CkNo,ChrNo; ";
-
                 if (Type == "A") {
-                    sql = "select w.ST_placeID as ID,t.Type_Name as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
-                    sql += "from SalesH h(nolock) ";
-                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
-                    sql += "inner join warehouse w(nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode ";
-                    sql += "inner join TypeData t(nolock) on w.ST_placeID = t.Type_ID and t.Type_Code = 'A' and t.CompanyCode = h.CompanyCode ";
+                    sql = "select w.ST_placeID as ID1,t.Type_Name as Name1,sum(h.Cash)Cash1,COUNT(*)Cnt1,(SUM(h.cash) / COUNT(*))CashCnt1 ";
+                    sql += "into #H ";
+                    sql += "from SalesH h (nolock) ";
+                    sql += "inner join warehouse w (nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode ";
+                    sql += "inner join TypeData t (nolock) on w.ST_placeID = t.Type_ID and t.Type_Code = 'A' and t.CompanyCode = h.CompanyCode ";
                     sql += "where h.CompanyCode='" + uu.CompanyId + "' "  ;
+                    sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
                     sql += "group by w.ST_placeID,t.Type_Name ";
-                    sql += "order by w.ST_placeID ";
-                    DataTable dtQ = PubUtility.SqlQry(sql1+sql, uu, "SYS");
+                    sql += "order by w.ST_placeID; ";
+
+                    sql += "select w.ST_placeID as ID2,t.Type_Name as Name2,sum(h.Cash)Cash2,COUNT(*)Cnt2,(SUM(h.cash) / COUNT(*))CashCnt2 ";
+                    sql += "into #V ";
+                    sql += "from SalesH h (nolock) ";
+                    sql += "inner join warehouse w (nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode ";
+                    sql += "inner join TypeData t (nolock) on w.ST_placeID = t.Type_ID and t.Type_Code = 'A' and t.CompanyCode = h.CompanyCode ";
+                    sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                    sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
+                    sql += "group by w.ST_placeID,t.Type_Name ";
+                    sql += "order by w.ST_placeID; ";
+
+                    sql += "Select isnull(h.ID1,'')ID1,isnull(h.Name1,'')Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                    sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                    sql += "from #H h (nolock) ";
+                    sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                    sql += "Where 1=1 ";
+                    sql += "Order by h.ID1 ";
+
+                    DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
                     dtQ.TableName = "dtQ";
                     ds.Tables.Add(dtQ);
-
-                    sql = "select w.ST_placeID as ID,t.Type_Name as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
-                    sql += "from SalesH h(nolock) ";
-                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
-                    sql += "inner join warehouse w(nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode ";
-                    sql += "inner join TypeData t(nolock) on w.ST_placeID = t.Type_ID and t.Type_Code = 'A' and t.CompanyCode = h.CompanyCode ";
-                    sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
-                    sql += "group by w.ST_placeID,t.Type_Name ";
-                    sql += "order by w.ST_placeID ";
-                    DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
-                    dtV.TableName = "dtV";
-                    ds.Tables.Add(dtV);
+                    
+                    //DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                    //dtV.TableName = "dtV";
+                    //ds.Tables.Add(dtV);
                 }
                 else if (Type == "S") {
-                    sql = "select h.ShopNo as ID,w.st_sname as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql = "select h.ShopNo as ID1,w.st_sname as Name1,sum(h.Cash)Cash1,COUNT(*)Cnt1,(SUM(h.cash) / COUNT(*))CashCnt1 ";
+                    sql += "into #H ";
                     sql += "from SalesH h(nolock) ";
-                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
                     sql += "inner join warehouse w (nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode ";
                     sql += "where h.CompanyCode='" + uu.CompanyId + "' ";
+                    sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
                     sql += "group by h.ShopNo,w.st_sname ";
-                    sql += "order by h.ShopNo ";
-                    DataTable dtQ = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
-                    dtQ.TableName = "dtQ";
-                    ds.Tables.Add(dtQ);
+                    sql += "order by h.ShopNo; ";
 
-                    sql = "select h.ShopNo as ID,w.st_sname as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql += "select h.ShopNo as ID2,w.st_sname as Name2,sum(h.Cash)Cash2,COUNT(*)Cnt2,(SUM(h.cash) / COUNT(*))CashCnt2 ";
+                    sql += "into #V ";
                     sql += "from SalesH h(nolock) ";
-                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
                     sql += "inner join warehouse w (nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode ";
                     sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                    sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
                     sql += "group by h.ShopNo,w.st_sname ";
-                    sql += "order by h.ShopNo ";
-                    DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
-                    dtV.TableName = "dtV";
-                    ds.Tables.Add(dtV);
+                    sql += "order by h.ShopNo; ";
+
+                    sql += "Select isnull(h.ID1,'')ID1,substring(isnull(h.Name1,''),1,4)Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                    sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                    sql += "from #H h (nolock) ";
+                    sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                    sql += "Where 1=1 ";
+                    sql += "Order by h.ID1 ";
+
+                    DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                    dtQ.TableName = "dtQ";
+                    ds.Tables.Add(dtQ);
                 }
                 else if (Type == "D")
                 {
-                    sql = "select h.OpenDate as ID,h.OpenDate as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql = "select h.OpenDate as ID1,h.OpenDate as Name1,sum(h.Cash)Cash1,COUNT(*)Cnt1,(SUM(h.cash) / COUNT(*))CashCnt1 ";
+                    sql += "into #H ";
                     sql += "from SalesH h(nolock) ";
-                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
                     sql += "where h.CompanyCode='" + uu.CompanyId + "' ";
+                    sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
                     sql += "group by h.OpenDate ";
-                    sql += "order by h.OpenDate ";
-                    DataTable dtQ = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
+                    sql += "order by h.OpenDate; ";
+                    
+                    sql += "select h.OpenDate as ID2,h.OpenDate as Name2,sum(h.Cash)Cash2,COUNT(*)Cnt2,(SUM(h.cash) / COUNT(*))CashCnt2 ";
+                    sql += "into #V ";
+                    sql += "from SalesH h(nolock) ";
+                    sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                    sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
+                    sql += "group by h.OpenDate ";
+                    sql += "order by h.OpenDate; ";
+
+                    sql += "Select isnull(h.ID1,'')ID1,isnull(h.Name1,'')Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                    sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                    sql += "from #H h (nolock) ";
+                    sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                    sql += "Where 1=1 ";
+                    sql += "Order by h.ID1 ";
+
+                    DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
                     dtQ.TableName = "dtQ";
                     ds.Tables.Add(dtQ);
-
-                    sql = "select h.OpenDate as ID,h.OpenDate as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
-                    sql += "from SalesH h(nolock) ";
-                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
-                    sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
-                    sql += "group by h.OpenDate ";
-                    sql += "order by h.OpenDate ";
-                    DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
-                    dtV.TableName = "dtV";
-                    ds.Tables.Add(dtV);
                 }
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("ChkQuery1_Shop")]
+        public ActionResult SystemSetup_ChkQuery1_Shop()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "ChkQuery1_ShopOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Shop = rq["Shop"];
+
+                string sql = "";
+                sql = "Select w.st_id,w.st_sname,w.st_placeid,t.type_name ";
+                sql += "from Warehouse w (nolock) ";
+                sql += "left join TypeData t (nolock) on w.ST_PlaceID=t.type_ID and t.type_code='A' and t.companycode=w.companycode ";
+                sql += "Where w.companycode='" + uu.CompanyId + "' "   ;
+                sql += "and (w.ST_ID='" + Shop + "' or w.st_sname='" + Shop + "') ";
+                DataTable dtW = PubUtility.SqlQry(sql, uu, "SYS");
+                dtW.TableName = "dtW";
+                ds.Tables.Add(dtW);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("Query1_Shop")]
+        public ActionResult SystemSetup_Query1_Shop()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "Query1_ShopOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string OpenDateS = rq["OpenDateS"];
+                string OpenDateE = rq["OpenDateE"];
+                string Shop = rq["Shop"];
+
+                string sql = "";
+
+                sql = "select h.OpenDate as ID1,h.OpenDate as Name1,sum(h.Cash)Cash1,COUNT(*)Cnt1,(SUM(h.cash) / COUNT(*))CashCnt1 ";
+                sql += "into #H ";
+                sql += "from SalesH h(nolock) ";
+                sql += "inner join warehouse w (nolock) on h.ShopNo=w.ST_ID and w.CompanyCode=h.CompanyCode and (w.st_id='" + Shop + "' or w.st_sname='" + Shop + "') ";
+                sql += "where h.CompanyCode='" + uu.CompanyId + "' ";
+                sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
+                sql += "group by h.OpenDate ";
+                sql += "order by h.OpenDate; ";
+
+                sql += "select h.OpenDate as ID2,h.OpenDate as Name2,sum(h.Cash)Cash2,COUNT(*)Cnt2,(SUM(h.cash) / COUNT(*))CashCnt2 ";
+                sql += "into #V ";
+                sql += "from SalesH h(nolock) ";
+                sql += "inner join warehouse w (nolock) on h.ShopNo=w.ST_ID and w.CompanyCode=h.CompanyCode and (w.st_id='" + Shop + "' or w.st_sname='" + Shop + "') ";
+                sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
+                sql += "group by h.OpenDate ";
+                sql += "order by h.OpenDate; ";
+
+                sql += "Select isnull(h.ID1,'')ID1,isnull(h.Name1,'')Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                sql += "from #H h (nolock) ";
+                sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                sql += "Where 1=1 ";
+                sql += "Order by h.ID1 ";
+
+                DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                dtQ.TableName = "dtQ";
+                ds.Tables.Add(dtQ);
 
             }
             catch (Exception err)
@@ -6237,69 +6334,72 @@ namespace SVMAdmin.Controllers
                 IFormCollection rq = HttpContext.Request.Form;
                 string OpenDateS = rq["OpenDateS"];
                 string OpenDateE = rq["OpenDateE"];
-                string Shop = rq["Shop"];
                 string Area = rq["Area"];
                 string Type_Step1 = rq["Type_Step1"];
 
                 string sql = "";
 
-                string sql1 = "select ShopNo, OpenDate, CkNo, ChrNo, sum(Cash)Cash,SUM(Num)Num into #SD ";
-                sql1 += "from SalesD (nolock) ";
-                sql1 += "where CompanyCode='" + uu.CompanyId + "' ";
-                sql1 += "and OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
-                if (Shop != "")
-                {
-                    sql1 += "and ShopNo='" + Shop + "' ";
-                }
-                sql1 += "group by ShopNo,OpenDate,CkNo,ChrNo; ";
-
                 if (Type_Step1 == "S")
                 {
-                    sql = "select h.ShopNo as ID,w.st_sname as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql = "select h.ShopNo as ID1,w.st_sname as Name1,sum(h.Cash)Cash1,COUNT(*)Cnt1,(SUM(h.Cash) / COUNT(*))CashCnt1 ";
+                    sql += "into #H ";
                     sql += "from SalesH h(nolock) ";
-                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
                     sql += "inner join warehouse w (nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode and w.ST_placeID='" + Area + "' ";
                     sql += "where h.CompanyCode='" + uu.CompanyId + "' ";
+                    sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
                     sql += "group by h.ShopNo,w.st_sname ";
-                    sql += "order by h.ShopNo ";
-                    DataTable dtQ = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
-                    dtQ.TableName = "dtQ";
-                    ds.Tables.Add(dtQ);
+                    sql += "order by h.ShopNo; ";
 
-                    sql = "select h.ShopNo as ID,w.st_sname as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql += "select h.ShopNo as ID2,w.st_sname as Name2,sum(h.Cash)Cash2,COUNT(*)Cnt2,(SUM(h.cash) / COUNT(*))CashCnt2 ";
+                    sql += "into #V ";
                     sql += "from SalesH h(nolock) ";
-                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
                     sql += "inner join warehouse w (nolock) on h.ShopNo=w.ST_ID and w.CompanyCode=h.CompanyCode and w.ST_placeID='" + Area + "' ";
                     sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                    sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
                     sql += "group by h.ShopNo,w.st_sname ";
-                    sql += "order by h.ShopNo ";
-                    DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
-                    dtV.TableName = "dtV";
-                    ds.Tables.Add(dtV);
+                    sql += "order by h.ShopNo; ";
+
+                    sql += "Select isnull(h.ID1,'')ID1,substring(isnull(h.Name1,''),1,4)Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                    sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                    sql += "from #H h (nolock) ";
+                    sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                    sql += "Where 1=1 ";
+                    sql += "Order by h.ID1 ";
+
+                    DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                    dtQ.TableName = "dtQ";
+                    ds.Tables.Add(dtQ);
                 }
                 else if (Type_Step1 == "D")
                 {
-                    sql = "select h.OpenDate as ID,h.OpenDate as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql = "select h.OpenDate as ID1,h.OpenDate as Name1,sum(h.Cash)Cash1,COUNT(*)Cnt1,(SUM(h.cash) / COUNT(*))CashCnt1 ";
+                    sql += "into #H ";
                     sql += "from SalesH h(nolock) ";
-                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
                     sql += "inner join warehouse w (nolock) on h.ShopNo=w.ST_ID and w.CompanyCode=h.CompanyCode and w.ST_placeID='" + Area + "' ";
                     sql += "where h.CompanyCode='" + uu.CompanyId + "' ";
+                    sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
                     sql += "group by h.OpenDate ";
-                    sql += "order by h.OpenDate ";
-                    DataTable dtQ = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
-                    dtQ.TableName = "dtQ";
-                    ds.Tables.Add(dtQ);
+                    sql += "order by h.OpenDate; ";
 
-                    sql = "select h.OpenDate as ID,h.OpenDate as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql += "select h.OpenDate as ID2,h.OpenDate as Name2,sum(h.Cash)Cash2,COUNT(*)Cnt2,(SUM(h.cash) / COUNT(*))CashCnt2 ";
+                    sql += "into #V ";
                     sql += "from SalesH h(nolock) ";
-                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
                     sql += "inner join warehouse w (nolock) on h.ShopNo=w.ST_ID and w.CompanyCode=h.CompanyCode and w.ST_placeID='" + Area + "' ";
                     sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                    sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
                     sql += "group by h.OpenDate ";
-                    sql += "order by h.OpenDate ";
-                    DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
-                    dtV.TableName = "dtV";
-                    ds.Tables.Add(dtV);
+                    sql += "order by h.OpenDate; ";
+
+                    sql += "Select isnull(h.ID1,'')ID1,isnull(h.Name1,'')Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                    sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                    sql += "from #H h (nolock) ";
+                    sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                    sql += "Where 1=1 ";
+                    sql += "Order by h.ID1 ";
+
+                    DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                    dtQ.TableName = "dtQ";
+                    ds.Tables.Add(dtQ);
                 }
 
             }
@@ -6327,37 +6427,42 @@ namespace SVMAdmin.Controllers
               
                 string sql = "";
 
-                string sql1 = "select ShopNo, OpenDate, CkNo, ChrNo, sum(Cash)Cash,SUM(Num)Num into #SD ";
-                sql1 += "from SalesD (nolock) ";
-                sql1 += "where CompanyCode='" + uu.CompanyId + "' ";
-                sql1 += "and OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
-                if (Shop != "")
-                {
-                    sql1 += "and ShopNo='" + Shop + "' ";
-                }
-                sql1 += "group by ShopNo,OpenDate,CkNo,ChrNo; ";
-
-                sql = "select h.OpenDate as ID,h.OpenDate as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                sql = "select h.OpenDate as ID1,h.OpenDate as Name1,sum(h.Cash)Cash1,COUNT(*)Cnt1,(SUM(h.cash) / COUNT(*))CashCnt1 ";
+                sql += "into #H ";
                 sql += "from SalesH h(nolock) ";
-                sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
                 sql += "inner join warehouse w (nolock) on h.ShopNo=w.ST_ID and w.CompanyCode=h.CompanyCode and w.ST_placeID='" + Area + "' ";
                 sql += "where h.CompanyCode='" + uu.CompanyId + "' ";
+                sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
+                if (Shop != "")
+                {
+                    sql += "and h.ShopNo='" + Shop + "' ";
+                }
                 sql += "group by h.OpenDate ";
-                sql += "order by h.OpenDate ";
-                DataTable dtQ = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
-                dtQ.TableName = "dtQ";
-                ds.Tables.Add(dtQ);
+                sql += "order by h.OpenDate; ";
 
-                sql = "select h.OpenDate as ID,h.OpenDate as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                sql += "select h.OpenDate as ID2,h.OpenDate as Name2,sum(h.Cash)Cash2,COUNT(*)Cnt2,(SUM(h.cash) / COUNT(*))CashCnt2 ";
+                sql += "into #V ";
                 sql += "from SalesH h(nolock) ";
-                sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
                 sql += "inner join warehouse w (nolock) on h.ShopNo=w.ST_ID and w.CompanyCode=h.CompanyCode and w.ST_placeID='" + Area + "' ";
                 sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
+                if (Shop != "")
+                {
+                    sql += "and h.ShopNo='" + Shop + "' ";
+                }
                 sql += "group by h.OpenDate ";
-                sql += "order by h.OpenDate ";
-                DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
-                dtV.TableName = "dtV";
-                ds.Tables.Add(dtV);
+                sql += "order by h.OpenDate; ";
+
+                sql += "Select isnull(h.ID1,'')ID1,isnull(h.Name1,'')Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                sql += "from #H h (nolock) ";
+                sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                sql += "Where 1=1 ";
+                sql += "Order by h.ID1 ";
+
+                DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                dtQ.TableName = "dtQ";
+                ds.Tables.Add(dtQ);
 
             }
             catch (Exception err)
@@ -6379,42 +6484,37 @@ namespace SVMAdmin.Controllers
                 IFormCollection rq = HttpContext.Request.Form;
                 string OpenDate = rq["OpenDate"];
                 string Area = rq["Area"];
-                string Date = rq["Date"];
-                string Shop = rq["Shop"];
 
                 string sql = "";
 
-                string sql1 = "select ShopNo, OpenDate, CkNo, ChrNo, sum(Cash)Cash,SUM(Num)Num into #SD ";
-                sql1 += "from SalesD (nolock) ";
-                sql1 += "where CompanyCode='" + uu.CompanyId + "' ";
-                sql1 += "and OpenDate='" + OpenDate + "' ";
-                if (Shop != "")
-                {
-                    sql1 += "and ShopNo='" + Shop + "' ";
-                }
-                sql1 += "group by ShopNo,OpenDate,CkNo,ChrNo; ";
-
-                sql = "select h.ShopNo as ID,w.st_sname as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                sql = "select h.ShopNo as ID1,w.st_sname as Name1,sum(h.Cash)Cash1,COUNT(*)Cnt1,(SUM(h.Cash) / COUNT(*))CashCnt1 ";
+                sql += "into #H ";
                 sql += "from SalesH h(nolock) ";
-                sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
                 sql += "inner join warehouse w (nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode and w.ST_placeID='" + Area + "' ";
                 sql += "where h.CompanyCode='" + uu.CompanyId + "' ";
+                sql += "and h.OpenDate='" + OpenDate + "' ";
                 sql += "group by h.ShopNo,w.st_sname ";
-                sql += "order by h.ShopNo ";
-                DataTable dtQ = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
-                dtQ.TableName = "dtQ";
-                ds.Tables.Add(dtQ);
+                sql += "order by h.ShopNo; ";
 
-                sql = "select h.ShopNo as ID,w.st_sname as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                sql += "select h.ShopNo as ID2,w.st_sname as Name2,sum(h.Cash)Cash2,COUNT(*)Cnt2,(SUM(h.cash) / COUNT(*))CashCnt2 ";
+                sql += "into #V ";
                 sql += "from SalesH h(nolock) ";
-                sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
                 sql += "inner join warehouse w (nolock) on h.ShopNo=w.ST_ID and w.CompanyCode=h.CompanyCode and w.ST_placeID='" + Area + "' ";
                 sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                sql += "and h.OpenDate='" + OpenDate + "' ";
                 sql += "group by h.ShopNo,w.st_sname ";
-                sql += "order by h.ShopNo ";
-                DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
-                dtV.TableName = "dtV";
-                ds.Tables.Add(dtV);
+                sql += "order by h.ShopNo; ";
+
+                sql += "Select isnull(h.ID1,'')ID1,substring(isnull(h.Name1,''),1,4)Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                sql += "from #H h (nolock) ";
+                sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                sql += "Where 1=1 ";
+                sql += "Order by h.ID1 ";
+
+                DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                dtQ.TableName = "dtQ";
+                ds.Tables.Add(dtQ);
 
             }
             catch (Exception err)
@@ -6440,38 +6540,42 @@ namespace SVMAdmin.Controllers
 
                 string sql = "";
 
-                string sql1 = "select ShopNo, OpenDate, CkNo, ChrNo, sum(Cash)Cash,SUM(Num)Num into #SD ";
-                sql1 += "from SalesD (nolock) ";
-                sql1 += "where CompanyCode='" + uu.CompanyId + "' ";
-                sql1 += "and OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
-                if (Shop != "")
-                {
-                    sql1 += "and ShopNo='" + Shop + "' ";
-                }
-                sql1 += "group by ShopNo,OpenDate,CkNo,ChrNo; ";
-
-                sql = "select h.OpenDate as ID,h.OpenDate as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                sql = "select h.OpenDate as ID1,h.OpenDate as Name1,sum(h.Cash)Cash1,COUNT(*)Cnt1,(SUM(h.cash) / COUNT(*))CashCnt1 ";
+                sql += "into #H ";
                 sql += "from SalesH h(nolock) ";
-                sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
                 sql += "inner join warehouse w (nolock) on h.ShopNo=w.ST_ID and w.CompanyCode=h.CompanyCode ";
                 sql += "where h.CompanyCode='" + uu.CompanyId + "' ";
+                sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
+                if (Shop != "")
+                {
+                    sql += "and h.ShopNo='" + Shop + "' ";
+                }
                 sql += "group by h.OpenDate ";
-                sql += "order by h.OpenDate ";
-                DataTable dtQ = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
-                dtQ.TableName = "dtQ";
-                ds.Tables.Add(dtQ);
+                sql += "order by h.OpenDate; ";
 
-                sql = "select h.OpenDate as ID,h.OpenDate as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                sql += "select h.OpenDate as ID2,h.OpenDate as Name2,sum(h.Cash)Cash2,COUNT(*)Cnt2,(SUM(h.cash) / COUNT(*))CashCnt2 ";
+                sql += "into #V ";
                 sql += "from SalesH h(nolock) ";
-                sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
                 sql += "inner join warehouse w (nolock) on h.ShopNo=w.ST_ID and w.CompanyCode=h.CompanyCode ";
                 sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
+                if (Shop != "")
+                {
+                    sql += "and h.ShopNo='" + Shop + "' ";
+                }
                 sql += "group by h.OpenDate ";
-                sql += "order by h.OpenDate ";
-                DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
-                dtV.TableName = "dtV";
-                ds.Tables.Add(dtV);
+                sql += "order by h.OpenDate; ";
 
+                sql += "Select isnull(h.ID1,'')ID1,isnull(h.Name1,'')Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                sql += "from #H h (nolock) ";
+                sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                sql += "Where 1=1 ";
+                sql += "Order by h.ID1 ";
+
+                DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                dtQ.TableName = "dtQ";
+                ds.Tables.Add(dtQ);
             }
             catch (Exception err)
             {
@@ -6492,75 +6596,89 @@ namespace SVMAdmin.Controllers
                 IFormCollection rq = HttpContext.Request.Form;
                 string OpenDateS = rq["OpenDateS"];
                 string OpenDateE = rq["OpenDateE"];
-                string Shop = rq["Shop"];
                 string Date = rq["Date"];
                 string Type_Step1 = rq["Type_Step1"];
 
                 string sql = "";
 
-                string sql1 = "select ShopNo, OpenDate, CkNo, ChrNo, sum(Cash)Cash,SUM(Num)Num into #SD ";
-                sql1 += "from SalesD (nolock) ";
-                sql1 += "where CompanyCode='" + uu.CompanyId + "' ";
-                sql1 += "and OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
-                if (Shop != "")
-                {
-                    sql1 += "and ShopNo='" + Shop + "' ";
-                }
-                if (Date != "")
-                {
-                    sql1 += "and OpenDate='" + Date + "' ";
-                }
-                sql1 += "group by ShopNo,OpenDate,CkNo,ChrNo; ";
-
                 if (Type_Step1 == "A")
                 {
-                    sql = "select w.ST_placeID as ID,t.Type_Name as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql = "select w.ST_placeID as ID1,t.Type_Name as Name1,sum(h.Cash)Cash1,COUNT(*)Cnt1,(SUM(h.cash) / COUNT(*))CashCnt1 ";
+                    sql += "into #H ";
                     sql += "from SalesH h(nolock) ";
-                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
                     sql += "inner join warehouse w(nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode ";
                     sql += "inner join TypeData t(nolock) on w.ST_placeID = t.Type_ID and t.Type_Code = 'A' and t.CompanyCode = h.CompanyCode ";
                     sql += "where h.CompanyCode='" + uu.CompanyId + "' ";
+                    sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
+                    if (Date != "")
+                    {
+                        sql += "and h.OpenDate='" + Date + "' ";
+                    }
                     sql += "group by w.ST_placeID,t.Type_Name ";
-                    sql += "order by w.ST_placeID ";
-                    DataTable dtQ = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
-                    dtQ.TableName = "dtQ";
-                    ds.Tables.Add(dtQ);
+                    sql += "order by w.ST_placeID; ";
 
-                    sql = "select w.ST_placeID as ID,t.Type_Name as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql += "select w.ST_placeID as ID2,t.Type_Name as Name2,sum(h.Cash)Cash2,COUNT(*)Cnt2,(SUM(h.cash) / COUNT(*))CashCnt2 ";
+                    sql += "into #V ";
                     sql += "from SalesH h(nolock) ";
-                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
                     sql += "inner join warehouse w(nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode ";
                     sql += "inner join TypeData t(nolock) on w.ST_placeID = t.Type_ID and t.Type_Code = 'A' and t.CompanyCode = h.CompanyCode ";
                     sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                    sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
+                    if (Date != "")
+                    {
+                        sql += "and h.OpenDate='" + Date + "' ";
+                    }
                     sql += "group by w.ST_placeID,t.Type_Name ";
-                    sql += "order by w.ST_placeID ";
-                    DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
-                    dtV.TableName = "dtV";
-                    ds.Tables.Add(dtV);
+                    sql += "order by w.ST_placeID; ";
+
+                    sql += "Select isnull(h.ID1,'')ID1,isnull(h.Name1,'')Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                    sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                    sql += "from #H h (nolock) ";
+                    sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                    sql += "Where 1=1 ";
+                    sql += "Order by h.ID1 ";
+
+                    DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                    dtQ.TableName = "dtQ";
+                    ds.Tables.Add(dtQ);
                 }
                 else if (Type_Step1 == "S")
                 {
-                    sql = "select h.ShopNo as ID,w.st_sname as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql = "select h.ShopNo as ID1,w.st_sname as Name1,sum(h.Cash)Cash1,COUNT(*)Cnt1,(SUM(h.cash) / COUNT(*))CashCnt1 ";
+                    sql += "into #H ";
                     sql += "from SalesH h(nolock) ";
-                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
                     sql += "inner join warehouse w (nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode ";
                     sql += "where h.CompanyCode='" + uu.CompanyId + "' ";
+                    sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
+                    if (Date != "")
+                    {
+                        sql += "and h.OpenDate='" + Date + "' ";
+                    }
                     sql += "group by h.ShopNo,w.st_sname ";
-                    sql += "order by h.ShopNo ";
-                    DataTable dtQ = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
-                    dtQ.TableName = "dtQ";
-                    ds.Tables.Add(dtQ);
+                    sql += "order by h.ShopNo; ";
 
-                    sql = "select h.ShopNo as ID,w.st_sname as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                    sql += "select h.ShopNo as ID2,w.st_sname as Name2,sum(h.Cash)Cash2,COUNT(*)Cnt2,(SUM(h.cash) / COUNT(*))CashCnt2 ";
+                    sql += "into #V ";
                     sql += "from SalesH h(nolock) ";
-                    sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
                     sql += "inner join warehouse w (nolock) on h.ShopNo=w.ST_ID and w.CompanyCode=h.CompanyCode ";
                     sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                    sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
+                    if (Date != "")
+                    {
+                        sql += "and h.OpenDate='" + Date + "' ";
+                    }
                     sql += "group by h.ShopNo,w.st_sname ";
-                    sql += "order by h.ShopNo ";
-                    DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
-                    dtV.TableName = "dtV";
-                    ds.Tables.Add(dtV);
+                    sql += "order by h.ShopNo; ";
+
+                    sql += "Select isnull(h.ID1,'')ID1,substring(isnull(h.Name1,''),1,4)Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                    sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                    sql += "from #H h (nolock) ";
+                    sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                    sql += "Where 1=1 ";
+                    sql += "Order by h.ID1 ";
+                    DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                    dtQ.TableName = "dtQ";
+                    ds.Tables.Add(dtQ);
                 }
 
             }
@@ -6583,48 +6701,46 @@ namespace SVMAdmin.Controllers
                 IFormCollection rq = HttpContext.Request.Form;
                 string OpenDateS = rq["OpenDateS"];
                 string OpenDateE = rq["OpenDateE"];
-                string Shop = rq["Shop"];
                 string Date = rq["Date"];
                 string Area = rq["Area"];
 
                 string sql = "";
 
-                string sql1 = "select ShopNo, OpenDate, CkNo, ChrNo, sum(Cash)Cash,SUM(Num)Num into #SD ";
-                sql1 += "from SalesD (nolock) ";
-                sql1 += "where CompanyCode='" + uu.CompanyId + "' ";
-                sql1 += "and OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
-                if (Shop != "")
-                {
-                    sql1 += "and ShopNo='" + Shop + "' ";
-                }
-                if (Date != "")
-                {
-                    sql1 += "and OpenDate='" + Date + "' ";
-                }
-                sql1 += "group by ShopNo,OpenDate,CkNo,ChrNo; ";
-
-                sql = "select h.ShopNo as ID,w.st_sname as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                sql = "select h.ShopNo as ID1,w.st_sname as Name1,sum(h.Cash)Cash1,COUNT(*)Cnt1,(SUM(h.cash) / COUNT(*))CashCnt1 ";
+                sql += "into #H ";
                 sql += "from SalesH h(nolock) ";
-                sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
                 sql += "inner join warehouse w (nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode and w.ST_PlaceID='" + Area + "' ";
                 sql += "where h.CompanyCode='" + uu.CompanyId + "' ";
+                sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
+                if (Date != "")
+                {
+                    sql += "and h.OpenDate='" + Date + "' ";
+                }
                 sql += "group by h.ShopNo,w.st_sname ";
-                sql += "order by h.ShopNo ";
-                DataTable dtQ = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
-                dtQ.TableName = "dtQ";
-                ds.Tables.Add(dtQ);
+                sql += "order by h.ShopNo; ";
 
-                sql = "select h.ShopNo as ID,w.st_sname as Name,sum(d.Cash)Cash,SUM(d.Num)Num,COUNT(*)cnt,(SUM(d.cash) / COUNT(*))cashcnt ";
+                sql += "select h.ShopNo as ID2,w.st_sname as Name2,sum(h.Cash)Cash2,COUNT(*)Cnt2,(SUM(h.cash) / COUNT(*))CashCnt2 ";
+                sql += "into #V ";
                 sql += "from SalesH h(nolock) ";
-                sql += "inner join #SD d (nolock) on h.ShopNo=d.ShopNo and h.OpenDate=d.OpenDate and h.CKNo=d.CkNo and h.ChrNo=d.ChrNo ";
                 sql += "inner join warehouse w (nolock) on h.ShopNo=w.ST_ID and w.CompanyCode=h.CompanyCode and w.ST_PlaceID='" + Area + "' ";
                 sql += "where h.CompanyCode='" + uu.CompanyId + "' and isnull(h.ifvip,'')='1' ";
+                sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
+                if (Date != "")
+                {
+                    sql += "and h.OpenDate='" + Date + "' ";
+                }
                 sql += "group by h.ShopNo,w.st_sname ";
-                sql += "order by h.ShopNo ";
-                DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
-                dtV.TableName = "dtV";
-                ds.Tables.Add(dtV);
+                sql += "order by h.ShopNo; ";
 
+                sql += "Select isnull(h.ID1,'')ID1,substring(isnull(h.Name1,''),1,4)Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                sql += "from #H h (nolock) ";
+                sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                sql += "Where 1=1 ";
+                sql += "Order by h.ID1 ";
+                DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                dtQ.TableName = "dtQ";
+                ds.Tables.Add(dtQ);
             }
             catch (Exception err)
             {
