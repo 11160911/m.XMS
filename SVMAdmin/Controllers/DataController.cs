@@ -6134,6 +6134,8 @@ namespace SVMAdmin.Controllers
                 string Type = rq["Type"];
 
                 string sql = "";
+                string sqlQ = "";
+                string sqlSumQ = "";
 
                 if (Type == "A") {
                     sql = "select w.ST_placeID as ID1,t.Type_Name as Name1,sum(h.Cash)Cash1,COUNT(*)Cnt1,(SUM(h.cash) / COUNT(*))CashCnt1 ";
@@ -6156,20 +6158,25 @@ namespace SVMAdmin.Controllers
                     sql += "group by w.ST_placeID,t.Type_Name ";
                     sql += "order by w.ST_placeID; ";
 
-                    sql += "Select isnull(h.ID1,'')ID1,isnull(h.Name1,'')Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
-                    sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
-                    sql += "from #H h (nolock) ";
-                    sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
-                    sql += "Where 1=1 ";
-                    sql += "Order by h.ID1 ";
+                    sqlQ = "Select isnull(h.ID1,'')ID1,isnull(h.Name1,'')Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                    sqlQ += "isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                    sqlQ += "from #H h (nolock) ";
+                    sqlQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                    sqlQ += "Where 1=1 ";
+                    sqlQ += "Order by h.ID1 ";
 
-                    DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                    DataTable dtQ = PubUtility.SqlQry(sql+ sqlQ, uu, "SYS");
                     dtQ.TableName = "dtQ";
                     ds.Tables.Add(dtQ);
-                    
-                    //DataTable dtV = PubUtility.SqlQry(sql1 + sql, uu, "SYS");
-                    //dtV.TableName = "dtV";
-                    //ds.Tables.Add(dtV);
+
+                    sqlSumQ = "Select sum(isnull(h.Cash1,0))SumCash1,sum(isnull(h.Cnt1,0))SumCnt1,Round(sum(isnull(h.Cash1,0))/sum(isnull(h.Cnt1,0)),0)SumCashCnt1, ";
+                    sqlSumQ += "sum(isnull(v.Cash2,0))SumCash2,sum(isnull(v.Cnt2,0))SumCnt2,Round(sum(isnull(v.Cash2,0))/sum(isnull(v.Cnt2,0)),0)SumCashCnt2,cast(cast(Round((sum(isnull(v.Cash2,0))/sum(isnull(h.Cash1,0)))*100,0) as int) as varchar) + '%' SumVIPPercent ";
+                    sqlSumQ += "from #H h (nolock) ";
+                    sqlSumQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                    sqlSumQ += "Where 1=1 ";
+                    DataTable dtSumQ = PubUtility.SqlQry(sql + sqlSumQ, uu, "SYS");
+                    dtSumQ.TableName = "dtSumQ";
+                    ds.Tables.Add(dtSumQ);
                 }
                 else if (Type == "S") {
                     sql = "select h.ShopNo as ID1,w.st_sname as Name1,sum(h.Cash)Cash1,COUNT(*)Cnt1,(SUM(h.cash) / COUNT(*))CashCnt1 ";
@@ -6190,16 +6197,25 @@ namespace SVMAdmin.Controllers
                     sql += "group by h.ShopNo,w.st_sname ";
                     sql += "order by h.ShopNo; ";
 
-                    sql += "Select isnull(h.ID1,'')ID1,substring(isnull(h.Name1,''),1,4)Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
-                    sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
-                    sql += "from #H h (nolock) ";
-                    sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
-                    sql += "Where 1=1 ";
-                    sql += "Order by h.ID1 ";
+                    sqlQ = "Select isnull(h.ID1,'')ID1,substring(isnull(h.Name1,''),1,4)Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                    sqlQ += "isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                    sqlQ += "from #H h (nolock) ";
+                    sqlQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                    sqlQ += "Where 1=1 ";
+                    sqlQ += "Order by h.ID1 ";
 
-                    DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                    DataTable dtQ = PubUtility.SqlQry(sql+ sqlQ, uu, "SYS");
                     dtQ.TableName = "dtQ";
                     ds.Tables.Add(dtQ);
+
+                    sqlSumQ = "Select sum(isnull(h.Cash1,0))SumCash1,sum(isnull(h.Cnt1,0))SumCnt1,Round(sum(isnull(h.Cash1,0))/sum(isnull(h.Cnt1,0)),0)SumCashCnt1, ";
+                    sqlSumQ += "sum(isnull(v.Cash2,0))SumCash2,sum(isnull(v.Cnt2,0))SumCnt2,Round(sum(isnull(v.Cash2,0))/sum(isnull(v.Cnt2,0)),0)SumCashCnt2,cast(cast(Round((sum(isnull(v.Cash2,0))/sum(isnull(h.Cash1,0)))*100,0) as int) as varchar) + '%' SumVIPPercent ";
+                    sqlSumQ += "from #H h (nolock) ";
+                    sqlSumQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                    sqlSumQ += "Where 1=1 ";
+                    DataTable dtSumQ = PubUtility.SqlQry(sql + sqlSumQ, uu, "SYS");
+                    dtSumQ.TableName = "dtSumQ";
+                    ds.Tables.Add(dtSumQ);
                 }
                 else if (Type == "D")
                 {
@@ -6219,16 +6235,25 @@ namespace SVMAdmin.Controllers
                     sql += "group by h.OpenDate ";
                     sql += "order by h.OpenDate; ";
 
-                    sql += "Select isnull(h.ID1,'')ID1,isnull(h.Name1,'')Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
-                    sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
-                    sql += "from #H h (nolock) ";
-                    sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
-                    sql += "Where 1=1 ";
-                    sql += "Order by h.ID1 ";
+                    sqlQ = "Select isnull(h.ID1,'')ID1,isnull(h.Name1,'')Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                    sqlQ += "isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                    sqlQ += "from #H h (nolock) ";
+                    sqlQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                    sqlQ += "Where 1=1 ";
+                    sqlQ += "Order by h.ID1 ";
 
-                    DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                    DataTable dtQ = PubUtility.SqlQry(sql+sqlQ, uu, "SYS");
                     dtQ.TableName = "dtQ";
                     ds.Tables.Add(dtQ);
+
+                    sqlSumQ = "Select sum(isnull(h.Cash1,0))SumCash1,sum(isnull(h.Cnt1,0))SumCnt1,Round(sum(isnull(h.Cash1,0))/sum(isnull(h.Cnt1,0)),0)SumCashCnt1, ";
+                    sqlSumQ += "sum(isnull(v.Cash2,0))SumCash2,sum(isnull(v.Cnt2,0))SumCnt2,Round(sum(isnull(v.Cash2,0))/sum(isnull(v.Cnt2,0)),0)SumCashCnt2,cast(cast(Round((sum(isnull(v.Cash2,0))/sum(isnull(h.Cash1,0)))*100,0) as int) as varchar) + '%' SumVIPPercent ";
+                    sqlSumQ += "from #H h (nolock) ";
+                    sqlSumQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                    sqlSumQ += "Where 1=1 ";
+                    DataTable dtSumQ = PubUtility.SqlQry(sql+ sqlSumQ, uu, "SYS");
+                    dtSumQ.TableName = "dtSumQ";
+                    ds.Tables.Add(dtSumQ);
                 }
 
             }
@@ -6284,6 +6309,8 @@ namespace SVMAdmin.Controllers
                 string Shop = rq["Shop"];
 
                 string sql = "";
+                string sqlQ = "";
+                string sqlSumQ = "";
 
                 sql = "select h.OpenDate as ID1,h.OpenDate as Name1,sum(h.Cash)Cash1,COUNT(*)Cnt1,(SUM(h.cash) / COUNT(*))CashCnt1 ";
                 sql += "into #H ";
@@ -6303,16 +6330,25 @@ namespace SVMAdmin.Controllers
                 sql += "group by h.OpenDate ";
                 sql += "order by h.OpenDate; ";
 
-                sql += "Select isnull(h.ID1,'')ID1,isnull(h.Name1,'')Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
-                sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
-                sql += "from #H h (nolock) ";
-                sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
-                sql += "Where 1=1 ";
-                sql += "Order by h.ID1 ";
+                sqlQ = "Select isnull(h.ID1,'')ID1,isnull(h.Name1,'')Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                sqlQ += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                sqlQ += "from #H h (nolock) ";
+                sqlQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                sqlQ += "Where 1=1 ";
+                sqlQ += "Order by h.ID1 ";
 
-                DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                DataTable dtQ = PubUtility.SqlQry(sql+ sqlQ, uu, "SYS");
                 dtQ.TableName = "dtQ";
                 ds.Tables.Add(dtQ);
+
+                sqlSumQ = "Select sum(isnull(h.Cash1,0))SumCash1,sum(isnull(h.Cnt1,0))SumCnt1,Round(sum(isnull(h.Cash1,0))/sum(isnull(h.Cnt1,0)),0)SumCashCnt1, ";
+                sqlSumQ += "sum(isnull(v.Cash2,0))SumCash2,sum(isnull(v.Cnt2,0))SumCnt2,Round(sum(isnull(v.Cash2,0))/sum(isnull(v.Cnt2,0)),0)SumCashCnt2,cast(cast(Round((sum(isnull(v.Cash2,0))/sum(isnull(h.Cash1,0)))*100,0) as int) as varchar) + '%' SumVIPPercent ";
+                sqlSumQ += "from #H h (nolock) ";
+                sqlSumQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                sqlSumQ += "Where 1=1 ";
+                DataTable dtSumQ = PubUtility.SqlQry(sql + sqlSumQ, uu, "SYS");
+                dtSumQ.TableName = "dtSumQ";
+                ds.Tables.Add(dtSumQ);
 
             }
             catch (Exception err)
@@ -6338,6 +6374,8 @@ namespace SVMAdmin.Controllers
                 string Type_Step1 = rq["Type_Step1"];
 
                 string sql = "";
+                string sqlQ = "";
+                string sqlSumQ = "";
 
                 if (Type_Step1 == "S")
                 {
@@ -6359,16 +6397,24 @@ namespace SVMAdmin.Controllers
                     sql += "group by h.ShopNo,w.st_sname ";
                     sql += "order by h.ShopNo; ";
 
-                    sql += "Select isnull(h.ID1,'')ID1,substring(isnull(h.Name1,''),1,4)Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
-                    sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
-                    sql += "from #H h (nolock) ";
-                    sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
-                    sql += "Where 1=1 ";
-                    sql += "Order by h.ID1 ";
-
-                    DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                    sqlQ = "Select isnull(h.ID1,'')ID1,substring(isnull(h.Name1,''),1,4)Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                    sqlQ += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                    sqlQ += "from #H h (nolock) ";
+                    sqlQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                    sqlQ += "Where 1=1 ";
+                    sqlQ += "Order by h.ID1 ";
+                    DataTable dtQ = PubUtility.SqlQry(sql+ sqlQ, uu, "SYS");
                     dtQ.TableName = "dtQ";
                     ds.Tables.Add(dtQ);
+
+                    sqlSumQ = "Select sum(isnull(h.Cash1,0))SumCash1,sum(isnull(h.Cnt1,0))SumCnt1,Round(sum(isnull(h.Cash1,0))/sum(isnull(h.Cnt1,0)),0)SumCashCnt1, ";
+                    sqlSumQ += "sum(isnull(v.Cash2,0))SumCash2,sum(isnull(v.Cnt2,0))SumCnt2,Round(sum(isnull(v.Cash2,0))/sum(isnull(v.Cnt2,0)),0)SumCashCnt2,cast(cast(Round((sum(isnull(v.Cash2,0))/sum(isnull(h.Cash1,0)))*100,0) as int) as varchar) + '%' SumVIPPercent ";
+                    sqlSumQ += "from #H h (nolock) ";
+                    sqlSumQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                    sqlSumQ += "Where 1=1 ";
+                    DataTable dtSumQ = PubUtility.SqlQry(sql + sqlSumQ, uu, "SYS");
+                    dtSumQ.TableName = "dtSumQ";
+                    ds.Tables.Add(dtSumQ);
                 }
                 else if (Type_Step1 == "D")
                 {
@@ -6390,16 +6436,24 @@ namespace SVMAdmin.Controllers
                     sql += "group by h.OpenDate ";
                     sql += "order by h.OpenDate; ";
 
-                    sql += "Select isnull(h.ID1,'')ID1,isnull(h.Name1,'')Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
-                    sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
-                    sql += "from #H h (nolock) ";
-                    sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
-                    sql += "Where 1=1 ";
-                    sql += "Order by h.ID1 ";
-
-                    DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                    sqlQ = "Select isnull(h.ID1,'')ID1,isnull(h.Name1,'')Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                    sqlQ += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                    sqlQ += "from #H h (nolock) ";
+                    sqlQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                    sqlQ += "Where 1=1 ";
+                    sqlQ += "Order by h.ID1 ";
+                    DataTable dtQ = PubUtility.SqlQry(sql+sqlQ, uu, "SYS");
                     dtQ.TableName = "dtQ";
                     ds.Tables.Add(dtQ);
+
+                    sqlSumQ = "Select sum(isnull(h.Cash1,0))SumCash1,sum(isnull(h.Cnt1,0))SumCnt1,Round(sum(isnull(h.Cash1,0))/sum(isnull(h.Cnt1,0)),0)SumCashCnt1, ";
+                    sqlSumQ += "sum(isnull(v.Cash2,0))SumCash2,sum(isnull(v.Cnt2,0))SumCnt2,Round(sum(isnull(v.Cash2,0))/sum(isnull(v.Cnt2,0)),0)SumCashCnt2,cast(cast(Round((sum(isnull(v.Cash2,0))/sum(isnull(h.Cash1,0)))*100,0) as int) as varchar) + '%' SumVIPPercent ";
+                    sqlSumQ += "from #H h (nolock) ";
+                    sqlSumQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                    sqlSumQ += "Where 1=1 ";
+                    DataTable dtSumQ = PubUtility.SqlQry(sql + sqlSumQ, uu, "SYS");
+                    dtSumQ.TableName = "dtSumQ";
+                    ds.Tables.Add(dtSumQ);
                 }
 
             }
@@ -6424,8 +6478,10 @@ namespace SVMAdmin.Controllers
                 string OpenDateE = rq["OpenDateE"];
                 string Area = rq["Area"];
                 string Shop = rq["Shop"];
-              
+
                 string sql = "";
+                string sqlQ = "";
+                string sqlSumQ = "";
 
                 sql = "select h.OpenDate as ID1,h.OpenDate as Name1,sum(h.Cash)Cash1,COUNT(*)Cnt1,(SUM(h.cash) / COUNT(*))CashCnt1 ";
                 sql += "into #H ";
@@ -6453,16 +6509,25 @@ namespace SVMAdmin.Controllers
                 sql += "group by h.OpenDate ";
                 sql += "order by h.OpenDate; ";
 
-                sql += "Select isnull(h.ID1,'')ID1,isnull(h.Name1,'')Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
-                sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
-                sql += "from #H h (nolock) ";
-                sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
-                sql += "Where 1=1 ";
-                sql += "Order by h.ID1 ";
+                sqlQ = "Select isnull(h.ID1,'')ID1,isnull(h.Name1,'')Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                sqlQ += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                sqlQ += "from #H h (nolock) ";
+                sqlQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                sqlQ += "Where 1=1 ";
+                sqlQ += "Order by h.ID1 ";
 
-                DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                DataTable dtQ = PubUtility.SqlQry(sql+ sqlQ, uu, "SYS");
                 dtQ.TableName = "dtQ";
                 ds.Tables.Add(dtQ);
+
+                sqlSumQ = "Select sum(isnull(h.Cash1,0))SumCash1,sum(isnull(h.Cnt1,0))SumCnt1,Round(sum(isnull(h.Cash1,0))/sum(isnull(h.Cnt1,0)),0)SumCashCnt1, ";
+                sqlSumQ += "sum(isnull(v.Cash2,0))SumCash2,sum(isnull(v.Cnt2,0))SumCnt2,Round(sum(isnull(v.Cash2,0))/sum(isnull(v.Cnt2,0)),0)SumCashCnt2,cast(cast(Round((sum(isnull(v.Cash2,0))/sum(isnull(h.Cash1,0)))*100,0) as int) as varchar) + '%' SumVIPPercent ";
+                sqlSumQ += "from #H h (nolock) ";
+                sqlSumQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                sqlSumQ += "Where 1=1 ";
+                DataTable dtSumQ = PubUtility.SqlQry(sql + sqlSumQ, uu, "SYS");
+                dtSumQ.TableName = "dtSumQ";
+                ds.Tables.Add(dtSumQ);
 
             }
             catch (Exception err)
@@ -6484,8 +6549,10 @@ namespace SVMAdmin.Controllers
                 IFormCollection rq = HttpContext.Request.Form;
                 string OpenDate = rq["OpenDate"];
                 string Area = rq["Area"];
-
+                
                 string sql = "";
+                string sqlQ = "";
+                string sqlSumQ = "";
 
                 sql = "select h.ShopNo as ID1,w.st_sname as Name1,sum(h.Cash)Cash1,COUNT(*)Cnt1,(SUM(h.Cash) / COUNT(*))CashCnt1 ";
                 sql += "into #H ";
@@ -6505,16 +6572,25 @@ namespace SVMAdmin.Controllers
                 sql += "group by h.ShopNo,w.st_sname ";
                 sql += "order by h.ShopNo; ";
 
-                sql += "Select isnull(h.ID1,'')ID1,substring(isnull(h.Name1,''),1,4)Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
-                sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
-                sql += "from #H h (nolock) ";
-                sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
-                sql += "Where 1=1 ";
-                sql += "Order by h.ID1 ";
+                sqlQ = "Select isnull(h.ID1,'')ID1,substring(isnull(h.Name1,''),1,4)Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                sqlQ += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                sqlQ += "from #H h (nolock) ";
+                sqlQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                sqlQ += "Where 1=1 ";
+                sqlQ += "Order by h.ID1 ";
 
-                DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                DataTable dtQ = PubUtility.SqlQry(sql+sqlQ, uu, "SYS");
                 dtQ.TableName = "dtQ";
                 ds.Tables.Add(dtQ);
+
+                sqlSumQ = "Select sum(isnull(h.Cash1,0))SumCash1,sum(isnull(h.Cnt1,0))SumCnt1,Round(sum(isnull(h.Cash1,0))/sum(isnull(h.Cnt1,0)),0)SumCashCnt1, ";
+                sqlSumQ += "sum(isnull(v.Cash2,0))SumCash2,sum(isnull(v.Cnt2,0))SumCnt2,Round(sum(isnull(v.Cash2,0))/sum(isnull(v.Cnt2,0)),0)SumCashCnt2,cast(cast(Round((sum(isnull(v.Cash2,0))/sum(isnull(h.Cash1,0)))*100,0) as int) as varchar) + '%' SumVIPPercent ";
+                sqlSumQ += "from #H h (nolock) ";
+                sqlSumQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                sqlSumQ += "Where 1=1 ";
+                DataTable dtSumQ = PubUtility.SqlQry(sql + sqlSumQ, uu, "SYS");
+                dtSumQ.TableName = "dtSumQ";
+                ds.Tables.Add(dtSumQ);
 
             }
             catch (Exception err)
@@ -6539,6 +6615,8 @@ namespace SVMAdmin.Controllers
                 string Shop = rq["Shop"];
 
                 string sql = "";
+                string sqlQ = "";
+                string sqlSumQ = "";
 
                 sql = "select h.OpenDate as ID1,h.OpenDate as Name1,sum(h.Cash)Cash1,COUNT(*)Cnt1,(SUM(h.cash) / COUNT(*))CashCnt1 ";
                 sql += "into #H ";
@@ -6566,16 +6644,25 @@ namespace SVMAdmin.Controllers
                 sql += "group by h.OpenDate ";
                 sql += "order by h.OpenDate; ";
 
-                sql += "Select isnull(h.ID1,'')ID1,isnull(h.Name1,'')Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
-                sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
-                sql += "from #H h (nolock) ";
-                sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
-                sql += "Where 1=1 ";
-                sql += "Order by h.ID1 ";
+                sqlQ = "Select isnull(h.ID1,'')ID1,isnull(h.Name1,'')Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                sqlQ += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                sqlQ += "from #H h (nolock) ";
+                sqlQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                sqlQ += "Where 1=1 ";
+                sqlQ += "Order by h.ID1 ";
 
-                DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                DataTable dtQ = PubUtility.SqlQry(sql+ sqlQ, uu, "SYS");
                 dtQ.TableName = "dtQ";
                 ds.Tables.Add(dtQ);
+
+                sqlSumQ = "Select sum(isnull(h.Cash1,0))SumCash1,sum(isnull(h.Cnt1,0))SumCnt1,Round(sum(isnull(h.Cash1,0))/sum(isnull(h.Cnt1,0)),0)SumCashCnt1, ";
+                sqlSumQ += "sum(isnull(v.Cash2,0))SumCash2,sum(isnull(v.Cnt2,0))SumCnt2,Round(sum(isnull(v.Cash2,0))/sum(isnull(v.Cnt2,0)),0)SumCashCnt2,cast(cast(Round((sum(isnull(v.Cash2,0))/sum(isnull(h.Cash1,0)))*100,0) as int) as varchar) + '%' SumVIPPercent ";
+                sqlSumQ += "from #H h (nolock) ";
+                sqlSumQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                sqlSumQ += "Where 1=1 ";
+                DataTable dtSumQ = PubUtility.SqlQry(sql + sqlSumQ, uu, "SYS");
+                dtSumQ.TableName = "dtSumQ";
+                ds.Tables.Add(dtSumQ);
             }
             catch (Exception err)
             {
@@ -6600,6 +6687,8 @@ namespace SVMAdmin.Controllers
                 string Type_Step1 = rq["Type_Step1"];
 
                 string sql = "";
+                string sqlQ = "";
+                string sqlSumQ = "";
 
                 if (Type_Step1 == "A")
                 {
@@ -6631,16 +6720,25 @@ namespace SVMAdmin.Controllers
                     sql += "group by w.ST_placeID,t.Type_Name ";
                     sql += "order by w.ST_placeID; ";
 
-                    sql += "Select isnull(h.ID1,'')ID1,isnull(h.Name1,'')Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
-                    sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
-                    sql += "from #H h (nolock) ";
-                    sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
-                    sql += "Where 1=1 ";
-                    sql += "Order by h.ID1 ";
+                    sqlQ = "Select isnull(h.ID1,'')ID1,isnull(h.Name1,'')Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                    sqlQ += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                    sqlQ += "from #H h (nolock) ";
+                    sqlQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                    sqlQ += "Where 1=1 ";
+                    sqlQ += "Order by h.ID1 ";
 
-                    DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                    DataTable dtQ = PubUtility.SqlQry(sql+ sqlQ, uu, "SYS");
                     dtQ.TableName = "dtQ";
                     ds.Tables.Add(dtQ);
+
+                    sqlSumQ = "Select sum(isnull(h.Cash1,0))SumCash1,sum(isnull(h.Cnt1,0))SumCnt1,Round(sum(isnull(h.Cash1,0))/sum(isnull(h.Cnt1,0)),0)SumCashCnt1, ";
+                    sqlSumQ += "sum(isnull(v.Cash2,0))SumCash2,sum(isnull(v.Cnt2,0))SumCnt2,Round(sum(isnull(v.Cash2,0))/sum(isnull(v.Cnt2,0)),0)SumCashCnt2,cast(cast(Round((sum(isnull(v.Cash2,0))/sum(isnull(h.Cash1,0)))*100,0) as int) as varchar) + '%' SumVIPPercent ";
+                    sqlSumQ += "from #H h (nolock) ";
+                    sqlSumQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                    sqlSumQ += "Where 1=1 ";
+                    DataTable dtSumQ = PubUtility.SqlQry(sql + sqlSumQ, uu, "SYS");
+                    dtSumQ.TableName = "dtSumQ";
+                    ds.Tables.Add(dtSumQ);
                 }
                 else if (Type_Step1 == "S")
                 {
@@ -6670,15 +6768,24 @@ namespace SVMAdmin.Controllers
                     sql += "group by h.ShopNo,w.st_sname ";
                     sql += "order by h.ShopNo; ";
 
-                    sql += "Select isnull(h.ID1,'')ID1,substring(isnull(h.Name1,''),1,4)Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
-                    sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
-                    sql += "from #H h (nolock) ";
-                    sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
-                    sql += "Where 1=1 ";
-                    sql += "Order by h.ID1 ";
-                    DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                    sqlQ = "Select isnull(h.ID1,'')ID1,substring(isnull(h.Name1,''),1,4)Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                    sqlQ += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                    sqlQ += "from #H h (nolock) ";
+                    sqlQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                    sqlQ += "Where 1=1 ";
+                    sqlQ += "Order by h.ID1 ";
+                    DataTable dtQ = PubUtility.SqlQry(sql+ sqlQ, uu, "SYS");
                     dtQ.TableName = "dtQ";
                     ds.Tables.Add(dtQ);
+
+                    sqlSumQ = "Select sum(isnull(h.Cash1,0))SumCash1,sum(isnull(h.Cnt1,0))SumCnt1,Round(sum(isnull(h.Cash1,0))/sum(isnull(h.Cnt1,0)),0)SumCashCnt1, ";
+                    sqlSumQ += "sum(isnull(v.Cash2,0))SumCash2,sum(isnull(v.Cnt2,0))SumCnt2,Round(sum(isnull(v.Cash2,0))/sum(isnull(v.Cnt2,0)),0)SumCashCnt2,cast(cast(Round((sum(isnull(v.Cash2,0))/sum(isnull(h.Cash1,0)))*100,0) as int) as varchar) + '%' SumVIPPercent ";
+                    sqlSumQ += "from #H h (nolock) ";
+                    sqlSumQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                    sqlSumQ += "Where 1=1 ";
+                    DataTable dtSumQ = PubUtility.SqlQry(sql + sqlSumQ, uu, "SYS");
+                    dtSumQ.TableName = "dtSumQ";
+                    ds.Tables.Add(dtSumQ);
                 }
 
             }
@@ -6705,6 +6812,8 @@ namespace SVMAdmin.Controllers
                 string Area = rq["Area"];
 
                 string sql = "";
+                string sqlQ = "";
+                string sqlSumQ = "";
 
                 sql = "select h.ShopNo as ID1,w.st_sname as Name1,sum(h.Cash)Cash1,COUNT(*)Cnt1,(SUM(h.cash) / COUNT(*))CashCnt1 ";
                 sql += "into #H ";
@@ -6732,15 +6841,24 @@ namespace SVMAdmin.Controllers
                 sql += "group by h.ShopNo,w.st_sname ";
                 sql += "order by h.ShopNo; ";
 
-                sql += "Select isnull(h.ID1,'')ID1,substring(isnull(h.Name1,''),1,4)Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
-                sql += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
-                sql += "from #H h (nolock) ";
-                sql += "left join #V v (nolock) on h.ID1=v.ID2 ";
-                sql += "Where 1=1 ";
-                sql += "Order by h.ID1 ";
-                DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
+                sqlQ = "Select isnull(h.ID1,'')ID1,substring(isnull(h.Name1,''),1,4)Name1,isnull(h.Cash1,0)Cash1,isnull(h.Cnt1,0)Cnt1,Round(isnull(h.CashCnt1,0),0)CashCnt1, ";
+                sqlQ += "isnull(v.ID2,'')ID2,isnull(v.Name2,'')Name2,isnull(v.Cash2,0)Cash2,isnull(v.Cnt2,0)Cnt2,Round(isnull(v.CashCnt2,0),0)CashCnt2,cast(cast(Round((isnull(v.Cash2,0)/isnull(h.Cash1,0))*100,0) as int) as varchar) + '%' VIPPercent ";
+                sqlQ += "from #H h (nolock) ";
+                sqlQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                sqlQ += "Where 1=1 ";
+                sqlQ += "Order by h.ID1 ";
+                DataTable dtQ = PubUtility.SqlQry(sql+ sqlQ, uu, "SYS");
                 dtQ.TableName = "dtQ";
                 ds.Tables.Add(dtQ);
+
+                sqlSumQ = "Select sum(isnull(h.Cash1,0))SumCash1,sum(isnull(h.Cnt1,0))SumCnt1,Round(sum(isnull(h.Cash1,0))/sum(isnull(h.Cnt1,0)),0)SumCashCnt1, ";
+                sqlSumQ += "sum(isnull(v.Cash2,0))SumCash2,sum(isnull(v.Cnt2,0))SumCnt2,Round(sum(isnull(v.Cash2,0))/sum(isnull(v.Cnt2,0)),0)SumCashCnt2,cast(cast(Round((sum(isnull(v.Cash2,0))/sum(isnull(h.Cash1,0)))*100,0) as int) as varchar) + '%' SumVIPPercent ";
+                sqlSumQ += "from #H h (nolock) ";
+                sqlSumQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
+                sqlSumQ += "Where 1=1 ";
+                DataTable dtSumQ = PubUtility.SqlQry(sql + sqlSumQ, uu, "SYS");
+                dtSumQ.TableName = "dtSumQ";
+                ds.Tables.Add(dtSumQ);
             }
             catch (Exception err)
             {

@@ -127,12 +127,22 @@
                                 #tbSales1 thead tr th {
                                     font-size: 14px;
                                     padding: 3px;
+                                    background-color: #ffdb00;
+                                    font-weight: bold;
+                                }
+
+                                #tbSales1 thead tr td {
+                                    font-size: 14px;
+                                    padding: 3px;
+                                    background-color: #ffdb00;
+                                    font-weight: bold;
                                 }
 
                                 #tbSales1 tbody tr td {
                                     font-size: 12px;
                                     padding: 3px;
                                 }
+
                             </style>
 
                             <div class="form-group row" style="margin-left:8px;margin-top:5px">
@@ -166,31 +176,42 @@
 
                             <div class="card-block forminput">
                                 <div class="x_content">
-                                    <label style="margin-top: 10px; margin-left: 70px;color:red">總交易</label>
-                                    <label style="margin-top: 10px; margin-left: 90px; color: red ">會員交易</label>
-
                                     <div style="overflow: auto; height: 350px;">
                                         <table id="tbSales1" class="table table-bordered" style="width:100%">
                                             <thead>
+                                                <!--分類-->
                                                 <tr>
-                                                    <th style="display: none "></th>
-                                                    <th style="background-color: orange">區課</th>
-                                                    <th style="background-color: orange ">營業額</th>
-                                                    <th style="background-color: orange ">筆數</th>
-                                                    <th style="background-color: orange ">客單</th>
-                                                    <th style="display: none "></th>
-                                                    <th style="display: none">區課</th>
-                                                    <th style="background-color: orange">營業額</th>
-                                                    <th style="background-color: orange">筆數</th>
-                                                    <th style="background-color: orange">客單</th>
-                                                    <th style="background-color: orange">佔比</th>
+                                                    <td class="text-center" colspan="4">總交易</td>
+                                                    <td class="text-center" colspan="4">會員交易</td>
+                                                </tr>
+                                                <!--標題-->
+                                                <tr>
+                                                    <th style="display:none"></th>
+                                                    <th id="thtype">區</th>
+                                                    <th >營業額</th>
+                                                    <th >筆數</th>
+                                                    <th >客單</th>
+                                                    <th >營業額</th>
+                                                    <th >筆數</th>
+                                                    <th >客單</th>
+                                                    <th >佔比</th>
+                                                </tr>
+                                                <!--合計-->
+                                                <tr>
+                                                    <td colspan="1"></td>
+                                                    <td id="td1" colspan="1" style="text-align: right; "></td>
+                                                    <td id="td2" colspan="1" style="text-align: right; "></td>
+                                                    <td id="td3" colspan="1" style="text-align: right; "></td>
+                                                    <td id="td4" colspan="1" style="text-align: right; "></td>
+                                                    <td id="td5" colspan="1" style="text-align: right; "></td>
+                                                    <td id="td6" colspan="1" style="text-align: right; "></td>
+                                                    <td id="td7" colspan="1" style="text-align: right; "></td>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
                                                 </tr>
                                             </tbody>
-
                                         </table>
                                     </div>
                                 </div>
@@ -206,6 +227,15 @@
                                     #tbSales_Shop thead tr th {
                                         font-size: 14px;
                                         padding: 3px;
+                                        background-color: #ffdb00;
+                                        font-weight: bold;
+                                    }
+
+                                    #tbSales_Shop thead tr td {
+                                        font-size: 14px;
+                                        padding: 3px;
+                                        background-color: #ffdb00;
+                                        font-weight: bold;
                                     }
 
                                     #tbSales_Shop tbody tr td {
@@ -232,24 +262,36 @@
 
                                     <div class="card-block forminput">
                                         <div class="x_content">
-                                            <label style="margin-top: 10px; margin-left: 70px;color:red">總交易</label>
-                                            <label style="margin-top: 10px; margin-left: 90px; color: red ">會員交易</label>
-
                                             <div style="overflow: auto; height: 280px;">
                                                 <table id="tbSales_Shop" class="table table-bordered" style="width:100%">
                                                     <thead>
+                                                        <!--分類-->
                                                         <tr>
-                                                            <th style="display: none "></th>
-                                                            <th style="background-color: orange">日期</th>
-                                                            <th style="background-color: orange ">營業額</th>
-                                                            <th style="background-color: orange ">筆數</th>
-                                                            <th style="background-color: orange ">客單</th>
-                                                            <th style="display: none "></th>
-                                                            <th style="display: none">日期</th>
-                                                            <th style="background-color: orange">營業額</th>
-                                                            <th style="background-color: orange">筆數</th>
-                                                            <th style="background-color: orange">客單</th>
-                                                            <th style="background-color: orange">佔比</th>
+                                                            <td class="text-center" colspan="4">總交易</td>
+                                                            <td class="text-center" colspan="4">會員交易</td>
+                                                        </tr>
+                                                        <!--標題-->
+                                                        <tr>
+                                                            <th style="display:none"></th>
+                                                            <th id="thtype">日</th>
+                                                            <th>營業額</th>
+                                                            <th>筆數</th>
+                                                            <th>客單</th>
+                                                            <th>營業額</th>
+                                                            <th>筆數</th>
+                                                            <th>客單</th>
+                                                            <th>佔比</th>
+                                                        </tr>
+                                                        <!--合計-->
+                                                        <tr>
+                                                            <td colspan="1"></td>
+                                                            <td id="td1" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td2" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td3" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td4" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td5" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td6" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td7" colspan="1" style="text-align: right; "></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -268,7 +310,6 @@
                     </div>
 
 
-
                     <div class="modal fade" id="modal_Area_Step1" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content" style="height: 560px; background-image: url(images/Web底圖-地球-2.png); background-size: contain ">
@@ -276,6 +317,15 @@
                                     #tbSales_Area_Step1 thead tr th {
                                         font-size: 14px;
                                         padding: 3px;
+                                        background-color: #ffdb00;
+                                        font-weight: bold;
+                                    }
+
+                                    #tbSales_Area_Step1 thead tr td {
+                                        font-size: 14px;
+                                        padding: 3px;
+                                        background-color: #ffdb00;
+                                        font-weight: bold;
                                     }
 
                                     #tbSales_Area_Step1 tbody tr td {
@@ -310,27 +360,39 @@
 
                                     <div class="card-block forminput">
                                         <div class="x_content">
-                                            <label style="margin-top: 10px; margin-left: 70px;color:red">總交易</label>
-                                            <label style="margin-top: 10px; margin-left: 90px; color: red ">會員交易</label>
-
-
                                             <div style="overflow: auto; height: 280px;">
                                                 <table id="tbSales_Area_Step1" class="table table-bordered" style="width:100%">
                                                     <thead>
+                                                        <!--分類-->
                                                         <tr>
-                                                            <th style="display: none "></th>
-                                                            <th style="background-color: orange">區課</th>
-                                                            <th style="background-color: orange ">營業額</th>
-                                                            <th style="background-color: orange ">筆數</th>
-                                                            <th style="background-color: orange ">客單</th>
-                                                            <th style="display: none "></th>
-                                                            <th style="display: none">區課</th>
-                                                            <th style="background-color: orange">營業額</th>
-                                                            <th style="background-color: orange">筆數</th>
-                                                            <th style="background-color: orange">客單</th>
-                                                            <th style="background-color: orange">佔比</th>
+                                                            <td class="text-center" colspan="4">總交易</td>
+                                                            <td class="text-center" colspan="4">會員交易</td>
+                                                        </tr>
+                                                        <!--標題-->
+                                                        <tr>
+                                                            <th style="display:none"></th>
+                                                            <th id="thtype">區</th>
+                                                            <th>營業額</th>
+                                                            <th>筆數</th>
+                                                            <th>客單</th>
+                                                            <th>營業額</th>
+                                                            <th>筆數</th>
+                                                            <th>客單</th>
+                                                            <th>佔比</th>
+                                                        </tr>
+                                                        <!--合計-->
+                                                        <tr>
+                                                            <td colspan="1"></td>
+                                                            <td id="td1" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td2" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td3" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td4" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td5" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td6" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td7" colspan="1" style="text-align: right; "></td>
                                                         </tr>
                                                     </thead>
+
                                                     <tbody>
                                                         <tr>
                                                         </tr>
@@ -353,6 +415,15 @@
                                     #tbSales_Area_Shop_Step2 thead tr th {
                                         font-size: 14px;
                                         padding: 3px;
+                                        background-color: #ffdb00;
+                                        font-weight: bold;
+                                    }
+
+                                    #tbSales_Area_Shop_Step2 thead tr td {
+                                        font-size: 14px;
+                                        padding: 3px;
+                                        background-color: #ffdb00;
+                                        font-weight: bold;
                                     }
 
                                     #tbSales_Area_Shop_Step2 tbody tr td {
@@ -379,23 +450,36 @@
 
                                     <div class="card-block forminput">
                                         <div class="x_content">
-                                            <label style="margin-top: 10px; margin-left: 70px;color:red">總交易</label>
-                                            <label style="margin-top: 10px; margin-left: 90px; color: red ">會員交易</label>
-                                            <div style="overflow: auto; height: 300px;">
+                                            <div style="overflow: auto; height: 350px;">
                                                 <table id="tbSales_Area_Shop_Step2" class="table table-bordered" style="width:100%">
                                                     <thead>
+                                                        <!--分類-->
                                                         <tr>
-                                                            <th style="display: none "></th>
-                                                            <th style="background-color: orange">日期</th>
-                                                            <th style="background-color: orange ">營業額</th>
-                                                            <th style="background-color: orange ">筆數</th>
-                                                            <th style="background-color: orange ">客單</th>
-                                                            <th style="display: none "></th>
-                                                            <th style="display: none">區課</th>
-                                                            <th style="background-color: orange">營業額</th>
-                                                            <th style="background-color: orange">筆數</th>
-                                                            <th style="background-color: orange">客單</th>
-                                                            <th style="background-color: orange">佔比</th>
+                                                            <td class="text-center" colspan="4">總交易</td>
+                                                            <td class="text-center" colspan="4">會員交易</td>
+                                                        </tr>
+                                                        <!--標題-->
+                                                        <tr>
+                                                            <th style="display:none"></th>
+                                                            <th id="thtype">日</th>
+                                                            <th>營業額</th>
+                                                            <th>筆數</th>
+                                                            <th>客單</th>
+                                                            <th>營業額</th>
+                                                            <th>筆數</th>
+                                                            <th>客單</th>
+                                                            <th>佔比</th>
+                                                        </tr>
+                                                        <!--合計-->
+                                                        <tr>
+                                                            <td colspan="1"></td>
+                                                            <td id="td1" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td2" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td3" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td4" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td5" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td6" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td7" colspan="1" style="text-align: right; "></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -421,6 +505,15 @@
                                     #tbSales_Area_Date_Step2 thead tr th {
                                         font-size: 14px;
                                         padding: 3px;
+                                        background-color: #ffdb00;
+                                        font-weight: bold;
+                                    }
+
+                                    #tbSales_Area_Date_Step2 thead tr td {
+                                        font-size: 14px;
+                                        padding: 3px;
+                                        background-color: #ffdb00;
+                                        font-weight: bold;
                                     }
 
                                     #tbSales_Area_Date_Step2 tbody tr td {
@@ -446,23 +539,36 @@
 
                                     <div class="card-block forminput">
                                         <div class="x_content">
-                                            <label style="margin-top: 10px; margin-left: 70px;color:red">總交易</label>
-                                            <label style="margin-top: 10px; margin-left: 90px; color: red ">會員交易</label>
-                                            <div style="overflow: auto; height: 300px;">
+                                            <div style="overflow: auto; height: 350px;">
                                                 <table id="tbSales_Area_Date_Step2" class="table table-bordered" style="width:100%">
                                                     <thead>
+                                                        <!--分類-->
                                                         <tr>
-                                                            <th style="display: none "></th>
-                                                            <th style="background-color: orange">店別</th>
-                                                            <th style="background-color: orange ">營業額</th>
-                                                            <th style="background-color: orange ">筆數</th>
-                                                            <th style="background-color: orange ">客單</th>
-                                                            <th style="display: none "></th>
-                                                            <th style="display: none">店別</th>
-                                                            <th style="background-color: orange">營業額</th>
-                                                            <th style="background-color: orange">筆數</th>
-                                                            <th style="background-color: orange">客單</th>
-                                                            <th style="background-color: orange">佔比</th>
+                                                            <td class="text-center" colspan="4">總交易</td>
+                                                            <td class="text-center" colspan="4">會員交易</td>
+                                                        </tr>
+                                                        <!--標題-->
+                                                        <tr>
+                                                            <th style="display:none"></th>
+                                                            <th id="thtype">店</th>
+                                                            <th>營業額</th>
+                                                            <th>筆數</th>
+                                                            <th>客單</th>
+                                                            <th>營業額</th>
+                                                            <th>筆數</th>
+                                                            <th>客單</th>
+                                                            <th>佔比</th>
+                                                        </tr>
+                                                        <!--合計-->
+                                                        <tr>
+                                                            <td colspan="1"></td>
+                                                            <td id="td1" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td2" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td3" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td4" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td5" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td6" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td7" colspan="1" style="text-align: right; "></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -489,6 +595,15 @@
                                     #tbSales_Shop_Step1 thead tr th {
                                         font-size: 14px;
                                         padding: 3px;
+                                        background-color: #ffdb00;
+                                        font-weight: bold;
+                                    }
+
+                                    #tbSales_Shop_Step1 thead tr td {
+                                        font-size: 14px;
+                                        padding: 3px;
+                                        background-color: #ffdb00;
+                                        font-weight: bold;
                                     }
 
                                     #tbSales_Shop_Step1 tbody tr td {
@@ -514,23 +629,36 @@
 
                                     <div class="card-block forminput">
                                         <div class="x_content">
-                                            <label style="margin-top: 10px; margin-left: 70px;color:red">總交易</label>
-                                            <label style="margin-top: 10px; margin-left: 90px; color: red ">會員交易</label>
                                             <div style="overflow: auto; height: 300px;">
                                                 <table id="tbSales_Shop_Step1" class="table table-bordered" style="width:100%">
                                                     <thead>
+                                                        <!--分類-->
                                                         <tr>
-                                                            <th style="display: none "></th>
-                                                            <th style="background-color: orange">日期</th>
-                                                            <th style="background-color: orange ">營業額</th>
-                                                            <th style="background-color: orange ">筆數</th>
-                                                            <th style="background-color: orange ">客單</th>
-                                                            <th style="display: none "></th>
-                                                            <th style="display: none">日期</th>
-                                                            <th style="background-color: orange">營業額</th>
-                                                            <th style="background-color: orange">筆數</th>
-                                                            <th style="background-color: orange">客單</th>
-                                                            <th style="background-color: orange">佔比</th>
+                                                            <td class="text-center" colspan="4">總交易</td>
+                                                            <td class="text-center" colspan="4">會員交易</td>
+                                                        </tr>
+                                                        <!--標題-->
+                                                        <tr>
+                                                            <th style="display:none"></th>
+                                                            <th id="thtype">日</th>
+                                                            <th>營業額</th>
+                                                            <th>筆數</th>
+                                                            <th>客單</th>
+                                                            <th>營業額</th>
+                                                            <th>筆數</th>
+                                                            <th>客單</th>
+                                                            <th>佔比</th>
+                                                        </tr>
+                                                        <!--合計-->
+                                                        <tr>
+                                                            <td colspan="1"></td>
+                                                            <td id="td1" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td2" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td3" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td4" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td5" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td6" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td7" colspan="1" style="text-align: right; "></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -556,6 +684,15 @@
                                     #tbSales_Date_Step1 thead tr th {
                                         font-size: 14px;
                                         padding: 3px;
+                                        background-color: #ffdb00;
+                                        font-weight: bold;
+                                    }
+
+                                    #tbSales_Date_Step1 thead tr td {
+                                        font-size: 14px;
+                                        padding: 3px;
+                                        background-color: #ffdb00;
+                                        font-weight: bold;
                                     }
 
                                     #tbSales_Date_Step1 tbody tr td {
@@ -590,23 +727,36 @@
 
                                     <div class="card-block forminput">
                                         <div class="x_content">
-                                            <label style="margin-top: 10px; margin-left: 70px;color:red">總交易</label>
-                                            <label style="margin-top: 10px; margin-left: 90px; color: red ">會員交易</label>
-                                            <div style="overflow: auto; height: 280px;">
+                                            <div style="overflow: auto; height: 300px;">
                                                 <table id="tbSales_Date_Step1" class="table table-bordered" style="width:100%">
                                                     <thead>
+                                                        <!--分類-->
                                                         <tr>
-                                                            <th style="display: none "></th>
-                                                            <th style="background-color: orange">區課</th>
-                                                            <th style="background-color: orange ">營業額</th>
-                                                            <th style="background-color: orange ">筆數</th>
-                                                            <th style="background-color: orange ">客單</th>
-                                                            <th style="display: none "></th>
-                                                            <th style="display: none">區課</th>
-                                                            <th style="background-color: orange">營業額</th>
-                                                            <th style="background-color: orange">筆數</th>
-                                                            <th style="background-color: orange">客單</th>
-                                                            <th style="background-color: orange">佔比</th>
+                                                            <td class="text-center" colspan="4">總交易</td>
+                                                            <td class="text-center" colspan="4">會員交易</td>
+                                                        </tr>
+                                                        <!--標題-->
+                                                        <tr>
+                                                            <th style="display:none"></th>
+                                                            <th id="thtype">區</th>
+                                                            <th>營業額</th>
+                                                            <th>筆數</th>
+                                                            <th>客單</th>
+                                                            <th>營業額</th>
+                                                            <th>筆數</th>
+                                                            <th>客單</th>
+                                                            <th>佔比</th>
+                                                        </tr>
+                                                        <!--合計-->
+                                                        <tr>
+                                                            <td colspan="1"></td>
+                                                            <td id="td1" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td2" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td3" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td4" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td5" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td6" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td7" colspan="1" style="text-align: right; "></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -631,6 +781,15 @@
                                     #tbSales_Date_Area_Step2 thead tr th {
                                         font-size: 14px;
                                         padding: 3px;
+                                        background-color: #ffdb00;
+                                        font-weight: bold;
+                                    }
+
+                                    #tbSales_Date_Area_Step2 thead tr td {
+                                        font-size: 14px;
+                                        padding: 3px;
+                                        background-color: #ffdb00;
+                                        font-weight: bold;
                                     }
 
                                     #tbSales_Date_Area_Step2 tbody tr td {
@@ -657,23 +816,36 @@
 
                                     <div class="card-block forminput">
                                         <div class="x_content">
-                                            <label style="margin-top: 10px; margin-left: 70px;color:red">總交易</label>
-                                            <label style="margin-top: 10px; margin-left: 90px; color: red ">會員交易</label>
-                                            <div style="overflow: auto; height: 300px;">
+                                            <div style="overflow: auto; height: 350px;">
                                                 <table id="tbSales_Date_Area_Step2" class="table table-bordered" style="width:100%">
                                                     <thead>
+                                                        <!--分類-->
                                                         <tr>
-                                                            <th style="display: none "></th>
-                                                            <th style="background-color: orange">店別</th>
-                                                            <th style="background-color: orange ">營業額</th>
-                                                            <th style="background-color: orange ">筆數</th>
-                                                            <th style="background-color: orange ">客單</th>
-                                                            <th style="display: none "></th>
-                                                            <th style="display: none">店別</th>
-                                                            <th style="background-color: orange">營業額</th>
-                                                            <th style="background-color: orange">筆數</th>
-                                                            <th style="background-color: orange">客單</th>
-                                                            <th style="background-color: orange">佔比</th>
+                                                            <td class="text-center" colspan="4">總交易</td>
+                                                            <td class="text-center" colspan="4">會員交易</td>
+                                                        </tr>
+                                                        <!--標題-->
+                                                        <tr>
+                                                            <th style="display:none"></th>
+                                                            <th id="thtype">店</th>
+                                                            <th>營業額</th>
+                                                            <th>筆數</th>
+                                                            <th>客單</th>
+                                                            <th>營業額</th>
+                                                            <th>筆數</th>
+                                                            <th>客單</th>
+                                                            <th>佔比</th>
+                                                        </tr>
+                                                        <!--合計-->
+                                                        <tr>
+                                                            <td colspan="1"></td>
+                                                            <td id="td1" colspan="1" style="text-align: right; ">55</td>
+                                                            <td id="td2" colspan="1" style="text-align: right; ">44</td>
+                                                            <td id="td3" colspan="1" style="text-align: right; ">33</td>
+                                                            <td id="td4" colspan="1" style="text-align: right; ">66</td>
+                                                            <td id="td5" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td6" colspan="1" style="text-align: right; "></td>
+                                                            <td id="td7" colspan="1" style="text-align: right; "></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>

@@ -21,19 +21,17 @@
         grdM = new DynGrid(
             {
                 table_lement: $('#tbSales1')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6", "tdCol7", "tdCol8 label-align", "tdCol9 label-align", "tdCol10 label-align", "tdCol11"],
+                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9"],
                 fields_info: [
-                    { type: "Text", name: "ID1", style: "" },
-                    { type: "Text", name: "Name1", style: "" },
-                    { type: "TextAmt", name: "Cash1", style: "" },
-                    { type: "TextAmt", name: "Cnt1", style: "" },
-                    { type: "TextAmt", name: "CashCnt1", style: "" },
-                    { type: "Text", name: "ID2", style: "" },
-                    { type: "Text", name: "Name2", style: "" },
-                    { type: "TextAmt", name: "Cash2", style: "" },
-                    { type: "TextAmt", name: "Cnt2", style: "" },
-                    { type: "TextAmt", name: "CashCnt2", style: "" },
-                    { type: "Text", name: "VIPPercent", style: "" }
+                    { type: "Text", name: "ID1", style: "display:none" },
+                    { type: "Text", name: "Name1"},
+                    { type: "TextAmt", name: "Cash1"},
+                    { type: "TextAmt", name: "Cnt1"},
+                    { type: "TextAmt", name: "CashCnt1"},
+                    { type: "TextAmt", name: "Cash2"},
+                    { type: "TextAmt", name: "Cnt2"},
+                    { type: "TextAmt", name: "CashCnt2"},
+                    { type: "Text", name: "VIPPercent"}
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -45,19 +43,17 @@
         grdM_Shop = new DynGrid(
             {
                 table_lement: $('#tbSales_Shop')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6", "tdCol7", "tdCol8 label-align", "tdCol9 label-align", "tdCol10 label-align", "tdCol11"],
+                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9"],
                 fields_info: [
-                    { type: "Text", name: "ID1", style: "" },
-                    { type: "Text", name: "Name1", style: "" },
-                    { type: "TextAmt", name: "Cash1", style: "" },
-                    { type: "TextAmt", name: "Cnt1", style: "" },
-                    { type: "TextAmt", name: "CashCnt1", style: "" },
-                    { type: "Text", name: "ID2", style: "" },
-                    { type: "Text", name: "Name2", style: "" },
-                    { type: "TextAmt", name: "Cash2", style: "" },
-                    { type: "TextAmt", name: "Cnt2", style: "" },
-                    { type: "TextAmt", name: "CashCnt2", style: "" },
-                    { type: "Text", name: "VIPPercent", style: "" }
+                    { type: "Text", name: "ID1", style: "display:none" },
+                    { type: "Text", name: "Name1" },
+                    { type: "TextAmt", name: "Cash1" },
+                    { type: "TextAmt", name: "Cnt1" },
+                    { type: "TextAmt", name: "CashCnt1" },
+                    { type: "TextAmt", name: "Cash2" },
+                    { type: "TextAmt", name: "Cnt2" },
+                    { type: "TextAmt", name: "CashCnt2" },
+                    { type: "Text", name: "VIPPercent" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -69,19 +65,17 @@
         grdM_Area_Step1 = new DynGrid(
             {
                 table_lement: $('#tbSales_Area_Step1')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6", "tdCol7", "tdCol8 label-align", "tdCol9 label-align", "tdCol10 label-align", "tdCol11"],
+                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9"],
                 fields_info: [
-                    { type: "Text", name: "ID1", style: "" },
-                    { type: "Text", name: "Name1", style: "" },
-                    { type: "TextAmt", name: "Cash1", style: "" },
-                    { type: "TextAmt", name: "Cnt1", style: "" },
-                    { type: "TextAmt", name: "CashCnt1", style: "" },
-                    { type: "Text", name: "ID2", style: "" },
-                    { type: "Text", name: "Name2", style: "" },
-                    { type: "TextAmt", name: "Cash2", style: "" },
-                    { type: "TextAmt", name: "Cnt2", style: "" },
-                    { type: "TextAmt", name: "CashCnt2", style: "" },
-                    { type: "Text", name: "VIPPercent", style: "" }
+                    { type: "Text", name: "ID1", style: "display:none" },
+                    { type: "Text", name: "Name1" },
+                    { type: "TextAmt", name: "Cash1" },
+                    { type: "TextAmt", name: "Cnt1" },
+                    { type: "TextAmt", name: "CashCnt1" },
+                    { type: "TextAmt", name: "Cash2" },
+                    { type: "TextAmt", name: "Cnt2" },
+                    { type: "TextAmt", name: "CashCnt2" },
+                    { type: "Text", name: "VIPPercent" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -93,19 +87,17 @@
         grdM_Area_Shop_Step2 = new DynGrid(
             {
                 table_lement: $('#tbSales_Area_Shop_Step2')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6", "tdCol7", "tdCol8 label-align", "tdCol9 label-align", "tdCol10 label-align", "tdCol11"],
+                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9"],
                 fields_info: [
-                    { type: "Text", name: "ID1", style: "" },
-                    { type: "Text", name: "Name1", style: "" },
-                    { type: "TextAmt", name: "Cash1", style: "" },
-                    { type: "TextAmt", name: "Cnt1", style: "" },
-                    { type: "TextAmt", name: "CashCnt1", style: "" },
-                    { type: "Text", name: "ID2", style: "" },
-                    { type: "Text", name: "Name2", style: "" },
-                    { type: "TextAmt", name: "Cash2", style: "" },
-                    { type: "TextAmt", name: "Cnt2", style: "" },
-                    { type: "TextAmt", name: "CashCnt2", style: "" },
-                    { type: "Text", name: "VIPPercent", style: "" }
+                    { type: "Text", name: "ID1", style: "display:none" },
+                    { type: "Text", name: "Name1" },
+                    { type: "TextAmt", name: "Cash1" },
+                    { type: "TextAmt", name: "Cnt1" },
+                    { type: "TextAmt", name: "CashCnt1" },
+                    { type: "TextAmt", name: "Cash2" },
+                    { type: "TextAmt", name: "Cnt2" },
+                    { type: "TextAmt", name: "CashCnt2" },
+                    { type: "Text", name: "VIPPercent" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -117,19 +109,17 @@
         grdM_Area_Date_Step2 = new DynGrid(
             {
                 table_lement: $('#tbSales_Area_Date_Step2')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6", "tdCol7", "tdCol8 label-align", "tdCol9 label-align", "tdCol10 label-align", "tdCol11"],
+                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9"],
                 fields_info: [
-                    { type: "Text", name: "ID1", style: "" },
-                    { type: "Text", name: "Name1", style: "" },
-                    { type: "TextAmt", name: "Cash1", style: "" },
-                    { type: "TextAmt", name: "Cnt1", style: "" },
-                    { type: "TextAmt", name: "CashCnt1", style: "" },
-                    { type: "Text", name: "ID2", style: "" },
-                    { type: "Text", name: "Name2", style: "" },
-                    { type: "TextAmt", name: "Cash2", style: "" },
-                    { type: "TextAmt", name: "Cnt2", style: "" },
-                    { type: "TextAmt", name: "CashCnt2", style: "" },
-                    { type: "Text", name: "VIPPercent", style: "" }
+                    { type: "Text", name: "ID1", style: "display:none" },
+                    { type: "Text", name: "Name1" },
+                    { type: "TextAmt", name: "Cash1" },
+                    { type: "TextAmt", name: "Cnt1" },
+                    { type: "TextAmt", name: "CashCnt1" },
+                    { type: "TextAmt", name: "Cash2" },
+                    { type: "TextAmt", name: "Cnt2" },
+                    { type: "TextAmt", name: "CashCnt2" },
+                    { type: "Text", name: "VIPPercent" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -141,19 +131,17 @@
         grdM_Shop_Step1 = new DynGrid(
             {
                 table_lement: $('#tbSales_Shop_Step1')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6", "tdCol7", "tdCol8 label-align", "tdCol9 label-align", "tdCol10 label-align", "tdCol11"],
+                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9"],
                 fields_info: [
-                    { type: "Text", name: "ID1", style: "" },
-                    { type: "Text", name: "Name1", style: "" },
-                    { type: "TextAmt", name: "Cash1", style: "" },
-                    { type: "TextAmt", name: "Cnt1", style: "" },
-                    { type: "TextAmt", name: "CashCnt1", style: "" },
-                    { type: "Text", name: "ID2", style: "" },
-                    { type: "Text", name: "Name2", style: "" },
-                    { type: "TextAmt", name: "Cash2", style: "" },
-                    { type: "TextAmt", name: "Cnt2", style: "" },
-                    { type: "TextAmt", name: "CashCnt2", style: "" },
-                    { type: "Text", name: "VIPPercent", style: "" }
+                    { type: "Text", name: "ID1", style: "display:none" },
+                    { type: "Text", name: "Name1" },
+                    { type: "TextAmt", name: "Cash1" },
+                    { type: "TextAmt", name: "Cnt1" },
+                    { type: "TextAmt", name: "CashCnt1" },
+                    { type: "TextAmt", name: "Cash2" },
+                    { type: "TextAmt", name: "Cnt2" },
+                    { type: "TextAmt", name: "CashCnt2" },
+                    { type: "Text", name: "VIPPercent" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -165,19 +153,17 @@
         grdM_Date_Step1 = new DynGrid(
             {
                 table_lement: $('#tbSales_Date_Step1')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6", "tdCol7", "tdCol8 label-align", "tdCol9 label-align", "tdCol10 label-align", "tdCol11"],
+                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9"],
                 fields_info: [
-                    { type: "Text", name: "ID1", style: "" },
-                    { type: "Text", name: "Name1", style: "" },
-                    { type: "TextAmt", name: "Cash1", style: "" },
-                    { type: "TextAmt", name: "Cnt1", style: "" },
-                    { type: "TextAmt", name: "CashCnt1", style: "" },
-                    { type: "Text", name: "ID2", style: "" },
-                    { type: "Text", name: "Name2", style: "" },
-                    { type: "TextAmt", name: "Cash2", style: "" },
-                    { type: "TextAmt", name: "Cnt2", style: "" },
-                    { type: "TextAmt", name: "CashCnt2", style: "" },
-                    { type: "Text", name: "VIPPercent", style: "" }
+                    { type: "Text", name: "ID1", style: "display:none" },
+                    { type: "Text", name: "Name1" },
+                    { type: "TextAmt", name: "Cash1" },
+                    { type: "TextAmt", name: "Cnt1" },
+                    { type: "TextAmt", name: "CashCnt1" },
+                    { type: "TextAmt", name: "Cash2" },
+                    { type: "TextAmt", name: "Cnt2" },
+                    { type: "TextAmt", name: "CashCnt2" },
+                    { type: "Text", name: "VIPPercent" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -189,19 +175,17 @@
         grdM_Date_Area_Step2 = new DynGrid(
             {
                 table_lement: $('#tbSales_Date_Area_Step2')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6", "tdCol7", "tdCol8 label-align", "tdCol9 label-align", "tdCol10 label-align", "tdCol11"],
+                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9"],
                 fields_info: [
-                    { type: "Text", name: "ID1", style: "" },
-                    { type: "Text", name: "Name1", style: "" },
-                    { type: "TextAmt", name: "Cash1", style: "" },
-                    { type: "TextAmt", name: "Cnt1", style: "" },
-                    { type: "TextAmt", name: "CashCnt1", style: "" },
-                    { type: "Text", name: "ID2", style: "" },
-                    { type: "Text", name: "Name2", style: "" },
-                    { type: "TextAmt", name: "Cash2", style: "" },
-                    { type: "TextAmt", name: "Cnt2", style: "" },
-                    { type: "TextAmt", name: "CashCnt2", style: "" },
-                    { type: "Text", name: "VIPPercent", style: "" }
+                    { type: "Text", name: "ID1", style: "display:none" },
+                    { type: "Text", name: "Name1" },
+                    { type: "TextAmt", name: "Cash1" },
+                    { type: "TextAmt", name: "Cnt1" },
+                    { type: "TextAmt", name: "CashCnt1" },
+                    { type: "TextAmt", name: "Cash2" },
+                    { type: "TextAmt", name: "Cnt2" },
+                    { type: "TextAmt", name: "CashCnt2" },
+                    { type: "Text", name: "VIPPercent" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -1147,16 +1131,22 @@ Timerset(sessionStorage.getItem('isamcomp'));
         else {
             var dtQ = data.getElementsByTagName('dtQ');
             grdM_Shop.BindData(dtQ);
-
+            
             if (dtQ.length == 0) {
                 DyAlert("無符合資料!");
                 $(".modal-backdrop").remove();
                 return;
             }
+            var dtSumQ = data.getElementsByTagName('dtSumQ');
+            $('#tbSales_Shop thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
+            $('#tbSales_Shop thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
+            $('#tbSales_Shop thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
+            $('#tbSales_Shop thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
+            $('#tbSales_Shop thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
+            $('#tbSales_Shop thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
+            $('#tbSales_Shop thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
         }
     };
-
-
 
     let afterQuery1 = function (data) {
         CloseLoading();
@@ -1169,24 +1159,30 @@ Timerset(sessionStorage.getItem('isamcomp'));
             var dtQ = data.getElementsByTagName('dtQ');
             grdM.BindData(dtQ);
 
-            var heads = $('#tbSales1 thead tr th');
-
+            var heads = $('#tbSales1 thead tr th#thtype');
             if ($('#rdoArea').prop('checked')) {
-                $(heads[1]).text('區課');
+                $(heads).html('區');
             }
             else if ($('#rdoShop').prop('checked')) {
-                $(heads[1]).text('店別');
+                $(heads).html('店');
             }
             else if ($('#rdoDate').prop('checked')) {
-                $(heads[1]).text('日期');
+                $(heads).html('日');
             }
             
-
             if (dtQ.length == 0) {
                 DyAlert("無符合資料!");
                 $(".modal-backdrop").remove();
                 return;
             }
+            var dtSumQ = data.getElementsByTagName('dtSumQ');
+            $('#tbSales1 thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
+            $('#tbSales1 thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
+            $('#tbSales1 thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
+            $('#tbSales1 thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
+            $('#tbSales1 thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
+            $('#tbSales1 thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
+            $('#tbSales1 thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
         }
     };
 
@@ -1220,13 +1216,12 @@ Timerset(sessionStorage.getItem('isamcomp'));
             var dtQ = data.getElementsByTagName('dtQ');
             grdM_Area_Step1.BindData(dtQ);
 
-            var heads = $('#tbSales_Area_Step1 thead tr th');
-
+            var heads = $('#tbSales_Area_Step1 thead tr th#thtype');
             if ($('#rdoShop_Area_Step1').prop('checked')) {
-                $(heads[1]).text('店別');
+                $(heads).text('店');
             }
             else if ($('#rdoDate_Area_Step1').prop('checked')) {
-                $(heads[1]).text('日期');
+                $(heads).text('日');
             }
 
             if (dtQ.length == 0) {
@@ -1234,9 +1229,15 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 $(".modal-backdrop").remove();
                 return;
             }
-            else {
-                /*$('#modal_Area_Step1').modal('show');*/
-            }
+
+            var dtSumQ = data.getElementsByTagName('dtSumQ');
+            $('#tbSales_Area_Step1 thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
+            $('#tbSales_Area_Step1 thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
+            $('#tbSales_Area_Step1 thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
+            $('#tbSales_Area_Step1 thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
+            $('#tbSales_Area_Step1 thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
+            $('#tbSales_Area_Step1 thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
+            $('#tbSales_Area_Step1 thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
 
         }
     };
@@ -1270,9 +1271,15 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 $(".modal-backdrop").remove();
                 return;
             }
-            else {
-                //$('#modal_Area_Shop_Step2').modal('show');
-            }
+
+            var dtSumQ = data.getElementsByTagName('dtSumQ');
+            $('#tbSales_Area_Shop_Step2 thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
+            $('#tbSales_Area_Shop_Step2 thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
+            $('#tbSales_Area_Shop_Step2 thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
+            $('#tbSales_Area_Shop_Step2 thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
+            $('#tbSales_Area_Shop_Step2 thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
+            $('#tbSales_Area_Shop_Step2 thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
+            $('#tbSales_Area_Shop_Step2 thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
         }
     };
 
@@ -1303,9 +1310,15 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 $(".modal-backdrop").remove();
                 return;
             }
-            else {
-                /*$('#modal_Area_Date_Step2').modal('show');*/
-            }
+
+            var dtSumQ = data.getElementsByTagName('dtSumQ');
+            $('#tbSales_Area_Date_Step2 thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
+            $('#tbSales_Area_Date_Step2 thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
+            $('#tbSales_Area_Date_Step2 thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
+            $('#tbSales_Area_Date_Step2 thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
+            $('#tbSales_Area_Date_Step2 thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
+            $('#tbSales_Area_Date_Step2 thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
+            $('#tbSales_Area_Date_Step2 thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
         }
     };
 
@@ -1333,10 +1346,14 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 $(".modal-backdrop").remove();
                 return;
             }
-            else {
-                /*$('#modal_Shop_Step1').modal('show');*/
-            }
-
+            var dtSumQ = data.getElementsByTagName('dtSumQ');
+            $('#tbSales_Shop_Step1 thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
+            $('#tbSales_Shop_Step1 thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
+            $('#tbSales_Shop_Step1 thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
+            $('#tbSales_Shop_Step1 thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
+            $('#tbSales_Shop_Step1 thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
+            $('#tbSales_Shop_Step1 thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
+            $('#tbSales_Shop_Step1 thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
         }
     };
 
@@ -1369,13 +1386,13 @@ Timerset(sessionStorage.getItem('isamcomp'));
             var dtQ = data.getElementsByTagName('dtQ');
             grdM_Date_Step1.BindData(dtQ);
 
-            var heads = $('#tbSales_Date_Step1 thead tr th');
+            var heads = $('#tbSales_Date_Step1 thead tr th#thtype');
             
             if ($('#rdoArea_Date_Step1').prop('checked')) {
-                $(heads[1]).text('區課');
+                $(heads).text('區');
             }
             else if ($('#rdoShop_Date_Step1').prop('checked')) {
-                $(heads[1]).text('店別');
+                $(heads).text('店');
             }
 
             if (dtQ.length == 0) {
@@ -1383,10 +1400,15 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 $(".modal-backdrop").remove();
                 return;
             }
-            else {
-                /*$('#modal_Date_Step1').modal('show');*/
-            }
 
+            var dtSumQ = data.getElementsByTagName('dtSumQ');
+            $('#tbSales_Date_Step1 thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
+            $('#tbSales_Date_Step1 thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
+            $('#tbSales_Date_Step1 thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
+            $('#tbSales_Date_Step1 thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
+            $('#tbSales_Date_Step1 thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
+            $('#tbSales_Date_Step1 thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
+            $('#tbSales_Date_Step1 thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
         }
     };
 
@@ -1414,10 +1436,15 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 $(".modal-backdrop").remove();
                 return;
             }
-            else {
-              /*  $('#modal_Date_Area_Step2').modal('show');*/
-            }
 
+            var dtSumQ = data.getElementsByTagName('dtSumQ');
+            $('#tbSales_Date_Area_Step2 thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
+            $('#tbSales_Date_Area_Step2 thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
+            $('#tbSales_Date_Area_Step2 thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
+            $('#tbSales_Date_Area_Step2 thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
+            $('#tbSales_Date_Area_Step2 thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
+            $('#tbSales_Date_Area_Step2 thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
+            $('#tbSales_Date_Area_Step2 thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
         }
     };
 
