@@ -247,15 +247,15 @@
             console.log(pg);
             //alert(pg);
 
-            if (pg == "mXMS01") {
-                if (window.PagemXMS01 == undefined)
-                    $.getScript('SystemSetup/mXMS01.js',
+            if (pg == "msSA101") {
+                if (window.PagemsSA101 == undefined)
+                    $.getScript('SystemSetup/msSA101.js',
                         function () {
-                            PagemXMS01($(".workarea"));
+                            PagemsSA101($(".workarea"));
                         }
                     );
                 else {
-                    PagemXMS01($(".workarea"));
+                    PagemsSA101($(".workarea"));
                 }
             }
 

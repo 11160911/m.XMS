@@ -1,4 +1,4 @@
-﻿var PagemXMS01 = function (ParentNode) {
+﻿var PagemsSA101 = function (ParentNode) {
 
     let grdM;
     let grdM_Shop;
@@ -1501,8 +1501,8 @@ Timerset(sessionStorage.getItem('isamcomp'));
 //#endregion
     
 
-    if ($('#pgmXMS01').length == 0) {  
-        AllPages = new LoadAllPages(ParentNode, "SystemSetup/mXMS01", ["mXMS01btns", "pgmXMS01Init", "pgmXMS01Add", "pgmXMS01Mod"], afterLoadPage);
+    if ($('#pgmsSA101').length == 0) {  
+        AllPages = new LoadAllPages(ParentNode, "SystemSetup/msSA101", ["msSA101btns", "pgmsSA101Init", "pgmsSA101Add", "pgmsSA101Mod"], afterLoadPage);
     };
 
 

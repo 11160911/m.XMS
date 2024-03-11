@@ -1225,14 +1225,14 @@ namespace SVMAdmin
             dt.Columns.Add("MobilePC", typeof(string));
             dt.Columns.Add("Icon", typeof(string));
 
-            dt.Rows.Add(new object[] { "業績分析", "VIP1", "mXMS01", "業績分析", "mXMS01", "P", "fa-cogs" });
-            dt.Rows.Add(new object[] { "促銷分析", "VIP2", "mXMS02", "促銷分析", "mXMS02", "P", "fa-cubes" });
-			//dt.Rows.Add(new object[] { "出貨/調撥", "OperatManage", "ISAM03", "出貨/調撥", "ISAM03", "P", "fa-th-large" });
+            dt.Rows.Add(new object[] { "銷售查詢", "SalesQuery", "msSA101", "銷售分析", "msSA101", "P", "fa-cogs" });
+            dt.Rows.Add(new object[] { "銷售查詢", "SalesQuery", "msSA102", "組促銷售分析", "msSA102", "P", "fa-cubes" });
+            dt.Rows.Add(new object[] { "資料查詢", "DataQuery", "mXMS03", "EDM設定", "mXMS03", "P", "fa-th-large" });
             //dt.Rows.Add(new object[] { "單價查詢", "PriceRequest", "ISAMQPLU", "單價查詢", "ISAMQPLU", "P", "fa-dollar" });
-               //dt.Rows.Add(new object[] { "分區盤點上傳", "MachineManage", "ISAMToFTP", "分區盤點上傳", "ISAMToFTP", "P", "fa-cloud-upload" });
-               //dt.Rows.Add(new object[] { "上傳查詢", "UpRecordQuery", "ISAMQFTPREC", "上傳查詢", "ISAMQFTPREC", "P", "fa-list" });
-               //dt.Rows.Add(new object[] { "清除作業", "GoodsManage", "ISAMDelData", "清除作業", "ISAMDelData", "P", "fa-trash-o" });
-               //dt.Rows.Add(new object[] { "店號設定", "ShopManage", "ISAMWHSET", "店號設定", "ISAMWHSET", "P", "fa-desktop" });
+            //dt.Rows.Add(new object[] { "分區盤點上傳", "MachineManage", "ISAMToFTP", "分區盤點上傳", "ISAMToFTP", "P", "fa-cloud-upload" });
+            //dt.Rows.Add(new object[] { "上傳查詢", "UpRecordQuery", "ISAMQFTPREC", "上傳查詢", "ISAMQFTPREC", "P", "fa-list" });
+            //dt.Rows.Add(new object[] { "清除作業", "GoodsManage", "ISAMDelData", "清除作業", "ISAMDelData", "P", "fa-trash-o" });
+            //dt.Rows.Add(new object[] { "店號設定", "ShopManage", "ISAMWHSET", "店號設定", "ISAMWHSET", "P", "fa-desktop" });
 
 
 
