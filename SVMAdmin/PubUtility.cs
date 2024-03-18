@@ -1227,7 +1227,7 @@ namespace SVMAdmin
 
             dt.Rows.Add(new object[] { "銷售查詢", "SalesQuery", "msSA101", "銷售分析", "msSA101", "P", "fa-cogs" });
             dt.Rows.Add(new object[] { "銷售查詢", "SalesQuery", "msSA102", "組促銷售分析", "msSA102", "P", "fa-cubes" });
-            dt.Rows.Add(new object[] { "資料查詢", "DataQuery", "mXMS03", "EDM設定", "mXMS03", "P", "fa-th-large" });
+            dt.Rows.Add(new object[] { "資料查詢", "DataQuery", "msDM101", "EDM發送設定作業", "msDM101", "P", "fa-th-large" });
             //dt.Rows.Add(new object[] { "單價查詢", "PriceRequest", "ISAMQPLU", "單價查詢", "ISAMQPLU", "P", "fa-dollar" });
             //dt.Rows.Add(new object[] { "分區盤點上傳", "MachineManage", "ISAMToFTP", "分區盤點上傳", "ISAMToFTP", "P", "fa-cloud-upload" });
             //dt.Rows.Add(new object[] { "上傳查詢", "UpRecordQuery", "ISAMQFTPREC", "上傳查詢", "ISAMQFTPREC", "P", "fa-list" });

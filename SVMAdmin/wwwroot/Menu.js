@@ -259,6 +259,20 @@
                 }
             }
 
+            else if (pg == "msDM101") {
+                if (window.PagemsDM101 == undefined) {
+                    $.getScript('SystemSetup/msDM101.js',
+                        function () {
+                            PagemsDM101($(".workarea"));
+                        }
+                    );
+                }
+                    
+                else {
+                    PagemsDM101($(".workarea"));
+                }
+            }
+
             else if (pg == "ISAMDelData") {
                 if (window.PageISAMDelData == undefined)
                     $.getScript('SystemSetup/ISAMDelData.js',
