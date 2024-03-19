@@ -23,7 +23,48 @@
     };
 
     let InitModifyDeleteButton = function () {
+        $('#tbDM tbody tr td').click(function () { DMMod_click(this) });
     }
+
+    let DMMod_click = function (bt) {
+        $(bt).closest('tr').click();
+        $('.msg-valid').hide();
+        var node = $(grdM.ActiveRowTR()).prop('Record');
+
+        if (GetNodeValue(node, 'Type') == "A") {
+            for (var i = 0; i < 8; i++) {
+                GetGetImage("PLUPic" + String(i + 1) + "_A", "");
+            }
+
+            $('#titDMAdd_A').text('版型A修改');
+            $('#lblDocNo_DMAdd_A').html(GetNodeValue(node, 'DocNo'))
+            $('#modal_DMAdd_A').modal('show');
+            setTimeout(function () {
+                Print_DMMod_A();
+            }, 500);
+        }
+    };
+
+    let Print_DMMod_A = function () {
+        var pData = {
+            DocNo: $('#lblDocNo_DMAdd_A').html()
+        }
+        PostToWebApi({ url: "api/SystemSetup/Print_DMMod_A", data: pData, success: afterPrint_DMMod_A });
+    };
+
+    let afterPrint_DMMod_A = function (data) {
+        if (ReturnMsg(data, 0) != "Print_DMMod_AOK") {
+            DyAlert(ReturnMsg(data, 1), function () {
+                $('#modal_DMAdd_A').modal('hide');
+            });
+        }
+        else {
+            var dtE = data.getElementsByTagName('dtE');
+            for (var i = 0; i < dtE.length; i++) {
+                GetGetImage("PLUPic" + String(i + 1) + "_A", GetNodeValue(dtE[i], "SGID"));
+            }
+        }
+    };
 
 //    let InitModifyDeleteButton = function () {
 //        $('#tbSales1 tbody tr td').click(function () { Step1_click(this) });
@@ -903,21 +944,26 @@
 
 
     let btDMAdd_click = function (bt) {
-        GetGetImage("PLUPic1_A", "");
-        GetGetImage("PLUPic2_A", "");
-        GetGetImage("PLUPic3_A", "");
-        GetGetImage("PLUPic4_A", "");
-        GetGetImage("PLUPic5_A", "");
-        GetGetImage("PLUPic6_A", "");
-        GetGetImage("PLUPic7_A", "");
-        GetGetImage("PLUPic8_A", "");
-        $('#modal_DMAdd_A').modal('show');
-        setTimeout(function () {
-            GetDocNoDM();
-        }, 500);
+        if ($('#cboType').val() == null) {
+            DyAlert("請選擇版型!")
+            return;
+        }
+        else if ($('#cboType').val() == "A") {
+            for (var i = 0; i < 8; i++) {
+                GetGetImage("PLUPic" + String(i + 1) + "_A", "");
+            }
+            $('#titDMAdd_A').text('版型A新增');
+            $('#modal_DMAdd_A').modal('show');
+            setTimeout(function () {
+                GetDocNoDM();
+            }, 500);
+        }
     };
 
     let btPrint_DMAdd_A_click = function (bt) {
+        for (var i = 0; i < 8; i++) {
+            GetGetImage("PLUPic" + String(i + 1) + "_DM_A", "");
+        }
         $('#modal_DM_A').modal('show');
         setTimeout(function () {
             Print_DM_A();

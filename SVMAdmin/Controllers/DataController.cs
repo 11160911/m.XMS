@@ -6920,7 +6920,7 @@ namespace SVMAdmin.Controllers
                 if (Type != "") {
                     sql += "and a.Type='" + Type + "' ";
                 }
-                sql += "order by a.DocNo ";
+                sql += "order by a.DocNo desc ";
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
                 ds.Tables.Add(dtE);
@@ -6962,6 +6962,36 @@ namespace SVMAdmin.Controllers
         {
             UserInfo uu = PubUtility.GetCurrentUser(this);
             System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "Print_DM_AOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string DocNo = rq["DocNo"];
+
+                string sql = "select RIGHT(DataType,1),* from SetEDM (nolock) ";
+                sql += "where Companycode='" + uu.CompanyId + "' ";
+                if (DocNo != "")
+                {
+                    sql += "and DocNo='" + DocNo + "' ";
+                }
+                sql += "order by DataType ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/Print_DMMod_A")]
+        public ActionResult SystemSetup_Print_DMMod_A()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "Print_DMMod_AOK", "" });
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
