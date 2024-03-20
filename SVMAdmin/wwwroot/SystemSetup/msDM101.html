@@ -127,7 +127,7 @@
 
                             <div class="form-group row" style="margin-left: 5px; margin-top: 5px; margin-bottom: 5px; width: 100%">
                                 <label style="margin-top: 5px; color: black; ">版&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型：</label>
-                                <select id="cboType" class="form-control" style="width:150px">
+                                <select id="cboType" class="form-control" style="width:150px;padding:0px">
                                     <option disabled selected> 請選擇版型</option>
                                     <option value="A">版型A</option>
                                     <option value="B">版型B</option>
@@ -164,7 +164,7 @@
 
                     <div class="modal fade" id="modal_DMAdd_A" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 700px;width:600px">
+                            <div class="modal-content" style="height: 100%;width:600px">
                                 <style>
                                 </style>
 
@@ -183,8 +183,8 @@
 
                                     <div class="form-group row" style="margin-left: 5px; margin-top: 5px; width: 100%">
                                         <div id="btUPPic1_A" style="width: 484px; height: 52px; border: 2px solid #000; background-image: url(images/品牌Logo1.png); background-size: 100% 100% ">
-                                            
-                                        <!--<label style="color:red;margin-top:25px">品牌LOGO(圖)</label>-->
+
+                                            <!--<label style="color:red;margin-top:25px">品牌LOGO(圖)</label>-->
                                             <img id="PLUPic1_A" style="max-width: 100%; max-height: 100%; display: block; margin: auto">
                                         </div>
 
@@ -208,7 +208,7 @@
                                         </div>
                                         <input type="hidden" id="Photo3_A" />
                                         <!--<button id="btUPPic3_A" type="button" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 25px; margin-left: 1px">設定</button>-->
-                                        
+
                                         <div id="btUPPic4_A" style="width: 160px; height: 180px; border: 2px solid #000; background-image: url(images/圖2.png); background-size: 100% 100% ">
                                             <!--<label style="color: red; margin-top: 25px; margin-left: 5px">圖2</label>-->
                                             <img id="PLUPic4_A" style="max-width: 100%; max-height: 100%; display: block; margin: auto">
@@ -225,7 +225,7 @@
                                     </div>
 
                                     <div class="form-group row" style="margin-left: 5px; width: 100%">
-                                        
+
                                         <div id="btUPPic6_A" style="width: 160px; height: 180px; border: 2px solid #000; background-image: url(images/圖4.png); background-size: 100% 100% ">
                                             <!--<label style="color: red; margin-top: 25px">圖4</label>-->
                                             <img id="PLUPic6_A" style="max-width: 100%; max-height: 100%; display: block; margin: auto">
@@ -247,6 +247,13 @@
                                         <input type="hidden" id="Photo8_A" />
                                         <!--<button id="btUPPic8_A" type="button" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 25px; margin-left: 1px">設定</button>-->
                                     </div>
+
+                                    <div class="form-group row" style="margin-left: 5px; width: 100%">
+                                        <div id="" style="width: 484px; height: 150px; border: 2px solid #000; background-image: url(images/文字敘述.png); background-size: 100% 100% ">
+
+                                        </div>
+                                        <!--<button id="btUPPic1_A" type="button" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 25px; margin-left: 1px">設定</button>-->
+                                    </div>
                                 </div>
 
                             </div>
@@ -259,11 +266,12 @@
                             <div style="max-height: calc(100vh - 3.5rem); max-height: calc(100vh - 1rem); overflow: hidden; max-height: none; position: relative; display: -ms-flexbox; -ms-flex-direction: column; flex-direction: column; pointer-events: auto; background-color: #fff; background-clip: padding-box; border: 1px solid rgba(0, 0, 0, 0.2); border-radius: 0.3rem; outline: 0; height: 700px; width: 600px ">
                                 <style>
                                     table {
-                                    margin-left:3px;
+                                        margin-left: 3px;
                                     }
-                                    table td {
-                                        border-spacing:0;
-                                    }
+
+                                        table td {
+                                            border-spacing: 0;
+                                        }
                                 </style>
 
                                 <div class="modal-header">
@@ -879,7 +887,7 @@
                     </div>
                 </article>
 
-                
+
 
 
                 <div class="modal fade" id="modal_Lookup" data-keyboard="false" data-backdrop="static">
@@ -931,16 +939,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
-
-
-
-
-
-
-
 
                 <article id="msDM101btns" hidden>
                     <div class="col-md-12 col-sm-12">
@@ -1035,12 +1033,12 @@
                                         }
                                     </style>
                                     <!--<style>
-                            #modal-content .col-form-label {
-                                text-align: center;
-                                color: red;
-                                font-size: 0.85rem;
-                            }
-                        </style>-->
+                                        #modal-content .col-form-label {
+                                            text-align: center;
+                                            color: red;
+                                            font-size: 0.85rem;
+                                        }
+                                    </style>-->
                                     <div class="card-block forminput">
                                         <div class="form-group row">
                                             <label class="col-form-label col-3 text-right">品號</label>
@@ -1086,12 +1084,12 @@
                                         }
                                     </style>
                                     <!--<style>
-                            #modal-content .col-form-label {
-                                text-align: center;
-                                color: red;
-                                font-size: 0.85rem;
-                            }
-                        </style>-->
+                                        #modal-content .col-form-label {
+                                            text-align: center;
+                                            color: red;
+                                            font-size: 0.85rem;
+                                        }
+                                    </style>-->
                                     <div class="card-block forminput">
                                         <div class="form-group row">
                                             <label class="col-form-label col-3 text-right">品號</label>
@@ -1211,21 +1209,18 @@
                 </article>
 
                 <!--<article id="pgISAM01UpFtp" class="row" hidden>
-    <div class="col-md-12 col-sm-12">
-        <div class="x_panel">-->
+                <div class="col-md-12 col-sm-12">
+                    <div class="x_panel">-->
                 <!--<div class="form-group row">
-        <div><label id="lblShop4" class="col-md-5 col-form-label">999999 智販店</label></div>
-        <div><label id="lblManID4" class="col-md-7 col-form-label">分區：001</label></div>
-    </div>
-    <div><label id="lblDate4" class="col-form-label">盤點日期：2022/06/01</label></div>-->
+                    <div><label id="lblShop4" class="col-md-5 col-form-label">999999 智販店</label></div>
+                    <div><label id="lblManID4" class="col-md-7 col-form-label">分區：001</label></div>
+                </div>
+                <div><label id="lblDate4" class="col-form-label">盤點日期：2022/06/01</label></div>-->
                 <!--</div>
-        </div>
+                    </div>
 
 
-    </article>-->
-
-
-
+                </article>-->
 
             </div>
             <!-- /page content -->

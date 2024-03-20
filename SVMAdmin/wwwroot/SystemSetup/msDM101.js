@@ -831,6 +831,7 @@
             UploadFileType = "PLU+Pic8"
         }
         $('#modal-media').prop("UploadFileType", UploadFileType);
+        $('#fileURL').val('')
         $('#modal-media').modal('show');
 
     };
@@ -854,12 +855,12 @@
             if (Type == "A") {
                 DocNo = $('#lblDocNo_DMAdd_A').html();
             }
-
             data.formData = {
                 "UploadFileType": $('#modal-media').prop("UploadFileType"),
                 "ImgSGID": $('#' + $('#modal-media').prop("FieldName")).val(),
                 "Type": Type,
-                "DocNo": DocNo
+                "DocNo": DocNo,
+                "fileURL": $('#fileURL').val()
             };
         });
 

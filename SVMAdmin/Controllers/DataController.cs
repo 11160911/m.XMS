@@ -970,6 +970,7 @@ namespace SVMAdmin.Controllers
                 dtF.Columns.Add("FileName", typeof(string));
                 dtF.Columns.Add("DocType", typeof(string));
                 dtF.Columns.Add("DocImage", typeof(byte[]));
+                dtF.Columns.Add("ImgURL", typeof(string));
 
                 string sql = "Delete From SetEDM ";
                 sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + HttpContext.Request.Form["DocNo"] + "' And DataType='" + HttpContext.Request.Form["UploadFileType"] + "'";
@@ -983,6 +984,7 @@ namespace SVMAdmin.Controllers
                 drF["FileName"] = file.FileName;
                 drF["DocType"] = file.ContentType;
                 drF["DocImage"] = ms.ToArray();
+                drF["ImgURL"] = HttpContext.Request.Form["fileURL"];
                 dtF.Rows.Add(drF);
                 sgid = PubUtility.AddTable("SetEDM", dtF, uu, "SYS");
             }
