@@ -943,7 +943,6 @@
         $('#' + elmImg).prop('src', url);
     }
 
-
     let btDMAdd_click = function (bt) {
         if ($('#cboType').val() == null) {
             DyAlert("請選擇版型!")
@@ -953,6 +952,8 @@
             for (var i = 0; i < 8; i++) {
                 GetGetImage("PLUPic" + String(i + 1) + "_A", "");
             }
+            $('#Barcode1_A').val('');
+
             $('#titDMAdd_A').text('版型A新增');
             $('#modal_DMAdd_A').modal('show');
             setTimeout(function () {
@@ -962,9 +963,16 @@
     };
 
     let btPrint_DMAdd_A_click = function (bt) {
-        for (var i = 0; i < 8; i++) {
-            GetGetImage("PLUPic" + String(i + 1) + "_DM_A", "");
-        }
+        GetGetImage("PLUPic1_DM_A", "");
+        GetGetImage("PLUPic2_DM_A", "");
+        GetGetImage("PLUPic3_DM_A", "");
+        GetGetImage("PLUPic4_DM_A", "");
+        GetGetImage("PLUPic5_DM_A", "");
+        GetGetImage("PLUPic6_DM_A", "");
+        GetGetImage("PLUPic7_DM_A", "");
+        GetGetImage("PLUPic8_DM_A", "");
+        GetGetImage("Barcode1_DM_A", "");
+
         $('#modal_DM_A').modal('show');
         setTimeout(function () {
             Print_DM_A();
@@ -985,7 +993,6 @@
             });
         }
         else {
-            
             var dtE = data.getElementsByTagName('dtE');
             if (dtE.length == 0) {
                 DyAlert("請設定DM資料!", function () {
@@ -994,9 +1001,34 @@
                 $(".modal-backdrop").remove();
                 return;
             }
-
             for (var i = 0; i < dtE.length; i++) {
-                GetGetImage("PLUPic" + String(i + 1) + "_DM_A", GetNodeValue(dtE[i], "SGID"));
+                if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic1") {
+                    GetGetImage("PLUPic1_DM_A", GetNodeValue(dtE[i], "SGID"));
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic2") {
+                    GetGetImage("PLUPic2_DM_A", GetNodeValue(dtE[i], "SGID"));
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic3") {
+                    GetGetImage("PLUPic3_DM_A", GetNodeValue(dtE[i], "SGID"));
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic4") {
+                    GetGetImage("PLUPic4_DM_A", GetNodeValue(dtE[i], "SGID"));
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic5") {
+                    GetGetImage("PLUPic5_DM_A", GetNodeValue(dtE[i], "SGID"));
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic6") {
+                    GetGetImage("PLUPic6_DM_A", GetNodeValue(dtE[i], "SGID"));
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic7") {
+                    GetGetImage("PLUPic7_DM_A", GetNodeValue(dtE[i], "SGID"));
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic8") {
+                    GetGetImage("PLUPic8_DM_A", GetNodeValue(dtE[i], "SGID"));
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "Barcode1") {
+                    GetGetImage("Barcode1_DM_A", GetNodeValue(dtE[i], "SGID"));
+                }
             }
         }
     };
@@ -1054,6 +1086,25 @@
         }
     };
 
+    let btBarcode1_A_click = function (bt) {
+        var pData = {
+            DocNo: $('#lblDocNo_DMAdd_A').html(),
+            Barcode1: $('#Barcode1_A').val()
+        }
+        PostToWebApi({ url: "api/SystemSetup/SetBarcode1_A", data: pData, success: afterSetBarcode1_A });
+    };
+
+    let afterSetBarcode1_A = function (data) {
+        if (ReturnMsg(data, 0) != "SetBarcode1_AOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            DyAlert("設定完成!")
+        }
+    };
+
+
+
     let GetInitmsDM = function (data) {
         if (ReturnMsg(data, 0) != "GetInitmsDMOK") {
             DyAlert(ReturnMsg(data, 1));
@@ -1076,6 +1127,10 @@
             $('#btUPPic6_A').click(function () { btUPPic1_click(this) });
             $('#btUPPic7_A').click(function () { btUPPic1_click(this) });
             $('#btUPPic8_A').click(function () { btUPPic1_click(this) });
+
+
+            $('#btBarcode1_A').click(function () { btBarcode1_A_click(this) });
+
         }
     };
 

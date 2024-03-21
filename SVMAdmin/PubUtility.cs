@@ -14,6 +14,14 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using static System.Net.Mime.MediaTypeNames;
+using System.Net.NetworkInformation;
+using System.Drawing.Printing;
+using System.Drawing;
+
+using ZXing;
+using ZXing.Common;
+using ZXing.Rendering;
 
 
 
@@ -1252,6 +1260,124 @@ namespace SVMAdmin
             return dt.Copy();
         }
 
+        private static System.Drawing.Bitmap imgBackBmp;
+        private static System.Drawing.Bitmap imgBackG;
+        private static int Resolution = 1000;
+        private static int margin = 0;
+    
+
+        public static System.Drawing.Bitmap[] GetBitmap(string Barcode)
+        {
+            try
+            {
+                System.Drawing.Bitmap[] bmps;
+                bmps = new System.Drawing.Bitmap[1];
+
+                string fontA = "Courier New";
+                fontA = "標楷體";
+                //fontA = "新細明體";
+                string fontC = "Courier New";
+                fontC = "Calibri";
+                string fontT = "Times New Roman";
+
+
+                System.Drawing.SolidBrush BrushB = new System.Drawing.SolidBrush(System.Drawing.Color.Black);
+                System.Drawing.SolidBrush BrushW = new System.Drawing.SolidBrush(System.Drawing.Color.White);
+                System.Drawing.Pen LineP1 = new System.Drawing.Pen(System.Drawing.Color.Black, 40);
+                System.Drawing.Pen LineP = new System.Drawing.Pen(System.Drawing.Color.Black, 20);
+                System.Drawing.SolidBrush drawBrush = new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(0, 0, 0));
+
+                System.Drawing.Font drawFontC12 = new System.Drawing.Font(fontC, 12, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFontC26 = new System.Drawing.Font(fontC, 26, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFontC20 = new System.Drawing.Font(fontC, 20, System.Drawing.FontStyle.Bold);
+
+                System.Drawing.Font drawFont6 = new System.Drawing.Font(fontA, 6, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont7 = new System.Drawing.Font(fontA, 7, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont8 = new System.Drawing.Font(fontA, 8, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont9 = new System.Drawing.Font(fontA, 9, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont10 = new System.Drawing.Font(fontA, 10, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont12 = new System.Drawing.Font(fontA, 12, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont16 = new System.Drawing.Font(fontA, 15, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont18 = new System.Drawing.Font(fontA, 18, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont14 = new System.Drawing.Font(fontA, 14, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont20 = new System.Drawing.Font(fontA, 20, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont24 = new System.Drawing.Font(fontA, 24, System.Drawing.FontStyle.Bold);
+
+                System.Drawing.Font drawFontHeader = new System.Drawing.Font(fontA, 12, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFontHeader10 = new System.Drawing.Font(fontA, 10, System.Drawing.FontStyle.Bold);
+
+                int iWidth = mm2px(40);
+                int iHeight = mm2px(20);
+                imgBackG = new System.Drawing.Bitmap(iWidth, iHeight, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+                imgBackG.SetResolution(Resolution, Resolution);     //列印解析度
+                System.Drawing.Graphics grLabel = System.Drawing.Graphics.FromImage(imgBackG);
+                grLabel.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+                grLabel.Clear(System.Drawing.Color.White);
+
+                string strCode39 = Convert.ToString(Barcode);
+                grLabel.DrawImage(Generate2(strCode39, 0, 50), mm2px(2), mm2px(2));
+
+                //qrcode
+                //ZXing.BarcodeWriter bw = new ZXing.BarcodeWriter();
+                //bw.Format = ZXing.BarcodeFormat.QR_CODE;
+                //ZXing.QrCode.QrCodeEncodingOptions op = new ZXing.QrCode.QrCodeEncodingOptions();
+                //op.Width = mm2px(25);
+                //op.Height = mm2px(25);
+                //op.Margin = 1;
+                //op.CharacterSet = "UTF-8";
+                //bw.Options = op;
+                //QREncrypter qre = new QREncrypter();
+                //string strQR = dt.Rows[0]["QR_CODE"].ToString();
+                //System.Drawing.Bitmap bitmapQR = bw.Write(strQR);
+                //grLabel.DrawImage(bitmapQR, mm2px(51), mm2px(50), mm2px(18), mm2px(18));
+
+                grLabel.Dispose();
+                System.Drawing.Imaging.BitmapData bmpData = imgBackG.LockBits(new System.Drawing.Rectangle(0, 0, iWidth, iHeight), System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format1bppIndexed);
+                imgBackBmp = new System.Drawing.Bitmap(iWidth, iHeight, bmpData.Stride, System.Drawing.Imaging.PixelFormat.Format1bppIndexed, bmpData.Scan0);
+                imgBackBmp.SetResolution(Resolution, Resolution);
+                bmps[0] = imgBackBmp;
+                return bmps;
+            }
+            catch (IOException e)
+            {
+                return null;
+            }
+
+        }
+
+        private static int mm2px(int mm)
+        {
+            return Convert.ToInt32(Math.Round((mm - 2 * margin) * Resolution / 25.4));
+        }
+
+        private static int mm2px(double mm)
+        {
+            return Convert.ToInt32(Math.Round((mm - 2 * margin) * Resolution / 25.4));
+        }
+
+        public static Bitmap Generate2(string text, int width, int height)
+        {
+            BarcodeWriter writer = new BarcodeWriter();
+            //使用ITF 格式，不能被現在常用的支付寶、微信掃出來
+            //如果想生成可識別的可以使用 CODE_128 格式
+            //writer.Format = BarcodeFormat.ITF;
+            writer.Format = BarcodeFormat.CODE_128;
+            EncodingOptions options = new EncodingOptions()
+            {
+                Width = width,
+                Height = height,
+                Margin = 1
+            };
+            System.Drawing.Font drawFontC8 = new System.Drawing.Font("Consolas", 9, System.Drawing.FontStyle.Bold);
+            BitmapRenderer Renderer = new BitmapRenderer
+            {
+                TextFont = drawFontC8
+            };
+            writer.Renderer = Renderer;
+            writer.Options = options;
+            Bitmap map = writer.Write(text);
+            return map;
+        }
     }
 
     public static class StringExtensions

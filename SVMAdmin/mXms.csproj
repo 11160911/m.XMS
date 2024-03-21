@@ -82,6 +82,9 @@
     <Reference Include="HtmlAgilityPack">
       <HintPath>bin\Debug\netcoreapp3.1\HtmlAgilityPack.dll</HintPath>
     </Reference>
+    <Reference Include="zxing">
+      <HintPath>bin\Debug\net5.0\zxing.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

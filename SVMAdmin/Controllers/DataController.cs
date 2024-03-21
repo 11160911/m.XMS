@@ -7019,7 +7019,53 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("SystemSetup/SetBarcode1_A")]
+        public ActionResult SystemSetup_SetBarcode1_A()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SetBarcode1_AOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string DocNo = rq["DocNo"];
+                string Barcode1 = rq["Barcode1"];
+                
+                DataTable dtF = new DataTable();
+                dtF.Columns.Add("CompanyCode", typeof(string));
+                dtF.Columns.Add("DocNo", typeof(string));
+                dtF.Columns.Add("Type", typeof(string));
+                dtF.Columns.Add("DataType", typeof(string));
+                dtF.Columns.Add("DocType", typeof(string));
+                dtF.Columns.Add("DocImage", typeof(byte[]));
+                dtF.Columns.Add("Barcode", typeof(string));
 
+                string sql = "Delete From SetEDM ";
+                sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + DocNo + "' And DataType='Barcode1'";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                System.IO.MemoryStream ms = new System.IO.MemoryStream();
+                System.Drawing.Bitmap bmp = ConstList.GetBitmap(Barcode1)[0];
+                bmp.Save(ms,System.Drawing.Imaging.ImageFormat.Bmp);
+
+                DataRow drF = dtF.NewRow();
+                drF["CompanyCode"] = uu.CompanyId;
+                drF["DocNo"] = DocNo;
+                drF["Type"] = "A";
+                drF["DataType"] = "Barcode1";
+                drF["DocType"] = "image/jpeg";
+                drF["DocImage"] = ms.ToArray();
+                drF["Barcode"] = Barcode1;
+                dtF.Rows.Add(drF);
+                string sgid = PubUtility.AddTable("SetEDM", dtF, uu, "SYS");
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
 
 
 
