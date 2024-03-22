@@ -1266,7 +1266,7 @@ namespace SVMAdmin
         private static int margin = 0;
     
 
-        public static System.Drawing.Bitmap[] GetBitmap(string Barcode)
+        public static System.Drawing.Bitmap[] GetBitmap_Barcode(string Barcode)
         {
             try
             {
@@ -1306,8 +1306,8 @@ namespace SVMAdmin
                 System.Drawing.Font drawFontHeader = new System.Drawing.Font(fontA, 12, System.Drawing.FontStyle.Bold);
                 System.Drawing.Font drawFontHeader10 = new System.Drawing.Font(fontA, 10, System.Drawing.FontStyle.Bold);
 
-                int iWidth = mm2px(40);
-                int iHeight = mm2px(20);
+                int iWidth = mm2px(15);
+                int iHeight = mm2px(5);
                 imgBackG = new System.Drawing.Bitmap(iWidth, iHeight, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
                 imgBackG.SetResolution(Resolution, Resolution);     //列印解析度
                 System.Drawing.Graphics grLabel = System.Drawing.Graphics.FromImage(imgBackG);
@@ -1315,7 +1315,7 @@ namespace SVMAdmin
                 grLabel.Clear(System.Drawing.Color.White);
 
                 string strCode39 = Convert.ToString(Barcode);
-                grLabel.DrawImage(Generate2(strCode39, 0, 50), mm2px(2), mm2px(2));
+                grLabel.DrawImage(Generate2(strCode39, 0, 50), mm2px(2), mm2px(2), mm2px(10), mm2px(3));
 
                 //qrcode
                 //ZXing.BarcodeWriter bw = new ZXing.BarcodeWriter();
@@ -1345,6 +1345,86 @@ namespace SVMAdmin
 
         }
 
+        public static System.Drawing.Bitmap[] GetBitmap_QRCode(string QRCode)
+        {
+            try
+            {
+                System.Drawing.Bitmap[] bmps;
+                bmps = new System.Drawing.Bitmap[1];
+
+                string fontA = "Courier New";
+                fontA = "標楷體";
+                //fontA = "新細明體";
+                string fontC = "Courier New";
+                fontC = "Calibri";
+                string fontT = "Times New Roman";
+
+
+                System.Drawing.SolidBrush BrushB = new System.Drawing.SolidBrush(System.Drawing.Color.Black);
+                System.Drawing.SolidBrush BrushW = new System.Drawing.SolidBrush(System.Drawing.Color.White);
+                System.Drawing.Pen LineP1 = new System.Drawing.Pen(System.Drawing.Color.Black, 40);
+                System.Drawing.Pen LineP = new System.Drawing.Pen(System.Drawing.Color.Black, 20);
+                System.Drawing.SolidBrush drawBrush = new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(0, 0, 0));
+
+                System.Drawing.Font drawFontC12 = new System.Drawing.Font(fontC, 12, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFontC26 = new System.Drawing.Font(fontC, 26, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFontC20 = new System.Drawing.Font(fontC, 20, System.Drawing.FontStyle.Bold);
+
+                System.Drawing.Font drawFont6 = new System.Drawing.Font(fontA, 6, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont7 = new System.Drawing.Font(fontA, 7, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont8 = new System.Drawing.Font(fontA, 8, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont9 = new System.Drawing.Font(fontA, 9, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont10 = new System.Drawing.Font(fontA, 10, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont12 = new System.Drawing.Font(fontA, 12, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont16 = new System.Drawing.Font(fontA, 15, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont18 = new System.Drawing.Font(fontA, 18, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont14 = new System.Drawing.Font(fontA, 14, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont20 = new System.Drawing.Font(fontA, 20, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont24 = new System.Drawing.Font(fontA, 24, System.Drawing.FontStyle.Bold);
+
+                System.Drawing.Font drawFontHeader = new System.Drawing.Font(fontA, 12, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFontHeader10 = new System.Drawing.Font(fontA, 10, System.Drawing.FontStyle.Bold);
+
+                int iWidth = mm2px(10);
+                int iHeight = mm2px(10);
+                imgBackG = new System.Drawing.Bitmap(iWidth, iHeight, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+                imgBackG.SetResolution(Resolution, Resolution);     //列印解析度
+                System.Drawing.Graphics grLabel = System.Drawing.Graphics.FromImage(imgBackG);
+                grLabel.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+                grLabel.Clear(System.Drawing.Color.White);
+
+                //qrcode
+                ZXing.BarcodeWriter bw = new ZXing.BarcodeWriter();
+                bw.Format = ZXing.BarcodeFormat.QR_CODE;
+                ZXing.QrCode.QrCodeEncodingOptions op = new ZXing.QrCode.QrCodeEncodingOptions();
+                op.Width = mm2px(25);
+                op.Height = mm2px(25);
+                op.Margin = 1;
+                op.CharacterSet = "UTF-8";
+                bw.Options = op;
+                QREncrypter qre = new QREncrypter();
+                string strQR = QRCode;
+                System.Drawing.Bitmap bitmapQR = bw.Write(strQR);
+                grLabel.DrawImage(bitmapQR, mm2px(2), mm2px(2), mm2px(5), mm2px(5));
+
+                grLabel.Dispose();
+                System.Drawing.Imaging.BitmapData bmpData = imgBackG.LockBits(new System.Drawing.Rectangle(0, 0, iWidth, iHeight), System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format1bppIndexed);
+                imgBackBmp = new System.Drawing.Bitmap(iWidth, iHeight, bmpData.Stride, System.Drawing.Imaging.PixelFormat.Format1bppIndexed, bmpData.Scan0);
+                imgBackBmp.SetResolution(Resolution, Resolution);
+                bmps[0] = imgBackBmp;
+                return bmps;
+            }
+            catch (IOException e)
+            {
+                return null;
+            }
+
+        }
+
+
+
+
+
         private static int mm2px(int mm)
         {
             return Convert.ToInt32(Math.Round((mm - 2 * margin) * Resolution / 25.4));
@@ -1361,7 +1441,7 @@ namespace SVMAdmin
             //使用ITF 格式，不能被現在常用的支付寶、微信掃出來
             //如果想生成可識別的可以使用 CODE_128 格式
             //writer.Format = BarcodeFormat.ITF;
-            writer.Format = BarcodeFormat.CODE_128;
+            writer.Format = BarcodeFormat.CODE_39;
             EncodingOptions options = new EncodingOptions()
             {
                 Width = width,
@@ -1377,6 +1457,206 @@ namespace SVMAdmin
             writer.Options = options;
             Bitmap map = writer.Write(text);
             return map;
+        }
+
+        public class QREncrypter
+        {
+            /// <summary>
+            /// 將發票資訊文字加密成驗證文字
+            /// </summary>
+            /// <param name="plainText">發票資訊</param>
+            /// <param name="AESKey">種子密碼(QRcode)</param>
+            /// <returns>加密後的HEX字串</returns>
+            public string AESEncrypt(string plainText, string AESKey)
+            {
+                byte[] bytes = Encoding.Default.GetBytes(plainText);
+                ICryptoTransform transform = new RijndaelManaged
+                {
+                    KeySize = 0x80,
+                    Key = this.convertHexToByte(AESKey),
+                    BlockSize = 0x80,
+                    IV = Convert.FromBase64String("Dt8lyToo17X/XkXaQvihuA==")
+                }.CreateEncryptor();
+                MemoryStream stream = new MemoryStream();
+                CryptoStream stream2 = new CryptoStream(stream, transform, CryptoStreamMode.Write);
+                stream2.Write(bytes, 0, bytes.Length);
+                stream2.FlushFinalBlock();
+                stream2.Close();
+                return Convert.ToBase64String(stream.ToArray());
+            }
+            /// <summary>
+            /// 轉換HEX值為 Binaries
+            /// </summary>
+            /// <param name="hexString">HEX字串</param>
+            /// <returns>Binaries值</returns>
+            private byte[] convertHexToByte(string hexString)
+            {
+                byte[] buffer = new byte[hexString.Length / 2];
+                int index = 0;
+                for (int i = 0; i < hexString.Length; i += 2)
+                {
+                    int num3 = Convert.ToInt32(hexString.Substring(i, 2), 0x10);
+                    buffer[index] = BitConverter.GetBytes(num3)[0];
+                    index++;
+                }
+                return buffer;
+            }
+            /// <summary>
+            /// 檢查發票輸入資訊
+            /// </summary>
+            /// <param name="InvoiceNumber">發票字軌號碼共 10 碼</param>
+            /// <param name="InvoiceDate">發票開立年月日(中華民國年份月份日期)共 7 碼</param>
+            /// <param name="InvoiceTime">發票開立時間 (24 小時制) 共 6 碼</param>
+            /// <param name="RandomNumber">4碼隨機碼</param>
+            /// <param name="SalesAmount">以整數方式載入銷售額 (未稅)，若無法分離稅項則記載為0</param>
+            /// <param name="TaxAmount">以整數方式載入稅額，若無法分離稅項則記載為0</param>
+            /// <param name="TotalAmount">整數方式載入總計金額(含稅)</param>
+            /// <param name="BuyerIdentifier">買受人統一編號，若買受人為一般消費者，請填入 00000000 8位字串</param>
+            /// <param name="RepresentIdentifier">代表店統一編號，電子發票證明聯二維條碼規格已不使用代表店，請填入00000000 8位字串</param>
+            /// <param name="SellerIdentifier">銷售店統一編號</param>
+            /// <param name="BusinessIdentifier">總機構統一編號，如無總機構請填入銷售店統一編號</param>
+            /// <param name="productArray">單項商品資訊</param>
+            /// <param name="AESKey">加解密金鑰(QR種子密碼)</param>
+            private void inputValidate(string InvoiceNumber,
+                string InvoiceDate,
+                string InvoiceTime,
+                string RandomNumber,
+                decimal SalesAmount,
+                decimal TaxAmount,
+                decimal TotalAmount,
+                string BuyerIdentifier,
+                string RepresentIdentifier,
+                string SellerIdentifier,
+                string BusinessIdentifier,
+                Array[] productArray,
+                string AESKey)
+            {
+                if (string.IsNullOrEmpty(InvoiceNumber) || (InvoiceNumber.Length != 10))
+                {
+                    throw new Exception("Invaild InvoiceNumber: " + InvoiceNumber);
+                }
+                if (string.IsNullOrEmpty(InvoiceDate) || (InvoiceDate.Length != 7))
+                {
+                    throw new Exception("Invaild InvoiceDate: " + InvoiceDate);
+                }
+                try
+                {
+                    long num = long.Parse(InvoiceDate);
+                    int num2 = int.Parse(InvoiceDate.Substring(3, 2));
+                    int num3 = int.Parse(InvoiceDate.Substring(5));
+                    if ((num2 < 1) || (num2 > 12))
+                    {
+                        throw new Exception();
+                    }
+                    if ((num3 < 1) || (num3 > 0x1f))
+                    {
+                        throw new Exception();
+                    }
+                }
+                catch (Exception)
+                {
+                    throw new Exception("Invaild InvoiceDate: " + InvoiceDate);
+                }
+                if (string.IsNullOrEmpty(InvoiceTime))
+                {
+                    throw new Exception("Invaild InvoiceTime: " + InvoiceTime);
+                }
+                if (string.IsNullOrEmpty(RandomNumber) || (RandomNumber.Length != 4))
+                {
+                    throw new Exception("Invaild RandomNumber: " + RandomNumber);
+                }
+                if (SalesAmount < 0M)
+                {
+                    throw new Exception("Invaild SalesAmount: " + SalesAmount);
+                }
+                if (TotalAmount < 0M)
+                {
+                    throw new Exception("Invaild TotalAmount: " + TotalAmount);
+                }
+                if (string.IsNullOrEmpty(BuyerIdentifier) || (BuyerIdentifier.Length != 8))
+                {
+                    throw new Exception("Invaild BuyerIdentifier: " + BuyerIdentifier);
+                }
+                if (string.IsNullOrEmpty(RepresentIdentifier))
+                {
+                    throw new Exception("Invaild RepresentIdentifier: " + RepresentIdentifier);
+                }
+                if (string.IsNullOrEmpty(SellerIdentifier) || (SellerIdentifier.Length != 8))
+                {
+                    throw new Exception("Invaild SellerIdentifier: " + SellerIdentifier);
+                }
+                if (string.IsNullOrEmpty(BusinessIdentifier))
+                {
+                    throw new Exception("Invaild BusinessIdentifier: " + BusinessIdentifier);
+                }
+                if ((productArray == null) || (productArray.Length == 0))
+                {
+                    throw new Exception("Invaild ProductArray");
+                }
+                if (string.IsNullOrEmpty(AESKey))
+                {
+                    throw new Exception("Invaild AESKey");
+                }
+            }
+            /// <summary>
+            /// 產生發票左邊QR碼
+            /// </summary>
+            /// <param name="InvoiceNumber">發票字軌號碼共 10 碼</param>
+            /// <param name="InvoiceDate">發票開立年月日(中華民國年份月份日期)共 7 碼</param>
+            /// <param name="InvoiceTime">發票開立時間 (24 小時制) 共 6 碼</param>
+            /// <param name="RandomNumber">4碼隨機碼</param>
+            /// <param name="SalesAmount">以整數方式載入銷售額 (未稅)，若無法分離稅項則記載為0</param>
+            /// <param name="TaxAmount">以整數方式載入稅額，若無法分離稅項則記載為0</param>
+            /// <param name="TotalAmount">整數方式載入總計金額(含稅)</param>
+            /// <param name="BuyerIdentifier">買受人統一編號，若買受人為一般消費者，請填入 00000000 8位字串</param>
+            /// <param name="RepresentIdentifier">代表店統一編號，電子發票證明聯二維條碼規格已不使用代表店，請填入00000000 8位字串</param>
+            /// <param name="SellerIdentifier">銷售店統一編號</param>
+            /// <param name="BusinessIdentifier">總機構統一編號，如無總機構請填入銷售店統一編號</param>
+            /// <param name="productArray">單項商品資訊</param>
+            /// <param name="AESKey">加解密金鑰(QR種子密碼)</param>
+            /// <returns></returns>
+            public string QRCodeINV(string InvoiceNumber,
+                string InvoiceDate,
+                string InvoiceTime,
+                string RandomNumber,
+                decimal SalesAmount,
+                decimal TaxAmount,
+                decimal TotalAmount,
+                string BuyerIdentifier,
+                string RepresentIdentifier,
+                string SellerIdentifier,
+                string BusinessIdentifier,
+                string[][] productArray,
+                string AESKey)
+            {
+                try
+                {
+                    this.inputValidate(InvoiceNumber,
+                        InvoiceDate,
+                        InvoiceTime,
+                        RandomNumber,
+                        SalesAmount,
+                        TaxAmount,
+                        TotalAmount,
+                        BuyerIdentifier,
+                        RepresentIdentifier,
+                        SellerIdentifier,
+                        BusinessIdentifier,
+                        productArray,
+                        AESKey);
+                }
+                catch (Exception exception)
+                {
+                    throw exception;
+                }
+                return ((InvoiceNumber +
+                    InvoiceDate +
+                    RandomNumber +
+                    Convert.ToInt32(SalesAmount).ToString("x8") +
+                    Convert.ToInt32(TotalAmount).ToString("x8") +
+                    BuyerIdentifier + SellerIdentifier) +
+                    this.AESEncrypt(InvoiceNumber + RandomNumber, AESKey).PadRight(0x18));
+            }
         }
     }
 

@@ -32,9 +32,16 @@
         var node = $(grdM.ActiveRowTR()).prop('Record');
 
         if (GetNodeValue(node, 'Type') == "A") {
-            for (var i = 0; i < 8; i++) {
-                GetGetImage("PLUPic" + String(i + 1) + "_A", "");
-            }
+            GetGetImage("Logo_A", "");
+            GetGetImage("Subject_A", "");
+            GetGetImage("PLUPic1_A", "");
+            GetGetImage("PLUPic2_A", "");
+            GetGetImage("PLUPic3_A", "");
+            GetGetImage("PLUPic4_A", "");
+            GetGetImage("PLUPic5_A", "");
+            GetGetImage("PLUPic6_A", "");
+            $('#Barcode1_A').val('');
+            $('#QRCode1_A').val('');
 
             $('#titDMAdd_A').text('版型A修改');
             $('#lblDocNo_DMAdd_A').html(GetNodeValue(node, 'DocNo'))
@@ -61,7 +68,36 @@
         else {
             var dtE = data.getElementsByTagName('dtE');
             for (var i = 0; i < dtE.length; i++) {
-                GetGetImage("PLUPic" + String(i + 1) + "_A", GetNodeValue(dtE[i], "SGID"));
+                if (GetNodeValue(dtE[i], "DataType") == "Logo") {
+                    GetGetImage("Logo_A", GetNodeValue(dtE[i], "SGID"));
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "Subject") {
+                    GetGetImage("Subject_A", GetNodeValue(dtE[i], "SGID"));
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic1") {
+                    GetGetImage("PLUPic1_A", GetNodeValue(dtE[i], "SGID"));
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic2") {
+                    GetGetImage("PLUPic2_A", GetNodeValue(dtE[i], "SGID"));
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic3") {
+                    GetGetImage("PLUPic3_A", GetNodeValue(dtE[i], "SGID"));
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic4") {
+                    GetGetImage("PLUPic4_A", GetNodeValue(dtE[i], "SGID"));
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic5") {
+                    GetGetImage("PLUPic5_A", GetNodeValue(dtE[i], "SGID"));
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic6") {
+                    GetGetImage("PLUPic6_A", GetNodeValue(dtE[i], "SGID"));
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "Barcode1") {
+                    $('#Barcode1_A').val(GetNodeValue(dtE[i], "Barcode"))
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "QRCode1") {
+                    $('#QRCode1_A').val(GetNodeValue(dtE[i], "Barcode"))
+                }
             }
         }
     };
@@ -806,6 +842,12 @@
     let btUPPic1_click = function (bt) {
         InitFileUpload(bt);
         var UploadFileType = "";
+        if (bt.id == "btLogo_A") {
+            UploadFileType = "Logo"
+        }
+        if (bt.id == "btSubject_A") {
+            UploadFileType = "Subject"
+        }
         if (bt.id == "btUPPic1_A") {
             UploadFileType = "PLU+Pic1"
         }
@@ -823,12 +865,6 @@
         }
         if (bt.id == "btUPPic6_A") {
             UploadFileType = "PLU+Pic6"
-        }
-        if (bt.id == "btUPPic7_A") {
-            UploadFileType = "PLU+Pic7"
-        }
-        if (bt.id == "btUPPic8_A") {
-            UploadFileType = "PLU+Pic8"
         }
         $('#modal-media').prop("UploadFileType", UploadFileType);
         $('#fileURL').val('')
@@ -880,51 +916,51 @@
             var UploadFileType = $('#modal-media').prop("UploadFileType");// "PLU+Pic1";
             var Type = bt.id.split('_')[1]
 
+            if (UploadFileType == "Logo") {
+                if (Type == "A") {
+                    GetGetImage("Logo_A", ReturnMsg(data, 1));
+                    $('#Photo1_A').val(ReturnMsg(data, 1));
+                }
+            }
+            if (UploadFileType == "Subject") {
+                if (Type == "A") {
+                    GetGetImage("Subject_A", ReturnMsg(data, 1));
+                    $('#Photo2_A').val(ReturnMsg(data, 1));
+                }
+            }
             if (UploadFileType == "PLU+Pic1") {
                 if (Type == "A") {
                     GetGetImage("PLUPic1_A", ReturnMsg(data, 1));
-                    $('#Photo1_A').val(ReturnMsg(data, 1));
+                    $('#Photo3_A').val(ReturnMsg(data, 1));
                 }
             }
             if (UploadFileType == "PLU+Pic2") {
                 if (Type == "A") {
                     GetGetImage("PLUPic2_A", ReturnMsg(data, 1));
-                    $('#Photo2_A').val(ReturnMsg(data, 1));
+                    $('#Photo4_A').val(ReturnMsg(data, 1));
                 }
             }
             if (UploadFileType == "PLU+Pic3") {
                 if (Type == "A") {
                     GetGetImage("PLUPic3_A", ReturnMsg(data, 1));
-                    $('#Photo3_A').val(ReturnMsg(data, 1));
+                    $('#Photo5_A').val(ReturnMsg(data, 1));
                 }
             }
             if (UploadFileType == "PLU+Pic4") {
                 if (Type == "A") {
                     GetGetImage("PLUPic4_A", ReturnMsg(data, 1));
-                    $('#Photo4_A').val(ReturnMsg(data, 1));
+                    $('#Photo6_A').val(ReturnMsg(data, 1));
                 }
             }
             if (UploadFileType == "PLU+Pic5") {
                 if (Type == "A") {
                     GetGetImage("PLUPic5_A", ReturnMsg(data, 1));
-                    $('#Photo5_A').val(ReturnMsg(data, 1));
+                    $('#Photo7_A').val(ReturnMsg(data, 1));
                 }
             }
             if (UploadFileType == "PLU+Pic6") {
                 if (Type == "A") {
                     GetGetImage("PLUPic6_A", ReturnMsg(data, 1));
-                    $('#Photo6_A').val(ReturnMsg(data, 1));
-                }
-            }
-            if (UploadFileType == "PLU+Pic7") {
-                if (Type == "A") {
-                    GetGetImage("PLUPic7_A", ReturnMsg(data, 1));
-                    $('#Photo7_A').val(ReturnMsg(data, 1));
-                }
-            }
-            if (UploadFileType == "PLU+Pic8") {
-                if (Type == "A") {
-                    GetGetImage("PLUPic8_A", ReturnMsg(data, 1));
                     $('#Photo8_A').val(ReturnMsg(data, 1));
                 }
             }
@@ -949,10 +985,16 @@
             return;
         }
         else if ($('#cboType').val() == "A") {
-            for (var i = 0; i < 8; i++) {
-                GetGetImage("PLUPic" + String(i + 1) + "_A", "");
-            }
+            GetGetImage("Logo_A", "");
+            GetGetImage("Subject_A", "");
+            GetGetImage("PLUPic1_A", "");
+            GetGetImage("PLUPic2_A", "");
+            GetGetImage("PLUPic3_A", "");
+            GetGetImage("PLUPic4_A", "");
+            GetGetImage("PLUPic5_A", "");
+            GetGetImage("PLUPic6_A", "");
             $('#Barcode1_A').val('');
+            $('#QRCode1_A').val('');
 
             $('#titDMAdd_A').text('版型A新增');
             $('#modal_DMAdd_A').modal('show');
@@ -963,15 +1005,16 @@
     };
 
     let btPrint_DMAdd_A_click = function (bt) {
+        GetGetImage("Logo_DM_A", "");
+        GetGetImage("Subject_DM_A", "");
         GetGetImage("PLUPic1_DM_A", "");
         GetGetImage("PLUPic2_DM_A", "");
         GetGetImage("PLUPic3_DM_A", "");
         GetGetImage("PLUPic4_DM_A", "");
         GetGetImage("PLUPic5_DM_A", "");
         GetGetImage("PLUPic6_DM_A", "");
-        GetGetImage("PLUPic7_DM_A", "");
-        GetGetImage("PLUPic8_DM_A", "");
         GetGetImage("Barcode1_DM_A", "");
+        GetGetImage("QRCode1_DM_A", "");
 
         $('#modal_DM_A').modal('show');
         setTimeout(function () {
@@ -1002,7 +1045,13 @@
                 return;
             }
             for (var i = 0; i < dtE.length; i++) {
-                if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic1") {
+                if (GetNodeValue(dtE[i], "DataType") == "Logo") {
+                    GetGetImage("Logo_DM_A", GetNodeValue(dtE[i], "SGID"));
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "Subject") {
+                    GetGetImage("Subject_DM_A", GetNodeValue(dtE[i], "SGID"));
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic1") {
                     GetGetImage("PLUPic1_DM_A", GetNodeValue(dtE[i], "SGID"));
                 }
                 else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic2") {
@@ -1020,14 +1069,11 @@
                 else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic6") {
                     GetGetImage("PLUPic6_DM_A", GetNodeValue(dtE[i], "SGID"));
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic7") {
-                    GetGetImage("PLUPic7_DM_A", GetNodeValue(dtE[i], "SGID"));
-                }
-                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic8") {
-                    GetGetImage("PLUPic8_DM_A", GetNodeValue(dtE[i], "SGID"));
-                }
                 else if (GetNodeValue(dtE[i], "DataType") == "Barcode1") {
                     GetGetImage("Barcode1_DM_A", GetNodeValue(dtE[i], "SGID"));
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "QRCode1") {
+                    GetGetImage("QRCode1_DM_A", GetNodeValue(dtE[i], "SGID"));
                 }
             }
         }
@@ -1103,6 +1149,23 @@
         }
     };
 
+    let btQRCode1_A_click = function (bt) {
+        var pData = {
+            DocNo: $('#lblDocNo_DMAdd_A').html(),
+            QRCode1: $('#QRCode1_A').val()
+        }
+        PostToWebApi({ url: "api/SystemSetup/SetQRCode1_A", data: pData, success: afterSetQRCode1_A });
+    };
+
+    let afterSetQRCode1_A = function (data) {
+        if (ReturnMsg(data, 0) != "SetQRCode1_AOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            DyAlert("設定完成!")
+        }
+    };
+
 
 
     let GetInitmsDM = function (data) {
@@ -1119,18 +1182,18 @@
             $('#btPrint_DMAdd_A').click(function () { btPrint_DMAdd_A_click(this) });
             $('#btExit_DM_A').click(function () { btExit_DM_A_click(this) });
 
+            $('#btLogo_A').click(function () { btUPPic1_click(this) });
+            $('#btSubject_A').click(function () { btUPPic1_click(this) });
             $('#btUPPic1_A').click(function () { btUPPic1_click(this) });
             $('#btUPPic2_A').click(function () { btUPPic1_click(this) });
             $('#btUPPic3_A').click(function () { btUPPic1_click(this) });
             $('#btUPPic4_A').click(function () { btUPPic1_click(this) });
             $('#btUPPic5_A').click(function () { btUPPic1_click(this) });
             $('#btUPPic6_A').click(function () { btUPPic1_click(this) });
-            $('#btUPPic7_A').click(function () { btUPPic1_click(this) });
-            $('#btUPPic8_A').click(function () { btUPPic1_click(this) });
 
 
             $('#btBarcode1_A').click(function () { btBarcode1_A_click(this) });
-
+            $('#btQRCode1_A').click(function () { btQRCode1_A_click(this) });
         }
     };
 
