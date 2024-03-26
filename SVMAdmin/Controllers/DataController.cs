@@ -339,7 +339,7 @@ namespace SVMAdmin.Controllers
             {
                 IFormFileCollection files = HttpContext.Request.Form.Files;
                 string UploadFileType = HttpContext.Request.Form["UploadFileType"];
-                if (UploadFileType == "Logo" | UploadFileType == "Subject" | UploadFileType == "PLU+Pic1" | UploadFileType == "PLU+Pic2" | UploadFileType == "PLU+Pic3" | UploadFileType == "PLU+Pic4" | UploadFileType == "PLU+Pic5" | UploadFileType == "PLU+Pic6")
+                if (UploadFileType == "P1" | UploadFileType == "P2" | UploadFileType == "P3" | UploadFileType == "P4" | UploadFileType == "P5" | UploadFileType == "P6" | UploadFileType == "P7" | UploadFileType == "P8")
                 {
                     picSGID = ImportPLUPic(files, UploadFileType);
                     DataTable dtMessage = ds.Tables["dtMessage"];
@@ -970,7 +970,7 @@ namespace SVMAdmin.Controllers
                 dtF.Columns.Add("FileName", typeof(string));
                 dtF.Columns.Add("DocType", typeof(string));
                 dtF.Columns.Add("DocImage", typeof(byte[]));
-                dtF.Columns.Add("ImgURL", typeof(string));
+                dtF.Columns.Add("URL", typeof(string));
 
                 string sql = "Delete From SetEDM ";
                 sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + HttpContext.Request.Form["DocNo"] + "' And DataType='" + HttpContext.Request.Form["UploadFileType"] + "'";
@@ -984,7 +984,7 @@ namespace SVMAdmin.Controllers
                 drF["FileName"] = file.FileName;
                 drF["DocType"] = file.ContentType;
                 drF["DocImage"] = ms.ToArray();
-                drF["ImgURL"] = HttpContext.Request.Form["fileURL"];
+                drF["URL"] = HttpContext.Request.Form["fileURL"];
                 dtF.Rows.Add(drF);
                 sgid = PubUtility.AddTable("SetEDM", dtF, uu, "SYS");
             }
@@ -7038,10 +7038,10 @@ namespace SVMAdmin.Controllers
                 dtF.Columns.Add("DataType", typeof(string));
                 dtF.Columns.Add("DocType", typeof(string));
                 dtF.Columns.Add("DocImage", typeof(byte[]));
-                dtF.Columns.Add("Barcode", typeof(string));
+                dtF.Columns.Add("Memo", typeof(string));
 
                 string sql = "Delete From SetEDM ";
-                sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + DocNo + "' And DataType='Barcode1'";
+                sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + DocNo + "' And DataType='P9'";
                 PubUtility.ExecuteSql(sql, uu, "SYS");
 
                 System.IO.MemoryStream ms = new System.IO.MemoryStream();
@@ -7052,10 +7052,10 @@ namespace SVMAdmin.Controllers
                 drF["CompanyCode"] = uu.CompanyId;
                 drF["DocNo"] = DocNo;
                 drF["Type"] = "A";
-                drF["DataType"] = "Barcode1";
+                drF["DataType"] = "P9";
                 drF["DocType"] = "image/jpeg";
                 drF["DocImage"] = ms.ToArray();
-                drF["Barcode"] = Barcode1;
+                drF["Memo"] = Barcode1;
                 dtF.Rows.Add(drF);
                 string sgid = PubUtility.AddTable("SetEDM", dtF, uu, "SYS");
             }
@@ -7086,10 +7086,10 @@ namespace SVMAdmin.Controllers
                 dtF.Columns.Add("DataType", typeof(string));
                 dtF.Columns.Add("DocType", typeof(string));
                 dtF.Columns.Add("DocImage", typeof(byte[]));
-                dtF.Columns.Add("Barcode", typeof(string));
+                dtF.Columns.Add("Memo", typeof(string));
 
                 string sql = "Delete From SetEDM ";
-                sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + DocNo + "' And DataType='QRCode1'";
+                sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + DocNo + "' And DataType='P10'";
                 PubUtility.ExecuteSql(sql, uu, "SYS");
 
                 System.IO.MemoryStream ms = new System.IO.MemoryStream();
@@ -7100,10 +7100,10 @@ namespace SVMAdmin.Controllers
                 drF["CompanyCode"] = uu.CompanyId;
                 drF["DocNo"] = DocNo;
                 drF["Type"] = "A";
-                drF["DataType"] = "QRCode1";
+                drF["DataType"] = "P10";
                 drF["DocType"] = "image/jpeg";
                 drF["DocImage"] = ms.ToArray();
-                drF["Barcode"] = QRCode1;
+                drF["Memo"] = QRCode1;
                 dtF.Rows.Add(drF);
                 string sgid = PubUtility.AddTable("SetEDM", dtF, uu, "SYS");
             }
@@ -7115,6 +7115,47 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("SystemSetup/Seteditor1_A")]
+        public ActionResult SystemSetup_Seteditor1_A()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "Seteditor1_AOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string DocNo = rq["DocNo"];
+                string editor = rq["editor"];
+
+                DataTable dtF = new DataTable();
+                dtF.Columns.Add("CompanyCode", typeof(string));
+                dtF.Columns.Add("DocNo", typeof(string));
+                dtF.Columns.Add("Type", typeof(string));
+                dtF.Columns.Add("DataType", typeof(string));
+                dtF.Columns.Add("DocType", typeof(string));
+                dtF.Columns.Add("Memo", typeof(string));
+
+                string sql = "Delete From SetEDM ";
+                sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + DocNo + "' And DataType='T1'";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                DataRow drF = dtF.NewRow();
+                drF["CompanyCode"] = uu.CompanyId;
+                drF["DocNo"] = DocNo;
+                drF["Type"] = "A";
+                drF["DataType"] = "T1";
+                drF["DocType"] = "text";
+                drF["Memo"] = editor;
+                dtF.Rows.Add(drF);
+                string sgid = PubUtility.AddTable("SetEDM", dtF, uu, "SYS");
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
 
         //[Route("SystemSetup/FTPUpload")]
         //public ActionResult SystemSetup_FTPUpload()

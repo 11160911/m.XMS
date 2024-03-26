@@ -164,7 +164,7 @@
 
                     <div class="modal fade" id="modal_DMAdd_A" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 100%;width:600px">
+                            <div class="modal-content" style="height: 850px;width:600px;overflow:auto">
                                 <style>
                                 </style>
 
@@ -257,6 +257,12 @@
                                         <input id="QRCode1_A" type="text" style="width: 484px; height: 40px;font-size:16px" placeholder="優惠券二維條碼" />
                                         <button id="btQRCode1_A" type="button" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 10px; margin-left: 5px">設定</button>
                                     </div>
+
+                                    <div class="form-group row" style="margin-left: 5px; width: 100%">
+                                        <textarea id="editor1_A"></textarea>
+                                        <button id="bteditor1_A" type="button" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 10px; margin-left: 5px">設定</button>
+                                    </div>
+                                    
                                 </div>
 
                             </div>
@@ -338,6 +344,14 @@
                                     <tr>
                                         <td>
                                             <img id="QRCode1_DM_A">
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <div id="editor_DM_A"></div>
                                         </td>
                                     </tr>
                                 </table>
@@ -514,7 +528,7 @@
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-form-label col-4 text-right">修改後數量</label>
-                                            <input id="txtModQty1" type="text" class="form-control" style="text-align:right;width:80px" autocomplete="off" inputmode="numeric"></input>
+                                            <input id="txtModQty1" type="text" class="form-control" style="text-align:right;width:80px" autocomplete="off" inputmode="numeric"/>
                                         </div>
                                         <div class="modal-footer">
                                             <button id="btModCancel" type="button" class="btn btn-primary">取消</button>
@@ -684,5 +698,6 @@
     <!-- Custom Theme Scripts -->
     <script src="js/custom.min.js"></script>
 
+    <!--<script src="ck/build/ckeditor.js"></script>-->
 </body>
 </html>

@@ -42,6 +42,7 @@
             GetGetImage("PLUPic6_A", "");
             $('#Barcode1_A').val('');
             $('#QRCode1_A').val('');
+            window.editor.setData('');
 
             $('#titDMAdd_A').text('版型A修改');
             $('#lblDocNo_DMAdd_A').html(GetNodeValue(node, 'DocNo'))
@@ -68,35 +69,38 @@
         else {
             var dtE = data.getElementsByTagName('dtE');
             for (var i = 0; i < dtE.length; i++) {
-                if (GetNodeValue(dtE[i], "DataType") == "Logo") {
+                if (GetNodeValue(dtE[i], "DataType") == "P1") {
                     GetGetImage("Logo_A", GetNodeValue(dtE[i], "SGID"));
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "Subject") {
+                else if (GetNodeValue(dtE[i], "DataType") == "P2") {
                     GetGetImage("Subject_A", GetNodeValue(dtE[i], "SGID"));
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic1") {
+                else if (GetNodeValue(dtE[i], "DataType") == "P3") {
                     GetGetImage("PLUPic1_A", GetNodeValue(dtE[i], "SGID"));
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic2") {
+                else if (GetNodeValue(dtE[i], "DataType") == "P4") {
                     GetGetImage("PLUPic2_A", GetNodeValue(dtE[i], "SGID"));
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic3") {
+                else if (GetNodeValue(dtE[i], "DataType") == "P5") {
                     GetGetImage("PLUPic3_A", GetNodeValue(dtE[i], "SGID"));
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic4") {
+                else if (GetNodeValue(dtE[i], "DataType") == "P6") {
                     GetGetImage("PLUPic4_A", GetNodeValue(dtE[i], "SGID"));
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic5") {
+                else if (GetNodeValue(dtE[i], "DataType") == "P7") {
                     GetGetImage("PLUPic5_A", GetNodeValue(dtE[i], "SGID"));
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic6") {
+                else if (GetNodeValue(dtE[i], "DataType") == "P8") {
                     GetGetImage("PLUPic6_A", GetNodeValue(dtE[i], "SGID"));
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "Barcode1") {
-                    $('#Barcode1_A').val(GetNodeValue(dtE[i], "Barcode"))
+                else if (GetNodeValue(dtE[i], "DataType") == "P9") {
+                    $('#Barcode1_A').val(GetNodeValue(dtE[i], "Memo"))
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "QRCode1") {
-                    $('#QRCode1_A').val(GetNodeValue(dtE[i], "Barcode"))
+                else if (GetNodeValue(dtE[i], "DataType") == "P10") {
+                    $('#QRCode1_A').val(GetNodeValue(dtE[i], "Memo"))
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "T1") {
+                    window.editor.setData(GetNodeValue(dtE[i], "Memo"));
                 }
             }
         }
@@ -843,28 +847,28 @@
         InitFileUpload(bt);
         var UploadFileType = "";
         if (bt.id == "btLogo_A") {
-            UploadFileType = "Logo"
+            UploadFileType = "P1"
         }
         if (bt.id == "btSubject_A") {
-            UploadFileType = "Subject"
+            UploadFileType = "P2"
         }
         if (bt.id == "btUPPic1_A") {
-            UploadFileType = "PLU+Pic1"
+            UploadFileType = "P3"
         }
         if (bt.id == "btUPPic2_A") {
-            UploadFileType = "PLU+Pic2"
+            UploadFileType = "P4"
         }
         if (bt.id == "btUPPic3_A") {
-            UploadFileType = "PLU+Pic3"
+            UploadFileType = "P5"
         }
         if (bt.id == "btUPPic4_A") {
-            UploadFileType = "PLU+Pic4"
+            UploadFileType = "P6"
         }
         if (bt.id == "btUPPic5_A") {
-            UploadFileType = "PLU+Pic5"
+            UploadFileType = "P7"
         }
         if (bt.id == "btUPPic6_A") {
-            UploadFileType = "PLU+Pic6"
+            UploadFileType = "P8"
         }
         $('#modal-media').prop("UploadFileType", UploadFileType);
         $('#fileURL').val('')
@@ -916,49 +920,49 @@
             var UploadFileType = $('#modal-media').prop("UploadFileType");// "PLU+Pic1";
             var Type = bt.id.split('_')[1]
 
-            if (UploadFileType == "Logo") {
+            if (UploadFileType == "P1") {
                 if (Type == "A") {
                     GetGetImage("Logo_A", ReturnMsg(data, 1));
                     $('#Photo1_A').val(ReturnMsg(data, 1));
                 }
             }
-            if (UploadFileType == "Subject") {
+            if (UploadFileType == "P2") {
                 if (Type == "A") {
                     GetGetImage("Subject_A", ReturnMsg(data, 1));
                     $('#Photo2_A').val(ReturnMsg(data, 1));
                 }
             }
-            if (UploadFileType == "PLU+Pic1") {
+            if (UploadFileType == "P3") {
                 if (Type == "A") {
                     GetGetImage("PLUPic1_A", ReturnMsg(data, 1));
                     $('#Photo3_A').val(ReturnMsg(data, 1));
                 }
             }
-            if (UploadFileType == "PLU+Pic2") {
+            if (UploadFileType == "P4") {
                 if (Type == "A") {
                     GetGetImage("PLUPic2_A", ReturnMsg(data, 1));
                     $('#Photo4_A').val(ReturnMsg(data, 1));
                 }
             }
-            if (UploadFileType == "PLU+Pic3") {
+            if (UploadFileType == "P5") {
                 if (Type == "A") {
                     GetGetImage("PLUPic3_A", ReturnMsg(data, 1));
                     $('#Photo5_A').val(ReturnMsg(data, 1));
                 }
             }
-            if (UploadFileType == "PLU+Pic4") {
+            if (UploadFileType == "P6") {
                 if (Type == "A") {
                     GetGetImage("PLUPic4_A", ReturnMsg(data, 1));
                     $('#Photo6_A').val(ReturnMsg(data, 1));
                 }
             }
-            if (UploadFileType == "PLU+Pic5") {
+            if (UploadFileType == "P7") {
                 if (Type == "A") {
                     GetGetImage("PLUPic5_A", ReturnMsg(data, 1));
                     $('#Photo7_A').val(ReturnMsg(data, 1));
                 }
             }
-            if (UploadFileType == "PLU+Pic6") {
+            if (UploadFileType == "P8") {
                 if (Type == "A") {
                     GetGetImage("PLUPic6_A", ReturnMsg(data, 1));
                     $('#Photo8_A').val(ReturnMsg(data, 1));
@@ -995,6 +999,7 @@
             GetGetImage("PLUPic6_A", "");
             $('#Barcode1_A').val('');
             $('#QRCode1_A').val('');
+            window.editor.setData('');
 
             $('#titDMAdd_A').text('版型A新增');
             $('#modal_DMAdd_A').modal('show');
@@ -1015,6 +1020,8 @@
         GetGetImage("PLUPic6_DM_A", "");
         GetGetImage("Barcode1_DM_A", "");
         GetGetImage("QRCode1_DM_A", "");
+        var element = document.getElementById("editor_DM_A");
+        element.replaceChildren();
 
         $('#modal_DM_A').modal('show');
         setTimeout(function () {
@@ -1045,35 +1052,41 @@
                 return;
             }
             for (var i = 0; i < dtE.length; i++) {
-                if (GetNodeValue(dtE[i], "DataType") == "Logo") {
+                if (GetNodeValue(dtE[i], "DataType") == "P1") {
                     GetGetImage("Logo_DM_A", GetNodeValue(dtE[i], "SGID"));
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "Subject") {
+                else if (GetNodeValue(dtE[i], "DataType") == "P2") {
                     GetGetImage("Subject_DM_A", GetNodeValue(dtE[i], "SGID"));
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic1") {
+                else if (GetNodeValue(dtE[i], "DataType") == "P3") {
                     GetGetImage("PLUPic1_DM_A", GetNodeValue(dtE[i], "SGID"));
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic2") {
+                else if (GetNodeValue(dtE[i], "DataType") == "P4") {
                     GetGetImage("PLUPic2_DM_A", GetNodeValue(dtE[i], "SGID"));
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic3") {
+                else if (GetNodeValue(dtE[i], "DataType") == "P5") {
                     GetGetImage("PLUPic3_DM_A", GetNodeValue(dtE[i], "SGID"));
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic4") {
+                else if (GetNodeValue(dtE[i], "DataType") == "P6") {
                     GetGetImage("PLUPic4_DM_A", GetNodeValue(dtE[i], "SGID"));
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic5") {
+                else if (GetNodeValue(dtE[i], "DataType") == "P7") {
                     GetGetImage("PLUPic5_DM_A", GetNodeValue(dtE[i], "SGID"));
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "PLU+Pic6") {
+                else if (GetNodeValue(dtE[i], "DataType") == "P8") {
                     GetGetImage("PLUPic6_DM_A", GetNodeValue(dtE[i], "SGID"));
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "Barcode1") {
+                else if (GetNodeValue(dtE[i], "DataType") == "P9") {
                     GetGetImage("Barcode1_DM_A", GetNodeValue(dtE[i], "SGID"));
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "QRCode1") {
+                else if (GetNodeValue(dtE[i], "DataType") == "P10") {
                     GetGetImage("QRCode1_DM_A", GetNodeValue(dtE[i], "SGID"));
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "T1") {
+                    var p = document.createElement('p')
+                    p.innerHTML = GetNodeValue(dtE[i], "Memo")
+                    var element = document.getElementById("editor_DM_A");
+                    element.appendChild(p);
                 }
             }
         }
@@ -1166,7 +1179,22 @@
         }
     };
 
+    let bteditor1_A_click = function (bt) {
+        var pData = {
+            DocNo: $('#lblDocNo_DMAdd_A').html(),
+            editor: window.editor.getData()
+        }
+        PostToWebApi({ url: "api/SystemSetup/Seteditor1_A", data: pData, success: afterSeteditor1_A });
+    };
 
+    let afterSeteditor1_A = function (data) {
+        if (ReturnMsg(data, 0) != "Seteditor1_AOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            DyAlert("設定完成!")
+        }
+    };
 
     let GetInitmsDM = function (data) {
         if (ReturnMsg(data, 0) != "GetInitmsDMOK") {
@@ -1194,8 +1222,60 @@
 
             $('#btBarcode1_A').click(function () { btBarcode1_A_click(this) });
             $('#btQRCode1_A').click(function () { btQRCode1_A_click(this) });
+
+            $('#bteditor1_A').click(function () { bteditor1_A_click(this) });
+            ClassicEditor
+                .create(document.querySelector('#editor1_A'), {
+                    toolbar: {
+                        items: [
+                            'bold',                     //粗體
+                            'fontColor',                //文字顏色
+                            'fontSize',                 //文字大小
+                            'FontBackgroundColor',      //文字背景顏色
+                            'fontFamily'                //文字字型
+                        ]
+                    },
+                    placeholder: '請在這裡填寫內容!',   //文字編輯器顯示的預設文字
+                    removePlugins: ['Title'],           //移除文字編輯器的標題
+                    fontSize: {
+                        options: [10, 12, 14, 'default', 18, 20, 22,26,28,30,32,34],    //設定文字大小的格式
+                        supportAllValues: true                                          //支援其他地方複製的文字大小至文字編輯器
+                    },
+                    fontFamily: {
+                        options: [
+                            'default',
+                            'Arial, Helvetica, sans-serif',
+                            'Courier New, Courier, monospace',
+                            'Georgia, serif',
+                            'Lucida Sans Unicode, Lucida Grande, sans-serif',
+                            'Tahoma, Geneva, sans-serif',
+                            'Times New Roman, Times, serif',
+                            'Trebuchet MS, Helvetica, sans-serif',
+                            'Verdana, Geneva, sans-serif'                               //設定文字字型的格式
+                        ],
+                        supportAllValues: true                                          //支援其他地方複製的文字字型至文字編輯器
+                    }
+                })
+                .then(editor => {
+                    window.editor = editor;                             //使用window.editor.getData()取得文字編輯html內容
+                })
+                .catch(handleSampleError);
         }
     };
+
+    let handleSampleError = function (error) {
+        const issueUrl = 'https://github.com/ckeditor/ckeditor5/issues';
+
+        const message = [
+            'Oops, something went wrong!',
+            `Please, report the following error on ${issueUrl} with the build id "z9q36oeareu6-5mceor8expe3" and the error stack trace:`
+        ].join('\n');
+
+        console.error(message);
+        console.error(error);
+    }
+
+
 
     let afterLoadPage = function () {
         PostToWebApi({ url: "api/SystemSetup/GetInitmsDM", success: GetInitmsDM });
