@@ -93,10 +93,10 @@
                 else if (GetNodeValue(dtE[i], "DataType") == "P8") {
                     GetGetImage("PLUPic6_A", GetNodeValue(dtE[i], "SGID"));
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "P9") {
+                else if (GetNodeValue(dtE[i], "DataType") == "B1") {
                     $('#Barcode1_A').val(GetNodeValue(dtE[i], "Memo"))
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "P10") {
+                else if (GetNodeValue(dtE[i], "DataType") == "Q1") {
                     $('#QRCode1_A').val(GetNodeValue(dtE[i], "Memo"))
                 }
                 else if (GetNodeValue(dtE[i], "DataType") == "T1") {
@@ -1076,10 +1076,10 @@
                 else if (GetNodeValue(dtE[i], "DataType") == "P8") {
                     GetGetImage("PLUPic6_DM_A", GetNodeValue(dtE[i], "SGID"));
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "P9") {
+                else if (GetNodeValue(dtE[i], "DataType") == "B1") {
                     GetGetImage("Barcode1_DM_A", GetNodeValue(dtE[i], "SGID"));
                 }
-                else if (GetNodeValue(dtE[i], "DataType") == "P10") {
+                else if (GetNodeValue(dtE[i], "DataType") == "Q1") {
                     GetGetImage("QRCode1_DM_A", GetNodeValue(dtE[i], "SGID"));
                 }
                 else if (GetNodeValue(dtE[i], "DataType") == "T1") {
@@ -1187,6 +1187,7 @@
         PostToWebApi({ url: "api/SystemSetup/Seteditor1_A", data: pData, success: afterSeteditor1_A });
     };
 
+
     let afterSeteditor1_A = function (data) {
         if (ReturnMsg(data, 0) != "Seteditor1_AOK") {
             DyAlert(ReturnMsg(data, 1));
@@ -1228,11 +1229,18 @@
                 .create(document.querySelector('#editor1_A'), {
                     toolbar: {
                         items: [
+                            'Undo',                     //上一步
+                            'Redo',                     //下一步
                             'bold',                     //粗體
+                            'Italic',                   //斜體
+                            'Underline',                //底線
+                            'Strikethrough',            //刪除線
                             'fontColor',                //文字顏色
                             'fontSize',                 //文字大小
                             'FontBackgroundColor',      //文字背景顏色
-                            'fontFamily'                //文字字型
+                            'fontFamily',                //文字字型
+                            'Indent',                    //增加縮排
+                            'Outdent'                   //減少縮排
                         ]
                     },
                     placeholder: '請在這裡填寫內容!',   //文字編輯器顯示的預設文字

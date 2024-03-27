@@ -7041,7 +7041,7 @@ namespace SVMAdmin.Controllers
                 dtF.Columns.Add("Memo", typeof(string));
 
                 string sql = "Delete From SetEDM ";
-                sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + DocNo + "' And DataType='P9'";
+                sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + DocNo + "' And DataType='B1'";
                 PubUtility.ExecuteSql(sql, uu, "SYS");
 
                 System.IO.MemoryStream ms = new System.IO.MemoryStream();
@@ -7052,7 +7052,7 @@ namespace SVMAdmin.Controllers
                 drF["CompanyCode"] = uu.CompanyId;
                 drF["DocNo"] = DocNo;
                 drF["Type"] = "A";
-                drF["DataType"] = "P9";
+                drF["DataType"] = "B1";
                 drF["DocType"] = "image/jpeg";
                 drF["DocImage"] = ms.ToArray();
                 drF["Memo"] = Barcode1;
@@ -7089,7 +7089,7 @@ namespace SVMAdmin.Controllers
                 dtF.Columns.Add("Memo", typeof(string));
 
                 string sql = "Delete From SetEDM ";
-                sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + DocNo + "' And DataType='P10'";
+                sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + DocNo + "' And DataType='Q1'";
                 PubUtility.ExecuteSql(sql, uu, "SYS");
 
                 System.IO.MemoryStream ms = new System.IO.MemoryStream();
@@ -7100,7 +7100,7 @@ namespace SVMAdmin.Controllers
                 drF["CompanyCode"] = uu.CompanyId;
                 drF["DocNo"] = DocNo;
                 drF["Type"] = "A";
-                drF["DataType"] = "P10";
+                drF["DataType"] = "Q1";
                 drF["DocType"] = "image/jpeg";
                 drF["DocImage"] = ms.ToArray();
                 drF["Memo"] = QRCode1;

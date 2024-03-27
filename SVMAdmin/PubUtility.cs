@@ -1421,10 +1421,6 @@ namespace SVMAdmin
 
         }
 
-
-
-
-
         private static int mm2px(int mm)
         {
             return Convert.ToInt32(Math.Round((mm - 2 * margin) * Resolution / 25.4));
@@ -1441,7 +1437,7 @@ namespace SVMAdmin
             //使用ITF 格式，不能被現在常用的支付寶、微信掃出來
             //如果想生成可識別的可以使用 CODE_128 格式
             //writer.Format = BarcodeFormat.ITF;
-            writer.Format = BarcodeFormat.CODE_39;
+            writer.Format = BarcodeFormat.CODE_128;
             EncodingOptions options = new EncodingOptions()
             {
                 Width = width,
