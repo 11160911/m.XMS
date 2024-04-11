@@ -23,7 +23,6 @@
         });
 
         $('#CompanyName').val();
-
         LoginCompany();
 
         $('#btSignIn').click(function () {
