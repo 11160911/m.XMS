@@ -5478,101 +5478,71 @@ namespace SVMAdmin.Controllers
                 IFormCollection rq = HttpContext.Request.Form;
                 string LV = rq["LV"];
                 string isFormLoad = rq["FormLoad"];
-                string lvtype = "";
-                switch (LV)
-                {
-                    case "1":
-                        lvtype = "3";
-                        break;
-                    case "2":
-                        lvtype = "2";
-                        break;
-                    case "3":
-                        lvtype = "1";
-                        break;
-                    default:
-                        break;
-                }
-                //Group+Man
-                string sql = "select 'G_'+GroupID [id],'#' parent,GroupName [text] from GroupIDSV where CompanyCode='" + uu.CompanyId + "' and [status]='" + LV.SqlQuote() + "' order by GroupID ";
+
+                //Left1.Group
+                string sql = "select 'G_'+GroupID [id],'#' parent,GroupName [text] from GroupIDWeb (nolock) where CompanyCode='" + uu.CompanyId + "' order by GroupID ";  
                 DataTable dtG = PubUtility.SqlQry(sql, uu, "SYS");
                 dtG.TableName = "dtGroupID";
                 ds.Tables.Add(dtG);
 
-                sql = "Select 'E_'+Man_ID [id],Man_Name [text],'G_'+Man_Group parent from EmployeeSV where CompanyCode='" + uu.CompanyId + "' and [Level]='" + LV.SqlQuote() + "' order by Man_Group,Man_ID ";
+                //Left2.Man
+                sql = "Select 'E_'+convert(varchar,b.UID)+'_'+isnull(b.groupid,'') [id],UName [text],'G_'+isnull(b.groupid,'') parent from Accountgroupweb b (nolock) left join Account a (nolock) ";
+                sql += "on b.companyCode=a.CompanyCode and b.Uid=a.Uid where b.CompanyCode='" + uu.CompanyId + "' order by isnull(b.groupid,''),b.uid ";
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtEmp";
                 ds.Tables.Add(dtE);
 
-                //SystemID
-                sql = "select 'S_'+a.SystemId id,'#' parent,a.ChineseName [text] from CompanySIDSV a inner join CompanyPIDSV b ";
-                sql += "on a.CompanyCode=b.CompanyCode and a.SystemId=b.SystemID ";
-                sql += "inner join SystemId c on a.SystemId=c.SystemId ";
-                sql += "Where a.CompanyCode='" + uu.CompanyId + "' and b.Flag" + lvtype + "='Y' and isnull(b.OrderSequence,'')<>'99' ";
-                sql += "group by a.SystemId,a.ChineseName,c.OrderSequence Order By c.OrderSequence ";
+                //Right1.SystemID
+                sql = "select 'S_'+a.SystemId id,'#' parent,a.ChineseName [text] from SystemIDCompanyWWeb a (nolock) inner join ProgramIDCompanyWWeb b (nolock) ";
+                sql += "on a.CompanyCode=b.CompanyCode and a.SystemId=b.SectionID ";
+                sql += "Where a.CompanyCode='" + uu.CompanyId + "' and isnull(b.OrderSequence,'')<>'99' ";
+                sql += "group by a.SystemId,a.ChineseName,a.OrderSequence Order By a.OrderSequence ";
 
                 DataTable dtS = PubUtility.SqlQry(sql, uu, "SYS");
                 dtS.TableName = "dtSystemID";
                 ds.Tables.Add(dtS);
 
-                //ProgramID
-                sql = "select 'P_'+b.ProgramId id,'S_'+b.SystemID parent,b.ChineseName text from CompanySIDSV a inner join CompanyPIDSV b ";
-                sql += "on a.CompanyCode=b.CompanyCode and a.SystemId=b.SystemID ";
-                sql += "inner join SystemId c on a.SystemId=c.SystemId ";
-                sql += "Where a.CompanyCode='" + uu.CompanyId + "' and b.Flag" + lvtype + "='Y' and isnull(b.OrderSequence,'')<>'99' ";
-                sql += "Order By c.OrderSequence,b.OrderSequence ";
+                //Right2.ProgramID
+                sql = "select 'P_'+b.ProgramId id,'S_'+b.SectionID parent,b.ChineseName text from SystemIDCompanyWWeb a (nolock) inner join ProgramIDCompanyWWeb b (nolock) ";
+                sql += "on a.CompanyCode=b.CompanyCode and a.SystemId=b.SectionID ";
+                sql += "Where a.CompanyCode='" + uu.CompanyId + "' and isnull(b.OrderSequence,'')<>'99' ";
+                sql += "Order By a.OrderSequence,b.OrderSequence ";
 
                 DataTable dtP = PubUtility.SqlQry(sql, uu, "SYS");
                 dtP.TableName = "dtProgramID";
                 ds.Tables.Add(dtP);
 
-                //GroupProgramIDSV
+                //Right3.ProgramButton
+                sql = "select 'B_'+b.Button+'_'+b.ProgramID id,'P_'+b.ProgramID parent,b.Tradchn text from ProgramIDCompanyWWeb a (nolock) inner join ProgramButtonWeb b (nolock) ";
+                sql += "on a.ProgramId=b.ProgramId ";
+                sql += "Where a.CompanyCode='" + uu.CompanyId + "' and isnull(a.OrderSequence,'')<>'99' ";
+                sql += "Order By a.OrderSequence,b.Button ";
+
+                DataTable dtB = PubUtility.SqlQry(sql, uu, "SYS");
+                dtB.TableName = "dtProgramButton";
+                ds.Tables.Add(dtB);
+
+
+                //GroupProgramID
                 string GID = "";
                 if (dtG.Rows.Count > 0)
                 {
                     GID = dtG.Rows[0]["id"].ToString().Substring(2, dtG.Rows[0]["id"].ToString().Length - 2);
                 }
 
-                sql = "select 'P_'+ProgramId id from GroupProgramIDSV ";
+                sql = "select 'P_'+ProgramId id from GroupProgramIDWeb (nolock) ";
                 sql += "Where CompanyCode='" + uu.CompanyId + "' and GroupID='" + GID.SqlQuote() + "' ";
                 DataTable dtGP = PubUtility.SqlQry(sql, uu, "SYS");
                 dtGP.TableName = "dtGroupProgramID";
                 ds.Tables.Add(dtGP);
 
-
-                //Lavel
-                if (isFormLoad == "Y")
-                {
-                    sql = "select CONVERT(varchar(1),'') LV,CONVERT(nvarchar(10),N'') LName";
-                    DataTable dtL = PubUtility.SqlQry(sql, uu, "SYS");
-                    for (int i = 0; i < 3; i++)
-                    {
-                        DataRow dr = dtL.NewRow();
-                        dr["LV"] = (i + 1).ToString();
-                        string lname = "";
-                        switch (i)
-                        {
-                            case 0:
-                                lname = "智販店";
-                                break;
-                            case 1:
-                                lname = "分公司";
-                                break;
-                            case 2:
-                                lname = "總公司";
-                                break;
-                            default:
-                                break;
-                        }
-                        dr["LName"] = lname;
-                        dtL.Rows.Add(dr);
-                    }
-                    dtL = dtL.Select("", "LV desc").CopyToDataTable();
-                    dtL.TableName = "dtLV";
-                    ds.Tables.Add(dtL);
-                }
-
-
+                //GroupButton
+                sql = "select 'B_'+a.Button+'_'+a.ProgramID id,'P_'+a.ProgramId parent,case when isnull(b.button,'')='' then '0' else '1' end Flag1 ";
+                sql += "from ProgramButtonWeb a (nolock) left join GroupButtonWeb b (nolock) on a.ProgramID=b.ProgramID and a.Button=b.Button ";
+                sql += "and CompanyCode='" + uu.CompanyId + "' and GroupID='" + GID.SqlQuote() + "' ";
+                DataTable dtGB = PubUtility.SqlQry(sql, uu, "SYS");
+                dtGB.TableName = "dtGroupButton";
+                ds.Tables.Add(dtGB);
 
             }
             catch (Exception err)
@@ -5599,7 +5569,7 @@ namespace SVMAdmin.Controllers
                 string ManGroup = rq["ManGroup"];
 
                 //Group
-                string sql = "select 'DG_'+GroupID [id],'#' parent,GroupName [text] from GroupIDSV where CompanyCode='" + uu.CompanyId + "' and [status]='" + LV.SqlQuote() + "' order by GroupID ";
+                string sql = "select 'DG_'+GroupID [id],'#' parent,GroupName [text] from GroupIDWeb (nolock) where CompanyCode='" + uu.CompanyId + "' order by GroupID ";  // and [status]='" + LV.SqlQuote() + "'
                 DataTable dtG = PubUtility.SqlQry(sql, uu, "SYS");
                 dtG.TableName = "dtGroupID";
                 ds.Tables.Add(dtG);
@@ -5610,12 +5580,15 @@ namespace SVMAdmin.Controllers
                     switch (Emptype)    //A-加入群組人員;D-刪除群組人員
                     {
                         case "A":
-                            ls_Cond = " and NorMal='1' and isnull(Man_Group,'')='' ";
+                            if (ManGroup != null & ManGroup != "")
+                            {
+                                ls_Cond = " and not exists (Select * from AccountGroupWeb (nolock) where CompanyCode=Account.CompanyCode and GroupID='" + ManGroup.SqlQuote() + "' and UID=Account.UID) ";
+                            }
                             break;
                         case "D":
                             if (ManGroup != null)
                             {
-                                ls_Cond = " and isnull(Man_Group,'')='" + ManGroup.SqlQuote() + "' ";
+                                ls_Cond = " and UID in (Select UID from AccountGroupWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and GroupID='" + ManGroup.SqlQuote() + "') ";
                             }
                             else
                             {
@@ -5630,9 +5603,9 @@ namespace SVMAdmin.Controllers
                     if (Emptype != "X")
                     {
                         //Emp
-                        sql = "Select Man_ID,Man_Name from EmployeeSV where CompanyCode='" + uu.CompanyId + "' and [Level]='" + LV.SqlQuote() + "'";
+                        sql = "Select UID,UName from Account (nolock) where CompanyCode='" + uu.CompanyId + "'";
                         sql += ls_Cond;
-                        sql += " order by Man_ID ";
+                        sql += " order by UID,id ";
                         DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                         dtE.TableName = "dtEmp";
                         ds.Tables.Add(dtE);
@@ -5640,9 +5613,9 @@ namespace SVMAdmin.Controllers
                 }
                 else
                 {
-                    sql = "select distinct a.GroupID,GroupName from GroupIDSV a inner join GroupProgramIDSV b ";
+                    sql = "select distinct a.GroupID,GroupName from GroupIDWeb a (nolock) inner join GroupProgramIDWeb b (nolock) ";
                     sql += "on a.CompanyCode=b.CompanyCode and a.GroupId=b.GroupID ";
-                    sql += "where a.CompanyCode='" + uu.CompanyId + "' and a.[status]='" + LV.SqlQuote() + "' order by GroupID ";
+                    sql += "where a.CompanyCode='" + uu.CompanyId + "' order by GroupID ";  // and a.[status]='" + LV.SqlQuote() + "'
                     DataTable dtCG = PubUtility.SqlQry(sql, uu, "SYS");
                     dtCG.TableName = "dtCopyGroup";
                     ds.Tables.Add(dtCG);
@@ -5674,14 +5647,14 @@ namespace SVMAdmin.Controllers
                 string sql = "";
                 if (EditType == "A")
                 { //群組新增
-                    sql = "select 'DG_'+GroupID id,'#' parent,GroupName [text] from GroupIDSV Where CompanyCode='" + uu.CompanyId + "' and GroupID='" + GroupID + "'";
+                    sql = "select 'DG_'+GroupID id,'#' parent,GroupName [text] from GroupIDWeb Where CompanyCode='" + uu.CompanyId + "' and GroupID='" + GroupID + "'";
                     DataTable dtG = PubUtility.SqlQry(sql, uu, "SYS");
                     dtG.TableName = "dtGroupID";
                     ds.Tables.Add(dtG);
                 }
                 else
                 { //群組刪除
-                    sql = "select top 3 * from EmployeeSV Where CompanyCode='" + uu.CompanyId + "' and Man_Group='" + GroupID + "'";
+                    sql = "select * from AccountGroupWeb Where 1=0";
                     DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                     dtE.TableName = "dtGroupEmp";
                     ds.Tables.Add(dtE);
@@ -5703,7 +5676,7 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-                DataTable dtRec = new DataTable("GroupIDSV");
+                DataTable dtRec = new DataTable("GroupIDWeb");
                 PubUtility.AddStringColumns(dtRec, "GroupID,GroupName,Status,CopyGroup");
                 DataSet dsRQ = new DataSet();
                 dsRQ.Tables.Add(dtRec);
@@ -5719,14 +5692,20 @@ namespace SVMAdmin.Controllers
                         {
                             string copygroup = dr["CopyGroup"].ToString().SqlQuote();
                             DataTable dtTmp = dtRec.Copy();
+                            dtTmp.Columns.Remove("Status");
                             dtTmp.Columns.Remove("CopyGroup");
-                            dbop.Add("GroupIDSV", dtTmp, uu, "SYS");
+                            dbop.Add("GroupIDWeb", dtTmp, uu, "SYS");
                             if (copygroup != "")
                             {
-                                DataTable dtP = dbop.Query("select Companycode,'" + dr["GroupID"] + "' GroupID,ProgramID from GroupProgramIDSV where Companycode='" + uu.CompanyId + "' and GroupID='" + copygroup + "'", uu, "SYS");
+                                DataTable dtP = dbop.Query("select Companycode,'" + dr["GroupID"] + "' GroupID,ProgramID from GroupProgramIDWeb (nolock) where Companycode='" + uu.CompanyId + "' and GroupID='" + copygroup + "'", uu, "SYS");
                                 if (dtP.Rows.Count > 0)
                                 {
-                                    dbop.Add("GroupProgramIDSV", dtP, uu, "SYS");
+                                    dbop.Add("GroupProgramIDWeb", dtP, uu, "SYS");
+                                }
+                                DataTable dtB = dbop.Query("select Companycode,'" + dr["GroupID"] + "' GroupID,ProgramID,Button from GroupButtonWeb (nolock) where Companycode='" + uu.CompanyId + "' and GroupID='" + copygroup + "'", uu, "SYS");
+                                if (dtB.Rows.Count > 0)
+                                {
+                                    dbop.Add("GroupButtonWeb", dtB, uu, "SYS");
                                 }
                             }
 
@@ -5741,15 +5720,15 @@ namespace SVMAdmin.Controllers
                         dbop.Dispose();
                     }
                 }
-                sql = "select 'DG_'+GroupID id,'#' parent,GroupName [text] from GroupIDSV a";
-                sql += " where a.CompanyCode='" + uu.CompanyId + "' And [Status]='" + dr["Status"].ToString().SqlQuote() + "' order by GroupID";
+                sql = "select 'DG_'+GroupID id,'#' parent,GroupName [text] from GroupIDWeb a (nolock) ";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "' order by GroupID"; 
                 DataTable dtG = PubUtility.SqlQry(sql, uu, "SYS");
                 dtG.TableName = "dtGroupID";
                 ds.Tables.Add(dtG);
 
-                sql = "select distinct a.GroupID,GroupName from GroupIDSV a inner join GroupProgramIDSV b ";
+                sql = "select distinct a.GroupID,GroupName from GroupIDWeb a (nolock) inner join GroupProgramIDWeb b (nolock) ";
                 sql += "on a.CompanyCode=b.CompanyCode and a.GroupId=b.GroupID ";
-                sql += "where a.CompanyCode='" + uu.CompanyId + "' and a.[status]='" + dr["Status"].ToString().SqlQuote() + "' order by GroupID ";
+                sql += "where a.CompanyCode='" + uu.CompanyId + "' order by GroupID "; 
                 DataTable dtCG = PubUtility.SqlQry(sql, uu, "SYS");
                 dtCG.TableName = "dtCopyGroup";
                 ds.Tables.Add(dtCG);
@@ -5770,7 +5749,7 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-                DataTable dtRec = new DataTable("GroupIDSV");
+                DataTable dtRec = new DataTable("GroupIDWeb");
                 PubUtility.AddStringColumns(dtRec, "GroupID,GroupName,LV,EditType");
                 DataSet dsRQ = new DataSet();
                 dsRQ.Tables.Add(dtRec);
@@ -5786,21 +5765,19 @@ namespace SVMAdmin.Controllers
                         {
                             if (dr["EditType"].ToString() == "M")
                             {
-                                sql = "update GroupIDSV set ";
-                                sql += " GroupName='" + dr["GroupName"].ToString().SqlQuote() + "'";
-                                sql += ",ModDate=convert(char(10),getdate(),111)";
-                                sql += ",ModTime=convert(char(12),getdate(),108)";
-                                sql += ",ModUser='" + uu.UserID + "'";
-                                sql += " where CompanyCode='" + uu.CompanyId + "' And GroupID='" + dr["GroupID"].ToString().SqlQuote() + "' and [Status]='" + dr["LV"].ToString().SqlQuote() + "'";
+                                sql = "update GroupIDWeb set ";
+                                sql += " GroupName='" + dr["GroupName"].ToString().SqlQuote() + "' where CompanyCode='" + uu.CompanyId + "' And GroupID='" + dr["GroupID"].ToString().SqlQuote() + "'";
                                 dbop.ExecuteSql(sql, uu, "SYS");
                             }
                             else
                             {
-                                sql = "Delete from GroupIDSV";
-                                sql += " where CompanyCode='" + uu.CompanyId + "' And GroupID='" + dr["GroupID"].ToString().SqlQuote() + "' and [Status]='" + dr["LV"].ToString().SqlQuote() + "'";
+                                sql = "Delete from AccountGroupWeb where CompanyCode='" + uu.CompanyId + "' and GroupID='" + dr["GroupID"].ToString().SqlQuote() + "'";
                                 dbop.ExecuteSql(sql, uu, "SYS");
-                                sql = "Delete from GroupProgramIDSV";
-                                sql += " where CompanyCode='" + uu.CompanyId + "' And GroupID='" + dr["GroupID"].ToString().SqlQuote() + "'";
+                                sql = "Delete from GroupButtonWeb where CompanyCode='" + uu.CompanyId + "' and GroupID='" + dr["GroupID"].ToString().SqlQuote() + "'";
+                                dbop.ExecuteSql(sql, uu, "SYS");
+                                sql = "Delete from GroupProgramIDWeb where CompanyCode='" + uu.CompanyId + "' and GroupID='" + dr["GroupID"].ToString().SqlQuote() + "'";
+                                dbop.ExecuteSql(sql, uu, "SYS");
+                                sql = "Delete from GroupIDWeb where CompanyCode='" + uu.CompanyId + "' and GroupID='" + dr["GroupID"].ToString().SqlQuote() + "'";
                                 dbop.ExecuteSql(sql, uu, "SYS");
 
                             }
@@ -5816,8 +5793,8 @@ namespace SVMAdmin.Controllers
                     }
                 }
                 sql = "select 'DG_'+GroupID id,'#' parent,GroupName [text]";
-                sql += " from GroupIDSV a";
-                sql += " where a.CompanyCode='" + uu.CompanyId + "' and [Status]='" + dr["LV"].ToString().SqlQuote() + "' order by GroupID";
+                sql += " from GroupIDWeb a";
+                sql += " where a.CompanyCode='" + uu.CompanyId + "' order by GroupID";
                 DataTable dtG = PubUtility.SqlQry(sql, uu, "SYS");
                 dtG.TableName = "dtGroupID";
                 ds.Tables.Add(dtG);
@@ -5838,12 +5815,14 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-                DataTable dtRec = new DataTable("EmployeeSV");
+                DataTable dtRec = new DataTable("Account");
                 PubUtility.AddStringColumns(dtRec, "LV,GroupID,EmpStr,EditType");
                 DataSet dsRQ = new DataSet();
                 dsRQ.Tables.Add(dtRec);
                 PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
                 DataRow dr = dtRec.Rows[0];
+
+                DataTable dtSysDT = PubUtility.SqlQry("Select Convert(varchar,getdate(),111) D1,convert(varchar,getdate(),108) D2", uu, "SYS");
 
                 string sql = "";
                 using (DBOperator dbop = new DBOperator())
@@ -5854,23 +5833,29 @@ namespace SVMAdmin.Controllers
                         {
                             if (dr["EditType"].ToString() == "A")
                             {   //增加群組人員
-                                sql = "update EmployeeSV set ";
-                                sql += " Man_Group='" + dr["GroupID"].ToString().SqlQuote() + "'";
-                                sql += ",ModDate=convert(char(10),getdate(),111)";
-                                sql += ",ModTime=convert(char(12),getdate(),108)";
-                                sql += ",ModUser='" + uu.UserID + "'";
-                                sql += " where CompanyCode='" + uu.CompanyId + "' And [Level]='" + dr["LV"].ToString().SqlQuote() + "' and Man_ID in ('" + dr["EmpStr"].ToString().SqlQuote().Replace(",", "','") + "')";
-                                dbop.ExecuteSql(sql, uu, "SYS");
+                                string[] emps = dr["EmpStr"].ToString().Split(',');
+                                string sysdate = dtSysDT.Rows[0]["D1"].ToString();
+                                string systime = dtSysDT.Rows[0]["D2"].ToString();
+                                foreach (string emp in emps)
+                                {
+                                    sql = "Select * from AccountGroupWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and GroupID='" + dr["GroupID"].ToString().SqlQuote() + "' and UID='" + emp + "'";
+                                    DataTable ldt = dbop.Query(sql, uu, "SYS");
+                                    if (ldt.Rows.Count == 0)
+                                    {
+                                        sql = "insert into AccountGroupWeb (CompanyCode,CrtUser,CrtDate,CrtTime,GroupID,UID) ";
+                                        sql += "values ('" + uu.CompanyId + "','" + uu.UserID + "','" + sysdate + "','" + systime + "','" + dr["GroupID"].ToString().SqlQuote() + "','" + emp + "')";
+                                        dbop.ExecuteSql(sql, uu, "SYS");
+                                    }
+                                }
                             }
                             else
                             { //刪除人員之群組
-                                sql = "update EmployeeSV set ";
-                                sql += " Man_Group=''";
-                                sql += ",ModDate=convert(char(10),getdate(),111)";
-                                sql += ",ModTime=convert(char(12),getdate(),108)";
-                                sql += ",ModUser='" + uu.UserID + "'";
-                                sql += " where CompanyCode='" + uu.CompanyId + "' And Man_Group='" + dr["GroupID"].ToString().SqlQuote() + "' and [Level]='" + dr["LV"].ToString().SqlQuote() + "' and Man_ID in ('" + dr["EmpStr"].ToString().SqlQuote().Replace(",", "','") + "')";
-                                dbop.ExecuteSql(sql, uu, "SYS");
+                                string[] emps = dr["EmpStr"].ToString().Split(',');
+                                foreach (string emp in emps)
+                                {
+                                    sql = "Delete from AccountGroupWeb where CompanyCode='" + uu.CompanyId + "' and GroupID='" + dr["GroupID"].ToString().SqlQuote() + "' and UID='" + emp + "'";
+                                    dbop.ExecuteSql(sql, uu, "SYS");
+                                }
                             }
                             ts.Complete();
                         }
@@ -5903,31 +5888,25 @@ namespace SVMAdmin.Controllers
                 IFormCollection rq = HttpContext.Request.Form;
                 string LV = rq["LV"];
                 string Group = rq["GroupID"];
-                string lvtype = "";
-                switch (LV)
-                {
-                    case "1":
-                        lvtype = "3";
-                        break;
-                    case "2":
-                        lvtype = "2";
-                        break;
-                    case "3":
-                        lvtype = "1";
-                        break;
-                    default:
-                        break;
-                }
+               
                 //GroupProgramID
-                string sql = "select 'P_'+a.ProgramId id,'S_'+b.SystemID parent from GroupProgramIDSV a inner join CompanyPIDSV b ";
+                string sql = "select 'P_'+a.ProgramId id,'S_'+b.SectionID parent from GroupProgramIDWeb a inner join ProgramIdCompanyWWeb b ";
                 sql += "on a.CompanyCode=b.CompanyCode and a.ProgramId=b.ProgramId ";
-                sql += "inner join CompanySIDSV c on a.CompanyCode=c.CompanyCode and b.SystemId=c.SystemId ";
+                sql += "inner join SystemIdCompanyWWeb c on a.CompanyCode=c.CompanyCode and b.SectionId=c.SystemId ";
                 sql += "Where a.CompanyCode='" + uu.CompanyId + "' and GroupID='" + Group.SqlQuote() + "' and isnull(b.OrderSequence,'')<>'99' ";
                 sql += "Order By c.OrderSequence,b.OrderSequence ";
-                
+
                 DataTable dtGP = PubUtility.SqlQry(sql, uu, "SYS");
                 dtGP.TableName = "dtGroupProgramID";
                 ds.Tables.Add(dtGP);
+
+                //GroupButton
+                sql = "select 'B_'+a.Button+'_'+a.ProgramID id,'P_'+a.ProgramId parent,case when isnull(b.button,'')='' then '0' else '1' end Flag1 ";
+                sql += "from ProgramButtonWeb a (nolock) left join GroupButtonWeb b (nolock) on a.ProgramID=b.ProgramID and a.Button=b.Button ";
+                sql += "and CompanyCode='" + uu.CompanyId + "' and GroupID='" + Group.SqlQuote() + "' ";
+                DataTable dtGB = PubUtility.SqlQry(sql, uu, "SYS");
+                dtGB.TableName = "dtGroupButton";
+                ds.Tables.Add(dtGB);
 
             }
             catch (Exception err)
@@ -5946,8 +5925,8 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-                DataTable dtG = new DataTable("GPIDSV");
-                PubUtility.AddStringColumns(dtG, "LV,GroupID,ProgramID");
+                DataTable dtG = new DataTable("GPIDWeb");
+                PubUtility.AddStringColumns(dtG, "LV,GroupID,ProgramID,Btn");
                 DataSet dsRQ = new DataSet();
                 dsRQ.Tables.Add(dtG);
 
@@ -5956,6 +5935,7 @@ namespace SVMAdmin.Controllers
 
                 string sql = "";
                 string[] Programid = drG["ProgramID"].ToString().Split(",");
+                string[] Btn = drG["Btn"].ToString().Split(",");
                 using (DBOperator dbop = new DBOperator())
                 {
                     using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required))
@@ -5963,7 +5943,7 @@ namespace SVMAdmin.Controllers
                         try
                         {
                             //insert ProgramID至暫存表
-                            sql = "Select ProgramID into #TempProgramID from GroupProgramIDSV where 1=0";
+                            sql = "Select ProgramID into #TempProgramID from GroupProgramIDWeb where 1=0";
                             dbop.ExecuteSql(sql, uu, "SYS");
 
                             foreach (string dr in Programid)
@@ -5972,21 +5952,54 @@ namespace SVMAdmin.Controllers
                                 dbop.ExecuteSql(sql, uu, "SYS");
                             }
 
+                            //insert Button至暫存表
+                            sql = "Select ProgramID,Button into #TempGroupButton from GroupButtonWeb where 1=0";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+                            if (Btn.Length > 0 && Btn[0].ToString() != "")
+                            {
+                                foreach (string dr in Btn)
+                                {
+                                    string[] tmpdr = dr.ToString().Split("_");
+                                    sql = "insert into #TempGroupButton (ProgramID,Button) values ('" + tmpdr[2].ToString().SqlQuote() + "','" + tmpdr[1].ToString().SqlQuote() + "')";
+                                    dbop.ExecuteSql(sql, uu, "SYS");
+                                }
+                            }
+
+                            //合併 ProgramID與Button.ProgramID
+                            sql = "select * into #tmpPID from (";
+                            sql += "select * from #TempProgramID ";
+                            sql += "union ";
+                            sql += "select distinct ProgramID from #TempGroupButton) a";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+
                             //刪除已取消的群組程式權限
-                            sql = "Delete a from GroupProgramIDSV a full join #TempProgramID b on a.ProgramID=b.ProgramID ";
+                            sql = "Delete a from GroupProgramIDWeb a full join #tmpPID b on a.ProgramID=b.ProgramID ";
                             sql += "where a.Companycode = '" + uu.CompanyId + "' and GroupID = '" + drG["GroupID"].ToString().SqlQuote() + "' and b.ProgramID is null";
                             dbop.ExecuteSql(sql, uu, "SYS");
 
                             //新增本次設定的群組程式權限
-                            sql = "insert into GroupProgramIDSV ";
-                            sql += "select '" + uu.CompanyId + "','" + uu.UserID + "',Convert(varchar,getdate(),111),substring(Convert(varchar,getdate(),121),12,12),";
-                            sql += "'" + uu.UserID + "',Convert(varchar,getdate(),111),substring(Convert(varchar,getdate(),121),12,12),";
-                            sql += "'" + drG["GroupID"].ToString().SqlQuote() + "',a.ProgramID from #TempProgramID a left join GroupProgramIDSV b ";
+                            sql = "insert into GroupProgramIDWeb ";
+                            sql += "select '" + uu.CompanyId + "','" + uu.UserID + "',Convert(varchar,getdate(),111),Convert(varchar,getdate(),108),";
+                            sql += "'" + drG["GroupID"].ToString().SqlQuote() + "',a.ProgramID from #tmpPID a left join GroupProgramIDWeb b ";
                             sql += "on a.ProgramID=b.ProgramID and b.Companycode='" + uu.CompanyId + "' and GroupID='" + drG["GroupID"].ToString().SqlQuote() + "' ";
                             sql += "where b.programid is null";
                             dbop.ExecuteSql(sql, uu, "SYS");
 
-                            dbop.ExecuteSql("drop table #TempProgramID", uu, "SYS");
+                            //刪除已取消的群組程式按鍵權限
+                            sql = "Delete a from GroupButtonWeb a full join #TempGroupButton b on a.ProgramID=b.ProgramID and a.Button=b.Button ";
+                            sql += "where a.Companycode = '" + uu.CompanyId + "' and GroupID = '" + drG["GroupID"].ToString().SqlQuote() + "' and b.Button is null";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+                            //新增本次設定的群組程式按鍵權限
+                            sql = "insert into GroupButtonWeb ";
+                            sql += "select '" + uu.CompanyId + "','" + uu.UserID + "',Convert(varchar,getdate(),111),Convert(varchar,getdate(),108),";
+                            sql += "'" + drG["GroupID"].ToString().SqlQuote() + "',a.ProgramID,a.Button from #TempGroupButton a left join GroupButtonWeb b ";
+                            sql += "on a.ProgramID=b.ProgramID and a.Button=b.Button and b.Companycode='" + uu.CompanyId + "' and GroupID='" + drG["GroupID"].ToString().SqlQuote() + "' ";
+                            sql += "where b.Button is null";
+                            dbop.ExecuteSql(sql, uu, "SYS");
+
+                            dbop.ExecuteSql("drop table #TempProgramID,#tmpPID,#TempGroupButton", uu, "SYS");
                             ts.Complete();
                         }
                         catch (Exception err)
@@ -5999,11 +6012,20 @@ namespace SVMAdmin.Controllers
                     }
                 }
                 //GroupProgramID
-                sql = "select 'P_'+ProgramId id from GroupProgramIDSV ";
+                sql = "select 'P_'+ProgramId id from GroupProgramIDWeb ";
                 sql += "Where CompanyCode='" + uu.CompanyId + "' and GroupID='" + drG["GroupID"].ToString().SqlQuote() + "' ";
                 DataTable dtGP = PubUtility.SqlQry(sql, uu, "SYS");
                 dtGP.TableName = "dtGroupProgramID";
                 ds.Tables.Add(dtGP);
+
+                //GroupButton
+                sql = "select 'B_'+a.Button+'_'+a.ProgramID id,'P_'+a.ProgramId parent,case when isnull(b.button,'')='' then '0' else '1' end Flag1 ";
+                sql += "from ProgramButtonWeb a (nolock) left join GroupButtonWeb b (nolock) on a.ProgramID=b.ProgramID and a.Button=b.Button ";
+                sql += "and CompanyCode='" + uu.CompanyId + "' and GroupID='" + drG["GroupID"].ToString().SqlQuote() + "' ";
+                DataTable dtGB = PubUtility.SqlQry(sql, uu, "SYS");
+                dtGB.TableName = "dtGroupButton";
+                ds.Tables.Add(dtGB);
+
             }
             catch (Exception err)
             {

@@ -985,7 +985,7 @@ var DateDiff = function (interval, objDate1, objDate2) {
     }
 }
 
-var SetTreeField = function (id, xmlParent, xmlChild) {
+var SetTreeField = function (id, xmlParent, xmlChild, xmlGreadChild) {
     $(id).empty();
     let root = $('<ul></ul>');
     $(id).append(root);
@@ -1001,6 +1001,7 @@ var SetTreeField = function (id, xmlParent, xmlChild) {
             var li_Cnt = 0;
             for (var j = 0; j < xmlChild.length; j++) {
                 let nodeB1;
+                let branch2;
                 var jid2 = GetNodeValue(xmlChild[j], "id");
                 var jtxt2 = GetNodeValue(xmlChild[j], "text");
                 var jparent2 = GetNodeValue(xmlChild[j], "parent");
@@ -1012,6 +1013,25 @@ var SetTreeField = function (id, xmlParent, xmlChild) {
                     nodeB1 = $('<li id="' + jid2 + '">' + jtxt2 + '</li>');
                     branch1.append(nodeB1);
                     li_Cnt++;
+                    if (xmlGreadChild != null) {
+                        var li_GCnt = 0;
+                        for (var k = 0; k < xmlGreadChild.length; k++) {
+                            let nodeC1;
+                            var jid3 = GetNodeValue(xmlGreadChild[k], "id");
+                            var jtxt3 = GetNodeValue(xmlGreadChild[k], "text");
+                            var jparent3 = GetNodeValue(xmlGreadChild[k], "parent");
+                            if (jparent3 == jid2) {
+                                if (li_GCnt == 0) {
+                                    branch2 = $('<ul></ul>');
+                                    nodeB1.append(branch2);
+                                }
+                                nodeC1 = $('<li id="' + jid3 + '">' + jtxt3 + '</li>');
+                                branch2.append(nodeC1);
+                                li_GCnt++;
+                            }
+                        }
+                        li_GCnt = 0;
+                    }
                 }
             }
             li_Cnt = 0;

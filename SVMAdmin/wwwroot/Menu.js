@@ -272,7 +272,19 @@
                     PagemsDM101($(".workarea"));
                 }
             }
+            else if (pg == "MSPV102") {
+                if (window.PageMSPV102 == undefined) {
+                    $.getScript('SystemSetup/MSPV102.js',
+                        function () {
+                            PageMSPV102($(".workarea"));
+                        }
+                    );
+                }
 
+                else {
+                    PageMSPV102($(".workarea"));
+                }
+            }
             else if (pg == "ISAMDelData") {
                 if (window.PageISAMDelData == undefined)
                     $.getScript('SystemSetup/ISAMDelData.js',
