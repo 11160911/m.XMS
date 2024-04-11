@@ -79,6 +79,9 @@
     <Reference Include="EPPlus">
       <HintPath>bin\Debug\netcoreapp3.1\EPPlus.dll</HintPath>
     </Reference>
+    <Reference Include="GoogleAuthenticatorService.Core">
+      <HintPath>bin\Debug\net5.0\GoogleAuthenticatorService.Core.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>bin\Debug\netcoreapp3.1\HtmlAgilityPack.dll</HintPath>
     </Reference>

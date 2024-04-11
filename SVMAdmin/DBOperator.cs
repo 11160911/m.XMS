@@ -31,6 +31,9 @@ namespace SVMAdmin
   
         private System.Data.SqlClient.SqlConnection SetConnectionByModule(UserInfo vUser, string ModuleID)
         {
+            if (vUser.CompanyId == "") {
+                vUser.CompanyId = "BLACK";
+            }
             CompanyID = vUser.CompanyId;
             LogPath = ConstList.ThisSiteConfig.LogPath.Trim();
             if (! LogPath.EndsWith(@"\"))
@@ -385,7 +388,7 @@ namespace SVMAdmin
                 da.Fill(ds);
                 dt = ds.Tables[0];
                 ds.Tables.Remove(dt);
-            }
+            } 
             catch (Exception ex)
             {
                 WriteLogFile(LogPath + "SqlError.Log", ex.Message);

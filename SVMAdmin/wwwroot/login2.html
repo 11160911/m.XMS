@@ -145,7 +145,7 @@
                   <section class="login_content2">
                       <form id="frmLogin">
                           <div style="text-align:center;margin-top:120px;">
-                               <img src="images/m.Xms-1.png" style="width:220px;" >
+                              <img src="images/m.Xms-1.png" style="width:220px;">
                               <h3 id="CompanyName" style="color:white" hidden></h3>
                           </div>
                           <div style="margin-top:100px">
@@ -161,14 +161,17 @@
                               <button type="button" id="btSignIn" class="btn btn-round btn-secondary" style="background-color: red; color: white; width: 250px; border-width: 2PX; border-radius: 8PX; border-color: transparent; font-size: 20px; font-weight: bold"> 登入</button>
                               <a class="reset_pass" href="#" hidden> Lost your password?</a>
                           </div>
-                          <div id="icrpwd" style="display:none">
-                              <label style="color:red;font-size:18px;"> 密碼錯誤!</label>
+                          <div id="icrpwd" style="display: none; text-align: center">
+                              <label style="color:red;font-size:18px;"> 帳號不正確，請重新輸入!</label>
                           </div>
-                          <div id="chklogin" style="display: none">
-                              <label style="color:yellow;font-size:18px;"> 本設備已登入使用中，若要再次登入，請將前次連線做登出，並正常登入系統!</label>
+                          <div id="locklogin" style="display: none; text-align: center">
+                              <label style="color: red; font-size: 18px;"> 此帳號已被鎖定，請通知系統維護人員!</label>
                           </div>
-                          <div id="doublelogin" style="display:none">
-                              <label style="color:yellow; font-size:18px;"> 已重複登入，請重新執行登入鍵!</label>
+                          <div id="expiredlogin" style="display: none; text-align: center">
+                              <label style="color: red; font-size: 18px;"> 帳號已過期，請通知系統維護人員!</label>
+                          </div>
+                          <div id="upwdlogin" style="display: none; text-align: center">
+                              <label style="color: red; font-size: 18px;"> 密碼不正確，請重新輸入!</label>
                           </div>
 
                           <div class="clearfix"> </div>
@@ -189,6 +192,44 @@
         </div>
     </div>-->
                       </form>
+
+
+                      <div class="modal fade" id="OTP_modal" data-keyboard="false"  data-backdrop="static">
+                          <div class="modal-dialog">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <div class="OTPTaitle">
+                                          <span>請查看您手機的Google Authenticator</span>
+                                      </div>
+                                      <div class="OTPTaitle">
+                                          <div>
+                                              <span>1.申請兩步驟驗證：請先在手機安裝 Google Authenticator 應用程式，請參考這裡：</span>
+                                              <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&amp;hl=en" target="_blank" style="text-decoration:underline">Android</a>
+                                              <span> or </span>
+                                              <a href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8" target="_blank" style="text-decoration:underline">iOS</a>
+                                          </div>
+                                          <div>2.開啟 Google Authenticator 掃描 QRcode</div>
+                                          <div style="width:100%;text-align:center">
+                                              <img class="AuthenticatorQRcode" src="" style="width:150px;height:150px" />
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="modal-body modal-tab-container">
+                                      <div class="item form-group">
+                                          <div class="col-md-4">
+                                              <label class="col-form-label label-align">請輸入驗證密碼</label>
+                                          </div>
+                                          <div class="col-md-6">
+                                              <input id="txtOTP" type="number" class="form-control" />
+                                          </div>
+                                      </div>
+                                      <div class="modal-footer">
+                                          <button id="btSubmitOTP" type="button" class="btn btn-danger">送出</button>
+                                      </div>
+                                  </div><!-- /.modal-content -->
+                              </div><!-- /.modal-dialog -->
+                          </div><!-- /.modal -->
+                      </div>
 
                       <style>
                           #frmChkBeforeLogin:hover > #SystemSetup, #SystemSetup:focus {

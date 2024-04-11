@@ -15,28 +15,44 @@
         $('#btSave').click(function () { btSave_click(); });
         $('#btCancel').click(function () { btCancel_click(); });
 
+        $('#btSubmitOTP').click(function () { SendOTP(); });
+        $('#txtOTP').keypress(function (e) {
+            if (e.which == 13) {
+                SendOTP();
+            }
+        });
+
         $('#CompanyName').val();
 
         LoginCompany();
 
-       /* BeforeInit();*/
-        
         $('#btSignIn').click(function () {
             $('#icrpwd').hide();
-            $('#chklogin').hide();
-            $('#doublelogin').hide();
+            $('#locklogin').hide();
+            $('#expiredlogin').hide();
+            $('#upwdlogin').hide();
             LoginSys();
         });
 
         $('#password').keypress(function (e) {
             $('#icrpwd').hide();
-            $('#chklogin').hide();
-            $('#doublelogin').hide();
+            $('#locklogin').hide();
+            $('#expiredlogin').hide();
+            $('#upwdlogin').hide();
             if (e.which == 13) {
                 LoginSys();
             }
         });
+
     };
+
+    var getdeviceID = function () {
+        let UserAgent = navigator.userAgent;
+        let ScreenResolution = window.screen.width + 'x' + window.screen.height;
+        let timezoneOffset = new Date().getTimezoneOffset();
+        let uniqueId = UserAgent + ScreenResolution + timezoneOffset;
+        return uniqueId;
+    }
 
     let btnChkOK_click = function () {
         window.location.href = "Login" + sessionStorage.getItem('isamcomp');
@@ -295,15 +311,89 @@
 
     var LoginSuccess = function (data) {
         if (ReturnMsg(data, 0) == "LoginSysOK") {
-            var dtE = data.getElementsByTagName('dtEmployee');
-            var token = GetNodeValue(dtE[0], "token");
+            let user = data.getElementsByTagName('dtEmployee')[0];
+            $('#CompanyID').val(GetNodeValue(user, 'CompanyCode'))
+            CheckOTP(data);
+            //var dtE = data.getElementsByTagName('dtEmployee');
+            //var token = GetNodeValue(dtE[0], "token");
+            //var companyid = window.location.search;
+            //sessionStorage.setItem("token", token);
+            //sessionStorage.setItem("isamcomp", companyid);
+            //window.location.replace("menu");
+        }
+        else if (ReturnMsg(data, 1) == "帳號錯誤") {
+            $('#icrpwd').show();
+        }
+        else if (ReturnMsg(data, 1) == "帳號鎖定") {
+            $('#locklogin').show();
+        }
+        else if (ReturnMsg(data, 1) == "帳號失效") {
+            $('#expiredlogin').show();
+        }
+        else if (ReturnMsg(data, 1) == "密碼錯誤") {
+            $('#upwdlogin').show();
+        }
+        else if (ReturnMsg(data, 0) == "Exception") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            DyAlert(ReturnMsg(data, 1));
+        }
+    };
+
+    let CheckOTP = function (data) {
+        $('.OTPTaitle').hide();
+        let user = data.getElementsByTagName('dtEmployee')[0];
+        if (GetNodeValue(user, 'lastlogin') == "") {
+            $($('.OTPTaitle')[1]).show();
+            let QrCodeSetupImageUrl = GetNodeValue(user, 'QrCodeSetupImageUrl');
+            QrCodeSetupImageUrl = QrCodeSetupImageUrl.replace("chart.googleapis.com/chart?cht=qr&chs=250x250&chl", "qrcode.tec-it.com/API/QRCode?data");
+            $('.AuthenticatorQRcode').prop('src', QrCodeSetupImageUrl);
+        }
+        else {
+            $($('.OTPTaitle')[0]).show();
+        }
+        $('#OTP_modal').modal("show");
+        setTimeout(function () { $('.modal-backdrop').remove(); }, 200);
+        setTimeout(function () { $('#txtOTP').focus(); }, 500);
+    }
+
+    let SendOTP = function () {
+        var pData = {
+            USERID: $('#username').val(),
+            PASSWORD: $('#password').val(),
+            CompanyID: $('#CompanyID').val(),
+            OTP: $('#txtOTP').val()
+        };
+        PostToWebApi({ url: "api/SendOTP", data: pData, success: afterSendOTP, error: LoginError });
+    }
+
+    var afterSendOTP = function (data) {
+        if (ReturnMsg(data, 0) == "SendOTPOK") {
+            var dtAccount = data.getElementsByTagName('dtAccount');
+            var token = GetNodeValue(dtAccount[0], "token");
             var companyid = window.location.search;
             sessionStorage.setItem("token", token);
             sessionStorage.setItem("isamcomp", companyid);
             window.location.replace("menu");
+
+
+            //var dtE = data.getElementsByTagName('sy_USERLIST');
+            //token = GetNodeValue(dtE[0], "token");
+            //sessionStorage.setItem("token", token);
+            //UU = sessionStorage.getItem('token');
+            //if (ReturnMsg(data, 1) != "FirstLogin") {
+            //    window.location.replace("menu");
+            //}
+            //else {
+            //    $('#OTP_modal').modal("hide");
+            //    $('#NEW_PWD').val("");
+            //    $('#CFN_PWD').val("");
+            //    $('#modal_changePWD').modal('show');
+            //    return;
+            //}
         }
         else if (ReturnMsg(data, 1) == "密碼錯誤") {
-            //alert("密碼錯誤 : " + ReturnMsg(data,0))
             $('#icrpwd').show();
         }
         else if (ReturnMsg(data, 0) == "Exception") {
@@ -313,6 +403,7 @@
             DyAlert(ReturnMsg(data, 1));
         }
     };
+
 
     var LoginError = function (data) {
         DyAlert(ReturnMsg(data, 1));
