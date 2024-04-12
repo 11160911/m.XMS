@@ -160,7 +160,7 @@
 
 
 */
-            if (icat != strCat) {
+            if (icat != strCat) {  //
                 strCat = icat;
                 var strLi = '<li><a><i class="fa ' + GetNodeValue(dtFun[i], 'icon') + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
                 strLi += '<ul class="nav child_menu">';
