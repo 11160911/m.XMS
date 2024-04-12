@@ -47,7 +47,13 @@
         }
         else {
             
-            $("a[href='Login']").attr("href", "Login" + sessionStorage.getItem('isamcomp'));
+            //$("a[href='Login']").attr("href", "Login");
+            $('#logout').click(function () {
+                var pData = {
+                    PASSWORD: sessionStorage.getItem('UPWD')
+                };
+                PostToWebApi({ url: "api/LogOut", data: pData, success: afterLogOut });
+            });
 
             $('.right_col').mousedown(function (e) {
                 Sidebar_Close();
@@ -77,9 +83,17 @@
             $('#FunctionDesc').text('');
             PageDashboard($("#app"));
         }
-
-
     };
+
+    let afterLogOut = function (data) {
+        if (ReturnMsg(data, 0) != "LogOutOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            window.location.href = "Login";
+        }
+    };
+
 
     let LogOutX = function () {
         

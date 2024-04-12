@@ -352,6 +352,7 @@
         else {
             $($('.OTPTaitle')[0]).show();
         }
+        $('#txtOTP').val('');
         $('#OTP_modal').modal("show");
         setTimeout(function () { $('.modal-backdrop').remove(); }, 200);
         setTimeout(function () { $('#txtOTP').focus(); }, 500);
@@ -362,7 +363,8 @@
             USERID: $('#username').val(),
             PASSWORD: $('#password').val(),
             CompanyID: $('#CompanyID').val(),
-            OTP: $('#txtOTP').val()
+            OTP: $('#txtOTP').val(),
+            GID: localStorage.getItem('GID')
         };
         PostToWebApi({ url: "api/SendOTP", data: pData, success: afterSendOTP, error: LoginError });
     }
@@ -370,13 +372,14 @@
     var afterSendOTP = function (data) {
         if (ReturnMsg(data, 0) == "SendOTPOK") {
             var dtAccount = data.getElementsByTagName('dtAccount');
-            var token = GetNodeValue(dtAccount[0], "token");
-            var companyid = window.location.search;
-            sessionStorage.setItem("token", token);
-            sessionStorage.setItem("isamcomp", companyid);
+            var dtAccount1 = data.getElementsByTagName('dtAccount1');
+            var token1 = GetNodeValue(dtAccount[0], "token1");
+            sessionStorage.setItem("token", token1);
+            sessionStorage.setItem("UPWD", $('#password').val());
+
+            localStorage.removeItem('GID');
+            localStorage.setItem("GID", GetNodeValue(dtAccount1[0], "token"));
             window.location.replace("menu");
-
-
             //var dtE = data.getElementsByTagName('sy_USERLIST');
             //token = GetNodeValue(dtE[0], "token");
             //sessionStorage.setItem("token", token);
@@ -392,11 +395,46 @@
             //    return;
             //}
         }
+        else if (ReturnMsg(data, 1) == "GID不一致") {
+            DyConfirm("將於不同設備登入系統，前一設備將會自動登出，是否繼續登入?", function () {
+                var pData = {
+                    USERID: $('#username').val(),
+                    CompanyID: $('#CompanyID').val(),
+                    GID: localStorage.getItem('GID')
+                };
+                PostToWebApi({ url: "api/UpdateGID", data: pData, success: afterUpdateGID });
+            }, function () {
+                $('#OTP_modal').modal("hide");
+            })
+            //confirm("將於不同設備登入系統，前一設備將會自動登出，是否繼續登入?", function () {
+            //    var pData = {
+            //        USERID: $('#username').val(),
+            //        CompanyID: $('#CompanyID').val(),
+            //        GID: localStorage.getItem('GID')
+            //    };
+            //    PostToWebApi({ url: "api/UpdateGID", data: pData, success: afterUpdateGID });
+            //})
+        }
         else if (ReturnMsg(data, 1) == "密碼錯誤") {
             $('#icrpwd').show();
         }
         else if (ReturnMsg(data, 0) == "Exception") {
             DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            DyAlert(ReturnMsg(data, 1));
+        }
+    };
+
+    var afterUpdateGID = function (data) {
+        if (ReturnMsg(data, 0) == "UpdateGIDOK") {
+            var dtAccount = data.getElementsByTagName('dtAccount');
+            var token1 = GetNodeValue(dtAccount[0], "token1");
+            sessionStorage.setItem("token", token1);
+            sessionStorage.setItem("UPWD", $('#password').val());
+            localStorage.removeItem('GID');
+            localStorage.setItem("GID", GetNodeValue(dtAccount[0], "token"));
+            window.location.replace("menu");
         }
         else {
             DyAlert(ReturnMsg(data, 1));
