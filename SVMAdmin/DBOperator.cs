@@ -31,7 +31,7 @@ namespace SVMAdmin
   
         private System.Data.SqlClient.SqlConnection SetConnectionByModule(UserInfo vUser, string ModuleID)
         {
-            if (vUser.CompanyId == "") {
+            if (vUser.CompanyId == "" | vUser.CompanyId == null) {
                 vUser.CompanyId = "BLACK";
             }
             CompanyID = vUser.CompanyId;
