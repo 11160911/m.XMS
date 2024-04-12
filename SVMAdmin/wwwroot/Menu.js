@@ -47,7 +47,7 @@
         }
         else {
             
-            $("a[href='Login']").attr("href", "Login" + sessionStorage.getItem('isamcomp'));
+            //$("a[href='Login']").attr("href", "Login" + sessionStorage.getItem('isamcomp'));
 
             $('.right_col').mousedown(function (e) {
                 Sidebar_Close();
@@ -148,32 +148,32 @@
 */
             if (icat != strCat) {
                 strCat = icat;
-                //var strLi = '<li><a><i class="fa ' + GetNodeValue(dtFun[i], 'icon') + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
-                //strLi += '<ul class="nav child_menu">';
-                //strLi += "</ul></li>";
-                var strLi = '<li><a><i class="fa ' + GetNodeValue(dtFun[i], 'icon') + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' </a>';
-                strLi += "</li>";
+                var strLi = '<li><a><i class="fa ' + GetNodeValue(dtFun[i], 'icon') + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
+                strLi += '<ul class="nav child_menu">';
+                strLi += "</ul></li>";
+                //var strLi = '<li><a><i class="fa ' + GetNodeValue(dtFun[i], 'icon') + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' </a>';
+                //strLi += "</li>";
                 licat = $(strLi);
-                var apg = licat.find('a');
+                //var apg = licat.find('a');
 
-                apg.prop('Page', GetNodeValue(dtFun[i], "Page"));
-                apg.prop('ItemCode', GetNodeValue(dtFun[i], "ItemCode"));
-                apg.prop('Description', GetNodeValue(dtFun[i], "Description"));
-                apg.prop('SECU_PERMIT', GetNodeValue(dtFun[i], "SECU_PERMIT"));
-                apg.prop('href', '#' + GetNodeValue(dtFun[i], "Page"));
+                //apg.prop('Page', GetNodeValue(dtFun[i], "Page"));
+                //apg.prop('ItemCode', GetNodeValue(dtFun[i], "ItemCode"));
+                //apg.prop('Description', GetNodeValue(dtFun[i], "Description"));
+                //apg.prop('SECU_PERMIT', GetNodeValue(dtFun[i], "SECU_PERMIT"));
+                //apg.prop('href', '#' + GetNodeValue(dtFun[i], "Page"));
 
                 menu.append(licat);
             }
-            //strLi = '<li><a href="#">' + GetNodeValue(dtFun[i], 'Description') + '</a></li>';
+            strLi = '<li><a href="#">' + GetNodeValue(dtFun[i], 'Description') + '</a></li>';
             var liFunc = $(strLi);
-            //licat.find('.child_menu').append(liFunc);
+            licat.find('.child_menu').append(liFunc);
             var apg = liFunc.find('a');
 
-            //apg.prop('Page', GetNodeValue(dtFun[i], "Page"));
-            //apg.prop('ItemCode', GetNodeValue(dtFun[i], "ItemCode"));
-            //apg.prop('Description', GetNodeValue(dtFun[i], "Description"));
-            //apg.prop('SECU_PERMIT', GetNodeValue(dtFun[i], "SECU_PERMIT"));
-            //apg.prop('href', '#' + GetNodeValue(dtFun[i], "Page"));
+            apg.prop('Page', GetNodeValue(dtFun[i], "Page"));
+            apg.prop('ItemCode', GetNodeValue(dtFun[i], "ItemCode"));
+            apg.prop('Description', GetNodeValue(dtFun[i], "Description"));
+            apg.prop('SECU_PERMIT', GetNodeValue(dtFun[i], "SECU_PERMIT"));
+            apg.prop('href', '#' + GetNodeValue(dtFun[i], "Page"));
             apg.click(function () { click_menu(this); });
           
 
@@ -427,7 +427,32 @@
 
         $SIDEBAR_MENU.find('a').on('click', function () {
             //ChkLogOut(sessionStorage.getItem('isamcomp'))
-            click_menu(this);
+            //click_menu(this);
+            var $li = $(this).parent();
+
+            if ($li.is('.active')) {
+                $li.removeClass('active active-sm');
+                $('ul:first', $li).slideUp(function () {
+                    setContentHeight();
+                });
+            } else {
+                // prevent closing menu if we are on child menu
+                if (!$li.parent().is('.child_menu')) {
+                    openUpMenu();
+                } else {
+                    if ($BODY.is('nav-sm')) {
+                        if (!$li.parent().is('child_menu')) {
+                            openUpMenu();
+                        }
+                    }
+                }
+
+                $li.addClass('active');
+
+                $('ul:first', $li).slideDown(function () {
+                    setContentHeight();
+                });
+            }
         }
         );
 
@@ -455,8 +480,8 @@
             }
         }
 
-        //// check active menu
-        //$SIDEBAR_MENU.find('a[href="' + CURRENT_URL + '"]').parent('li').addClass('current-page');
+        // check active menu
+        $SIDEBAR_MENU.find('a[href="' + CURRENT_URL + '"]').parent('li').addClass('current-page');
 
         $SIDEBAR_MENU.find('a').filter(function () {
             return this.href == CURRENT_URL;
