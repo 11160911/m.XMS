@@ -615,7 +615,7 @@ namespace SVMAdmin
         }
 
         static object lockMe = new object();
-        private void WriteLogFile(string path, string strData)
+        public void WriteLogFile(string path, string strData)
         {
             lock (lockMe)
             {

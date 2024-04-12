@@ -10,6 +10,7 @@ using System.IO;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+using ZXing.QrCode.Internal;
 
 
 namespace SVMAdmin.Controllers
@@ -159,7 +160,6 @@ namespace SVMAdmin.Controllers
         public ActionResult LoginSys()
         {
             System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "LoginSysOK", "" });
-
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
