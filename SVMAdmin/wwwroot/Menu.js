@@ -56,7 +56,7 @@
             });
 
             $('.right_col').mousedown(function (e) {
-                Sidebar_Close();
+                //Sidebar_Close();
             })
 
             var dtEmployeeSV = data.getElementsByTagName('dtEmployee');
@@ -201,7 +201,7 @@
         //$('#Timer').hide();
         //TimerReset(sessionStorage.getItem('isamcomp'),"");
 
-        Timerset(sessionStorage.getItem('isamcomp'));
+        Timerset();
         $MENU_TOGGLE.click();
         OpenPage(menuitem);
 
@@ -503,7 +503,7 @@
             setContentHeight();
         }).parent().addClass('active');
 
-        Timerset(sessionStorage.getItem('isamcomp'));
+        Timerset();
         // recompute content when resizing
         $(window).smartresize(function () {
             setContentHeight();
