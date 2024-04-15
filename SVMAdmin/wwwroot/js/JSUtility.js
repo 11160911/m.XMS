@@ -1059,24 +1059,16 @@ var InitCheckBoxItem = function (elmCheck, xml, valField, txtField, propName) {
 }
 
 var LogOutTimer;
-var searchComp_1;
-var Timerset = function (searchComp) {
-    var LoginDT = sessionStorage.getItem('LoginDT');
-    searchComp_1 = searchComp
-    //if (LogOutTimer != null) {
-    //    if (LogOutTimer.length > 1) {
-            for (i = 0;i<=10000 ; i++) {
-                clearInterval(i);
-            }
-    //    }
-    //    //clearInterval(LogOutTimer);
-    //}
+var Timerset = function () {
+    for (i = 0; i <= 10000; i++) {
+        clearInterval(i);
+    }
     var pg = JSPath('JSUtility.js') + "../Menu.html";
     var divN = $('<div></div>');
     divN.load(pg + " #Timer", function () {
         var timer = $('#Timer');
-        var ShowNumber = 6000;
-        var number = 6000;
+        var ShowNumber = 1800;
+        var number = 1800;
         timer.text(SecToHMS(number));
         
         LogOutTimer = setInterval(function () {
@@ -1086,7 +1078,7 @@ var Timerset = function (searchComp) {
                 number = 0;
 
                 DyAlert("您已超過" + ShowNumber / 60 + "分鐘未執行作業", function () {
-                    window.location.href = "Login" + searchComp_1;
+                    window.location.href = "Login";
                 },"系統已自動登出","請按[確定]，回到登入畫面");
 
             }
@@ -1094,8 +1086,6 @@ var Timerset = function (searchComp) {
                 //timer.text(number + 0);
                 timer.text(SecToHMS(number));
             }
-            
-
         }, 1000);
     });        
     
@@ -1103,10 +1093,8 @@ var Timerset = function (searchComp) {
 
 
 
-var searchComp_LogOut;
 //檢查登出狀態
-var ChkLogOut = function (searchComp) {
-    searchComp_LogOut = searchComp
+var ChkLogOut = function () {
     var LoginDT = sessionStorage.getItem('LoginDT');
     var cData = {
         LoginDT: LoginDT
@@ -1121,7 +1109,7 @@ var AfterChkLogOut = function (data) {
     else {
         var dtLogin = data.getElementsByTagName('dtLogin');
         if (GetNodeValue(dtLogin[0], "LogOutType") != "") {
-            window.location.href = "Login" + searchComp_LogOut;
+            window.location.href = "Login";
         }
     }
 

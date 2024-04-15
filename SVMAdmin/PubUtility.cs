@@ -1222,46 +1222,52 @@ namespace SVMAdmin
             }
         }
 
-        public static DataTable AllFunction()
-        {
-            DataTable dt = new DataTable("dtAllFunction");
-            dt.Columns.Add("CategoryC", typeof(string));
-            dt.Columns.Add("Category", typeof(string));
-            dt.Columns.Add("ItemCode", typeof(string));
-            dt.Columns.Add("Description", typeof(string));
-            dt.Columns.Add("Page", typeof(string));
-            dt.Columns.Add("MobilePC", typeof(string));
-            dt.Columns.Add("Icon", typeof(string));
+        //public static DataTable AllFunction(DataTable dtA)
+        //{
+        //    //DataTable dt = new DataTable("dtAllFunction");
+        //    //dt.Columns.Add("CategoryC", typeof(string));
+        //    //dt.Columns.Add("Category", typeof(string));
+        //    //dt.Columns.Add("ItemCode", typeof(string));
+        //    //dt.Columns.Add("Description", typeof(string));
+        //    //dt.Columns.Add("Page", typeof(string));
+        //    //dt.Columns.Add("MobilePC", typeof(string));
+        //    //dt.Columns.Add("Icon", typeof(string));
 
-            dt.Rows.Add(new object[] { "銷售查詢", "SalesQuery", "msSA101", "銷售分析", "msSA101", "P", "fa-cogs" });
-            dt.Rows.Add(new object[] { "銷售查詢", "SalesQuery", "msSA102", "組促銷售分析", "msSA102", "P", "fa-cubes" });
-            dt.Rows.Add(new object[] { "資料查詢", "DataQuery", "msDM101", "EDM發送設定作業", "msDM101", "P", "fa-th-large" });
-            dt.Rows.Add(new object[] { "其他", "Authorize", "MS99", "密碼變更", "MSPV101", "P", "fa-cog" });
-            dt.Rows.Add(new object[] { "其他", "Authorize", "MS99", "群組權限設定", "MSPV102", "P", "fa-cog" });
-            dt.Rows.Add(new object[] { "其他", "Authorize", "MS99", "公佈欄", "MSPV103", "P", "fa-cog" });
-            //dt.Rows.Add(new object[] { "單價查詢", "PriceRequest", "ISAMQPLU", "單價查詢", "ISAMQPLU", "P", "fa-dollar" });
-            //dt.Rows.Add(new object[] { "分區盤點上傳", "MachineManage", "ISAMToFTP", "分區盤點上傳", "ISAMToFTP", "P", "fa-cloud-upload" });
-            //dt.Rows.Add(new object[] { "上傳查詢", "UpRecordQuery", "ISAMQFTPREC", "上傳查詢", "ISAMQFTPREC", "P", "fa-list" });
-            //dt.Rows.Add(new object[] { "清除作業", "GoodsManage", "ISAMDelData", "清除作業", "ISAMDelData", "P", "fa-trash-o" });
-            //dt.Rows.Add(new object[] { "店號設定", "ShopManage", "ISAMWHSET", "店號設定", "ISAMWHSET", "P", "fa-desktop" });
+        //    //for (int i = 0; i < dtA.Rows.Count; i++) {
+        //    //    dt.Rows.Add(new object[] { dtA.Rows[i]["SystemName"].ToString(), dtA.Rows[i]["SectionID"].ToString(), dtA.Rows[i]["ProgramID"].ToString(), dtA.Rows[i]["ProgramName"].ToString(), dtA.Rows[i]["ProgramID"].ToString(), "P", "" });
+        //    //}
 
 
 
+        //    //dt.Rows.Add(new object[] { "銷售查詢", "SalesQuery", "msSA101", "銷售分析", "msSA101", "P", "fa-cogs" });
+        //    //dt.Rows.Add(new object[] { "銷售查詢", "SalesQuery", "msSA102", "組促銷售分析", "msSA102", "P", "fa-cubes" });
+        //    //dt.Rows.Add(new object[] { "資料查詢", "DataQuery", "msDM101", "EDM發送設定作業", "msDM101", "P", "fa-th-large" });
+        //    //dt.Rows.Add(new object[] { "其他", "Authorize", "MS99", "密碼變更", "MSPV101", "P", "fa-cog" });
+        //    //dt.Rows.Add(new object[] { "其他", "Authorize", "MS99", "群組權限設定", "MSPV102", "P", "fa-cog" });
+        //    //dt.Rows.Add(new object[] { "其他", "Authorize", "MS99", "公佈欄", "MSPV103", "P", "fa-cog" });
+        //    //dt.Rows.Add(new object[] { "單價查詢", "PriceRequest", "ISAMQPLU", "單價查詢", "ISAMQPLU", "P", "fa-dollar" });
+        //    //dt.Rows.Add(new object[] { "分區盤點上傳", "MachineManage", "ISAMToFTP", "分區盤點上傳", "ISAMToFTP", "P", "fa-cloud-upload" });
+        //    //dt.Rows.Add(new object[] { "上傳查詢", "UpRecordQuery", "ISAMQFTPREC", "上傳查詢", "ISAMQFTPREC", "P", "fa-list" });
+        //    //dt.Rows.Add(new object[] { "清除作業", "GoodsManage", "ISAMDelData", "清除作業", "ISAMDelData", "P", "fa-trash-o" });
+        //    //dt.Rows.Add(new object[] { "店號設定", "ShopManage", "ISAMWHSET", "店號設定", "ISAMWHSET", "P", "fa-desktop" });
 
-            //權限管理,智販機管理,商品管理,營運管理,營運分析
-            //dt.Rows.Add(new object[] { "權限管理", "Authorize", "SysUsers", "使用者維護", "SysUsers", "P", "fa-cog" });
-            //dt.Rows.Add(new object[] { "權限管理", "Authorize", "VPV01", "系統權限管理", "VPV01", "P", "fa-cog" });
-            //dt.Rows.Add(new object[] { "權限管理", "Authorize", "SysChangePWD", "密碼變更作業", "SysChangePWD", "P", "fa-cog" });
-            //dt.Rows.Add(new object[] { "功能選單", "MachineManage", "GMMacPLUSet", "盤點作業", "GMMacPLUSet", "P", "fa-cogs" });
-            ////dt.Rows.Add(new object[] { "功能選單", "MachineManage", "ISAM01", "盤點作業", "ISAM01", "P", "fa-cogs" });
-            //dt.Rows.Add(new object[] { "功能選單", "MachineManage", "ISAM02", "條碼收集", "ISAM02", "P", "fa-cogs" });
-            //dt.Rows.Add(new object[] { "功能選單", "MachineManage", "ISAM03", "出貨/調撥", "ISAM03", "P", "fa-cogs" });
-            //dt.Rows.Add(new object[] { "功能選單", "MachineManage", "ISAMQPLU", "單價查詢", "ISAMQPLU", "P", "fa-cogs" });
-            //dt.Rows.Add(new object[] { "功能選單", "MachineManage", "ISAMTOFTP", "上傳作業", "ISAMTOFTP", "P", "fa-cogs" });
-            //dt.Rows.Add(new object[] { "功能選單", "MachineManage", "ISAMDELDATA", "清除作業", "ISAMDELDATA", "P", "fa-cogs" });
 
-            return dt.Copy();
-        }
+
+
+        //    //權限管理,智販機管理,商品管理,營運管理,營運分析
+        //    //dt.Rows.Add(new object[] { "權限管理", "Authorize", "SysUsers", "使用者維護", "SysUsers", "P", "fa-cog" });
+        //    //dt.Rows.Add(new object[] { "權限管理", "Authorize", "VPV01", "系統權限管理", "VPV01", "P", "fa-cog" });
+        //    //dt.Rows.Add(new object[] { "權限管理", "Authorize", "SysChangePWD", "密碼變更作業", "SysChangePWD", "P", "fa-cog" });
+        //    //dt.Rows.Add(new object[] { "功能選單", "MachineManage", "GMMacPLUSet", "盤點作業", "GMMacPLUSet", "P", "fa-cogs" });
+        //    ////dt.Rows.Add(new object[] { "功能選單", "MachineManage", "ISAM01", "盤點作業", "ISAM01", "P", "fa-cogs" });
+        //    //dt.Rows.Add(new object[] { "功能選單", "MachineManage", "ISAM02", "條碼收集", "ISAM02", "P", "fa-cogs" });
+        //    //dt.Rows.Add(new object[] { "功能選單", "MachineManage", "ISAM03", "出貨/調撥", "ISAM03", "P", "fa-cogs" });
+        //    //dt.Rows.Add(new object[] { "功能選單", "MachineManage", "ISAMQPLU", "單價查詢", "ISAMQPLU", "P", "fa-cogs" });
+        //    //dt.Rows.Add(new object[] { "功能選單", "MachineManage", "ISAMTOFTP", "上傳作業", "ISAMTOFTP", "P", "fa-cogs" });
+        //    //dt.Rows.Add(new object[] { "功能選單", "MachineManage", "ISAMDELDATA", "清除作業", "ISAMDELDATA", "P", "fa-cogs" });
+
+        //    //return dt.Copy();
+        //}
 
         private static System.Drawing.Bitmap imgBackBmp;
         private static System.Drawing.Bitmap imgBackG;

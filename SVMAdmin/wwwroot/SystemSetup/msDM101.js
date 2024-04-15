@@ -1,4 +1,4 @@
-﻿var PagemsDM101 = function (ParentNode) {
+﻿var PageMSDM101 = function (ParentNode) {
 
     let grdM;
     let AssignVar = function () {
@@ -1284,13 +1284,12 @@
     }
 
 
-
     let afterLoadPage = function () {
         PostToWebApi({ url: "api/SystemSetup/GetInitmsDM", success: GetInitmsDM });
     };
 
-    if ($('#pgmsDM101').length == 0) {  
-        AllPages = new LoadAllPages(ParentNode, "SystemSetup/msDM101", ["msDM101btns", "pgmsDM101Init", "pgmsDM101Add", "pgmsDM101Mod"], afterLoadPage);
+    if ($('#pgMSDM101').length == 0) {  
+        AllPages = new LoadAllPages(ParentNode, "SystemSetup/MSDM101", ["MSDM101btns", "pgMSDM101Init", "pgMSDM101Add", "pgMSDM101Mod"], afterLoadPage);
     };
 
 

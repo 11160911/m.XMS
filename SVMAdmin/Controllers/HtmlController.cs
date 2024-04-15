@@ -104,11 +104,11 @@ namespace SVMAdmin.Controllers
 
 
         //
-        [Route("SystemSetup/msSA101")]
-        public IActionResult msSA101()
+        [Route("SystemSetup/MSSA101")]
+        public IActionResult MSSA101()
         {
             HtmlAgilityPack.HtmlDocument doc1 = new HtmlAgilityPack.HtmlDocument();
-            string strHtml = System.IO.File.ReadAllText(ConstList.HostEnvironment.WebRootPath + @"\SystemSetup\msSA101.html".AdjPathByOS());
+            string strHtml = System.IO.File.ReadAllText(ConstList.HostEnvironment.WebRootPath + @"\SystemSetup\MSSA101.html".AdjPathByOS());
             doc1.LoadHtml(strHtml);
 
             //Remove Node
@@ -129,7 +129,7 @@ namespace SVMAdmin.Controllers
             //RemoveAllChildren
             NodeRemove = new string[] {
                  "//ul[contains(@class,'app-menu')]",
-                 "//table[@id='tbmsSA101Mod']/tbody"
+                 "//table[@id='tbMSSA101Mod']/tbody"
             };
             for (int i = 0; i < NodeRemove.Length; i++)
             {
@@ -157,11 +157,11 @@ namespace SVMAdmin.Controllers
             return Content(strHtml, "text/html", System.Text.Encoding.UTF8);
         }
 
-        [Route("SystemSetup/msDM101")]
-        public IActionResult msDM101()
+        [Route("SystemSetup/MSDM101")]
+        public IActionResult MSDM101()
         {
             HtmlAgilityPack.HtmlDocument doc1 = new HtmlAgilityPack.HtmlDocument();
-            string strHtml = System.IO.File.ReadAllText(ConstList.HostEnvironment.WebRootPath + @"\SystemSetup\msDM101.html".AdjPathByOS());
+            string strHtml = System.IO.File.ReadAllText(ConstList.HostEnvironment.WebRootPath + @"\SystemSetup\MSDM101.html".AdjPathByOS());
             doc1.LoadHtml(strHtml);
 
             //Remove Node
@@ -182,7 +182,7 @@ namespace SVMAdmin.Controllers
             //RemoveAllChildren
             NodeRemove = new string[] {
                  "//ul[contains(@class,'app-menu')]",
-                 "//table[@id='tbmsDM101Mod']/tbody"
+                 "//table[@id='tbMSDM101Mod']/tbody"
             };
             for (int i = 0; i < NodeRemove.Length; i++)
             {

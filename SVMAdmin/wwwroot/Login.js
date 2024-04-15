@@ -45,13 +45,14 @@
 
     };
 
-    var getdeviceID = function () {
-        let UserAgent = navigator.userAgent;
-        let ScreenResolution = window.screen.width + 'x' + window.screen.height;
-        let timezoneOffset = new Date().getTimezoneOffset();
-        let uniqueId = UserAgent + ScreenResolution + timezoneOffset;
-        return uniqueId;
-    }
+    //另一種取設備ID方法
+    //var getdeviceID = function () {
+    //    let UserAgent = navigator.userAgent;
+    //    let ScreenResolution = window.screen.width + 'x' + window.screen.height;
+    //    let timezoneOffset = new Date().getTimezoneOffset();
+    //    let uniqueId = UserAgent + ScreenResolution + timezoneOffset;
+    //    return uniqueId;
+    //}
 
     let btnChkOK_click = function () {
         window.location.href = "Login" + sessionStorage.getItem('isamcomp');
@@ -380,20 +381,6 @@
             localStorage.removeItem('GID');
             localStorage.setItem("GID", GetNodeValue(dtAccount1[0], "token"));
             window.location.replace("menu");
-            //var dtE = data.getElementsByTagName('sy_USERLIST');
-            //token = GetNodeValue(dtE[0], "token");
-            //sessionStorage.setItem("token", token);
-            //UU = sessionStorage.getItem('token');
-            //if (ReturnMsg(data, 1) != "FirstLogin") {
-            //    window.location.replace("menu");
-            //}
-            //else {
-            //    $('#OTP_modal').modal("hide");
-            //    $('#NEW_PWD').val("");
-            //    $('#CFN_PWD').val("");
-            //    $('#modal_changePWD').modal('show');
-            //    return;
-            //}
         }
         else if (ReturnMsg(data, 1) == "GID不一致") {
             DyConfirm("將於不同設備登入系統，前一設備將會自動登出，是否繼續登入?", function () {
@@ -406,14 +393,6 @@
             }, function () {
                 $('#OTP_modal').modal("hide");
             })
-            //confirm("將於不同設備登入系統，前一設備將會自動登出，是否繼續登入?", function () {
-            //    var pData = {
-            //        USERID: $('#username').val(),
-            //        CompanyID: $('#CompanyID').val(),
-            //        GID: localStorage.getItem('GID')
-            //    };
-            //    PostToWebApi({ url: "api/UpdateGID", data: pData, success: afterUpdateGID });
-            //})
         }
         else if (ReturnMsg(data, 1) == "密碼錯誤") {
             $('#icrpwd').show();

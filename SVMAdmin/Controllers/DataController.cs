@@ -361,12 +361,27 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-                DataTable dt = ConstList.AllFunction();
+                string sql = "";
+                sql = "Select b.ChineseName as CategoryC,a.SectionID as Category,a.ProgramID as ItemCode,a.ChineseName as Description,a.ProgramID as Page,'P' as MobilePC,'' as Icon ";
+                sql += "From programIdCompanyWWeb a (nolock) ";
+                sql += "inner join SystemIdCompanyWWeb b (nolock) on a.SectionID=b.SystemID and b.Companycode=a.Companycode ";
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                sql += "and a.ProgramID in (Select distinct ProgramID From GroupProgramIDWeb c (nolock) ";
+                sql += "inner join AccountGroupWeb d (nolock) on c.GroupID=d.GroupID and d.UID='" + uu.UserID + "' and d.Companycode=c.Companycode ";
+                sql += "where c.Companycode='" + uu.CompanyId + "') " ;
+                sql += "order by a.SectionID,a.orderSequence ";
+                DataTable dtA = PubUtility.SqlQry(sql, uu, "SYS");
+                dtA.TableName = "dtAllFunction";
                 if (ds.Tables["dtAllFunction"] == null)
-                    if (dt.DataSet == null)
-                        ds.Tables.Add(dt);
+                    if (dtA.DataSet == null)
+                        ds.Tables.Add(dtA);
 
-                string sql = "select a.Man_Name,b.ChineseName,a.WhNo,c.ST_SName";
+                //DataTable dt = ConstList.AllFunction(dtA);
+                //if (ds.Tables["dtAllFunction"] == null)
+                //    if (dt.DataSet == null)
+                //        ds.Tables.Add(dt);
+
+                sql = "select a.Man_Name,b.ChineseName,a.WhNo,c.ST_SName";
                 sql += " from EmployeeWeb a (nolock) ";
                 sql += " left join CompanyWeb b (nolock) on a.CompanyCode=b.CompanyCode";
                 sql += " left join WarehouseWeb c (nolock) on a.WhNo=c.ST_ID and c.CompanyCode=a.CompanyCode ";

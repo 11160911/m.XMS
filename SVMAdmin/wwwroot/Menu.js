@@ -261,29 +261,29 @@
             console.log(pg);
             //alert(pg);
 
-            if (pg == "msSA101") {
-                if (window.PagemsSA101 == undefined)
-                    $.getScript('SystemSetup/msSA101.js',
+            if (pg == "MSSA101") {
+                if (window.PageMSSA101 == undefined)
+                    $.getScript('SystemSetup/MSSA101.js',
                         function () {
-                            PagemsSA101($(".workarea"));
+                            PageMSSA101($(".workarea"));
                         }
                     );
                 else {
-                    PagemsSA101($(".workarea"));
+                    PageMSSA101($(".workarea"));
                 }
             }
 
-            else if (pg == "msDM101") {
-                if (window.PagemsDM101 == undefined) {
-                    $.getScript('SystemSetup/msDM101.js',
+            else if (pg == "MSDM101") {
+                if (window.PageMSDM101 == undefined) {
+                    $.getScript('SystemSetup/MSDM101.js',
                         function () {
-                            PagemsDM101($(".workarea"));
+                            PageMSDM101($(".workarea"));
                         }
                     );
                 }
                     
                 else {
-                    PagemsDM101($(".workarea"));
+                    PageMSDM101($(".workarea"));
                 }
             }
             else if (pg == "MSPV102") {
