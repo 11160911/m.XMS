@@ -1091,8 +1091,6 @@ var Timerset = function () {
     
 }
 
-
-
 //檢查登出狀態
 var ChkLogOut = function () {
     var LoginDT = sessionStorage.getItem('LoginDT');
@@ -1113,6 +1111,25 @@ var AfterChkLogOut = function (data) {
         }
     }
 
+}
+
+var ChkDevice = function () {
+    var cData = {
+    }
+    PostToWebApi({ url: "api/js/ChkDevice", data: cData, success: AfterChkDevice });
+}
+
+var AfterChkDevice = function (data) {
+    if (ReturnMsg(data, 0) != "ChkDeviceOK") {
+        DyAlert(ReturnMsg(data, 1));
+    }
+    else {
+        var GID = localStorage.getItem('GID');
+        var dtA = data.getElementsByTagName('dtA');
+        if (GetNodeValue(dtA[0], 'token') != GID) {
+            window.location.href = "Login";
+        }
+    }
 }
 
 

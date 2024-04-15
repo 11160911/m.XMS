@@ -56,7 +56,11 @@
             });
 
             $('.right_col').mousedown(function (e) {
-                //Sidebar_Close();
+                Sidebar_Close();
+            })
+
+            $('.body').mousedown(function (e) {
+                ChkDevice();
             })
 
             var dtEmployeeSV = data.getElementsByTagName('dtEmployee');

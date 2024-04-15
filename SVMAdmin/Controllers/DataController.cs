@@ -7415,6 +7415,29 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("js/ChkDevice")]
+        public ActionResult ChkDevice()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "ChkDeviceOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+
+                string sql = "select * from Account (nolock) Where UID='" + uu.UserID + "' ";
+                DataTable dtA = PubUtility.SqlQry(sql, uu, "SYS");
+                dtA.TableName = "dtA";
+                ds.Tables.Add(dtA);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
 
 
         //[Route("SystemSetup/FTPUpload")]
