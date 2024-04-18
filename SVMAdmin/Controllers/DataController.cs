@@ -362,14 +362,24 @@ namespace SVMAdmin.Controllers
             try
             {
                 string sql = "";
-                sql = "Select b.ChineseName as CategoryC,a.SectionID as Category,a.ProgramID as ItemCode,a.ChineseName as Description,a.ProgramID as Page,'P' as MobilePC,'' as Icon ";
-                sql += "From programIdCompanyWWeb a (nolock) ";
-                sql += "inner join SystemIdCompanyWWeb b (nolock) on a.SectionID=b.SystemID and b.Companycode=a.Companycode ";
-                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
-                sql += "and a.ProgramID in (Select distinct ProgramID From GroupProgramIDWeb c (nolock) ";
-                sql += "inner join AccountGroupWeb d (nolock) on c.GroupID=d.GroupID and d.UID='" + uu.UserID + "' and d.Companycode=c.Companycode ";
-                sql += "where c.Companycode='" + uu.CompanyId + "') " ;
-                sql += "order by a.SectionID,a.orderSequence ";
+                if (uu.UserID == uu.CompanyId)
+                {
+                    sql = "Select b.ChineseName as CategoryC,a.SectionID as Category,a.ProgramID as ItemCode,a.ChineseName as Description,a.ProgramID as Page,'P' as MobilePC,'' as Icon ";
+                    sql += "From programIdCompanyWWeb a (nolock) ";
+                    sql += "inner join SystemIdCompanyWWeb b (nolock) on a.SectionID=b.SystemID and b.Companycode=a.Companycode ";
+                    sql += "Where a.Companycode='TEST2' ";
+                    sql += "order by a.SectionID,a.orderSequence ";
+                }
+                else {
+                    sql = "Select b.ChineseName as CategoryC,a.SectionID as Category,a.ProgramID as ItemCode,a.ChineseName as Description,a.ProgramID as Page,'P' as MobilePC,'' as Icon ";
+                    sql += "From programIdCompanyWWeb a (nolock) ";
+                    sql += "inner join SystemIdCompanyWWeb b (nolock) on a.SectionID=b.SystemID and b.Companycode=a.Companycode ";
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and a.ProgramID in (Select distinct ProgramID From GroupProgramIDWeb c (nolock) ";
+                    sql += "inner join AccountGroupWeb d (nolock) on c.GroupID=d.GroupID and d.UID='" + uu.UserID + "' and d.Companycode=c.Companycode ";
+                    sql += "where c.Companycode='" + uu.CompanyId + "') ";
+                    sql += "order by a.SectionID,a.orderSequence ";
+                }
                 DataTable dtA = PubUtility.SqlQry(sql, uu, "SYS");
                 dtA.TableName = "dtAllFunction";
                 if (ds.Tables["dtAllFunction"] == null)
@@ -7339,6 +7349,70 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("SendOTP_EDDMS")]
+        public ActionResult SendOTP_EDDMS()
+        {
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "SendOTP_EDDMSOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string USERID = rq["USERID"];
+                string PASSWORD = rq["PASSWORD"];
+                string CompanyID = rq["CompanyID"];
+                string GID = rq["GID"];
+                UserInfo uu = new UserInfo();
+                uu.UserID = USERID;
+                uu.CompanyId = CompanyID;
+
+                string sql = "select * from Account (nolock) ";
+                sql += "where UID='" + USERID.SqlQuote() + "' ";
+                DataTable dtU = PubUtility.SqlQry(sql, uu, "SYS");
+                DataRow dr = dtU.Rows[0];
+                dtU.TableName = "dtAccount";
+                ds.Tables.Add(dtU);
+
+                dtU.Columns.Add("token1", typeof(string));
+                string token1 = PubUtility.GenerateJwtToken(uu);
+                dr["token1"] = token1;
+
+                sql = "Insert into LoginRec_WEB (Status,CrtDate,CrtTime,UID,UPWD,Memo) ";
+                sql += "Select 'Y',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                sql += "'" + USERID.SqlQuote() + "','" + PASSWORD.SqlQuote() + "','' ";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                if (dr["token"].ToString() == "")
+                {
+                    var GID_New = Guid.NewGuid().ToString();
+                    sql = "Update Account Set ModDate=convert(char(10),getdate(),111),ModUser='" + USERID.SqlQuote() + "',lastlogin =convert(char(10),getdate(),111) + ' ' + right(convert(varchar, getdate(), 121),12),ErrTimes=0, ";
+                    sql += "token='" + GID_New + "' ";
+                    sql += "where UID='" + USERID.SqlQuote() + "' ";
+                    PubUtility.ExecuteSql(sql, uu, "SYS");
+                }
+                else
+                {
+                    sql = "Update Account Set ModDate=convert(char(10),getdate(),111),ModUser='" + USERID.SqlQuote() + "',lastlogin =convert(char(10),getdate(),111) + ' ' + right(convert(varchar, getdate(), 121),12),ErrTimes=0 ";
+                    if (dr["token"].ToString() != GID.SqlQuote())
+                    {
+                        sql += ",token='" + GID.SqlQuote() + "' ";
+                    }
+                    sql += "where UID='" + USERID.SqlQuote() + "' ";
+                    PubUtility.ExecuteSql(sql, uu, "SYS");
+                }
+                sql = "select * from Account (nolock) ";
+                sql += "where UID='" + USERID.SqlQuote() + "' ";
+                DataTable dtA = PubUtility.SqlQry(sql, uu, "SYS");
+                dtA.TableName = "dtAccount1";
+                ds.Tables.Add(dtA);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
         [Route("UpdateGID")]
         public ActionResult UpdateGID()
         {
@@ -7439,6 +7513,29 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("ClickMenu")]
+        public ActionResult ClickMenu()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "ClickMenuOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ProgramID = rq["ProgramID"];
+
+                string sql = "";
+                sql = "Insert into WebHitRecWeb (Companycode,CrtDate,UID,WEBName) ";
+                sql += "Select '" + uu.CompanyId + "',convert(char(10),getdate(),111) + ' ' + convert(char(12),getdate(),108),'" + uu.UserID + "','" + ProgramID.SqlQuote() + "' ";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
 
         //[Route("SystemSetup/FTPUpload")]
         //public ActionResult SystemSetup_FTPUpload()

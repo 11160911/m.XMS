@@ -146,6 +146,8 @@
 
     var menu = $('#sidebar-menu .side-menu');
 
+    let menuitem;
+
     var SetMenu = function () {
         var strCat = "";
 
@@ -186,31 +188,34 @@
             var liFunc = $(strLi);
             licat.find('.child_menu').append(liFunc);
             var apg = liFunc.find('a');
-
             apg.prop('Page', GetNodeValue(dtFun[i], "Page"));
             apg.prop('ItemCode', GetNodeValue(dtFun[i], "ItemCode"));
             apg.prop('Description', GetNodeValue(dtFun[i], "Description"));
             apg.prop('SECU_PERMIT', GetNodeValue(dtFun[i], "SECU_PERMIT"));
             apg.prop('href', '#' + GetNodeValue(dtFun[i], "Page"));
             apg.click(function () { click_menu(this); });
-          
-
         }
     };
 
-    var click_menu = function (menuitem) {
-        
-        $('#FunctionDesc').text($(menuitem).prop('Description'));
-        //$('#TimerLbl').hide();
-        //$('#Timer').hide();
-        //TimerReset(sessionStorage.getItem('isamcomp'),"");
-
-        Timerset();
-        $MENU_TOGGLE.click();
-        OpenPage(menuitem);
-
-
+    var click_menu = function (menuitem1) {
+        menuitem = menuitem1;
+        var pData = {
+            ProgramID: $(menuitem).prop('ItemCode')
+        };
+        PostToWebApi({ url: "api/ClickMenu", data: pData, success: afterClickMenu });
     }
+
+    let afterClickMenu = function (data) {
+        if (ReturnMsg(data, 0) != "ClickMenuOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            $('#FunctionDesc').text($(menuitem).prop('Description'));
+            Timerset();
+            $MENU_TOGGLE.click();
+            OpenPage(menuitem);
+        }
+    };
 
     var clickCategory = function (catitem) {
         if ($(catitem).hasClass('open')) {
@@ -260,11 +265,6 @@
         if (pg == "SysChangePWD")
             auth = "Y";
         if (auth == "Y") {
-
-            //2021-04-29 Debug用，按F12後，在主控台內會顯示內容
-            console.log(pg);
-            //alert(pg);
-
             if (pg == "MSSA101") {
                 if (window.PageMSSA101 == undefined)
                     $.getScript('SystemSetup/MSSA101.js',
@@ -276,7 +276,6 @@
                     PageMSSA101($(".workarea"));
                 }
             }
-
             else if (pg == "MSDM101") {
                 if (window.PageMSDM101 == undefined) {
                     $.getScript('SystemSetup/MSDM101.js',
@@ -303,91 +302,19 @@
                     PageMSPV102($(".workarea"));
                 }
             }
-            else if (pg == "ISAMDelData") {
-                if (window.PageISAMDelData == undefined)
-                    $.getScript('SystemSetup/ISAMDelData.js',
+            else if (pg == "MSDM104") {
+                if (window.PageMSDM104 == undefined) {
+                    $.getScript('SystemSetup/MSDM104.js',
                         function () {
-                            PageISAMDelData($(".workarea"));
+                            PageMSDM104($(".workarea"));
                         }
                     );
-                else {
-                    PageISAMDelData($(".workarea"));
                 }
-            }
 
-            else if (pg == "ISAMToFTP") {
-                if (window.PageISAMToFTP == undefined)
-                    $.getScript('SystemSetup/ISAMToFTP.js',
-                        function () {
-                            PageISAMToFTP($(".workarea"));
-                        }
-                    );
                 else {
-                    PageISAMToFTP($(".workarea"));
+                    PageMSDM104($(".workarea"));
                 }
             }
-
-            else if (pg == "ISAMWHSET") {
-                if (window.PageISAMWHSET == undefined)
-                    $.getScript('SystemSetup/ISAMWhSet.js',
-                        function () {
-                            PageISAMWHSET($(".workarea"));
-                        }
-                    );
-                else {
-                    PageISAMWHSET($(".workarea"));
-                }
-            }
-
-            else if (pg == "ISAMQFTPREC") {
-                if (window.PageISAMQFTPREC == undefined)
-                    $.getScript('SystemSetup/ISAMQFTPREC.js',
-                        function () {
-                            PageISAMQFTPREC($(".workarea"));
-                        }
-                    );
-                else {
-                    PageISAMQFTPREC($(".workarea"));
-                }
-            }
-            else if (pg == "ISAM02") {
-                if (window.PageISAM02 == undefined)
-                    $.getScript('SystemSetup/ISAM02.js',
-                        function () {
-                            PageISAM02($(".workarea"));
-                        }
-                    );
-                else {
-                    PageISAM02($(".workarea"));
-                }
-            }
-            else if (pg == "ISAM03") {
-                if (window.PageISAM03 == undefined)
-                    $.getScript('SystemSetup/ISAM03.js',
-                        function () {
-                            PageISAM03($(".workarea"));
-                        }
-                    );
-                else {
-                    PageISAM03($(".workarea"));
-                }
-            }
-
-            //2022-07-27 larry
-            else if (pg == "ISAMQPLU") {
-                //alert("ISAMQPLU");
-                if (window.PageISAMQPLU == undefined)
-
-                    $.getScript('SystemSetup/ISAMQPLU.js',
-                        function () {
-                            PageISAMQPLU($(".workarea"));
-                        }
-                    );
-                else {
-                    PageISAMQPLU($(".workarea"));
-                }
-            }
-
             else if (pg == "SysChangePWD") {
                 $('#OLD_PWD').val("");
                 $('#NEW_PWD').val("");

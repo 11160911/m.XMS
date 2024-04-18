@@ -10,8 +10,8 @@
        
         $('#btnChkOK').click(function () { btnChkOK_click(); });
         $('#SystemSetup').click(function () { SystemSetup_click(); });
-        $('#SebtSave').click(function () { SebtSave_click(); });
         $('#SebtCancel').click(function () { SebtCancel_click(); });
+        $('#SebtSave').click(function () { SebtSave_click(); });
         $('#btSave').click(function () { btSave_click(); });
         $('#btCancel').click(function () { btCancel_click(); });
 
@@ -342,21 +342,33 @@
     };
 
     let CheckOTP = function (data) {
-        $('.OTPTaitle').hide();
         let user = data.getElementsByTagName('dtEmployee')[0];
-        if (GetNodeValue(user, 'lastlogin') == "") {
-            $($('.OTPTaitle')[1]).show();
-            let QrCodeSetupImageUrl = GetNodeValue(user, 'QrCodeSetupImageUrl');
-            QrCodeSetupImageUrl = QrCodeSetupImageUrl.replace("chart.googleapis.com/chart?cht=qr&chs=250x250&chl", "qrcode.tec-it.com/API/QRCode?data");
-            $('.AuthenticatorQRcode').prop('src', QrCodeSetupImageUrl);
+        //增加判斷若登入者為世代人員，則跳過OTP驗證
+        if (GetNodeValue(user, 'UID') == GetNodeValue(user, 'CompanyCode')) {
+            var pData = {
+                USERID: $('#username').val(),
+                PASSWORD: $('#password').val(),
+                CompanyID: $('#CompanyID').val(),
+                GID: localStorage.getItem('GID')
+            };
+            PostToWebApi({ url: "api/SendOTP_EDDMS", data: pData, success: afterSendOTP_EDDMS, error: LoginError });
         }
         else {
-            $($('.OTPTaitle')[0]).show();
+            $('.OTPTaitle').hide();
+            if (GetNodeValue(user, 'lastlogin') == "") {
+                $($('.OTPTaitle')[1]).show();
+                let QrCodeSetupImageUrl = GetNodeValue(user, 'QrCodeSetupImageUrl');
+                QrCodeSetupImageUrl = QrCodeSetupImageUrl.replace("chart.googleapis.com/chart?cht=qr&chs=250x250&chl", "qrcode.tec-it.com/API/QRCode?data");
+                $('.AuthenticatorQRcode').prop('src', QrCodeSetupImageUrl);
+            }
+            else {
+                $($('.OTPTaitle')[0]).show();
+            }
+            $('#txtOTP').val('');
+            $('#OTP_modal').modal("show");
+            setTimeout(function () { $('.modal-backdrop').remove(); }, 200);
+            setTimeout(function () { $('#txtOTP').focus(); }, 500);
         }
-        $('#txtOTP').val('');
-        $('#OTP_modal').modal("show");
-        setTimeout(function () { $('.modal-backdrop').remove(); }, 200);
-        setTimeout(function () { $('#txtOTP').focus(); }, 500);
     }
 
     let SendOTP = function () {
@@ -394,12 +406,6 @@
                 $('#OTP_modal').modal("hide");
             })
         }
-        else if (ReturnMsg(data, 1) == "密碼錯誤") {
-            $('#icrpwd').show();
-        }
-        else if (ReturnMsg(data, 0) == "Exception") {
-            DyAlert(ReturnMsg(data, 1));
-        }
         else {
             DyAlert(ReturnMsg(data, 1));
         }
@@ -420,6 +426,22 @@
         }
     };
 
+    var afterSendOTP_EDDMS = function (data) {
+        if (ReturnMsg(data, 0) == "SendOTP_EDDMSOK") {
+            var dtAccount = data.getElementsByTagName('dtAccount');
+            var dtAccount1 = data.getElementsByTagName('dtAccount1');
+            var token1 = GetNodeValue(dtAccount[0], "token1");
+            sessionStorage.setItem("token", token1);
+            sessionStorage.setItem("UPWD", $('#password').val());
+
+            localStorage.removeItem('GID');
+            localStorage.setItem("GID", GetNodeValue(dtAccount1[0], "token"));
+            window.location.replace("menu");
+        }
+        else {
+            DyAlert(ReturnMsg(data, 1));
+        }
+    };
 
     var LoginError = function (data) {
         DyAlert(ReturnMsg(data, 1));

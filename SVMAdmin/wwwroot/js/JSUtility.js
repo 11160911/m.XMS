@@ -1126,8 +1126,10 @@ var AfterChkDevice = function (data) {
     else {
         var GID = localStorage.getItem('GID');
         var dtA = data.getElementsByTagName('dtA');
-        if (GetNodeValue(dtA[0], 'token') != GID) {
-            window.location.href = "Login";
+        if (GetNodeValue(dtA[0], 'UID') != GetNodeValue(dtA[0], 'Companycode')) {
+            if (GetNodeValue(dtA[0], 'token') != GID) {
+                window.location.href = "Login";
+            }
         }
     }
 }
