@@ -92,7 +92,7 @@ namespace SVMAdmin.Controllers
             PubUtility.AppendScriptAtBodyEnd(doc1, "Menu.js");
 
             PubUtility.SetCssVer(doc1, "css/custom.css");
-            PubUtility.AppendCssAtHeadEnd(doc1, "../css/DyForm3.css");
+            PubUtility.AppendCssAtHeadEnd(doc1, "css/DyForm3.css");
             System.IO.MemoryStream ms = new System.IO.MemoryStream();
             doc1.Save(ms);
             string strHtml = System.Text.Encoding.UTF8.GetString(ms.ToArray());
