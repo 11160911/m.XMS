@@ -1,14 +1,37 @@
 ﻿var PageMSDM104 = function (ParentNode) {
 
     let grdM;
+    let grdLookUp;
     let AssignVar = function () {
         grdM = new DynGrid(
             {
-                table_lement: $('#tbDM')[0],
-                class_collection: ["tdCol1","tdCol2"],
+                table_lement: $('#tbQMSDM104')[0],
+                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7"],
                 fields_info: [
-                    { type: "Text", name: "Type", style: "" },
-                    { type: "Text", name: "DocNo", style: "" }
+                    { type: "Text", name: "DocNO", style: "" },
+                    { type: "Text", name: "EDMMemo", style: "" },
+                    { type: "Text", name: "EDDate", style: "" },
+                    { type: "Text", name: "PS_Name", style: "" },
+                    { type: "Text", name: "ActivityCode", style: "" },
+                    { type: "Text", name: "ApproveDate", style: "" },
+                    { type: "Text", name: "DefeasanceDate", style: "" }
+                ],
+                //rows_per_page: 10,
+                method_clickrow: click_PLU,
+                afterBind: InitModifyDeleteButton,
+                sortable: "N"
+            }
+        );
+        grdLookUp = new DynGrid(
+            {
+                table_lement: $('#tbDataLookup')[0],
+                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol4"],
+                fields_info: [
+                    { type: "radio", name: "chkset", style: "" },
+                    { type: "Text", name: "ActivityCode", style: "" },
+                    { type: "Text", name: "PS_Name", style: "" },
+                    { type: "Text", name: "StartDate", style: "" },
+                    { type: "Text", name: "EndDate", style: "" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -23,7 +46,7 @@
     };
 
     let InitModifyDeleteButton = function () {
-        $('#tbDM tbody tr td').click(function () { DMMod_click(this) });
+        $('#tbQMSDM104 tbody tr td').click(function () { DMMod_click(this) });
     }
 
     let DMMod_click = function (bt) {
@@ -1100,25 +1123,53 @@
         $('#modal_DM_A').modal('hide');
     };
 
-    let DMQuery1_click = function (bt) {
+    let btQuery_click = function (bt) {
+        var App = "";
+        var Def = "";
+
+        if ($('#chkNoApp').prop('checked') == true && $('#chkApp').prop('checked') == false) {
+            App = "NoApp"
+        }
+        else if ($('#chkNoApp').prop('checked') == false && $('#chkApp').prop('checked') == true) {
+            App = "App"
+        }
+        else if ($('#chkNoApp').prop('checked') == false && $('#chkApp').prop('checked') == false) {
+            DyAlert("批核識別條件至少選擇一個項目!")
+            return
+        }
+
+        if ($('#chkNoDef').prop('checked') == true && $('#chkDef').prop('checked') == false) {
+            Def = "NoDef"
+        }
+        else if ($('#chkNoDef').prop('checked') == false && $('#chkDef').prop('checked') == true) {
+            Def = "Def"
+        }
+        else if ($('#chkNoDef').prop('checked') == false && $('#chkDef').prop('checked') == false) {
+            DyAlert("作廢識別條件至少選擇一個項目!")
+            return
+        }
+
         ShowLoading();
         var pData = {
             DocNo: $('#txtDocNo').val(),
-            Type: $('#cboType').val()
+            EDMMemo: $('#txtEDMMemo').val(),
+            ActivityCode: $('#txtActivityCode').val(),
+            PS_Name: $('#txtPS_Name').val(),
+            App: App,
+            Def: Def,
+            VIPDate: $('#txtVIPDate').val().toString().replaceAll('-', '/')
         }
-        PostToWebApi({ url: "api/SystemSetup/DMQuery1", data: pData, success: afterDMQuery1 });
+        PostToWebApi({ url: "api/SystemSetup/MSDM104Query", data: pData, success: afterMSDM104Query });
     };
 
-    let afterDMQuery1 = function (data) {
+    let afterMSDM104Query = function (data) {
         CloseLoading();
-
-        if (ReturnMsg(data, 0) != "DMQuery1OK") {
+        if (ReturnMsg(data, 0) != "MSDM104QueryOK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
             grdM.BindData(dtE);
-
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
                 $(".modal-backdrop").remove();
@@ -1126,6 +1177,34 @@
             }
         }
     };
+
+    let btActivityCode_click = function (bt) {
+        var pData = {
+            ActivityCode: $('#txtActivityCode').val()
+        }
+        PostToWebApi({ url: "api/SystemSetup/LookUpActivityCode", data: pData, success: afterLookUpActivityCode });
+    };
+
+    let afterLookUpActivityCode = function (data) {
+        if (ReturnMsg(data, 0) != "LookUpActivityCodeOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtE = data.getElementsByTagName('dtE');
+            if (dtE.length == 0) {
+                DyAlert("無符合資料!");
+                $(".modal-backdrop").remove();
+                return;
+            }
+            $('#QLookup').val($('#txtActivityCode').val());
+            $('#modal_Lookup').modal('show');
+            setTimeout(function () {
+                grdLookUp.BindData(dtE);
+            }, 500);
+        }
+    };
+
+
 
     let GetDocNoDM = function () {
         var pData = {
@@ -1197,15 +1276,19 @@
         }
     };
 
-    let GetInitmsDM = function (data) {
+    let GetInitMSDM104 = function (data) {
         if (ReturnMsg(data, 0) != "GetInitmsDMOK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
+            $('#lblProgramName').html(GetNodeValue(dtE[0], "ChineseName"));
             AssignVar();
+            $('#btQuery').click(function () { btQuery_click(this) });
+            $('#btActivityCode').click(function () { btActivityCode_click(this) });
 
-            $('#DMQuery1').click(function () { DMQuery1_click(this) });
+
+
             $('#btDMAdd').click(function () { btDMAdd_click(this) });
             $('#btExit_DMAdd_A').click(function () { btExit_DMAdd_A_click(this) });
             $('#btPrint_DMAdd_A').click(function () { btPrint_DMAdd_A_click(this) });
@@ -1225,6 +1308,8 @@
             $('#btQRCode1_A').click(function () { btQRCode1_A_click(this) });
 
             $('#bteditor1_A').click(function () { bteditor1_A_click(this) });
+
+            //文字編輯器
             ClassicEditor
                 .create(document.querySelector('#editor1_A'), {
                     toolbar: {
@@ -1285,7 +1370,10 @@
 
 
     let afterLoadPage = function () {
-        PostToWebApi({ url: "api/SystemSetup/GetInitmsDM", success: GetInitmsDM });
+        var pData = {
+            ProgramID: "MSDM104"
+        }
+        PostToWebApi({ url: "api/SystemSetup/GetInitmsDM", data: pData, success: GetInitMSDM104 });
     };
 
     if ($('#pgMSDM104').length == 0) {  

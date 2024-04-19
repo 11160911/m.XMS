@@ -61,6 +61,7 @@
 
             $('.body').mousedown(function (e) {
                 ChkDevice();
+                Timerset();
             })
 
             var dtEmployeeSV = data.getElementsByTagName('dtEmployee');

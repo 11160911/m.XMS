@@ -74,8 +74,34 @@
     color: red;
     background-color: inherit;
     padding: 0;
-    margin-left: -13px;
-    margin-right: 3px;
-    margin-top: 4px;
+    margin-left:3px;
+    margin-top: 5px;
     width: 10px;
+}
+/*單選LookUp*/
+.DyForm3-BtnLookUp {
+    width: 25px;
+    height: 25px;
+    background-color: gainsboro;
+    color: dimgray;
+    border-radius: 3px;
+    border: 0px;
+    font-size: 12px;
+    margin-left: 1px;
+    padding: 0px;
+    margin-top:3px;
+}
+.DyForm3-TextBox {
+    width: 150px;
+    height: 30px;
+    font-size: 16px;
+    color: black;
+    margin-left: 3px;
+}
+.DyForm3-Label {
+    margin-top: 3px;
+    margin-left: 3px;
+    margin-bottom: 0px;
+    font-size: 16px;
+    color: black;
 }

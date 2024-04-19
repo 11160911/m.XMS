@@ -6990,8 +6990,9 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-
-                string sql = "select Type,DocNo from SetEDM (nolock) where 1=0";
+                IFormCollection rq = HttpContext.Request.Form;
+                string ProgramID = rq["ProgramID"];
+                string sql = "select ChineseName from ProgramIDWeb (nolock) where ProgramID='" + ProgramID.SqlQuote() + "'";
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
                 ds.Tables.Add(dtE);
@@ -7528,6 +7529,110 @@ namespace SVMAdmin.Controllers
                 sql = "Insert into WebHitRecWeb (Companycode,CrtDate,UID,WEBName) ";
                 sql += "Select '" + uu.CompanyId + "',convert(char(10),getdate(),111) + ' ' + convert(char(12),getdate(),108),'" + uu.UserID + "','" + ProgramID.SqlQuote() + "' ";
                 PubUtility.ExecuteSql(sql, uu, "SYS");
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSDM104Query")]
+        public ActionResult SystemSetup_MSDM104Query()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSDM104QueryOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string DocNo = rq["DocNo"];
+                string EDMMemo = rq["EDMMemo"];
+                string ActivityCode = rq["ActivityCode"];
+                string PS_Name = rq["PS_Name"];
+                string App = rq["App"];
+                string Def = rq["Def"];
+                string VIPDate = rq["VIPDate"];
+
+                string sql = "";
+                sql = "Select a.DocNO,a.EDMMemo,a.StartDate + ' ~ ' + a.EndDate as EDDate,b.PS_Name,b.ActivityCode, ";
+                sql += "isnull(a.ApproveDate,'')ApproveDate,isnull(a.DefeasanceDate,'')DefeasanceDate ";
+                sql += "From SetEDMHWeb a (nolock) ";
+                sql += "left join PromoteSCouponHWeb b (nolock) on a.PS_NO=b.PS_NO and b.Companycode=a.Companycode ";
+                //折價券代號
+                if (ActivityCode.SqlQuote() != "")
+                {
+                    sql += "and b.ActivityCode like '" + ActivityCode.SqlQuote() + "%' ";
+                }
+                //折價券活動
+                if (PS_Name.SqlQuote() != "")
+                {
+                    sql += "and b.PS_Name like '%" + PS_Name.SqlQuote() + "%' ";
+                }
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                //DM單號
+                if (DocNo.SqlQuote() != "") {
+                    sql += "and a.DocNo like '" + DocNo.SqlQuote() + "%' ";
+                }
+                //DM主旨
+                if (EDMMemo.SqlQuote() != "")
+                {
+                    sql += "and a.EDMMemo like '%" + EDMMemo.SqlQuote() + "%' ";
+                }
+                //批核日期
+                if (App.SqlQuote() == "NoApp") {
+                    sql += "and isnull(a.ApproveDate,'')='' ";
+                }
+                else if (App.SqlQuote() == "App") {
+                    sql += "and isnull(a.ApproveDate,'')<>'' ";
+                }
+                //作廢日期
+                if (Def.SqlQuote() == "NoDef")
+                {
+                    sql += "and isnull(a.DefeasanceDate,'')='' ";
+                }
+                else if (Def.SqlQuote() == "Def")
+                {
+                    sql += "and isnull(a.DefeasanceDate,'')<>'' ";
+                }
+                sql += "Order by a.DocNo Desc ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/LookUpActivityCode")]
+        public ActionResult LookUpActivityCode()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "LookUpActivityCodeOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ActivityCode = rq["ActivityCode"];
+
+                string sql = "";
+                sql = "Select a.ActivityCode,a.PS_Name,a.StartDate,a.EndDate ";
+                sql += "From PromoteSCouponHWeb a (nolock) ";
+                //sql += "inner join SetEDMHWeb b (nolock) on a.PS_NO=b.PS_NO and b.EDMType='V' and isnull(b.DelDate,'')='' and b.Companycode=a.Companycode ";
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                if (ActivityCode.SqlQuote() != "") {
+                    sql += "and a.ActivityCode='" + ActivityCode.SqlQuote() + "' ";
+                }
+                sql += "group by a.ActivityCode,a.PS_Name,a.StartDate,a.EndDate ";
+                sql += "Order By a.StartDate desc ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
             }
             catch (Exception err)
             {

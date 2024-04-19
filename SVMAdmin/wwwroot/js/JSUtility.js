@@ -376,6 +376,25 @@ var DynGrid = function (option) {
                 lb.append(jqelm);
                 lb.append('<span></span>');
             }
+            else if (fdType == 'radio') {
+                var lb = $("<label></label>");
+                td.append(lb);
+                var jqelm = $("<input type='radio' />");
+                jqelm.attr("name", fdName);
+                jqelm.prop('Record', xml);
+                jqelm.addClass('checkbox');
+                jqelm.addClass('rounded');
+                tr.prop(fdName, jqelm);
+                if (GetNodeValue(xml, fdName) == "Y")
+                    jqelm.prop('checked', true);
+                else
+                    jqelm.prop('checked', false);
+                if (fdStyle != null) {
+                    jqelm.attr('style', fdStyle);
+                }
+                lb.append(jqelm);
+                lb.append('<span></span>');
+            }
             else if (fdType == 'JQ') {
                 if (fdinfo.element != "") {
                     var jqelm = $(fdinfo.element);

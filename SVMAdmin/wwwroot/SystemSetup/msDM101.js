@@ -1285,7 +1285,10 @@
 
 
     let afterLoadPage = function () {
-        PostToWebApi({ url: "api/SystemSetup/GetInitmsDM", success: GetInitmsDM });
+        var pData = {
+            ProgramID: "MSDM101"
+        }
+        PostToWebApi({ url: "api/SystemSetup/GetInitmsDM", data: pData, success: GetInitmsDM });
     };
 
     if ($('#pgMSDM101').length == 0) {  
