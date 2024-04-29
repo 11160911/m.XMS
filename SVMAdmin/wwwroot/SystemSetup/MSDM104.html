@@ -120,6 +120,7 @@
                                     background-color: #ffb620;
                                     font-weight: bold;
                                 }
+
                                 #tbQMSDM104 tbody tr td {
                                     font-size: 16px;
                                     padding: 0px;
@@ -135,52 +136,56 @@
                                     新增
                                     <i class="fa fa-plus"></i>
                                 </button>
-                                <button class="DyForm3-BtnClear" id="btClear" type="button">
+                                <button class="DyForm3-BtnClear" id="btClear" type="button" style="margin-left:5px">
                                     清除
                                     <i class="fa fa-close"></i>
                                 </button>
-
-
-                                <button class="DyForm3-BtnQuery" id="btQuery" style="margin-left:15px" type="button">
+                                <button class="DyForm3-BtnQuery" id="btQuery" type="button" style="margin-left:15px">
                                     查詢
                                     <i class="fa fa-search"></i>
                                 </button>
-                                <button class="DyForm3-BtnExit" id="btExit" type="button">
+                                <button class="DyForm3-BtnExit" id="btExit" type="button" style="margin-left:5px">
                                     離開
                                     <i class="fa fa-sign-out"></i>
                                 </button>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 5px; width: 100%">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%">
                                 <label class="DyForm3-Label">DM單號</label>
                                 <input id="txtDocNo" class="DyForm3-TextBox" type="text" maxlength="13" />
 
-                                <label class="DyForm3-Label">折價券代號</label>
+                                <label class="DyForm3-Label">活動代號</label>
                                 <input id="txtActivityCode" class="DyForm3-TextBox" type="text" maxlength="20" />
                                 <button id="btActivityCode" class="DyForm3-BtnLookUp" type="button">
                                     <i class="fa fa-ellipsis-h"></i>
                                 </button>
 
-                                <label class="DyForm3-Label">批核識別</label>
                                 <mark class="DyForm3-DyNotEmptyMark">*</mark>
-                                <input id="chkNoApp" type="checkbox" style="height:30px" checked><label class="DyForm3-Label">未批核</label>
-                                <input id="chkApp" type="checkbox" style="height:30px" checked><label class="DyForm3-Label">已批核</label>
+                                <label class="DyForm3-Label">批核識別</label>
+                                <input id="chkNoApp" type="checkbox" style="height: 30px; margin-left: 5px" checked><label class="DyForm3-Label" for="chkNoApp">未批核</label>
+                                <input id="chkApp" type="checkbox" style="height: 30px; margin-left: 5px" checked><label class="DyForm3-Label" for="chkApp">已批核</label>
                             </div>
-                            <div class="form-group row" style="margin-left: 5px; width: 100%">
+
+                            <div class="form-group row" style="margin-left: 12px; width: 100%">
                                 <label class="DyForm3-Label">DM主旨</label>
                                 <input id="txtEDMMemo" class="DyForm3-TextBox" type="text" maxlength="100" />
 
-                                <label class="DyForm3-Label">折價券活動</label>
-                                <input id="txtPS_Name" class="DyForm3-TextBox" type="text" maxlength="50" />
+                                <label class="DyForm3-Label">店&ensp;&ensp;&ensp;&ensp;別</label>
+                                <input id="txtShopNo" class="DyForm3-TextBox" type="text" maxlength="12" />
+                                <button id="btShopNo" class="DyForm3-BtnLookUp" type="button">
+                                    <i class="fa fa-ellipsis-h"></i>
+                                </button>
 
-                                <label class="DyForm3-Label" style="margin-left:35px">作廢識別</label>
                                 <mark class="DyForm3-DyNotEmptyMark">*</mark>
-                                <input id="chkNoDef" type="checkbox" style="height:30px" checked><label class="DyForm3-Label" style="margin-top:5px">未作廢</label>
-                                <input id="chkDef" type="checkbox" style="height:30px" checked><label class="DyForm3-Label">已作廢</label>
+                                <label class="DyForm3-Label">作廢識別</label>
+                                <input id="chkNoDef" type="checkbox" style="height: 30px; margin-left: 5px" checked><label class="DyForm3-Label" for="chkNoDef">未作廢</label>
+                                <input id="chkDef" type="checkbox" style="height:30px;margin-left:5px" checked><label class="DyForm3-Label" for="chkDef">已作廢</label>
                             </div>
+
                             <div class="form-group row" style="margin-left: 5px; width: 100%">
                                 <label class="DyForm3-Label">入會日期</label>
-                                <input class="DyForm3-TextBox" id="txtVIPDate" type="date" />
+                                <input class="DyForm3-TextBox" id="txtEDDate" type="date" />
+                                <label class="DyForm3-Label">(搜尋含此入會日期之DM)</label>
                             </div>
                             <!--<div class="form-group row" style="margin-left: 5px; margin-top: 5px; margin-bottom: 5px; width: 100%">
                 <label style="margin-top: 5px; color: black; ">版&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型：</label>
@@ -201,16 +206,29 @@
                                         <table id="tbQMSDM104" class="table table-bordered" style="width:100%">
                                             <thead>
                                                 <tr>
+                                                    <th></th>
                                                     <th>DM單號</th>
                                                     <th>DM主旨</th>
                                                     <th>入會期間</th>
-                                                    <th>折價券活動</th>
-                                                    <th>折價券代號</th>
+                                                    <th>活動名稱</th>
+                                                    <th>活動代號</th>
+                                                    <th>發送筆數</th>
                                                     <th>批核日期</th>
                                                     <th>作廢日期</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td id="tdDocNo"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>                
                                             </tbody>
                                         </table>
                                     </div>
@@ -219,26 +237,27 @@
                         </div>
                     </div>
 
-                    <div class="modal fade" id="modal_Lookup" data-keyboard="false" data-backdrop="static">
+                    <div class="modal fade" id="modal_Lookup_ActivityCode" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height:550px">
+                            <div class="modal-content" style="height:480px">
                                 <div class="modal-body modal-tab-container" style="padding:8px">
                                     <style>
-                                        #tbDataLookup thead tr th {
+                                        #tbDataLookup_ActivityCode thead tr th {
                                             font-size: 16px;
                                             padding: 0px;
                                             background-color: #ffb620;
                                             font-weight: bold;
                                         }
-                                        #tbDataLookup tbody tr td {
+
+                                        #tbDataLookup_ActivityCode tbody tr td {
                                             font-size: 16px;
                                             padding: 0px;
                                         }
                                     </style>
-                                    
+
                                     <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 5px; margin-top: 15px ">
-                                        <input id="QLookup" class="form-control small" style="border-radius: 10px; font-size: 16px; width: 70%; line-height: 0px; padding: 3px; height: 28px ">
-                                        <button id="btQLookup" type="button" class="DyForm3-BtnQuery" style="margin-left:5px">
+                                        <input id="txtQLookup_ActivityCode" class="form-control small" style="border-radius: 10px; font-size: 16px; width: 70%; line-height: 0px; padding: 3px; height: 28px ">
+                                        <button id="btQLookup_ActivityCode" type="button" class="DyForm3-BtnQuery" style="margin-left:5px">
                                             查詢
                                             <i class="fa fa-search"></i>
                                         </button>
@@ -246,13 +265,13 @@
 
                                     <div class="card-block forminput">
                                         <div class="x_content">
-                                            <div style="overflow: auto; height: 280px;">
-                                                <table id="tbDataLookup" class="table table-bordered" style="width: 100%;">
+                                            <div style="overflow: auto; height: 350px;">
+                                                <table id="tbDataLookup_ActivityCode" class="table table-bordered" style="width: 100%;">
                                                     <thead>
                                                         <tr>
                                                             <th></th>
-                                                            <th>折價券代號</th>
-                                                            <th>折價券活動</th>
+                                                            <th>活動代號</th>
+                                                            <th>活動名稱</th>
                                                             <th>開始日期</th>
                                                             <th>結束日期</th>
                                                         </tr>
@@ -263,9 +282,15 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group row" style="width: 100%; margin: 0 auto; padding: 0; height: 30px;margin-top:15px">
-                                            <button id="btLpOK" type="button" class="btn btn-round" style="position: absolute; right: 100px; background-color: red; color: white; width: 60px; font-size: 16px; height: 25px; line-height: 0px; margin: 0; ">確定</button>
-                                            <button id="btLpExit" type="button" class="btn btn-round" style="position: absolute; right: 18px; background-color: red; color: white; width: 60px; font-size: 16px; height: 25px; line-height: 0px; margin: 0; ">離開</button>
+                                        <div class="form-group row" style="width: 100%; margin-top: 15px; ">
+                                            <button class="DyForm3-BtnQuery" id="btLpOK_ActivityCode" type="button" style=" position: absolute; right: 100px">
+                                                確定
+                                                <!--<i class="fa fa-search"></i>-->
+                                            </button>
+                                            <button class="DyForm3-BtnExit" id="btLpExit_ActivityCode" type="button" style=" position: absolute; right: 5px">
+                                                離開
+                                                <i class="fa fa-sign-out"></i>
+                                            </button>
                                         </div>
                                     </div>
 
@@ -274,112 +299,281 @@
                         </div>
                     </div>
 
-
-
-
-                    <div class="modal fade" id="modal_DMAdd_A" data-keyboard="false" data-backdrop="static">
+                    <div class="modal fade" id="modal_Lookup_ShopNo" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 850px;width:600px;overflow:auto">
-                                <style>
-                                </style>
+                            <div class="modal-content" style="height:480px">
+                                <div class="modal-body modal-tab-container" style="padding:8px">
+                                    <style>
+                                        #tbDataLookup_ShopNo thead tr th {
+                                            font-size: 16px;
+                                            padding: 0px;
+                                            background-color: #ffb620;
+                                            font-weight: bold;
+                                        }
 
-                                <div class="modal-header">
-                                    <h4 id="titDMAdd_A" class="modal-title" style="width: 100%; text-align: left;color:black"></h4>
-                                    <button id="btPrint_DMAdd_A" type="button" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: cornflowerblue; color: white; width: 65px; height: 25px; font-size: 12PX; margin-left: 1px">預覽</button>
-                                    <button id="btExit_DMAdd_A" type="button" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 65px; height: 25px; font-size: 12PX; margin-left: 1px">離開</button>
+                                        #tbDataLookup_ShopNo tbody tr td {
+                                            font-size: 16px;
+                                            padding: 0px;
+                                        }
+                                    </style>
+
+                                    <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 5px; margin-top: 15px ">
+                                        <input id="txtQLookup_ShopNo" class="form-control small" style="border-radius: 10px; font-size: 16px; width: 70%; line-height: 0px; padding: 3px; height: 28px ">
+                                        <button id="btQLookup_ShopNo" type="button" class="DyForm3-BtnQuery" style="margin-left:5px">
+                                            查詢
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="card-block forminput">
+                                        <div class="x_content">
+                                            <div style="overflow: auto; height: 350px;">
+                                                <table id="tbDataLookup_ShopNo" class="table table-bordered" style="width: 100%;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>店別代號</th>
+                                                            <th>店別名稱</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row" style="width: 100%; margin-top: 15px; ">
+                                            <button class="DyForm3-BtnQuery" id="btLpOK_ShopNo" type="button" style=" position: absolute; right: 100px">
+                                                確定
+                                                <!--<i class="fa fa-search"></i>-->
+                                            </button>
+                                            <button class="DyForm3-BtnExit" id="btLpExit_ShopNo" type="button" style=" position: absolute; right: 5px">
+                                                離開
+                                                <i class="fa fa-sign-out"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="modal_Lookup_ShopNo_EDM" data-keyboard="false" data-backdrop="static" style="z-index:9999">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content" style="height: 480px; width: 600px">
+                                <div class="modal-body modal-tab-container" style="padding:8px">
+                                    <style>
+                                        #tbDataLookup_ShopNo_EDM thead tr th {
+                                            font-size: 16px;
+                                            padding: 0px;
+                                            background-color: #ffb620;
+                                            font-weight: bold;
+                                        }
+
+                                        #tbDataLookup_ShopNo_EDM tbody tr td {
+                                            font-size: 16px;
+                                            padding: 0px;
+                                        }
+                                    </style>
+
+                                    <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 5px; margin-top: 15px ">
+                                        <input id="txtQLookup_ShopNo_EDM" class="form-control small" style="border-radius: 10px; font-size: 16px; width: 70%; line-height: 0px; padding: 3px; height: 28px ">
+                                        <button id="btQLookup_ShopNo_EDM" type="button" class="DyForm3-BtnQuery" style="margin-left:5px">
+                                            查詢
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="card-block forminput">
+                                        <div class="x_content">
+                                            <div style="overflow: auto; height: 350px;">
+                                                <table id="tbDataLookup_ShopNo_EDM" class="table table-bordered" style="width: 100%;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>店別代號</th>
+                                                            <th>店別名稱</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row" style="width: 100%; margin-top: 15px; ">
+                                            <button class="DyForm3-BtnQuery" id="btLpOK_ShopNo_EDM" type="button" style=" position: absolute; right: 100px">
+                                                確定
+                                                <!--<i class="fa fa-search"></i>-->
+                                            </button>
+                                            <button class="DyForm3-BtnExit" id="btLpExit_ShopNo_EDM" type="button" style=" position: absolute; right: 5px">
+                                                離開
+                                                <i class="fa fa-sign-out"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="modal_Lookup_PSNO_EDM" data-keyboard="false" data-backdrop="static" style="z-index:9999">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content" style="height: 480px; width: 600px">
+                                <div class="modal-body modal-tab-container" style="padding:8px">
+                                    <style>
+                                        #tbDataLookup_PSNO_EDM thead tr th {
+                                            font-size: 16px;
+                                            padding: 0px;
+                                            background-color: #ffb620;
+                                            font-weight: bold;
+                                        }
+
+                                        #tbDataLookup_PSNO_EDM tbody tr td {
+                                            font-size: 16px;
+                                            padding: 0px;
+                                        }
+                                    </style>
+
+                                    <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 5px; margin-top: 15px ">
+                                        <input id="txtQLookup_PSNO_EDM" class="form-control small" style="border-radius: 10px; font-size: 16px; width: 70%; line-height: 0px; padding: 3px; height: 28px ">
+                                        <button id="btQLookup_PSNO_EDM" type="button" class="DyForm3-BtnQuery" style="margin-left:5px">
+                                            查詢
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="card-block forminput">
+                                        <div class="x_content">
+                                            <div style="overflow: auto; height: 350px;">
+                                                <table id="tbDataLookup_PSNO_EDM" class="table table-bordered" style="width: 100%;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>單號</th>
+                                                            <th>活動名稱</th>
+                                                            <th>活動代號</th>
+                                                            <th>開始日期</th>
+                                                            <th>結束日期</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row" style="width: 100%; margin-top: 15px; ">
+                                            <button class="DyForm3-BtnQuery" id="btLpOK_PSNO_EDM" type="button" style=" position: absolute; right: 100px">
+                                                確定
+                                                <!--<i class="fa fa-search"></i>-->
+                                            </button>
+                                            <button class="DyForm3-BtnExit" id="btLpExit_PSNO_EDM" type="button" style=" position: absolute; right: 5px">
+                                                離開
+                                                <i class="fa fa-sign-out"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="modal_EDM" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content" style="height: 735px;width:800px;overflow:auto">
+
+                                <div class="modal-header" style="justify-content:unset">
+                                    <button class="DyForm3-BtnMod" id="btMod_EDM" type="button">修改</button>
+                                    <button class="DyForm3-BtnSave" id="btSave_EDM" type="button" style="margin-left:3px">儲存</button>
+                                    <button class="DyForm3-BtnCancel" id="btCancel_EDM" type="button" style="margin-left:3px">取消</button>
+                                    <button class="DyForm3-BtnShow" id="btShow_EDM" type="button" style="margin-left:3px">預覽</button>
+                                    <button class="DyForm3-BtnApp" id="btApp_EDM" type="button" style="margin-left:3px">批核</button>
+                                    <button class="DyForm3-BtnDef" id="btDef_EDM" type="button" style="margin-left:3px">作廢</button>
+                                    <button class="DyForm3-BtnExit" id="btExit_EDM" type="button" style="margin-left:3px">離開</button>
                                 </div>
 
                                 <div class="modal-body modal-tab-container" style="padding:8px">
 
-                                    <div class="form-group row" style="margin-left: 5px; margin-top: 5px; width: 100%">
-                                        <label id="lblDocNo_DMAdd_A" style="color:black;"></label>
-                                        <label style="color:black;margin-left:10px">版型A</label>
+                                    <div class="form-group row" style="margin-left: 18px; margin-top: 5px; width: 100%">
+                                        <label class="DyForm3-LabelBlack">DM單號</label>
+                                        <label class="DyForm3-LabelBlack" id="lblDocNo_EDM" style="margin-left:25px"></label>
+
+                                        <label class="DyForm3-LabelBlack" style="margin-left:47px">批&ensp;核&ensp;者</label>
+                                        <label class="DyForm3-Label" id="lblAppUser_EDM" style="margin-left: 10px; margin-top: 0px;"></label>
+                                        <label class="DyForm3-LabelBlack" style="margin-left: 78px">作&ensp;廢&ensp;者</label>
+                                        <label class="DyForm3-Label" id="lblDefUser_EDM" style="margin-left: 10px; margin-top: 0px;"></label>
                                     </div>
 
                                     <div class="form-group row" style="margin-left: 5px; margin-top: 5px; width: 100%">
-                                        <div id="btLogo_A" style="width: 484px; height: 52px; border: 2px solid #000; background-image: url(images/品牌Logo1.png); background-size: 100% 100% ">
+                                        <mark class="DyForm3-DyNotEmptyMark">*</mark>
+                                        <label class="DyForm3-LabelBlack">DM主旨</label>
+                                        <input id="txtEDMMemo_EDM" class="DyForm3-TextBox" type="text" style="margin-left:10px" maxlength="100" />
 
-                                            <!--<label style="color:red;margin-top:25px">品牌LOGO(圖)</label>-->
-                                            <img id="Logo_A" style="max-width: 100%; max-height: 100%; display: block; margin: auto">
-                                        </div>
-
-                                        <input type="hidden" id="Photo1_A" />
-                                        <!--<button id="btUPPic1_A" type="button" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 25px; margin-left: 1px">設定</button>-->
+                                        <label class="DyForm3-LabelBlack" style="margin-left: 20px">批核日期</label>
+                                        <label class="DyForm3-Label" id="lblAppDate_EDM" style="margin-left: 10px; margin-top: 0px;"></label>
+                                        <label class="DyForm3-LabelBlack" style="margin-left: 10px">作廢日期</label>
+                                        <label class="DyForm3-Label" id="lblDefDate_EDM" style="margin-left: 10px; margin-top: 0px;"></label>
                                     </div>
 
                                     <div class="form-group row" style="margin-left: 5px; margin-top: 5px; width: 100%">
-                                        <div id="btSubject_A" style="width: 484px; height: 128px; border: 2px solid #000; background-image: url(images/活動主題.png); background-size: 100% 100% ">
-                                            <!--<label style="color:red;margin-top:25px">活動主題(圖)</label>-->
-                                            <img id="Subject_A" style="max-width: 100%; max-height: 100%; display: block; margin: auto">
-                                        </div>
-                                        <input type="hidden" id="Photo2_A" />
-                                        <!--<button id="btUPPic2_A" type="button" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 25px; margin-left: 1px">設定</button>-->
+                                        <mark class="DyForm3-DyNotEmptyMark">*</mark>
+                                        <label class="DyForm3-LabelBlack">入會期間</label>
+                                        <input class="DyForm3-TextBox" id="txtStartDate_EDM" type="date" />
+                                        <label class="DyForm3-LabelBlack">&ensp;~&ensp;</label>
+                                        <input class="DyForm3-TextBox" id="txtEndDate_EDM" type="date" />
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 5px; margin-top: 5px; margin-bottom:0px; width: 100%;">
-                                        <div id="btUPPic1_A" style="width: 160px; height: 180px; border: 2px solid #000; background-image: url(images/圖1.png); background-size: 100% 100%">
-                                            <!--<label style="color: red; margin-top: 25px">圖1</label>-->
-                                            <img id="PLUPic1_A" style="max-width: 100%; max-height: 100%; display: block; margin: auto">
-                                        </div>
-                                        <input type="hidden" id="Photo3_A" />
-                                        <!--<button id="btUPPic3_A" type="button" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 25px; margin-left: 1px">設定</button>-->
-
-                                        <div id="btUPPic2_A" style="width: 160px; height: 180px; border: 2px solid #000; background-image: url(images/圖2.png); background-size: 100% 100% ">
-                                            <!--<label style="color: red; margin-top: 25px; margin-left: 5px">圖2</label>-->
-                                            <img id="PLUPic2_A" style="max-width: 100%; max-height: 100%; display: block; margin: auto">
-                                        </div>
-                                        <input type="hidden" id="Photo4_A" />
-                                        <!--<button id="btUPPic4_A" type="button" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 25px; margin-left: 1px">設定</button>-->
-
-                                        <div id="btUPPic3_A" style="width: 160px; height: 180px; border: 2px solid #000; background-image: url(images/圖3.png); background-size: 100% 100% ">
-                                            <!--<label style="color: red; margin-top: 25px; margin-left: 5px">圖3</label>-->
-                                            <img id="PLUPic3_A" style="max-width: 100%; max-height: 100%; display: block; margin: auto">
-                                        </div>
-                                        <input type="hidden" id="Photo5_A" />
-                                        <!--<button id="btUPPic5_A" type="button" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 25px; margin-left: 1px">設定</button>-->
+                                    <div class="form-group row" style="margin-left: 5px; margin-top: 5px; width: 100%">
+                                        <mark class="DyForm3-DyNotEmptyMark">*</mark>
+                                        <label class="DyForm3-LabelBlack">入會店別</label>
+                                        <input id="chkAllShopNo_EDM" type="checkbox" style="height:20px;margin-left:5px" checked><label class="DyForm3-Label" style="margin-top:0px" for="chkAllShopNo_EDM">適用所有店櫃</label>
+                                        <button class="DyForm3-BtnShop" id="btShopNo_EDM" style="margin-left:55px" type="button">指定店倉</button>
+                                        <label class="DyForm3-Label" id="lblShopNoCnt_EDM" style=" margin-left: 10px; margin-top: 0px"></label>
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 5px; width: 100%">
+                                    <div class="form-group row" style="margin-left: 5px; margin-top: 5px; width: 100%">
+                                        <mark class="DyForm3-DyNotEmptyMark">*</mark>
+                                        <label class="DyForm3-LabelBlack">小計折價單號</label>
+                                        <input id="txtPSNO_EDM" class="DyForm3-TextBox" type="text" style="margin-left:10px" maxlength="13" disabled/>
+                                        <button id="btPSNO_EDM" class="DyForm3-BtnLookUp" type="button">
+                                            <i class="fa fa-ellipsis-h"></i>
+                                        </button>
+                                        <label class="DyForm3-Label" id="lblPSName_EDM" style=" margin-left: 10px; margin-top: 3px"></label>
+                                    </div>
 
-                                        <div id="btUPPic4_A" style="width: 160px; height: 180px; border: 2px solid #000; background-image: url(images/圖4.png); background-size: 100% 100% ">
-                                            <!--<label style="color: red; margin-top: 25px">圖4</label>-->
-                                            <img id="PLUPic4_A" style="max-width: 100%; max-height: 100%; display: block; margin: auto">
+                                    <div class="form-group row" style="margin-left: 5px; margin-top: 5px; width: 100%">
+                                        <div id="btP1_EDM" style="width: 233px; height: 203px; border: 2px solid #000;">
+                                            <img id="P1_EDM">
                                         </div>
-                                        <input type="hidden" id="Photo6_A" />
-                                        <!--<button id="btUPPic6_A" type="button" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 25px; margin-left: 1px">設定</button>-->
+                                        <label id="lblCompanyLogo" class="DyForm3-Label"></label>
+                                    </div>
 
-                                        <div id="btUPPic5_A" style="width: 160px; height: 180px; border: 2px solid #000; background-image: url(images/圖5.png); background-size: 100% 100% ">
-                                            <!--<label style="color:red;margin-top:25px;margin-left:5px">圖5</label>-->
-                                            <img id="PLUPic5_A" style="max-width: 100%; max-height: 100%; display: block; margin: auto">
+                                    <div class="form-group row" style="margin-left: 5px; margin-top: 5px; width: 100%;">
+                                        <textarea id="txtT1_EDM" ></textarea>
+                                    </div>
+
+                                    <div class="form-group row" style="margin-left: 5px; margin-top: 5px; width: 100%">
+                                        <div id="btP2_EDM" style="width: 400px; height: 288px; border: 2px solid #000; background-image: url(images/活動主題.png); background-size: 100% 100% ">
+                                            <img id="P2_EDM">
                                         </div>
-                                        <input type="hidden" id="Photo7_A" />
-                                        <!--<button id="btUPPic7_A" type="button" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 25px; margin-left: 1px">設定</button>-->
-
-                                        <div id="btUPPic6_A" style="width: 160px; height: 180px; border: 2px solid #000; background-image: url(images/圖6.png); background-size: 100% 100% ">
-                                            <!--<label style="color: red; margin-top: 25px; margin-left: 5px">圖6</label>-->
-                                            <img id="PLUPic6_A" style="max-width: 100%; max-height: 100%; display: block; margin: auto">
-                                        </div>
-                                        <input type="hidden" id="Photo8_A" />
-                                        <!--<button id="btUPPic8_A" type="button" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 25px; margin-left: 1px">設定</button>-->
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 5px; width: 100%">
-                                        <input id="Barcode1_A" type="text" style="width: 484px; height: 40px;font-size:16px" placeholder="優惠券一維條碼" />
-                                        <button id="btBarcode1_A" type="button" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 10px; margin-left: 5px">設定</button>
+                                    <div class="form-group row" style="margin-left: 5px; margin-top: 5px; width: 100%">
+                                        <mark class="DyForm3-DyNotEmptyMark">*</mark>
+                                        <label class="DyForm3-LabelBlack">優惠券內容</label>
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 5px; width: 100%">
-                                        <input id="QRCode1_A" type="text" style="width: 484px; height: 40px;font-size:16px" placeholder="優惠券二維條碼" />
-                                        <button id="btQRCode1_A" type="button" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 10px; margin-left: 5px">設定</button>
+                                    <div class="form-group row" style="margin-left: 5px; margin-top: 5px; width: 100%">
+                                        <textarea id="txtT2_EDM"></textarea>
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 5px; width: 100%">
-                                        <textarea id="editor1_A"></textarea>
-                                        <button id="bteditor1_A" type="button" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 10px; margin-left: 5px">設定</button>
-                                    </div>
+
 
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -484,7 +678,7 @@
                 <article id="MSDM104btns" hidden>
                     <div class="col-md-12 col-sm-12">
                         <div class="form-group row col-md">
-                            <button id="btAdd" type="button" class="btn btn-primary" style="width: 55px; font-size: 14px; background-color: blue">新增</button>
+                            <button id="btAddx" type="button" class="btn btn-primary" style="width: 55px; font-size: 14px; background-color: blue">新增</button>
                             <button id="btMod" type="button" class="btn btn-success" style="width: 55px; font-size: 14px; background-color:green">編查</button>
                             <button id="btToFTP" type="button" class="btn btn-warning" style="color: white; width: 55px; font-size: 14px; background-color: gold ">上傳</button>
                             <button id="btRtn" type="button" class="btn btn-secondary" style="color: white; background-color: mediumpurple; width: 55px; font-size: 14px">返回</button>

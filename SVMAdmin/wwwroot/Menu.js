@@ -65,7 +65,7 @@
             })
 
             var dtEmployeeSV = data.getElementsByTagName('dtEmployee');
-            $('#navbarDropdown').text(GetNodeValue(dtEmployeeSV[0], 'ST_SName') + ' - ' + GetNodeValue(dtEmployeeSV[0], 'Man_Name'));
+            $('#navbarDropdown').text(GetNodeValue(dtEmployeeSV[0], 'UName'));
             dtFun = data.getElementsByTagName('dtAllFunction');
             SetMenu();
             init_sidebar();
@@ -314,6 +314,19 @@
 
                 else {
                     PageMSDM104($(".workarea"));
+                }
+            }
+            else if (pg == "MSPV101") {
+                if (window.PageMSPV101 == undefined) {
+                    $.getScript('SystemSetup/MSPV101.js',
+                        function () {
+                            PageMSPV101($(".workarea"));
+                        }
+                    );
+                }
+
+                else {
+                    PageMSPV101($(".workarea"));
                 }
             }
             else if (pg == "SysChangePWD") {
