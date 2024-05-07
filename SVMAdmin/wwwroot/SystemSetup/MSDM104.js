@@ -107,8 +107,51 @@
     }
 
     let btDelete_click = function (bt) {
-        
+        $(bt).closest('tr').click();
+        $('.msg-valid').hide();
+        var node = $(grdM.ActiveRowTR()).prop('Record');
+        var pData = {
+            DocNo: GetNodeValue(node, 'DocNo')
+        }
+        PostToWebApi({ url: "api/SystemSetup/MSDM104ChkDelete", data: pData, success: afterMSDM104ChkDelete });
     };
+
+    let afterMSDM104ChkDelete = function (data) {
+        if (ReturnMsg(data, 0) != "MSDM104ChkDeleteOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtE = data.getElementsByTagName('dtE');
+            if (dtE.length == 0) {
+                DyAlert("此DM單據無資料，無法刪除!");
+                $(".modal-backdrop").remove();
+                return;
+            }
+            if (GetNodeValue(dtE[0], "ApproveDate") != "") {
+                DyAlert("此DM單據已批核，無法刪除!");
+            }
+            else {
+                DyConfirm("請確認是否刪除DM單據(" + GetNodeValue(dtE[0], "DocNo") + ")？", function () {
+                    var pData = {
+                        DocNo: GetNodeValue(dtE[0], "DocNo")
+                    }
+                    PostToWebApi({ url: "api/SystemSetup/MSDM104Delete", data: pData, success: afterMSDM104Delete });
+                }, function () { DummyFunction();})
+            }
+        }
+    };
+
+    let afterMSDM104Delete = function (data) {
+        if (ReturnMsg(data, 0) != "MSDM104DeleteOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            DyAlert("刪除完成!", function () {
+                btQuery_click();
+            })
+        }
+    };
+
 
     let DMMod_click = function (bt) {
         $(bt).closest('tr').click();
@@ -190,32 +233,11 @@
     };
 
 
-    let btUPPic1_click = function (bt) {
+    let btUPEDM_click = function (bt) {
         InitFileUpload(bt);
         var UploadFileType = "";
-        if (bt.id == "btLogo_A") {
-            UploadFileType = "P1"
-        }
-        if (bt.id == "btSubject_A") {
+        if (bt.id == "btP2_EDM") {
             UploadFileType = "P2"
-        }
-        if (bt.id == "btUPPic1_A") {
-            UploadFileType = "P3"
-        }
-        if (bt.id == "btUPPic2_A") {
-            UploadFileType = "P4"
-        }
-        if (bt.id == "btUPPic3_A") {
-            UploadFileType = "P5"
-        }
-        if (bt.id == "btUPPic4_A") {
-            UploadFileType = "P6"
-        }
-        if (bt.id == "btUPPic5_A") {
-            UploadFileType = "P7"
-        }
-        if (bt.id == "btUPPic6_A") {
-            UploadFileType = "P8"
         }
         $('#modal-media').prop("UploadFileType", UploadFileType);
         $('#fileURL').val('')
@@ -226,7 +248,7 @@
     let InitFileUpload = function (bt) {
         $('#fileupload').fileupload({
             dataType: 'xml',
-            url: "api/FileUpload",
+            url: "api/FileUpload_EDM",
             dropZone: $('#dropzone'),
             headers: { "Authorization": "Bearer " + UU }
         });
@@ -237,17 +259,17 @@
         );
 
         $('#fileupload').bind('fileuploadsubmit', function (e, data) {
-            var Type = bt.id.split('_')[1]
             var DocNo = ""
-            if (Type == "A") {
-                DocNo = $('#lblDocNo_DMAdd_A').html();
+            if (cs_EditMode == "A") {
+                DocNo = $('#lblVMDocNo_EDM').html();
+            }
+            else {
+                DocNo = $('#lblDocNo_EDM').html();
             }
             data.formData = {
                 "UploadFileType": $('#modal-media').prop("UploadFileType"),
                 "ImgSGID": $('#' + $('#modal-media').prop("FieldName")).val(),
-                "Type": Type,
-                "DocNo": DocNo,
-                "fileURL": $('#fileURL').val()
+                "DocNo": DocNo
             };
         });
 
@@ -259,61 +281,21 @@
 
     let AfterFileUpoad = function (returndata, bt) {
         var data = returndata.jqXHR.responseXML;
-        if (ReturnMsg(data, 0) != "FileUploadOK") {
+        if (ReturnMsg(data, 0) != "FileUpload_EDMOK") {
             DyAlert(ReturnMsg(data, 0));
         }
         else {
             $('#modal-media').modal('hide');
-            var UploadFileType = $('#modal-media').prop("UploadFileType");// "PLU+Pic1";
-            var Type = bt.id.split('_')[1]
-
-            if (UploadFileType == "P1") {
-                if (Type == "A") {
-                    GetGetImage("Logo_A", ReturnMsg(data, 1));
-                    $('#Photo1_A').val(ReturnMsg(data, 1));
-                }
-            }
+            var UploadFileType = $('#modal-media').prop("UploadFileType");
+            var DocNo = "";
             if (UploadFileType == "P2") {
-                if (Type == "A") {
-                    GetGetImage("Subject_A", ReturnMsg(data, 1));
-                    $('#Photo2_A').val(ReturnMsg(data, 1));
+                if (cs_EditMode == "A") {
+                    DocNo = $('#lblVMDocNo_EDM').html();
                 }
-            }
-            if (UploadFileType == "P3") {
-                if (Type == "A") {
-                    GetGetImage("PLUPic1_A", ReturnMsg(data, 1));
-                    $('#Photo3_A').val(ReturnMsg(data, 1));
+                else if (cs_EditMode == "M") {
+                    DocNo = $('#lblDocNo_EDM').html();
                 }
-            }
-            if (UploadFileType == "P4") {
-                if (Type == "A") {
-                    GetGetImage("PLUPic2_A", ReturnMsg(data, 1));
-                    $('#Photo4_A').val(ReturnMsg(data, 1));
-                }
-            }
-            if (UploadFileType == "P5") {
-                if (Type == "A") {
-                    GetGetImage("PLUPic3_A", ReturnMsg(data, 1));
-                    $('#Photo5_A').val(ReturnMsg(data, 1));
-                }
-            }
-            if (UploadFileType == "P6") {
-                if (Type == "A") {
-                    GetGetImage("PLUPic4_A", ReturnMsg(data, 1));
-                    $('#Photo6_A').val(ReturnMsg(data, 1));
-                }
-            }
-            if (UploadFileType == "P7") {
-                if (Type == "A") {
-                    GetGetImage("PLUPic5_A", ReturnMsg(data, 1));
-                    $('#Photo7_A').val(ReturnMsg(data, 1));
-                }
-            }
-            if (UploadFileType == "P8") {
-                if (Type == "A") {
-                    GetGetImage("PLUPic6_A", ReturnMsg(data, 1));
-                    $('#Photo8_A').val(ReturnMsg(data, 1));
-                }
+                GetImage_EDM("P2_EDM", DocNo, "P2");
             }
             $('#modal-media').prop("UploadFileType", UploadFileType);
         }
@@ -336,6 +318,36 @@
             return;
         }
         var url = "api/GetImage_EDM?DocNo=" + picDocNo + "&DataType=" + picDataType + "&UU=" + encodeURIComponent(UU);
+        url += "&Ver=" + encodeURIComponent(new Date().toLocaleTimeString());
+        $('#' + elmImg).prop('src', url);
+    }
+
+    let GetImage_QRCode = function (elmImg, picQRCode) {
+        if (picQRCode == "") {
+            $('#' + elmImg).prop('src', "");
+            return;
+        }
+        var url = "api/GetImage_QRCode?QRCode=" + picQRCode + "&UU=" + encodeURIComponent(UU);
+        url += "&Ver=" + encodeURIComponent(new Date().toLocaleTimeString());
+        $('#' + elmImg).prop('src', url);
+    }
+
+    let GetImage_Barcode = function (elmImg, picBarcode) {
+        if (picBarcode == "") {
+            $('#' + elmImg).prop('src', "");
+            return;
+        }
+        var url = "api/GetImage_Barcode?Barcode=" + picBarcode + "&UU=" + encodeURIComponent(UU);
+        url += "&Ver=" + encodeURIComponent(new Date().toLocaleTimeString());
+        $('#' + elmImg).prop('src', url);
+    }
+
+    let GetImage_QRCodeandBarcode = function (elmImg, picCode) {
+        if (picCode == "") {
+            $('#' + elmImg).prop('src', "");
+            return;
+        }
+        var url = "api/GetImage_QRCodeandBarcode?Code=" + picCode + "&UU=" + encodeURIComponent(UU);
         url += "&Ver=" + encodeURIComponent(new Date().toLocaleTimeString());
         $('#' + elmImg).prop('src', url);
     }
@@ -559,14 +571,19 @@
                 $('#btShopNo_EDM').prop('disabled', mod);
             }
         }
+        else {
+            $('#btShopNo_EDM').prop('disabled', mod);
+        }
         $('#btPSNO_EDM').prop('disabled', mod);
         if (mod == true) {
             window.t1.enableReadOnlyMode('t1');         //停用
             window.t2.enableReadOnlyMode('t2');         //停用
+            $('#btP2_EDM').css('pointer-events', 'none');
         }
         else {
             window.t1.disableReadOnlyMode('t1');        //啟用
             window.t2.disableReadOnlyMode('t2');        //啟用
+            $('#btP2_EDM').css('pointer-events', 'unset');
         }
     };
 
@@ -601,8 +618,9 @@
         $('#txtEDMMemo_EDM').val(GetNodeValue(dtH[0], "EDMMemo"));
         $('#lblAppDate_EDM').html(GetNodeValue(dtH[0], "ApproveDate"));
         $('#lblDefDate_EDM').html(GetNodeValue(dtH[0], "DefeasanceDate"));
-        $('#txtStartDate_EDM').val(GetNodeValue(dtH[0], "StartDate"));
-        $('#txtEndDate_EDM').val(GetNodeValue(dtH[0], "EndDate"));
+        $('#txtStartDate_EDM').val(GetNodeValue(dtH[0], "StartDate").toString().replaceAll('/', '-'));
+        $('#txtEndDate_EDM').val(GetNodeValue(dtH[0], "EndDate").toString().replaceAll('/', '-'));
+
         if (GetNodeValue(dtH[0], "WhNoFlag") == "Y") {
             $('#chkAllShopNo_EDM').prop('checked', true);
             $('#lblShopNoCnt_EDM').html('');
@@ -622,14 +640,13 @@
         for (var i = 0; i < dtH.length; i++) {
             if (GetNodeValue(dtH[i], "DataType") == "P1") {
                 GetImage_EDM("P1_EDM", GetNodeValue(dtH[i], "DocNo"), GetNodeValue(dtH[i], "DataType"));
-                $('#lblCompanyLogo').html(GetNodeValue(dtH[i], "TXT"))
-
+                //$('#lblCompanyLogo').html(GetNodeValue(dtH[i], "TXT"))
             }
             else if (GetNodeValue(dtH[i], "DataType") == "T1") {
                 window.t1.setData(GetNodeValue(dtH[i], "TXT"));
             }
             else if (GetNodeValue(dtH[i], "DataType") == "P2") {
-                
+                GetImage_EDM("P2_EDM", GetNodeValue(dtH[i], "DocNo"), GetNodeValue(dtH[i], "DataType"));
             }
             else if (GetNodeValue(dtH[i], "DataType") == "T2") {
                 window.t2.setData(GetNodeValue(dtH[i], "TXT"));
@@ -639,8 +656,8 @@
 
     //EDM查詢
     let MSDM104Query_EDM_click = function (bt) {
-    alert("ccc")
-
+        $(bt).closest('tr').click();
+        $('.msg-valid').hide();
         var node = $(grdM.ActiveRowTR()).prop('Record');
         var pData = {
             DocNo: GetNodeValue(node, 'DocNo')
@@ -682,13 +699,321 @@
         else {
             var dtE = data.getElementsByTagName('dtE');
             GetImage_Logo("P1_EDM", "MSDM104");
-            $('#lblCompanyLogo').html(GetNodeValue(dtE[0], "Txt"))
+            //$('#lblCompanyLogo').html(GetNodeValue(dtE[0], "Txt"))
+            $('#lblVMDocNo_EDM').html(GetNodeValue(dtE[0], "DocNo"))
             cs_EditMode = "A";
             ClearData_EDM();
             FunctionEnable_EDM(cs_EditMode);
             EnableForm_EDM(false)
             $('#modal_EDM').modal('show');
         }
+    };
+
+    //EDM修改
+    let btMod_EDM_click = function (bt) {
+        cs_EditMode = "M"
+        FunctionEnable_EDM(cs_EditMode)
+        EnableForm_EDM(false)
+    };
+
+    //EDM取消
+    let btCancel_EDM_click = function (bt) {
+        var pData = {
+            DocNo: $('#lblDocNo_EDM').html()
+        }
+        PostToWebApi({ url: "api/SystemSetup/MSDM104Query_EDM", data: pData, success: afterMSDM104Cancel_EDM });
+    };
+
+    let afterMSDM104Cancel_EDM = function (data) {
+        if (ReturnMsg(data, 0) != "MSDM104Query_EDMOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            cs_EditMode = "Q"
+            BindForm_EDM(data)
+            FunctionEnable_EDM(cs_EditMode)
+            EnableForm_EDM(true)
+        }
+    };
+
+    //EDM儲存
+    let btSave_EDM_click = function (bt) {
+        EnableForm_EDM(true)
+
+        if ($('#txtEDMMemo_EDM').val() == "") {
+            DyAlert("請輸入DM主旨!", function () { EnableForm_EDM(false) })
+            return;
+        }
+        if ($('#txtStartDate_EDM').val() == "" | $('#txtEndDate_EDM').val() == "") {
+            DyAlert("入會期間兩欄皆需輸入!", function () { EnableForm_EDM(false) })
+            return;
+        }
+        if ($('#chkAllShopNo_EDM').prop('checked') == false) {
+            if (chkShopNo == "") {
+                DyAlert("請選擇入會店別!", function () { EnableForm_EDM(false) })
+                return;
+            }
+        }
+        if ($('#txtPSNO_EDM').val() == "") {
+            DyAlert("請選擇小計折價單號!", function () { EnableForm_EDM(false) })
+            return;
+        }
+        var P2 = $('#P2_EDM').attr('src');
+        if (P2 == "") {
+            DyAlert("請設定活動圖片!", function () { EnableForm_EDM(false) })
+            return;
+        }
+        if (window.t2.getData() == "<p>&nbsp;</p>") {
+            DyAlert("請輸入優惠券內容!", function () { EnableForm_EDM(false) })
+            return;
+        }
+
+        var WhNoFlag = ""
+        if ($('#chkAllShopNo_EDM').prop('checked') == true) {
+            WhNoFlag = "Y";
+        }
+        else {
+            WhNoFlag = "N";
+        }
+
+        var T1 = ""
+        if (window.t1.getData() != "<p>&nbsp;</p>") {
+            T1 = window.t1.getData();
+        }
+
+        var DocNo = ""
+        if (cs_EditMode == "A") {
+            DocNo = ""
+        }
+        else if (cs_EditMode == "M") {
+            DocNo = $('#lblDocNo_EDM').html();
+        }
+
+        var VMDocNo = ""
+        if (cs_EditMode == "A") {
+            VMDocNo = $('#lblVMDocNo_EDM').html();
+        }
+        else if (cs_EditMode == "M") {
+            VMDocNo = "";
+        }
+
+        var pData = {
+            EditMode: cs_EditMode,
+            EDMMemo: $('#txtEDMMemo_EDM').val(),
+            StartDate: $('#txtStartDate_EDM').val().toString().replaceAll('-', '/'),
+            EndDate: $('#txtEndDate_EDM').val().toString().replaceAll('-', '/'),
+            WhNoFlag: WhNoFlag,
+            chkShopNo: chkShopNo,
+            PS_NO: $('#txtPSNO_EDM').val(),
+            T1: T1,
+            T2: window.t2.getData(),
+            DocNo: DocNo,
+            VMDocNo: VMDocNo
+        }
+        PostToWebApi({ url: "api/SystemSetup/MSDM104_Save_EDM", data: pData, success: afterMSDM104_Save_EDM });
+    };
+
+    let afterMSDM104_Save_EDM = function (data) {
+        if (ReturnMsg(data, 0) != "MSDM104_Save_EDMOK") {
+            DyAlert(ReturnMsg(data, 1), function () { EnableForm_EDM(false) });
+        }
+        else {
+            var dtS = data.getElementsByTagName('dtS');
+            DyAlert("存檔成功!", function () {
+                if (cs_EditMode == "A") { $('#lblDocNo_EDM').html(GetNodeValue(dtS[0], "DocNo")) }
+                cs_EditMode = "Q";
+                FunctionEnable_EDM(cs_EditMode);
+                EnableForm_EDM(true)
+            })
+        }
+    };
+
+    //EDM批核
+    let btApp_EDM_click = function (bt) {
+        DyConfirm("確定批核此DM？", function () {
+            var pData = {
+                DocNo: $('#lblDocNo_EDM').html()
+            }
+            PostToWebApi({ url: "api/SystemSetup/MSDM104Query_EDM", data: pData, success: afterMSDM104_ChkApprove_EDM });
+        }, function () { DummyFunction() })
+    };
+
+    let afterMSDM104_ChkApprove_EDM = function (data) {
+        if (ReturnMsg(data, 0) != "MSDM104Query_EDMOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtH = data.getElementsByTagName('dtH');
+            if (GetNodeValue(dtH[0], "ApproveDate") != "") {
+                DyAlert("此DM已批核，請重新確認!", function () {
+                    cs_EditMode = "Q"
+                    BindForm_EDM(data)
+                    FunctionEnable_EDM(cs_EditMode)
+                    EnableForm_EDM(true)
+                })
+            }
+            else {
+                var pData = {
+                    DocNo: $('#lblDocNo_EDM').html()
+                }
+                PostToWebApi({ url: "api/SystemSetup/MSDM104_Approve_EDM", data: pData, success: afterMSDM104_Approve_EDM });
+            }
+        }
+    };
+
+    let afterMSDM104_Approve_EDM = function (data) {
+        if (ReturnMsg(data, 0) != "MSDM104_Approve_EDMOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtH = data.getElementsByTagName('dtH');
+            DyAlert("批核完成!", function () {
+                $('#lblAppUser_EDM').html(GetNodeValue(dtH[0], "ApproveUser"))
+                $('#lblAppDate_EDM').html(GetNodeValue(dtH[0], "ApproveDate"))
+                cs_EditMode = "Q"
+                FunctionEnable_EDM(cs_EditMode)
+                EnableForm_EDM(true)
+            })
+        }
+    };
+
+    //EDM作廢
+    let btDef_EDM_click = function (bt) {
+        DyConfirm("確定作廢此DM？", function () {
+            var pData = {
+                DocNo: $('#lblDocNo_EDM').html()
+            }
+            PostToWebApi({ url: "api/SystemSetup/MSDM104Query_EDM", data: pData, success: afterMSDM104_ChkDefeasance_EDM });
+        }, function () { DummyFunction() })
+    };
+
+    let afterMSDM104_ChkDefeasance_EDM = function (data) {
+        if (ReturnMsg(data, 0) != "MSDM104Query_EDMOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtH = data.getElementsByTagName('dtH');
+            if (GetNodeValue(dtH[0], "ApproveDate") != "") {
+                if (GetNodeValue(dtH[0], "DefeasanceDate") != "") {
+                    DyAlert("此DM已作廢，請重新確認!", function () {
+                        cs_EditMode = "Q"
+                        BindForm_EDM(data)
+                        FunctionEnable_EDM(cs_EditMode)
+                        EnableForm_EDM(true)
+                    })
+                }
+                else {
+                    var pData = {
+                        DocNo: $('#lblDocNo_EDM').html()
+                    }
+                    PostToWebApi({ url: "api/SystemSetup/MSDM104_Defeasance_EDM", data: pData, success: afterMSDM104_Defeasance_EDM });
+                }
+            }
+            else {
+                DyAlert("此DM未批核，無法作廢!", function () {
+                    cs_EditMode = "Q"
+                    BindForm_EDM(data)
+                    FunctionEnable_EDM(cs_EditMode)
+                    EnableForm_EDM(true)
+                })
+            }
+        }
+    };
+
+    let afterMSDM104_Defeasance_EDM = function (data) {
+        if (ReturnMsg(data, 0) != "MSDM104_Defeasance_EDMOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtH = data.getElementsByTagName('dtH');
+            DyAlert("作廢完成!", function () {
+                $('#lblDefUser_EDM').html(GetNodeValue(dtH[0], "Defeasance"))
+                $('#lblDefDate_EDM').html(GetNodeValue(dtH[0], "DefeasanceDate"))
+                cs_EditMode = "Q"
+                FunctionEnable_EDM(cs_EditMode)
+                EnableForm_EDM(true)
+            })
+        }
+    };
+
+    //EDM預覽
+    let btShow_EDM_click = function (bt) {
+        $('#lbl_Purpose_ShowEDM').html('');
+        GetImage_EDM("P1_ShowEDM", "");
+        GetImage_EDM("P2_ShowEDM", "");
+        GetImage_QRCodeandBarcode("Code_ShowEDM", "");
+        
+        var T1 = document.getElementById("T1_ShowEDM");
+        T1.replaceChildren();
+        var T2 = document.getElementById("T2_ShowEDM");
+        T2.replaceChildren();
+
+        $('#modal_ShowEDM').modal('show');
+        setTimeout(function () {
+            MSDM104ShowEDM();
+        }, 500);
+    };
+
+    let MSDM104ShowEDM = function () {
+        var pData = {
+            DocNo: $('#lblDocNo_EDM').html()
+        }
+        PostToWebApi({ url: "api/SystemSetup/MSDM104ShowEDM", data: pData, success: afterMSDM104ShowEDM });
+    };
+
+    let afterMSDM104ShowEDM = function (data) {
+        if (ReturnMsg(data, 0) != "MSDM104ShowEDMOK") {
+            DyAlert(ReturnMsg(data, 1), function () {
+                $('#modal_ShowEDM').modal('hide');
+            });
+        }
+        else {
+            var dtE = data.getElementsByTagName('dtE');
+            if (dtE.length == 0) {
+                DyAlert("請設定DM資料!", function () {
+                    $('#modal_ShowEDM').modal('hide');
+                });
+                $(".modal-backdrop").remove();
+                return;
+            }
+
+            $('#lbl_Purpose_ShowEDM').html(GetNodeValue(dtE[0], "EDMMemo"));
+            GetImage_QRCodeandBarcode("Code_ShowEDM", "123ABC");
+
+            for (var i = 0; i < dtE.length; i++) {
+                if (GetNodeValue(dtE[i], "DataType") == "P1") {
+                    GetImage_EDM("P1_ShowEDM", GetNodeValue(dtE[i], "DocNo"), GetNodeValue(dtE[i], "DataType"));
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "T1") {
+                    var p = document.createElement('p')
+                    p.innerHTML = GetNodeValue(dtE[i], "TXT")
+                    var T1 = document.getElementById("T1_ShowEDM");
+                    T1.appendChild(p);
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "P2") {
+                    GetImage_EDM("P2_ShowEDM", GetNodeValue(dtE[i], "DocNo"), GetNodeValue(dtE[i], "DataType"));
+                }
+                else if (GetNodeValue(dtE[i], "DataType") == "T2") {
+                    var p = document.createElement('p')
+                    p.innerHTML = GetNodeValue(dtE[i], "TXT")
+                    var T2 = document.getElementById("T2_ShowEDM");
+                    T2.appendChild(p);
+                }
+            }
+
+
+        }
+    };
+
+    //EDM預覽-離開
+    let btExit_ShowEDM_click = function (bt) {
+        $('#modal_ShowEDM').modal('hide');
+    };
+
+
+    //EDM離開
+    let btExit_EDM_click = function (bt) {
+        $('#modal_EDM').modal('hide')
     };
 
     //清除
@@ -760,7 +1085,6 @@
         }
     };
 
-    
     //活動代號[...]
     let btActivityCode_click = function (bt) {
         var pData = {
@@ -897,131 +1221,7 @@
         $('#modal_Lookup_ShopNo').modal('hide')
     };
 
-    //let GetDocNoDM = function () {
-    //    var pData = {
-    //    }
-    //    PostToWebApi({ url: "api/SystemSetup/GetDocNoDM", data: pData, success: afterGetDocNoDM });
-    //};
-
-    //let afterGetDocNoDM = function (data) {
-    //    if (ReturnMsg(data, 0) != "GetDocNoDMOK") {
-    //        DyAlert(ReturnMsg(data, 1), function () {
-    //            $('#modal_DMAdd_A').modal('hide');
-    //        });
-    //    }
-    //    else {
-    //        var dtE = data.getElementsByTagName('dtE');
-    //        $('#lblDocNo_DMAdd_A').html(GetNodeValue(dtE[0], "DocNo"));
-    //    }
-    //};
-
-    //let btBarcode1_A_click = function (bt) {
-    //    var pData = {
-    //        DocNo: $('#lblDocNo_DMAdd_A').html(),
-    //        Barcode1: $('#Barcode1_A').val()
-    //    }
-    //    PostToWebApi({ url: "api/SystemSetup/SetBarcode1_A", data: pData, success: afterSetBarcode1_A });
-    //};
-
-    //let afterSetBarcode1_A = function (data) {
-    //    if (ReturnMsg(data, 0) != "SetBarcode1_AOK") {
-    //        DyAlert(ReturnMsg(data, 1));
-    //    }
-    //    else {
-    //        DyAlert("設定完成!")
-    //    }
-    //};
-
-    //let btQRCode1_A_click = function (bt) {
-    //    var pData = {
-    //        DocNo: $('#lblDocNo_DMAdd_A').html(),
-    //        QRCode1: $('#QRCode1_A').val()
-    //    }
-    //    PostToWebApi({ url: "api/SystemSetup/SetQRCode1_A", data: pData, success: afterSetQRCode1_A });
-    //};
-
-    //let afterSetQRCode1_A = function (data) {
-    //    if (ReturnMsg(data, 0) != "SetQRCode1_AOK") {
-    //        DyAlert(ReturnMsg(data, 1));
-    //    }
-    //    else {
-    //        DyAlert("設定完成!")
-    //    }
-    //};
-
-    let btSave_EDM_click = function (bt) {
-        EnableForm_EDM(true)
-
-        if ($('#txtEDMMemo_EDM').val() == "") {
-            DyAlert("請輸入DM主旨!", function () { EnableForm_EDM(false) })
-            return;
-        }
-        if ($('#txtStartDate_EDM').val() == "" | $('#txtEndDate_EDM').val() == "") {
-            DyAlert("入會期間兩欄皆需輸入!", function () { EnableForm_EDM(false) })
-            return;
-        }
-        if ($('#chkAllShopNo_EDM').prop('checked') == false) {
-            if (chkShopNo == "") {
-                DyAlert("請選擇入會店別!", function () { EnableForm_EDM(false) })
-                return;
-            }
-        }
-        if ($('#txtPSNO_EDM').val() == "") {
-            DyAlert("請選擇小計折價單號!", function () { EnableForm_EDM(false) })
-            return;
-        }
-        if (window.t2.getData() == "<p>&nbsp;</p>") {
-            DyAlert("請輸入優惠券內容!", function () { EnableForm_EDM(false) })
-            return;
-        }
-
-        var WhNoFlag = ""
-        if ($('#chkAllShopNo_EDM').prop('checked') == true) {
-            WhNoFlag = "Y";
-        }
-        else {
-            WhNoFlag = "N";
-        }
-
-        var T1 = ""
-        if (window.t1.getData() != "<p>&nbsp;</p>") {
-            T1 = window.t1.getData();
-        }
-
-        var pData = {
-            EditMode: cs_EditMode,
-            EDMMemo: $('#txtEDMMemo_EDM').val(),
-            StartDate: $('#txtStartDate_EDM').val().toString().replaceAll('-', '/'),
-            EndDate: $('#txtEndDate_EDM').val().toString().replaceAll('-', '/'),
-            WhNoFlag: WhNoFlag,
-            chkShopNo: chkShopNo,
-            PS_NO: $('#txtPSNO_EDM').val(),
-            T1: T1,
-            T2: window.t2.getData(),
-            DocNo: ""
-        }
-        PostToWebApi({ url: "api/SystemSetup/MSDM104_Save_EDM", data: pData, success: afterMSDM104_Save_EDM });
-    };
-
-    let afterMSDM104_Save_EDM = function (data) {
-        if (ReturnMsg(data, 0) != "MSDM104_Save_EDMOK") {
-            DyAlert(ReturnMsg(data, 1), function () { EnableForm_EDM(false) });
-        }
-        else {
-            var dtS = data.getElementsByTagName('dtS');
-            DyAlert("存檔成功!", function () {
-                $('#lblDocNo_EDM').html(GetNodeValue(dtS[0], "DocNo"))
-                cs_EditMode = "Q";
-                FunctionEnable_EDM(cs_EditMode);
-                EnableForm_EDM(true)
-            })
-
-        }
-    };
-
-    let btExit_EDM_click = function (bt) {
-        $('#modal_EDM').modal('hide')
-    };
+   
 
     let GetAllShop = function () {
         if ($('#chkAllShopNo_EDM').prop('checked') == true) {
@@ -1044,7 +1244,24 @@
     };
 
     let btShopNo_EDM_click = function (bt) {
-        $('#modal_Lookup_ShopNo_EDM').modal('show');
+        var pData = {
+            ShopNo: chkShopNo
+        }
+        PostToWebApi({ url: "api/SystemSetup/MSDM104_LookUpShopNo_EDM", data: pData, success: afterMSDM104_ShopNo_EDM });
+    };
+
+    let afterMSDM104_ShopNo_EDM = function (data) {
+        if (ReturnMsg(data, 0) != "MSDM104_LookUpShopNo_EDMOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtE = data.getElementsByTagName('dtE');
+            $('#txtQLookup_ShopNo_EDM').val('');
+            $('#modal_Lookup_ShopNo_EDM').modal('show');
+            setTimeout(function () {
+                grdLookUp_ShopNo_EDM.BindData(dtE);
+            }, 500);
+        }
     };
 
     let btQLookup_ShopNo_EDM_click = function (bt) {
@@ -1203,7 +1420,6 @@
             $('#btAdd').click(function () { btAdd_click(this) });
             $('#btClear').click(function () { btClear_click(this) });
             $('#btQuery').click(function () { btQuery_click(this) });
-            $('#btExit').click(function () { btExit_click(this) });
 
             $('#btActivityCode').click(function () { btActivityCode_click(this) });
             $('#btQLookup_ActivityCode').click(function () { btQLookup_ActivityCode_click(this) });
@@ -1215,7 +1431,12 @@
             $('#btLpExit_ShopNo').click(function () { btLpExit_ShopNo_click(this) });
 
 
+            $('#btMod_EDM').click(function () { btMod_EDM_click(this) });
             $('#btSave_EDM').click(function () { btSave_EDM_click(this) });
+            $('#btCancel_EDM').click(function () { btCancel_EDM_click(this) });
+            $('#btApp_EDM').click(function () { btApp_EDM_click(this) });
+            $('#btDef_EDM').click(function () { btDef_EDM_click(this) });
+            $('#btShow_EDM').click(function () { btShow_EDM_click(this) });
             $('#btExit_EDM').click(function () { btExit_EDM_click(this) });
             $('#chkAllShopNo_EDM').change(function () { GetAllShop(); });
             $('#btShopNo_EDM').click(function () { btShopNo_EDM_click(this) });
@@ -1226,9 +1447,9 @@
             $('#btQLookup_PSNO_EDM').click(function () { btQLookup_PSNO_EDM_click(this) });
             $('#btLpOK_PSNO_EDM').click(function () { btLpOK_PSNO_EDM_click(this) });
             $('#btLpExit_PSNO_EDM').click(function () { btLpExit_PSNO_EDM_click(this) });
+            $('#btP2_EDM').click(function () { btUPEDM_click(this) });
 
-
-
+            $('#btExit_ShowEDM').click(function () { btExit_ShowEDM_click(this) });
 
 
 

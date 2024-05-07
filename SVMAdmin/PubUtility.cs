@@ -22,6 +22,7 @@ using System.Drawing;
 using ZXing;
 using ZXing.Common;
 using ZXing.Rendering;
+using ZXing.QrCode.Internal;
 
 
 
@@ -1429,6 +1430,87 @@ namespace SVMAdmin
             }
 
         }
+
+        public static System.Drawing.Bitmap[] GetBitmap_QRCodeandBarcode(string Code)
+        {
+            try
+            {
+                System.Drawing.Bitmap[] bmps;
+                bmps = new System.Drawing.Bitmap[1];
+
+                string fontA = "Courier New";
+                fontA = "標楷體";
+                //fontA = "新細明體";
+                string fontC = "Courier New";
+                fontC = "Calibri";
+                string fontT = "Times New Roman";
+
+
+                System.Drawing.SolidBrush BrushB = new System.Drawing.SolidBrush(System.Drawing.Color.Black);
+                System.Drawing.SolidBrush BrushW = new System.Drawing.SolidBrush(System.Drawing.Color.White);
+                System.Drawing.Pen LineP1 = new System.Drawing.Pen(System.Drawing.Color.Black, 40);
+                System.Drawing.Pen LineP = new System.Drawing.Pen(System.Drawing.Color.Black, 20);
+                System.Drawing.SolidBrush drawBrush = new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(0, 0, 0));
+
+                System.Drawing.Font drawFontC12 = new System.Drawing.Font(fontC, 12, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFontC26 = new System.Drawing.Font(fontC, 26, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFontC20 = new System.Drawing.Font(fontC, 20, System.Drawing.FontStyle.Bold);
+
+                System.Drawing.Font drawFont6 = new System.Drawing.Font(fontA, 6, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont7 = new System.Drawing.Font(fontA, 7, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont8 = new System.Drawing.Font(fontA, 8, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont9 = new System.Drawing.Font(fontA, 9, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont10 = new System.Drawing.Font(fontA, 10, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont12 = new System.Drawing.Font(fontA, 12, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont16 = new System.Drawing.Font(fontA, 15, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont18 = new System.Drawing.Font(fontA, 18, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont14 = new System.Drawing.Font(fontA, 14, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont20 = new System.Drawing.Font(fontA, 20, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFont24 = new System.Drawing.Font(fontA, 24, System.Drawing.FontStyle.Bold);
+
+                System.Drawing.Font drawFontHeader = new System.Drawing.Font(fontA, 12, System.Drawing.FontStyle.Bold);
+                System.Drawing.Font drawFontHeader10 = new System.Drawing.Font(fontA, 10, System.Drawing.FontStyle.Bold);
+
+                int iWidth = mm2px(10);
+                int iHeight = mm2px(9);
+                imgBackG = new System.Drawing.Bitmap(iWidth, iHeight, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+                imgBackG.SetResolution(Resolution, Resolution);     //列印解析度
+                System.Drawing.Graphics grLabel = System.Drawing.Graphics.FromImage(imgBackG);
+                grLabel.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+                grLabel.Clear(System.Drawing.Color.White);
+
+                //qrcode
+                ZXing.BarcodeWriter bw = new ZXing.BarcodeWriter();
+                bw.Format = ZXing.BarcodeFormat.QR_CODE;
+                ZXing.QrCode.QrCodeEncodingOptions op = new ZXing.QrCode.QrCodeEncodingOptions();
+                op.Width = mm2px(25);
+                op.Height = mm2px(25);
+                op.Margin = 1;
+                op.CharacterSet = "UTF-8";
+                bw.Options = op;
+                QREncrypter qre = new QREncrypter();
+                string strQR = Code;
+                System.Drawing.Bitmap bitmapQR = bw.Write(strQR);
+                grLabel.DrawImage(bitmapQR, mm2px(2), mm2px(0), mm2px(5), mm2px(5));
+
+                string strCode39 = Convert.ToString(Code);
+                grLabel.DrawImage(Generate2(strCode39, 0, 50), mm2px(1), mm2px(6), mm2px(10), mm2px(3));
+
+                grLabel.Dispose();
+                System.Drawing.Imaging.BitmapData bmpData = imgBackG.LockBits(new System.Drawing.Rectangle(0, 0, iWidth, iHeight), System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format1bppIndexed);
+                imgBackBmp = new System.Drawing.Bitmap(iWidth, iHeight, bmpData.Stride, System.Drawing.Imaging.PixelFormat.Format1bppIndexed, bmpData.Scan0);
+                imgBackBmp.SetResolution(Resolution, Resolution);
+                bmps[0] = imgBackBmp;
+                return bmps;
+            }
+            catch (IOException e)
+            {
+                return null;
+            }
+
+        }
+
+
 
         private static int mm2px(int mm)
         {

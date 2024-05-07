@@ -116,14 +116,12 @@
                             <style>
                                 #tbQMSDM104 thead tr th {
                                     font-size: 16px;
-                                    padding: 0px;
                                     background-color: #ffb620;
                                     font-weight: bold;
                                 }
 
                                 #tbQMSDM104 tbody tr td {
                                     font-size: 16px;
-                                    padding: 0px;
                                 }
                             </style>
 
@@ -144,23 +142,19 @@
                                     查詢
                                     <i class="fa fa-search"></i>
                                 </button>
-                                <button class="DyForm3-BtnExit" id="btExit" type="button" style="margin-left:5px">
-                                    離開
-                                    <i class="fa fa-sign-out"></i>
-                                </button>
                             </div>
 
                             <div class="form-group row" style="margin-left: 12px; width: 100%">
                                 <label class="DyForm3-Label">DM單號</label>
                                 <input id="txtDocNo" class="DyForm3-TextBox" type="text" maxlength="13" />
 
-                                <label class="DyForm3-Label">活動代號</label>
+                                <label class="DyForm3-Label" style="margin-left:25px">活動代號</label>
                                 <input id="txtActivityCode" class="DyForm3-TextBox" type="text" maxlength="20" />
                                 <button id="btActivityCode" class="DyForm3-BtnLookUp" type="button">
                                     <i class="fa fa-ellipsis-h"></i>
                                 </button>
 
-                                <mark class="DyForm3-DyNotEmptyMark">*</mark>
+                                <mark class="DyForm3-DyNotEmptyMark" style="margin-left:25px">*</mark>
                                 <label class="DyForm3-Label">批核識別</label>
                                 <input id="chkNoApp" type="checkbox" style="height: 30px; margin-left: 5px" checked><label class="DyForm3-Label" for="chkNoApp">未批核</label>
                                 <input id="chkApp" type="checkbox" style="height: 30px; margin-left: 5px" checked><label class="DyForm3-Label" for="chkApp">已批核</label>
@@ -170,13 +164,13 @@
                                 <label class="DyForm3-Label">DM主旨</label>
                                 <input id="txtEDMMemo" class="DyForm3-TextBox" type="text" maxlength="100" />
 
-                                <label class="DyForm3-Label">店&ensp;&ensp;&ensp;&ensp;別</label>
+                                <label class="DyForm3-Label" style="margin-left:25px">店&ensp;&ensp;&ensp;&ensp;別</label>
                                 <input id="txtShopNo" class="DyForm3-TextBox" type="text" maxlength="12" />
                                 <button id="btShopNo" class="DyForm3-BtnLookUp" type="button">
                                     <i class="fa fa-ellipsis-h"></i>
                                 </button>
 
-                                <mark class="DyForm3-DyNotEmptyMark">*</mark>
+                                <mark class="DyForm3-DyNotEmptyMark" style="margin-left:25px">*</mark>
                                 <label class="DyForm3-Label">作廢識別</label>
                                 <input id="chkNoDef" type="checkbox" style="height: 30px; margin-left: 5px" checked><label class="DyForm3-Label" for="chkNoDef">未作廢</label>
                                 <input id="chkDef" type="checkbox" style="height:30px;margin-left:5px" checked><label class="DyForm3-Label" for="chkDef">已作廢</label>
@@ -202,11 +196,11 @@
 
                             <div class="card-block forminput">
                                 <div class="x_content">
-                                    <div style="overflow: auto; height: 280px;">
+                                    <div style="overflow: auto; height: 560px;">
                                         <table id="tbQMSDM104" class="table table-bordered" style="width:100%">
                                             <thead>
                                                 <tr>
-                                                    <th></th>
+                                                    <th>刪除</th>
                                                     <th>DM單號</th>
                                                     <th>DM主旨</th>
                                                     <th>入會期間</th>
@@ -220,7 +214,7 @@
                                             <tbody>
                                                 <tr>
                                                     <td></td>
-                                                    <td id="tdDocNo"></td>
+                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -500,11 +494,12 @@
 
                                     <div class="form-group row" style="margin-left: 18px; margin-top: 5px; width: 100%">
                                         <label class="DyForm3-LabelBlack">DM單號</label>
-                                        <label class="DyForm3-LabelBlack" id="lblDocNo_EDM" style="margin-left:25px"></label>
+                                        <label class="DyForm3-LabelBlack" id="lblDocNo_EDM" style="margin-left:10px"></label>
+                                        <label class="DyForm3-LabelBlack" id="lblVMDocNo_EDM" hidden></label>
 
                                         <label class="DyForm3-LabelBlack" style="margin-left:47px">批&ensp;核&ensp;者</label>
                                         <label class="DyForm3-Label" id="lblAppUser_EDM" style="margin-left: 10px; margin-top: 0px;"></label>
-                                        <label class="DyForm3-LabelBlack" style="margin-left: 78px">作&ensp;廢&ensp;者</label>
+                                        <label class="DyForm3-LabelBlack" style="margin-left: 103px">作&ensp;廢&ensp;者</label>
                                         <label class="DyForm3-Label" id="lblDefUser_EDM" style="margin-left: 10px; margin-top: 0px;"></label>
                                     </div>
 
@@ -546,10 +541,10 @@
                                     </div>
 
                                     <div class="form-group row" style="margin-left: 5px; margin-top: 5px; width: 100%">
-                                        <div id="btP1_EDM" style="width: 233px; height: 203px; border: 2px solid #000;">
+                                        <div id="btP1_EDM" style="width: 484px; height: 50px; border: 2px solid #000;">
                                             <img id="P1_EDM">
                                         </div>
-                                        <label id="lblCompanyLogo" class="DyForm3-Label"></label>
+                                        <!--<label id="lblCompanyLogo" class="DyForm3-Label"></label>-->
                                     </div>
 
                                     <div class="form-group row" style="margin-left: 5px; margin-top: 5px; width: 100%;">
@@ -557,7 +552,7 @@
                                     </div>
 
                                     <div class="form-group row" style="margin-left: 5px; margin-top: 5px; width: 100%">
-                                        <div id="btP2_EDM" style="width: 400px; height: 288px; border: 2px solid #000; background-image: url(images/活動主題.png); background-size: 100% 100% ">
+                                        <div id="btP2_EDM" style="width: 484px; height: 350px; border: 2px solid #000; background-image: url(images/MSDM104活動主題.jpg); background-size: 100% 100% ">
                                             <img id="P2_EDM">
                                         </div>
                                     </div>
@@ -570,16 +565,12 @@
                                     <div class="form-group row" style="margin-left: 5px; margin-top: 5px; width: 100%">
                                         <textarea id="txtT2_EDM"></textarea>
                                     </div>
-
-
-
                                 </div>
                             </div>
                         </div>
                     </div>
 
-
-                    <div class="modal fade" id="modal_DM_A" data-keyboard="false" data-backdrop="static">
+                    <div class="modal fade" id="modal_ShowEDM" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
                             <div style="max-height: calc(100vh - 3.5rem); max-height: calc(100vh - 1rem); overflow: auto; max-height: none; position: relative; display: -ms-flexbox; -ms-flex-direction: column; flex-direction: column; pointer-events: auto; background-color: #fff; background-clip: padding-box; border: 1px solid rgba(0, 0, 0, 0.2); border-radius: 0.3rem; outline: 0; height: 780px; width: 600px ">
                                 <style>
@@ -593,14 +584,19 @@
                                 </style>
 
                                 <div class="modal-header">
-                                    <h4 class="modal-title" style="width: 100%; text-align: left;color:black">預覽</h4>
-                                    <button id="btExit_DM_A" type="button" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 65px; height: 25px; font-size: 12PX; margin-left: 1px">離開</button>
+                                    <h4 class="modal-title" style="width: 100%; text-align: left;color:black">預覽 (郵件呈現主旨&內文)</h4>
+                                    <button class="DyForm3-BtnExit" id="btExit_ShowEDM" type="button" style="width: 65px; height: 25px;margin-top:5px">離開</button>
+                                </div>
+
+                                <div class="form-group row" style="margin-left: 18px; margin-top: 5px; width: 100%">
+                                    <label class="DyForm3-LabelBlack">主旨 :&nbsp;&nbsp;</label>
+                                    <label class="DyForm3-LabelBlack" id="lbl_Purpose_ShowEDM" style=""></label>
                                 </div>
 
                                 <table>
                                     <tr>
                                         <td>
-                                            <img id="Logo_DM_A" />
+                                            <img id="P1_ShowEDM" />
                                         </td>
                                     </tr>
                                 </table>
@@ -608,7 +604,7 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            <img id="Subject_DM_A">
+                                            <div id="T1_ShowEDM"></div>
                                         </td>
                                     </tr>
                                 </table>
@@ -616,13 +612,7 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            <img id="PLUPic1_DM_A">
-                                        </td>
-                                        <td>
-                                            <img id="PLUPic2_DM_A">
-                                        </td>
-                                        <td>
-                                            <img id="PLUPic3_DM_A">
+                                            <img id="P2_ShowEDM" />
                                         </td>
                                     </tr>
                                 </table>
@@ -630,40 +620,26 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            <img id="PLUPic4_DM_A">
-                                        </td>
-                                        <td>
-                                            <img id="PLUPic5_DM_A">
-                                        </td>
-                                        <td>
-                                            <img id="PLUPic6_DM_A">
+                                            <div id="T2_ShowEDM"></div>
                                         </td>
                                     </tr>
                                 </table>
 
-                                <table>
-                                    <tr>
-                                        <td>
-                                            <img id="Barcode1_DM_A">
-                                        </td>
-                                    </tr>
-                                </table>
+                                <div class="form-group row" style="margin-left: 18px; margin-top: 5px; width: 100%">
+                                    <label class="DyForm3-LabelBlack">結帳前請出示此QRCode進行折抵</label>
+                                </div>
 
                                 <table>
                                     <tr>
                                         <td>
-                                            <img id="QRCode1_DM_A">
+                                            <img id="Code_ShowEDM">
                                         </td>
                                     </tr>
                                 </table>
 
-                                <table>
-                                    <tr>
-                                        <td>
-                                            <div id="editor_DM_A"></div>
-                                        </td>
-                                    </tr>
-                                </table>
+                                <div class="form-group row" style="margin-left: 18px;width: 100%">
+                                    <label style="font-size: 16px; color: red; font-weight: bold;">*此信件為系統自動發送，請勿直接回覆*</label>
+                                </div>
                             </div>
                         </div>
 

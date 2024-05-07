@@ -7689,13 +7689,12 @@ namespace SVMAdmin.Controllers
                 DataTable dt = PubUtility.SqlQry("select * from SetEDMDWeb (nolock) where DocNo='" + DocNo + "' and DataType='" + DataType + "' and Companycode='" + uu.CompanyId + "' ", uu, "SYS");
                 DataRow dr = dt.Rows[0];
                 string ContentType = "image/jpeg";
-                HttpContext.Response.Headers.Add("content-disposition", "attachment; filename=" + System.Web.HttpUtility.UrlEncode(dr["FileName"].ToString()));
+                //HttpContext.Response.Headers.Add("content-disposition", "attachment; filename=" + System.Web.HttpUtility.UrlEncode(dr["FileName"].ToString()));
 
                 return File(dr["DocImage"] as byte[], ContentType);
             }
             catch (Exception err)
             {
-
                 string ContentType = "image/jpeg";
                 HttpContext.Response.Headers.Add("content-disposition", "attachment; filename=No_Pic.jpg");
                 string fn = ConstList.HostEnvironment.WebRootPath + @"\images\No_Pic.jpg";
@@ -7713,6 +7712,7 @@ namespace SVMAdmin.Controllers
             {
                 IFormCollection rq = HttpContext.Request.Form;
                 string ShopNo = rq["ShopNo"];
+                int ShopCnt = ShopNo.Split(',').Length;
 
                 string sql = "";
                 sql = "Select ST_ID,ST_SName ";
@@ -7720,7 +7720,15 @@ namespace SVMAdmin.Controllers
                 sql += "Where Companycode='" + uu.CompanyId + "' and ST_Type not in ('2','3') ";
                 if (ShopNo.SqlQuote() != "")
                 {
-                    sql += "and ST_ID like '" + ShopNo.SqlQuote() + "%' ";
+                    if (ShopCnt > 1)
+                    {
+                        sql += "and ST_ID in (" + ShopNo + ") ";
+                    }
+                    else {
+                        var ShopNo1 = ShopNo.Replace("'", "");
+
+                        sql += "and ST_ID like '" + ShopNo1 + "%' ";
+                    }
                 }
                 sql += "Order By ST_ID ";
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
@@ -7793,15 +7801,20 @@ namespace SVMAdmin.Controllers
             {
                 IFormCollection rq = HttpContext.Request.Form;
                 string ProgramID = rq["ProgramID"];
+                var DocNo = PubUtility.GetNewDocNo(uu, "VM", 3);
+
 
                 string sql = "";
-                sql = "Select * From EDMSetWeb (nolock) Where Companycode='" + uu.CompanyId + "' ";
+                sql = "Select '" + DocNo + "' as DocNo,* From EDMSetWeb (nolock) Where Companycode='" + uu.CompanyId + "' ";
                 if (ProgramID.SqlQuote() != "") {
                     sql += "and ProgramID='" + ProgramID.SqlQuote() + "' ";
                 }
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
                 ds.Tables.Add(dtE);
+
+                sql = "Delete From SetEDMDWeb Where Companycode='" + uu.CompanyId + "' and left(DocNo,2)='VM' and CrtDate<convert(char(10),getdate(),111) ";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
             }
             catch (Exception err)
             {
@@ -7856,11 +7869,12 @@ namespace SVMAdmin.Controllers
                 string T1 = rq["T1"];
                 string T2 = rq["T2"];
                 string DocNo = rq["DocNo"];
+                string VMDocNo = rq["VMDocNo"];
                 string sql = "";
                 string sql1 = "";
 
                 //新增
-                if (EditMode == "A") {
+                if (EditMode.SqlQuote() == "A") {
                     DocNo = PubUtility.GetNewDocNo(uu, "EM", 3);
                     //SetEDMHWeb
                     sql = "Insert into SetEDMHWeb (Companycode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
@@ -7873,29 +7887,30 @@ namespace SVMAdmin.Controllers
                     sql += "'" + PS_NO.SqlQuote() + "','V','','','','','','','','','" + WhNoFlag.SqlQuote() + "';";
 
                     //SetEDMDWeb(P1)
-                    string P1 = "Select * From EDMSetWeb (nolock) Where Companycode='" + uu.CompanyId + "' and ProgramID='MSDM104' ";
-                    DataTable dtP1 = PubUtility.SqlQry(P1, uu, "SYS");
-                    if (dtP1.Rows.Count > 0) {
-                        sql1 = "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
-                        sql1 += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
+                    sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
+                    sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
 
-                        sql1 += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
-                        sql1 += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
-                        sql1 += "'" + DocNo + "','P1','P1.jpg','P','" + dtP1.Rows[0]["Pic"].ToString() + "','" + dtP1.Rows[0]["Txt"].ToString() + "','','';";
-                    }
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + DocNo + "','P1','P1.jpg','P',Pic,'','','' ";
+                    sql += "From EDMSetWeb (nolock) Where Companycode='" + uu.CompanyId + "' and ProgramID='MSDM104';";
+
                     //SetEDMDWeb(T1)
                     if (T1.SqlQuote() != "") {
-                        sql1 += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
+                        sql1 = "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
                         sql1 += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
 
                         sql1 += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
                         sql1 += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
                         sql1 += "'" + DocNo + "','T1','','T','','" + T1.SqlQuote() + "','','';";
                     }
+                    //SetEDMDWeb(P2)
+                    sql += "Update SetEDMDWeb Set DocNo='" + DocNo.SqlQuote() + "',CrtUser='" + uu.UserID + "',CrtDate=convert(char(10),getdate(),111),CrtTime=right(convert(varchar, getdate(), 121),12), ";
+                    sql += "ModUser='" + uu.UserID + "',ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12) ";
+                    sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + VMDocNo.SqlQuote() + "' and DataType='P2'; ";
                     //SetEDMDWeb(T2)
                     sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
                     sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
-
                     sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
                     sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
                     sql += "'" + DocNo + "','T2','','T','','" + T2.SqlQuote() + "','','';";
@@ -7921,10 +7936,44 @@ namespace SVMAdmin.Controllers
                     PubUtility.ExecuteSql(sql, uu, "SYS");
                 }
                 //修改
-                else if (EditMode == "M") {
-                    //sql = "Update Account Set ModDate=convert(char(10),getdate(),111),ModUser='" + uu.UserID + "',ErrTimes=0 ";
-                    //sql += "where UID='" + uu.UserID + "' ";
-                    //PubUtility.ExecuteSql(sql, uu, "SYS");
+                else if (EditMode.SqlQuote() == "M") {
+                    //SetEDMHWeb
+                    sql = "Update SetEDMHWeb Set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                    sql += "EDMMemo='" + EDMMemo.SqlQuote() + "',StartDate='" + StartDate.SqlQuote() + "',EndDate='" + EndDate.SqlQuote() + "',WhNoFlag='" + WhNoFlag.SqlQuote() + "', ";
+                    sql += "PS_NO='" + PS_NO.SqlQuote() + "' ";
+                    sql += "where DocNo='" + DocNo.SqlQuote() + "'; ";
+                    //SetEDMDWeb(P1)
+                    sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                    sql += "DocImage=b.Pic ";
+                    sql += "From SetEDMDWeb a (nolock) ";
+                    sql += "inner join EDMSetWeb b (nolock) on a.Companycode=b.Companycode and b.Programid='MSDM104' ";
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' and a.DocNo='" + DocNo.SqlQuote() + "' ";
+                    sql += "and a.DataType='P1'; ";
+                    //SetEDMDWeb(T1)
+                    if (T1.SqlQuote() != "") {
+                        sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                        sql += "TXT='" + T1.SqlQuote() + "' ";
+                        sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
+                        sql += "and DataType='T1'; ";
+                    }
+                    //SetEDMDWeb(T2)
+                    sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                    sql += "TXT='" + T2.SqlQuote() + "' ";
+                    sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
+                    sql += "and DataType='T2'; ";
+                    //SetEDMShopWeb
+                    sql += "Delete From SetEDMShopWeb Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "'; ";
+                    if (WhNoFlag.SqlQuote() != "Y") {
+                        sql += "Insert Into SetEDMShopWeb Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                        sql += "'" + DocNo.SqlQuote() + "',ST_ID ";
+                        sql += "From WarehouseWeb (nolock) Where Companycode='" + uu.CompanyId + "' and ST_ID in (" + chkShopNo + "); ";
+                    }
+                    //SetEDMVIP_HWeb
+                    sql += "Update SetEDMVIP_HWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                    sql += "StartDate=convert(char(10),getdate(),111),EndDate='" + EndDate.SqlQuote() + "',EDMMemo='" + EDMMemo.SqlQuote() + "', " ;
+                    sql += "EDM_DocNO='" + DocNo.SqlQuote() + "',PS_NO='" + PS_NO.SqlQuote() + "' "  ;
+                    sql += "Where Companycode='" + uu.CompanyId + "' and EVNO='" + DocNo.SqlQuote() + "'; ";
+                    PubUtility.ExecuteSql(sql, uu, "SYS");
                 }
 
                 sql = "select * from SetEDMHWeb (nolock) ";
@@ -7955,14 +8004,14 @@ namespace SVMAdmin.Controllers
 
                 //SetEDMHWeb
                 sql = "Select a.DocNo,a.EDMMemo,a.StartDate,a.EndDate,a.WhNoFlag,a.PS_NO,c.PS_Name + '  ' + c.StartDate + ' ~ ' + c.EndDate as PS_Name, ";
-                sql += "isnull(a.ApproveDate,'')ApproveDate,isnull(a.ApproveUser)ApproveUser,isnull(a.DefeasanceDate,'')DefeasanceDate,isnull(a.Defeasance,'')Defeasance, ";
+                sql += "isnull(a.ApproveDate,'')ApproveDate,isnull(a.ApproveUser,'')ApproveUser,isnull(a.DefeasanceDate,'')DefeasanceDate,isnull(a.Defeasance,'')Defeasance, ";
                 sql += "b.DataType,b.DocImage,b.TXT ";
                 sql += "From SetEDMHWeb a (nolock) ";
                 sql += "inner join SetEDMDWeb b (nolock) on a.DocNo=b.DocNo and b.Companycode=a.Companycode ";
                 sql += "inner join PromoteSCouponHWeb c (nolock) on a.PS_NO=c.PS_NO and c.Companycode=a.Companycode ";
                 sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                 if (DocNo.SqlQuote() != "") {
-                    sql += "a.DocNo='" + DocNo.SqlQuote() + "' ";
+                    sql += "and a.DocNo='" + DocNo.SqlQuote() + "' ";
                 }
                 sql += "Order by b.DataType ";
                 DataTable dtH = PubUtility.SqlQry(sql, uu, "SYS");
@@ -7973,7 +8022,7 @@ namespace SVMAdmin.Controllers
                 sql = "Select * From SetEDMShopWeb (nolock) Where Companycode='" + uu.CompanyId + "' ";
                 if (DocNo.SqlQuote() != "")
                 {
-                    sql += "DocNo='" + DocNo.SqlQuote() + "' ";
+                    sql += "and DocNo='" + DocNo.SqlQuote() + "' ";
                 }
                 sql += "Order by ShopNo ";
                 DataTable dtShop = PubUtility.SqlQry(sql, uu, "SYS");
@@ -7988,6 +8037,323 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("SystemSetup/MSDM104_Approve_EDM")]
+        public ActionResult SystemSetup_MSDM104_Approve_EDM()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSDM104_Approve_EDMOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string DocNo = rq["DocNo"];
+                string sql = "";
+                sql = "Update SetEDMHWeb Set ApproveDate=convert(char(10),getdate(),111) + ' ' + convert(char(12),getdate(),108), ";
+                sql += "ApproveUser='" + uu.UserID + "' ";
+                sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "'; ";
+
+                sql += "Update SetEDMVIP_HWeb Set ApproveDate=convert(char(10),getdate(),111) + ' ' + convert(char(12),getdate(),108), ";
+                sql += "ApproveUser='" + uu.UserID + "' ";
+                sql += "Where Companycode='" + uu.CompanyId + "' and EVNO='" + DocNo.SqlQuote() + "' ";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                //SetEDMHWeb
+                sql = "Select * From SetEDMHWeb (nolock) Where Companycode='" + uu.CompanyId + "' ";
+                if (DocNo.SqlQuote() != "")
+                {
+                    sql += "and DocNo='" + DocNo.SqlQuote() + "' ";
+                }
+                DataTable dtH = PubUtility.SqlQry(sql, uu, "SYS");
+                dtH.TableName = "dtH";
+                ds.Tables.Add(dtH);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSDM104_Defeasance_EDM")]
+        public ActionResult SystemSetup_MSDM104_Defeasance_EDM()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSDM104_Defeasance_EDMOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string DocNo = rq["DocNo"];
+                string sql = "";
+                sql = "Update SetEDMHWeb Set DefeasanceDate=convert(char(10),getdate(),111) + ' ' + convert(char(12),getdate(),108), ";
+                sql += "Defeasance='" + uu.UserID + "' ";
+                sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "'; ";
+
+                sql += "Update SetEDMVIP_HWeb Set DefeasanceDate=convert(char(10),getdate(),111) + ' ' + convert(char(12),getdate(),108), ";
+                sql += "Defeasance='" + uu.UserID + "' ";
+                sql += "Where Companycode='" + uu.CompanyId + "' and EVNO='" + DocNo.SqlQuote() + "' ";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                //SetEDMHWeb
+                sql = "Select * From SetEDMHWeb (nolock) Where Companycode='" + uu.CompanyId + "' ";
+                if (DocNo.SqlQuote() != "")
+                {
+                    sql += "and DocNo='" + DocNo.SqlQuote() + "' ";
+                }
+                DataTable dtH = PubUtility.SqlQry(sql, uu, "SYS");
+                dtH.TableName = "dtH";
+                ds.Tables.Add(dtH);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSDM104ShowEDM")]
+        public ActionResult SystemSetup_MSDM104ShowEDM()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSDM104ShowEDMOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string DocNo = rq["DocNo"];
+                string sql = "";
+
+                //SetEDMHWeb
+                sql = "Select a.DocNo,a.EDMMemo,b.DataType,b.DocImage,b.TXT ";
+                sql += "From SetEDMHWeb a (nolock) ";
+                sql += "inner join SetEDMDWeb b (nolock) on a.DocNo=b.DocNo and b.Companycode=a.Companycode ";
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                if (DocNo.SqlQuote() != "")
+                {
+                    sql += "and a.DocNo='" + DocNo.SqlQuote() + "' ";
+                }
+                sql += "Order by b.DataType ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("GetImage_QRCode")]
+        public ActionResult GetImage_QRCode()
+        {
+            try
+            {
+                IQueryCollection rq = HttpContext.Request.Query;
+                string QRCode = rq["QRCode"];
+                string UU = rq["UU"];
+
+                System.IO.MemoryStream ms = new System.IO.MemoryStream();
+                System.Drawing.Bitmap bmp = ConstList.GetBitmap_QRCode(QRCode)[0];
+                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+
+                UserInfo uu = PubUtility.GetCurrentUser("Bearer " + UU);
+                string ContentType = "image/jpeg";
+                //HttpContext.Response.Headers.Add("content-disposition", "attachment; filename=" + System.Web.HttpUtility.UrlEncode(dr["FileName"].ToString()));
+
+                return File(ms.ToArray() as byte[], ContentType);
+            }
+            catch (Exception err)
+            {
+                string ContentType = "image/jpeg";
+                HttpContext.Response.Headers.Add("content-disposition", "attachment; filename=No_Pic.jpg");
+                string fn = ConstList.HostEnvironment.WebRootPath + @"\images\No_Pic.jpg";
+                return File(System.IO.File.ReadAllBytes(fn), ContentType);
+            }
+        }
+
+        [Route("GetImage_Barcode")]
+        public ActionResult GetImage_Barcode()
+        {
+            try
+            {
+                IQueryCollection rq = HttpContext.Request.Query;
+                string Barcode = rq["Barcode"];
+                string UU = rq["UU"];
+
+                System.IO.MemoryStream ms = new System.IO.MemoryStream();
+                System.Drawing.Bitmap bmp = ConstList.GetBitmap_Barcode(Barcode)[0];
+                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+
+                UserInfo uu = PubUtility.GetCurrentUser("Bearer " + UU);
+                string ContentType = "image/jpeg";
+                //HttpContext.Response.Headers.Add("content-disposition", "attachment; filename=" + System.Web.HttpUtility.UrlEncode(dr["FileName"].ToString()));
+
+                return File(ms.ToArray() as byte[], ContentType);
+            }
+            catch (Exception err)
+            {
+                string ContentType = "image/jpeg";
+                HttpContext.Response.Headers.Add("content-disposition", "attachment; filename=No_Pic.jpg");
+                string fn = ConstList.HostEnvironment.WebRootPath + @"\images\No_Pic.jpg";
+                return File(System.IO.File.ReadAllBytes(fn), ContentType);
+            }
+        }
+
+        [Route("GetImage_QRCodeandBarcode")]
+        public ActionResult GetImage_QRCodeandBarcode()
+        {
+            try
+            {
+                IQueryCollection rq = HttpContext.Request.Query;
+                string Code = rq["Code"];
+                string UU = rq["UU"];
+
+                System.IO.MemoryStream ms = new System.IO.MemoryStream();
+                System.Drawing.Bitmap bmp = ConstList.GetBitmap_QRCodeandBarcode(Code)[0];
+                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+
+                UserInfo uu = PubUtility.GetCurrentUser("Bearer " + UU);
+                string ContentType = "image/jpeg";
+                //HttpContext.Response.Headers.Add("content-disposition", "attachment; filename=" + System.Web.HttpUtility.UrlEncode(dr["FileName"].ToString()));
+
+                return File(ms.ToArray() as byte[], ContentType);
+            }
+            catch (Exception err)
+            {
+                string ContentType = "image/jpeg";
+                HttpContext.Response.Headers.Add("content-disposition", "attachment; filename=No_Pic.jpg");
+                string fn = ConstList.HostEnvironment.WebRootPath + @"\images\No_Pic.jpg";
+                return File(System.IO.File.ReadAllBytes(fn), ContentType);
+            }
+        }
+
+        [Route("SystemSetup/MSDM104ChkDelete")]
+        public ActionResult SystemSetup_MSDM104ChkDelete()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSDM104ChkDeleteOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string DocNo = rq["DocNo"];
+                string sql = "";
+
+                //SetEDMHWeb
+                sql = "Select * ";
+                sql += "From SetEDMHWeb (nolock) ";
+                sql += "Where Companycode='" + uu.CompanyId + "' ";
+                if (DocNo.SqlQuote() != "")
+                {
+                    sql += "and DocNo='" + DocNo.SqlQuote() + "' ";
+                }
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSDM104Delete")]
+        public ActionResult SystemSetup_MSDM104Delete()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSDM104DeleteOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string DocNo = rq["DocNo"];
+                string sql = "";
+                sql = "Update SetEDMHWeb Set DelDate=convert(char(10),getdate(),111) + ' ' + convert(char(12),getdate(),108), ";
+                sql += "DelUser='" + uu.UserID + "' ";
+                sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "'; ";
+
+                sql += "Update SetEDMVIP_HWeb Set DelDate=convert(char(10),getdate(),111) + ' ' + convert(char(12),getdate(),108), ";
+                sql += "DelUser='" + uu.UserID + "' ";
+                sql += "Where Companycode='" + uu.CompanyId + "' and EVNO='" + DocNo.SqlQuote() + "' ";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
+        [Route("FileUpload_EDM")]
+        public ActionResult FileUpload_EDM()
+        {
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "FileUpload_EDMOK", "" });
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            string picSGID = "";
+            try
+            {
+                IFormFileCollection files = HttpContext.Request.Form.Files;
+                string UploadFileType = HttpContext.Request.Form["UploadFileType"];
+                if (UploadFileType == "P2")
+                {
+                    picSGID = ImportPLUPic_EDM(files, UploadFileType);
+                    DataTable dtMessage = ds.Tables["dtMessage"];
+                    dtMessage.Rows[0][1] = picSGID;
+                }
+            }
+            catch (Exception err)
+            {
+                DataTable dtMessage = ds.Tables["dtMessage"];
+                dtMessage.Rows[0][0] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        private string ImportPLUPic_EDM(IFormFileCollection files, string ParaType)
+        {
+            string sgid = "";
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            foreach (IFormFile file in files)
+            {
+                string filename = file.FileName;
+                if (filename.ToLower().IndexOf(".jpg") < 0 & filename.ToLower().IndexOf(".jpeg") < 0)
+                {
+                    throw new Exception("必須是.jpg檔案!");
+                }
+                System.IO.MemoryStream ms = new System.IO.MemoryStream();
+                file.CopyTo(ms);
+                DataTable dtF = new DataTable();
+                dtF.Columns.Add("CompanyCode", typeof(string));
+                dtF.Columns.Add("DocNo", typeof(string));
+                dtF.Columns.Add("DataType", typeof(string));
+                dtF.Columns.Add("FileName", typeof(string));
+                dtF.Columns.Add("DocType", typeof(string));
+                dtF.Columns.Add("DocImage", typeof(byte[]));
+
+                string sql = "Delete From SetEDMDWeb ";
+                sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + HttpContext.Request.Form["DocNo"] + "' And DataType='" + HttpContext.Request.Form["UploadFileType"] + "'";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                DataRow drF = dtF.NewRow();
+                drF["CompanyCode"] = uu.CompanyId;
+                drF["DocNo"] = HttpContext.Request.Form["DocNo"];
+                drF["DataType"] = HttpContext.Request.Form["UploadFileType"];
+                drF["FileName"] = file.FileName;
+                drF["DocType"] = "P";
+                drF["DocImage"] = ms.ToArray();
+                dtF.Rows.Add(drF);
+                sgid = PubUtility.AddTable("SetEDMDWeb", dtF, uu, "SYS");
+            }
+            return sgid;
+        }
 
         //[Route("SystemSetup/FTPUpload")]
         //public ActionResult SystemSetup_FTPUpload()
