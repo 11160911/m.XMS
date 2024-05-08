@@ -14,7 +14,7 @@
                 table_lement: $('#tbQMSDM104')[0],
                 class_collection: ["tdColbt icon_in_td btDelete", "tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6 label-align", "tdCol7", "tdCol8"],
                 fields_info: [
-                    { type: "JQ", name: "fa-trash-o", element: '<i class="fa fa-trash-o"></i>' },
+                    { type: "JQ", name: "fa-trash-o", element: '<i class="fa fa-trash-o" style="font-size:24px"></i>'},
                     { type: "Text", name: "DocNO", style: "" },
                     { type: "Text", name: "EDMMemo", style: "" },
                     { type: "Text", name: "EDDate", style: "" },
@@ -233,7 +233,13 @@
     };
 
     let btP2_EDM_click = function (bt) {
-        $('#modal_ImgUp').modal('show');
+        var P2 = $('#P2_EDM').attr('src');
+        if (P2 == "") {
+            btUPEDM_click();
+        }
+        else {
+            $('#modal_ImgUp').modal('show');
+        }
     };
 
     let btExit_ImgUp_click = function (bt) {
@@ -691,9 +697,12 @@
 
     //EDM查詢
     let MSDM104Query_EDM_click = function (bt) {
+        $('#tbQMSDM104 td').closest('tr').css('background-color', 'white');
+
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         var node = $(grdM.ActiveRowTR()).prop('Record');
+        $('#tbQMSDM104 td:contains(' + GetNodeValue(node, 'DocNo') + ')').closest('tr').css('background-color', '#DEEBF7');
         var pData = {
             DocNo: GetNodeValue(node, 'DocNo')
         }
@@ -1528,7 +1537,7 @@
                             'Outdent'                   //減少縮排
                         ]
                     },
-                    placeholder: '請在這裡填寫內容!',   //文字編輯器顯示的預設文字
+                    placeholder: '請在這裡填寫活動內容!',   //文字編輯器顯示的預設文字
                     removePlugins: ['Title'],           //移除文字編輯器的標題
                     fontSize: {
                         options: [10, 12, 14, 'default', 18, 20, 22,26,28,30,32,34],    //設定文字大小的格式
@@ -1572,7 +1581,7 @@
                             'Outdent'                   //減少縮排
                         ]
                     },
-                    placeholder: '請在這裡填寫內容!',   //文字編輯器顯示的預設文字
+                    placeholder: '請在這裡填寫優惠券內容!',   //文字編輯器顯示的預設文字
                     removePlugins: ['Title'],           //移除文字編輯器的標題
                     fontSize: {
                         options: [10, 12, 14, 'default', 18, 20, 22, 26, 28, 30, 32, 34],    //設定文字大小的格式
