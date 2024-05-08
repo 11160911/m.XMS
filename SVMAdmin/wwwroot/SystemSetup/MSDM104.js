@@ -232,17 +232,52 @@
         }
     };
 
+    let btP2_EDM_click = function (bt) {
+        $('#modal_ImgUp').modal('show');
+    };
+
+    let btExit_ImgUp_click = function (bt) {
+        $('#modal_ImgUp').modal('hide');
+    };
+
+    let btDelete_ImgUp_click = function (bt) {
+        DyConfirm("請確認是否刪除此圖片？", function () {
+            var DocNo = "";
+            if (cs_EditMode == "A") {
+                DocNo = $('#lblVMDocNo_EDM').html();
+            }
+            else if (cs_EditMode == "M") {
+                DocNo = $('#lblDocNo_EDM').html();
+            }
+            var pData = {
+                DocNo: DocNo
+            }
+            PostToWebApi({ url: "api/SystemSetup/MSDM104DelImg", data: pData, success: afterMSDM104DelImg });
+        },function () {
+            DummyFunction();
+        })
+    };
+
+    let afterMSDM104DelImg = function (data) {
+        if (ReturnMsg(data, 0) != "MSDM104DelImgOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            $('#modal_ImgUp').modal('hide');
+            DyAlert("圖片刪除完成!", function () {
+                GetImage_EDM("P2_EDM", "");
+            })
+        }
+    };
 
     let btUPEDM_click = function (bt) {
+        $('#modal_ImgUp').modal('hide');
+
         InitFileUpload(bt);
-        var UploadFileType = "";
-        if (bt.id == "btP2_EDM") {
-            UploadFileType = "P2"
-        }
+        var UploadFileType = "P2";
         $('#modal-media').prop("UploadFileType", UploadFileType);
         $('#fileURL').val('')
         $('#modal-media').modal('show');
-
     };
 
     let InitFileUpload = function (bt) {
@@ -1447,11 +1482,13 @@
             $('#btQLookup_PSNO_EDM').click(function () { btQLookup_PSNO_EDM_click(this) });
             $('#btLpOK_PSNO_EDM').click(function () { btLpOK_PSNO_EDM_click(this) });
             $('#btLpExit_PSNO_EDM').click(function () { btLpExit_PSNO_EDM_click(this) });
-            $('#btP2_EDM').click(function () { btUPEDM_click(this) });
+            $('#btP2_EDM').click(function () { btP2_EDM_click(this) });
 
             $('#btExit_ShowEDM').click(function () { btExit_ShowEDM_click(this) });
 
-
+            $('#btExit_ImgUp').click(function () { btExit_ImgUp_click(this) });
+            $('#btDelete_ImgUp').click(function () { btDelete_ImgUp_click(this) });
+            $('#btImgUp').click(function () { btUPEDM_click(this) });
 
             ///////////////////////////////////////////////////////
             $('#btDMAdd').click(function () { btDMAdd_click(this) });

@@ -8291,6 +8291,28 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("SystemSetup/MSDM104DelImg")]
+        public ActionResult SystemSetup_MSDM104DelImg()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSDM104DelImgOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string DocNo = rq["DocNo"];
+                string sql = "";
+                sql = "Delete From SetEDMDWeb ";
+                sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' and DataType='P2' ";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
 
         [Route("FileUpload_EDM")]
         public ActionResult FileUpload_EDM()
