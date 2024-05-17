@@ -655,7 +655,7 @@ var CloseLoading = function () {
             $('#modal_Loading').modal('hide');
         }
         catch (ERR) { }
-    }, 500);
+    }, 1000);
     
 }
 

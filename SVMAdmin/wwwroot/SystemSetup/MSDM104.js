@@ -1058,6 +1058,7 @@
     //EDM離開
     let btExit_EDM_click = function (bt) {
         $('#modal_EDM').modal('hide')
+        btQuery_click();
     };
 
     //清除
@@ -1115,6 +1116,7 @@
 
     let afterMSDM104Query = function (data) {
         CloseLoading();
+       
         if (ReturnMsg(data, 0) != "MSDM104QueryOK") {
             DyAlert(ReturnMsg(data, 1));
         }
