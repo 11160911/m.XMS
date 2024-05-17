@@ -1560,6 +1560,9 @@
                 })
                 .then(t1 => {
                     window.t1 = t1;                             //使用window.t1.getData()取得文字編輯html內容
+                    //t1.editing.view.document.on('change:isSelecting', (evt, name, value) => {
+                    //   alert("ss")
+                    //});
                 })
                 .catch(handleSampleError);
 
@@ -1610,8 +1613,7 @@
 
             //window.t1.enableReadOnlyMode('t1');          停用
             //window.t1.disableReadOnlyMode('t1');         啟用
-            
-        }
+                    }
     };
 
     let handleSampleError = function (error) {
