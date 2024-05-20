@@ -57,11 +57,8 @@
 
             $('.right_col').mousedown(function (e) {
                 Sidebar_Close();
-            })
-
-            $('.body').mousedown(function (e) {
                 ChkDevice();
-                Timerset();
+                //Timerset();   //不可使用，否則DM的文字編輯器反白時焦點會有異常
             })
 
             var dtEmployeeSV = data.getElementsByTagName('dtEmployee');
@@ -213,6 +210,7 @@
         else {
             $('#FunctionDesc').text($(menuitem).prop('Description'));
             Timerset();
+            ChkDevice();
             $MENU_TOGGLE.click();
             OpenPage(menuitem);
         }
