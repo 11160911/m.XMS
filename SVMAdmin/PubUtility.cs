@@ -1178,6 +1178,24 @@ namespace SVMAdmin
             #endregion
         }
 
+        public static string GetSerString(object ob, Type T, string type = "")
+        {
+            System.Runtime.Serialization.Json.DataContractJsonSerializer js = new System.Runtime.Serialization.Json.DataContractJsonSerializer(T);
+            MemoryStream ms = new MemoryStream();
+            js.WriteObject(ms, ob);
+            string str = System.Text.Encoding.UTF8.GetString(ms.ToArray());
+            string a = "";
+            if (type == "")
+            {
+                a = aesEncryptBase64(str, secKey);
+            }
+            else if (type == "api")
+            {
+                a = aesEncryptBase64(str, "HelloKitty");
+            }
+
+            return a;
+        }
     }
 
     public static class ConstList
@@ -1776,6 +1794,56 @@ namespace SVMAdmin
 
     }
 
+    public class iXmsClient
+    {
+        public static string ApiUrl;
+        public static System.Data.DataSet LockedCode(System.Data.DataSet ds, UserInfo vUserInfo)
+        {
+            if (ApiUrl.ToLower().IndexOf("https:") == 0)
+                SSLValidator.OverrideValidation();
+            iXmsApiParameter AP = new iXmsApiParameter();
+            AP.user = vUserInfo;
+            AP.Method = "LockedCode";
+            AP.ObjName = "";
+            AP.UnknowName = "";
+            string strPara = PubUtility.GetSerString(AP, typeof(iXmsApiParameter), "api");
 
+            Uri aUri = new Uri(ApiUrl);
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(aUri);
+            httpWebRequest.Headers.Add("ParaKey", strPara);
+            //httpWebRequest.Headers.Add("apikeysecret", ApiPara.apikeysecret);
+            //httpWebRequest.Headers.Add("Proxy-Authorization", ApiPara.Proxy_Authorization);
+            httpWebRequest.ContentType = "text/xml";
+            httpWebRequest.Accept = "text/xml";
+            httpWebRequest.Method = "POST";
+            //string strReturn = "";
+            ds.WriteXml(httpWebRequest.GetRequestStream());
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            DataSet dsR = null;
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                //strReturn = streamReader.ReadToEnd();
+                dsR = new DataSet();
+                dsR.ReadXml(streamReader);
+                //AR.Msg_Code = strReturn;
+            }
+            return dsR;
+        }
+    }
 
+    public static class SSLValidator
+    {
+        private static bool OnValidateCertificate(object sender, System.Security.Cryptography.X509Certificates.X509Certificate certificate, System.Security.Cryptography.X509Certificates.X509Chain chain,
+                                                    System.Net.Security.SslPolicyErrors sslPolicyErrors)
+        {
+            return true;
+        }
+        public static void OverrideValidation()
+        {
+            System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType)3072;
+            System.Net.ServicePointManager.ServerCertificateValidationCallback =
+                OnValidateCertificate;
+            System.Net.ServicePointManager.Expect100Continue = true;
+        }
+    }
 }

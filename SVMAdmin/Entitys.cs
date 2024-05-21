@@ -20,6 +20,12 @@ namespace SVMAdmin
         public string UserID { get; set; }
     }
 
+    public class ApiSetting
+    {
+        public bool isTestSite { get; set; }
+        public string LogPath { get; set; }
+        public string url_HTADDVIP_ET { get; set; }
+    }
 
     [System.Runtime.Serialization.DataContract]
     internal class AutoCompleteData

@@ -11,6 +11,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using ZXing.QrCode.Internal;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
 
 namespace SVMAdmin.Controllers
@@ -210,6 +211,21 @@ namespace SVMAdmin.Controllers
                         sql = "Update Account Set User_Lock='Y',User_LockDate=convert(char(10),getdate(),111) + ' ' + convert(char(12),getdate(),108),ErrTimes=0 ";
                         sql += " where UID='" + USERID.SqlQuote() + "'";
                         PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                        sql = "select '" + uu.CompanyId + "' as CompanyID,'" + USERID.SqlQuote() + "' as UID ";
+                        DataTable dtLockedCode = PubUtility.SqlQry(sql, uu, "SYS");
+                        dtLockedCode.TableName = "dtLockedCode";
+                        DataSet dsLockedCode = new DataSet();
+                        dsLockedCode.Tables.Add(dtLockedCode);
+
+                        ApiSetting aSet = GetApiSetting();
+                        iXmsClient.ApiUrl = aSet.url_HTADDVIP_ET;
+                        DataSet dsR = iXmsClient.LockedCode(dsLockedCode, uu);
+                        DataTable dtP = dsR.Tables["dtProcessStatus"];
+                        if (dtP.Rows[0]["Error"].ToString() != "0")
+                        {
+                            throw new Exception(dtP.Rows[0]["Msg_Code"].ToString());
+                        }
                         throw new Exception("帳號鎖定");
                     }
                     else if (dtTmp.Rows[0]["UPWD"].ToString() != PASSWORD.SqlQuote())
@@ -8375,6 +8391,14 @@ namespace SVMAdmin.Controllers
                 sgid = PubUtility.AddTable("SetEDMDWeb", dtF, uu, "SYS");
             }
             return sgid;
+        }
+
+        private ApiSetting GetApiSetting()
+        {
+            string setfn = _hostingEnvironment.ContentRootPath + @"\ApiSetting.json";
+            string str = System.IO.File.ReadAllText(setfn, System.Text.Encoding.UTF8);
+            ApiSetting GAS = PubUtility.ConvertToEntity(str, typeof(ApiSetting)) as ApiSetting;
+            return GAS;
         }
 
         //[Route("SystemSetup/FTPUpload")]
