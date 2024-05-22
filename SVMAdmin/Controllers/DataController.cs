@@ -7742,7 +7742,6 @@ namespace SVMAdmin.Controllers
                     }
                     else {
                         var ShopNo1 = ShopNo.Replace("'", "");
-
                         sql += "and ST_ID like '" + ShopNo1 + "%' ";
                     }
                 }

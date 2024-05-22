@@ -35,7 +35,7 @@
                 table_lement: $('#tbDataLookup_ActivityCode')[0],
                 class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5"],
                 fields_info: [
-                    { type: "radio", name: "chkset", style: "" },
+                    { type: "radio", name: "chkset", style: "width:16px;height:16px" },
                     { type: "Text", name: "ActivityCode", style: "" },
                     { type: "Text", name: "PS_Name", style: "" },
                     { type: "Text", name: "StartDate", style: "" },
@@ -52,7 +52,7 @@
                 table_lement: $('#tbDataLookup_ShopNo')[0],
                 class_collection: ["tdCol1", "tdCol2", "tdCol3"],
                 fields_info: [
-                    { type: "radio", name: "chkset", style: "" },
+                    { type: "radio", name: "chkset", style: "width:16px;height:16px" },
                     { type: "Text", name: "ST_ID", style: "" },
                     { type: "Text", name: "ST_SName", style: "" }
                 ],
@@ -67,7 +67,7 @@
                 table_lement: $('#tbDataLookup_ShopNo_EDM')[0],
                 class_collection: ["tdCol1", "tdCol2", "tdCol3"],
                 fields_info: [
-                    { type: "checkbox", name: "chkset", style: "" },
+                    { type: "checkbox", name: "chkset", style: "width:16px;height:16px" },
                     { type: "Text", name: "ST_ID", style: "" },
                     { type: "Text", name: "ST_SName", style: "" }
                 ],
@@ -82,7 +82,7 @@
                 table_lement: $('#tbDataLookup_PSNO_EDM')[0],
                 class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6"],
                 fields_info: [
-                    { type: "radio", name: "chkset", style: "" },
+                    { type: "radio", name: "chkset", style: "width:16px;height:16px" },
                     { type: "Text", name: "PS_NO", style: "" },
                     { type: "Text", name: "PS_Name", style: "" },
                     { type: "Text", name: "ActivityCode", style: "" },
@@ -743,10 +743,19 @@
             DyAlert("請輸入DM主旨!", function () { EnableForm_EDM(false) })
             return;
         }
+
         if ($('#txtStartDate_EDM').val() == "" | $('#txtEndDate_EDM').val() == "") {
             DyAlert("入會期間兩欄皆需輸入!", function () { EnableForm_EDM(false) })
             return;
         }
+        else {
+            if ($('#txtStartDate_EDM').val() > $('#txtEndDate_EDM').val()) {
+                DyAlert("入會開始日不可大於結束日!", function () { EnableForm_EDM(false) })
+                return;
+            }
+        }
+
+
         if ($('#chkAllShopNo_EDM').prop('checked') == false) {
             if (chkShopNo == "") {
                 DyAlert("請選擇入會店別!", function () { EnableForm_EDM(false) })
@@ -1262,7 +1271,7 @@
     let btShopNo_EDM_click = function (bt) {
         //Timerset();
         var pData = {
-            ShopNo: chkShopNo
+            ShopNo: ""
         }
         PostToWebApi({ url: "api/SystemSetup/MSDM104_LookUpShopNo_EDM", data: pData, success: afterMSDM104_ShopNo_EDM });
     };
@@ -1277,6 +1286,13 @@
             $('#modal_Lookup_ShopNo_EDM').modal('show');
             setTimeout(function () {
                 grdLookUp_ShopNo_EDM.BindData(dtE);
+                if (chkShopNo != "") {
+                    var shop = chkShopNo.split(',');
+                    for (var i = 0; i < shop.length; i++) {
+                        //$('#tbDataLookup_ShopNo_EDM tbody tr .tdCol2:contains("' + shop[i].replaceAll("'", "") + '")').closest('tr').find('.tdCol1 input:checkbox').prop('checked', true);
+                        $('#tbDataLookup_ShopNo_EDM tbody tr .tdCol2').filter(function () { return $(this).text() == shop[i].replaceAll("'", ""); }).closest('tr').find('.tdCol1 input:checkbox').prop('checked', true);
+                    }
+                }
             }, 500);
         }
     };
