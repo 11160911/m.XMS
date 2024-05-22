@@ -233,6 +233,7 @@
     };
 
     let btP2_EDM_click = function (bt) {
+        //Timerset();
         var P2 = $('#P2_EDM').attr('src');
         if (P2 == "") {
             btUPEDM_click();
@@ -243,10 +244,12 @@
     };
 
     let btExit_ImgUp_click = function (bt) {
+        //Timerset();
         $('#modal_ImgUp').modal('hide');
     };
 
     let btDelete_ImgUp_click = function (bt) {
+        //Timerset();
         DyConfirm("請確認是否刪除此圖片？", function () {
             var DocNo = "";
             if (cs_EditMode == "A") {
@@ -277,6 +280,7 @@
     };
 
     let btUPEDM_click = function (bt) {
+        //Timerset();
         $('#modal_ImgUp').modal('hide');
 
         InitFileUpload(bt);
@@ -393,51 +397,6 @@
         $('#' + elmImg).prop('src', url);
     }
 
-    let btDMAdd_click = function (bt) {
-        if ($('#cboType').val() == null) {
-            DyAlert("請選擇版型!")
-            return;
-        }
-        else if ($('#cboType').val() == "A") {
-            GetGetImage("Logo_A", "");
-            GetGetImage("Subject_A", "");
-            GetGetImage("PLUPic1_A", "");
-            GetGetImage("PLUPic2_A", "");
-            GetGetImage("PLUPic3_A", "");
-            GetGetImage("PLUPic4_A", "");
-            GetGetImage("PLUPic5_A", "");
-            GetGetImage("PLUPic6_A", "");
-            $('#Barcode1_A').val('');
-            $('#QRCode1_A').val('');
-            window.editor.setData('');
-
-            $('#modal_DMAdd_A').modal('show');
-            setTimeout(function () {
-                GetDocNoDM();
-            }, 500);
-        }
-    };
-
-    let btPrint_DMAdd_A_click = function (bt) {
-        GetGetImage("Logo_DM_A", "");
-        GetGetImage("Subject_DM_A", "");
-        GetGetImage("PLUPic1_DM_A", "");
-        GetGetImage("PLUPic2_DM_A", "");
-        GetGetImage("PLUPic3_DM_A", "");
-        GetGetImage("PLUPic4_DM_A", "");
-        GetGetImage("PLUPic5_DM_A", "");
-        GetGetImage("PLUPic6_DM_A", "");
-        GetGetImage("Barcode1_DM_A", "");
-        GetGetImage("QRCode1_DM_A", "");
-        var element = document.getElementById("editor_DM_A");
-        element.replaceChildren();
-
-        $('#modal_DM_A').modal('show');
-        setTimeout(function () {
-            Print_DM_A();
-        }, 500);
-    };
-
     let Print_DM_A = function () {
         var pData = {
             DocNo: $('#lblDocNo_DMAdd_A').html()
@@ -499,14 +458,6 @@
                 }
             }
         }
-    };
-
-    let btExit_DMAdd_A_click = function (bt) {
-        $('#modal_DMAdd_A').modal('hide');
-    };
-
-    let btExit_DM_A_click = function (bt) {
-        $('#modal_DM_A').modal('hide');
     };
 
     //EDM按鍵控制
@@ -730,6 +681,7 @@
 
     //EDM新增
     let btAdd_click = function (bt) {
+        //Timerset();
         var pData = {
             ProgramID: "MSDM104"
         }
@@ -755,6 +707,7 @@
 
     //EDM修改
     let btMod_EDM_click = function (bt) {
+        //Timerset();
         cs_EditMode = "M"
         FunctionEnable_EDM(cs_EditMode)
         EnableForm_EDM(false)
@@ -762,6 +715,7 @@
 
     //EDM取消
     let btCancel_EDM_click = function (bt) {
+        //Timerset();
         var pData = {
             DocNo: $('#lblDocNo_EDM').html()
         }
@@ -782,6 +736,7 @@
 
     //EDM儲存
     let btSave_EDM_click = function (bt) {
+        //Timerset();
         EnableForm_EDM(true)
 
         if ($('#txtEDMMemo_EDM').val() == "") {
@@ -874,6 +829,7 @@
 
     //EDM批核
     let btApp_EDM_click = function (bt) {
+        //Timerset();
         DyConfirm("確定批核此DM？", function () {
             var pData = {
                 DocNo: $('#lblDocNo_EDM').html()
@@ -923,6 +879,7 @@
 
     //EDM作廢
     let btDef_EDM_click = function (bt) {
+        //Timerset();
         DyConfirm("確定作廢此DM？", function () {
             var pData = {
                 DocNo: $('#lblDocNo_EDM').html()
@@ -982,6 +939,7 @@
 
     //EDM預覽
     let btShow_EDM_click = function (bt) {
+        //Timerset();
         $('#lbl_Purpose_ShowEDM').html('');
         GetImage_EDM("P1_ShowEDM", "");
         GetImage_EDM("P2_ShowEDM", "");
@@ -1051,18 +1009,21 @@
 
     //EDM預覽-離開
     let btExit_ShowEDM_click = function (bt) {
+        //Timerset();
         $('#modal_ShowEDM').modal('hide');
     };
 
 
     //EDM離開
     let btExit_EDM_click = function (bt) {
+        //Timerset();
         $('#modal_EDM').modal('hide')
         btQuery_click();
     };
 
     //清除
     let btClear_click = function (bt) {
+        //Timerset();
         $('#txtDocNo').val('');
         $('#txtActivityCode').val('');
         $('#chkNoApp').prop('checked',true);
@@ -1076,6 +1037,7 @@
 
     //查詢
     let btQuery_click = function (bt) {
+        //Timerset();
         var App = "";
         var Def = "";
 
@@ -1133,6 +1095,7 @@
 
     //活動代號[...]
     let btActivityCode_click = function (bt) {
+        //Timerset();
         var pData = {
             ActivityCode: $('#txtActivityCode').val()
         }
@@ -1159,6 +1122,7 @@
     };
 
     let btQLookup_ActivityCode_click = function (bt) {
+        //Timerset();
         var pData = {
             ActivityCode: $('#txtQLookup_ActivityCode').val()
         }
@@ -1181,6 +1145,7 @@
     };
 
     let btLpOK_ActivityCode_click = function (bt) {
+        //Timerset();
         var obchkedtd = $('#tbDataLookup_ActivityCode input[type="radio"]:checked');
         var chkedRow = obchkedtd.length.toString();
 
@@ -1196,11 +1161,13 @@
     };
 
     let btLpExit_ActivityCode_click = function (bt) {
+        //Timerset();
         $('#modal_Lookup_ActivityCode').modal('hide')
     };
 
     //店別[...]
     let btShopNo_click = function (bt) {
+        //Timerset();
         var pData = {
             ShopNo: $('#txtShopNo').val().split(' ')[0]
         }
@@ -1227,6 +1194,7 @@
     };
 
     let btQLookup_ShopNo_click = function (bt) {
+        //Timerset();
         var pData = {
             ShopNo: $('#txtQLookup_ShopNo').val()
         }
@@ -1249,6 +1217,7 @@
     };
 
     let btLpOK_ShopNo_click = function (bt) {
+        //Timerset();
         var obchkedtd = $('#tbDataLookup_ShopNo input[type="radio"]:checked');
         var chkedRow = obchkedtd.length.toString();
 
@@ -1264,12 +1233,13 @@
     };
 
     let btLpExit_ShopNo_click = function (bt) {
+        //Timerset();
         $('#modal_Lookup_ShopNo').modal('hide')
     };
 
-   
 
     let GetAllShop = function () {
+        //Timerset();
         if ($('#chkAllShopNo_EDM').prop('checked') == true) {
             $('#btShopNo_EDM').prop('disabled', true)
             $('#lblShopNoCnt_EDM').html('')
@@ -1290,6 +1260,7 @@
     };
 
     let btShopNo_EDM_click = function (bt) {
+        //Timerset();
         var pData = {
             ShopNo: chkShopNo
         }
@@ -1311,6 +1282,7 @@
     };
 
     let btQLookup_ShopNo_EDM_click = function (bt) {
+        //Timerset();
         var pData = {
             ShopNo: $('#txtQLookup_ShopNo_EDM').val()
         }
@@ -1333,10 +1305,12 @@
     };
 
     let btLpExit_ShopNo_EDM_click = function (bt) {
+        //Timerset();
         $('#modal_Lookup_ShopNo_EDM').modal('hide');
     };
 
     let btLpOK_ShopNo_EDM_click = function (bt) {
+        //Timerset();
         var obchkedtd = $('#tbDataLookup_ShopNo_EDM .checkbox:checked');
         chkedRow = obchkedtd.length.toString();   //本次已勾選的總筆數
         if (chkedRow == 0) {
@@ -1356,6 +1330,7 @@
     };
 
     let btPSNO_EDM_click = function (bt) {
+        //Timerset();
         var WhNoFlag = ""
         if ($('#txtStartDate_EDM').val() == "" | $('#txtEndDate_EDM').val() == "") {
             DyAlert("入會期間兩欄皆需輸入!")
@@ -1400,6 +1375,7 @@
     };
 
     let btQLookup_PSNO_EDM_click = function (bt) {
+        //Timerset();
         var WhNoFlag = ""
         if ($('#chkAllShopNo_EDM').prop('checked') == true) {
             WhNoFlag = "Y"
@@ -1434,6 +1410,7 @@
     };
 
     let btLpOK_PSNO_EDM_click = function (bt) {
+        //Timerset();
         var obchkedtd = $('#tbDataLookup_PSNO_EDM input[type="radio"]:checked');
         var chkedRow = obchkedtd.length.toString();
 
@@ -1450,6 +1427,7 @@
     };
 
     let btLpExit_PSNO_EDM_click = function (bt) {
+        //Timerset();
         $('#modal_Lookup_PSNO_EDM').modal('hide');
     };
 
@@ -1500,25 +1478,6 @@
             $('#btExit_ImgUp').click(function () { btExit_ImgUp_click(this) });
             $('#btDelete_ImgUp').click(function () { btDelete_ImgUp_click(this) });
             $('#btImgUp').click(function () { btUPEDM_click(this) });
-
-            ///////////////////////////////////////////////////////
-            $('#btDMAdd').click(function () { btDMAdd_click(this) });
-            $('#btExit_DMAdd_A').click(function () { btExit_DMAdd_A_click(this) });
-            $('#btPrint_DMAdd_A').click(function () { btPrint_DMAdd_A_click(this) });
-            $('#btExit_DM_A').click(function () { btExit_DM_A_click(this) });
-
-            $('#btLogo_A').click(function () { btUPPic1_click(this) });
-            $('#btSubject_A').click(function () { btUPPic1_click(this) });
-            $('#btUPPic1_A').click(function () { btUPPic1_click(this) });
-            $('#btUPPic2_A').click(function () { btUPPic1_click(this) });
-            $('#btUPPic3_A').click(function () { btUPPic1_click(this) });
-            $('#btUPPic4_A').click(function () { btUPPic1_click(this) });
-            $('#btUPPic5_A').click(function () { btUPPic1_click(this) });
-            $('#btUPPic6_A').click(function () { btUPPic1_click(this) });
-
-            $('#btBarcode1_A').click(function () { btBarcode1_A_click(this) });
-            $('#btQRCode1_A').click(function () { btQRCode1_A_click(this) });
-            $('#bteditor1_A').click(function () { bteditor1_A_click(this) });
 
             //文字編輯器
             ClassicEditor
