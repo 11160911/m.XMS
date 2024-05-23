@@ -7573,7 +7573,7 @@ namespace SVMAdmin.Controllers
                 sql += "isnull(a.ApproveDate,'')ApproveDate,isnull(a.DefeasanceDate,'')DefeasanceDate ";
                 sql += "From SetEDMHWeb a (nolock) ";
                 sql += "left join PromoteSCouponHWeb b (nolock) on a.PS_NO=b.PS_NO and b.Companycode=a.Companycode ";
-                sql += "left join (Select EVNO,COUNT(*)Cnt From SetEDMVIP_VIPWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by EVNO)c on a.PS_NO=c.EVNO ";
+                sql += "left join (Select EVNO,COUNT(*)Cnt From SetEDMVIP_VIPWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by EVNO)c on a.DocNo=c.EVNO ";
                 //活動代號
                 if (ActivityCode.SqlQuote() != "")
                 {
