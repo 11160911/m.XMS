@@ -7641,7 +7641,7 @@ namespace SVMAdmin.Controllers
                 string sql = "";
                 sql = "Select a.ActivityCode,a.PS_Name,a.StartDate,a.EndDate ";
                 sql += "From PromoteSCouponHWeb a (nolock) ";
-                //sql += "inner join SetEDMHWeb b (nolock) on a.PS_NO=b.PS_NO and b.EDMType='V' and isnull(b.DelDate,'')='' and b.Companycode=a.Companycode ";
+                sql += "inner join SetEDMHWeb b (nolock) on a.PS_NO=b.PS_NO and b.EDMType='V' and isnull(b.DelDate,'')='' and b.Companycode=a.Companycode ";
                 sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                 if (ActivityCode.SqlQuote() != "") {
                     sql += "and a.ActivityCode like '" + ActivityCode.SqlQuote() + "%' ";
@@ -8328,6 +8328,96 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+
+        [Route("SystemSetup/MSSD102_LookUpActivityCode")]
+        public ActionResult SystemSetup_MSSD102_LookUpActivityCode()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSD102_LookUpActivityCodeOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ActivityCode = rq["ActivityCode"];
+
+                string sql = "";
+                sql = "Select a.ActivityCode,a.PS_Name,a.StartDate,a.EndDate ";
+                sql += "From PromoteSCouponHWeb a (nolock) ";
+                sql += "inner join SetEDMHWeb b (nolock) on a.PS_NO=b.PS_NO and b.EDMType='V' and isnull(b.ApproveDate,'')<>'' and b.Companycode=a.Companycode ";
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                if (ActivityCode.SqlQuote() != "")
+                {
+                    sql += "and a.ActivityCode like '" + ActivityCode.SqlQuote() + "%' ";
+                }
+                sql += "group by a.ActivityCode,a.PS_Name,a.StartDate,a.EndDate ";
+                sql += "Order By a.StartDate desc ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSSD102Query")]
+        public ActionResult SystemSetup_MSSD102Query()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSD102QueryOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ActivityCode = rq["ActivityCode"];
+                string PSName = rq["PSName"];
+                string EDDate = rq["EDDate"];
+
+                string sql = "";
+                sql = "Select a.PS_NO,a.ActivityCode,a.PS_Name,a.StartDate + ' ~ ' + a.EndDate EDDate,isnull(c.Cnt1,0)Cnt1,isnull(d.Cnt2,0)Cnt2 ";
+                sql += "From PromoteSCouponHWeb a (nolock) ";
+                sql += "inner join (Select PS_NO From SetEDMHWeb (nolock) Where EDMType='V' and isnull(ApproveDate,'')<>'' and Companycode='" + uu.CompanyId + "' ";
+                //入會日期
+                if (EDDate.SqlQuote() != "")
+                {
+                    sql += "and '" + EDDate.SqlQuote() + "' between StartDate and EndDate ";
+                }
+                sql += "group by PS_NO)b on a.PS_NO=b.PS_NO ";
+                //發出張數
+                sql += "inner join (Select PS_NO,Count(*)Cnt1 From SetEDMVIP_VIPWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by PS_NO)c on a.PS_NO=c.PS_NO ";
+                //回收張數
+                sql += "inner join (Select d1.PS_NO,Count(*)Cnt2 From SetEDMVIP_VIPWeb d1 (nolock)  ";
+                sql += "inner join PromoteSLogCardNoWeb d2 (nolock) on d1.CouponID=d2.CouponNo and d2.Companycode=d1.Companycode Where d1.Companycode='" + uu.CompanyId + "' ";
+                sql += "group by d1.PS_NO)d on a.PS_NO=d.PS_NO ";
+
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                //活動代號
+                if (ActivityCode.SqlQuote() != "")
+                {
+                    sql += "and a.ActivityCode like '%" + ActivityCode.SqlQuote() + "%' ";
+                }
+                //活動名稱
+                if (PSName.SqlQuote() != "")
+                {
+                    sql += "and a.PS_Name like '%" + PSName.SqlQuote() + "%' ";
+                }
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                sql += "Order by a.StartDate ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
 
         [Route("FileUpload_EDM")]
         public ActionResult FileUpload_EDM()
