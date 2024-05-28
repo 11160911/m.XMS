@@ -17,6 +17,8 @@
     let ModPLU = "";
     let ModPLUQty;
 
+    let SysYM = "";
+
 
     let AssignVar = function () {
 
@@ -1475,7 +1477,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
     //清除
     let btClear_click = function (bt) {
         //Timerset();
-        $('#txtYM').val('');
+        $('#txtYM').val(SysYM);
         $('#rdoShop').prop('checked','true');
     };
 
@@ -1492,19 +1494,22 @@ Timerset(sessionStorage.getItem('isamcomp'));
         }
 
         ShowLoading();
-        var Flag = "";
-        if ($('#rdoShop').prop('checked') == true) {
-            Flag = "S"
-        }
-        else if ($('#rdoDate').prop('checked') == true) {
-            Flag = "D"
-        }
 
-        var pData = {
-            CountYM: $('#txtYM').val().toString().replaceAll('-', '/'),
-            Flag: Flag
-        }
-        PostToWebApi({ url: "api/SystemSetup/MSSD105Query", data: pData, success: afterMSSD105Query });
+        setTimeout(function () {
+            var Flag = "";
+            if ($('#rdoShop').prop('checked') == true) {
+                Flag = "S"
+            }
+            else if ($('#rdoDate').prop('checked') == true) {
+                Flag = "D"
+            }
+
+            var pData = {
+                CountYM: $('#txtYM').val().toString().replaceAll('-', '/'),
+                Flag: Flag
+            }
+            PostToWebApi({ url: "api/SystemSetup/MSSD105Query", data: pData, success: afterMSSD105Query });
+        }, 1000);
     };
 
     let afterMSSD105Query = function (data) {
@@ -1527,6 +1532,18 @@ Timerset(sessionStorage.getItem('isamcomp'));
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
                 $(".modal-backdrop").remove();
+                $('#tbQuery thead td#td1').html('');
+                $('#tbQuery thead td#td2').html('');
+                $('#tbQuery thead td#td3').html('');
+                $('#tbQuery thead td#td4').html('');
+                $('#tbQuery thead td#td5').html('');
+                $('#tbQuery thead td#td6').html('');
+                $('#tbQuery thead td#td7').html('');
+                $('#tbQuery thead td#td8').html('');
+                $('#tbQuery thead td#td9').html('');
+                $('#tbQuery thead td#td10').html('');
+                $('#tbQuery thead td#td11').html('');
+                $('#tbQuery thead td#td12').html('');
                 return;
             }
 
@@ -1622,18 +1639,19 @@ Timerset(sessionStorage.getItem('isamcomp'));
        else {
             var dtE = data.getElementsByTagName('dtE');
             var dtV = data.getElementsByTagName('dtV');
-
             if (dtE.length > 0) {
                 $('#lblProgramName').html(GetNodeValue(dtE[0], "ChineseName"));
             }
-
             if (dtV.length > 0) {
-                $('#lblEnd').html("統計至 " + GetNodeValue(dtV[0], "EndDate") + " 止")
-                $('#lblVIPQty').html('目前會員總數 : ' + parseInt(GetNodeValue(dtV[0], "VIPCntAll")).toLocaleString('en-US'))
+                SysYM = GetNodeValue(dtV[0], "SysDate").toString().substring(0, 7).replaceAll('/', '-');
+                $('#txtYM').val(SysYM);
+                $('#lblEnd').html("統計至 " + GetNodeValue(dtV[0], "EndDate") + " 止");
+                $('#lblVIPQty').html('目前會員總數 : ' + parseInt(GetNodeValue(dtV[0], "VIPCntAll")).toLocaleString('en-US'));
             }
             else {
-                $('#lblEnd').html('')
-                $('#lblVIPQty').html('')
+                $('#txtYM').val('');
+                $('#lblEnd').html('');
+                $('#lblVIPQty').html('');
             }
             AssignVar();
 

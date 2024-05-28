@@ -8429,13 +8429,14 @@ namespace SVMAdmin.Controllers
                 IFormCollection rq = HttpContext.Request.Form;
                 string ProgramID = rq["ProgramID"];
                 string Yesterday = PubUtility.GetYesterday(uu);
+                string Today = PubUtility.GetToday(uu);
                 string sql = "select ChineseName from ProgramIDWeb (nolock) where ProgramID='" + ProgramID.SqlQuote() + "'";
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
                 ds.Tables.Add(dtE);
 
                 //統計截止日/會員總數
-                sql = "Select '" + Yesterday + "' as EndDate,Count(*) as VIPCntAll ";
+                sql = "Select '" + Yesterday.Trim() + "' as EndDate,'" + Today.Trim() + "' as SysDate,Count(*) as VIPCntAll ";
                 sql += "from EDDMS.dbo.VIP v (nolock) ";
                 sql += "inner join EDDMS.dbo.Warehouse w (nolock) on v.VIP_FaceID=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=v.Companycode ";
                 sql += "Where v.Companycode='" + uu.CompanyId + "' ";
