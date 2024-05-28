@@ -103,7 +103,7 @@
 
     let InitModifyDeleteButton = function () {
         $('#tbQMSDM104 .fa-trash-o').click(function () { btDelete_click(this) });
-        $('#tbQMSDM104 .tdCol1').click(function () { MSDM104Query_EDM_click(this) });
+        $('#tbQMSDM104 tbody tr .tdCol1').click(function () { MSDM104Query_EDM_click(this) });
     }
 
     let btDelete_click = function (bt) {
@@ -1126,6 +1126,7 @@
             $('#modal_Lookup_ActivityCode').modal('show');
             setTimeout(function () {
                 grdLookUp_ActivityCode.BindData(dtE);
+                $('#tbDataLookup_ActivityCode tbody tr .tdCol2').filter(function () { return $(this).text() == $('#txtActivityCode').val(); }).closest('tr').find('.tdCol1 input:radio').prop('checked', true);
             }, 500);
         }
     };
@@ -1198,6 +1199,7 @@
             $('#modal_Lookup_ShopNo').modal('show');
             setTimeout(function () {
                 grdLookUp_ShopNo.BindData(dtE);
+                $('#tbDataLookup_ShopNo tbody tr .tdCol2').filter(function () { return $(this).text() == $('#txtShopNo').val().split(' ')[0]; }).closest('tr').find('.tdCol1 input:radio').prop('checked', true);
             }, 500);
         }
     };

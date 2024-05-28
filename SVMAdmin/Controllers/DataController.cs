@@ -7572,13 +7572,14 @@ namespace SVMAdmin.Controllers
                 sql = "Select a.DocNO,a.EDMMemo,a.StartDate + ' ~ ' + a.EndDate as EDDate,b.PS_Name,b.ActivityCode,isnull(c.Cnt,0)Cnt, ";
                 sql += "isnull(a.ApproveDate,'')ApproveDate,isnull(a.DefeasanceDate,'')DefeasanceDate ";
                 sql += "From SetEDMHWeb a (nolock) ";
-                sql += "left join PromoteSCouponHWeb b (nolock) on a.PS_NO=b.PS_NO and b.Companycode=a.Companycode ";
-                sql += "left join (Select EVNO,COUNT(*)Cnt From SetEDMVIP_VIPWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by EVNO)c on a.DocNo=c.EVNO ";
+                sql += "inner join PromoteSCouponHWeb b (nolock) on a.PS_NO=b.PS_NO and b.Companycode=a.Companycode ";
                 //活動代號
                 if (ActivityCode.SqlQuote() != "")
                 {
                     sql += "and b.ActivityCode like '" + ActivityCode.SqlQuote() + "%' ";
                 }
+                sql += "left join (Select EVNO,COUNT(*)Cnt From SetEDMVIP_VIPWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by EVNO)c on a.DocNo=c.EVNO ";
+                
                 sql += "Where a.Companycode='" + uu.CompanyId + "' and isnull(a.DelDate,'')='' and a.EDMType='V' ";
                 //DM單號
                 if (DocNo.SqlQuote() != "") {
