@@ -8418,6 +8418,291 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("SystemSetup/GetInitMSSD105")]
+        public ActionResult SystemSetup_GetInitMSSD105()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetInitMSSD105OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ProgramID = rq["ProgramID"];
+                string Yesterday = PubUtility.GetYesterday(uu);
+                string sql = "select ChineseName from ProgramIDWeb (nolock) where ProgramID='" + ProgramID.SqlQuote() + "'";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+
+                //統計截止日/會員總數
+                sql = "Select '" + Yesterday + "' as EndDate,Count(*) as VIPCntAll ";
+                sql += "from EDDMS.dbo.VIP v (nolock) ";
+                sql += "inner join EDDMS.dbo.Warehouse w (nolock) on v.VIP_FaceID=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=v.Companycode ";
+                sql += "Where v.Companycode='" + uu.CompanyId + "' ";
+                sql += "and isnull(v.VIP_Qday,'')<='" + Yesterday + "' ";
+                DataTable dtV = PubUtility.SqlQry(sql, uu, "SYS");
+                dtV.TableName = "dtV";
+                ds.Tables.Add(dtV);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSSD105Query")]
+        public ActionResult SystemSetup_MSSD105Query()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSD105QueryOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string CountYM = rq["CountYM"];
+                string Flag = rq["Flag"];
+                string Yesterday = PubUtility.GetYesterday(uu);
+                string sql = "";
+                string sqlQ = "";
+                string sqlSumQ = "";
+
+                //店櫃
+                if (Flag == "S") {
+                    //入會數
+                    sql = "Select v.VIP_FaceID as ID,count(*) as VIPCnt ";
+                    sql += "into #v ";
+                    sql += "from EDDMS.dbo.VIP v (nolock) ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on v.VIP_FaceID=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=v.Companycode ";
+                    sql += "Where v.Companycode='" + uu.CompanyId + "' ";
+                    if (CountYM != "") {
+                        //判斷調閱年月是否同系統日
+                        if (CountYM == Yesterday.Substring(0, 7)) {
+                            sql += "and isnull(v.VIP_Qday,'') between '" + Yesterday.Substring(0, 7) + "/01' and '" + Yesterday + "' ";
+                        }
+                        else {
+                            sql += "and left(isnull(v.VIP_Qday,''),7)='" + CountYM + "' ";
+                        }
+                    }
+                    sql += "Group By v.VIP_FaceID; ";
+
+                    //新會員首日交易筆數/交易金額/客單價
+                    sql += "Select h.ShopNo as ID,Count(*) as SalesCnt1,Sum(h.Cash) as SalesCash1,case when Count(*)=0 then 0 else Round(Sum(h.Cash)/Count(*),0) end as SalesPrice1 ";
+                    sql += "into #s1 ";
+                    sql += "From SalesH_AllWeb h (nolock) ";
+                    sql += "inner join EDDMS.dbo.VIP v (nolock) on h.VIP_ID2=v.VIP_ID2 and h.ShopNo=v.VIP_FaceID and h.OpenDate=v.VIP_Qday and v.Companycode=h.Companycode ";
+                    if (CountYM != "")
+                    {
+                        //判斷調閱年月是否同系統日
+                        if (CountYM == Yesterday.Substring(0, 7))
+                        {
+                            sql += "and isnull(v.VIP_Qday,'') between '" + Yesterday.Substring(0, 7) + "/01' and '" + Yesterday + "' ";
+                        }
+                        else
+                        {
+                            sql += "and left(isnull(v.VIP_Qday,''),7)='" + CountYM + "' ";
+                        }
+                    }
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=h.Companycode ";
+                    sql += "Where h.Companycode='" + uu.CompanyId + "' ";
+                    sql += "Group By h.ShopNo; ";
+
+                    //會員當月交易筆數/交易金額/客單價/交易佔比
+                    sql += "Select h.ShopNo as ID,Count(*) as SalesCnt2,Sum(h.Cash) as SalesCash2,case when Count(*)=0 then 0 else Round(Sum(h.Cash)/Count(*),0) end as SalesPrice2 ";
+                    sql += "into #s2 ";
+                    sql += "From SalesH_AllWeb h (nolock) ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=h.Companycode ";
+                    sql += "Where h.Companycode='" + uu.CompanyId + "' and h.VIPNo<>'' ";
+                    if (CountYM != "") {
+                        sql += "and left(h.OpenDate,7)='" + CountYM + "' ";
+                    }
+                    sql += "Group By h.ShopNo; ";
+
+                    //非會員當月交易筆數/交易金額/客單價/交易佔比
+                    sql += "Select h.ShopNo as ID,Count(*) as SalesCnt3,Sum(h.Cash) as SalesCash3,case when Count(*)=0 then 0 else Round(Sum(h.Cash)/Count(*),0) end as SalesPrice3 ";
+                    sql += "into #s3 ";
+                    sql += "From SalesH_AllWeb h (nolock) ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=h.Companycode ";
+                    sql += "Where h.Companycode='" + uu.CompanyId + "' and h.VIPNo='' ";
+                    if (CountYM != "")
+                    {
+                        sql += "and left(h.OpenDate,7)='" + CountYM + "' ";
+                    }
+                    sql += "Group By h.ShopNo; ";
+
+                    //總交易
+                    sql += "Select h.ShopNo as ID,Sum(h.Cash) as SalesCashAll ";
+                    sql += "into #sall ";
+                    sql += "From SalesH_AllWeb h (nolock) ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=h.Companycode ";
+                    sql += "Where h.Companycode='" + uu.CompanyId + "' ";
+                    if (CountYM != "")
+                    {
+                        sql += "and left(h.OpenDate,7)='" + CountYM + "' ";
+                    }
+                    sql += "Group By h.ShopNo; ";
+
+                    //開始撈明細資料
+                    sqlQ = "Select w.ST_ID + '-' + w.ST_SName as ID,isnull(v.VIPCnt,0)VIPCnt, ";
+                    sqlQ += "isnull(s1.SalesCnt1,0)SalesCnt1,isnull(s1.SalesCash1,0)SalesCash1,isnull(s1.SalesPrice1,0)SalesPrice1, ";
+                    sqlQ += "isnull(s2.SalesCnt2,0)SalesCnt2,isnull(s2.SalesCash2,0)SalesCash2,isnull(s2.SalesPrice2,0)SalesPrice2,case when isnull(sall.SalesCashAll,0)=0 then '0%' else cast(cast(Round((isnull(s2.SalesCash2,0)/isnull(sall.SalesCashAll,0))*100,0) as int) as varchar) + '%' end as SalesPercent2, ";
+                    sqlQ += "isnull(s3.SalesCnt3,0)SalesCnt3,isnull(s3.SalesCash3,0)SalesCash3,isnull(s3.SalesPrice3,0)SalesPrice3,case when isnull(sall.SalesCashAll,0)=0 then '0%' else cast(cast(Round((isnull(s3.SalesCash3,0)/isnull(sall.SalesCashAll,0))*100,0) as int) as varchar) + '%' end as SalesPercent3 ";
+        
+                    sqlQ += "From EDDMS.dbo.Warehouse w (nolock) ";
+                    sqlQ += "left join #sall sall on w.ST_ID=sall.ID ";
+                    sqlQ += "left join #v v on w.ST_ID=v.ID ";
+                    sqlQ += "left join #s1 s1 on w.ST_ID=s1.ID ";
+                    sqlQ += "left join #s2 s2 on w.ST_ID=s2.ID ";
+                    sqlQ += "left join #s3 s3 on w.ST_ID=s3.ID ";
+                    sqlQ += "Where w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in ('0','2','3') ";
+                    //測試
+                    //sqlQ += "and w.ST_ID='EDM1' ";
+                    sqlQ += "Order by w.ST_ID ";
+
+                    DataTable dtE = PubUtility.SqlQry(sql+ sqlQ, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+
+                    //彙總明細資料
+                    sqlSumQ = "Select sum(isnull(v.VIPCnt,0))SumVIPCnt, ";
+                    sqlSumQ += "sum(isnull(s1.SalesCnt1,0))SumSalesCnt1,sum(isnull(s1.SalesCash1,0))SumSalesCash1,case when sum(isnull(s1.SalesCnt1,0))=0 then 0 else Round(sum(isnull(s1.SalesCash1,0))/sum(isnull(s1.SalesCnt1,0)),0) end as SumSalesPrice1, ";
+                    sqlSumQ += "sum(isnull(s2.SalesCnt2,0))SumSalesCnt2,sum(isnull(s2.SalesCash2,0))SumSalesCash2,case when sum(isnull(s2.SalesCnt2,0))=0 then 0 else Round(sum(isnull(s2.SalesCash2,0))/sum(isnull(s2.SalesCnt2,0)),0) end as SumSalesPrice2,case when sum(isnull(sall.SalesCashAll,0))=0 then '0%' else cast(cast(Round((sum(isnull(s2.SalesCash2,0))/sum(isnull(sall.SalesCashAll,0)))*100,0) as int) as varchar) + '%' end as SumSalesPercent2, ";
+                    sqlSumQ += "sum(isnull(s3.SalesCnt3,0))SumSalesCnt3,sum(isnull(s3.SalesCash3,0))SumSalesCash3,case when sum(isnull(s3.SalesCnt3,0))=0 then 0 else Round(sum(isnull(s3.SalesCash3,0))/sum(isnull(s3.SalesCnt3,0)),0) end as SumSalesPrice3,case when sum(isnull(sall.SalesCashAll,0))=0 then '0%' else cast(cast(Round((sum(isnull(s3.SalesCash3,0))/sum(isnull(sall.SalesCashAll,0)))*100,0) as int) as varchar) + '%' end as SumSalesPercent3 ";
+
+                    sqlSumQ += "From EDDMS.dbo.Warehouse w (nolock) ";
+                    sqlSumQ += "left join #sall sall on w.ST_ID=sall.ID ";
+                    sqlSumQ += "left join #v v on w.ST_ID=v.ID ";
+                    sqlSumQ += "left join #s1 s1 on w.ST_ID=s1.ID ";
+                    sqlSumQ += "left join #s2 s2 on w.ST_ID=s2.ID ";
+                    sqlSumQ += "left join #s3 s3 on w.ST_ID=s3.ID ";
+                    sqlSumQ += "Where w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in ('0','2','3') ";
+                    //測試
+                    //sqlSumQ += "and w.ST_ID='EDM1' ";
+                    DataTable dtSumQ = PubUtility.SqlQry(sql+ sqlSumQ, uu, "SYS");
+                    dtSumQ.TableName = "dtSumQ";
+                    ds.Tables.Add(dtSumQ);
+                }
+                //日期
+                else if (Flag == "D") {
+                    //入會數
+                    sql = "Select v.VIP_Qday as ID,count(*) as VIPCnt ";
+                    sql += "into #v ";
+                    sql += "from EDDMS.dbo.VIP v (nolock) ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on v.VIP_FaceID=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=v.Companycode ";
+                    sql += "Where v.Companycode='" + uu.CompanyId + "' ";
+                    if (CountYM != "")
+                    {
+                        //判斷調閱年月是否同系統日
+                        if (CountYM == Yesterday.Substring(0, 7))
+                        {
+                            sql += "and isnull(v.VIP_Qday,'') between '" + Yesterday.Substring(0, 7) + "/01' and '" + Yesterday + "' ";
+                        }
+                        else
+                        {
+                            sql += "and left(isnull(v.VIP_Qday,''),7)='" + CountYM + "' ";
+                        }
+                    }
+                    sql += "Group By v.VIP_Qday; ";
+
+                    //新會員首日交易筆數/交易金額/客單價
+                    sql += "Select h.OpenDate as ID,Count(*) as SalesCnt1,Sum(h.Cash) as SalesCash1,case when Count(*)=0 then 0 else Round(Sum(h.Cash)/Count(*),0) end as SalesPrice1 ";
+                    sql += "into #s1 ";
+                    sql += "From SalesH_AllWeb h (nolock) ";
+                    sql += "inner join EDDMS.dbo.VIP v (nolock) on h.VIP_ID2=v.VIP_ID2 and h.ShopNo=v.VIP_FaceID and h.OpenDate=v.VIP_Qday and v.Companycode=h.Companycode ";
+                    if (CountYM != "")
+                    {
+                        //判斷調閱年月是否同系統日
+                        if (CountYM == Yesterday.Substring(0, 7))
+                        {
+                            sql += "and isnull(v.VIP_Qday,'') between '" + Yesterday.Substring(0, 7) + "/01' and '" + Yesterday + "' ";
+                        }
+                        else
+                        {
+                            sql += "and left(isnull(v.VIP_Qday,''),7)='" + CountYM + "' ";
+                        }
+                    }
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=h.Companycode ";
+                    sql += "Where h.Companycode='" + uu.CompanyId + "' ";
+                    sql += "Group By h.OpenDate; ";
+
+                    //會員當月交易筆數/交易金額/客單價/交易佔比
+                    sql += "Select h.OpenDate as ID,Count(*) as SalesCnt2,Sum(h.Cash) as SalesCash2,case when Count(*)=0 then 0 else Round(Sum(h.Cash)/Count(*),0) end as SalesPrice2 ";
+                    sql += "into #s2 ";
+                    sql += "From SalesH_AllWeb h (nolock) ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=h.Companycode ";
+                    sql += "Where h.Companycode='" + uu.CompanyId + "' and h.VIPNo<>'' ";
+                    if (CountYM != "")
+                    {
+                        sql += "and left(h.OpenDate,7)='" + CountYM + "' ";
+                    }
+                    sql += "Group By h.OpenDate; ";
+
+                    //非會員當月交易筆數/交易金額/客單價/交易佔比
+                    sql += "Select h.OpenDate as ID,Count(*) as SalesCnt3,Sum(h.Cash) as SalesCash3,case when Count(*)=0 then 0 else Round(Sum(h.Cash)/Count(*),0) end as SalesPrice3 ";
+                    sql += "into #s3 ";
+                    sql += "From SalesH_AllWeb h (nolock) ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=h.Companycode ";
+                    sql += "Where h.Companycode='" + uu.CompanyId + "' and h.VIPNo='' ";
+                    if (CountYM != "")
+                    {
+                        sql += "and left(h.OpenDate,7)='" + CountYM + "' ";
+                    }
+                    sql += "Group By h.OpenDate; ";
+
+                    //總交易
+                    sql += "Select h.OpenDate as ID,Sum(h.Cash) as SalesCashAll ";
+                    sql += "into #sall ";
+                    sql += "From SalesH_AllWeb h (nolock) ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=h.Companycode ";
+                    sql += "Where h.Companycode='" + uu.CompanyId + "' ";
+                    if (CountYM != "")
+                    {
+                        sql += "and left(h.OpenDate,7)='" + CountYM + "' ";
+                    }
+                    sql += "Group By h.OpenDate; ";
+
+                    //開始撈明細資料
+                    sqlQ = "Select sall.ID as ID,isnull(v.VIPCnt,0)VIPCnt, ";
+                    sqlQ += "isnull(s1.SalesCnt1,0)SalesCnt1,isnull(s1.SalesCash1,0)SalesCash1,isnull(s1.SalesPrice1,0)SalesPrice1, ";
+                    sqlQ += "isnull(s2.SalesCnt2,0)SalesCnt2,isnull(s2.SalesCash2,0)SalesCash2,isnull(s2.SalesPrice2,0)SalesPrice2,case when isnull(sall.SalesCashAll,0)=0 then '0%' else cast(cast(Round((isnull(s2.SalesCash2,0)/isnull(sall.SalesCashAll,0))*100,0) as int) as varchar) + '%' end as SalesPercent2, ";
+                    sqlQ += "isnull(s3.SalesCnt3,0)SalesCnt3,isnull(s3.SalesCash3,0)SalesCash3,isnull(s3.SalesPrice3,0)SalesPrice3,case when isnull(sall.SalesCashAll,0)=0 then '0%' else cast(cast(Round((isnull(s3.SalesCash3,0)/isnull(sall.SalesCashAll,0))*100,0) as int) as varchar) + '%' end as SalesPercent3 ";
+
+                    sqlQ += "From #sall sall (nolock) ";
+                    sqlQ += "left join #v v on sall.ID=v.ID ";
+                    sqlQ += "left join #s1 s1 on sall.ID=s1.ID ";
+                    sqlQ += "left join #s2 s2 on sall.ID=s2.ID ";
+                    sqlQ += "left join #s3 s3 on sall.ID=s3.ID ";
+                    sqlQ += "Where 1=1 ";
+                    sqlQ += "Order by sall.ID ";
+                    DataTable dtE = PubUtility.SqlQry(sql + sqlQ, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+
+                    //彙總明細資料
+                    sqlSumQ = "Select sum(isnull(v.VIPCnt,0))SumVIPCnt, ";
+                    sqlSumQ += "sum(isnull(s1.SalesCnt1,0))SumSalesCnt1,sum(isnull(s1.SalesCash1,0))SumSalesCash1,case when sum(isnull(s1.SalesCnt1,0))=0 then 0 else Round(sum(isnull(s1.SalesCash1,0))/sum(isnull(s1.SalesCnt1,0)),0) end as SumSalesPrice1, ";
+                    sqlSumQ += "sum(isnull(s2.SalesCnt2,0))SumSalesCnt2,sum(isnull(s2.SalesCash2,0))SumSalesCash2,case when sum(isnull(s2.SalesCnt2,0))=0 then 0 else Round(sum(isnull(s2.SalesCash2,0))/sum(isnull(s2.SalesCnt2,0)),0) end as SumSalesPrice2,case when sum(isnull(sall.SalesCashAll,0))=0 then '0%' else cast(cast(Round((sum(isnull(s2.SalesCash2,0))/sum(isnull(sall.SalesCashAll,0)))*100,0) as int) as varchar) + '%' end as SumSalesPercent2, ";
+                    sqlSumQ += "sum(isnull(s3.SalesCnt3,0))SumSalesCnt3,sum(isnull(s3.SalesCash3,0))SumSalesCash3,case when sum(isnull(s3.SalesCnt3,0))=0 then 0 else Round(sum(isnull(s3.SalesCash3,0))/sum(isnull(s3.SalesCnt3,0)),0) end as SumSalesPrice3,case when sum(isnull(sall.SalesCashAll,0))=0 then '0%' else cast(cast(Round((sum(isnull(s3.SalesCash3,0))/sum(isnull(sall.SalesCashAll,0)))*100,0) as int) as varchar) + '%' end as SumSalesPercent3 ";
+
+                    sqlSumQ += "From #sall sall (nolock) ";
+                    sqlSumQ += "left join #v v on sall.ID=v.ID ";
+                    sqlSumQ += "left join #s1 s1 on sall.ID=s1.ID ";
+                    sqlSumQ += "left join #s2 s2 on sall.ID=s2.ID ";
+                    sqlSumQ += "left join #s3 s3 on sall.ID=s3.ID ";
+                    sqlSumQ += "Where 1=1 ";
+                    DataTable dtSumQ = PubUtility.SqlQry(sql + sqlSumQ, uu, "SYS");
+                    dtSumQ.TableName = "dtSumQ";
+                    ds.Tables.Add(dtSumQ);
+                }
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
 
         [Route("FileUpload_EDM")]
         public ActionResult FileUpload_EDM()

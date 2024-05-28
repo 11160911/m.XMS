@@ -1196,6 +1196,16 @@ namespace SVMAdmin
 
             return a;
         }
+
+        public static string GetYesterday(UserInfo uu)
+        {
+            string sDate;
+            string sql = "";
+            sql = "select convert(char,dateadd(DD,-1,getdate()),111)";
+            DataTable dtDate = PubUtility.SqlQry(sql, uu, "SYS");
+            sDate = dtDate.Rows[0][0].ToString();
+            return sDate.Trim();
+        }
     }
 
     public static class ConstList
