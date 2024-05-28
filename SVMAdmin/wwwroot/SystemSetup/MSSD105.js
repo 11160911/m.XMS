@@ -1622,7 +1622,11 @@ Timerset(sessionStorage.getItem('isamcomp'));
        else {
             var dtE = data.getElementsByTagName('dtE');
             var dtV = data.getElementsByTagName('dtV');
-            $('#lblProgramName').html(GetNodeValue(dtE[0], "ChineseName"));
+
+            if (dtE.length > 0) {
+                $('#lblProgramName').html(GetNodeValue(dtE[0], "ChineseName"));
+            }
+
             if (dtV.length > 0) {
                 $('#lblEnd').html("統計至 " + GetNodeValue(dtV[0], "EndDate") + " 止")
                 $('#lblVIPQty').html('目前會員總數 : ' + parseInt(GetNodeValue(dtV[0], "VIPCntAll")).toLocaleString('en-US'))
@@ -1635,37 +1639,9 @@ Timerset(sessionStorage.getItem('isamcomp'));
 
             $('#btQuery').click(function () { btQuery_click(this) });
             $('#btClear').click(function () { btClear_click(this) });
-            
-            
-            //$('#btActivityCode').click(function () { btActivityCode_click(this) });
-            //$('#btQLookup_ActivityCode').click(function () { btQLookup_ActivityCode_click(this) });
-            //$('#btLpOK_ActivityCode').click(function () { btLpOK_ActivityCode_click(this) });
-            //$('#btLpExit_ActivityCode').click(function () { btLpExit_ActivityCode_click(this) });
-           return;
-
            /////////////////////////////
-           $('#Query1').click(function () { Query1_click(this) });
-
-           $('#btExit_Shop').click(function () { btExit_Shop_click(this) });
-
-           $('#btExit_Area_Step1').click(function () { btExit_Area_Step1_click(this) });
-           $('#rdoShop_Area_Step1').change(function () { Query_Area_Step1_click(this) });
-           $('#rdoDate_Area_Step1').change(function () { Query_Area_Step1_click(this) });
-
-           $('#btExit_Area_Shop_Step2').click(function () { btExit_Area_Shop_Step2_click(this) });
-
-           $('#btExit_Area_Date_Step2').click(function () { btExit_Area_Date_Step2_click(this) });
-
-           $('#btExit_Shop_Step1').click(function () { btExit_Shop_Step1_click(this) });
-
-           $('#btExit_Date_Step1').click(function () { btExit_Date_Step1_click(this) });
-           $('#rdoArea_Date_Step1').change(function () { Query_Date_Step1_click(this) });
-           $('#rdoShop_Date_Step1').change(function () { Query_Date_Step1_click(this) });
-
-           $('#btExit_Date_Area_Step2').click(function () { btExit_Date_Area_Step2_click(this) });
-
-           var dtQ = data.getElementsByTagName('dtQ');
-           grdM.BindData(dtQ);
+           //var dtQ = data.getElementsByTagName('dtQ');
+           //grdM.BindData(dtQ);
         }
     };
     

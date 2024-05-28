@@ -1455,7 +1455,10 @@
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
-            $('#lblProgramName').html(GetNodeValue(dtE[0], "ChineseName"));
+            if (dtE.length > 0) {
+                $('#lblProgramName').html(GetNodeValue(dtE[0], "ChineseName"));
+            }
+
             AssignVar();
             $('#btAdd').click(function () { btAdd_click(this) });
             $('#btClear').click(function () { btClear_click(this) });
