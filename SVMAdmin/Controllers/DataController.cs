@@ -7957,7 +7957,7 @@ namespace SVMAdmin.Controllers
                     sql = "Update SetEDMHWeb Set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
                     sql += "EDMMemo='" + EDMMemo.SqlQuote() + "',StartDate='" + StartDate.SqlQuote() + "',EndDate='" + EndDate.SqlQuote() + "',WhNoFlag='" + WhNoFlag.SqlQuote() + "', ";
                     sql += "PS_NO='" + PS_NO.SqlQuote() + "' ";
-                    sql += "where DocNo='" + DocNo.SqlQuote() + "'; ";
+                    sql += "where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "'; ";
                     //SetEDMDWeb(P1)
                     sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
                     sql += "DocImage=b.Pic ";
@@ -8705,6 +8705,401 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+
+        [Route("SystemSetup/MSDMLookUpActivityCode")]
+        public ActionResult SystemSetup_MSDMLookUpActivityCode()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSDMLookUpActivityCodeOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ActivityCode = rq["ActivityCode"];
+                string EDM_Model = rq["EDM_Model"];
+
+                string sql = "";
+                sql = "Select a.ActivityCode,a.PS_Name,a.StartDate,a.EndDate ";
+                sql += "From PromoteSCouponHWeb a (nolock) ";
+                sql += "inner join SetEDMHWeb b (nolock) on a.PS_NO=b.PS_NO and b.EDMType='E' and EDM_Model='" + EDM_Model + "' and isnull(b.DelDate,'')='' and b.Companycode=a.Companycode ";
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                if (ActivityCode.SqlQuote() != "")
+                {
+                    sql += "and a.ActivityCode like '" + ActivityCode.SqlQuote() + "%' ";
+                }
+                sql += "group by a.ActivityCode,a.PS_Name,a.StartDate,a.EndDate ";
+                sql += "Order By a.StartDate desc ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSDMQuery")]
+        public ActionResult SystemSetup_MSDMQuery()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSDMQueryOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string DocNo = rq["DocNo"];
+                string EDMMemo = rq["EDMMemo"];
+                string ActivityCode = rq["ActivityCode"];
+                string App = rq["App"];
+                string Def = rq["Def"];
+                string EDDate = rq["EDDate"];
+                string EDM_Model = rq["EDM_Model"];
+
+                string sql = "";
+                sql = "Select a.DocNO,a.EDMMemo,a.StartDate + ' ~ ' + a.EndDate as EDDate,b.PS_Name,b.ActivityCode,isnull(c.Cnt1,0)Cnt1,isnull(d.Cnt2,0)Cnt2, ";
+                sql += "isnull(a.ApproveDate,'')ApproveDate,isnull(a.DefeasanceDate,'')DefeasanceDate ";
+                sql += "From SetEDMHWeb a (nolock) ";
+                sql += "inner join PromoteSCouponHWeb b (nolock) on a.PS_NO=b.PS_NO and b.Companycode=a.Companycode ";
+                //活動代號
+                if (ActivityCode.SqlQuote() != "")
+                {
+                    sql += "and b.ActivityCode like '" + ActivityCode.SqlQuote() + "%' ";
+                }
+                sql += "left join (Select EDM_DocNo,COUNT(*)Cnt1 From SetEDMVIP_HWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by EDM_DocNo)c on a.DocNo=c.EDM_DocNo ";
+                sql += "left join (Select EVNO,COUNT(*)Cnt2 From SetEDMVIP_VIPWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by EVNO)d on a.DocNo=d.EVNO ";
+
+                sql += "Where a.Companycode='" + uu.CompanyId + "' and isnull(a.DelDate,'')='' and a.EDMType='E' ";
+                sql += "and a.EDM_Model='" + EDM_Model.SqlQuote() + "' ";
+                //DM單號
+                if (DocNo.SqlQuote() != "")
+                {
+                    sql += "and a.DocNo like '" + DocNo.SqlQuote() + "%' ";
+                }
+                //DM主旨
+                if (EDMMemo.SqlQuote() != "")
+                {
+                    sql += "and a.EDMMemo like '%" + EDMMemo.SqlQuote() + "%' ";
+                }
+                //批核日期
+                if (App.SqlQuote() == "NoApp")
+                {
+                    sql += "and isnull(a.ApproveDate,'')='' ";
+                }
+                else if (App.SqlQuote() == "App")
+                {
+                    sql += "and isnull(a.ApproveDate,'')<>'' ";
+                }
+                //作廢日期
+                if (Def.SqlQuote() == "NoDef")
+                {
+                    sql += "and isnull(a.DefeasanceDate,'')='' ";
+                }
+                else if (Def.SqlQuote() == "Def")
+                {
+                    sql += "and isnull(a.DefeasanceDate,'')<>'' ";
+                }
+                //入會日期
+                if (EDDate.SqlQuote() != "")
+                {
+                    sql += "and '" + EDDate.SqlQuote() + "' between a.StartDate and a.EndDate ";
+                }
+
+                sql += "Order by a.DocNo ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSDM107_LookUpPSNO_EDM")]
+        public ActionResult SystemSetup_MSDM107_LookUpPSNO_EDM()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSDM107_LookUpPSNO_EDMOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string EndDate = rq["EndDate"];
+                string PS_NO = rq["PS_NO"];
+                string sql = "";
+                sql = "Select a.PS_NO,a.PS_Name,a.ActivityCode,a.StartDate,a.EndDate ";
+                sql += "From PromoteSCouponHWeb a (nolock) ";
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                sql += "and isnull(a.ApproveDate,'')<>'' and isnull(a.DefeasanceDate,'')='' ";
+                if (EndDate.SqlQuote() != "")
+                {
+                    sql += "and isnull(a.EndDate,'')>'" + EndDate.SqlQuote() + "' ";
+                }
+                if (PS_NO.SqlQuote() != "")
+                {
+                    sql += "and a.PS_NO like '" + PS_NO.SqlQuote() + "%' ";
+                }
+                sql += "order by a.StartDate,a.PS_NO ";
+
+
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSDM107_Save_EDM")]
+        public ActionResult SystemSetup_MSDM107_Save_EDM()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSDM107_Save_EDMOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string EditMode = rq["EditMode"];
+                string EDMMemo = rq["EDMMemo"];
+                string StartDate = rq["StartDate"];
+                string EndDate = rq["EndDate"];
+                string PS_NO = rq["PS_NO"];
+                string T1 = rq["T1"];
+                string T2 = rq["T2"];
+                string DocNo = rq["DocNo"];
+                string VMDocNo = rq["VMDocNo"];
+                string sql = "";
+                string sql1 = "";
+
+                //新增
+                if (EditMode.SqlQuote() == "A")
+                {
+                    DocNo = PubUtility.GetNewDocNo(uu, "EE", 3);
+                    //SetEDMHWeb
+                    sql = "Insert into SetEDMHWeb (Companycode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
+                    sql += "DocNO,StartDate,EndDate,EDMMemo,EDM_Model,PS_NO,EDMType,ApproveDate,ApproveUser,DefeasanceDate,Defeasance, ";
+                    sql += "PS_Title,PS_MEMO,DelDate,DelUser,WhNoFlag) ";
+
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + DocNo + "','" + StartDate.SqlQuote() + "','" + EndDate.SqlQuote() + "','" + EDMMemo.SqlQuote() + "','DM107', ";
+                    sql += "'" + PS_NO.SqlQuote() + "','E','','','','','','','','','';";
+
+                    //SetEDMDWeb(P1)
+                    sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
+                    sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
+
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + DocNo + "','P1','P1.jpg','P',Pic,'','','' ";
+                    sql += "From EDMSetWeb (nolock) Where Companycode='" + uu.CompanyId + "' and ProgramID='MSDM107';";
+
+                    //SetEDMDWeb(T1)
+                    if (T1.SqlQuote() != "")
+                    {
+                        sql1 = "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
+                        sql1 += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
+
+                        sql1 += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                        sql1 += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                        sql1 += "'" + DocNo + "','T1','','T','','" + T1.SqlQuote() + "','','';";
+                    }
+                    //SetEDMDWeb(P2)
+                    sql += "Update SetEDMDWeb Set DocNo='" + DocNo.SqlQuote() + "',CrtUser='" + uu.UserID + "',CrtDate=convert(char(10),getdate(),111),CrtTime=right(convert(varchar, getdate(), 121),12), ";
+                    sql += "ModUser='" + uu.UserID + "',ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12) ";
+                    sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + VMDocNo.SqlQuote() + "' and DataType='P2'; ";
+                    //SetEDMDWeb(T2)
+                    sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
+                    sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + DocNo + "','T2','','T','','" + T2.SqlQuote() + "','','';";
+                    sql = sql + sql1;
+                    PubUtility.ExecuteSql(sql, uu, "SYS");
+                }
+                //修改
+                else if (EditMode.SqlQuote() == "M")
+                {
+                    //SetEDMHWeb
+                    sql = "Update SetEDMHWeb Set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                    sql += "EDMMemo='" + EDMMemo.SqlQuote() + "',StartDate='" + StartDate.SqlQuote() + "',EndDate='" + EndDate.SqlQuote() + "', ";
+                    sql += "PS_NO='" + PS_NO.SqlQuote() + "' ";
+                    sql += "where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "'; ";
+                    //SetEDMDWeb(P1)
+                    sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                    sql += "DocImage=b.Pic ";
+                    sql += "From SetEDMDWeb a (nolock) ";
+                    sql += "inner join EDMSetWeb b (nolock) on a.Companycode=b.Companycode and b.Programid='MSDM107' ";
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' and a.DocNo='" + DocNo.SqlQuote() + "' ";
+                    sql += "and a.DataType='P1'; ";
+                    //SetEDMDWeb(T1)
+                    if (T1.SqlQuote() != "")
+                    {
+                        sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                        sql += "TXT='" + T1.SqlQuote() + "' ";
+                        sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
+                        sql += "and DataType='T1'; ";
+                    }
+                    //SetEDMDWeb(T2)
+                    sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                    sql += "TXT='" + T2.SqlQuote() + "' ";
+                    sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
+                    sql += "and DataType='T2'; ";
+                    PubUtility.ExecuteSql(sql, uu, "SYS");
+                }
+
+                sql = "select * from SetEDMHWeb (nolock) ";
+                sql += "where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo + "' ";
+                DataTable dtS = PubUtility.SqlQry(sql, uu, "SYS");
+                dtS.TableName = "dtS";
+                ds.Tables.Add(dtS);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSDMQuery_EDM")]
+        public ActionResult SystemSetup_MSDMQuery_EDM()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSDMQuery_EDMOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string DocNo = rq["DocNo"];
+                string sql = "";
+
+                //SetEDMHWeb
+                sql = "Select a.DocNo,a.EDMMemo,a.StartDate,a.EndDate,a.WhNoFlag,a.PS_NO,c.PS_Name + '  ' + c.StartDate + ' ~ ' + c.EndDate as PS_Name, ";
+                sql += "isnull(a.ApproveDate,'')ApproveDate,isnull(a.ApproveUser,'')ApproveUser,isnull(a.DefeasanceDate,'')DefeasanceDate,isnull(a.Defeasance,'')Defeasance, ";
+                sql += "b.DataType,b.DocImage,b.TXT ";
+                sql += "From SetEDMHWeb a (nolock) ";
+                sql += "inner join SetEDMDWeb b (nolock) on a.DocNo=b.DocNo and b.Companycode=a.Companycode ";
+                sql += "inner join PromoteSCouponHWeb c (nolock) on a.PS_NO=c.PS_NO and c.Companycode=a.Companycode ";
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                if (DocNo.SqlQuote() != "")
+                {
+                    sql += "and a.DocNo='" + DocNo.SqlQuote() + "' ";
+                }
+                sql += "Order by b.DataType ";
+                DataTable dtH = PubUtility.SqlQry(sql, uu, "SYS");
+                dtH.TableName = "dtH";
+                ds.Tables.Add(dtH);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSDMApprove_EDM")]
+        public ActionResult SystemSetup_MSDMApprove_EDM()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSDMApprove_EDMOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string DocNo = rq["DocNo"];
+                string sql = "";
+                sql = "Update SetEDMHWeb Set ApproveDate=convert(char(10),getdate(),111) + ' ' + convert(char(12),getdate(),108), ";
+                sql += "ApproveUser='" + uu.UserID + "' ";
+                sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "'; ";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                //SetEDMHWeb
+                sql = "Select * From SetEDMHWeb (nolock) Where Companycode='" + uu.CompanyId + "' ";
+                if (DocNo.SqlQuote() != "")
+                {
+                    sql += "and DocNo='" + DocNo.SqlQuote() + "' ";
+                }
+                DataTable dtH = PubUtility.SqlQry(sql, uu, "SYS");
+                dtH.TableName = "dtH";
+                ds.Tables.Add(dtH);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSDMDefeasance_EDM")]
+        public ActionResult SystemSetup_MSDMDefeasance_EDM()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSDMDefeasance_EDMOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string DocNo = rq["DocNo"];
+                string sql = "";
+                sql = "Update SetEDMHWeb Set DefeasanceDate=convert(char(10),getdate(),111) + ' ' + convert(char(12),getdate(),108), ";
+                sql += "Defeasance='" + uu.UserID + "' ";
+                sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "'; ";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                //SetEDMHWeb
+                sql = "Select * From SetEDMHWeb (nolock) Where Companycode='" + uu.CompanyId + "' ";
+                if (DocNo.SqlQuote() != "")
+                {
+                    sql += "and DocNo='" + DocNo.SqlQuote() + "' ";
+                }
+                DataTable dtH = PubUtility.SqlQry(sql, uu, "SYS");
+                dtH.TableName = "dtH";
+                ds.Tables.Add(dtH);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSDMDelete")]
+        public ActionResult SystemSetup_MSDMDelete()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSDMDeleteOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string DocNo = rq["DocNo"];
+                string sql = "";
+                sql = "Update SetEDMHWeb Set DelDate=convert(char(10),getdate(),111) + ' ' + convert(char(12),getdate(),108), ";
+                sql += "DelUser='" + uu.UserID + "' ";
+                sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "'; ";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
 
         [Route("FileUpload_EDM")]
         public ActionResult FileUpload_EDM()
