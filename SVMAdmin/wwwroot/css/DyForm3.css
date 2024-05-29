@@ -117,6 +117,12 @@
     color: black;
     font-weight: bold;
 }
+/*紅色Label*/
+.DyForm3-LabelRed {
+    font-size: 16px;
+    color: red;
+    font-weight: bold;
+}
 /*指定店倉*/
 .DyForm3-BtnShop {
     box-shadow: inset 0px 1px 0px 0px #ffffff;

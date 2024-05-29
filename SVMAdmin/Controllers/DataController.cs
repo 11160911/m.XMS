@@ -383,7 +383,7 @@ namespace SVMAdmin.Controllers
                     sql = "Select b.ChineseName as CategoryC,a.SectionID as Category,a.ProgramID as ItemCode,a.ChineseName as Description,a.ProgramID as Page,'P' as MobilePC,'' as Icon ";
                     sql += "From programIdCompanyWWeb a (nolock) ";
                     sql += "inner join SystemIdCompanyWWeb b (nolock) on a.SectionID=b.SystemID and b.Companycode=a.Companycode ";
-                    sql += "Where a.Companycode='TEST2' ";
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "order by a.SectionID,a.orderSequence ";
                 }
                 else {
@@ -9100,6 +9100,54 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("SystemSetup/MSVP102Query")]
+        public ActionResult SystemSetup_MSVP102Query()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSVP102QueryOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string EVNO = rq["EVNO"];
+                string EDM_DocNo = rq["EDM_DocNo"];
+                string StartDate = rq["StartDate"];
+                string EDMMemo = rq["EDMMemo"];
+
+                string sql = "";
+                sql = "Select a.EVNO,isnull(b.Cnt,0)Cnt,a.StartDate,a.EDM_DocNo,c.EDMMemo,c.StartDate + ' ~ ' + c.EndDate as EDDate ";
+                sql += "From SetEDMVIP_HWeb a (nolock) ";
+                sql += "left join (Select EVNO,Count(*)Cnt From SetEDMVIP_VIPWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by EVNO)b on a.EVNO=b.EVNO ";
+                sql += "inner join SetEDMHWeb c (nolock) on a.EDM_DocNo=c.DocNo and c.Companycode=a.Companycode ";
+                if (EDMMemo.SqlQuote() != "")
+                {
+                    sql += "and c.EDMMemo like '%" + EDMMemo.SqlQuote() + "%' ";
+                }
+                sql += "Where a.Companycode='" + uu.CompanyId + "' and a.EDMType='E' and isnull(a.EV_Model,'')='VP102'";
+                if (EVNO.SqlQuote() != "") {
+                    sql += "and a.EVNO='" + EVNO.SqlQuote() + "' ";
+                }
+                if (EDM_DocNo.SqlQuote() != "")
+                {
+                    sql += "and a.EDM_DocNo='" + EDM_DocNo.SqlQuote() + "' ";
+                }
+                if (StartDate.SqlQuote() != "")
+                {
+                    sql += "and a.StartDate='" + StartDate.SqlQuote() + "' ";
+                }
+                
+                sql += "Order by a.EVNO desc ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
 
         [Route("FileUpload_EDM")]
         public ActionResult FileUpload_EDM()

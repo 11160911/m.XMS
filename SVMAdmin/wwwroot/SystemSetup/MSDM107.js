@@ -1003,15 +1003,19 @@
 
     let afterQMSDMLookUpActivityCode = function (data) {
         if (ReturnMsg(data, 0) != "MSDMLookUpActivityCodeOK") {
+            $('#modal_Lookup_ActivityCode').modal('hide');
             DyAlert(ReturnMsg(data, 1), function () {
                 $('#btQLookup_ActivityCode').prop('disabled', false)
+                $('#modal_Lookup_ActivityCode').modal('show');
             });
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
             if (dtE.length == 0) {
+                $('#modal_Lookup_ActivityCode').modal('hide');
                 DyAlert("無符合資料!", function () {
                     $('#btQLookup_ActivityCode').prop('disabled', false)
+                    $('#modal_Lookup_ActivityCode').modal('show');
                 });
                 $(".modal-backdrop").remove();
                 return;
@@ -1028,7 +1032,11 @@
         var chkedRow = obchkedtd.length.toString();
 
         if (chkedRow == 0) {
-            DyAlert("未選取活動代號，請重新確認!", function () { $('#btLpOK_ActivityCode').prop('disabled', false); });
+            $('#modal_Lookup_ActivityCode').modal('hide');
+            DyAlert("未選取活動代號，請重新確認!", function () {
+                $('#btLpOK_ActivityCode').prop('disabled', false);
+                $('#modal_Lookup_ActivityCode').modal('show');
+            });
         }
         else {
             var a = $(obchkedtd[0]).closest('tr');
@@ -1096,12 +1104,20 @@
 
     let afterQMSDM107_LookUpPSNO_EDM = function (data) {
         if (ReturnMsg(data, 0) != "MSDM107_LookUpPSNO_EDMOK") {
-            DyAlert(ReturnMsg(data, 1), function () { $('#btQLookup_PSNO_EDM').prop('disabled', false); });
+            $('#modal_Lookup_PSNO_EDM').modal('hide');
+            DyAlert(ReturnMsg(data, 1), function () {
+                $('#btQLookup_PSNO_EDM').prop('disabled', false);
+                $('#modal_Lookup_PSNO_EDM').modal('show');
+            });
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
             if (dtE.length == 0) {
-                DyAlert("無符合資料!", function () { $('#btQLookup_PSNO_EDM').prop('disabled', false); });
+                $('#modal_Lookup_PSNO_EDM').modal('hide');
+                DyAlert("無符合資料!", function () {
+                    $('#btQLookup_PSNO_EDM').prop('disabled', false);
+                    $('#modal_Lookup_PSNO_EDM').modal('show');
+                });
                 $(".modal-backdrop").remove();
                 return;
             }
@@ -1119,7 +1135,11 @@
         var chkedRow = obchkedtd.length.toString();
 
         if (chkedRow == 0) {
-            DyAlert("未選取單號，請重新確認!", function () { $('#btLpOK_PSNO_EDM').prop('disabled', false); });
+            $('#modal_Lookup_PSNO_EDM').modal('hide');
+            DyAlert("未選取單號，請重新確認!", function () {
+                $('#btLpOK_PSNO_EDM').prop('disabled', false);
+                $('#modal_Lookup_PSNO_EDM').modal('show');
+            });
         }
         else {
             var a = $(obchkedtd[0]).closest('tr');
