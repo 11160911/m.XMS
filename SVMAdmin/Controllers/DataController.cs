@@ -228,7 +228,7 @@ namespace SVMAdmin.Controllers
                         }
                         throw new Exception("帳號鎖定");
                     }
-                    else if (dtTmp.Rows[0]["UPWD"].ToString() != PASSWORD.SqlQuote())
+                    else if (dtTmp.Rows[0]["UPWD"].ToString().ToLower() != PASSWORD.SqlQuote().ToLower())
                     {
                         sql = "Insert into LoginRec_WEB (Status,CrtDate,CrtTime,UID,UPWD,Memo) ";
                         sql += "Select 'N',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
@@ -378,7 +378,7 @@ namespace SVMAdmin.Controllers
             try
             {
                 string sql = "";
-                if (uu.UserID == uu.CompanyId)
+                if (uu.UserID.ToLower() == uu.CompanyId.ToLower())
                 {
                     sql = "Select b.ChineseName as CategoryC,a.SectionID as Category,a.ProgramID as ItemCode,a.ChineseName as Description,a.ProgramID as Page,'P' as MobilePC,'' as Icon ";
                     sql += "From programIdCompanyWWeb a (nolock) ";

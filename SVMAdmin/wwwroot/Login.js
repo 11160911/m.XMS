@@ -344,7 +344,7 @@
     let CheckOTP = function (data) {
         let user = data.getElementsByTagName('dtEmployee')[0];
         //增加判斷若登入者為世代人員，則跳過OTP驗證
-        if (GetNodeValue(user, 'UID') == GetNodeValue(user, 'CompanyCode')) {
+        if (GetNodeValue(user, 'UID').toLowerCase() == GetNodeValue(user, 'CompanyCode').toLowerCase()) {
             var pData = {
                 USERID: $('#username').val(),
                 PASSWORD: $('#password').val(),
