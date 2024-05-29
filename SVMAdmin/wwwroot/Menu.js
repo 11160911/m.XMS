@@ -327,7 +327,20 @@
                     PageMSPV101($(".workarea"));
                 }
             }
-            else if (pg == "MSSD102") {
+            else if (pg == "MSSD101") {
+                if (window.PageMSSD101 == undefined) {
+                    $.getScript('SystemSetup/MSSD101.js',
+                        function () {
+                            PageMSSD101($(".workarea"));
+                        }
+                    );
+                }
+
+                else {
+                    PageMSSD101($(".workarea"));
+                }
+            }
+             else if (pg == "MSSD102") {
                 if (window.PageMSSD102 == undefined) {
                     $.getScript('SystemSetup/MSSD102.js',
                         function () {
@@ -340,7 +353,7 @@
                     PageMSSD102($(".workarea"));
                 }
             }
-            else if (pg == "MSSD105") {
+           else if (pg == "MSSD105") {
                 if (window.PageMSSD105 == undefined) {
                     $.getScript('SystemSetup/MSSD105.js',
                         function () {

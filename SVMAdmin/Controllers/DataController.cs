@@ -9148,6 +9148,126 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+        #region MSSD101
+        [Route("SystemSetup/MSSD101Query")]
+        public ActionResult SystemSetup_MSSD101Query()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSD101QueryOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ActivityCode = rq["ActivityCode"];
+                string PSName = rq["PSName"];
+                string EDDate = rq["PSDate"];
+                
+                string sql = "";
+                sql = "select a.ActivityCode,a.PS_Name,a.StartDate + ' ~ ' + a.EndDate PSDate,d.SendCnt,b.BackCnt,round(b.BackCnt/d.SendCnt*100,1) BackPer,b.Dicount,c.Cash,c.SalesCnt,c.Balance ";
+                sql += "from PromoteSCouponHWeb a(nolock) ";
+                sql += "left join (Select CompanyCode,PS_NO From SetEDMHWeb (nolock) Where EDMType='E' and isnull(ApproveDate,'')<>''  ";
+                sql += "group by CompanyCode,PS_NO) e on a.CompanyCode=e.CompanyCode and a.PS_NO=e.PS_NO ";
+                //發出張數
+                sql += " left join (select CompanyCode,PS_NO,count(*) SendCnt from SetEDMVIP_VIPWeb group by CompanyCode,PS_NO) d on a.CompanyCode=d.CompanyCode and a.PS_No=d.PS_NO ";
+                //回收張數
+                sql += "join (select h.CompanyCode, h.PCHDocNO ,count (c.CouponNo) BackCnt,sum(c.ActualDiscount) Dicount ";
+                sql += "from PromoteSLogHWeb h join PromoteSLogCardNoWeb c on h.CompanyCode=c.CompanyCode and h.DocNo=c.DocNo and h.ShopNO=c.ShopNO ";
+                sql += "group by  h.CompanyCode,h.PCHDocNO ) b on a.CompanyCode=b.CompanyCode and a.PS_No=b.PCHDocNO ";
+                //銷售
+                sql += "join ( select h.companycode,h.PCHDocNO, sum(sh.cash) Cash,count(*) SalesCnt,convert(int,sum(sh.cash)/count(*)) Balance ";
+                sql += "from SalesH_AllWeb sh join PromoteSLogHWeb h on sh.CompanyCode =h.CompanyCode and sh.ShopNo=h.ShopNO and sh.OpenDate=h.SalesDate and sh.ckno=h.MachineNo and sh.chrno=h.ChrNO ";
+                sql += "group by h.companycode,h.PCHDocNO) c on a.CompanyCode=c.CompanyCode and a.PS_No=c.PCHDocNO ";
+                //活動代號
+                if (ActivityCode.SqlQuote() != "")
+                {
+                    sql += "and a.ActivityCode like '%" + ActivityCode.SqlQuote() + "%' ";
+                }
+                //活動名稱
+                if (PSName.SqlQuote() != "")
+                {
+                    sql += "and a.PS_Name like '%" + PSName.SqlQuote() + "%' ";
+                }
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                sql += "Order by a.StartDate ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSSD101_LookUpActivityCode")]
+        public ActionResult SystemSetup_MSSD101_LookUpActivityCode()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSD101_LookUpActivityCodeOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ActivityCode = rq["ActivityCode"];
+
+                string sql = "";
+                sql = "Select a.ActivityCode,a.PS_Name,a.StartDate,a.EndDate ";
+                sql += "From PromoteSCouponHWeb a (nolock) ";
+                sql += "inner join SetEDMHWeb b (nolock) on a.PS_NO=b.PS_NO and b.EDMType='E' and isnull(b.ApproveDate,'')<>'' and b.Companycode=a.Companycode ";
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                if (ActivityCode.SqlQuote() != "")
+                {
+                    sql += "and a.ActivityCode like '" + ActivityCode.SqlQuote() + "%' ";
+                }
+                sql += "group by a.ActivityCode,a.PS_Name,a.StartDate,a.EndDate ";
+                sql += "Order By a.StartDate desc ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSSD101_LookUpDocNO")]
+        public ActionResult SystemSetup_MSSD101_LookUpDocNO()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSD101_LookUpDocNOOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string DocNO = rq["DocNO"];
+
+                string sql = "";
+                sql = "Select a.DocNo,a.EDMMemo,a.StartDate,a.EndDate ";
+                sql += "From SetEDMHWeb a (nolock) ";
+                sql += " Where a.Companycode='" + uu.CompanyId + "' and a.EDMType='E' and isnull(a.ApproveDate,'')<>''  ";
+                if (DocNO.SqlQuote() != "")
+                {
+                    sql += "and a.DocNo like '" + DocNO.SqlQuote() + "%' ";
+                }
+                sql += "group by a.DocNo,a.EDMMemo,a.StartDate,a.EndDate ";
+                sql += "Order By a.StartDate desc ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+        #endregion
 
         [Route("FileUpload_EDM")]
         public ActionResult FileUpload_EDM()
