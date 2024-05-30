@@ -606,7 +606,7 @@ var DyAlert = function (txtMessage, HandlerOK, txtMessage2, txtMessage3) {
     LoadPage();
 }
 
-var DyConfirm = function (txtMessage, HandlerYes, HandlerNo) {
+var DyConfirm = function (txtMessage, HandlerYes, HandlerNo, txtMessage2, txtMessage3) {
     var divN = $('<div></div>');
 
     $("body").append(divN);
@@ -622,6 +622,8 @@ var DyConfirm = function (txtMessage, HandlerYes, HandlerNo) {
         var p = $('#DyAlert_modal').detach();
         ParentNode.append(p);
         $('#DyAlert_modal').find('p[name="pMsg"]').text(txtMessage);
+        $('#DyAlert_modal').find('p[name="pMsg2"]').text(txtMessage2);
+        $('#DyAlert_modal').find('p[name="pMsg3"]').text(txtMessage3);
         $('button[name="btOk"]').hide();
         $('#DyAlert_modal .modal-header').css('background-color', '#f19149');
         $('button[name="btYes"]').css('background-color', '#f19149');

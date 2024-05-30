@@ -125,9 +125,10 @@
                                 #tbQuery thead tr th {
                                     font-size: 14px;
                                     padding: 3px;
-                                    background-color: #ffdb00;
+                                    background-color: #ffb620;
                                     font-weight: bold;
                                 }
+
                                 #tbQuery tbody tr td {
                                     font-size: 12px;
                                     padding: 3px;
@@ -196,14 +197,15 @@
 
                     <div class="modal fade" id="modal_SendSet" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 750px; width: 800px; overflow: auto; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 410px 500px ">
+                            <div class="modal-content" style="height: 750px; width: 1000px; overflow: auto; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 410px 500px ">
                                 <style>
                                     #tbSendSet thead tr th {
                                         font-size: 14px;
                                         padding: 3px;
-                                        background-color: #ffdb00;
+                                        background-color: #ffb620;
                                         font-weight: bold;
                                     }
+
                                     #tbSendSet tbody tr td {
                                         font-size: 12px;
                                         padding: 3px;
@@ -211,61 +213,143 @@
                                 </style>
 
                                 <!--<div class="modal-header">
-                                    <h4 class="modal-title" style="width: 100%; text-align: center;color:black"></h4>
-                                </div>-->
+                    <h4 class="modal-title" style="width: 100%; text-align: center;color:black"></h4>
+                </div>-->
 
                                 <div class="modal-body modal-tab-container" style="padding:8px">
                                     <div class="form-group row" style="width: 100%;margin-left: 5px ">
                                         <label class="DyForm3-ProgramName">發送設定</label>
+                                        <label class="DyForm3-LabelBlack" id="lblVMEVNO_SendSet" hidden></label>
                                     </div>
 
                                     <div class="form-group row" style="width: 100%;margin-left:12px ">
-                                        <button class="DyForm3-BtnAdd" id="btDMSelect" type="button">
+                                        <button class="DyForm3-BtnAdd" id="btDMSel_SendSet" type="button">
                                             DM選取
                                         </button>
-                                        <label id="lblPSNO_SendSet" class="DyForm3-LabelBlack"></label>
-                                        <label id="lblEDMMemo_SendSet" class="DyForm3-LabelRed"></label>
-                                        <label id="lblEDDate_SendSet" class="DyForm3-LabelBlack"></label>
-                                        <button class="DyForm3-BtnAdd" id="btDMSelect" type="button">
+                                        <label id="lblDocNo_SendSet" class="DyForm3-LabelBlack" style="margin-left:5px"></label>
+                                        <label id="lblEDMMemo_SendSet" class="DyForm3-LabelRed" style="margin-left:5px"></label>
+                                        <label id="lblEDDate_SendSet" class="DyForm3-LabelBlack" style="margin-left:5px"></label>
+                                        <button class="DyForm3-BtnAdd" id="btDMDe_SendSet" type="button" style="color:black;background-color: #FFCD2F;margin-left:30px " hidden>
                                             DM明細
                                         </button>
-
-
-
-                                        <label id="lblOpenDate_Shop" style="font-size: 16px;color:red;margin-top:5px "></label>
-                                        <button id="btExit_Shop" type="button" class="" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 5px;margin-left:3px ">回上頁</button>
+                                        <button class="DyForm3-BtnQuery" id="btDMSend_SendSet" type="button" style="position: absolute; right: 160px">
+                                            發送EDM
+                                        </button>
+                                        <button id="btRe_SendSet" type="button" class="DyForm3-BtnRe" style="position: absolute; right: 20px">回上頁</button>
                                     </div>
 
+                                    <div class="form-group row" style="width: 100%;margin-left: 12px ">
+                                        <label class="DyForm3-ProgramName">會員條件篩選</label>
+                                        <button class="DyForm3-BtnClear" id="btClear_SendSet" type="button" style="position: absolute; right: 160px">
+                                            清除所有條件
+                                            <i class="fa fa-close"></i>
+                                        </button>
+                                        <button class="DyForm3-BtnQuery" id="btQuery_SendSet" type="button" style="position: absolute; right: 20px">
+                                            查詢
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
 
+                                    <div class="form-group row" style="width: 100%;margin-left: 12px ">
+                                        <button class="DyForm3-BtnShop" id="btVIPFaceID_SendSet" type="button">會籍店櫃</button>
+                                        <label class="DyForm3-LabelRed" id="lblVIPFaceIDCnt_SendSet" style=" margin-left: 10px; margin-top: 5px"></label>
+                                        <label class="DyForm3-Label" id="lblVIPFaceIDName_SendSet" style=" margin-left: 10px; margin-top: 5px"></label>
+                                    </div>
 
-
-
-
-
-
-
-                                    <div class="form-group row" style="width: 100%;margin-left:5px ">
-                                        <label id="lblShop" style="font-size: 16px;color:red "></label>
+                                    <div class="form-group row" style="width: 100%;margin-left: 12px ">
+                                        <mark class="DyForm3-DyNotEmptyMark" style="">*</mark>
+                                        <label class="DyForm3-Label">會員卡別</label>
+                                        <input id="chk0_SendSet" type="checkbox" style="height: 30px; margin-left: 10px" checked><label class="DyForm3-Label" for="chk0_SendSet">一般</label>
+                                        <input id="chk1_SendSet" type="checkbox" style="height:30px;margin-left:5px" checked><label class="DyForm3-Label" for="chk1_SendSet">會員</label>
+                                        <input id="chk2_SendSet" type="checkbox" style="height:30px;margin-left:5px" checked><label class="DyForm3-Label" for="chk2_SendSet">貴賓</label>
+                                        <input id="chk3_SendSet" type="checkbox" style="height:30px;margin-left:5px"><label class="DyForm3-Label" for="chk3_SendSet">白金卡</label>
                                     </div>
 
                                     <div class="card-block forminput">
                                         <div class="x_content">
-                                            <div style="overflow: auto; height: 280px;">
+                                            <div class="form-group row" style="width: 100%;margin-left: 12px ">
+                                                <label class="DyForm3-ProgramName">會員篩選清單</label>
+                                                <label class="DyForm3-ProgramName" style="color: red; position: absolute; right: 100px">篩選會員數&ensp;</label>
+                                                <label id="lblVIPCnt_SendSet" class="DyForm3-ProgramName" style="color: red; position: absolute; right: 20px"></label>
+                                                <label class="DyForm3-ProgramName" style="color: red; position: absolute; right: 0px">筆</label>
+                                            </div>
+                                            <div style="overflow: auto; height: 360px;">
                                                 <table id="tbSendSet" class="table table-bordered" style="width:100%">
                                                     <thead>
                                                         <tr>
-                                                            <th>入會數</th>
-                                                            <th>交易筆數</th>
-                                                            <th>交易金額</th>
-                                                            <th>客單價</th>
-                                                            <th>交易筆數</th>
-                                                            <th>交易金額</th>
-                                                            <th>客單價</th>
-                                                            <th>交易佔比</th>
-                                                            <th>交易筆數</th>
-                                                            <th>交易金額</th>
-                                                            <th>客單價</th>
-                                                            <th>交易佔比</th>
+                                                            <th>會員編號</th>
+                                                            <th>會員姓名</th>
+                                                            <th>手機號碼</th>
+                                                            <th>email</th>
+                                                            <th>性別</th>
+                                                            <th>縣市</th>
+                                                            <th>鄉鎮</th>
+                                                            <th>最近來店日</th>
+                                                            <th>剩餘點數</th>
+                                                            <th>會員卡別</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                        </tr>
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="modal_DMSel" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content" style="height: 750px; width: 1000px; overflow: auto; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 410px 500px ">
+                                <style>
+                                    #tbDMSel thead tr th {
+                                        font-size: 14px;
+                                        padding: 3px;
+                                        background-color: #ffb620;
+                                        font-weight: bold;
+                                    }
+
+                                    #tbDMSel tbody tr td {
+                                        font-size: 12px;
+                                        padding: 3px;
+                                    }
+                                </style>
+
+                                <!--<div class="modal-header">
+                    <h4 class="modal-title" style="width: 100%; text-align: center;color:black"></h4>
+                </div>-->
+
+                                <div class="modal-body modal-tab-container" style="padding:8px">
+                                    <div class="form-group row" style="width: 100%;margin-left: 5px;margin-top:5px ">
+                                        <label class="DyForm3-ProgramName">DM選取</label>
+                                        <button class="DyForm3-BtnQuery" id="btOK_DMSel" type="button" style="position: absolute; right: 130px">
+                                            確定
+                                        </button>
+                                        <button id="btRe_DMSel" type="button" class="DyForm3-BtnRe" style="position: absolute; right: 20px">回上頁</button>
+                                    </div>
+
+
+                                    <div class="card-block forminput">
+                                        <div class="x_content">
+                                            <div style="overflow: auto; height: 500px;">
+                                                <table id="tbDMSel" class="table table-bordered" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>選取</th>
+                                                            <th>DM單號</th>
+                                                            <th>DM主旨</th>
+                                                            <th>DM期間</th>
+                                                            <th>活動代號</th>
+                                                            <th>活動名稱</th>
+                                                            <th>活動期間</th>
+                                                            <th>適用店櫃</th>
+                                                            <th>發送次數</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -286,28 +370,27 @@
 
 
 
-
-                    <div class="modal fade" id="modal_Lookup_ActivityCode" data-keyboard="false" data-backdrop="static">
+                    <div class="modal fade" id="modal_Lookup_VIPFaceID_SendSet" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height:480px">
+                            <div class="modal-content" style="height: 480px; width: 600px">
                                 <div class="modal-body modal-tab-container" style="padding:8px">
                                     <style>
-                                        #tbDataLookup_ActivityCode thead tr th {
+                                        #tbDataLookup_VIPFaceID_SendSet thead tr th {
                                             font-size: 16px;
                                             padding: 0px;
                                             background-color: #ffb620;
                                             font-weight: bold;
                                         }
 
-                                        #tbDataLookup_ActivityCode tbody tr td {
+                                        #tbDataLookup_VIPFaceID_SendSet tbody tr td {
                                             font-size: 16px;
                                             padding: 0px;
                                         }
                                     </style>
 
                                     <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 5px; margin-top: 15px ">
-                                        <input id="txtQLookup_ActivityCode" class="form-control small" style="border-radius: 10px; font-size: 16px; width: 70%; line-height: 0px; padding: 3px; height: 28px ">
-                                        <button id="btQLookup_ActivityCode" type="button" class="DyForm3-BtnQuery" style="margin-left:5px">
+                                        <input id="txtLpQ_VIPFaceID_SendSet" class="form-control small" style="border-radius: 10px; font-size: 16px; width: 70%; line-height: 0px; padding: 3px; height: 28px ">
+                                        <button id="btLpQ_VIPFaceID_SendSet" type="button" class="DyForm3-BtnQuery" style="margin-left:5px">
                                             查詢
                                             <i class="fa fa-search"></i>
                                         </button>
@@ -316,14 +399,12 @@
                                     <div class="card-block forminput">
                                         <div class="x_content">
                                             <div style="overflow: auto; height: 350px;">
-                                                <table id="tbDataLookup_ActivityCode" class="table table-bordered" style="width: 100%;">
+                                                <table id="tbDataLookup_VIPFaceID_SendSet" class="table table-bordered" style="width: 100%;">
                                                     <thead>
                                                         <tr>
                                                             <th></th>
-                                                            <th>活動代號</th>
-                                                            <th>活動名稱</th>
-                                                            <th>開始日期</th>
-                                                            <th>結束日期</th>
+                                                            <th>店別代號</th>
+                                                            <th>店別名稱</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -333,11 +414,11 @@
                                         </div>
 
                                         <div class="form-group row" style="width: 100%; margin-top: 15px; ">
-                                            <button class="DyForm3-BtnQuery" id="btLpOK_ActivityCode" type="button" style=" position: absolute; right: 100px">
+                                            <button class="DyForm3-BtnQuery" id="btLpOK_VIPFaceID_SendSet" type="button" style=" position: absolute; right: 100px">
                                                 確定
                                                 <!--<i class="fa fa-search"></i>-->
                                             </button>
-                                            <button class="DyForm3-BtnExit" id="btLpExit_ActivityCode" type="button" style=" position: absolute; right: 5px">
+                                            <button class="DyForm3-BtnExit" id="btLpExit_VIPFaceID_SendSet" type="button" style=" position: absolute; right: 5px">
                                                 離開
                                                 <i class="fa fa-sign-out"></i>
                                             </button>
@@ -349,561 +430,6 @@
                         </div>
                     </div>
 
-
-
-                    <div class="modal fade" id="modal_Area_Step1" data-keyboard="false" data-backdrop="static">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 560px; background-image: url(images/Web底圖-地球-2.png); background-size: contain ">
-                                <style>
-                                    #tbSales_Area_Step1 thead tr th {
-                                        font-size: 14px;
-                                        padding: 3px;
-                                        background-color: #ffdb00;
-                                        font-weight: bold;
-                                    }
-
-                                    #tbSales_Area_Step1 thead tr td {
-                                        font-size: 14px;
-                                        padding: 3px;
-                                        background-color: #ffdb00;
-                                        font-weight: bold;
-                                    }
-
-                                    #tbSales_Area_Step1 tbody tr td {
-                                        font-size: 12px;
-                                        padding: 3px;
-                                    }
-                                </style>
-
-                                <div class="modal-header">
-                                    <h4 class="modal-title" style="width: 100%; text-align: center;color:black"></h4>
-                                </div>
-
-                                <div class="modal-body modal-tab-container" style="padding:8px">
-
-                                    <div class="form-group row" style="width: 100%;margin-left:5px ">
-                                        <label style="margin-top:5px;color:black">日期區間：</label>
-                                        <label id="lblOpenDate_Area_Step1" style="font-size: 16px;color:red;margin-top:5px "></label>
-                                        <button id="btExit_Area_Step1" type="button" class="" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 5px;margin-left:3px ">回上頁</button>
-                                    </div>
-                                    <div class="form-group row" style="width: 100%;margin-left: 5px ">
-                                        <input id="rdoShop_Area_Step1" type="radio" name="Step1" value="1" style="vertical-align: middle; margin-top: 2px; width: 20px; height: 20px; list-style: none; text-align: left; " checked>
-                                        <label for="rdoShop_Area_Step1" style="color: black; vertical-align: middle; margin-top: 2px; list-style: none; text-align: left; ">&ensp;店別</label>
-
-                                        <input id="rdoDate_Area_Step1" type="radio" name="Step1" value="1" style="vertical-align: middle; margin-top: 2px; width: 20px; height: 20px; list-style: none; text-align: left; margin-left:8px ">
-                                        <label for="rdoDate_Area_Step1" style="color: black; vertical-align: middle; margin-top: 2px; list-style: none; text-align: left; ">&ensp;日期</label>
-                                        <!--<i id="Query_Area_Step1" class="fa fa-search" style="font-size: 1.5rem; margin-left: 150px; color: green"></i>-->
-                                    </div>
-
-                                    <div class="form-group row" style="width: 100%;margin-left:5px ">
-                                        <label id="lblArea_Step1" style="font-size: 16px;color:red "></label>
-                                    </div>
-
-                                    <div class="card-block forminput">
-                                        <div class="x_content">
-                                            <div style="overflow: auto; height: 280px;">
-                                                <table id="tbSales_Area_Step1" class="table table-bordered" style="width:100%">
-                                                    <thead>
-                                                        <!--分類-->
-                                                        <tr>
-                                                            <td class="text-center" colspan="4">總交易</td>
-                                                            <td class="text-center" colspan="4">會員交易</td>
-                                                        </tr>
-                                                        <!--標題-->
-                                                        <tr>
-                                                            <th style="display:none"></th>
-                                                            <th id="thtype">區</th>
-                                                            <th>營業額</th>
-                                                            <th>筆數</th>
-                                                            <th>客單</th>
-                                                            <th>營業額</th>
-                                                            <th>筆數</th>
-                                                            <th>客單</th>
-                                                            <th>佔比</th>
-                                                        </tr>
-                                                        <!--合計-->
-                                                        <tr>
-                                                            <td colspan="1"></td>
-                                                            <td id="td1" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td2" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td3" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td4" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td5" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td6" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td7" colspan="1" style="text-align: right; "></td>
-                                                        </tr>
-                                                    </thead>
-
-                                                    <tbody>
-                                                        <tr>
-                                                        </tr>
-                                                    </tbody>
-
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal fade" id="modal_Area_Shop_Step2" data-keyboard="false" data-backdrop="static">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 560px; background-image: url(images/Web底圖-地球-2.png); background-size:contain">
-                                <style>
-                                    #tbSales_Area_Shop_Step2 thead tr th {
-                                        font-size: 14px;
-                                        padding: 3px;
-                                        background-color: #ffdb00;
-                                        font-weight: bold;
-                                    }
-
-                                    #tbSales_Area_Shop_Step2 thead tr td {
-                                        font-size: 14px;
-                                        padding: 3px;
-                                        background-color: #ffdb00;
-                                        font-weight: bold;
-                                    }
-
-                                    #tbSales_Area_Shop_Step2 tbody tr td {
-                                        font-size: 12px;
-                                        padding: 3px;
-                                    }
-                                </style>
-
-                                <div class="modal-header">
-                                    <h4 class="modal-title" style="width: 100%; text-align: center;color:black"></h4>
-                                </div>
-
-                                <div class="modal-body modal-tab-container" style="padding:8px">
-                                    <div class="form-group row" style="width: 100%; margin-left: 5px ">
-                                        <label style="margin-top:5px;color:black">日期區間：</label>
-                                        <label id="lblOpenDate_Area_Shop_Step2" style="font-size: 16px; color: red; margin-top: 5px "></label>
-                                        <button id="btExit_Area_Shop_Step2" type="button" class="" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 5px; margin-left: 3px ">回上頁</button>
-                                    </div>
-
-                                    <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 0px; margin-top: 0px; margin-left: 5px ">
-                                        <label id="lblArea_Shop_Step2" style="font-size: 16px;color:red "></label>
-                                        <!--<i id="Query_Area_Shop_Step2" class="fa fa-search" style="font-size: 1.5rem; margin-left: 80px; color: green"></i>-->
-                                    </div>
-
-                                    <div class="card-block forminput">
-                                        <div class="x_content">
-                                            <div style="overflow: auto; height: 350px;">
-                                                <table id="tbSales_Area_Shop_Step2" class="table table-bordered" style="width:100%">
-                                                    <thead>
-                                                        <!--分類-->
-                                                        <tr>
-                                                            <td class="text-center" colspan="4">總交易</td>
-                                                            <td class="text-center" colspan="4">會員交易</td>
-                                                        </tr>
-                                                        <!--標題-->
-                                                        <tr>
-                                                            <th style="display:none"></th>
-                                                            <th id="thtype">日</th>
-                                                            <th>營業額</th>
-                                                            <th>筆數</th>
-                                                            <th>客單</th>
-                                                            <th>營業額</th>
-                                                            <th>筆數</th>
-                                                            <th>客單</th>
-                                                            <th>佔比</th>
-                                                        </tr>
-                                                        <!--合計-->
-                                                        <tr>
-                                                            <td colspan="1"></td>
-                                                            <td id="td1" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td2" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td3" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td4" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td5" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td6" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td7" colspan="1" style="text-align: right; "></td>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                        </tr>
-                                                    </tbody>
-
-                                                </table>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal fade" id="modal_Area_Date_Step2" data-keyboard="false" data-backdrop="static">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 560px; background-image: url(images/Web底圖-地球-2.png); background-size: contain">
-                                <style>
-                                    #tbSales_Area_Date_Step2 thead tr th {
-                                        font-size: 14px;
-                                        padding: 3px;
-                                        background-color: #ffdb00;
-                                        font-weight: bold;
-                                    }
-
-                                    #tbSales_Area_Date_Step2 thead tr td {
-                                        font-size: 14px;
-                                        padding: 3px;
-                                        background-color: #ffdb00;
-                                        font-weight: bold;
-                                    }
-
-                                    #tbSales_Area_Date_Step2 tbody tr td {
-                                        font-size: 12px;
-                                        padding: 3px;
-                                    }
-                                </style>
-
-                                <div class="modal-header">
-                                    <h4 class="modal-title" style="width: 100%; text-align: center;color:black"></h4>
-                                </div>
-
-                                <div class="modal-body modal-tab-container" style="padding:8px">
-                                    <div class="form-group row" style="width: 100%; margin-left: 5px ">
-                                        <label style="margin-top:5px;color:black">日期區間：</label>
-                                        <label id="lblOpenDate_Area_Date_Step2" style="font-size: 16px; color: red; margin-top: 5px "></label>
-                                        <button id="btExit_Area_Date_Step2" type="button" class="" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 5px; margin-left: 3px ">回上頁</button>
-                                    </div>
-                                    <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 0px; margin-top: 0px; margin-left: 5px ">
-                                        <label id="lblArea_Date_Step2" style="font-size: 16px;color:red "></label>
-                                        <!--<i id="Query_Area_Date_Step2" class="fa fa-search" style="font-size: 1.5rem; margin-left: 80px; color: green"></i>-->
-                                    </div>
-
-                                    <div class="card-block forminput">
-                                        <div class="x_content">
-                                            <div style="overflow: auto; height: 350px;">
-                                                <table id="tbSales_Area_Date_Step2" class="table table-bordered" style="width:100%">
-                                                    <thead>
-                                                        <!--分類-->
-                                                        <tr>
-                                                            <td class="text-center" colspan="4">總交易</td>
-                                                            <td class="text-center" colspan="4">會員交易</td>
-                                                        </tr>
-                                                        <!--標題-->
-                                                        <tr>
-                                                            <th style="display:none"></th>
-                                                            <th id="thtype">店</th>
-                                                            <th>營業額</th>
-                                                            <th>筆數</th>
-                                                            <th>客單</th>
-                                                            <th>營業額</th>
-                                                            <th>筆數</th>
-                                                            <th>客單</th>
-                                                            <th>佔比</th>
-                                                        </tr>
-                                                        <!--合計-->
-                                                        <tr>
-                                                            <td colspan="1"></td>
-                                                            <td id="td1" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td2" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td3" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td4" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td5" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td6" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td7" colspan="1" style="text-align: right; "></td>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                        </tr>
-                                                    </tbody>
-
-                                                </table>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal fade" id="modal_Shop_Step1" data-keyboard="false" data-backdrop="static">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 560px; background-image: url(images/Web底圖-地球-2.png); background-size: contain">
-                                <style>
-                                    #tbSales_Shop_Step1 thead tr th {
-                                        font-size: 14px;
-                                        padding: 3px;
-                                        background-color: #ffdb00;
-                                        font-weight: bold;
-                                    }
-
-                                    #tbSales_Shop_Step1 thead tr td {
-                                        font-size: 14px;
-                                        padding: 3px;
-                                        background-color: #ffdb00;
-                                        font-weight: bold;
-                                    }
-
-                                    #tbSales_Shop_Step1 tbody tr td {
-                                        font-size: 12px;
-                                        padding: 3px;
-                                    }
-                                </style>
-                                <div class="modal-header">
-                                    <h4 class="modal-title" style="width: 100%; text-align: center;color:black"></h4>
-                                </div>
-
-                                <div class="modal-body modal-tab-container" style="padding:8px">
-                                    <div class="form-group row" style="width: 100%; margin-left: 5px ">
-                                        <label style="margin-top:5px;color:black">日期區間：</label>
-                                        <label id="lblOpenDate_Shop_Step1" style="font-size: 16px;color:red;margin-top:5px "></label>
-                                        <button id="btExit_Shop_Step1" type="button" class="" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 5px; margin-left: 3px ">回上頁</button>
-                                    </div>
-
-                                    <div class="form-group row" style="width: 100%; margin-left: 5px ">
-                                        <label id="lblShop_Step1" style="font-size: 16px;color:red "></label>
-                                        <!--<i id="Query_Shop_Step1" class="fa fa-search" style="font-size: 1.5rem; margin-left: 160px; color: green"></i>-->
-                                    </div>
-
-                                    <div class="card-block forminput">
-                                        <div class="x_content">
-                                            <div style="overflow: auto; height: 300px;">
-                                                <table id="tbSales_Shop_Step1" class="table table-bordered" style="width:100%">
-                                                    <thead>
-                                                        <!--分類-->
-                                                        <tr>
-                                                            <td class="text-center" colspan="4">總交易</td>
-                                                            <td class="text-center" colspan="4">會員交易</td>
-                                                        </tr>
-                                                        <!--標題-->
-                                                        <tr>
-                                                            <th style="display:none"></th>
-                                                            <th id="thtype">日</th>
-                                                            <th>營業額</th>
-                                                            <th>筆數</th>
-                                                            <th>客單</th>
-                                                            <th>營業額</th>
-                                                            <th>筆數</th>
-                                                            <th>客單</th>
-                                                            <th>佔比</th>
-                                                        </tr>
-                                                        <!--合計-->
-                                                        <tr>
-                                                            <td colspan="1"></td>
-                                                            <td id="td1" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td2" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td3" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td4" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td5" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td6" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td7" colspan="1" style="text-align: right; "></td>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                        </tr>
-                                                    </tbody>
-
-                                                </table>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal fade" id="modal_Date_Step1" data-keyboard="false" data-backdrop="static">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 560px; background-image: url(images/Web底圖-地球-2.png); background-size: contain">
-                                <style>
-                                    #tbSales_Date_Step1 thead tr th {
-                                        font-size: 14px;
-                                        padding: 3px;
-                                        background-color: #ffdb00;
-                                        font-weight: bold;
-                                    }
-
-                                    #tbSales_Date_Step1 thead tr td {
-                                        font-size: 14px;
-                                        padding: 3px;
-                                        background-color: #ffdb00;
-                                        font-weight: bold;
-                                    }
-
-                                    #tbSales_Date_Step1 tbody tr td {
-                                        font-size: 12px;
-                                        padding: 3px;
-                                    }
-                                </style>
-
-                                <div class="modal-header">
-                                    <h4 class="modal-title" style="width: 100%; text-align: center;color:black"></h4>
-                                </div>
-
-                                <div class="modal-body modal-tab-container" style="padding:8px">
-                                    <div class="form-group row" style="width: 100%;margin-left:5px ">
-                                        <label style="margin-top:5px;color:black">日期區間：</label>
-                                        <label id="lblOpenDate_Date_Step1" style="font-size: 16px;color:red;margin-top:5px "></label>
-                                        <button id="btExit_Date_Step1" type="button" class="" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 5px; margin-left: 3px ">回上頁</button>
-                                    </div>
-
-                                    <div class="form-group row" style="width: 100%; margin-left: 5px ">
-                                        <input id="rdoArea_Date_Step1" type="radio" name="Step1" value="1" style="vertical-align: middle; margin-top: 2px; width: 20px; height: 20px; list-style: none; text-align: left; " checked>
-                                        <label for="rdoArea_Date_Step1" style="color: black; vertical-align: middle; margin-top: 2px; list-style: none; text-align: left; ">&ensp;區課</label>
-
-                                        <input id="rdoShop_Date_Step1" type="radio" name="Step1" value="1" style="vertical-align: middle; margin-top: 2px; width: 20px; height: 20px; list-style: none; text-align: left; margin-left:8px ">
-                                        <label for="rdoShop_Date_Step1" style="color: black; vertical-align: middle; margin-top: 2px; list-style: none; text-align: left; ">&ensp;店別</label>
-                                        <!--<i id="Query_Date_Step1" class="fa fa-search" style="font-size: 1.5rem; margin-left: 120px; color: green"></i>-->
-                                    </div>
-
-                                    <div class="form-group row" style="width: 100%; margin-left: 5px ">
-                                        <label id="lblDate_Step1" style="font-size: 16px;color:red "></label>
-                                    </div>
-
-                                    <div class="card-block forminput">
-                                        <div class="x_content">
-                                            <div style="overflow: auto; height: 300px;">
-                                                <table id="tbSales_Date_Step1" class="table table-bordered" style="width:100%">
-                                                    <thead>
-                                                        <!--分類-->
-                                                        <tr>
-                                                            <td class="text-center" colspan="4">總交易</td>
-                                                            <td class="text-center" colspan="4">會員交易</td>
-                                                        </tr>
-                                                        <!--標題-->
-                                                        <tr>
-                                                            <th style="display:none"></th>
-                                                            <th id="thtype">區</th>
-                                                            <th>營業額</th>
-                                                            <th>筆數</th>
-                                                            <th>客單</th>
-                                                            <th>營業額</th>
-                                                            <th>筆數</th>
-                                                            <th>客單</th>
-                                                            <th>佔比</th>
-                                                        </tr>
-                                                        <!--合計-->
-                                                        <tr>
-                                                            <td colspan="1"></td>
-                                                            <td id="td1" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td2" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td3" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td4" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td5" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td6" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td7" colspan="1" style="text-align: right; "></td>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                        </tr>
-                                                    </tbody>
-
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal fade" id="modal_Date_Area_Step2" data-keyboard="false" data-backdrop="static">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 560px; background-image: url(images/Web底圖-地球-2.png); background-size: contain">
-                                <style>
-                                    #tbSales_Date_Area_Step2 thead tr th {
-                                        font-size: 14px;
-                                        padding: 3px;
-                                        background-color: #ffdb00;
-                                        font-weight: bold;
-                                    }
-
-                                    #tbSales_Date_Area_Step2 thead tr td {
-                                        font-size: 14px;
-                                        padding: 3px;
-                                        background-color: #ffdb00;
-                                        font-weight: bold;
-                                    }
-
-                                    #tbSales_Date_Area_Step2 tbody tr td {
-                                        font-size: 12px;
-                                        padding: 3px;
-                                    }
-                                </style>
-
-                                <div class="modal-header">
-                                    <h4 class="modal-title" style="width: 100%; text-align: center;color:black"></h4>
-                                </div>
-
-                                <div class="modal-body modal-tab-container" style="padding:8px">
-                                    <div class="form-group row" style="width: 100%;margin-left:5px ">
-                                        <label style="margin-top:5px;color:black">日期區間：</label>
-                                        <label id="lblOpenDate_Date_Area_Step2" style="font-size: 16px;color:red;margin-top:5px "></label>
-                                        <button id="btExit_Date_Area_Step2" type="button" class="" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 5px; margin-left: 3px ">回上頁</button>
-                                    </div>
-
-                                    <div class="form-group row" style="width: 100%;margin-left:5px ">
-                                        <label id="lblDate_Area_Step2" style="font-size: 16px;color:red "></label>
-                                        <!--<i id="Query_Date_Area_Step2" class="fa fa-search" style="font-size: 1.5rem; margin-left: 80px; color: green"></i>-->
-                                    </div>
-
-                                    <div class="card-block forminput">
-                                        <div class="x_content">
-                                            <div style="overflow: auto; height: 350px;">
-                                                <table id="tbSales_Date_Area_Step2" class="table table-bordered" style="width:100%">
-                                                    <thead>
-                                                        <!--分類-->
-                                                        <tr>
-                                                            <td class="text-center" colspan="4">總交易</td>
-                                                            <td class="text-center" colspan="4">會員交易</td>
-                                                        </tr>
-                                                        <!--標題-->
-                                                        <tr>
-                                                            <th style="display:none"></th>
-                                                            <th id="thtype">店</th>
-                                                            <th>營業額</th>
-                                                            <th>筆數</th>
-                                                            <th>客單</th>
-                                                            <th>營業額</th>
-                                                            <th>筆數</th>
-                                                            <th>客單</th>
-                                                            <th>佔比</th>
-                                                        </tr>
-                                                        <!--合計-->
-                                                        <tr>
-                                                            <td colspan="1"></td>
-                                                            <td id="td1" colspan="1" style="text-align: right; ">55</td>
-                                                            <td id="td2" colspan="1" style="text-align: right; ">44</td>
-                                                            <td id="td3" colspan="1" style="text-align: right; ">33</td>
-                                                            <td id="td4" colspan="1" style="text-align: right; ">66</td>
-                                                            <td id="td5" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td6" colspan="1" style="text-align: right; "></td>
-                                                            <td id="td7" colspan="1" style="text-align: right; "></td>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                        </tr>
-                                                    </tbody>
-
-                                                </table>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
                 </article>
 
                 <article id="MSVP102btns" hidden>

@@ -9149,6 +9149,232 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("SystemSetup/MSVP102_GetVIPFaceID")]
+        public ActionResult SystemSetup_MSVP102_GetVIPFaceID()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSVP102_GetVIPFaceIDOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ST_ID = rq["ST_ID"];
+                string sql = "";
+                sql = "Select a.ST_ID,a.ST_SName ";
+                sql += "From WarehouseWeb a (nolock) Where a.Companycode='" + uu.CompanyId + "' and a.ST_Type not in('2','3') ";
+                if (ST_ID.SqlQuote() != "") {
+                    sql += "and a.ST_ID like '" + ST_ID.SqlQuote() + "%' ";
+                }
+                sql += "Order by a.ST_ID ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSVP102Query_SendSet")]
+        public ActionResult SystemSetup_MSVP102Query_SendSet()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSVP102Query_SendSetOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string chkVIPFaceID = rq["chkVIPFaceID"];
+                string VIP_Type = rq["VIP_Type"];
+                string VMEVNO = rq["VMEVNO"];
+
+                string sql = "";
+                sql = "Delete From SetEDMVIP_VIPWeb Where Companycode='" + uu.CompanyId + "' and EVNO='" + VMEVNO + "'; ";
+                sql += "Delete From SetEDMVIP_SetWeb Where Companycode='" + uu.CompanyId + "' and EVNO='" + VMEVNO + "' ";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                //SetEDMVIP_VIPWeb
+                sql = "Insert into SetEDMVIP_VIPWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,VIP_ID2,CouponID,VIP_Name,VIP_EMail,SendDate,PS_NO,SeqNo,EDMType) ";
+                sql += "Select Companycode,'" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                sql += "'" + VMEVNO + "',VIP_ID2,'',VIP_Name,VIP_Eadd,'','',ROW_NUMBER() OVER(PARTITION BY '" + VMEVNO + "' order by VIP_ID2),'E' ";
+                sql += "From EDDMS.dbo.VIP ";
+                sql += "Where Companycode='" + uu.CompanyId + "' ";
+                sql += "and isnull(VIP_Eadd,'')<>'' and isnull(P_Flag2,'')='1' and isnull(VIP_Eday,'')>convert(char(10),getdate(),111) ";
+                if (chkVIPFaceID != "")
+                {
+                    sql += "and VIP_FaceID in(" + chkVIPFaceID + ") ";
+                }
+                if (VIP_Type != "")
+                {
+                    sql += "and VIP_Type in(" + VIP_Type + ") ";
+                }
+
+                //SetEDMVIP_SetWeb
+                if (chkVIPFaceID != "")
+                {
+                    sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                    sql += "'" + VMEVNO + "',1,'','','','','會籍店櫃','" + chkVIPFaceID.Replace("'", "") + "' ";
+                }
+                if (VIP_Type != "")
+                {
+                    sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                    sql += "'" + VMEVNO + "',2,'','','','','會員卡別','" + VIP_Type.Replace("'", "") + "' ";
+                }
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                sql = "Select VIP_ID2,VIP_Name,VIP_Tel,VIP_Eadd,case VIP_MW when '0' then '男' when '1' then '女' end as VIP_NM,VIP_City,AreaName,VIP_LCDay,isnull(PointsBalance,0)PointsBalance, ";
+                sql += "case VIP_Type when '0' then '一般卡' when '1' then '會員卡' when '2' then '貴賓卡' when '3' then '白金卡' end as VIP_Type ";
+                sql += "From EDDMS.dbo.VIP ";
+                sql += "Where Companycode='" + uu.CompanyId + "' ";
+                sql += "and isnull(VIP_Eadd,'')<>'' and isnull(P_Flag2,'')='1' and isnull(VIP_Eday,'')>convert(char(10),getdate(),111) ";
+                if (chkVIPFaceID.SqlQuote() != "")
+                {
+                    sql += "and VIP_FaceID in(" + chkVIPFaceID + ") ";
+                }
+                if (VIP_Type.SqlQuote() != "")
+                {
+                    sql += "and VIP_Type in(" + VIP_Type + ") ";
+                }
+                sql += "Order by VIP_ID2 ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSVP102_GetVMEVNO")]
+        public ActionResult SystemSetup_MSVP102_GetVMEVNO()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSVP102_GetVMEVNOOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ProgramID = rq["ProgramID"];
+                var DocNo = PubUtility.GetNewDocNo(uu, "VM", 3);
+
+
+                string sql = "";
+                sql = "Select '" + DocNo + "' as DocNo ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+
+                sql = "Select VIP_ID2,VIP_Name,VIP_Tel,VIP_Eadd,case VIP_MW when '0' then '男' when '1' then '女' end as VIP_NM,VIP_City,AreaName,VIP_LCDay,isnull(PointsBalance,0)PointsBalance, ";
+                sql += "case VIP_Type when '0' then '一般卡' when '1' then '會員卡' when '2' then '貴賓卡' when '3' then '白金卡' end as VIP_Type ";
+                sql += "From EDDMS.dbo.VIP ";
+                sql += "Where 1=2 ";
+                DataTable dtV = PubUtility.SqlQry(sql, uu, "SYS");
+                dtV.TableName = "dtV";
+                ds.Tables.Add(dtV);
+
+                sql = "Delete From SetEDMVIP_VIPWeb Where Companycode='" + uu.CompanyId + "' and left(EVNO,2)='VM' and CrtDate<convert(char(10),getdate(),111); ";
+                sql += "Delete From SetEDMVIP_SetWeb Where Companycode='" + uu.CompanyId + "' and left(EVNO,2)='VM' and CrtDate<convert(char(10),getdate(),111) ";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSVP102_GetDM")]
+        public ActionResult SystemSetup_MSVP102_GetDM()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSVP102_GetDMOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+
+                string sql = "";
+                sql = "Select a.DocNo,a.EDMMemo,a.StartDate + ' ~ ' + a.EndDate as EDDate1, ";
+                sql += "b.ActivityCode,b.PS_Name,b.StartDate + ' ~ ' + b.EndDate as EDDate2, ";
+                sql += "case b.WhNoFlag when 'Y' then '全部店' else cast(isnull(c.Cnt1,0) as varchar) + '店' end as WhNoFlag,isnull(d.Cnt2,0)Cnt2 ";
+                sql += "From SetEDMHWEB a (nolock) ";
+                sql += "inner join PromoteSCouponHWeb b (nolock) on a.PS_NO=b.PS_NO and b.Companycode=a.Companycode ";
+                sql += "left join (Select PS_NO,Count(*)Cnt1 From PromoteSCouponShopWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by PS_NO)c on a.PS_NO=c.PS_NO ";
+                sql += "left join (Select EDM_DocNo,Count(*)Cnt2 From SetEDMVIP_HWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by EDM_DocNo)d on a.DocNo=d.EDM_DocNo ";
+
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                sql += "and isnull(a.EDMType,'')='E' and a.EndDate>=convert(char(10),getdate(),111) and isnull(a.ApproveDate,'')<>'' ";
+                sql += "and isnull(a.DefeasanceDate,'')='' ";
+                sql += "Order by a.DocNo ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSVP102_DMSend")]
+        public ActionResult SystemSetup_MSVP102_DMSend()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSVP102_DMSendOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string VMDocNo = rq["VMDocNo"];
+                string DMDocNo = rq["DMDocNo"];
+                var EVNO = PubUtility.GetNewDocNo(uu, "EV", 3);
+
+
+                string sql = "";
+                sql = "Select * From SetEDMHWeb (nolock) Where Companycode='" + uu.CompanyId + "' and DocNo='" + DMDocNo + "' ";
+                DataTable dtH = PubUtility.SqlQry(sql, uu, "SYS");
+
+                sql = "Insert into SetEDMVIP_HWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
+                sql += "EVNO,StartDate,EndDate,EDMMemo,EDM_DocNO,PS_NO,EDMType,ApproveDate,ApproveUser,DefeasanceDate,Defeasance, ";
+                sql += "DelDate,DelUser,EV_Model,TOMailDate,MAMailDate,MAMail ";
+                sql += ") ";
+                sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                sql += "'" + EVNO + "',convert(char(10),getdate(),111),convert(char(10),getdate(),111),'" + dtH.Rows[0]["EDMMemo"].ToString() + "','" + DMDocNo + "','" + dtH.Rows[0]["PS_NO"].ToString() + "','E', ";
+                sql += "convert(char(10),getdate(),111) + ' ' + convert(char(12),getdate(),108),'" + uu.UserID + "','','', ";
+                sql += "'','','VP102','','',''; ";
+                
+                sql += "Update SetEDMVIP_VIPWeb Set EVNO='" + EVNO + "',PS_NO='" + dtH.Rows[0]["PS_NO"].ToString() + "' ";
+                sql += "Where Companycode='" + uu.CompanyId + "' and EVNO='" + VMDocNo + "'; ";
+
+                sql += "Update SetEDMVIP_SetWeb Set EVNO='" + EVNO + "' ";
+                sql += "Where Companycode='" + uu.CompanyId + "' and EVNO='" + VMDocNo + "' ";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                //DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                //dtE.TableName = "dtE";
+                //ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+
         [Route("FileUpload_EDM")]
         public ActionResult FileUpload_EDM()
         {
