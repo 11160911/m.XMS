@@ -1077,69 +1077,6 @@ Timerset(sessionStorage.getItem('isamcomp'));
     };
 //#endregion
 
-    let Query1_click = function () {
-        if ($('#OpenDateS').val() == "" | $('#OpenDateS').val() == null) {
-            DyAlert("請輸入日期!!", function () { $('#OpenDateS').focus() });
-            $(".modal-backdrop").remove();
-            return;
-        }
-        if ($('#OpenDateE').val() == "" | $('#OpenDateE').val() == null) {
-            DyAlert("請輸入日期!!", function () { $('#OpenDateE').focus() });
-            $(".modal-backdrop").remove();
-            return;
-        }
-
-        ShowLoading();
-
-        if ($('#txtShop1').val() == "") {
-            var Type = "";
-            if ($('#rdoArea').prop('checked')) {
-                Type = "A";
-            }
-            else if ($('#rdoShop').prop('checked')) {
-                Type = "S";
-            }
-            else if ($('#rdoDate').prop('checked')) {
-                Type = "D";
-            }
-
-            var pData = {
-                OpenDateS: $('#OpenDateS').val(),
-                OpenDateE: $('#OpenDateE').val(),
-                Type: Type
-            }
-            PostToWebApi({ url: "api/Query1", data: pData, success: afterQuery1 });
-        }
-        else {
-            var pData = {
-                Shop: $('#txtShop1').val()
-            }
-            PostToWebApi({ url: "api/ChkQuery1_Shop", data: pData, success: afterChkQuery1_Shop });
-        }
-    };
-
-    let afterChkQuery1_Shop = function (data) {
-        if (ReturnMsg(data, 0) != "ChkQuery1_ShopOK") {
-            CloseLoading();
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
-            var dtW = data.getElementsByTagName('dtW');
-            if (dtW.length == 0) {
-                DyAlert("無符合店櫃資料，請重新確認!");
-                $(".modal-backdrop").remove();
-                return;
-            }
-
-            $('#lblOpenDate_Shop').html($('#OpenDateS').val() + "~" + $('#OpenDateE').val());
-            $('#lblShop').html(GetNodeValue(dtW[0], "st_placeid") + ' ' + GetNodeValue(dtW[0], "type_name") + '-' + GetNodeValue(dtW[0], "st_id") + ' ' + GetNodeValue(dtW[0], "st_sname"));
-            $('#modal_Shop').modal('show');
-            setTimeout(function () {
-                Query1_Shop_click();
-            }, 500);
-        }
-    };
-
     let Query1_Shop_click = function () {
         var pData = {
             OpenDateS: $('#OpenDateS').val(),
@@ -1171,44 +1108,6 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#tbSales_Shop thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
             $('#tbSales_Shop thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
             $('#tbSales_Shop thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
-        }
-    };
-
-    let afterQuery1 = function (data) {
-        CloseLoading();
-
-        if (ReturnMsg(data, 0) != "Query1OK") {
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
-           
-            var dtQ = data.getElementsByTagName('dtQ');
-            grdM.BindData(dtQ);
-
-            var heads = $('#tbSales1 thead tr th#thtype');
-            if ($('#rdoArea').prop('checked')) {
-                $(heads).html('區');
-            }
-            else if ($('#rdoShop').prop('checked')) {
-                $(heads).html('店');
-            }
-            else if ($('#rdoDate').prop('checked')) {
-                $(heads).html('日');
-            }
-            
-            if (dtQ.length == 0) {
-                DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
-                return;
-            }
-            var dtSumQ = data.getElementsByTagName('dtSumQ');
-            $('#tbSales1 thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
-            $('#tbSales1 thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
-            $('#tbSales1 thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
-            $('#tbSales1 thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
-            $('#tbSales1 thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
-            $('#tbSales1 thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
-            $('#tbSales1 thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
         }
     };
 
@@ -1546,6 +1445,8 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 $('#tbQuery thead td#td12').html('');
                 return;
             }
+            $('#tbQuery tbody tr .tdCol9').html($('#tbQuery tbody tr .tdCol9').html() + '%')
+            $('#tbQuery tbody tr .tdCol13').html($('#tbQuery tbody tr .tdCol13').html() + '%')
 
             var dtSumQ = data.getElementsByTagName('dtSumQ');
             $('#tbQuery thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPCnt")).toLocaleString('en-US'));
@@ -1562,74 +1463,6 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#tbQuery thead td#td12').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesPercent3")).toLocaleString('en-US') + '%');
         }
     };
-
-    //活動代號...
-    let btActivityCode_click = function (bt) {
-        //Timerset();
-        var pData = {
-            ActivityCode: $('#txtActivityCode').val()
-        }
-        PostToWebApi({ url: "api/SystemSetup/MSSD105_LookUpActivityCode", data: pData, success: afterMSSD105_LookUpActivityCode });
-    };
-
-    let afterMSSD105_LookUpActivityCode = function (data) {
-        if (ReturnMsg(data, 0) != "MSSD105_LookUpActivityCodeOK") {
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
-            var dtE = data.getElementsByTagName('dtE');
-            $('#txtQLookup_ActivityCode').val($('#txtActivityCode').val());
-            $('#modal_Lookup_ActivityCode').modal('show');
-            setTimeout(function () {
-                grdLookUp_ActivityCode.BindData(dtE);
-            }, 500);
-        }
-    };
-
-    let btQLookup_ActivityCode_click = function (bt) {
-        //Timerset();
-        var pData = {
-            ActivityCode: $('#txtQLookup_ActivityCode').val()
-        }
-        PostToWebApi({ url: "api/SystemSetup/MSSD105_LookUpActivityCode", data: pData, success: afterMSSD105_QLookUpActivityCode });
-    };
-
-    let afterMSSD105_QLookUpActivityCode = function (data) {
-        if (ReturnMsg(data, 0) != "MSSD105_LookUpActivityCodeOK") {
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
-            var dtE = data.getElementsByTagName('dtE');
-            if (dtE.length == 0) {
-                DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
-                return;
-            }
-            grdLookUp_ActivityCode.BindData(dtE);
-        }
-    };
-
-    let btLpOK_ActivityCode_click = function (bt) {
-        //Timerset();
-        var obchkedtd = $('#tbDataLookup_ActivityCode input[type="radio"]:checked');
-        var chkedRow = obchkedtd.length.toString();
-
-        if (chkedRow == 0) {
-            DyAlert("未選取活動代號，請重新確認!");
-        }
-        else {
-            var a = $(obchkedtd[0]).closest('tr');
-            var trNode = $(a).prop('Record');
-            $('#txtActivityCode').val(GetNodeValue(trNode, "ActivityCode"))
-            $('#modal_Lookup_ActivityCode').modal('hide')
-        }
-    };
-
-    let btLpExit_ActivityCode_click = function (bt) {
-        //Timerset();
-        $('#modal_Lookup_ActivityCode').modal('hide')
-    };
-
 
 //#region FormLoad
     let GetInitMSSD105 = function (data) {
@@ -1657,9 +1490,6 @@ Timerset(sessionStorage.getItem('isamcomp'));
 
             $('#btQuery').click(function () { btQuery_click(this) });
             $('#btClear').click(function () { btClear_click(this) });
-           /////////////////////////////
-           //var dtQ = data.getElementsByTagName('dtQ');
-           //grdM.BindData(dtQ);
         }
     };
     

@@ -8439,7 +8439,7 @@ namespace SVMAdmin.Controllers
                 //統計截止日/會員總數
                 sql = "Select '" + Yesterday.Trim() + "' as EndDate,'" + Today.Trim() + "' as SysDate,Count(*) as VIPCntAll ";
                 sql += "from EDDMS.dbo.VIP v (nolock) ";
-                sql += "inner join EDDMS.dbo.Warehouse w (nolock) on v.VIP_FaceID=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=v.Companycode ";
+                sql += "inner join EDDMS.dbo.Warehouse w (nolock) on v.VIP_FaceID=w.ST_ID and w.ST_Type not in('2','3') and w.Companycode=v.Companycode ";
                 sql += "Where v.Companycode='" + uu.CompanyId + "' ";
                 sql += "and isnull(v.VIP_Qday,'')<='" + Yesterday + "' ";
                 DataTable dtV = PubUtility.SqlQry(sql, uu, "SYS");
@@ -8476,7 +8476,7 @@ namespace SVMAdmin.Controllers
                     sql = "Select v.VIP_FaceID as ID,count(*) as VIPCnt ";
                     sql += "into #v ";
                     sql += "from EDDMS.dbo.VIP v (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on v.VIP_FaceID=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=v.Companycode ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on v.VIP_FaceID=w.ST_ID and w.ST_Type not in('2','3') and w.Companycode=v.Companycode ";
                     sql += "Where v.Companycode='" + uu.CompanyId + "' ";
                     if (CountYM != "") {
                         //判斷調閱年月是否同系統日
@@ -8506,7 +8506,7 @@ namespace SVMAdmin.Controllers
                             sql += "and left(isnull(v.VIP_Qday,''),7)='" + CountYM + "' ";
                         }
                     }
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=h.Companycode ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('2','3') and w.Companycode=h.Companycode ";
                     sql += "Where h.Companycode='" + uu.CompanyId + "' ";
                     sql += "Group By h.ShopNo; ";
 
@@ -8514,7 +8514,7 @@ namespace SVMAdmin.Controllers
                     sql += "Select h.ShopNo as ID,Count(*) as SalesCnt2,Sum(h.Cash) as SalesCash2,case when Count(*)=0 then 0 else Round(Sum(h.Cash)/Count(*),0) end as SalesPrice2 ";
                     sql += "into #s2 ";
                     sql += "From SalesH_AllWeb h (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=h.Companycode ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('2','3') and w.Companycode=h.Companycode ";
                     sql += "Where h.Companycode='" + uu.CompanyId + "' and h.VIPNo<>'' ";
                     if (CountYM != "") {
                         sql += "and left(h.OpenDate,7)='" + CountYM + "' ";
@@ -8525,7 +8525,7 @@ namespace SVMAdmin.Controllers
                     sql += "Select h.ShopNo as ID,Count(*) as SalesCnt3,Sum(h.Cash) as SalesCash3,case when Count(*)=0 then 0 else Round(Sum(h.Cash)/Count(*),0) end as SalesPrice3 ";
                     sql += "into #s3 ";
                     sql += "From SalesH_AllWeb h (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=h.Companycode ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('2','3') and w.Companycode=h.Companycode ";
                     sql += "Where h.Companycode='" + uu.CompanyId + "' and h.VIPNo='' ";
                     if (CountYM != "")
                     {
@@ -8537,7 +8537,7 @@ namespace SVMAdmin.Controllers
                     sql += "Select h.ShopNo as ID,Sum(h.Cash) as SalesCashAll ";
                     sql += "into #sall ";
                     sql += "From SalesH_AllWeb h (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=h.Companycode ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('2','3') and w.Companycode=h.Companycode ";
                     sql += "Where h.Companycode='" + uu.CompanyId + "' ";
                     if (CountYM != "")
                     {
@@ -8557,7 +8557,7 @@ namespace SVMAdmin.Controllers
                     sqlQ += "left join #s1 s1 on w.ST_ID=s1.ID ";
                     sqlQ += "left join #s2 s2 on w.ST_ID=s2.ID ";
                     sqlQ += "left join #s3 s3 on w.ST_ID=s3.ID ";
-                    sqlQ += "Where w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in ('0','2','3') ";
+                    sqlQ += "Where w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in ('2','3') ";
                     //測試
                     //sqlQ += "and w.ST_ID='EDM1' ";
                     sqlQ += "Order by w.ST_ID ";
@@ -8578,7 +8578,7 @@ namespace SVMAdmin.Controllers
                     sqlSumQ += "left join #s1 s1 on w.ST_ID=s1.ID ";
                     sqlSumQ += "left join #s2 s2 on w.ST_ID=s2.ID ";
                     sqlSumQ += "left join #s3 s3 on w.ST_ID=s3.ID ";
-                    sqlSumQ += "Where w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in ('0','2','3') ";
+                    sqlSumQ += "Where w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in ('2','3') ";
                     //測試
                     //sqlSumQ += "and w.ST_ID='EDM1' ";
                     DataTable dtSumQ = PubUtility.SqlQry(sql+ sqlSumQ, uu, "SYS");
@@ -8591,7 +8591,7 @@ namespace SVMAdmin.Controllers
                     sql = "Select v.VIP_Qday as ID,count(*) as VIPCnt ";
                     sql += "into #v ";
                     sql += "from EDDMS.dbo.VIP v (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on v.VIP_FaceID=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=v.Companycode ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on v.VIP_FaceID=w.ST_ID and w.ST_Type not in('2','3') and w.Companycode=v.Companycode ";
                     sql += "Where v.Companycode='" + uu.CompanyId + "' ";
                     if (CountYM != "")
                     {
@@ -8624,7 +8624,7 @@ namespace SVMAdmin.Controllers
                             sql += "and left(isnull(v.VIP_Qday,''),7)='" + CountYM + "' ";
                         }
                     }
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=h.Companycode ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('2','3') and w.Companycode=h.Companycode ";
                     sql += "Where h.Companycode='" + uu.CompanyId + "' ";
                     sql += "Group By h.OpenDate; ";
 
@@ -8632,7 +8632,7 @@ namespace SVMAdmin.Controllers
                     sql += "Select h.OpenDate as ID,Count(*) as SalesCnt2,Sum(h.Cash) as SalesCash2,case when Count(*)=0 then 0 else Round(Sum(h.Cash)/Count(*),0) end as SalesPrice2 ";
                     sql += "into #s2 ";
                     sql += "From SalesH_AllWeb h (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=h.Companycode ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('2','3') and w.Companycode=h.Companycode ";
                     sql += "Where h.Companycode='" + uu.CompanyId + "' and h.VIPNo<>'' ";
                     if (CountYM != "")
                     {
@@ -8644,7 +8644,7 @@ namespace SVMAdmin.Controllers
                     sql += "Select h.OpenDate as ID,Count(*) as SalesCnt3,Sum(h.Cash) as SalesCash3,case when Count(*)=0 then 0 else Round(Sum(h.Cash)/Count(*),0) end as SalesPrice3 ";
                     sql += "into #s3 ";
                     sql += "From SalesH_AllWeb h (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=h.Companycode ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('2','3') and w.Companycode=h.Companycode ";
                     sql += "Where h.Companycode='" + uu.CompanyId + "' and h.VIPNo='' ";
                     if (CountYM != "")
                     {
@@ -8656,7 +8656,7 @@ namespace SVMAdmin.Controllers
                     sql += "Select h.OpenDate as ID,Sum(h.Cash) as SalesCashAll ";
                     sql += "into #sall ";
                     sql += "From SalesH_AllWeb h (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=h.Companycode ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('2','3') and w.Companycode=h.Companycode ";
                     sql += "Where h.Companycode='" + uu.CompanyId + "' ";
                     if (CountYM != "")
                     {
@@ -8838,7 +8838,7 @@ namespace SVMAdmin.Controllers
                 sql += "and isnull(a.ApproveDate,'')<>'' and isnull(a.DefeasanceDate,'')='' ";
                 if (EndDate.SqlQuote() != "")
                 {
-                    sql += "and isnull(a.EndDate,'')>'" + EndDate.SqlQuote() + "' ";
+                    sql += "and isnull(a.EndDate,'')>='" + EndDate.SqlQuote() + "' ";
                 }
                 if (PS_NO.SqlQuote() != "")
                 {
@@ -9262,9 +9262,7 @@ namespace SVMAdmin.Controllers
             try
             {
                 IFormCollection rq = HttpContext.Request.Form;
-                string ProgramID = rq["ProgramID"];
                 var DocNo = PubUtility.GetNewDocNo(uu, "VM", 3);
-
 
                 string sql = "";
                 sql = "Select '" + DocNo + "' as DocNo ";
@@ -9280,8 +9278,8 @@ namespace SVMAdmin.Controllers
                 dtV.TableName = "dtV";
                 ds.Tables.Add(dtV);
 
-                sql = "Delete From SetEDMVIP_VIPWeb Where Companycode='" + uu.CompanyId + "' and left(EVNO,2)='VM' and CrtDate<convert(char(10),getdate(),111); ";
-                sql += "Delete From SetEDMVIP_SetWeb Where Companycode='" + uu.CompanyId + "' and left(EVNO,2)='VM' and CrtDate<convert(char(10),getdate(),111) ";
+                sql = "Delete From SetEDMVIP_VIPWeb Where Companycode='" + uu.CompanyId + "' and left(EVNO,2)='VM' and CrtDate<=convert(char(10),getdate(),111) and CrtUser='" + uu.UserID + "'; ";
+                sql += "Delete From SetEDMVIP_SetWeb Where Companycode='" + uu.CompanyId + "' and left(EVNO,2)='VM' and CrtDate<=convert(char(10),getdate(),111) and CrtUser='" + uu.UserID + "' ";
                 PubUtility.ExecuteSql(sql, uu, "SYS");
             }
             catch (Exception err)
@@ -9365,6 +9363,29 @@ namespace SVMAdmin.Controllers
                 //DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 //dtE.TableName = "dtE";
                 //ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSVP102_ReSendSet")]
+        public ActionResult SystemSetup_MSVP102_ReSendSet()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSVP102_ReSendSetOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                
+                string sql = "";
+                sql = "Delete From SetEDMVIP_VIPWeb Where Companycode='" + uu.CompanyId + "' and left(EVNO,2)='VM' and CrtDate<=convert(char(10),getdate(),111) and CrtUser='" + uu.UserID + "'; ";
+                sql += "Delete From SetEDMVIP_SetWeb Where Companycode='" + uu.CompanyId + "' and left(EVNO,2)='VM' and CrtDate<=convert(char(10),getdate(),111) and CrtUser='" + uu.UserID + "' ";
+                PubUtility.ExecuteSql(sql, uu, "SYS");
             }
             catch (Exception err)
             {

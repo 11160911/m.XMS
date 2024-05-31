@@ -123,22 +123,23 @@
                                 }
 
                                 #tbQuery thead tr th {
-                                    font-size: 14px;
+                                    font-size: 16px;
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
                                 }
 
                                 #tbQuery thead tr td {
-                                    font-size: 14px;
+                                    font-size: 16px;
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
                                 }
 
                                 #tbQuery tbody tr td {
-                                    font-size: 12px;
+                                    font-size: 14px;
                                     padding: 3px;
+                                    font-weight: bold;
                                 }
                             </style>
 
@@ -151,11 +152,11 @@
                                 <mark class="DyForm3-DyNotEmptyMark" style="margin-left:15px">*</mark>
                                 <input class="DyForm3-TextBox" id="txtYM" type="month" />
 
-                                <button class="DyForm3-BtnClear" id="btClear" type="button" style="position: absolute; right: 110px">
+                                <button class="DyForm3-BtnClear" id="btClear" type="button" style="margin-left: 120px">
                                     清除
                                     <i class="fa fa-close"></i>
                                 </button>
-                                <button class="DyForm3-BtnQuery" id="btQuery" type="button" style="position: absolute; right: 15px">
+                                <button class="DyForm3-BtnQuery" id="btQuery" type="button" style="margin-left: 20px">
                                     查詢
                                     <i class="fa fa-search"></i>
                                 </button>
@@ -170,14 +171,14 @@
                                 <label class="DyForm3-Label" for="rdoDate" style="margin-top:2px">&ensp;日期</label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; margin-bottom:0px; width: 100%">
-                                <label id="lblEnd" class="DyForm3-Label" style="font-size:18px"></label>
-                                <label id="lblVIPQty" class="DyForm3-Label" style="font-size: 22px; color: red; position: absolute; right: 15px"></label>
+                            <div class="form-group row" style="margin-bottom: 0px; width: 100%; margin-left: 12px ">
+                                <label id="lblEnd" class="DyForm3-Label" style="font-size: 20px; margin-top:0px "></label>
+                                <label id="lblVIPQty" class="DyForm3-LabelRed" style="font-size: 20px; margin-left:60px "></label>
                             </div>
 
                             <div class="card-block forminput">
                                 <div class="x_content">
-                                    <div style="overflow: auto; height: 350px;">
+                                    <div style="overflow: auto; height: 600px;">
                                         <table id="tbQuery" class="table table-bordered" style="width:100%">
                                             <thead>
                                                 <!--第一層-->
@@ -192,18 +193,18 @@
                                                 <tr>
                                                     <!--<th style="display:none"></th>-->
                                                     <th class="text-center" colspan="1"></th>
-                                                    <th class="label-align">入會數</th>
-                                                    <th>交易筆數</th>
-                                                    <th>交易金額</th>
-                                                    <th>客單價</th>
-                                                    <th>交易筆數</th>
-                                                    <th>交易金額</th>
-                                                    <th>客單價</th>
-                                                    <th>交易佔比</th>
-                                                    <th>交易筆數</th>
-                                                    <th>交易金額</th>
-                                                    <th>客單價</th>
-                                                    <th>交易佔比</th>
+                                                    <th class="text-center">入會數</th>
+                                                    <th class="text-center">交易筆數</th>
+                                                    <th class="text-center">交易金額</th>
+                                                    <th class="text-center">客單價</th>
+                                                    <th class="text-center">交易筆數</th>
+                                                    <th class="text-center">交易金額</th>
+                                                    <th class="text-center">客單價</th>
+                                                    <th class="text-center">交易佔比</th>
+                                                    <th class="text-center">交易筆數</th>
+                                                    <th class="text-center">交易金額</th>
+                                                    <th class="text-center">客單價</th>
+                                                    <th class="text-center">交易佔比</th>
                                                 </tr>
                                                 <!--第三層-->
                                                 <tr>

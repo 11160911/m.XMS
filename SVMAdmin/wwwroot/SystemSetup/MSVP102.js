@@ -27,7 +27,7 @@
                     { type: "Text", name: "EDMMemo"},
                     { type: "Text", name: "EDDate"}
                 ],
-                rows_per_page: 15,
+                rows_per_page: 50,
                 method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
                 sortable: "N"
@@ -1057,7 +1057,18 @@ Timerset(sessionStorage.getItem('isamcomp'));
     //上一頁(發送設定)
     let btRe_SendSet_click = function (bt) {
         //Timerset();
-        $('#modal_SendSet').modal('hide');
+        var pData = {
+        }
+        PostToWebApi({ url: "api/SystemSetup/MSVP102_ReSendSet", data: pData, success: afterMSVP102_ReSendSet });
+    };
+
+    let afterMSVP102_ReSendSet = function (data) {
+        if (ReturnMsg(data, 0) != "MSVP102_ReSendSetOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            $('#modal_SendSet').modal('hide');
+        }
     };
 
     //DM選取(發送設定)

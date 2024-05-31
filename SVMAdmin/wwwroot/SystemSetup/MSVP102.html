@@ -123,15 +123,16 @@
                                 }
 
                                 #tbQuery thead tr th {
-                                    font-size: 14px;
+                                    font-size: 16px;
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
                                 }
 
                                 #tbQuery tbody tr td {
-                                    font-size: 12px;
+                                    font-size: 14px;
                                     padding: 3px;
+                                    font-weight: bold;
                                 }
                             </style>
 
@@ -171,16 +172,16 @@
 
                             <div class="card-block forminput">
                                 <div class="x_content">
-                                    <div style="overflow: auto; height: 350px;">
+                                    <div style="overflow: auto; height: 600px;">
                                         <table id="tbQuery" class="table table-bordered" style="width:100%">
                                             <thead>
                                                 <tr>
-                                                    <th>發送單號</th>
-                                                    <th>發送筆數</th>
-                                                    <th>發送日期</th>
-                                                    <th>DM單號</th>
-                                                    <th>DM主旨</th>
-                                                    <th>DM期間</th>
+                                                    <th class="text-center">發送單號</th>
+                                                    <th class="text-center">發送筆數</th>
+                                                    <th class="text-center">發送日期</th>
+                                                    <th class="text-center">DM單號</th>
+                                                    <th class="text-center">DM主旨</th>
+                                                    <th class="text-center">DM期間</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -200,15 +201,16 @@
                             <div class="modal-content" style="height: 750px; width: 1000px; overflow: auto; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 410px 500px ">
                                 <style>
                                     #tbSendSet thead tr th {
-                                        font-size: 14px;
+                                        font-size: 16px;
                                         padding: 3px;
                                         background-color: #ffb620;
                                         font-weight: bold;
                                     }
 
                                     #tbSendSet tbody tr td {
-                                        font-size: 12px;
+                                        font-size: 14px;
                                         padding: 3px;
+                                        font-weight: bold;
                                     }
                                 </style>
 
@@ -232,7 +234,7 @@
                                         <button class="DyForm3-BtnAdd" id="btDMDe_SendSet" type="button" style="color:black;background-color: #FFCD2F;margin-left:30px " hidden>
                                             DM明細
                                         </button>
-                                        <button class="DyForm3-BtnQuery" id="btDMSend_SendSet" type="button" style="position: absolute; right: 160px">
+                                        <button class="DyForm3-BtnQuery" id="btDMSend_SendSet" type="button" style="position: absolute; right: 140px">
                                             發送EDM
                                         </button>
                                         <button id="btRe_SendSet" type="button" class="DyForm3-BtnRe" style="position: absolute; right: 20px">回上頁</button>
@@ -240,11 +242,11 @@
 
                                     <div class="form-group row" style="width: 100%;margin-left: 12px ">
                                         <label class="DyForm3-ProgramName">會員條件篩選</label>
-                                        <button class="DyForm3-BtnClear" id="btClear_SendSet" type="button" style="position: absolute; right: 160px">
+                                        <button class="DyForm3-BtnClear" id="btClear_SendSet" type="button" style="margin-left: 100px">
                                             清除所有條件
                                             <i class="fa fa-close"></i>
                                         </button>
-                                        <button class="DyForm3-BtnQuery" id="btQuery_SendSet" type="button" style="position: absolute; right: 20px">
+                                        <button class="DyForm3-BtnQuery" id="btQuery_SendSet" type="button" style="margin-left: 20px">
                                             查詢
                                             <i class="fa fa-search"></i>
                                         </button>
@@ -257,12 +259,12 @@
                                     </div>
 
                                     <div class="form-group row" style="width: 100%;margin-left: 12px ">
-                                        <mark class="DyForm3-DyNotEmptyMark" style="">*</mark>
-                                        <label class="DyForm3-Label">會員卡別</label>
-                                        <input id="chk0_SendSet" type="checkbox" style="height: 30px; margin-left: 10px" checked><label class="DyForm3-Label" for="chk0_SendSet">一般</label>
-                                        <input id="chk1_SendSet" type="checkbox" style="height:30px;margin-left:5px" checked><label class="DyForm3-Label" for="chk1_SendSet">會員</label>
-                                        <input id="chk2_SendSet" type="checkbox" style="height:30px;margin-left:5px" checked><label class="DyForm3-Label" for="chk2_SendSet">貴賓</label>
-                                        <input id="chk3_SendSet" type="checkbox" style="height:30px;margin-left:5px"><label class="DyForm3-Label" for="chk3_SendSet">白金卡</label>
+                                        <mark class="DyForm3-DyNotEmptyMark" style="margin-top: 5px">*</mark>
+                                        <label class="DyForm3-LabelBlack" style="margin-top:5px">會員卡別</label>
+                                        <input id="chk0_SendSet" type="checkbox" style="height: 30px; margin-left: 10px" checked><label class="DyForm3-LabelBlack" for="chk0_SendSet" style="margin-top:5px">一般</label>
+                                        <input id="chk1_SendSet" type="checkbox" style="height:30px;margin-left:5px" checked><label class="DyForm3-LabelBlack" for="chk1_SendSet" style="margin-top:5px">會員</label>
+                                        <input id="chk2_SendSet" type="checkbox" style="height:30px;margin-left:5px" checked><label class="DyForm3-LabelBlack" for="chk2_SendSet" style="margin-top:5px">貴賓</label>
+                                        <input id="chk3_SendSet" type="checkbox" style="height:30px;margin-left:5px"><label class="DyForm3-LabelBlack" for="chk3_SendSet" style="margin-top:5px">白金卡</label>
                                     </div>
 
                                     <div class="card-block forminput">
@@ -277,16 +279,16 @@
                                                 <table id="tbSendSet" class="table table-bordered" style="width:100%">
                                                     <thead>
                                                         <tr>
-                                                            <th>會員編號</th>
-                                                            <th>會員姓名</th>
-                                                            <th>手機號碼</th>
-                                                            <th>email</th>
-                                                            <th>性別</th>
-                                                            <th>縣市</th>
-                                                            <th>鄉鎮</th>
-                                                            <th>最近來店日</th>
-                                                            <th>剩餘點數</th>
-                                                            <th>會員卡別</th>
+                                                            <th class="text-center">會員編號</th>
+                                                            <th class="text-center">會員姓名</th>
+                                                            <th class="text-center">手機號碼</th>
+                                                            <th class="text-center">email</th>
+                                                            <th class="text-center">性別</th>
+                                                            <th class="text-center">縣市</th>
+                                                            <th class="text-center">鄉鎮</th>
+                                                            <th class="text-center">最近來店日</th>
+                                                            <th class="text-center">剩餘點數</th>
+                                                            <th class="text-center">會員卡別</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -309,15 +311,16 @@
                             <div class="modal-content" style="height: 750px; width: 1000px; overflow: auto; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 410px 500px ">
                                 <style>
                                     #tbDMSel thead tr th {
-                                        font-size: 14px;
+                                        font-size: 16px;
                                         padding: 3px;
                                         background-color: #ffb620;
                                         font-weight: bold;
                                     }
 
                                     #tbDMSel tbody tr td {
-                                        font-size: 12px;
+                                        font-size: 14px;
                                         padding: 3px;
+                                        font-weight: bold;
                                     }
                                 </style>
 
@@ -341,15 +344,15 @@
                                                 <table id="tbDMSel" class="table table-bordered" style="width:100%">
                                                     <thead>
                                                         <tr>
-                                                            <th>選取</th>
-                                                            <th>DM單號</th>
-                                                            <th>DM主旨</th>
-                                                            <th>DM期間</th>
-                                                            <th>活動代號</th>
-                                                            <th>活動名稱</th>
-                                                            <th>活動期間</th>
-                                                            <th>適用店櫃</th>
-                                                            <th>發送次數</th>
+                                                            <th class="text-center">選取</th>
+                                                            <th class="text-center">DM單號</th>
+                                                            <th class="text-center">DM主旨</th>
+                                                            <th class="text-center">DM期間</th>
+                                                            <th class="text-center">活動代號</th>
+                                                            <th class="text-center">活動名稱</th>
+                                                            <th class="text-center">活動期間</th>
+                                                            <th class="text-center">適用店櫃</th>
+                                                            <th class="text-center">發送次數</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -366,9 +369,6 @@
                             </div>
                         </div>
                     </div>
-
-
-
 
                     <div class="modal fade" id="modal_Lookup_VIPFaceID_SendSet" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">

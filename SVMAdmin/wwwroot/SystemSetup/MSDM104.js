@@ -1342,6 +1342,7 @@
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
+            //$('#modal_EDM').modal('hide');
             $('#txtQLookup_ShopNo_EDM').val('');
             $('#modal_Lookup_ShopNo_EDM').modal('show');
             setTimeout(function () {
@@ -1459,11 +1460,6 @@
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
-            //if (dtE.length == 0) {
-            //    DyAlert("無符合資料!");
-            //    $(".modal-backdrop").remove();
-            //    return;
-            //}
             $('#txtQLookup_PSNO_EDM').val($('#txtPSNO_EDM').val())
             $('#modal_Lookup_PSNO_EDM').modal('show');
             setTimeout(function () {
