@@ -62,7 +62,7 @@
             })
 
             var dtEmployeeSV = data.getElementsByTagName('dtEmployee');
-            $('#navbarDropdown').text(GetNodeValue(dtEmployeeSV[0], 'UName'));
+            $('#navbarDropdown').text(GetNodeValue(dtEmployeeSV[0], 'UName') + '-' + GetNodeValue(dtEmployeeSV[0], 'ChineseName'));
             dtFun = data.getElementsByTagName('dtAllFunction');
             SetMenu();
             init_sidebar();

@@ -407,9 +407,10 @@ namespace SVMAdmin.Controllers
                 //    if (dt.DataSet == null)
                 //        ds.Tables.Add(dt);
 
-                sql = "select a.UName ";
+                sql = "select a.UName,a.Companycode,b.ChineseName ";
                 sql += " from Account a (nolock) ";
-                sql += " where a.UID='" + uu.UserID + "'";
+                sql += " left join CompanyWeb b (nolock) on a.Companycode=b.Companycode ";
+                sql += " where a.UID='" + uu.UserID + "' ";
                 DataTable dtU = PubUtility.SqlQry(sql, uu, "SYS");
                 dtU.TableName = "dtEmployee";
                 ds.Tables.Add(dtU);
