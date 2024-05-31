@@ -21,6 +21,7 @@
     text-decoration: none;
     text-shadow: 0px 1px 0px #631b16;
     margin: 0px;
+    height:28px;
 }
     .DyForm3-BtnAdd:focus, .DyForm3-BtnMod:focus, .DyForm3-BtnSave:focus, .DyForm3-BtnCancel:focus, .DyForm3-BtnShow:focus, .DyForm3-BtnDef:focus, .DyForm3-BtnRe:focus, .DyForm3-BtnClear:focus {
         outline-color: transparent;
@@ -42,6 +43,7 @@
     padding: 3px 14px;
     text-shadow: 0px 1px 0px #1570cd;
     margin: 0px;
+    height: 28px;
 }
 .DyForm3-BtnQuery:focus, .DyForm3-BtnApp:focus {
     outline-color: transparent;
@@ -65,6 +67,7 @@
     text-decoration: none;
     text-shadow: 0px 1px 0px #6c9447;
     margin: 0px;
+    height: 28px;
 }
 .DyForm3-BtnExit:focus {
     outline-color: transparent;
@@ -140,6 +143,7 @@
     text-decoration: none;
     text-shadow: 0px 1px 0px #6c9447;
     margin: 0px;
+    height: 28px;
 }
     .DyForm3-BtnShop:focus {
         outline-color: transparent;

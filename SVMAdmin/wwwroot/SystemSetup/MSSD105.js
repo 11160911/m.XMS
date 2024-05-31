@@ -1456,11 +1456,11 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#tbQuery thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCnt2")).toLocaleString('en-US'));
             $('#tbQuery thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCash2")).toLocaleString('en-US'));
             $('#tbQuery thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesPrice2")).toLocaleString('en-US'));
-            $('#tbQuery thead td#td8').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesPercent2")).toLocaleString('en-US') + '%');
+            $('#tbQuery thead td#td8').html(GetNodeValue(dtSumQ[0], "SumSalesPercent2"));
             $('#tbQuery thead td#td9').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCnt3")).toLocaleString('en-US'));
             $('#tbQuery thead td#td10').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCash3")).toLocaleString('en-US'));
             $('#tbQuery thead td#td11').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesPrice3")).toLocaleString('en-US'));
-            $('#tbQuery thead td#td12').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesPercent3")).toLocaleString('en-US') + '%');
+            $('#tbQuery thead td#td12').html(GetNodeValue(dtSumQ[0], "SumSalesPercent3"));
         }
     };
 
@@ -1479,7 +1479,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 SysYM = GetNodeValue(dtV[0], "SysDate").toString().substring(0, 7).replaceAll('/', '-');
                 $('#txtYM').val(SysYM);
                 $('#lblEnd').html("統計至 " + GetNodeValue(dtV[0], "EndDate") + " 止");
-                $('#lblVIPQty').html('目前會員總數 : ' + parseInt(GetNodeValue(dtV[0], "VIPCntAll")).toLocaleString('en-US'));
+                $('#lblVIPQty').html('會員總數 : ' + parseInt(GetNodeValue(dtV[0], "VIPCntAll")).toLocaleString('en-US'));
             }
             else {
                 $('#txtYM').val('');

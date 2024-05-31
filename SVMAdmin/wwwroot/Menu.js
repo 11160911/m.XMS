@@ -211,7 +211,7 @@
             $('#FunctionDesc').text($(menuitem).prop('Description'));
             Timerset();
             ChkDevice();
-            $MENU_TOGGLE.click();
+            //$MENU_TOGGLE.click();
             OpenPage(menuitem);
         }
     };

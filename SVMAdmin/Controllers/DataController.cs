@@ -8549,8 +8549,8 @@ namespace SVMAdmin.Controllers
                     //開始撈明細資料
                     sqlQ = "Select w.ST_ID + '-' + w.ST_SName as ID,isnull(v.VIPCnt,0)VIPCnt, ";
                     sqlQ += "isnull(s1.SalesCnt1,0)SalesCnt1,isnull(s1.SalesCash1,0)SalesCash1,isnull(s1.SalesPrice1,0)SalesPrice1, ";
-                    sqlQ += "isnull(s2.SalesCnt2,0)SalesCnt2,isnull(s2.SalesCash2,0)SalesCash2,isnull(s2.SalesPrice2,0)SalesPrice2,case when isnull(sall.SalesCashAll,0)=0 then '0%' else cast(cast(Round((isnull(s2.SalesCash2,0)/isnull(sall.SalesCashAll,0))*100,0) as int) as varchar) + '%' end as SalesPercent2, ";
-                    sqlQ += "isnull(s3.SalesCnt3,0)SalesCnt3,isnull(s3.SalesCash3,0)SalesCash3,isnull(s3.SalesPrice3,0)SalesPrice3,case when isnull(sall.SalesCashAll,0)=0 then '0%' else cast(cast(Round((isnull(s3.SalesCash3,0)/isnull(sall.SalesCashAll,0))*100,0) as int) as varchar) + '%' end as SalesPercent3 ";
+                    sqlQ += "isnull(s2.SalesCnt2,0)SalesCnt2,isnull(s2.SalesCash2,0)SalesCash2,isnull(s2.SalesPrice2,0)SalesPrice2,case when isnull(sall.SalesCashAll,0)=0 then '0%' else cast(Round((cast(isnull(s2.SalesCash2,0) as Float)/cast(isnull(sall.SalesCashAll,0) as Float))*100,2) as varchar) + '%' end as SalesPercent2, ";
+                    sqlQ += "isnull(s3.SalesCnt3,0)SalesCnt3,isnull(s3.SalesCash3,0)SalesCash3,isnull(s3.SalesPrice3,0)SalesPrice3,case when isnull(sall.SalesCashAll,0)=0 then '0%' else cast(Round((cast(isnull(s3.SalesCash3,0) as Float)/cast(isnull(sall.SalesCashAll,0) as Float))*100,2) as varchar) + '%' end as SalesPercent3 ";
         
                     sqlQ += "From EDDMS.dbo.Warehouse w (nolock) ";
                     sqlQ += "left join #sall sall on w.ST_ID=sall.ID ";
@@ -8570,8 +8570,8 @@ namespace SVMAdmin.Controllers
                     //彙總明細資料
                     sqlSumQ = "Select sum(isnull(v.VIPCnt,0))SumVIPCnt, ";
                     sqlSumQ += "sum(isnull(s1.SalesCnt1,0))SumSalesCnt1,sum(isnull(s1.SalesCash1,0))SumSalesCash1,case when sum(isnull(s1.SalesCnt1,0))=0 then 0 else Round(sum(isnull(s1.SalesCash1,0))/sum(isnull(s1.SalesCnt1,0)),0) end as SumSalesPrice1, ";
-                    sqlSumQ += "sum(isnull(s2.SalesCnt2,0))SumSalesCnt2,sum(isnull(s2.SalesCash2,0))SumSalesCash2,case when sum(isnull(s2.SalesCnt2,0))=0 then 0 else Round(sum(isnull(s2.SalesCash2,0))/sum(isnull(s2.SalesCnt2,0)),0) end as SumSalesPrice2,case when sum(isnull(sall.SalesCashAll,0))=0 then '0%' else cast(cast(Round((sum(isnull(s2.SalesCash2,0))/sum(isnull(sall.SalesCashAll,0)))*100,0) as int) as varchar) + '%' end as SumSalesPercent2, ";
-                    sqlSumQ += "sum(isnull(s3.SalesCnt3,0))SumSalesCnt3,sum(isnull(s3.SalesCash3,0))SumSalesCash3,case when sum(isnull(s3.SalesCnt3,0))=0 then 0 else Round(sum(isnull(s3.SalesCash3,0))/sum(isnull(s3.SalesCnt3,0)),0) end as SumSalesPrice3,case when sum(isnull(sall.SalesCashAll,0))=0 then '0%' else cast(cast(Round((sum(isnull(s3.SalesCash3,0))/sum(isnull(sall.SalesCashAll,0)))*100,0) as int) as varchar) + '%' end as SumSalesPercent3 ";
+                    sqlSumQ += "sum(isnull(s2.SalesCnt2,0))SumSalesCnt2,sum(isnull(s2.SalesCash2,0))SumSalesCash2,case when sum(isnull(s2.SalesCnt2,0))=0 then 0 else Round(sum(isnull(s2.SalesCash2,0))/sum(isnull(s2.SalesCnt2,0)),0) end as SumSalesPrice2,case when sum(isnull(sall.SalesCashAll,0))=0 then '0%' else cast(Round((cast(sum(isnull(s2.SalesCash2,0)) as Float)/cast(sum(isnull(sall.SalesCashAll,0)) as Float))*100,2) as varchar) + '%' end as SumSalesPercent2, ";
+                    sqlSumQ += "sum(isnull(s3.SalesCnt3,0))SumSalesCnt3,sum(isnull(s3.SalesCash3,0))SumSalesCash3,case when sum(isnull(s3.SalesCnt3,0))=0 then 0 else Round(sum(isnull(s3.SalesCash3,0))/sum(isnull(s3.SalesCnt3,0)),0) end as SumSalesPrice3,case when sum(isnull(sall.SalesCashAll,0))=0 then '0%' else cast(Round((cast(sum(isnull(s3.SalesCash3,0)) as Float)/cast(sum(isnull(sall.SalesCashAll,0)) as Float))*100,2) as varchar) + '%' end as SumSalesPercent3 ";
 
                     sqlSumQ += "From EDDMS.dbo.Warehouse w (nolock) ";
                     sqlSumQ += "left join #sall sall on w.ST_ID=sall.ID ";
@@ -8668,8 +8668,8 @@ namespace SVMAdmin.Controllers
                     //開始撈明細資料
                     sqlQ = "Select sall.ID as ID,isnull(v.VIPCnt,0)VIPCnt, ";
                     sqlQ += "isnull(s1.SalesCnt1,0)SalesCnt1,isnull(s1.SalesCash1,0)SalesCash1,isnull(s1.SalesPrice1,0)SalesPrice1, ";
-                    sqlQ += "isnull(s2.SalesCnt2,0)SalesCnt2,isnull(s2.SalesCash2,0)SalesCash2,isnull(s2.SalesPrice2,0)SalesPrice2,case when isnull(sall.SalesCashAll,0)=0 then '0%' else cast(cast(Round((isnull(s2.SalesCash2,0)/isnull(sall.SalesCashAll,0))*100,0) as int) as varchar) + '%' end as SalesPercent2, ";
-                    sqlQ += "isnull(s3.SalesCnt3,0)SalesCnt3,isnull(s3.SalesCash3,0)SalesCash3,isnull(s3.SalesPrice3,0)SalesPrice3,case when isnull(sall.SalesCashAll,0)=0 then '0%' else cast(cast(Round((isnull(s3.SalesCash3,0)/isnull(sall.SalesCashAll,0))*100,0) as int) as varchar) + '%' end as SalesPercent3 ";
+                    sqlQ += "isnull(s2.SalesCnt2,0)SalesCnt2,isnull(s2.SalesCash2,0)SalesCash2,isnull(s2.SalesPrice2,0)SalesPrice2,case when isnull(sall.SalesCashAll,0)=0 then '0%' else cast(Round((cast(isnull(s2.SalesCash2,0) as Float)/cast(isnull(sall.SalesCashAll,0) as Float))*100,2) as varchar) + '%' end as SalesPercent2, ";
+                    sqlQ += "isnull(s3.SalesCnt3,0)SalesCnt3,isnull(s3.SalesCash3,0)SalesCash3,isnull(s3.SalesPrice3,0)SalesPrice3,case when isnull(sall.SalesCashAll,0)=0 then '0%' else cast(Round((cast(isnull(s3.SalesCash3,0) as Float)/cast(isnull(sall.SalesCashAll,0) as Float))*100,2) as varchar) + '%' end as SalesPercent3 ";
 
                     sqlQ += "From #sall sall (nolock) ";
                     sqlQ += "left join #v v on sall.ID=v.ID ";
@@ -8685,8 +8685,8 @@ namespace SVMAdmin.Controllers
                     //彙總明細資料
                     sqlSumQ = "Select sum(isnull(v.VIPCnt,0))SumVIPCnt, ";
                     sqlSumQ += "sum(isnull(s1.SalesCnt1,0))SumSalesCnt1,sum(isnull(s1.SalesCash1,0))SumSalesCash1,case when sum(isnull(s1.SalesCnt1,0))=0 then 0 else Round(sum(isnull(s1.SalesCash1,0))/sum(isnull(s1.SalesCnt1,0)),0) end as SumSalesPrice1, ";
-                    sqlSumQ += "sum(isnull(s2.SalesCnt2,0))SumSalesCnt2,sum(isnull(s2.SalesCash2,0))SumSalesCash2,case when sum(isnull(s2.SalesCnt2,0))=0 then 0 else Round(sum(isnull(s2.SalesCash2,0))/sum(isnull(s2.SalesCnt2,0)),0) end as SumSalesPrice2,case when sum(isnull(sall.SalesCashAll,0))=0 then '0%' else cast(cast(Round((sum(isnull(s2.SalesCash2,0))/sum(isnull(sall.SalesCashAll,0)))*100,0) as int) as varchar) + '%' end as SumSalesPercent2, ";
-                    sqlSumQ += "sum(isnull(s3.SalesCnt3,0))SumSalesCnt3,sum(isnull(s3.SalesCash3,0))SumSalesCash3,case when sum(isnull(s3.SalesCnt3,0))=0 then 0 else Round(sum(isnull(s3.SalesCash3,0))/sum(isnull(s3.SalesCnt3,0)),0) end as SumSalesPrice3,case when sum(isnull(sall.SalesCashAll,0))=0 then '0%' else cast(cast(Round((sum(isnull(s3.SalesCash3,0))/sum(isnull(sall.SalesCashAll,0)))*100,0) as int) as varchar) + '%' end as SumSalesPercent3 ";
+                    sqlSumQ += "sum(isnull(s2.SalesCnt2,0))SumSalesCnt2,sum(isnull(s2.SalesCash2,0))SumSalesCash2,case when sum(isnull(s2.SalesCnt2,0))=0 then 0 else Round(sum(isnull(s2.SalesCash2,0))/sum(isnull(s2.SalesCnt2,0)),0) end as SumSalesPrice2,case when sum(isnull(sall.SalesCashAll,0))=0 then '0%' else cast(Round((cast(sum(isnull(s2.SalesCash2,0)) as Float)/cast(sum(isnull(sall.SalesCashAll,0)) as Float))*100,2) as varchar) + '%' end as SumSalesPercent2, ";
+                    sqlSumQ += "sum(isnull(s3.SalesCnt3,0))SumSalesCnt3,sum(isnull(s3.SalesCash3,0))SumSalesCash3,case when sum(isnull(s3.SalesCnt3,0))=0 then 0 else Round(sum(isnull(s3.SalesCash3,0))/sum(isnull(s3.SalesCnt3,0)),0) end as SumSalesPrice3,case when sum(isnull(sall.SalesCashAll,0))=0 then '0%' else cast(Round((cast(sum(isnull(s3.SalesCash3,0)) as Float)/cast(sum(isnull(sall.SalesCashAll,0)) as Float))*100,2) as varchar) + '%' end as SumSalesPercent3 ";
 
                     sqlSumQ += "From #sall sall (nolock) ";
                     sqlSumQ += "left join #v v on sall.ID=v.ID ";
