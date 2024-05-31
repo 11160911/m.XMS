@@ -35,11 +35,11 @@
                     { type: "TextAmt", name: "SalesCnt2"},
                     { type: "TextAmt", name: "SalesCash2"},
                     { type: "TextAmt", name: "SalesPrice2" },
-                    { type: "TextAmt", name: "SalesPercent2" },
+                    { type: "Text", name: "SalesPercent2" },
                     { type: "TextAmt", name: "SalesCnt3" },
                     { type: "TextAmt", name: "SalesCash3" },
                     { type: "TextAmt", name: "SalesPrice3" },
-                    { type: "TextAmt", name: "SalesPercent3" }
+                    { type: "Text", name: "SalesPercent3" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -1445,8 +1445,9 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 $('#tbQuery thead td#td12').html('');
                 return;
             }
-            $('#tbQuery tbody tr .tdCol9').html($('#tbQuery tbody tr .tdCol9').html() + '%')
-            $('#tbQuery tbody tr .tdCol13').html($('#tbQuery tbody tr .tdCol13').html() + '%')
+
+            //$('#tbQuery tbody tr .tdCol9').html($('#tbQuery tbody tr .tdCol9').html() + '%')
+            //$('#tbQuery tbody tr .tdCol13').html($('#tbQuery tbody tr .tdCol13').html() + '%')
 
             var dtSumQ = data.getElementsByTagName('dtSumQ');
             $('#tbQuery thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPCnt")).toLocaleString('en-US'));

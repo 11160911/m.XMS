@@ -60,7 +60,7 @@
                     { type: "Text", name: "VIP_Tel" },
                     { type: "Text", name: "VIP_Eadd" },
                     { type: "Text", name: "VIP_NM" },
-                    { type: "Text", name: "VIP_City" },
+                    { type: "Text", name: "City" },
                     { type: "Text", name: "AreaName" },
                     { type: "Text", name: "VIP_LCDay" },
                     { type: "TextAmt", name: "PointsBalance" },

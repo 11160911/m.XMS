@@ -9228,7 +9228,7 @@ namespace SVMAdmin.Controllers
                 }
                 PubUtility.ExecuteSql(sql, uu, "SYS");
 
-                sql = "Select VIP_ID2,VIP_Name,VIP_Tel,VIP_Eadd,case VIP_MW when '0' then '男' when '1' then '女' end as VIP_NM,VIP_City,AreaName,VIP_LCDay,isnull(PointsBalance,0)PointsBalance, ";
+                sql = "Select VIP_ID2,VIP_Name,VIP_Tel,VIP_Eadd,case VIP_MW when '0' then '男' when '1' then '女' end as VIP_NM,City,AreaName,VIP_LCDay,isnull(PointsBalance,0)PointsBalance, ";
                 sql += "case VIP_Type when '0' then '一般卡' when '1' then '會員卡' when '2' then '貴賓卡' when '3' then '白金卡' end as VIP_Type ";
                 sql += "From EDDMS.dbo.VIP ";
                 sql += "Where Companycode='" + uu.CompanyId + "' ";
