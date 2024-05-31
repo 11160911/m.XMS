@@ -14,7 +14,7 @@
     let chkVIPFaceID = "";
 
     let AssignVar = function () {
-
+        
         grdM = new DynGrid(
             {
                 table_lement: $('#tbQuery')[0],
@@ -836,7 +836,6 @@ Timerset(sessionStorage.getItem('isamcomp'));
     let btQuery_click = function (bt) {
         //Timerset();
         ShowLoading();
-
         var pData = {
             EVNO: $('#txtEVNO').val(),
             EDM_DocNo: $('#txtEDM_DocNo').val(),
@@ -1167,7 +1166,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
         if (ReturnMsg(data, 0) != "GetInitmsDMOK") {
             DyAlert(ReturnMsg(data, 1));
         }
-       else {
+        else {
             var dtE = data.getElementsByTagName('dtE');
             if (dtE.length > 0) {
                 $('#lblProgramName').html(GetNodeValue(dtE[0], "ChineseName"));
@@ -1186,9 +1185,10 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#btRe_SendSet').click(function () { btRe_SendSet_click(this) });
             $('#btDMSel_SendSet').click(function () { btDMSel_SendSet_click(this) });
             $('#btDMSend_SendSet').click(function () { btDMSend_SendSet_click(this) });
-
             $('#btOK_DMSel').click(function () { btOK_DMSel_click(this) });
             $('#btRe_DMSel').click(function () { btRe_DMSel_click(this) });
+
+         
         }
     };
     
@@ -1205,5 +1205,5 @@ Timerset(sessionStorage.getItem('isamcomp'));
         AllPages = new LoadAllPages(ParentNode, "SystemSetup/MSVP102", ["MSVP102btns", "pgMSVP102Init", "pgMSVP102Add", "pgMSVP102Mod"], afterLoadPage);
     };
 
-
+    
 }
