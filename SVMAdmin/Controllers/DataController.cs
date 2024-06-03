@@ -8517,8 +8517,17 @@ namespace SVMAdmin.Controllers
                     sql += "From SalesH_AllWeb h (nolock) ";
                     sql += "inner join WarehouseWeb w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('2','3') and w.Companycode=h.Companycode ";
                     sql += "Where h.Companycode='" + uu.CompanyId + "' and h.VIPNo<>'' ";
-                    if (CountYM != "") {
-                        sql += "and h.OpenDate between '" + CountYM + "/01' and '" + CountYM + "/31' ";
+                    if (CountYM != "")
+                    {
+                        //判斷調閱年月是否同系統日
+                        if (CountYM == Yesterday.Substring(0, 7))
+                        {
+                            sql += "and h.OpenDate between '" + Yesterday.Substring(0, 7) + "/01' and '" + Yesterday + "' ";
+                        }
+                        else
+                        {
+                            sql += "and h.OpenDate between '" + CountYM + "/01' and '" + CountYM + "/31' ";
+                        }
                     }
                     sql += "Group By h.ShopNo; ";
 
@@ -8530,7 +8539,15 @@ namespace SVMAdmin.Controllers
                     sql += "Where h.Companycode='" + uu.CompanyId + "' and h.VIPNo='' ";
                     if (CountYM != "")
                     {
-                        sql += "and h.OpenDate between '" + CountYM + "/01' and '" + CountYM + "/31' ";
+                        //判斷調閱年月是否同系統日
+                        if (CountYM == Yesterday.Substring(0, 7))
+                        {
+                            sql += "and h.OpenDate between '" + Yesterday.Substring(0, 7) + "/01' and '" + Yesterday + "' ";
+                        }
+                        else
+                        {
+                            sql += "and h.OpenDate between '" + CountYM + "/01' and '" + CountYM + "/31' ";
+                        }
                     }
                     sql += "Group By h.ShopNo; ";
 
@@ -8542,7 +8559,15 @@ namespace SVMAdmin.Controllers
                     sql += "Where h.Companycode='" + uu.CompanyId + "' ";
                     if (CountYM != "")
                     {
-                        sql += "and h.OpenDate between '" + CountYM + "/01' and '" + CountYM + "/31' ";
+                        //判斷調閱年月是否同系統日
+                        if (CountYM == Yesterday.Substring(0, 7))
+                        {
+                            sql += "and h.OpenDate between '" + Yesterday.Substring(0, 7) + "/01' and '" + Yesterday + "' ";
+                        }
+                        else
+                        {
+                            sql += "and h.OpenDate between '" + CountYM + "/01' and '" + CountYM + "/31' ";
+                        }
                     }
                     sql += "Group By h.ShopNo; ";
 
@@ -8636,7 +8661,15 @@ namespace SVMAdmin.Controllers
                     sql += "Where h.Companycode='" + uu.CompanyId + "' and h.VIPNo<>'' ";
                     if (CountYM != "")
                     {
-                        sql += "and h.OpenDate between '" + CountYM + "/01' and '" + CountYM + "/31' ";
+                        //判斷調閱年月是否同系統日
+                        if (CountYM == Yesterday.Substring(0, 7))
+                        {
+                            sql += "and h.OpenDate between '" + Yesterday.Substring(0, 7) + "/01' and '" + Yesterday + "' ";
+                        }
+                        else
+                        {
+                            sql += "and h.OpenDate between '" + CountYM + "/01' and '" + CountYM + "/31' ";
+                        }
                     }
                     sql += "Group By h.OpenDate; ";
 
@@ -8648,7 +8681,15 @@ namespace SVMAdmin.Controllers
                     sql += "Where h.Companycode='" + uu.CompanyId + "' and h.VIPNo='' ";
                     if (CountYM != "")
                     {
-                        sql += "and h.OpenDate between '" + CountYM + "/01' and '" + CountYM + "/31' ";
+                        //判斷調閱年月是否同系統日
+                        if (CountYM == Yesterday.Substring(0, 7))
+                        {
+                            sql += "and h.OpenDate between '" + Yesterday.Substring(0, 7) + "/01' and '" + Yesterday + "' ";
+                        }
+                        else
+                        {
+                            sql += "and h.OpenDate between '" + CountYM + "/01' and '" + CountYM + "/31' ";
+                        }
                     }
                     sql += "Group By h.OpenDate; ";
 
@@ -8660,7 +8701,15 @@ namespace SVMAdmin.Controllers
                     sql += "Where h.Companycode='" + uu.CompanyId + "' ";
                     if (CountYM != "")
                     {
-                        sql += "and h.OpenDate between '" + CountYM + "/01' and '" + CountYM + "/31' ";
+                        //判斷調閱年月是否同系統日
+                        if (CountYM == Yesterday.Substring(0, 7))
+                        {
+                            sql += "and h.OpenDate between '" + Yesterday.Substring(0, 7) + "/01' and '" + Yesterday + "' ";
+                        }
+                        else
+                        {
+                            sql += "and h.OpenDate between '" + CountYM + "/01' and '" + CountYM + "/31' ";
+                        }
                     }
                     sql += "Group By h.OpenDate; ";
 
