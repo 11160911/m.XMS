@@ -1220,7 +1220,8 @@
                             'FontBackgroundColor',      //文字背景顏色
                             'fontFamily',                //文字字型
                             'Indent',                    //增加縮排
-                            'Outdent'                   //減少縮排
+                            'Outdent',                   //減少縮排
+                            'alignment'                 //置左、置中、置右
                         ]
                     },
                     placeholder: '請在這裡填寫活動內容!',   //文字編輯器顯示的預設文字
@@ -1242,6 +1243,10 @@
                             'Verdana, Geneva, sans-serif'                               //設定文字字型的格式
                         ],
                         supportAllValues: true                                          //支援其他地方複製的文字字型至文字編輯器
+                    },
+                    alignment: {
+                        options: ['left', 'center', 'right'],
+                        supportAllValues: true
                     }
                 })
                 .then(t1 => {
@@ -1267,7 +1272,8 @@
                             'FontBackgroundColor',      //文字背景顏色
                             'fontFamily',                //文字字型
                             'Indent',                    //增加縮排
-                            'Outdent'                   //減少縮排
+                            'Outdent',                   //減少縮排
+                            'alignment'                 //置左、置中、置右
                         ]
                     },
                     placeholder: '請在這裡填寫優惠券內容!',   //文字編輯器顯示的預設文字
@@ -1290,7 +1296,11 @@
                         ],
                         supportAllValues: true                                          //支援其他地方複製的文字字型至文字編輯器
                     },
-                    resize:50
+                    resize: 50,
+                    alignment: {
+                        options: ['left', 'center', 'right'],
+                        supportAllValues: true
+                    }
                 })
                 .then(t2 => {
                     window.t2 = t2;                             //使用window.t2.getData()取得文字編輯html內容
