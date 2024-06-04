@@ -123,6 +123,14 @@ var DynGrid = function (option) {
     var ths = $(elm_table).find('thead th');
     var activeTR = null;
     var pagination = null;
+    var paginationA = null;
+    var paginationB = null;
+    var paginationC = null;
+    var paginationD = null;
+    var paginationE = null;
+    var paginationF = null;
+    var paginationG = null;
+    var paginationH = null;
     var btExpXls = null;
     var thisXmls = null;
     var export_xlsx_api = option.export_xlsx_api;
@@ -154,17 +162,34 @@ var DynGrid = function (option) {
 
     if (rows_per_page != null) {
         var nav = $('<nav class="text-left"></nav>');
-        pagination = $('<ul class="pagination"></ul>');
+        pagination = $('<ul class="pagination" style="margin-bottom:0px"></ul>');
         nav.append(pagination);
         nav.css('margin-top', '5px');
         nav.css('display', 'inline-block');
         $(elm_table).closest('div').after(nav);
-        var spTotal = $('<sapn class="rows_per_page_spTotal"></span>');
-        spTotal.css('padding-left', '5px');
-        spTotal.css('color', '#999999');
-        spTotal.css('font-size', '0.9rem');
-        pagination.prop('rows_per_page_spTotal', spTotal);
-        nav.append(spTotal);
+        //var spTotal = $('<sapn class="rows_per_page_spTotal"></span>');
+        //spTotal.css('padding-left', '5px');
+        //spTotal.css('color', '#999999');
+        //spTotal.css('font-size', '0.9rem');
+        //pagination.prop('rows_per_page_spTotal', spTotal);
+        //nav.append(spTotal);
+
+        paginationA = $('<ul class="pagination" style="margin-bottom:0px"></ul>');
+        nav.append(paginationA);
+        paginationB = $('<ul class="pagination" style="margin-bottom:0px"></ul>');
+        nav.append(paginationB);
+        paginationC = $('<ul class="pagination" style="margin-bottom:0px"></ul>');
+        nav.append(paginationC);
+        paginationD = $('<ul class="pagination" style="margin-bottom:0px"></ul>');
+        nav.append(paginationD);
+        paginationE = $('<ul class="pagination" style="margin-bottom:0px"></ul>');
+        nav.append(paginationE);
+        paginationF = $('<ul class="pagination" style="margin-bottom:0px"></ul>');
+        nav.append(paginationF);
+        paginationG = $('<ul class="pagination" style="margin-bottom:0px"></ul>');
+        nav.append(paginationG);
+        paginationH = $('<ul class="pagination" style="margin-bottom:0px"></ul>');
+        nav.append(paginationH);
     }
 
     if (option.sortable != null) {
@@ -428,24 +453,123 @@ var DynGrid = function (option) {
             btExpXls.show();
         }
         if (rows_per_page != null) {
+            var pagecnt = 30; //一行放幾頁
             pagination.empty();
+            paginationA.empty();
+            paginationB.empty();
+            paginationC.empty();
+            paginationD.empty();
+            paginationE.empty();
+            paginationF.empty();
+            paginationG.empty();
+            paginationH.empty();
             if (xmls.length > rows_per_page) {
                 var pgscount = Math.ceil((xmls.length) / rows_per_page);
                 if (pgscount > 1) {
                     for (var i = 0; i < pgscount; i++) {
-                        var li = $('<li class="page-item"></li>');
-                        var aa = $('<a class="page-link" href="#"></a>');
-                        var t = i + 1;
-                        aa.text(t);
-                        aa.prop('start', i * rows_per_page);
-                        aa.prop('end', i * rows_per_page + rows_per_page);
-                        li.append(aa);
-                        pagination.append(li);
-                        aa.click(function () { ShowPageData(this); });
+                        if (i >= pagecnt * 8) {
+                            var li = $('<li class="page-item" style="width:35px;height:35px"></li>');
+                            var aa = $('<a class="page-link" style="font-size:13px" href="#"></a>');
+                            var t = i + 1;
+                            aa.text(t);
+                            aa.prop('start', i * rows_per_page);
+                            aa.prop('end', i * rows_per_page + rows_per_page);
+                            li.append(aa);
+                            paginationH.append(li);
+                            aa.click(function () { ShowPageData(this); });
+                        }
+                        else if (i >= pagecnt * 7) {
+                            var li = $('<li class="page-item" style="width:35px;height:35px"></li>');
+                            var aa = $('<a class="page-link" style="font-size:13px" href="#"></a>');
+                            var t = i + 1;
+                            aa.text(t);
+                            aa.prop('start', i * rows_per_page);
+                            aa.prop('end', i * rows_per_page + rows_per_page);
+                            li.append(aa);
+                            paginationG.append(li);
+                            aa.click(function () { ShowPageData(this); });
+                        }
+                        else if (i >= pagecnt * 6) {
+                            var li = $('<li class="page-item" style="width:35px;height:35px"></li>');
+                            var aa = $('<a class="page-link" style="font-size:13px" href="#"></a>');
+                            var t = i + 1;
+                            aa.text(t);
+                            aa.prop('start', i * rows_per_page);
+                            aa.prop('end', i * rows_per_page + rows_per_page);
+                            li.append(aa);
+                            paginationF.append(li);
+                            aa.click(function () { ShowPageData(this); });
+                        }
+                        else if (i >= pagecnt * 5) {
+                            var li = $('<li class="page-item" style="width:35px;height:35px"></li>');
+                            var aa = $('<a class="page-link" style="font-size:13px" href="#"></a>');
+                            var t = i + 1;
+                            aa.text(t);
+                            aa.prop('start', i * rows_per_page);
+                            aa.prop('end', i * rows_per_page + rows_per_page);
+                            li.append(aa);
+                            paginationE.append(li);
+                            aa.click(function () { ShowPageData(this); });
+                        }
+                        else if (i >= pagecnt * 4) {
+                            var li = $('<li class="page-item" style="width:35px;height:35px"></li>');
+                            var aa = $('<a class="page-link" style="font-size:13px" href="#"></a>');
+                            var t = i + 1;
+                            aa.text(t);
+                            aa.prop('start', i * rows_per_page);
+                            aa.prop('end', i * rows_per_page + rows_per_page);
+                            li.append(aa);
+                            paginationD.append(li);
+                            aa.click(function () { ShowPageData(this); });
+                        }
+                        else if (i >= pagecnt * 3) {
+                            var li = $('<li class="page-item" style="width:35px;height:35px"></li>');
+                            var aa = $('<a class="page-link" style="font-size:13px" href="#"></a>');
+                            var t = i + 1;
+                            aa.text(t);
+                            aa.prop('start', i * rows_per_page);
+                            aa.prop('end', i * rows_per_page + rows_per_page);
+                            li.append(aa);
+                            paginationC.append(li);
+                            aa.click(function () { ShowPageData(this); });
+                        }
+                        else if (i >= pagecnt * 2) {
+                            var li = $('<li class="page-item" style="width:35px;height:35px"></li>');
+                            var aa = $('<a class="page-link" style="font-size:13px" href="#"></a>');
+                            var t = i + 1;
+                            aa.text(t);
+                            aa.prop('start', i * rows_per_page);
+                            aa.prop('end', i * rows_per_page + rows_per_page);
+                            li.append(aa);
+                            paginationB.append(li);
+                            aa.click(function () { ShowPageData(this); });
+                        }
+                        else if (i >= pagecnt * 1) {
+                            var li = $('<li class="page-item" style="width:35px;height:35px"></li>');
+                            var aa = $('<a class="page-link" style="font-size:13px" href="#"></a>');
+                            var t = i + 1;
+                            aa.text(t);
+                            aa.prop('start', i * rows_per_page);
+                            aa.prop('end', i * rows_per_page + rows_per_page);
+                            li.append(aa);
+                            paginationA.append(li);
+                            aa.click(function () { ShowPageData(this); });
+                        }
+                        else {
+                            var li = $('<li class="page-item" style="width:35px;height:35px"></li>');
+                            var aa = $('<a class="page-link" style="font-size:13px" href="#"></a>');
+                            var t = i + 1;
+                            aa.text(t);
+                            aa.prop('start', i * rows_per_page);
+                            aa.prop('end', i * rows_per_page + rows_per_page);
+                            li.append(aa);
+                            pagination.append(li);
+                            aa.click(function () { ShowPageData(this); });
+                        }
                     }
                 }
             }
-            pagination.prop('rows_per_page_spTotal').text("共:" + xmls.length + "筆" );
+            //pagination.prop('rows_per_page_spTotal').text("共:" + xmls.length + "筆" );
         }
         if (pgscount > 1) {
             if (fixPageA == null)
@@ -476,6 +600,15 @@ var DynGrid = function (option) {
     var ShowPageData = function (a) {
         gbody.empty();
         pagination.find('.page-item').removeClass('active');
+        paginationA.find('.page-item').removeClass('active');
+        paginationB.find('.page-item').removeClass('active');
+        paginationC.find('.page-item').removeClass('active');
+        paginationD.find('.page-item').removeClass('active');
+        paginationE.find('.page-item').removeClass('active');
+        paginationF.find('.page-item').removeClass('active');
+        paginationG.find('.page-item').removeClass('active');
+        paginationH.find('.page-item').removeClass('active');
+
         $(a).closest('.page-item').addClass('active');
         if (fixPage)
             fixPageA = $(a).text();

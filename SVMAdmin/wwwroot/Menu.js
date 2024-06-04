@@ -32,12 +32,9 @@
     var LogOut = false;
     
     var Initdoc = function () {
-        
         UU = sessionStorage.getItem('token');
         PostToWebApi({ url: "api/GetMenuInit", success: AfterInit, complete: GetHeads });
-        
         //$('#imglogo').css('cursor', 'pointer');
-
     };
 
     var AfterInit = function (data) {
@@ -47,6 +44,14 @@
         }
         else {
             
+            var bodyHeight = $BODY.outerHeight(),
+                footerHeight = $BODY.hasClass('footer_fixed') ? -10 : $FOOTER.height(),
+                leftColHeight = $LEFT_COL.eq(1).height() + $SIDEBAR_FOOTER.height(),
+                contentHeight = bodyHeight < leftColHeight ? leftColHeight : bodyHeight;
+
+            contentHeight -= $NAV_MENU.height() + footerHeight;
+            $RIGHT_COL.css('min-height', contentHeight);
+
             //$("a[href='Login']").attr("href", "Login");
             $('#logout').click(function () {
                 var pData = {
@@ -54,13 +59,11 @@
                 };
                 PostToWebApi({ url: "api/LogOut", data: pData, success: afterLogOut });
             });
-
             $('.right_col').mousedown(function (e) {
                 Sidebar_Close();
                 ChkDevice();
                 //Timerset();   //不可使用，否則DM的文字編輯器反白時焦點會有異常
             })
-
             var dtEmployeeSV = data.getElementsByTagName('dtEmployee');
             $('#navbarDropdown').text(GetNodeValue(dtEmployeeSV[0], 'ChineseName') + '-' + GetNodeValue(dtEmployeeSV[0], 'UName'));
             dtFun = data.getElementsByTagName('dtAllFunction');
@@ -422,10 +425,8 @@
                 footerHeight = $BODY.hasClass('footer_fixed') ? -10 : $FOOTER.height(),
                 leftColHeight = $LEFT_COL.eq(1).height() + $SIDEBAR_FOOTER.height(),
                 contentHeight = bodyHeight < leftColHeight ? leftColHeight : bodyHeight;
-
-            // normalize content
+         
             contentHeight -= $NAV_MENU.height() + footerHeight;
-
             $RIGHT_COL.css('min-height', contentHeight);
         };
 

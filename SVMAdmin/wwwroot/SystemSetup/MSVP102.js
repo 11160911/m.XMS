@@ -66,7 +66,7 @@
                     { type: "TextAmt", name: "PointsBalance" },
                     { type: "Text", name: "VIP_Type" },
                 ],
-                rows_per_page: 100,
+                rows_per_page: 200,
                 method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
                 sortable: "N"

@@ -198,7 +198,7 @@
 
                     <div class="modal fade" id="modal_SendSet" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 750px; width: 1000px; overflow: auto; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 410px 500px ">
+                            <div class="modal-content" style="height: 900px; width: 1080px; overflow: auto; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 410px 500px ">
                                 <style>
                                     #tbSendSet thead tr th {
                                         font-size: 16px;
@@ -215,8 +215,10 @@
                                 </style>
 
                                 <!--<div class="modal-header">
-                    <h4 class="modal-title" style="width: 100%; text-align: center;color:black"></h4>
-                </div>-->
+                                    <label class="DyForm3-ProgramName">發送設定</label>
+                                    <label class="DyForm3-LabelBlack" id="lblVMEVNO_SendSet" hidden></label>
+                                    <h4 class="modal-title" style="width: 100%; text-align: center;color:black"></h4>
+                                </div>-->
 
                                 <div class="modal-body modal-tab-container" style="padding:8px">
                                     <div class="form-group row" style="width: 100%;margin-left: 5px ">
@@ -240,13 +242,13 @@
                                         <button id="btRe_SendSet" type="button" class="DyForm3-BtnRe" style="position: absolute; right: 60px">回上頁</button>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%;margin-left: 12px ">
+                                    <div class="form-group row" style="width: 100%;margin-left: 12px;margin-top:30px ">
                                         <label class="DyForm3-ProgramName">會員條件篩選</label>
-                                        <button class="DyForm3-BtnClear" id="btClear_SendSet" type="button" style="margin-left: 60px">
-                                            清除所有條件
+                                        <button class="DyForm3-BtnClear" id="btClear_SendSet" type="button" style="margin-left: 70px">
+                                            清除
                                             <i class="fa fa-close"></i>
                                         </button>
-                                        <button class="DyForm3-BtnQuery" id="btQuery_SendSet" type="button" style="margin-left: 90px">
+                                        <button class="DyForm3-BtnQuery" id="btQuery_SendSet" type="button" style="margin-left: 140px">
                                             查詢
                                             <i class="fa fa-search"></i>
                                         </button>
@@ -261,10 +263,10 @@
                                     <div class="form-group row" style="width: 100%;margin-left: 12px ">
                                         <mark class="DyForm3-DyNotEmptyMark" style="margin-top: 5px">*</mark>
                                         <label class="DyForm3-LabelBlack" style="margin-top:5px">會員卡別</label>
-                                        <input id="chk0_SendSet" type="checkbox" style="height: 30px; margin-left: 10px" checked><label class="DyForm3-LabelBlack" for="chk0_SendSet" style="margin-top:5px">一般</label>
-                                        <input id="chk1_SendSet" type="checkbox" style="height:30px;margin-left:5px" checked><label class="DyForm3-LabelBlack" for="chk1_SendSet" style="margin-top:5px">會員</label>
-                                        <input id="chk2_SendSet" type="checkbox" style="height:30px;margin-left:5px" checked><label class="DyForm3-LabelBlack" for="chk2_SendSet" style="margin-top:5px">貴賓</label>
-                                        <input id="chk3_SendSet" type="checkbox" style="height:30px;margin-left:5px"><label class="DyForm3-LabelBlack" for="chk3_SendSet" style="margin-top:5px">白金卡</label>
+                                        <input id="chk0_SendSet" type="checkbox" style="height: 30px; margin-left: 10px" checked><label class="DyForm3-LabelBlack" for="chk0_SendSet" style="margin-top:5px;margin-left:5px">一般</label>
+                                        <input id="chk1_SendSet" type="checkbox" style="height:30px;margin-left:5px" checked><label class="DyForm3-LabelBlack" for="chk1_SendSet" style="margin-top: 5px; margin-left: 5px">會員</label>
+                                        <input id="chk2_SendSet" type="checkbox" style="height:30px;margin-left:5px" checked><label class="DyForm3-LabelBlack" for="chk2_SendSet" style="margin-top: 5px; margin-left: 5px">貴賓</label>
+                                        <input id="chk3_SendSet" type="checkbox" style="height:30px;margin-left:5px"><label class="DyForm3-LabelBlack" for="chk3_SendSet" style="margin-top: 5px; margin-left: 5px">白金卡</label>
                                     </div>
 
                                     <div class="card-block forminput">
@@ -275,7 +277,7 @@
                                                 <label id="lblVIPCnt_SendSet" class="DyForm3-ProgramName" style="color: red; position: absolute; right: 60px"></label>
                                                 <label class="DyForm3-ProgramName" style="color: red; position: absolute; right: 40px">筆</label>
                                             </div>
-                                            <div style="overflow: auto; height: 360px;">
+                                            <div style="overflow: auto; height: 400px;">
                                                 <table id="tbSendSet" class="table table-bordered" style="width:100%">
                                                     <thead>
                                                         <tr>

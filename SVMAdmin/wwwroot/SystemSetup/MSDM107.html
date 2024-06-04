@@ -139,7 +139,7 @@
                                     清除
                                     <i class="fa fa-close"></i>
                                 </button>
-                                <button class="DyForm3-BtnQuery" id="btQuery" type="button" style="margin-left: 140px">
+                                <button class="DyForm3-BtnQuery" id="btQuery" type="button" style="margin-left: 430px">
                                     查詢
                                     <i class="fa fa-search"></i>
                                 </button>
@@ -147,15 +147,15 @@
 
                             <div class="form-group row" style="margin-left: 12px; width: 100%">
                                 <label class="DyForm3-Label">DM單號</label>
-                                <input id="txtDocNo" class="DyForm3-TextBox" type="text" maxlength="13" />
+                                <input id="txtDocNo" class="DyForm3-TextBox" style="margin-left:15px" type="text" maxlength="13" />
 
-                                <label class="DyForm3-Label" style="margin-left:25px">活動代號</label>
-                                <input id="txtActivityCode" class="DyForm3-TextBox" type="text" maxlength="20" />
+                                <label class="DyForm3-Label" style="margin-left:53px">活動代號</label>
+                                <input id="txtActivityCode" class="DyForm3-TextBox" style="margin-left:15px" type="text" maxlength="20" />
                                 <button id="btActivityCode" class="DyForm3-BtnLookUp" type="button">
                                     <i class="fa fa-ellipsis-h"></i>
                                 </button>
 
-                                <mark class="DyForm3-DyNotEmptyMark" style="margin-left:25px">*</mark>
+                                <mark class="DyForm3-DyNotEmptyMark" style="margin-left: 53px">*</mark>
                                 <label class="DyForm3-Label">批核識別</label>
                                 <input id="chkNoApp" type="checkbox" style="height: 30px; margin-left: 5px" checked><label class="DyForm3-Label" for="chkNoApp">未批核</label>
                                 <input id="chkApp" type="checkbox" style="height: 30px; margin-left: 5px" checked><label class="DyForm3-Label" for="chkApp">已批核</label>
@@ -163,9 +163,9 @@
 
                             <div class="form-group row" style="margin-left: 12px; width: 100%">
                                 <label class="DyForm3-Label">DM主旨</label>
-                                <input id="txtEDMMemo" class="DyForm3-TextBox" type="text" maxlength="100" />
+                                <input id="txtEDMMemo" class="DyForm3-TextBox" style="margin-left: 15px;width:460px" type="text" maxlength="100" />
 
-                                <mark class="DyForm3-DyNotEmptyMark" style="margin-left:298px">*</mark>
+                                <mark class="DyForm3-DyNotEmptyMark" style="margin-left: 56px">*</mark>
                                 <label class="DyForm3-Label">作廢識別</label>
                                 <input id="chkNoDef" type="checkbox" style="height: 30px; margin-left: 5px" checked><label class="DyForm3-Label" for="chkNoDef">未作廢</label>
                                 <input id="chkDef" type="checkbox" style="height:30px;margin-left:5px" checked><label class="DyForm3-Label" for="chkDef">已作廢</label>
@@ -173,7 +173,7 @@
 
                             <div class="form-group row" style="margin-left: 12px; width: 100%">
                                 <label class="DyForm3-Label">DM日期</label>
-                                <input class="DyForm3-TextBox" id="txtEDDate" type="date" />
+                                <input class="DyForm3-TextBox" style="margin-left: 15px;" id="txtEDDate" type="date" />
                                 <label class="DyForm3-Label">(搜尋含此DM日期之DM)</label>
                             </div>
 
@@ -343,47 +343,47 @@
 
                     <div class="modal fade" id="modal_EDM" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 750px;width:800px;overflow:auto">
+                            <div class="modal-content" style="height: 900px; width: 1010px; overflow: auto">
 
                                 <div class="modal-header" style="justify-content:unset">
                                     <button class="DyForm3-BtnMod" id="btMod_EDM" type="button">修改</button>
-                                    <button class="DyForm3-BtnSave" id="btSave_EDM" type="button" style="margin-left:3px">儲存</button>
-                                    <button class="DyForm3-BtnCancel" id="btCancel_EDM" type="button" style="margin-left:3px">取消</button>
-                                    <button class="DyForm3-BtnShow" id="btShow_EDM" type="button" style="margin-left:3px">預覽</button>
-                                    <button class="DyForm3-BtnApp" id="btApp_EDM" type="button" style="margin-left:3px">批核</button>
-                                    <button class="DyForm3-BtnDef" id="btDef_EDM" type="button" style="margin-left:3px">作廢</button>
-                                    <button class="DyForm3-BtnExit" id="btExit_EDM" type="button" style="margin-left:3px">離開</button>
+                                    <button class="DyForm3-BtnSave" id="btSave_EDM" type="button" style="margin-left:6px">儲存</button>
+                                    <button class="DyForm3-BtnCancel" id="btCancel_EDM" type="button" style="margin-left: 6px">取消</button>
+                                    <button class="DyForm3-BtnShow" id="btShow_EDM" type="button" style="margin-left: 6px">預覽</button>
+                                    <button class="DyForm3-BtnApp" id="btApp_EDM" type="button" style="margin-left: 6px">批核</button>
+                                    <button class="DyForm3-BtnDef" id="btDef_EDM" type="button" style="margin-left: 6px">作廢</button>
+                                    <button class="DyForm3-BtnExit" id="btExit_EDM" type="button" style="margin-left: 6px">離開</button>
                                 </div>
 
                                 <div class="modal-body modal-tab-container" style="padding:8px">
 
                                     <div class="form-group row" style="margin-left: 18px; margin-top: 5px; width: 100%">
                                         <label class="DyForm3-LabelBlack">DM單號</label>
-                                        <label class="DyForm3-LabelBlack" id="lblDocNo_EDM" style="margin-left:10px"></label>
+                                        <label class="DyForm3-LabelBlack" id="lblDocNo_EDM" style="margin-left:13px"></label>
                                         <label class="DyForm3-LabelBlack" id="lblVMDocNo_EDM" hidden></label>
 
-                                        <label class="DyForm3-LabelBlack" style="margin-left:50px">批&ensp;核&ensp;者</label>
-                                        <label class="DyForm3-Label" id="lblAppUser_EDM" style="margin-left: 10px; margin-top: 0px;"></label>
-                                        <label class="DyForm3-LabelBlack" style="margin-left: 40px">批核日期</label>
-                                        <label class="DyForm3-Label" id="lblAppDate_EDM" style="margin-left: 10px; margin-top: 0px;"></label>
+                                        <label class="DyForm3-LabelBlack" style="position: absolute; right: 430px">批&ensp;核&ensp;者</label>
+                                        <label class="DyForm3-Label" id="lblAppUser_EDM" style="position: absolute; right: 360px;margin-top:0px"></label>
+                                        <label class="DyForm3-LabelBlack" style="position: absolute; right: 240px">批核日期</label>
+                                        <label class="DyForm3-Label" id="lblAppDate_EDM" style="position: absolute; right: 80px; margin-top: 0px"></label>
                                         
                                     </div>
 
                                     <div class="form-group row" style="margin-left: 5px; margin-top: 5px; width: 100%">
                                         <mark class="DyForm3-DyNotEmptyMark">*</mark>
                                         <label class="DyForm3-LabelBlack">DM主旨</label>
-                                        <input id="txtEDMMemo_EDM" class="DyForm3-TextBox" type="text" style="margin-left:10px" maxlength="100" />
+                                        <input id="txtEDMMemo_EDM" class="DyForm3-TextBox" type="text" style="margin-left: 15px; width: 329px" maxlength="100" />
 
-                                        <label class="DyForm3-LabelBlack" style="margin-left: 22px">作&ensp;廢&ensp;者</label>
-                                        <label class="DyForm3-Label" id="lblDefUser_EDM" style="margin-left: 10px; margin-top: 0px;"></label>
-                                        <label class="DyForm3-LabelBlack" style="margin-left: 40px">作廢日期</label>
-                                        <label class="DyForm3-Label" id="lblDefDate_EDM" style="margin-left: 10px; margin-top: 0px;"></label>
+                                        <label class="DyForm3-LabelBlack" style="position: absolute; right: 430px ">作&ensp;廢&ensp;者</label>
+                                        <label class="DyForm3-Label" id="lblDefUser_EDM" style="position: absolute; right: 360px; margin-top: 0px "></label>
+                                        <label class="DyForm3-LabelBlack" style="position: absolute; right: 240px ">作廢日期</label>
+                                        <label class="DyForm3-Label" id="lblDefDate_EDM" style="position: absolute; right: 80px; margin-top: 0px "></label>
                                     </div>
 
                                     <div class="form-group row" style="margin-left: 5px; margin-top: 5px; width: 100%">
                                         <mark class="DyForm3-DyNotEmptyMark">*</mark>
                                         <label class="DyForm3-LabelBlack">DM期間</label>
-                                        <input class="DyForm3-TextBox" id="txtStartDate_EDM" type="date" />
+                                        <input class="DyForm3-TextBox" style="margin-left:15px" id="txtStartDate_EDM" type="date" />
                                         <label class="DyForm3-LabelBlack">&ensp;~&ensp;</label>
                                         <input class="DyForm3-TextBox" id="txtEndDate_EDM" type="date" />
                                     </div>
