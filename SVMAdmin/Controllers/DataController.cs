@@ -272,7 +272,7 @@ namespace SVMAdmin.Controllers
                     }
                     
                     var Authenticator = new GoogleAuthenticatorService.Core.TwoFactorAuthenticator();
-                    var setupInfo = Authenticator.GenerateSetupCode("ET Pets Supply Chain",
+                    var setupInfo = Authenticator.GenerateSetupCode("m.Xms",
                                                                     dr["User_EMail"].ToString(),
                                                                     USR_Key,
                                                                     250,
