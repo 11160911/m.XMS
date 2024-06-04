@@ -36,7 +36,7 @@ namespace SVMAdmin.Controllers
             string CompanyID = rq["CompanyID"];
             string RealData = PubUtility.enCode170215(keyData);
             string Company = RealData.Split("@@")[0].Trim();
-            string ckno = RealData.Split("@@")[1].Substring(0,2);
+            string ckno = RealData.Split("@@")[1].Substring(0, 2);
 
             UserInfo uu = new UserInfo();
             uu.UserID = "Login";
@@ -104,11 +104,13 @@ namespace SVMAdmin.Controllers
                         sql += "and keydata='" + RealData + "' ";
                         PubUtility.ExecuteSql(sql, uu, "SYS");
                     }
-                    else {
+                    else
+                    {
                         throw new Exception("此金鑰資料已被註冊，請重新確認!");
                     }
                 }
-                else {
+                else
+                {
                     throw new Exception("此金鑰資料未設定，請重新確認!");
                 }
 
@@ -234,7 +236,7 @@ namespace SVMAdmin.Controllers
                         sql += "Select 'N',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
                         sql += "'" + USERID.SqlQuote() + "','" + PASSWORD.SqlQuote() + "','' ";
                         PubUtility.ExecuteSql(sql, uu, "SYS");
-                        
+
                         sql = "Update Account Set ErrTimes=isnull(ErrTimes,0)+1 ";
                         sql += " where UID='" + USERID.SqlQuote() + "'";
                         PubUtility.ExecuteSql(sql, uu, "SYS");
@@ -242,7 +244,8 @@ namespace SVMAdmin.Controllers
                         throw new Exception("密碼錯誤");
                     }
                 }
-                else {                      //帳號不存在
+                else
+                {                      //帳號不存在
                     throw new Exception("帳號錯誤");
                 }
 
@@ -267,10 +270,11 @@ namespace SVMAdmin.Controllers
                         sql += " where UID='" + USERID.SqlQuote() + "'";
                         PubUtility.ExecuteSql(sql, uu, "SYS");
                     }
-                    else {
+                    else
+                    {
                         USR_Key = dr["USR_Key"].ToString();
                     }
-                    
+
                     var Authenticator = new GoogleAuthenticatorService.Core.TwoFactorAuthenticator();
                     var setupInfo = Authenticator.GenerateSetupCode("ET Pets Supply Chain",
                                                                     dr["User_EMail"].ToString(),
@@ -386,7 +390,8 @@ namespace SVMAdmin.Controllers
                     sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "order by a.SectionID,a.orderSequence ";
                 }
-                else {
+                else
+                {
                     sql = "Select b.ChineseName as CategoryC,a.SectionID as Category,a.ProgramID as ItemCode,a.ChineseName as Description,a.ProgramID as Page,'P' as MobilePC,'' as Icon ";
                     sql += "From programIdCompanyWWeb a (nolock) ";
                     sql += "inner join SystemIdCompanyWWeb b (nolock) on a.SectionID=b.SystemID and b.Companycode=a.Companycode ";
@@ -473,7 +478,7 @@ namespace SVMAdmin.Controllers
             }
         }
 
-        [Route("SystemSetup/GetInitGMMacPLUSet")]  
+        [Route("SystemSetup/GetInitGMMacPLUSet")]
         public ActionResult SystemSetup_GetInitGMMacPLUSet()
         {
             UserInfo uu = PubUtility.GetCurrentUser(this);
@@ -572,7 +577,7 @@ namespace SVMAdmin.Controllers
                 IFormCollection rq = HttpContext.Request.Form;
                 string GD_NO = rq["GD_NO"];
                 string SetSuspend = rq["SetSuspend"];
-                string sql = "update PLUSV set GD_Flag1='"+ SetSuspend+"'";
+                string sql = "update PLUSV set GD_Flag1='" + SetSuspend + "'";
                 sql += " where CompanyCode='" + uu.CompanyId + "' And GD_NO='" + GD_NO.SqlQuote() + "'";
                 PubUtility.ExecuteSql(sql, uu, "SYS");
                 sql = "select a.*";
@@ -626,7 +631,7 @@ namespace SVMAdmin.Controllers
                             //sql += ",Photo2='" + dr["Photo2"].ToString().SqlQuote() + "'";
                             //sql += " where GD_NO='" + dr["GD_NO"].ToString().SqlQuote() + "'";
                             //dbop.ExecuteSql(sql, uu, "SYS");
-                            dbop.Update("PLUSV", dtRec, new string[] { "CompanyCode" , "GD_NO" }, uu, "SYS");
+                            dbop.Update("PLUSV", dtRec, new string[] { "CompanyCode", "GD_NO" }, uu, "SYS");
 
                             string OldPhoto1 = dtOld.Rows[0]["Photo1"].ToString();
                             if (OldPhoto1 != "" & OldPhoto1 != dr["Photo1"].ToString())
@@ -740,7 +745,7 @@ namespace SVMAdmin.Controllers
                 dsRQ.Tables.Add(dtRec);
                 PubUtility.FillDataFromRequest(dsRQ, HttpContext.Request.Form);
                 DataRow dr = dtRec.Rows[0];
-                
+
                 string GD_NO = dtRec.Rows[0]["GD_NO"].ToString();
                 string sql = "select * from PLU ";
                 sql += " where GD_NO='" + GD_NO.SqlQuote() + "'";
@@ -789,7 +794,7 @@ namespace SVMAdmin.Controllers
                     {
                         try
                         {
-                            for (int i= dtPLUi.Columns.Count-1; i >-1; i--)
+                            for (int i = dtPLUi.Columns.Count - 1; i > -1; i--)
                             {
                                 string fname = dtPLUi.Columns[i].ColumnName;
                                 if (!dtPLU.Columns.Contains(fname))
@@ -1987,7 +1992,7 @@ namespace SVMAdmin.Controllers
                     {
                         try
                         {
-                        
+
                             sql = "update MachineList set ";
                             sql += " FlagT='" + dr["FlagT"].ToString().SqlQuote() + "'";
                             sql += ",FlagNet='" + dr["FlagNet"].ToString().SqlQuote() + "'";
@@ -2312,7 +2317,7 @@ namespace SVMAdmin.Controllers
                             sql += ", ModUser, ModDate, ModTime ";
                             sql += ", DocNo, DocUser, DocDate";
                             sql += ", ExchangeDate, WhNoOut, CkNoOut "
-                                +  ", WhNoIn, CkNoIn) Values ";
+                                + ", WhNoIn, CkNoIn) Values ";
                             sql += " ('" + uu.CompanyId + "', '" + uu.UserID + "', convert(char(10),getdate(),111), convert(char(12),getdate(),108) ";
                             sql += ", '" + uu.UserID + "', convert(char(10),getdate(),111), convert(char(12),getdate(),108) ";
                             sql += ", '" + DocNo + "', '" + uu.UserID + "',convert(char(10),getdate(),111)+ ' ' +Substring(convert(char(12),getdate(),108),1,5) ";
@@ -2387,7 +2392,7 @@ namespace SVMAdmin.Controllers
         }
 
 
- 
+
 
 
         //public string GetNewDocNo(UserInfo uu, String DocType, Int16 Digits)
@@ -2478,7 +2483,7 @@ namespace SVMAdmin.Controllers
                             sql += ",ModDate=convert(char(10),getdate(),111)";
                             sql += ",ModTime=convert(char(10),getdate(),108)";
                             sql += ",ModUser='" + uu.UserID + "'";
-                            sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" + 
+                            sql += " where CompanyCode='" + uu.CompanyId + "' And DocNo='" +
                                 dr["DocNo"].ToString().SqlQuote() + "' And SeqNo=" + dr["SeqNo"].ToString().SqlQuote();
                             dbop.ExecuteSql(sql, uu, "SYS");
 
@@ -2585,7 +2590,7 @@ namespace SVMAdmin.Controllers
                     {
                         try
                         {
- 
+
                             string sqlAdj = "";
                             //異動庫存最近有效日期
                             sqlAdj = "Select * From TempDocumentSV a (Nolock) ";
@@ -2835,10 +2840,10 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-                
+
                 string sql = "select a.Man_ID,a.Whno,b.st_sname from EmployeeWeb a (nolock) ";
                 sql += "left join WarehouseWeb b (nolock) on a.whno=b.st_id and b.companycode=a.companycode ";
-                sql += "where a.Companycode='"+ uu.CompanyId +"' and a.Man_ID='"+ uu.UserID +"'";
+                sql += "where a.Companycode='" + uu.CompanyId + "' and a.Man_ID='" + uu.UserID + "'";
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
                 ds.Tables.Add(dtE);
@@ -2923,9 +2928,9 @@ namespace SVMAdmin.Controllers
                 string Shop = rq["Shop"];
                 string ISAMDate = rq["ISAMDate"];
                 string BinNo = rq["BinNo"];
-                
+
                 string sql = "select top 1 * from BINWeb (nolock) ";
-                sql += "where Companycode='" + uu.CompanyId + "' and BINStore='"+ Shop +"' and ISAMDate='"+ ISAMDate +"' and BINNO='"+ BinNo + "' and BINman='"+ uu.UserID +"'";
+                sql += "where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "'";
                 DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
                 if (dtC.Rows.Count == 0)
                 {
@@ -2933,7 +2938,7 @@ namespace SVMAdmin.Controllers
                     sql += "where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "'";
                     dtC = PubUtility.SqlQry(sql, uu, "SYS");
                 }
-                
+
                 dtC.TableName = "dtBINData";
                 ds.Tables.Add(dtC);
 
@@ -2995,16 +3000,16 @@ namespace SVMAdmin.Controllers
                 string sql = "select * from BINWeb (nolock) ";
                 sql += "where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "'";
                 DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
-                if (dtC.Rows.Count == 0) { lb_Insert = true; } 
+                if (dtC.Rows.Count == 0) { lb_Insert = true; }
                 else
                 {
-                    DataRow[] dr = dtC.Select("PLU='"+ PLU +"'");
+                    DataRow[] dr = dtC.Select("PLU='" + PLU + "'");
                     if (dr.Length == 0) { lb_Insert = true; }
                     else
                     {
                         sql = "Update BINWeb set Qty1=Qty1+" + Qty + ",ModDate=Convert(varchar,getdate(),111),ModTime=Substring(Convert(varchar,getdate(),121),12,12)";
                         sql += " where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "'";
-                        sql += " and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "' and PLU='" + PLU + "'"; 
+                        sql += " and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "' and PLU='" + PLU + "'";
                         PubUtility.ExecuteSql(sql, uu, "SYS");
                     }
 
@@ -3017,13 +3022,13 @@ namespace SVMAdmin.Controllers
                     sql += "'" + uu.UserID + "',Convert(varchar,getdate(),111),Substring(Convert(varchar,getdate(),121),12,12),";
                     sql += "'" + Shop + "','" + BinNo + "','" + uu.UserID + "','" + ISAMDate + "',Convert(varchar,getdate(),108),";
                     sql += "(select isnull(max(seqno),0)+1 from BINWeb (nolock) where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and Binman='" + uu.UserID + "'),";
-                    sql += "'" + PLU + "', "+ Qty.ToString() ;
+                    sql += "'" + PLU + "', " + Qty.ToString();
                     PubUtility.ExecuteSql(sql, uu, "SYS");
                 }
                 //Return 異動後的數量,故要重撈一次
                 //分區單品數
-                sql = "Select Sum(Qty1) SQ1 from BINWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BinNo='" + BinNo + "' and PLU='"+ PLU +"'";
-                DataTable dtSQ= PubUtility.SqlQry(sql, uu, "SYS");
+                sql = "Select Sum(Qty1) SQ1 from BINWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BinNo='" + BinNo + "' and PLU='" + PLU + "'";
+                DataTable dtSQ = PubUtility.SqlQry(sql, uu, "SYS");
                 dtSQ.TableName = "dtSQ";
                 ds.Tables.Add(dtSQ);
                 //分區總和(不看商品)
@@ -3036,7 +3041,7 @@ namespace SVMAdmin.Controllers
                 DataTable dtSWQ = PubUtility.SqlQry(sql, uu, "SYS");
                 dtSWQ.TableName = "dtSWQ";
                 ds.Tables.Add(dtSWQ);
-                sql = "Select '"+ PLU +"' PLU,GD_Name,GD_Retail from PLUWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and GD_Barcode='" + PLU + "'";
+                sql = "Select '" + PLU + "' PLU,GD_Name,GD_Retail from PLUWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and GD_Barcode='" + PLU + "'";
                 DataTable dtP = PubUtility.SqlQry(sql, uu, "SYS");
                 if (dtP.Rows.Count == 0)
                 {
@@ -3078,7 +3083,7 @@ namespace SVMAdmin.Controllers
 
                 string sql = "set nocount on;select a.*,GD_Name into #tmpA from BINWeb a (nolock) left join PLUWeb b (nolock) ";
                 sql += "on a.companycode=b.companycode and a.PLU=b.GD_Barcode ";
-                sql += "where a.Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "'"+ Comd +";";
+                sql += "where a.Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "'" + Comd + ";";
                 sql += "select a.PLU,a.Qty1,a.PLU+' '+case when isnull(a.GD_Name,'')='' then isnull(b.GD_Name,'') else isnull(a.GD_Name,'') end GD_Name from #tmpA a (nolock) left join PLUWeb b (nolock) ";
                 sql += "on a.companycode=b.companycode and a.PLU=b.GD_No order by SeqNo desc";
 
@@ -3107,8 +3112,8 @@ namespace SVMAdmin.Controllers
             {
                 IFormCollection rq = HttpContext.Request.Form;
                 string PLU = rq["PLU"];
-              
-                string sql = "select '"+ PLU + "' PLU,GD_Name from PLUWeb (nolock) ";
+
+                string sql = "select '" + PLU + "' PLU,GD_Name from PLUWeb (nolock) ";
                 sql += "where Companycode='" + uu.CompanyId + "' and GD_Barcode='" + PLU + "'";
                 DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
 
@@ -3130,7 +3135,7 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
-        
+
         [Route("SystemSetup/DelISAM01PLU")]
         public ActionResult SystemSetup_DelISAM01PLU()
         {
@@ -3146,7 +3151,7 @@ namespace SVMAdmin.Controllers
                 string PLU = rq["PLU"];
 
                 string sql = "Delete from BINWeb ";
-                sql += "where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "' and PLU='"+ PLU +"'";
+                sql += "where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "' and PLU='" + PLU + "'";
                 PubUtility.ExecuteSql(sql, uu, "SYS");
 
                 sql = "set nocount on;Select ROW_NUMBER() over(order by Companycode,Binstore,binno,isamdate,seqno) NewSeq,* into #tmpA from BINWeb (nolock) ";
@@ -3179,7 +3184,7 @@ namespace SVMAdmin.Controllers
                 string PLU = rq["PLU"];
                 string Qty = rq["Qty"];
 
-                string sql = "Update BINWeb set Qty1=" + Qty.SqlQuote() ;
+                string sql = "Update BINWeb set Qty1=" + Qty.SqlQuote();
                 sql += " where Companycode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and ISAMDate='" + ISAMDate + "' and BINNO='" + BinNo + "' and BINman='" + uu.UserID + "' and PLU='" + PLU + "'";
                 PubUtility.ExecuteSql(sql, uu, "SYS");
 
@@ -3241,12 +3246,12 @@ namespace SVMAdmin.Controllers
                     ls_Date = PubUtility.SqlQry("Select convert(char(10),getdate(),111)", uu, "SYS").Rows[0][0].ToString().SqlQuote();
                     ls_Time = PubUtility.SqlQry("Select right(convert(varchar, getdate(), 121),12)", uu, "SYS").Rows[0][0].ToString().SqlQuote();
                     if (!System.IO.Directory.Exists(PubUtility.UpLoadFiles.FTPFilePath)) { System.IO.Directory.CreateDirectory(PubUtility.UpLoadFiles.FTPFilePath); }
-                    if (!System.IO.Directory.Exists(PubUtility.UpLoadFiles.FTPFilePath + "\\BackUp" + "\\" + uu.CompanyId + "\\" + ls_Date.Replace("/",""))) { System.IO.Directory.CreateDirectory(PubUtility.UpLoadFiles.FTPFilePath + "\\BackUp" + "\\" + uu.CompanyId + "\\" + ls_Date.Replace("/","")); }
+                    if (!System.IO.Directory.Exists(PubUtility.UpLoadFiles.FTPFilePath + "\\BackUp" + "\\" + uu.CompanyId + "\\" + ls_Date.Replace("/", ""))) { System.IO.Directory.CreateDirectory(PubUtility.UpLoadFiles.FTPFilePath + "\\BackUp" + "\\" + uu.CompanyId + "\\" + ls_Date.Replace("/", "")); }
 
                     switch (Doctype)
                     {
                         case "T":
-                            filename = ls_Time.Replace(":","").Replace(".","") + "TAKE3.dat";
+                            filename = ls_Time.Replace(":", "").Replace(".", "") + "TAKE3.dat";
                             if (rq.Count > 2)
                             {
                                 string ISAMDate = rq["ISAMDate"];
@@ -3283,14 +3288,18 @@ namespace SVMAdmin.Controllers
                     sql += "and DocType='" + Doctype + "' and WhNo='" + Shop + "' and updatetype='N'";
                     DataTable dtFTPRec = PubUtility.SqlQry(sql, uu, "SYS");
 
-                    if (dtFTPRec.Rows.Count > 0) {
+                    if (dtFTPRec.Rows.Count > 0)
+                    {
                         //店號(6)、BIN(3)、條碼(16)、數量(6)、盤點人員 (6)、盤點日(8)、時間 HHMMSS(6)
-                        if (Doctype == "T") {
+                        if (Doctype == "T")
+                        {
 
-                            if (rq.Count > 2) {
+                            if (rq.Count > 2)
+                            {
                                 sql = "select * into #tmpA from BINWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and BINStore='" + Shop + "' and BINNo='" + rq["BinNo"] + "' and ISAMDate='" + rq["ISAMDate"] + "'; ";
                             }
-                            else {
+                            else
+                            {
                                 sql = "select * into #tmpA from BINWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and BINStore='" + Shop + "'; ";
                             }
 
@@ -3298,13 +3307,15 @@ namespace SVMAdmin.Controllers
                             sql += "Select left(BINStore+SPACE(6),6)+left(BINNo+SPACE(3),3)+left(PLU+SPACE(16),16)+right(SPACE(6)+convert(varchar,Qty1),6)+left(BINMan+SPACE(6),6)+Replace(ISAMDate,'/','')+Replace(ISAMTime,':','') A1 from #tmpA order by ISAMDate,BINNo,BINMan,Seqno; ";
                         }
                         //條碼(16)、數量(6)
-                        else if (Doctype == "C") {
+                        else if (Doctype == "C")
+                        {
                             sql = "select * into #tmpA from CollectWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and Whno='" + Shop + "' and WorkUser='" + uu.UserID + "'; ";
                             sql += "update b set FTPUpDate='" + ls_Date + "' + ' ' + left('" + ls_Time + "',8) from #tmpA a inner join CollectWeb b (nolock) on a.CompanyCode=b.CompanyCode and a.Whno=b.Whno and a.Workuser=b.Workuser and a.PLU=b.PLU; ";
                             sql += "Select left(PLU+SPACE(16),16)+right(SPACE(6)+convert(varchar,Qty),6) A1 from #tmpA order by Seqno; ";
                         }
                         //出貨倉庫(6)、補貨倉庫(6)、條碼(16)、出貨數量 (6)、員工(6)、出貨日(8)
-                        else if (Doctype == "D") {
+                        else if (Doctype == "D")
+                        {
                             sql = "select * into #tmpA from DeliveryWeb (nolock) where CompanyCode='" + uu.CompanyId + "' and WhnoOut='" + Shop + "' and WhnoIn='" + rq["WhNoIn"] + "' and DocDate='" + rq["DocDate"] + "' and OutUser='" + uu.UserID + "'; ";
                             sql += "update b set FTPUpDate='" + ls_Date + "' + ' ' + left('" + ls_Time + "',8) from #tmpA a inner join DeliveryWeb b (nolock) on a.CompanyCode=b.CompanyCode and a.WhnoOut=b.WhnoOut and a.WhnoIn=b.WhnoIn and a.DocDate=b.DocDate and a.OutUser=b.OutUser and a.SeqNo=b.SeqNo; ";
                             sql += "Select left(WhnoOut+SPACE(6),6)+left(WhnoIn+SPACE(6),6)+left(PLU+SPACE(16),16)+right(SPACE(6)+convert(varchar,OutNum),6)+left(OutUser+SPACE(6),6)+Replace(DocDate,'/','') A1 from #tmpA order by Seqno; ";
@@ -3312,7 +3323,8 @@ namespace SVMAdmin.Controllers
                         DataTable dtA1 = PubUtility.SqlQry(sql, uu, "SYS");
                         if (dtA1.Rows.Count > 0)
                         {
-                            for (int i = 0; i <= dtA1.Rows.Count - 1; i++) {
+                            for (int i = 0; i <= dtA1.Rows.Count - 1; i++)
+                            {
                                 System.IO.File.AppendAllText(PubUtility.UpLoadFiles.FTPFilePath + "\\" + filename, dtA1.Rows[i]["A1"].ToString() + "\r\n");
                             }
 
@@ -3339,20 +3351,23 @@ namespace SVMAdmin.Controllers
                                     }
                                 }
                             }
-                            else {
+                            else
+                            {
                                 sql = "UpDate ISAMTOFTPRecWeb set UpDateType='E',ModDate=Convert(varchar,getdate(),111),ModTime=substring(Convert(varchar,getdate(),121),12,12) ";
                                 sql += "where CompanyCode='" + uu.CompanyId + "' and CrtUser='" + uu.UserID + "' and CrtDate='" + ls_Date + "' and CrtTime='" + ls_Time + "' ";
                                 sql += "and DocType='" + Doctype + "' and Whno='" + Shop + "' ";
                                 PubUtility.ExecuteSql(sql, uu, "SYS");
                                 throw new Exception("上傳檔案");
                             }
-                            
+
                         }
-                        else {
+                        else
+                        {
                             throw new Exception("上傳資料");
                         }
                     }
-                    else {
+                    else
+                    {
                         throw new Exception("上傳記錄");
                     }
                 }
@@ -3595,9 +3610,10 @@ namespace SVMAdmin.Controllers
                     switch (DocType[i])
                     {
                         //盤點資料清除(本店)
-                        case "T":   
+                        case "T":
                             sql += "select * into #tmpT from binweb (nolock) where companycode='" + uu.CompanyId + "' and binstore='" + Shop + "'";
-                            if (DelType == "E") {
+                            if (DelType == "E")
+                            {
                                 sql += " and binman='" + uu.UserID + "'";
                             }
                             sql += ";";
@@ -3820,7 +3836,7 @@ namespace SVMAdmin.Controllers
                     sql += "'" + uu.UserID + "',Convert(varchar,getdate(),111),Substring(Convert(varchar,getdate(),121),12,12),";
                     sql += "'" + WhNoOut + "','" + DocDate + "','" + uu.UserID + "','" + WhNoIn + "',";
                     sql += "(select isnull(max(seqno),0)+1 from DeliveryWeb (nolock) where Companycode='" + uu.CompanyId + "' and WhNoOut='" + WhNoOut + "' and DocDate='" + DocDate + "' and WhNoIn='" + WhNoIn + "' and OutUser='" + uu.UserID + "'),";
-                    sql += "'" + PLU + "'," + Qty +" ,''";
+                    sql += "'" + PLU + "'," + Qty + " ,''";
                     PubUtility.ExecuteSql(sql, uu, "SYS");
                 }
                 //Return 異動後的數量,故要重撈一次
@@ -3991,7 +4007,7 @@ namespace SVMAdmin.Controllers
 
                 if (Edit == "Init")
                 {
-                    String[,] DocType = { {"T","盤點" },{ "C", "條碼蒐集" },{ "D", "出貨/調撥" } };
+                    String[,] DocType = { { "T", "盤點" }, { "C", "條碼蒐集" }, { "D", "出貨/調撥" } };
                     sql = "select Convert(varchar(1),'') DocType,Convert(nvarchar(10),'') DocTypeDesc where 1=0";
                     DataTable dtDoc = PubUtility.SqlQry(sql, uu, "SYS");
                     for (int i = 0; i <= DocType.GetUpperBound(0); i++)
@@ -4001,7 +4017,7 @@ namespace SVMAdmin.Controllers
                         dr["DocTypeDesc"] = DocType[i, 1];
                         dtDoc.Rows.Add(dr);
                     }
-                    
+
                     dtDoc.TableName = "dtDoc";
                     ds.Tables.Add(dtDoc);
 
@@ -4019,17 +4035,17 @@ namespace SVMAdmin.Controllers
                     DateE = rq["DateE"];
                     DocT = rq["DocType"];
                 }
-                
-                if (DateS!="" && DateE != "")
+
+                if (DateS != "" && DateE != "")
                 {
                     Comd = "and a.CrtDate between '" + DateS + "' and '" + DateE + "' ";
                 }
-                if (DocT != "") { Comd += "and DocType='"+ DocT + "' "; }
+                if (DocT != "") { Comd += "and DocType='" + DocT + "' "; }
 
                 sql = "select case DocType when 'T' then N'盤點' when 'C' then N'條碼蒐集' when 'D' then N'出貨調撥' end DocTypeDesc ,a.CrtDate,a.CrtDate+' '+a.CrtTime CrtDT,case when isnull(Man_Name,'')='' then a.CrtUser else b.Man_Name end CrtUserName,";
                 sql += "case UpdateType when 'N' then N'未上傳' when 'Y' then N'成功' when 'E' then N'異常' end UpdateTypeDesc,a.CrtUser,DocType from ISAMTOFTPRecWeb a (nolock) ";
                 sql += "left join EmployeeWeb b (nolock) on a.CompanyCode=b.CompanyCode and a.CrtUser=b.Man_ID ";
-                sql += "where a.Companycode='" + uu.CompanyId + "' and a.Whno='" + Shop + "' "+ Comd +"order by a.CompanyCode,a.CrtDate desc,a.CrtTime desc";
+                sql += "where a.Companycode='" + uu.CompanyId + "' and a.Whno='" + Shop + "' " + Comd + "order by a.CompanyCode,a.CrtDate desc,a.CrtTime desc";
                 DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
                 dtQ.TableName = "dtQRec";
                 ds.Tables.Add(dtQ);
@@ -4058,16 +4074,16 @@ namespace SVMAdmin.Controllers
                 string CrtTime = CrtDT.Split(" ")[1].Trim();
                 string DocType = rq["DocType"];
                 string Shop = rq["Shop"];
-                
+
                 string sql = "select case DocType when 'T' then N'盤點' when 'C' then N'條碼蒐集' when 'D' then N'出貨調撥' end DocTypeDesc ,a.CrtDate+' '+a.CrtTime CrtDT,case when isnull(Man_Name,'')='' then a.CrtUser else b.Man_Name end CrtUserName,";
                 sql += "case UpdateType when 'N' then N'未上傳' when 'Y' then N'成功' when 'E' then N'異常' end UpdateTypeDesc,FTPDate,UpLoadComd,DocType from ISAMTOFTPRecWeb a (nolock) ";
                 sql += "left join EmployeeWeb b (nolock) on a.CompanyCode=b.CompanyCode and a.CrtUser=b.Man_ID ";
-                sql += "where a.Companycode='" + uu.CompanyId + "' and a.CrtUser='"+ CrtUser + "' and a.CrtDate='" + CrtDate + "' and a.Crttime='" + CrtTime + "' and DocType='" + DocType + "' and a.Whno='" + Shop + "' ";
+                sql += "where a.Companycode='" + uu.CompanyId + "' and a.CrtUser='" + CrtUser + "' and a.CrtDate='" + CrtDate + "' and a.Crttime='" + CrtTime + "' and DocType='" + DocType + "' and a.Whno='" + Shop + "' ";
                 DataTable dtQ = PubUtility.SqlQry(sql, uu, "SYS");
                 dtQ.TableName = "dtRec";
                 ds.Tables.Add(dtQ);
 
-                if(DocType=="D" && dtQ.Rows[0]["UpLoadComd"].ToString().Split(";").Length>2)
+                if (DocType == "D" && dtQ.Rows[0]["UpLoadComd"].ToString().Split(";").Length > 2)
                 {
                     sql = "select left(ST_ID+'      ',6)+' '+ST_SName InSTName from WarehouseWeb c (nolock) ";
                     sql += "where Companycode='" + uu.CompanyId + "' and ST_ID='" + dtQ.Rows[0]["UpLoadComd"].ToString().Split(";")[1] + "'";
@@ -4771,7 +4787,7 @@ namespace SVMAdmin.Controllers
 
                 string sql = "Select MCSeq from MachineList (nolock) where Companycode='" + uu.CompanyId + "' ";
                 if (SNno != "")
-                   sql += "and SNno='" + SNno + "' ";
+                    sql += "and SNno='" + SNno + "' ";
                 DataTable dtMCSeq = PubUtility.SqlQry(sql, uu, "SYS");
                 ds.Tables.Add(dtMCSeq);
                 dtMCSeq.TableName = "dtMCSeq";
@@ -4933,11 +4949,11 @@ namespace SVMAdmin.Controllers
                 string ShopNo = rq["ShopNo"];
 
                 string sql = "select a.CkNo,a.SNno," +
-                "a.WhnoIn + b.ST_Sname as WhName, "+
-                "a.ST_Address,a.InvGetQty,a.InvSaveQty,a.ST_OpenDay,a.ST_StopDay,a.QrCode "+
-                "from WarehouseDSV a (nolock) "+
+                "a.WhnoIn + b.ST_Sname as WhName, " +
+                "a.ST_Address,a.InvGetQty,a.InvSaveQty,a.ST_OpenDay,a.ST_StopDay,a.QrCode " +
+                "from WarehouseDSV a (nolock) " +
                 "left join WarehouseSV b (nolock) on a.WhnoIn = b.ST_ID and b.CompanyCode = a.CompanyCode " +
-                "where a.CompanyCode='" + uu.CompanyId + "' "; 
+                "where a.CompanyCode='" + uu.CompanyId + "' ";
                 if (ShopNo != "")
                     sql += "and a.ST_ID='" + ShopNo + "' ";
                 sql += "order by a.CkNo ";
@@ -5274,7 +5290,7 @@ namespace SVMAdmin.Controllers
                                     sql += "and CkNo<>'00' ";
                                     dbop.ExecuteSql(sql, uu, "SYS");
                                 }
-                                else if(dr["OldFlagInv"].ToString() == "Y" && dr["FlagInv"].ToString() == "N")
+                                else if (dr["OldFlagInv"].ToString() == "Y" && dr["FlagInv"].ToString() == "N")
                                 {
                                     //調撥表頭
                                     string TH_ID = PubUtility.GetNewDocNo(uu, "TH", 6);
@@ -5340,9 +5356,9 @@ namespace SVMAdmin.Controllers
                                     sql += "left join InventorySV i (nolock) on t.WhNoOut=i.WhNo and t.CkNoOut=i.CkNo and t.PLU=i.PLU and t.LayerOut=i.Layer and t.SnoOut=i.Sno and i.companycode='" + uu.CompanyId + "' ";
                                     sql += "where 1=1 ";
                                     dbop.ExecuteSql(sql, uu, "SYS");
-                                    
+
                                     //刪除母倉資料
-                                    sql = "Delete From WarehouseDSV where Companycode='" + uu.CompanyId + "' " ;
+                                    sql = "Delete From WarehouseDSV where Companycode='" + uu.CompanyId + "' ";
                                     sql += "and ST_ID='" + dr["ST_ID"].ToString().SqlQuote() + "' and CkNo='00' ";
                                     dbop.ExecuteSql(sql, uu, "SYS");
 
@@ -5518,7 +5534,7 @@ namespace SVMAdmin.Controllers
                 string isFormLoad = rq["FormLoad"];
 
                 //Left1.Group
-                string sql = "select 'G_'+GroupID [id],'#' parent,GroupName [text] from GroupIDWeb (nolock) where CompanyCode='" + uu.CompanyId + "' order by GroupID ";  
+                string sql = "select 'G_'+GroupID [id],'#' parent,GroupName [text] from GroupIDWeb (nolock) where CompanyCode='" + uu.CompanyId + "' order by GroupID ";
                 DataTable dtG = PubUtility.SqlQry(sql, uu, "SYS");
                 dtG.TableName = "dtGroupID";
                 ds.Tables.Add(dtG);
@@ -5759,14 +5775,14 @@ namespace SVMAdmin.Controllers
                     }
                 }
                 sql = "select 'DG_'+GroupID id,'#' parent,GroupName [text] from GroupIDWeb a (nolock) ";
-                sql += " where a.CompanyCode='" + uu.CompanyId + "' order by GroupID"; 
+                sql += " where a.CompanyCode='" + uu.CompanyId + "' order by GroupID";
                 DataTable dtG = PubUtility.SqlQry(sql, uu, "SYS");
                 dtG.TableName = "dtGroupID";
                 ds.Tables.Add(dtG);
 
                 sql = "select distinct a.GroupID,GroupName from GroupIDWeb a (nolock) inner join GroupProgramIDWeb b (nolock) ";
                 sql += "on a.CompanyCode=b.CompanyCode and a.GroupId=b.GroupID ";
-                sql += "where a.CompanyCode='" + uu.CompanyId + "' order by GroupID "; 
+                sql += "where a.CompanyCode='" + uu.CompanyId + "' order by GroupID ";
                 DataTable dtCG = PubUtility.SqlQry(sql, uu, "SYS");
                 dtCG.TableName = "dtCopyGroup";
                 ds.Tables.Add(dtCG);
@@ -5926,7 +5942,7 @@ namespace SVMAdmin.Controllers
                 IFormCollection rq = HttpContext.Request.Form;
                 string LV = rq["LV"];
                 string Group = rq["GroupID"];
-               
+
                 //GroupProgramID
                 string sql = "select 'P_'+a.ProgramId id,'S_'+b.SectionID parent from GroupProgramIDWeb a inner join ProgramIdCompanyWWeb b ";
                 sql += "on a.CompanyCode=b.CompanyCode and a.ProgramId=b.ProgramId ";
@@ -6264,13 +6280,14 @@ namespace SVMAdmin.Controllers
                 string sqlQ = "";
                 string sqlSumQ = "";
 
-                if (Type == "A") {
+                if (Type == "A")
+                {
                     sql = "select w.ST_placeID as ID1,t.Type_Name as Name1,sum(h.Cash)Cash1,COUNT(*)Cnt1,(SUM(h.cash) / COUNT(*))CashCnt1 ";
                     sql += "into #H ";
                     sql += "from SalesH h (nolock) ";
                     sql += "inner join warehouse w (nolock) on h.ShopNo = w.ST_ID and w.CompanyCode = h.CompanyCode ";
                     sql += "inner join TypeData t (nolock) on w.ST_placeID = t.Type_ID and t.Type_Code = 'A' and t.CompanyCode = h.CompanyCode ";
-                    sql += "where h.CompanyCode='" + uu.CompanyId + "' "  ;
+                    sql += "where h.CompanyCode='" + uu.CompanyId + "' ";
                     sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
                     sql += "group by w.ST_placeID,t.Type_Name ";
                     sql += "order by w.ST_placeID; ";
@@ -6292,7 +6309,7 @@ namespace SVMAdmin.Controllers
                     sqlQ += "Where 1=1 ";
                     sqlQ += "Order by h.ID1 ";
 
-                    DataTable dtQ = PubUtility.SqlQry(sql+ sqlQ, uu, "SYS");
+                    DataTable dtQ = PubUtility.SqlQry(sql + sqlQ, uu, "SYS");
                     dtQ.TableName = "dtQ";
                     ds.Tables.Add(dtQ);
 
@@ -6305,7 +6322,8 @@ namespace SVMAdmin.Controllers
                     dtSumQ.TableName = "dtSumQ";
                     ds.Tables.Add(dtSumQ);
                 }
-                else if (Type == "S") {
+                else if (Type == "S")
+                {
                     sql = "select h.ShopNo as ID1,w.st_sname as Name1,sum(h.Cash)Cash1,COUNT(*)Cnt1,(SUM(h.cash) / COUNT(*))CashCnt1 ";
                     sql += "into #H ";
                     sql += "from SalesH h(nolock) ";
@@ -6331,7 +6349,7 @@ namespace SVMAdmin.Controllers
                     sqlQ += "Where 1=1 ";
                     sqlQ += "Order by h.ID1 ";
 
-                    DataTable dtQ = PubUtility.SqlQry(sql+ sqlQ, uu, "SYS");
+                    DataTable dtQ = PubUtility.SqlQry(sql + sqlQ, uu, "SYS");
                     dtQ.TableName = "dtQ";
                     ds.Tables.Add(dtQ);
 
@@ -6353,7 +6371,7 @@ namespace SVMAdmin.Controllers
                     sql += "and h.OpenDate between '" + OpenDateS + "' and '" + OpenDateE + "' ";
                     sql += "group by h.OpenDate ";
                     sql += "order by h.OpenDate; ";
-                    
+
                     sql += "select h.OpenDate as ID2,h.OpenDate as Name2,sum(h.Cash)Cash2,COUNT(*)Cnt2,(SUM(h.cash) / COUNT(*))CashCnt2 ";
                     sql += "into #V ";
                     sql += "from SalesH h(nolock) ";
@@ -6369,7 +6387,7 @@ namespace SVMAdmin.Controllers
                     sqlQ += "Where 1=1 ";
                     sqlQ += "Order by h.ID1 ";
 
-                    DataTable dtQ = PubUtility.SqlQry(sql+sqlQ, uu, "SYS");
+                    DataTable dtQ = PubUtility.SqlQry(sql + sqlQ, uu, "SYS");
                     dtQ.TableName = "dtQ";
                     ds.Tables.Add(dtQ);
 
@@ -6378,7 +6396,7 @@ namespace SVMAdmin.Controllers
                     sqlSumQ += "from #H h (nolock) ";
                     sqlSumQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
                     sqlSumQ += "Where 1=1 ";
-                    DataTable dtSumQ = PubUtility.SqlQry(sql+ sqlSumQ, uu, "SYS");
+                    DataTable dtSumQ = PubUtility.SqlQry(sql + sqlSumQ, uu, "SYS");
                     dtSumQ.TableName = "dtSumQ";
                     ds.Tables.Add(dtSumQ);
                 }
@@ -6407,7 +6425,7 @@ namespace SVMAdmin.Controllers
                 sql = "Select w.st_id,w.st_sname,w.st_placeid,t.type_name ";
                 sql += "from Warehouse w (nolock) ";
                 sql += "left join TypeData t (nolock) on w.ST_PlaceID=t.type_ID and t.type_code='A' and t.companycode=w.companycode ";
-                sql += "Where w.companycode='" + uu.CompanyId + "' "   ;
+                sql += "Where w.companycode='" + uu.CompanyId + "' ";
                 sql += "and (w.ST_ID='" + Shop + "' or w.st_sname='" + Shop + "') ";
                 DataTable dtW = PubUtility.SqlQry(sql, uu, "SYS");
                 dtW.TableName = "dtW";
@@ -6464,7 +6482,7 @@ namespace SVMAdmin.Controllers
                 sqlQ += "Where 1=1 ";
                 sqlQ += "Order by h.ID1 ";
 
-                DataTable dtQ = PubUtility.SqlQry(sql+ sqlQ, uu, "SYS");
+                DataTable dtQ = PubUtility.SqlQry(sql + sqlQ, uu, "SYS");
                 dtQ.TableName = "dtQ";
                 ds.Tables.Add(dtQ);
 
@@ -6530,7 +6548,7 @@ namespace SVMAdmin.Controllers
                     sqlQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
                     sqlQ += "Where 1=1 ";
                     sqlQ += "Order by h.ID1 ";
-                    DataTable dtQ = PubUtility.SqlQry(sql+ sqlQ, uu, "SYS");
+                    DataTable dtQ = PubUtility.SqlQry(sql + sqlQ, uu, "SYS");
                     dtQ.TableName = "dtQ";
                     ds.Tables.Add(dtQ);
 
@@ -6569,7 +6587,7 @@ namespace SVMAdmin.Controllers
                     sqlQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
                     sqlQ += "Where 1=1 ";
                     sqlQ += "Order by h.ID1 ";
-                    DataTable dtQ = PubUtility.SqlQry(sql+sqlQ, uu, "SYS");
+                    DataTable dtQ = PubUtility.SqlQry(sql + sqlQ, uu, "SYS");
                     dtQ.TableName = "dtQ";
                     ds.Tables.Add(dtQ);
 
@@ -6643,7 +6661,7 @@ namespace SVMAdmin.Controllers
                 sqlQ += "Where 1=1 ";
                 sqlQ += "Order by h.ID1 ";
 
-                DataTable dtQ = PubUtility.SqlQry(sql+ sqlQ, uu, "SYS");
+                DataTable dtQ = PubUtility.SqlQry(sql + sqlQ, uu, "SYS");
                 dtQ.TableName = "dtQ";
                 ds.Tables.Add(dtQ);
 
@@ -6676,7 +6694,7 @@ namespace SVMAdmin.Controllers
                 IFormCollection rq = HttpContext.Request.Form;
                 string OpenDate = rq["OpenDate"];
                 string Area = rq["Area"];
-                
+
                 string sql = "";
                 string sqlQ = "";
                 string sqlSumQ = "";
@@ -6706,7 +6724,7 @@ namespace SVMAdmin.Controllers
                 sqlQ += "Where 1=1 ";
                 sqlQ += "Order by h.ID1 ";
 
-                DataTable dtQ = PubUtility.SqlQry(sql+sqlQ, uu, "SYS");
+                DataTable dtQ = PubUtility.SqlQry(sql + sqlQ, uu, "SYS");
                 dtQ.TableName = "dtQ";
                 ds.Tables.Add(dtQ);
 
@@ -6778,7 +6796,7 @@ namespace SVMAdmin.Controllers
                 sqlQ += "Where 1=1 ";
                 sqlQ += "Order by h.ID1 ";
 
-                DataTable dtQ = PubUtility.SqlQry(sql+ sqlQ, uu, "SYS");
+                DataTable dtQ = PubUtility.SqlQry(sql + sqlQ, uu, "SYS");
                 dtQ.TableName = "dtQ";
                 ds.Tables.Add(dtQ);
 
@@ -6854,7 +6872,7 @@ namespace SVMAdmin.Controllers
                     sqlQ += "Where 1=1 ";
                     sqlQ += "Order by h.ID1 ";
 
-                    DataTable dtQ = PubUtility.SqlQry(sql+ sqlQ, uu, "SYS");
+                    DataTable dtQ = PubUtility.SqlQry(sql + sqlQ, uu, "SYS");
                     dtQ.TableName = "dtQ";
                     ds.Tables.Add(dtQ);
 
@@ -6901,7 +6919,7 @@ namespace SVMAdmin.Controllers
                     sqlQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
                     sqlQ += "Where 1=1 ";
                     sqlQ += "Order by h.ID1 ";
-                    DataTable dtQ = PubUtility.SqlQry(sql+ sqlQ, uu, "SYS");
+                    DataTable dtQ = PubUtility.SqlQry(sql + sqlQ, uu, "SYS");
                     dtQ.TableName = "dtQ";
                     ds.Tables.Add(dtQ);
 
@@ -6974,7 +6992,7 @@ namespace SVMAdmin.Controllers
                 sqlQ += "left join #V v (nolock) on h.ID1=v.ID2 ";
                 sqlQ += "Where 1=1 ";
                 sqlQ += "Order by h.ID1 ";
-                DataTable dtQ = PubUtility.SqlQry(sql+ sqlQ, uu, "SYS");
+                DataTable dtQ = PubUtility.SqlQry(sql + sqlQ, uu, "SYS");
                 dtQ.TableName = "dtQ";
                 ds.Tables.Add(dtQ);
 
@@ -7032,10 +7050,12 @@ namespace SVMAdmin.Controllers
 
                 string sql = "select distinct a.DocNo,a.Type from SetEDM a (nolock) ";
                 sql += "where a.Companycode='" + uu.CompanyId + "' ";
-                if (DocNo != "") {
+                if (DocNo != "")
+                {
                     sql += "and a.DocNo='" + DocNo + "' ";
                 }
-                if (Type != "") {
+                if (Type != "")
+                {
                     sql += "and a.Type='" + Type + "' ";
                 }
                 sql += "order by a.DocNo desc ";
@@ -7146,7 +7166,7 @@ namespace SVMAdmin.Controllers
                 IFormCollection rq = HttpContext.Request.Form;
                 string DocNo = rq["DocNo"];
                 string Barcode1 = rq["Barcode1"];
-                
+
                 DataTable dtF = new DataTable();
                 dtF.Columns.Add("CompanyCode", typeof(string));
                 dtF.Columns.Add("DocNo", typeof(string));
@@ -7162,7 +7182,7 @@ namespace SVMAdmin.Controllers
 
                 System.IO.MemoryStream ms = new System.IO.MemoryStream();
                 System.Drawing.Bitmap bmp = ConstList.GetBitmap_Barcode(Barcode1)[0];
-                bmp.Save(ms,System.Drawing.Imaging.ImageFormat.Bmp);
+                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
 
                 DataRow drF = dtF.NewRow();
                 drF["CompanyCode"] = uu.CompanyId;
@@ -7579,10 +7599,11 @@ namespace SVMAdmin.Controllers
                     sql += "and b.ActivityCode like '" + ActivityCode.SqlQuote() + "%' ";
                 }
                 sql += "left join (Select EVNO,COUNT(*)Cnt From SetEDMVIP_VIPWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by EVNO)c on a.DocNo=c.EVNO ";
-                
+
                 sql += "Where a.Companycode='" + uu.CompanyId + "' and isnull(a.DelDate,'')='' and a.EDMType='V' ";
                 //DM單號
-                if (DocNo.SqlQuote() != "") {
+                if (DocNo.SqlQuote() != "")
+                {
                     sql += "and a.DocNo like '" + DocNo.SqlQuote() + "%' ";
                 }
                 //DM主旨
@@ -7591,14 +7612,17 @@ namespace SVMAdmin.Controllers
                     sql += "and a.EDMMemo like '%" + EDMMemo.SqlQuote() + "%' ";
                 }
                 //店別
-                if (ShopNo.SqlQuote() != "") {
+                if (ShopNo.SqlQuote() != "")
+                {
                     sql += "and (a.WhNoFlag='Y' or a.DocNo in (Select DocNo From SetEDMShopWeb (nolock) Where Companycode='" + uu.CompanyId + "' and ShopNo='" + ShopNo.SqlQuote() + "')) ";
                 }
                 //批核日期
-                if (App.SqlQuote() == "NoApp") {
+                if (App.SqlQuote() == "NoApp")
+                {
                     sql += "and isnull(a.ApproveDate,'')='' ";
                 }
-                else if (App.SqlQuote() == "App") {
+                else if (App.SqlQuote() == "App")
+                {
                     sql += "and isnull(a.ApproveDate,'')<>'' ";
                 }
                 //作廢日期
@@ -7611,10 +7635,11 @@ namespace SVMAdmin.Controllers
                     sql += "and isnull(a.DefeasanceDate,'')<>'' ";
                 }
                 //入會日期
-                if (EDDate.SqlQuote() != "") {
+                if (EDDate.SqlQuote() != "")
+                {
                     sql += "and '" + EDDate.SqlQuote() + "' between a.StartDate and a.EndDate ";
                 }
-                
+
                 sql += "Order by a.DocNo ";
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
@@ -7644,7 +7669,8 @@ namespace SVMAdmin.Controllers
                 sql += "From PromoteSCouponHWeb a (nolock) ";
                 sql += "inner join SetEDMHWeb b (nolock) on a.PS_NO=b.PS_NO and b.EDMType='V' and isnull(b.DelDate,'')='' and b.Companycode=a.Companycode ";
                 sql += "Where a.Companycode='" + uu.CompanyId + "' ";
-                if (ActivityCode.SqlQuote() != "") {
+                if (ActivityCode.SqlQuote() != "")
+                {
                     sql += "and a.ActivityCode like '" + ActivityCode.SqlQuote() + "%' ";
                 }
                 sql += "group by a.ActivityCode,a.PS_Name,a.StartDate,a.EndDate ";
@@ -7741,7 +7767,8 @@ namespace SVMAdmin.Controllers
                     {
                         sql += "and ST_ID in (" + ShopNo + ") ";
                     }
-                    else {
+                    else
+                    {
                         var ShopNo1 = ShopNo.Replace("'", "");
                         sql += "and ST_ID like '" + ShopNo1 + "%' ";
                     }
@@ -7780,16 +7807,20 @@ namespace SVMAdmin.Controllers
                 sql += "From PromoteSCouponHWeb a (nolock) ";
                 sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                 sql += "and isnull(a.ApproveDate,'')<>'' and isnull(a.DefeasanceDate,'')='' ";
-                if (EndDate.SqlQuote() != "") {
+                if (EndDate.SqlQuote() != "")
+                {
                     sql += "and isnull(a.EndDate,'')>'" + EndDate.SqlQuote() + "' ";
                 }
-                if (WhNoFlag.SqlQuote() == "Y") {
+                if (WhNoFlag.SqlQuote() == "Y")
+                {
                     sql += "and isnull(a.WhNoFlag,'')='Y' ";
                 }
-                else {
+                else
+                {
                     sql += "and (isnull(a.WhNoFlag,'')='Y' or a.PS_NO in (Select PS_NO From PromoteSCouponShopWeb (nolock) Where Companycode='" + uu.CompanyId + "' and ShopNo in (" + ShopNo + ") and PS_NO in (Select PS_NO From PromoteSCouponHWeb (nolock) where Companycode='" + uu.CompanyId + "' and isnull(EndDate,'')>convert(char(10),getdate(),111) group by PS_NO Having Count(*)=" + ShopCnt + "))) ";
                 }
-                if (PS_NO.SqlQuote() != "") {
+                if (PS_NO.SqlQuote() != "")
+                {
                     sql += "and a.PS_NO like '" + PS_NO.SqlQuote() + "%' ";
                 }
                 sql += "order by a.StartDate,a.PS_NO ";
@@ -7822,7 +7853,8 @@ namespace SVMAdmin.Controllers
 
                 string sql = "";
                 sql = "Select '" + DocNo + "' as DocNo,* From EDMSetWeb (nolock) Where Companycode='" + uu.CompanyId + "' ";
-                if (ProgramID.SqlQuote() != "") {
+                if (ProgramID.SqlQuote() != "")
+                {
                     sql += "and ProgramID='" + ProgramID.SqlQuote() + "' ";
                 }
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
@@ -7890,7 +7922,8 @@ namespace SVMAdmin.Controllers
                 string sql1 = "";
 
                 //新增
-                if (EditMode.SqlQuote() == "A") {
+                if (EditMode.SqlQuote() == "A")
+                {
                     DocNo = PubUtility.GetNewDocNo(uu, "EM", 3);
                     //SetEDMHWeb
                     sql = "Insert into SetEDMHWeb (Companycode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
@@ -7912,7 +7945,8 @@ namespace SVMAdmin.Controllers
                     sql += "From EDMSetWeb (nolock) Where Companycode='" + uu.CompanyId + "' and ProgramID='MSDM104';";
 
                     //SetEDMDWeb(T1)
-                    if (T1.SqlQuote() != "") {
+                    if (T1.SqlQuote() != "")
+                    {
                         sql1 = "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
                         sql1 += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
 
@@ -7931,7 +7965,8 @@ namespace SVMAdmin.Controllers
                     sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
                     sql += "'" + DocNo + "','T2','','T','','" + T2.SqlQuote() + "','','';";
                     //SetEDMShopWeb
-                    if (WhNoFlag.SqlQuote() != "Y") {
+                    if (WhNoFlag.SqlQuote() != "Y")
+                    {
                         sql1 += "Insert into SetEDMShopWeb (CompanyCode,CrtUser,CrtDate,CrtTime,DocNO,ShopNo) ";
 
                         sql1 += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
@@ -7952,7 +7987,8 @@ namespace SVMAdmin.Controllers
                     PubUtility.ExecuteSql(sql, uu, "SYS");
                 }
                 //修改
-                else if (EditMode.SqlQuote() == "M") {
+                else if (EditMode.SqlQuote() == "M")
+                {
                     //SetEDMHWeb
                     sql = "Update SetEDMHWeb Set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
                     sql += "EDMMemo='" + EDMMemo.SqlQuote() + "',StartDate='" + StartDate.SqlQuote() + "',EndDate='" + EndDate.SqlQuote() + "',WhNoFlag='" + WhNoFlag.SqlQuote() + "', ";
@@ -7966,7 +8002,8 @@ namespace SVMAdmin.Controllers
                     sql += "Where a.Companycode='" + uu.CompanyId + "' and a.DocNo='" + DocNo.SqlQuote() + "' ";
                     sql += "and a.DataType='P1'; ";
                     //SetEDMDWeb(T1)
-                    if (T1.SqlQuote() != "") {
+                    if (T1.SqlQuote() != "")
+                    {
                         sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
                         sql += "TXT='" + T1.SqlQuote() + "' ";
                         sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
@@ -7979,15 +8016,16 @@ namespace SVMAdmin.Controllers
                     sql += "and DataType='T2'; ";
                     //SetEDMShopWeb
                     sql += "Delete From SetEDMShopWeb Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "'; ";
-                    if (WhNoFlag.SqlQuote() != "Y") {
+                    if (WhNoFlag.SqlQuote() != "Y")
+                    {
                         sql += "Insert Into SetEDMShopWeb Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
                         sql += "'" + DocNo.SqlQuote() + "',ST_ID ";
                         sql += "From WarehouseWeb (nolock) Where Companycode='" + uu.CompanyId + "' and ST_ID in (" + chkShopNo + "); ";
                     }
                     //SetEDMVIP_HWeb
                     sql += "Update SetEDMVIP_HWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
-                    sql += "StartDate=convert(char(10),getdate(),111),EndDate='" + EndDate.SqlQuote() + "',EDMMemo='" + EDMMemo.SqlQuote() + "', " ;
-                    sql += "EDM_DocNO='" + DocNo.SqlQuote() + "',PS_NO='" + PS_NO.SqlQuote() + "' "  ;
+                    sql += "StartDate=convert(char(10),getdate(),111),EndDate='" + EndDate.SqlQuote() + "',EDMMemo='" + EDMMemo.SqlQuote() + "', ";
+                    sql += "EDM_DocNO='" + DocNo.SqlQuote() + "',PS_NO='" + PS_NO.SqlQuote() + "' ";
                     sql += "Where Companycode='" + uu.CompanyId + "' and EVNO='" + DocNo.SqlQuote() + "'; ";
                     PubUtility.ExecuteSql(sql, uu, "SYS");
                 }
@@ -8026,7 +8064,8 @@ namespace SVMAdmin.Controllers
                 sql += "inner join SetEDMDWeb b (nolock) on a.DocNo=b.DocNo and b.Companycode=a.Companycode ";
                 sql += "inner join PromoteSCouponHWeb c (nolock) on a.PS_NO=c.PS_NO and c.Companycode=a.Companycode ";
                 sql += "Where a.Companycode='" + uu.CompanyId + "' ";
-                if (DocNo.SqlQuote() != "") {
+                if (DocNo.SqlQuote() != "")
+                {
                     sql += "and a.DocNo='" + DocNo.SqlQuote() + "' ";
                 }
                 sql += "Order by b.DataType ";
@@ -8471,19 +8510,23 @@ namespace SVMAdmin.Controllers
                 string sqlSumQ = "";
 
                 //店櫃
-                if (Flag == "S") {
+                if (Flag == "S")
+                {
                     //入會數
                     sql = "Select v.VIP_FaceID as ID,count(*) as VIPCnt ";
                     sql += "into #v ";
                     sql += "from EDDMS.dbo.VIP v (nolock) ";
                     sql += "inner join EDDMS.dbo.Warehouse w (nolock) on v.VIP_FaceID=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=v.Companycode ";
                     sql += "Where v.Companycode='" + uu.CompanyId + "' ";
-                    if (CountYM != "") {
+                    if (CountYM != "")
+                    {
                         //判斷調閱年月是否同系統日
-                        if (CountYM == Yesterday.Substring(0, 7)) {
+                        if (CountYM == Yesterday.Substring(0, 7))
+                        {
                             sql += "and isnull(v.VIP_Qday,'') between '" + Yesterday.Substring(0, 7) + "/01' and '" + Yesterday + "' ";
                         }
-                        else {
+                        else
+                        {
                             sql += "and left(isnull(v.VIP_Qday,''),7)='" + CountYM + "' ";
                         }
                     }
@@ -8516,7 +8559,8 @@ namespace SVMAdmin.Controllers
                     sql += "From SalesH_AllWeb h (nolock) ";
                     sql += "inner join EDDMS.dbo.Warehouse w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=h.Companycode ";
                     sql += "Where h.Companycode='" + uu.CompanyId + "' and h.VIPNo<>'' ";
-                    if (CountYM != "") {
+                    if (CountYM != "")
+                    {
                         sql += "and left(h.OpenDate,7)='" + CountYM + "' ";
                     }
                     sql += "Group By h.ShopNo; ";
@@ -8550,7 +8594,7 @@ namespace SVMAdmin.Controllers
                     sqlQ += "isnull(s1.SalesCnt1,0)SalesCnt1,isnull(s1.SalesCash1,0)SalesCash1,isnull(s1.SalesPrice1,0)SalesPrice1, ";
                     sqlQ += "isnull(s2.SalesCnt2,0)SalesCnt2,isnull(s2.SalesCash2,0)SalesCash2,isnull(s2.SalesPrice2,0)SalesPrice2,case when isnull(sall.SalesCashAll,0)=0 then '0%' else cast(cast(Round((isnull(s2.SalesCash2,0)/isnull(sall.SalesCashAll,0))*100,0) as int) as varchar) + '%' end as SalesPercent2, ";
                     sqlQ += "isnull(s3.SalesCnt3,0)SalesCnt3,isnull(s3.SalesCash3,0)SalesCash3,isnull(s3.SalesPrice3,0)SalesPrice3,case when isnull(sall.SalesCashAll,0)=0 then '0%' else cast(cast(Round((isnull(s3.SalesCash3,0)/isnull(sall.SalesCashAll,0))*100,0) as int) as varchar) + '%' end as SalesPercent3 ";
-        
+
                     sqlQ += "From EDDMS.dbo.Warehouse w (nolock) ";
                     sqlQ += "left join #sall sall on w.ST_ID=sall.ID ";
                     sqlQ += "left join #v v on w.ST_ID=v.ID ";
@@ -8562,7 +8606,7 @@ namespace SVMAdmin.Controllers
                     //sqlQ += "and w.ST_ID='EDM1' ";
                     sqlQ += "Order by w.ST_ID ";
 
-                    DataTable dtE = PubUtility.SqlQry(sql+ sqlQ, uu, "SYS");
+                    DataTable dtE = PubUtility.SqlQry(sql + sqlQ, uu, "SYS");
                     dtE.TableName = "dtE";
                     ds.Tables.Add(dtE);
 
@@ -8581,12 +8625,13 @@ namespace SVMAdmin.Controllers
                     sqlSumQ += "Where w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in ('0','2','3') ";
                     //測試
                     //sqlSumQ += "and w.ST_ID='EDM1' ";
-                    DataTable dtSumQ = PubUtility.SqlQry(sql+ sqlSumQ, uu, "SYS");
+                    DataTable dtSumQ = PubUtility.SqlQry(sql + sqlSumQ, uu, "SYS");
                     dtSumQ.TableName = "dtSumQ";
                     ds.Tables.Add(dtSumQ);
                 }
                 //日期
-                else if (Flag == "D") {
+                else if (Flag == "D")
+                {
                     //入會數
                     sql = "Select v.VIP_Qday as ID,count(*) as VIPCnt ";
                     sql += "into #v ";
@@ -9124,7 +9169,8 @@ namespace SVMAdmin.Controllers
                     sql += "and c.EDMMemo like '%" + EDMMemo.SqlQuote() + "%' ";
                 }
                 sql += "Where a.Companycode='" + uu.CompanyId + "' and a.EDMType='E' and isnull(a.EV_Model,'')='VP102'";
-                if (EVNO.SqlQuote() != "") {
+                if (EVNO.SqlQuote() != "")
+                {
                     sql += "and a.EVNO='" + EVNO.SqlQuote() + "' ";
                 }
                 if (EDM_DocNo.SqlQuote() != "")
@@ -9135,7 +9181,7 @@ namespace SVMAdmin.Controllers
                 {
                     sql += "and a.StartDate='" + StartDate.SqlQuote() + "' ";
                 }
-                
+
                 sql += "Order by a.EVNO desc ";
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
@@ -9148,7 +9194,7 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
-        #region MSSD101
+        #region msSD101
         [Route("SystemSetup/MSSD101Query")]
         public ActionResult SystemSetup_MSSD101Query()
         {
@@ -9160,35 +9206,106 @@ namespace SVMAdmin.Controllers
                 IFormCollection rq = HttpContext.Request.Form;
                 string ActivityCode = rq["ActivityCode"];
                 string PSName = rq["PSName"];
-                string EDDate = rq["PSDate"];
-                
+                string PSDate = rq["PSDate"];
+                string DocNO = rq["DocNO"];
+                string EDMMemo = rq["EDMMemo"];
+                string EDDate = rq["EDDate"];
+                string OptAB = rq["OptAB"];
+
                 string sql = "";
-                sql = "select a.ActivityCode,a.PS_Name,a.StartDate + ' ~ ' + a.EndDate PSDate,d.SendCnt,b.BackCnt,round(b.BackCnt/d.SendCnt*100,1) BackPer,b.Dicount,c.Cash,c.SalesCnt,c.Balance ";
-                sql += "from PromoteSCouponHWeb a(nolock) ";
-                sql += "left join (Select CompanyCode,PS_NO From SetEDMHWeb (nolock) Where EDMType='E' and isnull(ApproveDate,'')<>''  ";
-                sql += "group by CompanyCode,PS_NO) e on a.CompanyCode=e.CompanyCode and a.PS_NO=e.PS_NO ";
-                //發出張數
-                sql += " left join (select CompanyCode,PS_NO,count(*) SendCnt from SetEDMVIP_VIPWeb group by CompanyCode,PS_NO) d on a.CompanyCode=d.CompanyCode and a.PS_No=d.PS_NO ";
-                //回收張數
-                sql += "join (select h.CompanyCode, h.PCHDocNO ,count (c.CouponNo) BackCnt,sum(c.ActualDiscount) Dicount ";
-                sql += "from PromoteSLogHWeb h join PromoteSLogCardNoWeb c on h.CompanyCode=c.CompanyCode and h.DocNo=c.DocNo and h.ShopNO=c.ShopNO ";
-                sql += "group by  h.CompanyCode,h.PCHDocNO ) b on a.CompanyCode=b.CompanyCode and a.PS_No=b.PCHDocNO ";
-                //銷售
-                sql += "join ( select h.companycode,h.PCHDocNO, sum(sh.cash) Cash,count(*) SalesCnt,convert(int,sum(sh.cash)/count(*)) Balance ";
-                sql += "from SalesH_AllWeb sh join PromoteSLogHWeb h on sh.CompanyCode =h.CompanyCode and sh.ShopNo=h.ShopNO and sh.OpenDate=h.SalesDate and sh.ckno=h.MachineNo and sh.chrno=h.ChrNO ";
-                sql += "group by h.companycode,h.PCHDocNO) c on a.CompanyCode=c.CompanyCode and a.PS_No=c.PCHDocNO ";
-                //活動代號
-                if (ActivityCode.SqlQuote() != "")
+                if (OptAB == "DA")
                 {
-                    sql += "and a.ActivityCode like '%" + ActivityCode.SqlQuote() + "%' ";
+                    sql = "select a.ActivityCode,a.PS_Name,a.StartDate + ' ~ ' + a.EndDate PSDate,d.SendCnt,b.BackCnt,format(round(b.BackCnt/d.SendCnt*100,1),'p') BackPer,b.Discount,c.Cash,c.SalesCnt,c.Balance,a.PS_NO ";
+                    sql += "from PromoteSCouponHWeb a(nolock) ";
+                    sql += "join (Select CompanyCode,PS_NO From SetEDMHWeb (nolock) Where EDMType='V' and isnull(ApproveDate,'')<>''  ";
+                    if (DocNO.SqlQuote() != "")     //DM單號
+                    {
+                        sql += "and DocNO like '%" + DocNO.SqlQuote() + "%' ";
+                    }
+                    if (EDMMemo.SqlQuote() != "")     //DM單號
+                    {
+                        sql += "and EDMMemo like '%" + EDMMemo.SqlQuote() + "%' ";
+                    }
+                    if (EDDate.SqlQuote() != "")     //DM日期
+                    {
+                        sql += "and '" + EDDate.SqlQuote() + "' between StartDate and EndDate ";
+                    }
+                    sql += "group by CompanyCode,PS_NO) e on a.CompanyCode=e.CompanyCode and a.PS_NO=e.PS_NO ";
+                    //發出張數
+                    sql += " join (select CompanyCode,PS_NO,count(*) SendCnt from SetEDMVIP_VIPWeb group by CompanyCode,PS_NO) d on a.CompanyCode=d.CompanyCode and a.PS_No=d.PS_NO ";
+                    //回收張數
+                    sql += "join (select h.CompanyCode, h.PCHDocNO ,count (c.CouponNo) BackCnt,sum(c.ActualDiscount) Discount ";
+                    sql += "from PromoteSLogHWeb h join PromoteSLogCardNoWeb c on h.CompanyCode=c.CompanyCode and h.DocNo=c.DocNo and h.ShopNO=c.ShopNO ";
+                    sql += "group by  h.CompanyCode,h.PCHDocNO ) b on a.CompanyCode=b.CompanyCode and a.PS_No=b.PCHDocNO ";
+                    //銷售
+                    sql += "join ( select h.companycode,h.PCHDocNO, sum(sh.cash) Cash,count(*) SalesCnt,convert(int,sum(sh.cash)/count(*)) Balance ";
+                    sql += "from SalesH_AllWeb sh join PromoteSLogHWeb h on sh.CompanyCode =h.CompanyCode and sh.ShopNo=h.ShopNO and sh.OpenDate=h.SalesDate and sh.ckno=h.MachineNo and sh.chrno=h.ChrNO ";
+                    sql += "group by h.companycode,h.PCHDocNO) c on a.CompanyCode=c.CompanyCode and a.PS_No=c.PCHDocNO ";
+
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                    if (ActivityCode.SqlQuote() != "")//活動代號
+                    {
+                        sql += "and a.ActivityCode like '%" + ActivityCode.SqlQuote() + "%' ";
+                    }
+                    if (PSName.SqlQuote() != "")//活動名稱
+                    {
+                        sql += "and a.PS_Name like '%" + PSName.SqlQuote() + "%' ";
+                    }
+                    if (PSDate.SqlQuote() != "")     //活動日期
+                    {
+                        sql += "and '" + PSDate.SqlQuote() + "' between StartDate and EndDate ";
+                    }
+                    sql += "Order by a.StartDate ";
                 }
-                //活動名稱
-                if (PSName.SqlQuote() != "")
+                else if (OptAB == "DB")
                 {
-                    sql += "and a.PS_Name like '%" + PSName.SqlQuote() + "%' ";
+                    sql = "select a.DocNO ActivityCode,a.EDMMemo PS_Name,a.StartDate + ' ~ ' + a.EndDate PSDate,b.SendCnt,c.BackCnt,format(round(c.BackCnt/b.SendCnt*100,1),'p') BackPer ,c.Discount,d.Cash,d.SalesCnt,d.Balance ";
+                    sql += "from SetEDMHWeb a(nolock) ";
+                    //發出張數
+                    sql += " join (select h.CompanyCode,h.EDM_DocNO,count(*) SendCnt ";
+                    sql += "from SetEDMVIP_VIPWeb v join SetEDMVIP_HWeb h on v.CompanyCode=h.CompanyCode and v.EVNO=h.EVNO group by  h.CompanyCode,h.EDM_DocNO) b ";
+                    sql += "on a.CompanyCode=b.CompanyCode and a.DocNO=b.EDM_DocNO ";
+                    //回收張數
+                    sql += "join (select h.CompanyCode,h.EDM_DocNO,count(CouponID) BackCnt,sum(p.ActualDiscount) Discount ";
+                    sql += "from SetEDMVIP_VIPWeb v join SetEDMVIP_HWeb h on v.CompanyCode=h.CompanyCode and v.EVNO=h.EVNO ";
+                    sql += "join PromoteSLogCardNoWeb p on h.CompanyCode=p.CompanyCode  and v.CouponID=p.CouponNo ";
+                    sql += "group by  h.CompanyCode,h.EDM_DocNO) c on a.CompanyCode=c.CompanyCode and a.DocNO=c.EDM_DocNO ";
+                    //銷售
+                    sql += "join (select sh.CompanyCode ,e.EDM_DocNO,h.PCHDocNO ,sum(cash) Cash,count(*) SalesCnt,convert(int,sum(sh.cash)/count(*)) Balance  ";
+                    sql += "from SalesH_AllWeb sh join PromoteSLogHWeb h on sh.CompanyCode =h.CompanyCode and sh.ShopNo=h.ShopNO and sh.OpenDate=h.SalesDate and sh.ckno=h.MachineNo and sh.chrno=h.ChrNO ";
+                    sql += "join PromoteSLogCardNoWeb p on  h.CompanyCode=p.CompanyCode and h.DocNO=p.DocNo ";
+                    sql += "join SetEDMVIP_VIPWeb d on d.CompanyCode=p.CompanyCode and d.CouponID=p.CouponNo ";
+                    sql += "join SetEDMVIP_HWeb e on d.CompanyCode=e.CompanyCode and d.EVNO=e.EVNO ";
+                    if (ActivityCode.SqlQuote() != "")//活動代號
+                    {
+                        sql += "and h.ActivityCode like '%" + ActivityCode.SqlQuote() + "%' ";
+                    }
+                    if (PSName.SqlQuote() != "")//活動名稱
+                    {
+                        sql += "and h.PS_Name like '%" + PSName.SqlQuote() + "%' ";
+                    }
+                    if (PSDate.SqlQuote() != "")     //活動日期
+                    {
+                        sql += "and '" + PSDate.SqlQuote() + "' between StartDate and EndDate ";
+                    }
+                    sql += "group by sh.CompanyCode ,e.EDM_DocNO,h.PCHDocNO) d on a.CompanyCode=d.CompanyCode and a.DocNO=d.EDM_DocNO and a.PS_NO=d.PCHDocNO ";
+
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' and EDMType='V' and isnull(ApproveDate,'')<>'' ";
+                    if (DocNO.SqlQuote() != "")     //DM單號
+                    {
+                        sql += "and DocNO like '%" + DocNO.SqlQuote() + "%' ";
+                    }
+                    if (EDMMemo.SqlQuote() != "")     //DM單號
+                    {
+                        sql += "and EDMMemo like '%" + EDMMemo.SqlQuote() + "%' ";
+                    }
+                    if (EDDate.SqlQuote() != "")     //DM日期
+                    {
+                        sql += "and '" + EDDate.SqlQuote() + "' between StartDate and EndDate ";
+                    }
+                    sql += "Order by a.StartDate ";
                 }
-                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
-                sql += "Order by a.StartDate ";
+
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
                 ds.Tables.Add(dtE);
@@ -9196,6 +9313,40 @@ namespace SVMAdmin.Controllers
             catch (Exception err)
             {
                 dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSSD101_Query_PS_Step1")]
+        public ActionResult SystemSetup_MSSD101_Query_PS_Step1()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "Query_PS_Step1OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ActivityCode = rq["ActivityCode"];
+                string Type_Step1 = rq["Type_Step1"];
+
+                string sql = "";
+                sql = "Select a.DocNo,a.EDMMemo,a.StartDate,a.EndDate ";
+                sql += "From SetEDMHWeb a (nolock) ";
+                sql += " Where a.Companycode='" + uu.CompanyId + "' and a.EDMType='V' and isnull(a.ApproveDate,'')<>''  ";
+                if (ActivityCode.SqlQuote() != "")
+                {
+                    sql += "and a.DocNo like '" + ActivityCode.SqlQuote() + "%' ";
+                }
+                sql += "group by a.DocNo,a.EDMMemo,a.StartDate,a.EndDate ";
+                sql += "Order By a.StartDate desc ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
                 dtMessage.Rows[0][1] = err.Message;
             }
             return PubUtility.DatasetXML(ds);
@@ -9215,7 +9366,7 @@ namespace SVMAdmin.Controllers
                 string sql = "";
                 sql = "Select a.ActivityCode,a.PS_Name,a.StartDate,a.EndDate ";
                 sql += "From PromoteSCouponHWeb a (nolock) ";
-                sql += "inner join SetEDMHWeb b (nolock) on a.PS_NO=b.PS_NO and b.EDMType='E' and isnull(b.ApproveDate,'')<>'' and b.Companycode=a.Companycode ";
+                sql += "inner join SetEDMHWeb b (nolock) on a.PS_NO=b.PS_NO and b.EDMType='V' and isnull(b.ApproveDate,'')<>'' and b.Companycode=a.Companycode ";
                 sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                 if (ActivityCode.SqlQuote() != "")
                 {
@@ -9249,7 +9400,7 @@ namespace SVMAdmin.Controllers
                 string sql = "";
                 sql = "Select a.DocNo,a.EDMMemo,a.StartDate,a.EndDate ";
                 sql += "From SetEDMHWeb a (nolock) ";
-                sql += " Where a.Companycode='" + uu.CompanyId + "' and a.EDMType='E' and isnull(a.ApproveDate,'')<>''  ";
+                sql += " Where a.Companycode='" + uu.CompanyId + "' and a.EDMType='V' and isnull(a.ApproveDate,'')<>''  ";
                 if (DocNO.SqlQuote() != "")
                 {
                     sql += "and a.DocNo like '" + DocNO.SqlQuote() + "%' ";
@@ -9267,6 +9418,7 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+
         #endregion
 
         [Route("FileUpload_EDM")]
