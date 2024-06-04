@@ -24,22 +24,23 @@
         grdM = new DynGrid(
             {
                 table_lement: $('#tbQuery')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9 label-align", "tdCol10 label-align"],
+                class_collection: ["tdCol1 label-align:center", "tdCol2", "tdCol3", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9 label-align", "tdCol10 label-align", "tdCol11"],
                 fields_info: [
-                    { type: "Text", name: "ActivityCode", style: "" },
+                    { type: "Text", name: "ActivityCode", style: "text-align:center" },
                     { type: "Text", name: "PS_Name" },
-                    { type: "Text", name: "PSDate" },
+                    { type: "Text", name: "PSDate", style: "text-align:center" },
                     { type: "TextAmt", name: "SendCnt" },
                     { type: "TextAmt", name: "BackCnt" },
-                    { type: "TextAmt", name: "BackPer" },
-                    { type: "TextAmt", name: "Dicount" },
+                    { type: "Text", name: "BackPer" },
+                    { type: "TextAmt", name: "Discount" },
                     { type: "TextAmt", name: "Cash" },
                     { type: "TextAmt", name: "SalesCnt" },
-                    { type: "TextAmt", name: "Balance" }
+                    { type: "TextAmt", name: "Balance" },
+                    { type: "Text", name: "PS_No"}
                 ],
                 //rows_per_page: 10,
-                method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton,
+                method_clickrow: click_Row,
+                afterBind: Init_Shop_PS_Step1,
                 sortable: "N"
             }
         );
@@ -56,8 +57,7 @@
                     { type: "Text", name: "EndDate", style: "" }
                 ],
                 //rows_per_page: 10,
-                method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton,
+                method_clickrow: click_Row,
                 sortable: "N"
             }
         );
@@ -74,8 +74,7 @@
                     { type: "Text", name: "EndDate", style: "" }
                 ],
                 //rows_per_page: 10,
-                method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton,
+                method_clickrow: click_Row,
                 sortable: "N"
             }
         );
@@ -96,7 +95,7 @@
                     { type: "Text", name: "VIPPercent" }
                 ],
                 //rows_per_page: 10,
-                method_clickrow: click_PLU,
+                method_clickrow: click_Row,
                 afterBind: InitModifyDeleteButton_Shop,
                 sortable: "N"
             }
@@ -118,7 +117,7 @@
                     { type: "Text", name: "VIPPercent" }
                 ],
                 //rows_per_page: 10,
-                method_clickrow: click_PLU,
+                method_clickrow: click_Row,
                 afterBind: InitModifyDeleteButton_Area_Step1,
                 sortable: "N"
             }
@@ -140,7 +139,7 @@
                     { type: "Text", name: "VIPPercent" }
                 ],
                 //rows_per_page: 10,
-                method_clickrow: click_PLU,
+                method_clickrow: click_Row,
                 afterBind: InitModifyDeleteButton_Area_Shop_Step2,
                 sortable: "N"
             }
@@ -162,7 +161,7 @@
                     { type: "Text", name: "VIPPercent" }
                 ],
                 //rows_per_page: 10,
-                method_clickrow: click_PLU,
+                method_clickrow: click_Row,
                 afterBind: InitModifyDeleteButton_Area_Date_Step2,
                 sortable: "N"
             }
@@ -184,7 +183,7 @@
                     { type: "Text", name: "VIPPercent" }
                 ],
                 //rows_per_page: 10,
-                method_clickrow: click_PLU,
+                method_clickrow: click_Row,
                 afterBind: InitModifyDeleteButton_Shop_Step1,
                 sortable: "N"
             }
@@ -206,7 +205,7 @@
                     { type: "Text", name: "VIPPercent" }
                 ],
                 //rows_per_page: 10,
-                method_clickrow: click_PLU,
+                method_clickrow: click_Row,
                 afterBind: InitModifyDeleteButton_Date_Step1,
                 sortable: "N"
             }
@@ -228,7 +227,7 @@
                     { type: "Text", name: "VIPPercent" }
                 ],
                 //rows_per_page: 10,
-                method_clickrow: click_PLU,
+                method_clickrow: click_Row,
                 afterBind: InitModifyDeleteButton_Date_Area_Step2,
                 sortable: "N"
             }
@@ -237,11 +236,11 @@
         return;
     };
 
-    let click_PLU = function (tr) {
+    //點ROW時的事件
+    let click_Row = function (tr) {
 
     };
-
-    let InitModifyDeleteButton = function () {
+    let Init_Shop_PS_Step1 = function () {
         $('#tbQuery tbody tr td').click(function () { Step1_click(this) });
         //$('#tbISAM01Mod .fa-trash-o').click(function () { btPLUDelete_click(this) });
     }
@@ -272,26 +271,35 @@
     }
 
     let Step1_click = function (bt) {
-
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         var node = $(grdM.ActiveRowTR()).prop('Record');
+        var rdoAB = $('input[name="TypeCode"]:checked').val();
+        if (rdoAB == "DA") {
+            //$('#modal_PS_Step1').modal('show');
 
-        if ($('#rdoDA').prop('checked')) {
-            $('#lblOpenDate_Area_Step1').html($('#PSDate').val());
-            $('#lblArea_Step1').html(GetNodeValue(node, 'ID1') + " " + GetNodeValue(node, 'Name1'));
-            $('#rdoShop_Area_Step1').prop('checked', true);
-            $('#modal_Area_Step1').modal('show');
+            $('#pgMSSD101Init').hide();
+            if ($('#pgMSSD101_PS_STEP1').attr('hidden') == undefined) {
+                $('#pgMSSD101_PS_STEP1').show();
+            }
+            else {
+                $('#pgMSSD101_PS_STEP1').removeAttr('hidden');
+            }
+            $('#lblActivityCode_Step1').html(GetNodeValue(node, 'ActivityCode'));
+            $('#lblPSDate_Step1').html(GetNodeValue(node, 'PSDate'));
+            $('#lblPSName_Step1').html(GetNodeValue(node, 'PS_Name'));
+            $('#lblPSNO_Step1').html(GetNodeValue(node, 'PS_No'));
+            $('#rdoShop_PS_Step1').prop('checked', true);
             setTimeout(function () {
-                Query_Area_Step1_click();
+                Query_PS_Step1_click();
             }, 500);
         }
-        else if ($('#rdoDB').prop('checked')) {
+        else if (rdoAB == "DB") {
             $('#lblOpenDate_Shop_Step1').html($('#OpenDateS').val() + "~" + $('#OpenDateE').val());
             $('#lblShop_Step1').html(GetNodeValue(node, 'ID1') + " " + GetNodeValue(node, 'Name1'));
             $('#modal_Shop_Step1').modal('show');
             setTimeout(function () {
-                Query_Shop_Step1_click();
+                Query_DM_Step1_click();
             }, 500);
         }
         
@@ -341,9 +349,11 @@
     let btExit_Shop_click = function (bt) {
         $('#modal_Shop').modal('hide');
     };
-
-    let btExit_Area_Step1_click = function (bt) {
-        $('#modal_Area_Step1').modal('hide');
+    //各畫面的回上頁
+    let btExit_PS_Step1_click = function (bt) {
+        //$('#modal_PS_Step1').modal('hide');
+        $('#pgMSSD101Init').show();
+        $('#pgMSSD101_PS_STEP1').hide();
     };
 
     let btExit_Area_Shop_Step2_click = function (bt) {
@@ -1014,6 +1024,7 @@
     };
     //#endregion
 
+    //未使用
     //#region 輸入盤點日期,分區
     let afterSearchBINWeb = function (data) {
         //EditMode = "Q";
@@ -1082,7 +1093,7 @@
         PostToWebApi({ url: "api/SystemSetup/SearchBINWeb", data: pData, success: afterSearchBINWeb });
     };
     //#endregion
-
+    //#region 
     let Query1_click = function () {
         if ($('#OpenDateS').val() == "" | $('#OpenDateS').val() == null) {
             DyAlert("請輸入日期!!", function () { $('#OpenDateS').focus() });
@@ -1217,30 +1228,30 @@
             $('#tbSales1 thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
         }
     };
+    //#endregion
 
-    let Query_Area_Step1_click = function () {
+    let Query_PS_Step1_click = function () {
         ShowLoading();
 
         var Type_Step1 = "";
-        if ($('#rdoShop_Area_Step1').prop('checked')) {
+        if ($('#rdoShop_PS_Step1').prop('checked')) {
             Type_Step1 = "S";
         }
-        else if ($('#rdoDate_Area_Step1').prop('checked')) {
+        else if ($('#rdoDate_PS_Step1').prop('checked')) {
             Type_Step1 = "D";
         }
 
         var pData = {
-            OpenDateS: $('#lblOpenDate_Area_Step1').html().split('~')[0],
-            OpenDateE: $('#lblOpenDate_Area_Step1').html().split('~')[1],
-            Area: $('#lblArea_Step1').html().split(' ')[0],
+            PS_No: $('#lblPSNO_Step1').html(),
+            ActivityCode: $('#lblActivityCode_Step1').html(),
             Type_Step1: Type_Step1
         }
-        PostToWebApi({ url: "api/Query_Area_Step1", data: pData, success: afterQuery_Area_Step1 });
+        PostToWebApi({ url: "api/SystemSetup/MSSD101_Query_PS_Step1", data: pData, success: afterQuery_PS_Step1 });
     };
 
-    let afterQuery_Area_Step1 = function (data) {
+    let afterQuery_PS_Step1 = function (data) {
         CloseLoading();
-        if (ReturnMsg(data, 0) != "Query_Area_Step1OK") {
+        if (ReturnMsg(data, 0) != "Query_PS_Step1OK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
@@ -1248,13 +1259,6 @@
             var dtQ = data.getElementsByTagName('dtQ');
             grdM_Area_Step1.BindData(dtQ);
 
-            var heads = $('#tbSales_Area_Step1 thead tr th#thtype');
-            if ($('#rdoShop_Area_Step1').prop('checked')) {
-                $(heads).text('店');
-            }
-            else if ($('#rdoDate_Area_Step1').prop('checked')) {
-                $(heads).text('日');
-            }
 
             if (dtQ.length == 0) {
                 DyAlert("無符合資料!");
@@ -1262,14 +1266,14 @@
                 return;
             }
 
-            var dtSumQ = data.getElementsByTagName('dtSumQ');
-            $('#tbSales_Area_Step1 thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
-            $('#tbSales_Area_Step1 thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Area_Step1 thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Area_Step1 thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
-            $('#tbSales_Area_Step1 thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Area_Step1 thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Area_Step1 thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
+            //var dtSumQ = data.getElementsByTagName('dtSumQ');
+            //$('#tboShop_PS_Step1 thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
+            //$('#tboShop_PS_Step1 thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
+            //$('#tboShop_PS_Step1 thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
+            //$('#tbSales_Area_Step1 thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
+            //$('#tbSales_Area_Step1 thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
+            //$('#tbSales_Area_Step1 thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
+            //$('#tbSales_Area_Step1 thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
 
         }
     };
@@ -1354,7 +1358,7 @@
         }
     };
 
-    let Query_Shop_Step1_click = function () {
+    let Query_DM_Step1_click = function () {
         ShowLoading();
         var pData = {
             OpenDateS: $('#lblOpenDate_Shop_Step1').html().split('~')[0],
@@ -1485,6 +1489,9 @@
         //Timerset();
         $('#txtActivityCode').val('');
         $('#txtPSName').val('');
+        $('#txtPSDate').val('');
+        $('#txtDocNO').val('');
+        $('#txtEDMMemo').val('');
         $('#txtEDDate').val('');
     };
 
@@ -1498,9 +1505,23 @@
             PSDate: $('#txtPSDate').val().toString().replaceAll('-', '/'),
             DocNO: $('#txtDocNO').val(),
             EDMMemo: $('#txtEDMMemo').val(),
-            EDDate: $('#txtEDDate').val().toString().replaceAll('-', '/')
+            EDDate: $('#txtEDDate').val().toString().replaceAll('-', '/'),
+            OptAB: $('input[name="TypeCode"]:checked').val()   //群組rdo
         }
-        PostToWebApi({ url: "api/SystemSetup/MSSD101Query", data: pData, success: afterMSSD101Query });
+        var rdoAB = $('input[name="TypeCode"]:checked').val();
+        if (rdoAB == "DB") {
+            $('table tr th:contains("活動代號 ")').text('DM單號 ');   //空一格是避免抓到相同名稱
+            $('table tr th:contains("活動名稱 ")').text('DM名稱 ');   
+            $('table tr th:contains("活動期間 ")').text('DM期間 ');
+        }
+        else if(rdoAB == "DA")
+        {
+            $('table tr th:contains("DM單號 ")').text('活動代號 ');
+            $('table tr th:contains("DM名稱 ")').text('活動名稱 ');
+            $('table tr th:contains("DM期間 ")').text('活動期間 ');
+        }
+
+         PostToWebApi({ url: "api/SystemSetup/MSSD101Query", data: pData, success: afterMSSD101Query });
     };
 
     let afterMSSD101Query = function (data) {
@@ -1670,7 +1691,7 @@
             AssignVar();
             //查詢
             $('#btQuery').click(function () { btQuery_click(this) });
-            //$('#btClear').click(function () { btClear_click(this) });
+            $('#btClear').click(function () { btClear_click(this) });
 
             //開啟活動代碼介面
             $('#btActivityCode').click(function () { btActivityCode_click(this) });
@@ -1690,6 +1711,7 @@
             //DM代碼介面離開鍵
             $('#btLpExit_DocNO').click(function () { btLpExit_DocNO_click(this) });
 
+            $('#btExit_PS_Step1').click(function () { btExit_PS_Step1_click(this) });
             return;
 
 
@@ -1700,7 +1722,6 @@
 
             //$('#btExit_Shop').click(function () { btExit_Shop_click(this) });
 
-            //$('#btExit_Area_Step1').click(function () { btExit_Area_Step1_click(this) });
             //$('#rdoShop_Area_Step1').change(function () { Query_Area_Step1_click(this) });
             //$('#rdoDate_Area_Step1').change(function () { Query_Area_Step1_click(this) });
 
@@ -1731,7 +1752,7 @@
 
 
     if ($('#pgMSSD101').length == 0) {
-        AllPages = new LoadAllPages(ParentNode, "SystemSetup/MSSD101", ["MSSD101btns", "pgMSSD101Init", "pgMSSD101Add", "pgMSSD101Mod"], afterLoadPage);
+        AllPages = new LoadAllPages(ParentNode, "SystemSetup/MSSD101", ["pgMSSD101Init", "pgMSSD101_PS_STEP1", "pgMSSD101Mod"], afterLoadPage);
     };
 
 
