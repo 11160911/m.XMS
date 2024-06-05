@@ -233,28 +233,31 @@
                                         <label id="lblDocNo_SendSet" class="DyForm3-LabelBlack" style="margin-left:5px"></label>
                                         <label id="lblEDMMemo_SendSet" class="DyForm3-LabelRed" style="margin-left:5px"></label>
                                         <label id="lblEDDate_SendSet" class="DyForm3-LabelBlack" style="margin-left:5px"></label>
-                                        <button class="DyForm3-BtnAdd"  id="btDMDe_SendSet" type="button" style="width: 90px;color:black; background-color: #FFCD2F; margin-left: 30px " hidden>
+                                        <button class="DyForm3-BtnAdd" id="btDMDe_SendSet" type="button" style="width: 90px;color:black; background-color: #FFCD2F; margin-left: 30px " hidden>
                                             DM明細
                                         </button>
-                                        <button class="DyForm3-BtnQuery"  id="btDMSend_SendSet" type="button" style="width: 90px;position: absolute; right: 180px">
+                                        <button class="DyForm3-BtnQuery" id="btDMSend_SendSet" type="button" style="width: 90px;position: absolute; right: 180px">
                                             發送EDM
                                         </button>
                                         <button id="btRe_SendSet" type="button" class="DyForm3-BtnRe" style="position: absolute; right: 60px">回上頁</button>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%;margin-left: 12px;margin-top:30px ">
+                                    <div class="form-group row" style="width: 100%;margin-left: 12px;margin-top:30px;margin-bottom:0px ">
                                         <label class="DyForm3-ProgramName">會員條件篩選</label>
-                                        <button class="DyForm3-BtnClear" id="btClear_SendSet" type="button" style="margin-left: 70px">
+                                    </div>
+
+                                    <div class="form-group row" style="width: 100%;margin-left: 12px ">
+                                        <button class="DyForm3-BtnClear" id="btClear_SendSet" type="button">
                                             清除
                                             <i class="fa fa-close"></i>
                                         </button>
-                                        <button class="DyForm3-BtnQuery" id="btQuery_SendSet" type="button" style="margin-left: 140px">
+                                        <button class="DyForm3-BtnQuery" id="btQuery_SendSet" type="button" style="margin-left: 350px">
                                             查詢
                                             <i class="fa fa-search"></i>
                                         </button>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%;margin-left: 12px ">
+                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-top: 30px ">
                                         <button class="DyForm3-BtnShop" id="btVIPFaceID_SendSet" type="button">會籍店櫃</button>
                                         <label class="DyForm3-LabelRed" id="lblVIPFaceIDCnt_SendSet" style=" margin-left: 10px; margin-top: 5px"></label>
                                         <label class="DyForm3-Label" id="lblVIPFaceIDName_SendSet" style=" margin-left: 10px; margin-top: 5px"></label>
@@ -262,11 +265,11 @@
 
                                     <div class="form-group row" style="width: 100%;margin-left: 12px ">
                                         <mark class="DyForm3-DyNotEmptyMark" style="margin-top: 5px">*</mark>
-                                        <label class="DyForm3-LabelBlack" style="margin-top:5px">會員卡別</label>
-                                        <input id="chk0_SendSet" type="checkbox" style="height: 30px; margin-left: 10px" checked><label class="DyForm3-LabelBlack" for="chk0_SendSet" style="margin-top:5px;margin-left:5px">一般</label>
-                                        <input id="chk1_SendSet" type="checkbox" style="height:30px;margin-left:5px" checked><label class="DyForm3-LabelBlack" for="chk1_SendSet" style="margin-top: 5px; margin-left: 5px">會員</label>
-                                        <input id="chk2_SendSet" type="checkbox" style="height:30px;margin-left:5px" checked><label class="DyForm3-LabelBlack" for="chk2_SendSet" style="margin-top: 5px; margin-left: 5px">貴賓</label>
-                                        <input id="chk3_SendSet" type="checkbox" style="height:30px;margin-left:5px"><label class="DyForm3-LabelBlack" for="chk3_SendSet" style="margin-top: 5px; margin-left: 5px">白金卡</label>
+                                        <label class="DyForm3-Label" style="margin-top:5px">會員卡別</label>
+                                        <input id="chk0_SendSet" type="checkbox" style="height: 30px; margin-left: 10px" checked><label class="DyForm3-LabelBlack" for="chk0_SendSet" style="margin-top:5px;margin-left:10px">一般</label>
+                                        <input id="chk1_SendSet" type="checkbox" style="height:30px;margin-left:10px" checked><label class="DyForm3-LabelBlack" for="chk1_SendSet" style="margin-top: 5px; margin-left: 10px">會員</label>
+                                        <input id="chk2_SendSet" type="checkbox" style="height:30px;margin-left:10px" checked><label class="DyForm3-LabelBlack" for="chk2_SendSet" style="margin-top: 5px; margin-left: 10px">貴賓</label>
+                                        <input id="chk3_SendSet" type="checkbox" style="height:30px;margin-left:10px"><label class="DyForm3-LabelBlack" for="chk3_SendSet" style="margin-top: 5px; margin-left: 10px">白金卡</label>
                                     </div>
 
                                     <div class="card-block forminput">
@@ -333,7 +336,10 @@
                                 <div class="modal-body modal-tab-container" style="padding:8px">
                                     <div class="form-group row" style="width: 100%;margin-left: 5px;margin-top:5px ">
                                         <label class="DyForm3-ProgramName">DM選取</label>
-                                        <button class="DyForm3-BtnQuery" id="btOK_DMSel" type="button" style="position: absolute; right: 130px">
+                                    </div>
+
+                                    <div class="form-group row" style="width: 100%;margin-top:5px ">
+                                        <button class="DyForm3-BtnQuery" id="btOK_DMSel" type="button" style="position: absolute; right: 410px">
                                             確定
                                         </button>
                                         <button id="btRe_DMSel" type="button" class="DyForm3-BtnRe" style="position: absolute; right: 20px">回上頁</button>
@@ -342,7 +348,7 @@
 
                                     <div class="card-block forminput">
                                         <div class="x_content">
-                                            <div style="overflow: auto; height: 500px;">
+                                            <div style="overflow: auto; height: 500px;margin-top:25px">
                                                 <table id="tbDMSel" class="table table-bordered" style="width:100%">
                                                     <thead>
                                                         <tr>
