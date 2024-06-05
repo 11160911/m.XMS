@@ -835,6 +835,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
     //查詢
     let btQuery_click = function (bt) {
         //Timerset();
+        $('#btQuery').prop('disabled', true)
         ShowLoading();
         var pData = {
             EVNO: $('#txtEVNO').val(),
@@ -848,10 +849,15 @@ Timerset(sessionStorage.getItem('isamcomp'));
     let afterMSVP102Query = function (data) {
         CloseLoading();
         if (ReturnMsg(data, 0) != "MSVP102QueryOK") {
-            DyAlert(ReturnMsg(data, 1));
+            DyAlert(ReturnMsg(data, 1), function () { $('#btQuery').prop('disabled', false); });
         }
         else {
+            $('#btQuery').prop('disabled', false);
             var dtE = data.getElementsByTagName('dtE');
+            if (dtE.length == 0) {
+                DyAlert("無符合資料!");
+                return;
+            }
             grdM.BindData(dtE);
         }
     };

@@ -1055,12 +1055,12 @@
     let btPSNO_EDM_click = function (bt) {
         //Timerset();
         if ($('#txtStartDate_EDM').val() == "" | $('#txtEndDate_EDM').val() == "") {
-            DyAlert("入會期間兩欄皆需輸入!")
+            DyAlert("DM期間兩欄皆需輸入!")
             return;
         }
         else {
             if ($('#txtStartDate_EDM').val() > $('#txtEndDate_EDM').val()) {
-                DyAlert("入會開始日不可大於結束日!")
+                DyAlert("DM開始日不可大於結束日!")
                 return;
             }
         }

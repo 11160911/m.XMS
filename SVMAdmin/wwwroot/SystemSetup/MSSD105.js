@@ -1351,12 +1351,13 @@ Timerset(sessionStorage.getItem('isamcomp'));
     //查詢
     let btQuery_click = function (bt) {
         //Timerset();
+        $('#btQuery').prop('disabled', true)
         if ($('#txtYM').val() == "") {
-            DyAlert("請輸入年月!")
+            DyAlert("請輸入年月!", function () { $('#btQuery').prop('disabled', false); })
             return
         }
         if ($('#rdoShop').prop('checked') == false && $('#rdoDate').prop('checked') == false) {
-            DyAlert("統計條件請至少選擇一個項目!")
+            DyAlert("統計條件請至少選擇一個項目!", function () { $('#btQuery').prop('disabled', false); })
             return
         }
 
@@ -1382,9 +1383,10 @@ Timerset(sessionStorage.getItem('isamcomp'));
     let afterMSSD105Query = function (data) {
         CloseLoading();
         if (ReturnMsg(data, 0) != "MSSD105QueryOK") {
-            DyAlert(ReturnMsg(data, 1));
+            DyAlert(ReturnMsg(data, 1), function () { $('#btQuery').prop('disabled', false); });
         }
         else {
+            $('#btQuery').prop('disabled', false);
             var dtE = data.getElementsByTagName('dtE');
             grdM.BindData(dtE);
 
@@ -1566,10 +1568,76 @@ Timerset(sessionStorage.getItem('isamcomp'));
 
     let btRe_Shop1_click = function (bt) {
         $('#modal_Shop1').modal('hide');
+        setTimeout(function () {
+            ClearShop1();
+        }, 500);
+    };
+
+    let ClearShop1 = function () {
+        var pData = {
+        }
+        PostToWebApi({ url: "api/SystemSetup/MSSD105Clear_Step1", data: pData, success: afterMSSD105Clear_Shop1 });
+    };
+
+    let afterMSSD105Clear_Shop1 = function (data) {
+        if (ReturnMsg(data, 0) != "MSSD105Clear_Step1OK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtE = data.getElementsByTagName('dtE');
+            grdShop1.BindData(dtE);
+
+            $(".modal-backdrop").remove();
+            $('#tbShop1 thead td#td1_Shop1').html('');
+            $('#tbShop1 thead td#td2_Shop1').html('');
+            $('#tbShop1 thead td#td3_Shop1').html('');
+            $('#tbShop1 thead td#td4_Shop1').html('');
+            $('#tbShop1 thead td#td5_Shop1').html('');
+            $('#tbShop1 thead td#td6_Shop1').html('');
+            $('#tbShop1 thead td#td7_Shop1').html('');
+            $('#tbShop1 thead td#td8_Shop1').html('');
+            $('#tbShop1 thead td#td9_Shop1').html('');
+            $('#tbShop1 thead td#td10_Shop1').html('');
+            $('#tbShop1 thead td#td11_Shop1').html('');
+            $('#tbShop1 thead td#td12_Shop1').html('');
+        }
     };
 
     let btRe_Date1_click = function (bt) {
         $('#modal_Date1').modal('hide');
+        setTimeout(function () {
+            ClearDate1();
+        }, 500);
+    };
+
+    let ClearDate1 = function () {
+        var pData = {
+        }
+        PostToWebApi({ url: "api/SystemSetup/MSSD105Clear_Step1", data: pData, success: afterMSSD105Clear_Date1 });
+    };
+
+    let afterMSSD105Clear_Date1 = function (data) {
+        if (ReturnMsg(data, 0) != "MSSD105Clear_Step1OK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtE = data.getElementsByTagName('dtE');
+            grdDate1.BindData(dtE);
+
+            $(".modal-backdrop").remove();
+            $('#tbDate1 thead td#td1_Date1').html('');
+            $('#tbDate1 thead td#td2_Date1').html('');
+            $('#tbDate1 thead td#td3_Date1').html('');
+            $('#tbDate1 thead td#td4_Date1').html('');
+            $('#tbDate1 thead td#td5_Date1').html('');
+            $('#tbDate1 thead td#td6_Date1').html('');
+            $('#tbDate1 thead td#td7_Date1').html('');
+            $('#tbDate1 thead td#td8_Date1').html('');
+            $('#tbDate1 thead td#td9_Date1').html('');
+            $('#tbDate1 thead td#td10_Date1').html('');
+            $('#tbDate1 thead td#td11_Date1').html('');
+            $('#tbDate1 thead td#td12_Date1').html('');
+        }
     };
 
 //#region FormLoad

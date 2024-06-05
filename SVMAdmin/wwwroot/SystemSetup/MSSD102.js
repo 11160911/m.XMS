@@ -331,30 +331,6 @@
         $('#modal_Shop').modal('hide');
     };
 
-    let btExit_Area_Step1_click = function (bt) {
-        $('#modal_Area_Step1').modal('hide');
-    };
-
-    let btExit_Area_Shop_Step2_click = function (bt) {
-        $('#modal_Area_Shop_Step2').modal('hide');
-    };
-
-    let btExit_Area_Date_Step2_click = function (bt) {
-        $('#modal_Area_Date_Step2').modal('hide');
-    };
-
-    let btExit_Shop_Step1_click = function (bt) {
-        $('#modal_Shop_Step1').modal('hide');
-    };
-
-    let btExit_Date_Step1_click = function (bt) {
-        $('#modal_Date_Step1').modal('hide');
-    };
-
-    let btExit_Date_Area_Step2_click = function (bt) {
-        $('#modal_Date_Area_Step2').modal('hide');
-    };
-
     let ChkLogOut_1 = function (AfterChkLogOut_1) {
         var LoginDT = sessionStorage.getItem('LoginDT');
         var cData = {
@@ -1480,6 +1456,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
     //查詢
     let btQuery_click = function (bt) {
         //Timerset();
+        $('#btQuery').prop('disabled', true)
         ShowLoading();
         var pData = {
             ActivityCode: $('#txtActivityCode').val(),
@@ -1492,13 +1469,13 @@ Timerset(sessionStorage.getItem('isamcomp'));
     let afterMSSD102Query = function (data) {
         CloseLoading();
         if (ReturnMsg(data, 0) != "MSSD102QueryOK") {
-            DyAlert(ReturnMsg(data, 1));
+            DyAlert(ReturnMsg(data, 1), function () { $('#btQuery').prop('disabled', false); });
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
             grdM.BindData(dtE);
             if (dtE.length == 0) {
-                DyAlert("無符合資料!");
+                DyAlert("無符合資料!", function () { $('#btQuery').prop('disabled', false); });
                 $(".modal-backdrop").remove();
                 return;
             }
@@ -1524,12 +1501,14 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#modal_Lookup_ActivityCode').modal('show');
             setTimeout(function () {
                 grdLookUp_ActivityCode.BindData(dtE);
+                $('#tbDataLookup_ActivityCode tbody tr .tdCol2').filter(function () { return $(this).text() == $('#txtActivityCode').val(); }).closest('tr').find('.tdCol1 input:radio').prop('checked', true);
             }, 500);
         }
     };
 
     let btQLookup_ActivityCode_click = function (bt) {
         //Timerset();
+        $('#btQLookup_ActivityCode').prop('disabled', true)
         var pData = {
             ActivityCode: $('#txtQLookup_ActivityCode').val()
         }
@@ -1538,31 +1517,48 @@ Timerset(sessionStorage.getItem('isamcomp'));
 
     let afterMSSD102_QLookUpActivityCode = function (data) {
         if (ReturnMsg(data, 0) != "MSSD102_LookUpActivityCodeOK") {
-            DyAlert(ReturnMsg(data, 1));
+            $('#modal_Lookup_ActivityCode').modal('hide');
+            DyAlert(ReturnMsg(data, 1), function () {
+                $('#btQLookup_ActivityCode').prop('disabled', false);
+                $('#modal_Lookup_ActivityCode').modal('show');
+            });
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
             if (dtE.length == 0) {
-                DyAlert("無符合資料!");
+                $('#modal_Lookup_ActivityCode').modal('hide');
+                DyAlert("無符合資料!", function () {
+                    $('#btQLookup_ActivityCode').prop('disabled', false);
+                    $('#modal_Lookup_ActivityCode').modal('show');
+                });
                 $(".modal-backdrop").remove();
                 return;
             }
-            grdLookUp_ActivityCode.BindData(dtE);
+            setTimeout(function () {
+                grdLookUp_ActivityCode.BindData(dtE);
+                $('#btQLookup_ActivityCode').prop('disabled', false);
+            }, 500);
         }
     };
 
     let btLpOK_ActivityCode_click = function (bt) {
         //Timerset();
+        $('#btLpOK_ActivityCode').prop('disabled', true);
         var obchkedtd = $('#tbDataLookup_ActivityCode input[type="radio"]:checked');
         var chkedRow = obchkedtd.length.toString();
 
         if (chkedRow == 0) {
-            DyAlert("未選取活動代號，請重新確認!");
+            $('#modal_Lookup_ActivityCode').modal('hide');
+            DyAlert("未選取活動代號，請重新確認!", function () {
+                $('#btLpOK_ActivityCode').prop('disabled', false);
+                $('#modal_Lookup_ActivityCode').modal('show');
+            });
         }
         else {
             var a = $(obchkedtd[0]).closest('tr');
             var trNode = $(a).prop('Record');
             $('#txtActivityCode').val(GetNodeValue(trNode, "ActivityCode"))
+            $('#btLpOK_ActivityCode').prop('disabled', false);
             $('#modal_Lookup_ActivityCode').modal('hide')
         }
     };
@@ -1589,34 +1585,6 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#btQLookup_ActivityCode').click(function () { btQLookup_ActivityCode_click(this) });
             $('#btLpOK_ActivityCode').click(function () { btLpOK_ActivityCode_click(this) });
             $('#btLpExit_ActivityCode').click(function () { btLpExit_ActivityCode_click(this) });
-           return;
-
-
-           /////////////////////////////
-           
-
-           $('#Query1').click(function () { Query1_click(this) });
-
-           $('#btExit_Shop').click(function () { btExit_Shop_click(this) });
-
-           $('#btExit_Area_Step1').click(function () { btExit_Area_Step1_click(this) });
-           $('#rdoShop_Area_Step1').change(function () { Query_Area_Step1_click(this) });
-           $('#rdoDate_Area_Step1').change(function () { Query_Area_Step1_click(this) });
-
-           $('#btExit_Area_Shop_Step2').click(function () { btExit_Area_Shop_Step2_click(this) });
-
-           $('#btExit_Area_Date_Step2').click(function () { btExit_Area_Date_Step2_click(this) });
-
-           $('#btExit_Shop_Step1').click(function () { btExit_Shop_Step1_click(this) });
-
-           $('#btExit_Date_Step1').click(function () { btExit_Date_Step1_click(this) });
-           $('#rdoArea_Date_Step1').change(function () { Query_Date_Step1_click(this) });
-           $('#rdoShop_Date_Step1').change(function () { Query_Date_Step1_click(this) });
-
-           $('#btExit_Date_Area_Step2').click(function () { btExit_Date_Area_Step2_click(this) });
-
-           var dtQ = data.getElementsByTagName('dtQ');
-           grdM.BindData(dtQ);
         }
     };
     

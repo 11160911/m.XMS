@@ -8379,8 +8379,19 @@ namespace SVMAdmin.Controllers
                 string EDDate = rq["EDDate"];
 
                 string sql = "";
-                sql = "Select a.PS_NO,a.ActivityCode,a.PS_Name,a.StartDate + ' ~ ' + a.EndDate EDDate,isnull(c.Cnt1,0)Cnt1,isnull(d.Cnt2,0)Cnt2 ";
+                sql = "Select a.PS_NO,a.ActivityCode,a.PS_Name,a.StartDate + ' ~ ' + a.EndDate EDDate, ";
+                sql += "isnull(b.Cnt1,0)Cnt1,isnull(c.Cnt2,0)Cnt2, ";
                 sql += "From PromoteSCouponHWeb a (nolock) ";
+                //發出張數
+                sql += "inner join (Select PS_NO,Count(*)Cnt1 From SetEDMVIP_VIPWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by PS_NO)b on a.PS_NO=b.PS_NO ";
+                //回收張數
+                sql += "inner join (Select c1.PS_NO,Count(*)Cnt2 From SetEDMVIP_VIPWeb c1 (nolock) ";
+                sql += "inner join PromoteSLogCardNoWeb c2 (nolock) on c1.CouponID=c2.CouponNo and c2.Companycode=c1.Companycode Where c1.Companycode='" + uu.CompanyId + "' ";
+                sql += "group by c1.PS_NO)c on a.PS_NO=c.PS_NO ";
+
+
+
+
                 sql += "inner join (Select PS_NO From SetEDMHWeb (nolock) Where EDMType='V' and isnull(ApproveDate,'')<>'' and Companycode='" + uu.CompanyId + "' ";
                 //入會日期
                 if (EDDate.SqlQuote() != "")
@@ -8388,12 +8399,7 @@ namespace SVMAdmin.Controllers
                     sql += "and '" + EDDate.SqlQuote() + "' between StartDate and EndDate ";
                 }
                 sql += "group by PS_NO)b on a.PS_NO=b.PS_NO ";
-                //發出張數
-                sql += "inner join (Select PS_NO,Count(*)Cnt1 From SetEDMVIP_VIPWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by PS_NO)c on a.PS_NO=c.PS_NO ";
-                //回收張數
-                sql += "inner join (Select d1.PS_NO,Count(*)Cnt2 From SetEDMVIP_VIPWeb d1 (nolock)  ";
-                sql += "inner join PromoteSLogCardNoWeb d2 (nolock) on d1.CouponID=d2.CouponNo and d2.Companycode=d1.Companycode Where d1.Companycode='" + uu.CompanyId + "' ";
-                sql += "group by d1.PS_NO)d on a.PS_NO=d.PS_NO ";
+                
 
                 sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                 //活動代號
@@ -8889,6 +8895,39 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+
+        [Route("SystemSetup/MSSD105Clear_Step1")]
+        public ActionResult SystemSetup_MSSD105Clear_Step1()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSD105Clear_Step1OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string sql = "";
+
+                sql = "Select '' as ID,'' as VIPCnt, ";
+                sql += "'' as SalesCnt1,'' as SalesCash1,'' as SalesPrice1, ";
+                sql += "'' as SalesCnt2,'' as SalesCash2,'' as SalesPrice2, ";
+                sql += "'' as SalesPercent2, ";
+                sql += "'' as SalesCnt3,'' as SalesCash3,'' as SalesPrice3, ";
+                sql += "'' as SalesPercent3 ";
+
+                sql += "From SalesHWeb (nolock) ";
+                sql += "Where 1=2 ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
 
         [Route("SystemSetup/MSDMLookUpActivityCode")]
         public ActionResult SystemSetup_MSDMLookUpActivityCode()
