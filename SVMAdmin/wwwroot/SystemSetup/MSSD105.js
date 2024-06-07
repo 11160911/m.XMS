@@ -18,7 +18,7 @@
         grdM = new DynGrid(
             {
                 table_lement: $('#tbQuery')[0],
-                class_collection: ["tdCol1", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9 label-align", "tdCol10 label-align", "tdCol11 label-align", "tdCol12 label-align", "tdCol13 label-align"],
+                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9 text-center", "tdCol10 label-align", "tdCol11 label-align", "tdCol12 label-align", "tdCol13 text-center"],
                 fields_info: [
                     { type: "Text", name: "ID", style: "" },
                     { type: "TextAmt", name: "VIPCnt"},
@@ -44,7 +44,7 @@
         grdShop1 = new DynGrid(
             {
                 table_lement: $('#tbShop1')[0],
-                class_collection: ["tdCol1", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9 label-align", "tdCol10 label-align", "tdCol11 label-align", "tdCol12 label-align", "tdCol13 label-align"],
+                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9 text-center", "tdCol10 label-align", "tdCol11 label-align", "tdCol12 label-align", "tdCol13 text-center"],
                 fields_info: [
                     { type: "Text", name: "ID", style: "" },
                     { type: "TextAmt", name: "VIPCnt" },
@@ -70,7 +70,7 @@
         grdDate1 = new DynGrid(
             {
                 table_lement: $('#tbDate1')[0],
-                class_collection: ["tdCol1", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9 label-align", "tdCol10 label-align", "tdCol11 label-align", "tdCol12 label-align", "tdCol13 label-align"],
+                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9 text-center", "tdCol10 label-align", "tdCol11 label-align", "tdCol12 label-align", "tdCol13 text-center"],
                 fields_info: [
                     { type: "Text", name: "ID", style: "" },
                     { type: "TextAmt", name: "VIPCnt" },
@@ -1390,7 +1390,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
             var dtE = data.getElementsByTagName('dtE');
             grdM.BindData(dtE);
 
-            var heads = $('#tbQuery thead tr td#tdflag');
+            var heads = $('#tbQuery thead tr th#tdflag');
             if ($('#rdoShop').prop('checked')) {
                 $(heads).html('店別');
             }
@@ -1440,7 +1440,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         var node = $(grdM.ActiveRowTR()).prop('Record');
-        var heads = $('#tbQuery thead tr td#tdflag');
+        var heads = $('#tbQuery thead tr th#tdflag');
 
         if ($(heads).html() == "店別") {
             $('#lblYM_Shop1').html($('#txtYM').val().toString().replaceAll('-', '/'));

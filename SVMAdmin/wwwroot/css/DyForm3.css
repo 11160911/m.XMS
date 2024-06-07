@@ -154,3 +154,12 @@
         outline-style: solid;
         box-shadow: 0 0 0 3px #DEEBF7;
     }
+
+/*點擊欄位標題可進行排序*/
+.DyForm3-LabelSort {
+    font-size: 16px;
+    color: red;
+    font-weight: bold;
+    position: absolute;
+    right: 30px
+}
