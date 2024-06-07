@@ -1064,7 +1064,7 @@
         $('#txtEDMMemo').val('');
         $('#txtShopNo').val('');
         $('#chkNoDef').prop('checked', true);
-        $('#chkDef').prop('checked', true);
+        $('#chkDef').prop('checked', false);
         $('#txtEDDate').val('');
     };
 

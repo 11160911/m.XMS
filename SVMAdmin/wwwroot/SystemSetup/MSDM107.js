@@ -897,7 +897,7 @@
         $('#chkApp').prop('checked', true);
         $('#txtEDMMemo').val('');
         $('#chkNoDef').prop('checked', true);
-        $('#chkDef').prop('checked', true);
+        $('#chkDef').prop('checked', false);
         $('#txtEDDate').val('');
     };
 
