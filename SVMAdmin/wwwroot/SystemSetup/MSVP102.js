@@ -30,7 +30,7 @@
                 rows_per_page: 50,
                 method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
-                sortable: "N"
+                sortable: "Y"
             }
         );
 
