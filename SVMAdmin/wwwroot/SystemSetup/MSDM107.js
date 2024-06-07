@@ -229,7 +229,7 @@
                 else if (cs_EditMode == "M") {
                     DocNo = $('#lblDocNo_EDM').html();
                 }
-                GetImage_EDM("P2_EDM", DocNo, "P2");
+                GetImage_EDM("P2_EDM", DocNo, "P2", "N");
             }
             $('#modal-media').prop("UploadFileType", UploadFileType);
         }
@@ -246,12 +246,12 @@
         $('#' + elmImg).prop('src', url);
     }
 
-    let GetImage_EDM = function (elmImg, picDocNo, picDataType) {
+    let GetImage_EDM = function (elmImg, picDocNo, picDataType, picFlag) {
         if (picDocNo == "") {
             $('#' + elmImg).prop('src', "");
             return;
         }
-        var url = "api/GetImage_EDM?DocNo=" + picDocNo + "&DataType=" + picDataType + "&UU=" + encodeURIComponent(UU);
+        var url = "api/GetImage_EDM?DocNo=" + picDocNo + "&DataType=" + picDataType + "&Flag=" + picFlag + "&UU=" + encodeURIComponent(UU);
         url += "&Ver=" + encodeURIComponent(new Date().toLocaleTimeString());
         $('#' + elmImg).prop('src', url);
     }
@@ -490,14 +490,14 @@
         $('#lblPSName_EDM').html(GetNodeValue(dtH[0], "PS_Name"));
         for (var i = 0; i < dtH.length; i++) {
             if (GetNodeValue(dtH[i], "DataType") == "P1") {
-                GetImage_EDM("P1_EDM", GetNodeValue(dtH[i], "DocNo"), GetNodeValue(dtH[i], "DataType"));
+                GetImage_EDM("P1_EDM", GetNodeValue(dtH[i], "DocNo"), GetNodeValue(dtH[i], "DataType"), "Y");
                 //$('#lblCompanyLogo').html(GetNodeValue(dtH[i], "TXT"))
             }
             else if (GetNodeValue(dtH[i], "DataType") == "T1") {
                 window.t1.setData(GetNodeValue(dtH[i], "TXT"));
             }
             else if (GetNodeValue(dtH[i], "DataType") == "P2") {
-                GetImage_EDM("P2_EDM", GetNodeValue(dtH[i], "DocNo"), GetNodeValue(dtH[i], "DataType"));
+                GetImage_EDM("P2_EDM", GetNodeValue(dtH[i], "DocNo"), GetNodeValue(dtH[i], "DataType"), "Y");
             }
             else if (GetNodeValue(dtH[i], "DataType") == "T2") {
                 window.t2.setData(GetNodeValue(dtH[i], "TXT"));
@@ -578,11 +578,11 @@
         var pData = {
             DocNo: $('#lblDocNo_EDM').html()
         }
-        PostToWebApi({ url: "api/SystemSetup/MSDMQuery_EDM", data: pData, success: afterMSDM107Cancel_EDM });
+        PostToWebApi({ url: "api/SystemSetup/MSDM107Cancel_EDM", data: pData, success: afterMSDM107Cancel_EDM });
     };
 
     let afterMSDM107Cancel_EDM = function (data) {
-        if (ReturnMsg(data, 0) != "MSDMQuery_EDMOK") {
+        if (ReturnMsg(data, 0) != "MSDM107Cancel_EDMOK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
@@ -853,7 +853,7 @@
 
             for (var i = 0; i < dtE.length; i++) {
                 if (GetNodeValue(dtE[i], "DataType") == "P1") {
-                    GetImage_EDM("P1_ShowEDM", GetNodeValue(dtE[i], "DocNo"), GetNodeValue(dtE[i], "DataType"));
+                    GetImage_EDM("P1_ShowEDM", GetNodeValue(dtE[i], "DocNo"), GetNodeValue(dtE[i], "DataType"), "Y");
                 }
                 else if (GetNodeValue(dtE[i], "DataType") == "T1") {
                     var p = document.createElement('p')
@@ -862,7 +862,7 @@
                     T1.appendChild(p);
                 }
                 else if (GetNodeValue(dtE[i], "DataType") == "P2") {
-                    GetImage_EDM("P2_ShowEDM", GetNodeValue(dtE[i], "DocNo"), GetNodeValue(dtE[i], "DataType"));
+                    GetImage_EDM("P2_ShowEDM", GetNodeValue(dtE[i], "DocNo"), GetNodeValue(dtE[i], "DataType"), "Y");
                 }
                 else if (GetNodeValue(dtE[i], "DataType") == "T2") {
                     var p = document.createElement('p')

@@ -23,18 +23,19 @@
         grdM = new DynGrid(
             {
                 table_lement: $('#tbQuery')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9 label-align", "tdCol10 label-align"],
+                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5 label-align", "tdCol6 label-align", "tdCol7", "tdCol8 label-align", "tdCol9 label-align", "tdCol10 label-align", "tdCol11 label-align"],
                 fields_info: [
-                    { type: "Text", name: "ID1", style: "" },
-                    { type: "Text", name: "Name1" },
-                    { type: "Text", name: "Name1" },
-                    { type: "TextAmt", name: "Cash1"},
+                    { type: "Text", name: "PS_NO", style: "" },
+                    { type: "Text", name: "ActivityCode" },
+                    { type: "Text", name: "PS_Name" },
+                    { type: "Text", name: "EDDate"},
                     { type: "TextAmt", name: "Cnt1"},
-                    { type: "TextAmt", name: "CashCnt1"},
-                    { type: "TextAmt", name: "Cash2"},
                     { type: "TextAmt", name: "Cnt2"},
-                    { type: "TextAmt", name: "CashCnt2"},
-                    { type: "TextAmt", name: "VIPPercent"}
+                    { type: "Text", name: "CntPercent"},
+                    { type: "TextAmt", name: "ActualDiscount"},
+                    { type: "TextAmt", name: "Cnt3"},
+                    { type: "TextAmt", name: "Cash" },
+                    { type: "TextAmt", name: "SalesPrice" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -1472,10 +1473,11 @@ Timerset(sessionStorage.getItem('isamcomp'));
             DyAlert(ReturnMsg(data, 1), function () { $('#btQuery').prop('disabled', false); });
         }
         else {
+            $('#btQuery').prop('disabled', false);
             var dtE = data.getElementsByTagName('dtE');
             grdM.BindData(dtE);
             if (dtE.length == 0) {
-                DyAlert("無符合資料!", function () { $('#btQuery').prop('disabled', false); });
+                DyAlert("無符合資料!");
                 $(".modal-backdrop").remove();
                 return;
             }
