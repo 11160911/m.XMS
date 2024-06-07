@@ -208,7 +208,7 @@
                                                     <th>銷售業績</th>
                                                     <th>來客數</th>
                                                     <th>客單價</th>
-                                                    <th style="display:none" >單號</th>
+                                                    <th style="display:none">單號</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -427,6 +427,152 @@
 
                                                 </table>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="modal_PS_Step1" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content" style="left:-200px;width:1500px;height:800px; background-image: url(images /Web底圖-地球-2.png); background-size: contain ">
+                                <style>
+                                    #tbShop_PS_Step1 thead tr th, #tbShop_PS_Step1_2 thead tr th {
+                                        font-size: 14px;
+                                        padding: 3px;
+                                        background-color: #ffdb00;
+                                        font-weight: bold;
+                                    }
+
+                                    #tbShop_PS_Step1 thead tr td, #tbShop_PS_Step1_2 thead tr td {
+                                        font-size: 14px;
+                                        padding: 3px;
+                                        background-color: #ffdb00;
+                                        font-weight: bold;
+                                    }
+
+                                    #tbShop_PS_Step1 tbody tr td, #tbShop_PS_Step1_2 tbody tr td {
+                                        font-size: 12px;
+                                        padding: 3px;
+                                    }
+                                </style>
+
+                                <div class="form-group row" style="margin-left: 5px; width: 100%">
+                                    <label id="lblProgramName" class="DyForm3-ProgramName">折價券回收分析</label>
+                                </div>
+
+                                <div class="form-group row" style="width: 100%;margin-left:5px ">
+                                    <label style="margin-top:5px;color:black">活動代號：</label>
+                                    <label id="lblActivityCode_Step1" style="font-size: 16px;color:red;margin-top:5px "></label>
+                                    <label style="margin-top: 5px; color: black; margin-left: 30px ">活動期間：</label>
+                                    <label id="lblPSDate_Step1" style="font-size: 16px;color:red;margin-top:5px "></label>
+                                    <button id="btExit_PS_Step1" type="button" class="" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 5px;margin-left:50px ">回上頁</button>
+                                </div>
+                                <div class="form-group row" style="width: 100%;margin-left:5px ">
+                                    <label style="margin-top:5px;color:black">活動名稱：</label>
+                                    <label id="lblPSName_Step1" style="font-size: 16px;color:red;margin-top:5px "></label>
+                                    <label id="lblPSNO_Step1" hidden></label>
+                                </div>
+                                <div class="form-group row" style="width: 100%;margin-left: 5px ">
+                                    <input id="rdoShop_PS_Step1" type="radio" name="Step1" value="Shop" style="vertical-align: middle; margin-top: 2px; width: 20px; height: 20px; list-style: none; text-align: left; " checked>
+                                    <label for="Shop" style="color: black; vertical-align: middle; margin-top: 2px; list-style: none; text-align: left; ">&ensp;店別</label>
+
+                                    <input id="rdoDate_PS_Step1" type="radio" name="Step1" value="Date" style="vertical-align: middle; margin-top: 2px; width: 20px; height: 20px; list-style: none; text-align: left; margin-left:8px ">
+                                    <label for="Date" style="color: black; vertical-align: middle; margin-top: 2px; list-style: none; text-align: left; ">&ensp;銷售日期</label>
+                                </div>
+
+
+                                <div class="card-block forminput">
+                                    <div class="x_content">
+                                        <div style="overflow: auto; height: 550px;">
+                                            <table id="tbShop_PS_Step1" class="table table-bordered" style="width:100%">
+                                                <thead>
+                                                    <!--分類-->
+                                                    <tr>
+                                                        <td class="text-center" colspan="1" rowspan="2" id="Shop" style="padding: 20px 0;width:170px;">店別</td>
+                                                        <td class="text-center" colspan="7" rowspan="1" id="Coupon">折價券分析</td>
+                                                        <td class="text-center" colspan="3" rowspan="1">總業績分析</td>
+                                                    </tr>
+                                                    <!--標題 <th style="display:none"></th>-->
+                                                    <tr>
+
+                                                        <th class="text-center" id="td1H">發出張數</th">
+                                                        <th class="text-center">回收張數</th>
+                                                        <th class="text-center">回收率</th>
+                                                        <th class="text-center">折抵金額</th>
+                                                        <th class="text-center">銷售業績</th>
+                                                        <th class="text-center">來客數</th>
+                                                        <th class="text-center">客單價</th>
+                                                        <th class="text-center">總銷售業績</th>
+                                                        <th class="text-center">總來客數</th>
+                                                        <th class="text-center">總客單價</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="text-center">總計</th>
+                                                        <td id="td1" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td2" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td3" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td4" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td5" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td6" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td7" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td8" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td9" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td10" colspan="1" style="text-align: right; "></td>
+                                                    </tr>
+
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr>
+                                                    </tr>
+                                                </tbody>
+
+                                            </table>
+                                            <table id="tbShop_PS_Step1_2" class="table table-bordered" style="width:100%" hidden>
+                                                <thead>
+                                                    <!--分類-->
+                                                    <tr>
+                                                        <td class="text-center" colspan="1" rowspan="2" id="Shop" style="padding: 20px 0;width:170px;">日期</td>
+                                                        <td class="text-center" colspan="6" rowspan="1" id="Coupon">折價券分析</td>
+                                                        <td class="text-center" colspan="3" rowspan="1">總業績分析</td>
+                                                    </tr>
+                                                    <!--標題 <th style="display:none"></th>-->
+                                                    <tr>
+
+                                                        <th class="text-center">回收張數</th>
+                                                        <th class="text-center">回收率</th>
+                                                        <th class="text-center">折抵金額</th>
+                                                        <th class="text-center">銷售業績</th>
+                                                        <th class="text-center">來客數</th>
+                                                        <th class="text-center">客單價</th>
+                                                        <th class="text-center">總銷售業績</th>
+                                                        <th class="text-center">總來客數</th>
+                                                        <th class="text-center">總客單價</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="text-center">總計</th>
+                                                        <td id="td1" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td2" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td3" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td4" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td5" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td6" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td7" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td8" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td9" colspan="1" style="text-align: right; "></td>
+                                                    </tr>
+
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr>
+                                                    </tr>
+                                                </tbody>
+
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
