@@ -9665,7 +9665,7 @@ namespace SVMAdmin.Controllers
                 string sql = "";
                 //if (OptAB == "DA")  //活動
                 //{
-                    sql = "select a.ActivityCode,a.PS_Name,a.StartDate + ' ~ ' + a.EndDate PSDate,d.SendCnt,b.BackCnt,format(convert(numeric(10,1),b.BackCnt)/d.SendCnt,'p') BackPer,b.Discount,c.Cash,c.SalesCnt,c.Balance,a.PS_NO ";
+                    sql = "select a.ActivityCode,a.PS_Name,a.StartDate + ' ~ ' + a.EndDate PSDate,d.SendCnt,b.BackCnt,format(convert(numeric(10,1),b.BackCnt)/d.SendCnt,'0.0%') BackPer,b.Discount,c.Cash,c.SalesCnt,c.Balance,a.PS_NO ";
                     sql += "from PromoteSCouponHWeb a(nolock) ";
                     sql += "join (Select CompanyCode,PS_NO From SetEDMHWeb (nolock) Where EDMType='V' and isnull(ApproveDate,'')<>''  ";
                     //if (DocNO.SqlQuote() != "")     //DM單號
@@ -9740,7 +9740,7 @@ namespace SVMAdmin.Controllers
                 //    }
                 //    sql += "group by h.CompanyCode ,e.EDM_DocNO,h.PCHDocNO) d on a.CompanyCode=d.CompanyCode and a.DocNO=d.EDM_DocNO and a.PS_NO=d.PCHDocNO ";
 
-                //    sql += "Where a.Companycode='" + uu.CompanyId + "' and EDMType='V' and isnull(ApproveDate,'')<>'' ";
+                //    sql += "Where a.Companycode='" + uu.CompanyId + "' and EDMType='E' and isnull(ApproveDate,'')<>'' ";
                 //    if (DocNO.SqlQuote() != "")     //DM單號
                 //    {
                 //        sql += "and DocNO like '%" + DocNO.SqlQuote() + "%' ";
@@ -9767,7 +9767,73 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+        [Route("SystemSetup/MSSD101_LookUpActivityCode")]
+        public ActionResult SystemSetup_MSSD101_LookUpActivityCode()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSD101_LookUpActivityCodeOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ActivityCode = rq["ActivityCode"];
 
+                string sql = "";
+                sql = "Select a.ActivityCode,a.PS_Name,a.StartDate,a.EndDate ";
+                sql += "From PromoteSCouponHWeb a (nolock) ";
+                sql += "inner join SetEDMHWeb b (nolock) on a.PS_NO=b.PS_NO and b.EDMType='E' and isnull(b.ApproveDate,'')<>'' and b.Companycode=a.Companycode ";
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                if (ActivityCode.SqlQuote() != "")
+                {
+                    sql += "and a.ActivityCode like '" + ActivityCode.SqlQuote() + "%' ";
+                }
+                sql += "group by a.ActivityCode,a.PS_Name,a.StartDate,a.EndDate ";
+                sql += "Order By a.StartDate desc ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSSD101_LookUpDocNO")]
+        public ActionResult SystemSetup_MSSD101_LookUpDocNO()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSD101_LookUpDocNOOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string DocNO = rq["DocNO"];
+
+                string sql = "";
+                sql = "Select a.DocNo,a.EDMMemo,a.StartDate,a.EndDate ";
+                sql += "From SetEDMHWeb a (nolock) ";
+                sql += " Where a.Companycode='" + uu.CompanyId + "' and a.EDMType='E' and isnull(a.ApproveDate,'')<>''  ";
+                if (DocNO.SqlQuote() != "")
+                {
+                    sql += "and a.DocNo like '" + DocNO.SqlQuote() + "%' ";
+                }
+                sql += "group by a.DocNo,a.EDMMemo,a.StartDate,a.EndDate ";
+                sql += "Order By a.StartDate desc ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+        #endregion
         [Route("SystemSetup/MSVP102_GetVIPFaceID")]
         public ActionResult SystemSetup_MSVP102_GetVIPFaceID()
         {
@@ -9975,7 +10041,7 @@ namespace SVMAdmin.Controllers
                 sql += "from PromoteSCouponHWeb (nolock) h join PromoteSLogHWeb a on  h.Companycode=a.CompanyCode and h.PS_No=a.PCHDocNO ";
                 sql += "where  h.Companycode='" + uu.CompanyId + "' and h.PS_NO='" + PS_NO + "';";
                 if (Type_Step1 == "S")  //店
-                    sql += "select h.PS_NO, SendCnt, c.BackCnt, format(convert(numeric(10,1), c.BackCnt)/SendCnt,'p') BackPer,c.discount,tc.cash,tc.cnt,convert(int,tc.cash)/tc.cnt VIPPer ";
+                    sql += "select h.PS_NO, SendCnt, c.BackCnt, format(convert(numeric(10,1), c.BackCnt)/SendCnt,'0.0%') BackPer,c.discount,tc.cash,tc.cnt,convert(int,tc.cash)/tc.cnt VIPPer ";
                 else
                     sql += "select h.PS_NO, c.BackCnt, c.discount,tc.cash,tc.cnt,convert(int,tc.cash)/tc.cnt VIPPer ";
 
@@ -10005,7 +10071,7 @@ namespace SVMAdmin.Controllers
                 if (Type_Step1 == "S")  //店明細
                 {
                     sql = "select w.CompanyCode, ST_ID +' '+ ST_Sname ShopNO,isnull(SendCnt,0) SendCnt,";
-                    sql += "isnull(BackCnt,0) BackCnt,isnull(format(convert(numeric(10,1),BackCnt)/SendCnt,'p'),0) BackPer,isnull(Discount,0) Discount";
+                    sql += "isnull(BackCnt,0) BackCnt,isnull(format(convert(numeric(10,1),BackCnt)/SendCnt,'0.0%'),0) BackPer,isnull(Discount,0) Discount";
                     sql += ",isnull(Cash,0) Cash,isnull(VIPCNT,0) VIPCNT,isnull(convert(int,Cash)/VIPCNT,0) VIPPer";
                     sql += ",isnull(SalesCash,0) SalesCash,isnull(SalesCNT,0) SalesCNT,isnull(convert(int,SalesCash)/convert(int,SalesCNT),0) SalesPer ";
                     sql += "from WarehouseWeb w ";
@@ -10036,7 +10102,12 @@ namespace SVMAdmin.Controllers
                 }
                 else if (Type_Step1 == "D") //日期明細
                 {
-                    sql = "WITH dates ([Date]) AS ( SELECT convert(DATE, '" + SDate + "') AS [Date]  UNION ALL  SELECT dateadd(day, 1, [Date])  FROM dates  WHERE [Date] < convert(nvarchar(10),dateadd(DAY,-1,getdate()),111) ) ";
+                    sql = "WITH dates ([Date]) AS ( SELECT convert(DATE, '" + SDate + "') AS [Date]  UNION ALL  SELECT dateadd(day, 1, [Date])  FROM dates  WHERE [Date] < ";
+                    if (Convert.ToDateTime(EDate) >= DateTime.Now)  //結束日大於今日,只取到昨天
+                        sql += "convert(nvarchar(10),dateadd(DAY,-1,getdate()),111)";
+                    else
+                        sql += "'" + EDate + "'";
+                    sql +=  " ) ";
                     sql += "SELECT e.PS_No,convert(nvarchar(10),[date],111)  AS [SalesDate] into #PSDate FROM dates d CROSS JOIN PromoteSCouponHWeb e ";
                     sql += "where e.Companycode='" + uu.CompanyId + "' and PS_NO='" + PS_NO + "' ORDER BY PS_No, [date] OPTION (MAXRECURSION 32767)  ;";
 

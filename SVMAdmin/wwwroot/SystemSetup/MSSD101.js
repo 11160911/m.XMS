@@ -114,10 +114,10 @@
                     { type: "TextAmt", name: "Discount" },
                     { type: "TextAmt", name: "Cash" },
                     { type: "TextAmt", name: "VIPCNT" },
-                    { type: "Text", name: "VIPPer" },
+                    { type: "TextAmt", name: "VIPPer" },
                     { type: "TextAmt", name: "SalesCash" },
                     { type: "TextAmt", name: "SalesCNT" },
-                    { type: "Text", name: "SalesPer" }
+                    { type: "TextAmt", name: "SalesPer" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_Row,

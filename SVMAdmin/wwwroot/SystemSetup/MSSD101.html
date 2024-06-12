@@ -125,22 +125,23 @@
                                 }
 
                                 #tbQuery thead tr th {
-                                    font-size: 14px;
+                                    font-size: 16px;
                                     padding: 3px;
-                                    background-color: #ffdb00;
+                                    background-color: #ffb620;
                                     font-weight: bold;
                                 }
 
                                 #tbQuery thead tr td {
-                                    font-size: 14px;
+                                    font-size: 16px;
                                     padding: 3px;
-                                    background-color: #ffdb00;
+                                    background-color: #ffb620;
                                     font-weight: bold;
                                 }
 
                                 #tbQuery tbody tr td {
-                                    font-size: 12px;
+                                    font-size: 14px;
                                     padding: 3px;
+                                    font-weight: bold;
                                 }
                             </style>
 
@@ -149,65 +150,67 @@
                             </div>
 
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%">
-                                <label class="DyForm3-Label">活動代號</label>
-                                <input id="txtActivityCode" class="DyForm3-TextBox" type="text" maxlength="20" />
-                                <button id="btActivityCode" class="DyForm3-BtnLookUp" type="button">
-                                    <i class="fa fa-ellipsis-h"></i>
-                                </button>
-                                <!--<label class="DyForm3-Label" style="margin-left:25px">DM單號</label>
-                                <input id="txtDocNO" class="DyForm3-TextBox" type="text" maxlength="20" />
-                                <button id="btDocNO" class="DyForm3-BtnLookUp" type="button">
-                                    <i class="fa fa-ellipsis-h"></i>
-                                </button>-->
-
-
-                                <button class="DyForm3-BtnClear" id="btClear" type="button" style="margin-left: 120px;" ">
+                            <div class="form-group row" style="margin-left: 20px; width: 100%">
+                                <button class="DyForm3-BtnClear" id="btClear" type="button">
                                     清除
                                     <i class="fa fa-close"></i>
                                 </button>
-                                <button class="DyForm3-BtnQuery" id="btQuery" type="button" style="margin-left: 10px;">
+                                <button class="DyForm3-BtnQuery" id="btQuery" type="button" style="margin-left: 500px;">
                                     查詢
                                     <i class="fa fa-search"></i>
                                 </button>
                             </div>
+
+                            <div class="form-group row" style="margin-left: 12px; width: 100%">
+                                <label class="DyForm3-Label">活動代號</label>
+                                <input id="txtActivityCode" class="DyForm3-TextBox" style="margin-left: 15px" type="text" maxlength="20" />
+                                <button id="btActivityCode" class="DyForm3-BtnLookUp" type="button">
+                                    <i class="fa fa-ellipsis-h"></i>
+                                </button>
+                                <!--<label class="DyForm3-Label" style="margin-left:25px">DM單號</label>
+        <input id="txtDocNO" class="DyForm3-TextBox" type="text" maxlength="20" />
+        <button id="btDocNO" class="DyForm3-BtnLookUp" type="button">
+            <i class="fa fa-ellipsis-h"></i>
+        </button>-->
+
+                            </div>
                             <div class="form-group row" style="margin-left: 12px; width: 100%">
                                 <label class="DyForm3-Label">活動名稱</label>
-                                <input class="DyForm3-TextBox" id="txtPSName" type="text" maxlength="50" />
+                                <input class="DyForm3-TextBox" id="txtPSName" style="margin-left: 15px; width: 460px" type="text" maxlength="50" />
                                 <!--<label class="DyForm3-Label" style="margin-left:58px">DM主旨</label>
-                                <input class="DyForm3-TextBox" id="txtEDMMemo" type="text" maxlength="50" />-->
+        <input class="DyForm3-TextBox" id="txtEDMMemo" type="text" maxlength="50" />-->
                             </div>
 
                             <div class="form-group row" style="margin-left: 12px; width: 100%">
                                 <label class="DyForm3-Label">活動日期</label>
-                                <input class="DyForm3-TextBox" id="txtPSDate" type="date" />
+                                <input class="DyForm3-TextBox" id="txtPSDate" style="margin-left: 15px" type="date" />
                                 <!--<label class="DyForm3-Label" style="margin-left:58px">DM日期</label>
-                                <input class="DyForm3-TextBox" id="txtEDDate" type="date" />-->
+        <input class="DyForm3-TextBox" id="txtEDDate" type="date" />-->
                             </div>
 
                             <!--<div>
-                                <input type="radio" id="DA" name="TypeCode" value="DA" checked style="margin-left:25px">
-                                <label for="DA" class="DyForm3-Label">活動代號</label>
-                                <input type="radio" id="DB" name="TypeCode" value="DB" style="margin-left:25px">
-                                <label for="DB" class="DyForm3-Label">DM單號</label>
-                            </div>-->
+        <input type="radio" id="DA" name="TypeCode" value="DA" checked style="margin-left:25px">
+        <label for="DA" class="DyForm3-Label">活動代號</label>
+        <input type="radio" id="DB" name="TypeCode" value="DB" style="margin-left:25px">
+        <label for="DB" class="DyForm3-Label">DM單號</label>
+    </div>-->
 
                             <div class="card-block forminput">
                                 <div class="x_content">
-                                    <div style="overflow: auto; height: 350px;">
+                                    <div style="overflow: auto; height: 600px;">
                                         <table id="tbQuery" class="table table-bordered" style="width:100%">
                                             <thead>
                                                 <tr>
                                                     <th class="text-center">活動代號 </th>
                                                     <th class="text-center">活動名稱 </th>
                                                     <th class="text-center">活動期間 </th>
-                                                    <th>發出張數</th>
-                                                    <th>回收張數</th>
-                                                    <th>回收率%</th>
-                                                    <th>折抵金額</th>
-                                                    <th>銷售業績</th>
-                                                    <th>來客數</th>
-                                                    <th>客單價</th>
+                                                    <th class="text-center">發出張數</th>
+                                                    <th class="text-center">回收張數</th>
+                                                    <th class="text-center">回收率%</th>
+                                                    <th class="text-center">折抵金額</th>
+                                                    <th class="text-center">銷售業績</th>
+                                                    <th class="text-center">來客數</th>
+                                                    <th class="text-center">客單價</th>
                                                     <th style="display:none">單號</th>
                                                 </tr>
                                             </thead>
@@ -440,22 +443,23 @@
                             <div class="modal-content" style="left:-200px;width:1500px;height:800px; background-image: url(images /Web底圖-地球-2.png); background-size: contain ">
                                 <style>
                                     #tbShop_PS_Step1 thead tr th, #tbShop_PS_Step1_2 thead tr th {
-                                        font-size: 14px;
+                                        font-size: 16px;
                                         padding: 3px;
-                                        background-color: #ffdb00;
+                                        background-color: #ffb620;
                                         font-weight: bold;
                                     }
 
                                     #tbShop_PS_Step1 thead tr td, #tbShop_PS_Step1_2 thead tr td {
-                                        font-size: 14px;
+                                        font-size: 16px;
                                         padding: 3px;
-                                        background-color: #ffdb00;
+                                        background-color: #ffb620;
                                         font-weight: bold;
                                     }
 
                                     #tbShop_PS_Step1 tbody tr td, #tbShop_PS_Step1_2 tbody tr td {
-                                        font-size: 12px;
+                                        font-size: 14px;
                                         padding: 3px;
+                                        font-weight: bold;
                                     }
                                 </style>
 
@@ -463,24 +467,27 @@
                                     <label id="lblProgramName" class="DyForm3-ProgramName">折價券回收分析</label>
                                 </div>
 
+                                <div class="form-group row" style="width: 100%">
+                                    <button id="btExit_PS_Step1" type="button" class="DyForm3-BtnRe" style="position: absolute; right: 60px">回上頁</button>
+                                </div>
+
                                 <div class="form-group row" style="width: 100%;margin-left:5px ">
-                                    <label style="margin-top:5px;color:black">活動代號：</label>
-                                    <label id="lblActivityCode_Step1" style="font-size: 16px;color:red;margin-top:5px "></label>
-                                    <label style="margin-top: 5px; color: black; margin-left: 30px ">活動期間：</label>
-                                    <label id="lblPSDate_Step1" style="font-size: 16px;color:red;margin-top:5px "></label>
-                                    <button id="btExit_PS_Step1" type="button" class="" style="border-width: 2PX; border-color: transparent; border-radius: 8PX; background-color: red; color: white; width: 55px; height: 25px; font-size: 12PX; margin-top: 5px;margin-left:50px ">回上頁</button>
+                                    <label class="DyForm3-Label">活動代號：</label>
+                                    <label id="lblActivityCode_Step1" class="DyForm3-LabelBlack" style="margin-top: 3px"></label>
+                                    <label class="DyForm3-Label">活動期間：</label>
+                                    <label id="lblPSDate_Step1" class="DyForm3-LabelBlack" style="margin-top:3px "></label>
                                 </div>
                                 <div class="form-group row" style="width: 100%;margin-left:5px ">
-                                    <label style="margin-top:5px;color:black">活動名稱：</label>
-                                    <label id="lblPSName_Step1" style="font-size: 16px;color:red;margin-top:5px "></label>
+                                    <label class="DyForm3-Label">活動名稱：</label>
+                                    <label id="lblPSName_Step1" class="DyForm3-LabelRed" style="margin-top:3px "></label>
                                     <label id="lblPSNO_Step1" hidden></label>
                                 </div>
                                 <div class="form-group row" style="width: 100%;margin-left: 5px ">
-                                    <input id="rdoShop_PS_Step1" type="radio" name="Step1" value="Shop" style="vertical-align: middle; margin-top: 2px; width: 20px; height: 20px; list-style: none; text-align: left; " checked>
-                                    <label for="Shop" style="color: black; vertical-align: middle; margin-top: 2px; list-style: none; text-align: left; ">&ensp;店別</label>
-
-                                    <input id="rdoDate_PS_Step1" type="radio" name="Step1" value="Date" style="vertical-align: middle; margin-top: 2px; width: 20px; height: 20px; list-style: none; text-align: left; margin-left:8px ">
-                                    <label for="Date" style="color: black; vertical-align: middle; margin-top: 2px; list-style: none; text-align: left; ">&ensp;銷售日期</label>
+                                    <input id="rdoShop_PS_Step1" type="radio" name="Step1" value="Shop" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left; " checked>
+                                    <label class="DyForm3-LabelBlack" for="Shop" style="margin-top: 2px;">&ensp;店別</label>
+                                    <input id="rdoDate_PS_Step1" type="radio" name="Step1" value="Date" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left;  ">
+                                    <label class="DyForm3-LabelBlack" for="Date" style=" margin-top: 2px;">&ensp;銷售日期</label>
+                                    <label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>
                                 </div>
 
 
