@@ -42,7 +42,7 @@
                 //rows_per_page: 10,
                 method_clickrow: click_Row,
                 afterBind: Init_Shop_PS_Step1,
-                sortable: "N"
+                sortable: "Y"
             }
         );
 

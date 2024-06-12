@@ -18,11 +18,12 @@
         grdM = new DynGrid(
             {
                 table_lement: $('#tbQuery')[0],
-                class_collection: ["tdCol1", "tdCol2 label-align", "tdCol3", "tdCol4", "tdCol5", "tdCol6"],
+                class_collection: ["tdCol1", "tdCol2 label-align", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7"],
                 fields_info: [
                     { type: "Text", name: "EVNO", style: "" },
                     { type: "TextAmt", name: "Cnt"},
-                    { type: "Text", name: "StartDate"},
+                    { type: "Text", name: "ApproveDate" },
+                    { type: "Text", name: "TOMailDate" },
                     { type: "Text", name: "EDM_DocNo"},
                     { type: "Text", name: "EDMMemo"},
                     { type: "Text", name: "EDDate"}
