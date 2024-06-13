@@ -10280,7 +10280,7 @@ namespace SVMAdmin.Controllers
                 dtHeadCoupon.TableName = "dtHeadCoupon";
                 ds.Tables.Add(dtHeadCoupon);
                 //總計-銷售
-                sql = "select sum(cash) SalesCash,sum(RecS) SalesCNT,convert(int,sum(cash)/sum(RecS)) SalesPer from SalesHWeb(nolock) ";
+                sql = "select isnull(sum(cash),0) SalesCash,isnull(sum(RecS),0) SalesCNT,isnull(convert(int,sum(cash)/sum(RecS)),0) SalesPer from SalesHWeb(nolock) ";
                 sql += " where Companycode='" + uu.CompanyId + "' and OpenDate between '" + SDate + "' and '" + EDate + "'";
                 if (AllShop == false)
                 {
@@ -10292,7 +10292,7 @@ namespace SVMAdmin.Controllers
 
                 if (Type_Step1 == "S")  //店明細
                 {
-                    sql = "select w.CompanyCode, ST_ID +' '+ ST_Sname ShopNO,isnull(SendCnt,0) SendCnt,";
+                    sql = "select w.CompanyCode, ST_ID +'-'+ ST_Sname ShopNO,isnull(SendCnt,0) SendCnt,";
                     sql += "isnull(BackCnt,0) BackCnt,isnull(format(convert(numeric(10,1),BackCnt)/SendCnt,'0.0%'),0) BackPer,isnull(Discount,0) Discount";
                     sql += ",isnull(Cash,0) Cash,isnull(VIPCNT,0) VIPCNT,isnull(convert(int,Cash)/VIPCNT,0) VIPPer";
                     sql += ",isnull(SalesCash,0) SalesCash,isnull(SalesCNT,0) SalesCNT,isnull(convert(int,SalesCash)/convert(int,SalesCNT),0) SalesPer ";
@@ -10334,7 +10334,7 @@ namespace SVMAdmin.Controllers
                     sql += "where e.Companycode='" + uu.CompanyId + "' and PS_NO='" + PS_NO + "' ORDER BY PS_No, [date] OPTION (MAXRECURSION 32767)  ;";
 
                     sql += "select  e.Salesdate  ShopNO, isnull(BackCnt,0) BackCnt,isnull(Discount,0) Discount,isnull(Cash,0) Cash,isnull(VIPCNT,0) VIPCNT";
-                    sql += ",isnull(convert(int,Cash)/VIPCNT,0) VIPPer, SalesCash, SalesCNT,convert(int,SalesCash)/convert(int,SalesCNT) SalesPer ";
+                    sql += ",isnull(convert(int,Cash)/VIPCNT,0) VIPPer,isnull(SalesCash,0) SalesCash,isnull(SalesCNT,0) SalesCNT,isnull(convert(int,SalesCash)/convert(int,SalesCNT),0) SalesPer ";
                     sql += "from #PSDate e ";
                     sql += "left join (select ph.PCHDocNO,ph.SalesDate,count(CouponNo) BackCnt,sum(ActualDiscount) Discount  from PromoteSLogCardNoWeb PC(nolock) ";
                     sql += "join PromoteSLogHWeb PH(nolock) on pc.CompanyCode=ph.CompanyCode and pc.ShopNO=ph.ShopNO and pc.DocNo=ph.DocNo ";

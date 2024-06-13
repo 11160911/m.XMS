@@ -295,10 +295,13 @@
     }
 
     let Step1_click = function (bt) {
+        $('#tbQuery td').closest('tr').css('background-color', 'white');
+
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         var node = $(grdM.ActiveRowTR()).prop('Record');
-        //var rdoAB = $('input[name="TypeCode"]:checked').val();
+        $('#tbQuery td:contains(' + GetNodeValue(node, 'PS_NO') + ')').closest('tr').css('background-color', '#DEEBF7');
+      //var rdoAB = $('input[name="TypeCode"]:checked').val();
         //if (rdoAB == "DA") {
 
             //$('#pgMSSD101Init').hide();
@@ -1317,18 +1320,18 @@
             // }
             if ($('#rdoShop_PS_Step1').prop('checked')) {
                 var dtHeadCoupon = data.getElementsByTagName('dtHeadCoupon');
-                $('#tbShop_PS_Step1 thead td#td1').html(parseInt(GetNodeValue(dtHeadCoupon[0], "SendCnt")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1 thead td#td2').html(parseInt(GetNodeValue(dtHeadCoupon[0], "BackCnt")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1 thead td#td3').html(GetNodeValue(dtHeadCoupon[0], "BackPer").toLocaleString('en-US'));
-                $('#tbShop_PS_Step1 thead td#td4').html(parseInt(GetNodeValue(dtHeadCoupon[0], "discount")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1 thead td#td5').html(parseInt(GetNodeValue(dtHeadCoupon[0], "cash")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1 thead td#td6').html(parseInt(GetNodeValue(dtHeadCoupon[0], "cnt")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1 thead td#td7').html(parseInt(GetNodeValue(dtHeadCoupon[0], "VIPPer")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1 thead th#td1').html(parseInt(GetNodeValue(dtHeadCoupon[0], "SendCnt")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1 thead th#td2').html(parseInt(GetNodeValue(dtHeadCoupon[0], "BackCnt")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1 thead th#td3').html(GetNodeValue(dtHeadCoupon[0], "BackPer").toLocaleString('en-US'));
+                $('#tbShop_PS_Step1 thead th#td4').html(parseInt(GetNodeValue(dtHeadCoupon[0], "discount")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1 thead th#td5').html(parseInt(GetNodeValue(dtHeadCoupon[0], "cash")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1 thead th#td6').html(parseInt(GetNodeValue(dtHeadCoupon[0], "cnt")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1 thead th#td7').html(parseInt(GetNodeValue(dtHeadCoupon[0], "VIPPer")).toLocaleString('en-US'));
 
                 var dtHeadSales = data.getElementsByTagName('dtHeadSales');
-                $('#tbShop_PS_Step1 thead td#td8').html(parseInt(GetNodeValue(dtHeadSales[0], "SalesCash")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1 thead td#td9').html(parseInt(GetNodeValue(dtHeadSales[0], "SalesCNT")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1 thead td#td10').html(parseInt(GetNodeValue(dtHeadSales[0], "SalesPer")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1 thead th#td8').html(parseInt(GetNodeValue(dtHeadSales[0], "SalesCash")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1 thead th#td9').html(parseInt(GetNodeValue(dtHeadSales[0], "SalesCNT")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1 thead th#td10').html(parseInt(GetNodeValue(dtHeadSales[0], "SalesPer")).toLocaleString('en-US'));
 
                 $('#tbShop_PS_Step1').show();
                 $('.tdCol1').show();
@@ -1356,16 +1359,16 @@
                 }
 
                 var dtHeadCoupon = data.getElementsByTagName('dtHeadCoupon');
-                $('#tbShop_PS_Step1_2 thead td#td1').html(parseInt(GetNodeValue(dtHeadCoupon[0], "BackCnt")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1_2 thead td#td2').html(parseInt(GetNodeValue(dtHeadCoupon[0], "discount")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1_2 thead td#td3').html(parseInt(GetNodeValue(dtHeadCoupon[0], "cash")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1_2 thead td#td4').html(parseInt(GetNodeValue(dtHeadCoupon[0], "cnt")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1_2 thead td#td5').html(parseInt(GetNodeValue(dtHeadCoupon[0], "VIPPer")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1_2 thead th#td1').html(parseInt(GetNodeValue(dtHeadCoupon[0], "BackCnt")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1_2 thead th#td2').html(parseInt(GetNodeValue(dtHeadCoupon[0], "discount")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1_2 thead th#td3').html(parseInt(GetNodeValue(dtHeadCoupon[0], "cash")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1_2 thead th#td4').html(parseInt(GetNodeValue(dtHeadCoupon[0], "cnt")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1_2 thead th#td5').html(parseInt(GetNodeValue(dtHeadCoupon[0], "VIPPer")).toLocaleString('en-US'));
 
                 var dtHeadSales = data.getElementsByTagName('dtHeadSales');
-                $('#tbShop_PS_Step1_2 thead td#td6').html(parseInt(GetNodeValue(dtHeadSales[0], "SalesCash")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1_2 thead td#td7').html(parseInt(GetNodeValue(dtHeadSales[0], "SalesCNT")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1_2 thead td#td8').html(parseInt(GetNodeValue(dtHeadSales[0], "SalesPer")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1_2 thead th#td6').html(parseInt(GetNodeValue(dtHeadSales[0], "SalesCash")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1_2 thead th#td7').html(parseInt(GetNodeValue(dtHeadSales[0], "SalesCNT")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1_2 thead th#td8').html(parseInt(GetNodeValue(dtHeadSales[0], "SalesPer")).toLocaleString('en-US'));
 
                 $('.tdCol1').show();
                 $('.tdCol2').show();
