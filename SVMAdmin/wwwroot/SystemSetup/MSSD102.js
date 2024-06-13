@@ -25,7 +25,7 @@
         grdM = new DynGrid(
             {
                 table_lement: $('#tbQuery')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 text-center", "tdCol8 label-align", "tdCol9 label-align", "tdCol10 label-align", "tdCol11 label-align"],
+                class_collection: ["tdCol1", "tdCol2 text-center", "tdCol3", "tdCol4 text-center", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 text-center", "tdCol8 label-align", "tdCol9 label-align", "tdCol10 label-align", "tdCol11 label-align"],
                 fields_info: [
                     { type: "Text", name: "PS_NO", style: "" },
                     { type: "Text", name: "ActivityCode" },
@@ -325,11 +325,18 @@
             Flag = "S";
             $('#tbShopNo_PSNO').show();
             $('#tbDate_PSNO').hide();
+
         }
         else if ($('#rdoDate_PSNO').prop('checked') == true) {
             Flag = "D";
             $('#tbShopNo_PSNO').hide();
-            $('#tbDate_PSNO').show();
+            if ($('#tbDate_PSNO').attr('hidden') == undefined) {
+                $('#tbDate_PSNO').show();
+            }
+            else {
+                $('#tbDate_PSNO').removeAttr('hidden');
+                $('#tbDate_PSNO').show();
+            }
         }
 
         var OpenDate1 = $('#lblEDDate_PSNO').html().split('~')[0]

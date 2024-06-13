@@ -168,33 +168,33 @@
                                     <i class="fa fa-ellipsis-h"></i>
                                 </button>
                                 <!--<label class="DyForm3-Label" style="margin-left:25px">DM單號</label>
-        <input id="txtDocNO" class="DyForm3-TextBox" type="text" maxlength="20" />
-        <button id="btDocNO" class="DyForm3-BtnLookUp" type="button">
-            <i class="fa fa-ellipsis-h"></i>
-        </button>-->
+                                <input id="txtDocNO" class="DyForm3-TextBox" type="text" maxlength="20" />
+                                <button id="btDocNO" class="DyForm3-BtnLookUp" type="button">
+                                    <i class="fa fa-ellipsis-h"></i>
+                                </button>-->
 
                             </div>
                             <div class="form-group row" style="margin-left: 12px; width: 100%">
                                 <label class="DyForm3-Label">活動名稱</label>
                                 <input class="DyForm3-TextBox" id="txtPSName" style="margin-left: 15px; width: 460px" type="text" maxlength="50" />
                                 <!--<label class="DyForm3-Label" style="margin-left:58px">DM主旨</label>
-        <input class="DyForm3-TextBox" id="txtEDMMemo" type="text" maxlength="50" />-->
+                                <input class="DyForm3-TextBox" id="txtEDMMemo" type="text" maxlength="50" />-->
                             </div>
 
                             <div class="form-group row" style="margin-left: 12px; width: 100%">
                                 <label class="DyForm3-Label">活動日期</label>
                                 <input class="DyForm3-TextBox" id="txtPSDate" style="margin-left: 15px" type="date" />
                                 <!--<label class="DyForm3-Label" style="margin-left:58px">DM日期</label>
-    <input class="DyForm3-TextBox" id="txtEDDate" type="date" />-->
+                                <input class="DyForm3-TextBox" id="txtEDDate" type="date" />-->
                                 <label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>
                             </div>
 
                             <!--<div>
-        <input type="radio" id="DA" name="TypeCode" value="DA" checked style="margin-left:25px">
-        <label for="DA" class="DyForm3-Label">活動代號</label>
-        <input type="radio" id="DB" name="TypeCode" value="DB" style="margin-left:25px">
-        <label for="DB" class="DyForm3-Label">DM單號</label>
-    </div>-->
+                                <input type="radio" id="DA" name="TypeCode" value="DA" checked style="margin-left:25px">
+                                <label for="DA" class="DyForm3-Label">活動代號</label>
+                                <input type="radio" id="DB" name="TypeCode" value="DB" style="margin-left:25px">
+                                <label for="DB" class="DyForm3-Label">DM單號</label>
+                            </div>-->
 
                             <div class="card-block forminput">
                                 <div class="x_content">
@@ -449,6 +449,7 @@
                                         background-color: #ffb620;
                                         font-weight: bold;
                                         z-index: 3;
+                                        /*box-shadow: 0 0px 0px 1px inset #ddd*/
                                     }
 
                                     #tbShop_PS_Step1 thead tr td, #tbShop_PS_Step1_2 thead tr td {
@@ -463,7 +464,7 @@
                                         font-size: 14px;
                                         padding: 3px;
                                         font-weight: bold;
-                                        z-index: 1;                                        
+                                        z-index: 1;
                                     }
 
 
@@ -481,17 +482,24 @@
                                         /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
                                         /*box-shadow: 0 0px 6px 2px inset #fff;*/
                                     }
+
+                                    /*#thead1, #thead2, #thead3 {
+                                        top: 0;
+                                        z-index: 2;*/
+                                        /* border-bottom: 0;
+                                        border-right: 0px solid #ddd;*/
+                                    /*}*/
+
                                     #th1, #th2, #th3, #th4, #th5, #th6, #th7, #th8, #th9, #th10 {
-                                        border: 2px solid rgb(222, 226, 230);
-                                        top: 32.5px;
+                                        top: 33px;
                                         z-index: 2;
                                     }
+
                                     #td1, #td2, #td3, #td4, #td5, #td6, #td7, #td8, #td9, #td10 {
-                                        border: 2px solid rgb(222, 226, 230);
-                                        top: 65px;
+                                        top: 64px;
                                         z-index: 2;
+                                        color: red;
                                     }
-                                   
                                 </style>
 
                                 <div class="form-group row" style="margin-left: 5px; width: 100%">
@@ -505,7 +513,7 @@
                                 <div class="form-group row" style="width: 100%;margin-left:5px ">
                                     <label class="DyForm3-Label">活動代號：</label>
                                     <label id="lblActivityCode_Step1" class="DyForm3-LabelBlack" style="margin-top: 3px"></label>
-                                    <label class="DyForm3-Label" style="margin-left:12px">活動期間：</label>
+                                    <label class="DyForm3-Label" style="margin-left:350px">活動期間：</label>
                                     <label id="lblPSDate_Step1" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px "></label>
                                 </div>
                                 <div class="form-group row" style="width: 100%;margin-left:5px ">
@@ -515,9 +523,9 @@
                                 </div>
                                 <div class="form-group row" style="width: 100%;margin-left: 5px ">
                                     <input id="rdoShop_PS_Step1" type="radio" name="Step1" value="Shop" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left; " checked>
-                                    <label class="DyForm3-LabelBlack" for="Shop" style="margin-top: 2px;">&ensp;店別</label>
+                                    <label class="DyForm3-LabelBlack" for="rdoShop_PS_Step1" style="margin-top: 2px;">&ensp;店別</label>
                                     <input id="rdoDate_PS_Step1" type="radio" name="Step1" value="Date" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left;  ">
-                                    <label class="DyForm3-LabelBlack" for="Date" style=" margin-top: 2px;">&ensp;銷售日期</label>
+                                    <label class="DyForm3-LabelBlack" for="rdoDate_PS_Step1" style=" margin-top: 2px;">&ensp;銷售日期</label>
                                     <label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>
                                 </div>
 
@@ -529,16 +537,16 @@
                                                 <thead>
                                                     <!--分類-->
                                                     <tr>
-                                                        <th class="text-center" colspan="1" rowspan="2" id="Shop" style="padding: 20px 0;width:170px;">店別</th>
-                                                        <th class="text-center" colspan="7" rowspan="1" id="Coupon">折價券分析</th>
-                                                        <th class="text-center" colspan="3" rowspan="1">總業績分析</th>
+                                                        <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle; width: 170px;">店別</th>
+                                                        <th id="thead2" class="text-center" colspan="7" rowspan="1">折價券分析</th>
+                                                        <th id="thead3" class="text-center" colspan="3" rowspan="1">總業績分析</th>
                                                     </tr>
                                                     <!--標題 <th style="display:none"></th>-->
                                                     <tr>
 
-                                                        <th id="th1" class="text-center" id="td1H">發出張數</th">
+                                                        <th id="th1" class="text-center">發出張數</th">
                                                         <th id="th2" class="text-center">回收張數</th>
-                                                        <th id="th3" class="text-center">回收率</th>
+                                                        <th id="th3" class="text-center">回收率%</th>
                                                         <th id="th4" class="text-center">折抵金額</th>
                                                         <th id="th5" class="text-center">銷售業績</th>
                                                         <th id="th6" class="text-center">來客數</th>
@@ -548,10 +556,10 @@
                                                         <th id="th10" class="text-center">總客單價</th>
                                                     </tr>
                                                     <tr>
-                                                        <th class="text-center">總計</th>
+                                                        <th id="td0" class="text-center" style="top:64px">總計</th>
                                                         <th id="td1" colspan="1" style="text-align: right; "></th>
                                                         <th id="td2" colspan="1" style="text-align: right; "></th>
-                                                        <th id="td3" colspan="1" style="text-align: right; "></th>
+                                                        <th id="td3" colspan="1" style="text-align: center; "></th>
                                                         <th id="td4" colspan="1" style="text-align: right; "></th>
                                                         <th id="td5" colspan="1" style="text-align: right; "></th>
                                                         <th id="td6" colspan="1" style="text-align: right; "></th>
@@ -569,28 +577,28 @@
                                                 </tbody>
 
                                             </table>
-                                            <table id="tbShop_PS_Step1_2" class="table table-bordered" style="table-layout: fixed; width: 100%;border-collapse:collapse; overflow: unset!important; "  hidden>
+                                            <table id="tbShop_PS_Step1_2" class="table table-bordered" style="table-layout: fixed; width: 100%;" hidden>
                                                 <thead>
                                                     <!--分類-->
                                                     <tr>
-                                                        <th class="text-center" colspan="1" rowspan="2" id="Shop" style="padding: 20px 0;width:170px;">日期</th>
-                                                        <th class="text-center" colspan="5" rowspan="1" id="Coupon">折價券分析</th>
-                                                        <th class="text-center" colspan="3" rowspan="1">總業績分析</th>
+                                                        <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle; width: 170px;">日期</th>
+                                                        <th id="thead2" class="text-center" colspan="5" rowspan="1">折價券分析</th>
+                                                        <th id="thead3" class="text-center" colspan="3" rowspan="1">總業績分析</th>
                                                     </tr>
                                                     <!--標題 <th style="display:none"></th>-->
                                                     <tr>
 
-                                                        <th id="th1" class="text-center" >回收張數</th>
-                                                        <th id="th2" class="text-center" >折抵金額</th>
-                                                        <th id="th3" class="text-center" >銷售業績</th>
-                                                        <th id="th4" class="text-center" >來客數</th>
-                                                        <th id="th5" class="text-center" >客單價</th>
-                                                        <th id="th6" class="text-center" >總銷售業績</th>
-                                                        <th id="th7" class="text-center" >總來客數</th>
-                                                        <th id="th8" class="text-center" >總客單價</th>
+                                                        <th id="th1" class="text-center">回收張數</th>
+                                                        <th id="th2" class="text-center">折抵金額</th>
+                                                        <th id="th3" class="text-center">銷售業績</th>
+                                                        <th id="th4" class="text-center">來客數</th>
+                                                        <th id="th5" class="text-center">客單價</th>
+                                                        <th id="th6" class="text-center">總銷售業績</th>
+                                                        <th id="th7" class="text-center">總來客數</th>
+                                                        <th id="th8" class="text-center">總客單價</th>
                                                     </tr>
                                                     <tr>
-                                                        <th class="text-center" style="top:65px" >總計</th>
+                                                        <th id="td0" class="text-center" style="top:64px">總計</th>
                                                         <th id="td1" colspan="1" style="text-align: right;"></th>
                                                         <th id="td2" colspan="1" style="text-align: right;"></th>
                                                         <th id="td3" colspan="1" style="text-align: right;"></th>

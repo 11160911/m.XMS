@@ -8645,7 +8645,7 @@ namespace SVMAdmin.Controllers
                     //總業績分析
                     //總銷售業績、總來客數、總客單價
                     sql += "Select ShopNo id,sum(cash)SalesCash2,sum(RecS)SalesCnt2, ";
-                    sql += "case when count(*)=0 then 0 else Round(sum(cash)/count(*),0) end as SalesPrice2 ";
+                    sql += "case when sum(RecS)=0 then 0 else Round(sum(cash)/sum(RecS),0) end as SalesPrice2 ";
                     sql += "into #all ";
                     sql += "From SalesHWeb (nolock) ";
                     sql += "Where CompanyCode='" + uu.CompanyId + "' ";
@@ -8738,7 +8738,7 @@ namespace SVMAdmin.Controllers
                     //總業績分析
                     //總銷售業績、總來客數、總客單價
                     sql += "select OpenDate id,sum(cash)SalesCash2,sum(RecS)SalesCnt2, ";
-                    sql += "case when count(*)=0 then 0 else Round(sum(cash) / count(*), 0) end as SalesPrice2 ";
+                    sql += "case when sum(RecS)=0 then 0 else Round(sum(cash) / sum(RecS), 0) end as SalesPrice2 ";
                     sql += "into #all ";
                     sql += "from SalesHWeb (nolock) ";
                     sql += "where CompanyCode='" + uu.CompanyId + "' ";
@@ -8756,9 +8756,14 @@ namespace SVMAdmin.Controllers
                     sql += "WITH dates([Date]) AS( ";
                     sql += "SELECT convert(DATE, '" + OpenDate1 + "') AS[Date] ";
                     sql += "UNION ALL ";
-                    sql += "SELECT dateadd(day, 1, [Date])  FROM dates  WHERE[Date] < '" + OpenDate2 + "') ";
+                    sql += "SELECT dateadd(day, 1, [Date])  FROM dates WHERE[Date] < ";
+                    if (Convert.ToDateTime(OpenDate2) >= DateTime.Now)  //結束日大於今日,只取到昨天
+                        sql += "convert(nvarchar(10),dateadd(DAY,-1,getdate()),111)";
+                    else
+                        sql += "'" + OpenDate2 + "'";
+                    sql += " ) ";
 
-                    sql += "SELECT convert(nvarchar(10),[date],111)  AS[id] ";
+                    sql += "SELECT convert(nvarchar(10),[date],111) AS[id] ";
                     sql += "into #dates ";
                     sql += "FROM dates ";
                     sql += "[date] OPTION(MAXRECURSION 32767); ";
@@ -10293,7 +10298,7 @@ namespace SVMAdmin.Controllers
                 if (Type_Step1 == "S")  //店明細
                 {
                     sql = "select w.CompanyCode, ST_ID +'-'+ ST_Sname ShopNO,isnull(SendCnt,0) SendCnt,";
-                    sql += "isnull(BackCnt,0) BackCnt,isnull(format(convert(numeric(10,1),BackCnt)/SendCnt,'0.0%'),0) BackPer,isnull(Discount,0) Discount";
+                    sql += "isnull(BackCnt,0) BackCnt,isnull(format(convert(numeric(10,1),BackCnt)*100/SendCnt,'0.0'),0) BackPer,isnull(Discount,0) Discount";
                     sql += ",isnull(Cash,0) Cash,isnull(VIPCNT,0) VIPCNT,isnull(convert(int,Cash)/VIPCNT,0) VIPPer";
                     sql += ",isnull(SalesCash,0) SalesCash,isnull(SalesCNT,0) SalesCNT,isnull(convert(int,SalesCash)/convert(int,SalesCNT),0) SalesPer ";
                     sql += "from WarehouseWeb w ";

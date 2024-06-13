@@ -107,10 +107,10 @@
                 table_lement: $('#tbShop_PS_Step1')[0],
                 class_collection: ["tdCol1", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9", "tdCol10", "tdCol11 label-align"],
                 fields_info: [
-                    { type: "Text", name: "ShopNO" },
+                    { type: "Text", name: "ShopNO", style: "text-align:center" },
                     { type: "TextAmt", name: "SendCnt" },
                     { type: "TextAmt", name: "BackCnt" },
-                    { type: "Text", name: "BackPer" },
+                    { type: "Text", name: "BackPer", style: "text-align:center" },
                     { type: "TextAmt", name: "Discount" },
                     { type: "TextAmt", name: "Cash" },
                     { type: "TextAmt", name: "VIPCNT" },
@@ -130,7 +130,7 @@
                 table_lement: $('#tbShop_PS_Step1_2')[0],
                 class_collection: ["tdCol1", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9 label-align"],
                 fields_info: [
-                    { type: "Text", name: "ShopNO" },
+                    { type: "Text", name: "ShopNO", style: "text-align:center" },
                     { type: "TextAmt", name: "BackCnt" },
                     { type: "TextAmt", name: "Discount" },
                     { type: "TextAmt", name: "Cash" },
