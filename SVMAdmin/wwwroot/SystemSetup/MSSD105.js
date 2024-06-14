@@ -28,11 +28,11 @@
                     { type: "TextAmt", name: "SalesCnt2"},
                     { type: "TextAmt", name: "SalesCash2"},
                     { type: "TextAmt", name: "SalesPrice2" },
-                    { type: "Text", name: "SalesPercent2" },
+                    { type: "TextAmt", name: "SalesPercent2" },
                     { type: "TextAmt", name: "SalesCnt3" },
                     { type: "TextAmt", name: "SalesCash3" },
                     { type: "TextAmt", name: "SalesPrice3" },
-                    { type: "Text", name: "SalesPercent3" }
+                    { type: "TextAmt", name: "SalesPercent3" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -54,11 +54,11 @@
                     { type: "TextAmt", name: "SalesCnt2" },
                     { type: "TextAmt", name: "SalesCash2" },
                     { type: "TextAmt", name: "SalesPrice2" },
-                    { type: "Text", name: "SalesPercent2" },
+                    { type: "TextAmt", name: "SalesPercent2" },
                     { type: "TextAmt", name: "SalesCnt3" },
                     { type: "TextAmt", name: "SalesCash3" },
                     { type: "TextAmt", name: "SalesPrice3" },
-                    { type: "Text", name: "SalesPercent3" }
+                    { type: "TextAmt", name: "SalesPercent3" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -80,11 +80,11 @@
                     { type: "TextAmt", name: "SalesCnt2" },
                     { type: "TextAmt", name: "SalesCash2" },
                     { type: "TextAmt", name: "SalesPrice2" },
-                    { type: "Text", name: "SalesPercent2" },
+                    { type: "TextAmt", name: "SalesPercent2" },
                     { type: "TextAmt", name: "SalesCnt3" },
                     { type: "TextAmt", name: "SalesCash3" },
                     { type: "TextAmt", name: "SalesPrice3" },
-                    { type: "Text", name: "SalesPercent3" }
+                    { type: "TextAmt", name: "SalesPercent3" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -1437,11 +1437,12 @@ Timerset(sessionStorage.getItem('isamcomp'));
 
     //第一層
     let Step1_click = function (bt) {
+        $('#tbQuery td').closest('tr').css('background-color', 'white');
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         var node = $(grdM.ActiveRowTR()).prop('Record');
+        $('#tbQuery td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
         var heads = $('#tbQuery thead tr th#tdflag');
-
         if ($(heads).html() == "店別") {
             $('#lblYM_Shop1').html($('#txtYM').val().toString().replaceAll('-', '/'));
             $('#lblShop1').html(GetNodeValue(node, 'ID'));

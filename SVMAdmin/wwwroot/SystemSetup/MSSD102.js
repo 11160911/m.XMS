@@ -303,9 +303,11 @@
     }
 
     let Step1_click = function (bt) {
+        $('#tbQuery td').closest('tr').css('background-color', 'white');
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         var node = $(grdM.ActiveRowTR()).prop('Record');
+        $('#tbQuery td:contains(' + GetNodeValue(node, 'PS_NO') + ')').closest('tr').css('background-color', '#DEEBF7');
         $('#lblPSNO_PSNO').html(GetNodeValue(node, 'PS_NO'))
         $('#lblActivityCode_PSNO').html(GetNodeValue(node, 'ActivityCode'))
         $('#lblEDDate_PSNO').html(GetNodeValue(node, 'EDDate'))
