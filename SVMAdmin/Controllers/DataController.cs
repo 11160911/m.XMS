@@ -8530,7 +8530,7 @@ namespace SVMAdmin.Controllers
                 string sql = "";
                 sql = "Select a.PS_NO,a.ActivityCode,a.PS_Name,a.StartDate + '~' + a.EndDate EDDate, ";
                 sql += "isnull(b.Cnt1,0)Cnt1,isnull(c.Cnt2,0)Cnt2, ";
-                sql += "case when isnull(b.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(c.Cnt2,0) as Float)/cast(isnull(b.Cnt1,0) as Float),'p') end as RePercent, ";
+                sql += "case when isnull(b.Cnt1,0)=0 then format(0,'0.0%') else format(cast(isnull(c.Cnt2,0) as Float)/cast(isnull(b.Cnt1,0) as Float),'0.0%') end as RePercent, ";
                 sql += "isnull(c.ActualDiscount,0)ActualDiscount,isnull(d.Cnt3,0)Cnt3,isnull(d.Cash,0)Cash, ";
                 sql += "case when isnull(d.Cnt3,0)=0 then 0 else Round((cast(isnull(d.Cash,0) as int)/cast(isnull(d.Cnt3,0) as int)),0) end as SalesPrice ";
 
@@ -8658,7 +8658,7 @@ namespace SVMAdmin.Controllers
                     //開始撈明細資料
                     sqlQ = "Select aa.id + '-' + w.ST_SName as id,isnull(a.Cnt1,0)Cnt1, ";
                     sqlQ += "isnull(b.Cnt2,0)Cnt2,isnull(b.ActualDiscount,0)ActualDiscount, ";
-                    sqlQ += "case when isnull(a.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(b.Cnt2,0) as Float)/cast(isnull(a.Cnt1,0) as Float),'p') end as RePercent, ";
+                    sqlQ += "case when isnull(a.Cnt1,0)=0 then format(0,'0.0%') else format(cast(isnull(b.Cnt2,0) as Float)/cast(isnull(a.Cnt1,0) as Float),'0.0%') end as RePercent, ";
                     sqlQ += "isnull(c.SalesCnt1,0)SalesCnt1,isnull(c.SalesCash1,0)SalesCash1,isnull(c.SalesPrice1,0)SalesPrice1, ";
                     sqlQ += "isnull(aa.SalesCash2,0)SalesCash2,isnull(aa.SalesCnt2,0)SalesCnt2,isnull(aa.SalesPrice2,0)SalesPrice2 ";
 
@@ -8675,7 +8675,7 @@ namespace SVMAdmin.Controllers
                     //彙總明細資料
                     sqlSumQ = "Select sum(isnull(a.Cnt1,0))SumCnt1, ";
                     sqlSumQ += "sum(isnull(b.Cnt2,0))SumCnt2,sum(isnull(b.ActualDiscount,0))SumActualDiscount, ";
-                    sqlSumQ += "case when sum(isnull(a.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(b.Cnt2,0)) as Float)/cast(sum(isnull(a.Cnt1,0)) as Float),'p') end as SumRePercent, ";
+                    sqlSumQ += "case when sum(isnull(a.Cnt1,0))=0 then format(0,'0.0%') else format(cast(sum(isnull(b.Cnt2,0)) as Float)/cast(sum(isnull(a.Cnt1,0)) as Float),'0.0%') end as SumRePercent, ";
                     sqlSumQ += "sum(isnull(c.SalesCnt1,0))SumSalesCnt1,sum(isnull(c.SalesCash1,0))SumSalesCash1, ";
                     sqlSumQ += "case when sum(isnull(c.SalesCnt1,0))=0 then 0 else Round(sum(isnull(c.SalesCash1,0))/sum(isnull(c.SalesCnt1,0)),0) end as SumSalesPrice1, ";
                     sqlSumQ += "sum(isnull(aa.SalesCash2,0))SumSalesCash2,sum(isnull(aa.SalesCnt2,0))SumSalesCnt2, ";
