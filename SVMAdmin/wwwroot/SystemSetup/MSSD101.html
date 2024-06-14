@@ -468,46 +468,40 @@
                                     }
 
 
-                                    /*th:first-child {
+                                    th:first-child {
                                         position: sticky;
-                                        left: 0;*/ /* 首行永遠固定於左 */
-                                    /*}
+                                        left: 0;  首行永遠固定於左 
+                                    }
 
-                                    thead tr th {
+                                    .table thead th, .table thead td {
                                         position: sticky;
-                                        top: 0;*/ /* 列首永遠固定於上 */
-                                        /*border-bottom: 0 ;
-                                        border-right: 0 !important;*/
-                                        
+                                        border-top: 0;
+                                        border-bottom: 0;
                                         /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
-                                        /*box-shadow: 0 0px 2px 0px inset #fff !important;*/
-                                    /*}
+                                        box-shadow: 0 0px 2px 0px inset #ddd;
+                                    }
 
                                     #thead1, #thead2, #thead3 {
                                         top: 0;
                                         z-index: 2;
-                                        height:35px;*/
-                                         /*border-bottom: 0;*/
-                                        /*border-right: 0px solid #ddd;*/
-                                    /*}
+                                        height: 35px;
+                                    }
 
                                     #th1, #th2, #th3, #th4, #th5, #th6, #th7, #th8, #th9, #th10 {
                                         top: 35px;
-                                        height: 35px;
                                         z-index: 2;
-                                    }*/
+                                    }
 
                                     #td1S, #td2S, #td3S, #td4S, #td5S, #td6S, #td7S, #td8S, #td9S, #td10S, #td1D, #td2D, #td3D, #td4D, #td5D, #td6D, #td7D, #td8D {
-                                        /*        height: 35px;
-                                        top: 70px;
-                                        z-index: 2;*/
+                                        top: 65px;
+                                        z-index: 2;
                                         color: red;
                                     }
-                                    /*#td0 {
-                                        height: 35px;
-                                        top: 70px;
+                                    #td0S, #td0D {
+                                        top: 65px;
                                         z-index: 2;
-                                    }*/
+                                    }
+                                 
                                 </style>
 
                                 <div class="form-group row" style="margin-left: 5px; width: 100%">
@@ -545,14 +539,14 @@
                                                 <thead>
                                                     <!--分類-->
                                                     <tr>
-                                                        <th id="thead1S" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle; width: 170px;">店別</th>
-                                                        <td id="thead2S" class="text-center" colspan="7" rowspan="1">折價券分析</td>
-                                                        <td id="thead3S" class="text-center" colspan="3" rowspan="1">總業績分析</td>
+                                                        <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle; width: 170px;">店別</th>
+                                                        <td id="thead2" class="text-center" colspan="7" rowspan="1">折價券分析</td>
+                                                        <td id="thead3" class="text-center" colspan="3" rowspan="1">總業績分析</td>
                                                     </tr>
                                                     <!--標題 <th style="display:none"></th>-->
                                                     <tr>
 
-                                                        <th id="th1S" class="text-center">發出張數</th">
+                                                        <th id="th1S" class="text-center">發出張數</th>
                                                         <th id="th2S" class="text-center">回收張數</th>
                                                         <th id="th3S" class="text-center">回收率%</th>
                                                         <th id="th4S" class="text-center">折抵金額</th>

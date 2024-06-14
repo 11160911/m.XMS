@@ -9898,7 +9898,7 @@ namespace SVMAdmin.Controllers
                 //{
                     sql = "select a.ActivityCode,a.PS_Name,a.StartDate + ' ~ ' + a.EndDate PSDate,d.SendCnt,b.BackCnt,format(convert(numeric(10,1),b.BackCnt)/d.SendCnt,'0.0%') BackPer,b.Discount,c.Cash,c.SalesCnt,c.Balance,a.PS_NO ";
                     sql += "from PromoteSCouponHWeb a(nolock) ";
-                    sql += "join (Select CompanyCode,PS_NO From SetEDMHWeb (nolock) Where EDMType='V' and isnull(ApproveDate,'')<>''  ";
+                    sql += "join (Select CompanyCode,PS_NO From SetEDMHWeb (nolock) Where EDMType='E' and isnull(ApproveDate,'')<>''  ";
                     //if (DocNO.SqlQuote() != "")     //DM單號
                     //{
                     //    sql += "and DocNO like '%" + DocNO.SqlQuote() + "%' ";
