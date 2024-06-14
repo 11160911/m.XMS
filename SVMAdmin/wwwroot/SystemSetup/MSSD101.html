@@ -445,7 +445,7 @@
                                 <style>
                                     #tbShop_PS_Step1 thead tr th, #tbShop_PS_Step1_2 thead tr th {
                                         font-size: 16px;
-                                        padding: 3px;
+                                        padding: 3px ;
                                         background-color: #ffb620;
                                         font-weight: bold;
                                         z-index: 3;
@@ -454,52 +454,60 @@
 
                                     #tbShop_PS_Step1 thead tr td, #tbShop_PS_Step1_2 thead tr td {
                                         font-size: 16px;
-                                        padding: 3px;
+                                        padding: 3px ;
                                         background-color: #ffb620;
                                         font-weight: bold;
                                         z-index: 2;
                                     }
 
                                     #tbShop_PS_Step1 tbody tr td, #tbShop_PS_Step1_2 tbody tr td {
-                                        font-size: 14px;
+                                        font-size: 16px;
                                         padding: 3px;
                                         font-weight: bold;
                                         z-index: 1;
                                     }
 
 
-                                    th:first-child {
+                                    /*th:first-child {
                                         position: sticky;
-                                        left: 0; /* 首行永遠固定於左 */
-                                    }
+                                        left: 0;*/ /* 首行永遠固定於左 */
+                                    /*}
 
                                     thead tr th {
                                         position: sticky;
-                                        top: 0; /* 列首永遠固定於上 */
-                                        border-bottom: 0;
-                                        border-right: 0px solid #ddd;
-                                        overflow: hidden;
+                                        top: 0;*/ /* 列首永遠固定於上 */
+                                        /*border-bottom: 0 ;
+                                        border-right: 0 !important;*/
+                                        
                                         /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
-                                        /*box-shadow: 0 0px 6px 2px inset #fff;*/
-                                    }
+                                        /*box-shadow: 0 0px 2px 0px inset #fff !important;*/
+                                    /*}
 
-                                    /*#thead1, #thead2, #thead3 {
+                                    #thead1, #thead2, #thead3 {
                                         top: 0;
-                                        z-index: 2;*/
-                                        /* border-bottom: 0;
-                                        border-right: 0px solid #ddd;*/
-                                    /*}*/
+                                        z-index: 2;
+                                        height:35px;*/
+                                         /*border-bottom: 0;*/
+                                        /*border-right: 0px solid #ddd;*/
+                                    /*}
 
                                     #th1, #th2, #th3, #th4, #th5, #th6, #th7, #th8, #th9, #th10 {
-                                        top: 33px;
+                                        top: 35px;
+                                        height: 35px;
                                         z-index: 2;
-                                    }
+                                    }*/
 
-                                    #td1, #td2, #td3, #td4, #td5, #td6, #td7, #td8, #td9, #td10 {
-                                        top: 64px;
-                                        z-index: 2;
+                                    #td1S, #td2S, #td3S, #td4S, #td5S, #td6S, #td7S, #td8S, #td9S, #td10S, #td1D, #td2D, #td3D, #td4D, #td5D, #td6D, #td7D, #td8D {
+                                        /*        height: 35px;
+                                        top: 70px;
+                                        z-index: 2;*/
                                         color: red;
                                     }
+                                    /*#td0 {
+                                        height: 35px;
+                                        top: 70px;
+                                        z-index: 2;
+                                    }*/
                                 </style>
 
                                 <div class="form-group row" style="margin-left: 5px; width: 100%">
@@ -537,36 +545,36 @@
                                                 <thead>
                                                     <!--分類-->
                                                     <tr>
-                                                        <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle; width: 170px;">店別</th>
-                                                        <th id="thead2" class="text-center" colspan="7" rowspan="1">折價券分析</th>
-                                                        <th id="thead3" class="text-center" colspan="3" rowspan="1">總業績分析</th>
+                                                        <th id="thead1S" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle; width: 170px;">店別</th>
+                                                        <td id="thead2S" class="text-center" colspan="7" rowspan="1">折價券分析</td>
+                                                        <td id="thead3S" class="text-center" colspan="3" rowspan="1">總業績分析</td>
                                                     </tr>
                                                     <!--標題 <th style="display:none"></th>-->
                                                     <tr>
 
-                                                        <th id="th1" class="text-center">發出張數</th">
-                                                        <th id="th2" class="text-center">回收張數</th>
-                                                        <th id="th3" class="text-center">回收率%</th>
-                                                        <th id="th4" class="text-center">折抵金額</th>
-                                                        <th id="th5" class="text-center">銷售業績</th>
-                                                        <th id="th6" class="text-center">來客數</th>
-                                                        <th id="th7" class="text-center">客單價</th>
-                                                        <th id="th8" class="text-center">總銷售業績</th>
-                                                        <th id="th8" class="text-center">總來客數</th>
-                                                        <th id="th10" class="text-center">總客單價</th>
+                                                        <th id="th1S" class="text-center">發出張數</th">
+                                                        <th id="th2S" class="text-center">回收張數</th>
+                                                        <th id="th3S" class="text-center">回收率%</th>
+                                                        <th id="th4S" class="text-center">折抵金額</th>
+                                                        <th id="th5S" class="text-center">銷售業績</th>
+                                                        <th id="th6S" class="text-center">來客數</th>
+                                                        <th id="th7S" class="text-center">客單價</th>
+                                                        <th id="th8S" class="text-center">總銷售業績</th>
+                                                        <th id="th8S" class="text-center">總來客數</th>
+                                                        <th id="th10S" class="text-center">總客單價</th>
                                                     </tr>
                                                     <tr>
-                                                        <th id="td0" class="text-center" style="top:64px">總計</th>
-                                                        <th id="td1" colspan="1" style="text-align: right; "></th>
-                                                        <th id="td2" colspan="1" style="text-align: right; "></th>
-                                                        <th id="td3" colspan="1" style="text-align: center; "></th>
-                                                        <th id="td4" colspan="1" style="text-align: right; "></th>
-                                                        <th id="td5" colspan="1" style="text-align: right; "></th>
-                                                        <th id="td6" colspan="1" style="text-align: right; "></th>
-                                                        <th id="td7" colspan="1" style="text-align: right; "></th>
-                                                        <th id="td8" colspan="1" style="text-align: right; "></th>
-                                                        <th id="td9" colspan="1" style="text-align: right; "></th>
-                                                        <th id="td10" colspan="1" style="text-align: right; "></th>
+                                                        <td id="td0S" class="text-center" >總計</td>
+                                                        <td id="td1S" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td2S" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td3S" colspan="1" style="text-align: center; "></td>
+                                                        <td id="td4S" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td5S" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td6S" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td7S" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td8S" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td9S" colspan="1" style="text-align: right; "></td>
+                                                        <td id="td10S" colspan="1" style="text-align: right; "></td>
                                                     </tr>
 
                                                 </thead>
@@ -577,17 +585,16 @@
                                                 </tbody>
 
                                             </table>
-                                            <table id="tbShop_PS_Step1_2" class="table table-bordered" style="table-layout: fixed; width: 100%;" hidden>
+                                            <table id="tbShop_PS_Step1_2" class="table table-bordered" style="width: 100%;" hidden>
                                                 <thead>
-                                                    <!--分類-->
+                                                    <!--分類  table-layout: fixed; -->
                                                     <tr>
                                                         <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle; width: 170px;">日期</th>
-                                                        <th id="thead2" class="text-center" colspan="5" rowspan="1">折價券分析</th>
-                                                        <th id="thead3" class="text-center" colspan="3" rowspan="1">總業績分析</th>
+                                                        <td id="thead2" class="text-center" colspan="5" rowspan="1">折價券分析</td>
+                                                        <td id="thead3" class="text-center" colspan="3" rowspan="1">總業績分析</td>
                                                     </tr>
                                                     <!--標題 <th style="display:none"></th>-->
                                                     <tr>
-
                                                         <th id="th1" class="text-center">回收張數</th>
                                                         <th id="th2" class="text-center">折抵金額</th>
                                                         <th id="th3" class="text-center">銷售業績</th>
@@ -598,15 +605,15 @@
                                                         <th id="th8" class="text-center">總客單價</th>
                                                     </tr>
                                                     <tr>
-                                                        <th id="td0" class="text-center" style="top:64px">總計</th>
-                                                        <th id="td1" colspan="1" style="text-align: right;"></th>
-                                                        <th id="td2" colspan="1" style="text-align: right;"></th>
-                                                        <th id="td3" colspan="1" style="text-align: right;"></th>
-                                                        <th id="td4" colspan="1" style="text-align: right;"></th>
-                                                        <th id="td5" colspan="1" style="text-align: right;"></th>
-                                                        <th id="td6" colspan="1" style="text-align: right;"></th>
-                                                        <th id="td7" colspan="1" style="text-align: right;"></th>
-                                                        <th id="td8" colspan="1" style="text-align: right;"></th>
+                                                        <td id="td0D" class="text-center">總計</td>
+                                                        <td id="td1D" colspan="1" style="text-align: right;"></td>
+                                                        <td id="td2D" colspan="1" style="text-align: right;"></td>
+                                                        <td id="td3D" colspan="1" style="text-align: right;"></td>
+                                                        <td id="td4D" colspan="1" style="text-align: right;"></td>
+                                                        <td id="td5D" colspan="1" style="text-align: right;"></td>
+                                                        <td id="td6D" colspan="1" style="text-align: right;"></td>
+                                                        <td id="td7D" colspan="1" style="text-align: right;"></td>
+                                                        <td id="td8D" colspan="1" style="text-align: right;"></td>
                                                     </tr>
 
                                                 </thead>

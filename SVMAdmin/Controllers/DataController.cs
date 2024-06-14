@@ -10338,7 +10338,7 @@ namespace SVMAdmin.Controllers
                     sql += "SELECT e.PS_No,convert(nvarchar(10),[date],111)  AS [SalesDate] into #PSDate FROM dates d CROSS JOIN PromoteSCouponHWeb e ";
                     sql += "where e.Companycode='" + uu.CompanyId + "' and PS_NO='" + PS_NO + "' ORDER BY PS_No, [date] OPTION (MAXRECURSION 32767)  ;";
 
-                    sql += "select  e.Salesdate  ShopNO, isnull(BackCnt,0) BackCnt,isnull(Discount,0) Discount,isnull(Cash,0) Cash,isnull(VIPCNT,0) VIPCNT";
+                    sql += "select  e.Salesdate , isnull(BackCnt,0) BackCnt,isnull(Discount,0) Discount,isnull(Cash,0) Cash,isnull(VIPCNT,0) VIPCNT";
                     sql += ",isnull(convert(int,Cash)/VIPCNT,0) VIPPer,isnull(SalesCash,0) SalesCash,isnull(SalesCNT,0) SalesCNT,isnull(convert(int,SalesCash)/convert(int,SalesCNT),0) SalesPer ";
                     sql += "from #PSDate e ";
                     sql += "left join (select ph.PCHDocNO,ph.SalesDate,count(CouponNo) BackCnt,sum(ActualDiscount) Discount  from PromoteSLogCardNoWeb PC(nolock) ";
