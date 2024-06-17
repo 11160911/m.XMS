@@ -281,8 +281,8 @@
                                     <div class="form-group row" style="margin-left: 12px; width: 100%">
                                         <input id="rdoShop_PSNO" type="radio" name="Q" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
                                         <label class="DyForm3-LabelBlack" for="rdoShop_PSNO" style="margin-top: 2px">&ensp;店別</label>
-                                        <input id="rdoDate_PSNO" type="radio" name="Q" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " >
-                                        <label class="DyForm3-LabelBlack" for="rdoDate_PSNO" style="margin-top:2px" >&ensp;銷售日期</label>
+                                        <input id="rdoDate_PSNO" type="radio" name="Q" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
+                                        <label class="DyForm3-LabelBlack" for="rdoDate_PSNO" style="margin-top:2px">&ensp;銷售日期</label>
                                         <label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>
                                     </div>
 
@@ -333,7 +333,7 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
-                                            
+
                                                 <table id="tbDate_PSNO" class="table table-bordered" style="width:100%" hidden>
                                                     <thead>
                                                         <!--第一層-->
@@ -383,7 +383,134 @@
                         </div>
                     </div>
 
+                    <div class="modal fade" id="modal_PSNO_ShopNoDate" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content" style="height: 900px; width: 1400px;left:-200px; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
+                                <style>
+                                    #tbShopNo_PSNO_ShopNoDate thead tr th {
+                                        font-size: 16px;
+                                        padding: 3px;
+                                        background-color: #ffb620;
+                                        font-weight: bold;
+                                    }
 
+                                    #tbShopNo_PSNO_ShopNoDate thead tr td {
+                                        font-size: 16px;
+                                        padding: 3px;
+                                        background-color: #ffb620;
+                                        font-weight: bold;
+                                    }
+
+                                    #tbShopNo_PSNO_ShopNoDate tbody tr td {
+                                        font-size: 14px;
+                                        padding: 3px;
+                                        font-weight: bold;
+                                    }
+                                    #tbDate_PSNO_ShopNoDate thead tr th {
+                                        font-size: 16px;
+                                        padding: 3px;
+                                        background-color: #ffb620;
+                                        font-weight: bold;
+                                    }
+
+                                    #tbDate_PSNO_ShopNoDate thead tr td {
+                                        font-size: 16px;
+                                        padding: 3px;
+                                        background-color: #ffb620;
+                                        font-weight: bold;
+                                    }
+
+                                    #tbDate_PSNO_ShopNoDate tbody tr td {
+                                        font-size: 14px;
+                                        padding: 3px;
+                                        font-weight: bold;
+                                    }
+                                </style>
+
+                                <!--<div class="modal-header">
+                    <label id="lblProgramName" class="DyForm3-ProgramName">新會員交易分析</label>
+                </div>-->
+
+                                <div class="modal-body modal-tab-container" style="padding:8px">
+
+                                    <div class="form-group row" style="margin-left: 5px; width: 100%">
+                                        <label class="DyForm3-ProgramName">入會折價券回收分析</label>
+                                    </div>
+
+                                    <div class="form-group row" style="width: 100%">
+                                        <button id="btRe_PSNO_ShopNoDate" type="button" class="DyForm3-BtnRe" style="position: absolute; right: 60px">回上頁</button>
+                                    </div>
+
+                                    <div class="form-group row" style="margin-left: 12px; width: 100%">
+                                        <label id="lblPSNO_PSNO_ShopNoDate" hidden></label>
+                                        <label class="DyForm3-Label">活動代號</label>
+                                        <label id="lblActivityCode_PSNO_ShopNoDate" class="DyForm3-LabelBlack" style="margin-left:15px;margin-top:3px"></label>
+                                        <label class="DyForm3-Label" style="margin-left:350px">活動期間</label>
+                                        <label id="lblEDDate_PSNO_ShopNoDate" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px"></label>
+                                    </div>
+
+                                    <div class="form-group row" style="margin-left: 12px; width: 100%">
+                                        <label class="DyForm3-Label">活動名稱</label>
+                                        <label id="lblPSName_PSNO_ShopNoDate" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px"></label>
+                                    </div>
+
+                                    <div class="form-group row" style="margin-left: 15px; width: 100%">
+                                        <label id="lblType_PSNO_ShopNoDate" class="DyForm3-LabelBlack"></label>
+                                        <label id="lblTypeID_PSNO_ShopNoDate" class="DyForm3-LabelRed" style="margin-left: 17px;"></label>
+                                        <label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>
+                                    </div>
+
+                                    <div class="card-block forminput">
+                                        <div class="x_content">
+                                            <div style="overflow: auto; height: 650px;">
+                                                <table id="tbShopNo_PSNO_ShopNoDate" class="table table-bordered" style="width:100%">
+                                                    <thead>
+                                                        <!--第一層-->
+                                                        <tr>
+                                                            <!--<td class="text-center" colspan="1"></td>-->
+                                                            <th id="thname_PSNO_ShopNoDate" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">銷售日期</th>
+                                                            <td class="text-center" colspan="5">折價券分析</td>
+                                                            <td class="text-center" colspan="3">總業績分析</td>
+                                                        </tr>
+                                                        <!--第二層-->
+                                                        <tr>
+                                                            <!--<th style="display:none"></th>-->
+                                                            <!--<th class="text-center" colspan="1">店別</th>-->
+                                                            <th class="text-center">回收張數</th>
+                                                            <th class="text-center">折抵金額</th>
+                                                            <th class="text-center">銷售業績</th>
+                                                            <th class="text-center">來客數</th>
+                                                            <th class="text-center">客單價</th>
+                                                            <th class="text-center">總銷售業績</th>
+                                                            <th class="text-center">總來客數</th>
+                                                            <th class="text-center">總客單價</th>
+                                                        </tr>
+                                                        <!--第三層-->
+                                                        <tr>
+                                                            <td class="text-center" colspan="1">總計</td>
+                                                            <td id="tdShopNo1_PSNO_ShopNoDate" colspan="1" style="text-align: right;color:red "></td>
+                                                            <td id="tdShopNo2_PSNO_ShopNoDate" colspan="1" style="text-align: right;color:red "></td>
+                                                            <td id="tdShopNo3_PSNO_ShopNoDate" colspan="1" style="text-align: right; color: red "></td>
+                                                            <td id="tdShopNo4_PSNO_ShopNoDate" colspan="1" style="text-align: right;color:red "></td>
+                                                            <td id="tdShopNo5_PSNO_ShopNoDate" colspan="1" style="text-align: right;color:red "></td>
+                                                            <td id="tdShopNo6_PSNO_ShopNoDate" colspan="1" style="text-align: right;color:red "></td>
+                                                            <td id="tdShopNo7_PSNO_ShopNoDate" colspan="1" style="text-align: right;color:red "></td>
+                                                            <td id="tdShopNo8_PSNO_ShopNoDate" colspan="1" style="text-align: right; color: red "></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
 
 
                     <div class="modal fade" id="modal_Lookup_ActivityCode" data-keyboard="false" data-backdrop="static">

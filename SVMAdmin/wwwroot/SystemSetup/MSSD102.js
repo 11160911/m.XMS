@@ -3,6 +3,7 @@
     let grdM;
     let grdShopNo_PSNO;
     let grdDate_PSNO;
+    let grdShopNo_PSNO_ShopNoDate;
     let grdLookUp_ActivityCode;
 
     let grdM_Shop;
@@ -92,6 +93,27 @@
             }
         );
 
+        grdShopNo_PSNO_ShopNoDate = new DynGrid(
+            {
+                table_lement: $('#tbShopNo_PSNO_ShopNoDate')[0],
+                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9 label-align"],
+                fields_info: [
+                    { type: "Text", name: "ID", style: "" },
+                    { type: "TextAmt", name: "ReclaimQty" },
+                    { type: "TextAmt", name: "ShareAmt" },
+                    { type: "TextAmt", name: "ReclaimCash" },
+                    { type: "TextAmt", name: "ReclaimTrans" },
+                    { type: "TextAmt", name: "ReclaimPrice" },
+                    { type: "TextAmt", name: "TotalCash" },
+                    { type: "TextAmt", name: "TotalTrans" },
+                    { type: "TextAmt", name: "TotalPrice" },
+                ],
+                //rows_per_page: 10,
+                method_clickrow: click_PLU,
+                afterBind: InitModifyDeleteButton,
+                sortable: "Y"
+            }
+        );
 
         grdLookUp_ActivityCode = new DynGrid(
             {
@@ -274,6 +296,8 @@
 
     let InitModifyDeleteButton = function () {
         $('#tbQuery tbody tr td').click(function () { Step1_click(this) });
+        $('#tbShopNo_PSNO tbody tr td').click(function () { Step2_click(this) });
+        $('#tbDate_PSNO tbody tr td').click(function () { Step2_click(this) });
         //$('#tbISAM01Mod .fa-trash-o').click(function () { btPLUDelete_click(this) });
     }
 
@@ -416,8 +440,103 @@
         }
     };
 
+    let Step2_click = function (bt) {
+        $('#lblPSNO_PSNO_ShopNoDate').html($('#lblPSNO_PSNO').html())
+        $('#lblActivityCode_PSNO_ShopNoDate').html($('#lblActivityCode_PSNO').html())
+        $('#lblEDDate_PSNO_ShopNoDate').html($('#lblEDDate_PSNO').html())
+        $('#lblPSName_PSNO_ShopNoDate').html($('#lblPSName_PSNO').html())
+        if ($('#rdoShop_PSNO').prop('checked') == true) {
+            $('#tbShopNo_PSNO td').closest('tr').css('background-color', 'white');
+            $(bt).closest('tr').click();
+            $('.msg-valid').hide();
+            var node = $(grdShopNo_PSNO.ActiveRowTR()).prop('Record');
+            $('#tbShopNo_PSNO td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
+            $('#lblType_PSNO_ShopNoDate').html('店&ensp;&ensp;&ensp;&ensp;別')
+            $('#lblTypeID_PSNO_ShopNoDate').html(GetNodeValue(node, 'ID'))
+            $('#modal_PSNO_ShopNoDate').modal('show');
+            setTimeout(function () {
+                QueryPSNO_ShopNoDate($('#lblPSNO_PSNO_ShopNoDate').html(), GetNodeValue(node, 'ID').split('-')[0]);
+            }, 500);
+        }
+        else if ($('#rdoDate_PSNO').prop('checked') == true) {
+            $('#tbDate_PSNO td').closest('tr').css('background-color', 'white');
+            $(bt).closest('tr').click();
+            $('.msg-valid').hide();
+            var node = $(grdDate_PSNO.ActiveRowTR()).prop('Record');
+            $('#tbDate_PSNO td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
+            $('#lblType_PSNO_ShopNoDate').html('銷售日期')
+            $('#lblTypeID_PSNO_ShopNoDate').html(GetNodeValue(node, 'ID'))
+            $('#modal_PSNO_ShopNoDate').modal('show');
+            setTimeout(function () {
+                QueryPSNO_ShopNoDate($('#lblPSNO_PSNO_ShopNoDate').html(), GetNodeValue(node, 'ID'));
+            }, 500);
+        }
+    };
 
+    let QueryPSNO_ShopNoDate = function (PS_NO,ID) {
+        ShowLoading();
+        var Flag = "";
 
+        if ($('#rdoShop_PSNO').prop('checked') == true) {
+            Flag = "S";
+        }
+        else if ($('#rdoDate_PSNO').prop('checked') == true) {
+            Flag = "D";
+        }
+
+        var OpenDate1 = $('#lblEDDate_PSNO_ShopNoDate').html().split('~')[0]
+        var OpenDate2 = $('#lblEDDate_PSNO_ShopNoDate').html().split('~')[1]
+
+        var pData = {
+            PS_NO: PS_NO,
+            ID: ID,
+            OpenDate1: OpenDate1,
+            OpenDate2: OpenDate2,
+            Flag: Flag
+        }
+        PostToWebApi({ url: "api/SystemSetup/MSSD102Query_Step2", data: pData, success: afterMSSD102Query_Step2 });
+    };
+
+    let afterMSSD102Query_Step2 = function (data) {
+        CloseLoading();
+        if (ReturnMsg(data, 0) != "MSSD102Query_Step2OK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtE = data.getElementsByTagName('dtE');
+            var dtSumQ = data.getElementsByTagName('dtSumQ');
+            grdShopNo_PSNO_ShopNoDate.BindData(dtE);
+            var heads = $('#tbShopNo_PSNO_ShopNoDate thead tr th#thname_PSNO_ShopNoDate');
+            if ($('#rdoShop_PSNO').prop('checked') == true) {
+                $(heads).html('銷售日期');
+            }
+            else if ($('#rdoDate_PSNO').prop('checked') == true) {
+                $(heads).html('店別');
+            }
+
+            if (dtE.length == 0) {
+                DyAlert("無符合資料!");
+                $(".modal-backdrop").remove();
+                $('#tbShopNo_PSNO_ShopNoDate thead td#tdShopNo1_PSNO_ShopNoDate').html('');
+                $('#tbShopNo_PSNO_ShopNoDate thead td#tdShopNo2_PSNO_ShopNoDate').html('');
+                $('#tbShopNo_PSNO_ShopNoDate thead td#tdShopNo3_PSNO_ShopNoDate').html('');
+                $('#tbShopNo_PSNO_ShopNoDate thead td#tdShopNo4_PSNO_ShopNoDate').html('');
+                $('#tbShopNo_PSNO_ShopNoDate thead td#tdShopNo5_PSNO_ShopNoDate').html('');
+                $('#tbShopNo_PSNO_ShopNoDate thead td#tdShopNo6_PSNO_ShopNoDate').html('');
+                $('#tbShopNo_PSNO_ShopNoDate thead td#tdShopNo7_PSNO_ShopNoDate').html('');
+                $('#tbShopNo_PSNO_ShopNoDate thead td#tdShopNo8_PSNO_ShopNoDate').html('');
+                return;
+            }
+            $('#tbShopNo_PSNO_ShopNoDate thead td#tdShopNo1_PSNO_ShopNoDate').html(parseInt(GetNodeValue(dtSumQ[0], "SumReclaimQty")).toLocaleString('en-US'));
+            $('#tbShopNo_PSNO_ShopNoDate thead td#tdShopNo2_PSNO_ShopNoDate').html(parseInt(GetNodeValue(dtSumQ[0], "SumShareAmt")).toLocaleString('en-US'));
+            $('#tbShopNo_PSNO_ShopNoDate thead td#tdShopNo3_PSNO_ShopNoDate').html(parseInt(GetNodeValue(dtSumQ[0], "SumReclaimCash")).toLocaleString('en-US'));
+            $('#tbShopNo_PSNO_ShopNoDate thead td#tdShopNo4_PSNO_ShopNoDate').html(parseInt(GetNodeValue(dtSumQ[0], "SumReclaimTrans")).toLocaleString('en-US'));
+            $('#tbShopNo_PSNO_ShopNoDate thead td#tdShopNo5_PSNO_ShopNoDate').html(parseInt(GetNodeValue(dtSumQ[0], "SumReclaimPrice")).toLocaleString('en-US'));
+            $('#tbShopNo_PSNO_ShopNoDate thead td#tdShopNo6_PSNO_ShopNoDate').html(parseInt(GetNodeValue(dtSumQ[0], "SumTotalCash")).toLocaleString('en-US'));
+            $('#tbShopNo_PSNO_ShopNoDate thead td#tdShopNo7_PSNO_ShopNoDate').html(parseInt(GetNodeValue(dtSumQ[0], "SumTotalTrans")).toLocaleString('en-US'));
+            $('#tbShopNo_PSNO_ShopNoDate thead td#tdShopNo8_PSNO_ShopNoDate').html(parseInt(GetNodeValue(dtSumQ[0], "SumTotalPrice")).toLocaleString('en-US'));
+        }
+    };
 
     let Area_Step1_click = function (bt) {
         $(bt).closest('tr').click();
@@ -1707,6 +1826,11 @@ Timerset(sessionStorage.getItem('isamcomp'));
         //Timerset();
         $('#modal_PSNO').modal('hide')
     };
+
+    let btRe_PSNO_ShopNoDate_click = function (bt) {
+        //Timerset();
+        $('#modal_PSNO_ShopNoDate').modal('hide')
+    };
 //#region FormLoad
     let GetInitMSSD102 = function (data) {
         if (ReturnMsg(data, 0) != "GetInitmsDMOK") {
@@ -1726,6 +1850,8 @@ Timerset(sessionStorage.getItem('isamcomp'));
 
             $('#btRe_PSNO').click(function () { btRe_PSNO_click(this) });
             $('#rdoShop_PSNO,#rdoDate_PSNO').change(function () { QueryPSNO($('#lblPSNO_PSNO').html()) });
+
+            $('#btRe_PSNO_ShopNoDate').click(function () { btRe_PSNO_ShopNoDate_click(this) });
         }
     };
     
