@@ -18,7 +18,7 @@
         grdM = new DynGrid(
             {
                 table_lement: $('#tbQuery')[0],
-                class_collection: ["tdCol1", "tdCol2 label-align", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7"],
+                class_collection: ["tdCol1 text-center", "tdCol2 text-center", "tdCol3 text-center", "tdCol4 text-center", "tdCol5 text-center", "tdCol6", "tdCol7 text-center"],
                 fields_info: [
                     { type: "Text", name: "EVNO", style: "" },
                     { type: "TextAmt", name: "Cnt"},
@@ -79,7 +79,7 @@
                 table_lement: $('#tbDMSel')[0],
                 class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7", "tdCol8", "tdCol9 label-align"],
                 fields_info: [
-                    { type: "radio", name: "chkset", style: "" },
+                    { type: "radio", name: "chkset", style: "width:15px;height:15px" },
                     { type: "Text", name: "DocNo" },
                     { type: "Text", name: "EDMMemo" },
                     { type: "Text", name: "EDDate1" },

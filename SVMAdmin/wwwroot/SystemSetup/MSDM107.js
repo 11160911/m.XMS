@@ -9,7 +9,7 @@
         grdM = new DynGrid(
             {
                 table_lement: $('#tbQMSDM107')[0],
-                class_collection: ["tdColbt icon_in_td btDelete", "tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6 label-align", "tdCol7 label-align", "tdCol8", "tdCol9"],
+                class_collection: ["tdColbt icon_in_td btDelete", "tdCol1", "tdCol2", "tdCol3 text-center", "tdCol4", "tdCol5", "tdCol6 text-center", "tdCol7 text-center", "tdCol8 text-center", "tdCol9 text-center"],
                 fields_info: [
                     { type: "JQ", name: "fa-trash-o", element: '<i class="fa fa-trash-o" style="font-size:24px"></i>'},
                     { type: "Text", name: "DocNO", style: "" },
