@@ -9896,47 +9896,47 @@ namespace SVMAdmin.Controllers
                 string sql = "";
                 //if (OptAB == "DA")  //活動
                 //{
-                    sql = "select a.ActivityCode,a.PS_Name,a.StartDate + ' ~ ' + a.EndDate PSDate,d.SendCnt,b.BackCnt,format(convert(numeric(10,1),b.BackCnt)/d.SendCnt,'0.0%') BackPer,b.Discount,c.Cash,c.SalesCnt,c.Balance,a.PS_NO ";
-                    sql += "from PromoteSCouponHWeb a(nolock) ";
-                    sql += "join (Select CompanyCode,PS_NO From SetEDMHWeb (nolock) Where EDMType='E' and isnull(ApproveDate,'')<>''  ";
-                    //if (DocNO.SqlQuote() != "")     //DM單號
-                    //{
-                    //    sql += "and DocNO like '%" + DocNO.SqlQuote() + "%' ";
-                    //}
-                    //if (EDMMemo.SqlQuote() != "")     //DM單號
-                    //{
-                    //    sql += "and EDMMemo like '%" + EDMMemo.SqlQuote() + "%' ";
-                    //}
-                    //if (EDDate.SqlQuote() != "")     //DM日期
-                    //{
-                    //    sql += "and '" + EDDate.SqlQuote() + "' between StartDate and EndDate ";
-                    //}
-                    sql += "group by CompanyCode,PS_NO) e on a.CompanyCode=e.CompanyCode and a.PS_NO=e.PS_NO ";
-                    //發出張數
-                    sql += " join (select CompanyCode,PS_NO,count(*) SendCnt from SetEDMVIP_VIPWeb group by CompanyCode,PS_NO) d on a.CompanyCode=d.CompanyCode and a.PS_No=d.PS_NO ";
-                    //回收張數
-                    sql += "join (select h.CompanyCode, h.PCHDocNO ,count (c.CouponNo) BackCnt,sum(c.ActualDiscount) Discount ";
-                    sql += "from PromoteSLogHWeb h join PromoteSLogCardNoWeb c on h.CompanyCode=c.CompanyCode and h.DocNo=c.DocNo and h.ShopNO=c.ShopNO ";
-                    sql += "group by  h.CompanyCode,h.PCHDocNO ) b on a.CompanyCode=b.CompanyCode and a.PS_No=b.PCHDocNO ";
-                    //銷售
-                    sql += "join ( select h.companycode,h.PCHDocNO, sum(h.cash) Cash,count(*) SalesCnt,convert(int,sum(h.cash)/count(*)) Balance ";
-                    sql += "from PromoteSLogHWeb h  ";
-                    sql += "group by h.companycode,h.PCHDocNO) c on a.CompanyCode=c.CompanyCode and a.PS_No=c.PCHDocNO ";
+                //sql = "select a.ActivityCode,a.PS_Name,a.StartDate + ' ~ ' + a.EndDate PSDate,d.SendCnt,b.BackCnt,format(convert(numeric(10,1),b.BackCnt)/d.SendCnt,'0.0%') BackPer,b.Discount,c.Cash,c.SalesCnt,c.Balance,a.PS_NO ";
+                //sql += "from PromoteSCouponHWeb a(nolock) ";
+                //sql += "join (Select CompanyCode,PS_NO From SetEDMHWeb (nolock) Where EDMType='E' and isnull(ApproveDate,'')<>''  ";
+                ////if (DocNO.SqlQuote() != "")     //DM單號
+                ////{
+                ////    sql += "and DocNO like '%" + DocNO.SqlQuote() + "%' ";
+                ////}
+                ////if (EDMMemo.SqlQuote() != "")     //DM單號
+                ////{
+                ////    sql += "and EDMMemo like '%" + EDMMemo.SqlQuote() + "%' ";
+                ////}
+                ////if (EDDate.SqlQuote() != "")     //DM日期
+                ////{
+                ////    sql += "and '" + EDDate.SqlQuote() + "' between StartDate and EndDate ";
+                ////}
+                //sql += "group by CompanyCode,PS_NO) e on a.CompanyCode=e.CompanyCode and a.PS_NO=e.PS_NO ";
+                ////發出張數
+                //sql += " join (select CompanyCode,PS_NO,count(*) SendCnt from SetEDMVIP_VIPWeb group by CompanyCode,PS_NO) d on a.CompanyCode=d.CompanyCode and a.PS_No=d.PS_NO ";
+                ////回收張數
+                //sql += "join (select h.CompanyCode, h.PCHDocNO ,count (c.CouponNo) BackCnt,sum(c.ActualDiscount) Discount ";
+                //sql += "from PromoteSLogHWeb h join PromoteSLogCardNoWeb c on h.CompanyCode=c.CompanyCode and h.DocNo=c.DocNo and h.ShopNO=c.ShopNO ";
+                //sql += "group by  h.CompanyCode,h.PCHDocNO ) b on a.CompanyCode=b.CompanyCode and a.PS_No=b.PCHDocNO ";
+                ////銷售
+                //sql += "join ( select h.companycode,h.PCHDocNO, sum(h.cash) Cash,count(*) SalesCnt,convert(int,sum(h.cash)/count(*)) Balance ";
+                //sql += "from PromoteSLogHWeb h  ";
+                //sql += "group by h.companycode,h.PCHDocNO) c on a.CompanyCode=c.CompanyCode and a.PS_No=c.PCHDocNO ";
 
-                    sql += "Where a.Companycode='" + uu.CompanyId + "' ";
-                    if (ActivityCode.SqlQuote() != "")//活動代號
-                    {
-                        sql += "and a.ActivityCode like '%" + ActivityCode.SqlQuote() + "%' ";
-                    }
-                    if (PSName.SqlQuote() != "")//活動名稱
-                    {
-                        sql += "and a.PS_Name like '%" + PSName.SqlQuote() + "%' ";
-                    }
-                    if (PSDate.SqlQuote() != "")     //活動日期
-                    {
-                        sql += "and '" + PSDate.SqlQuote() + "' between StartDate and EndDate ";
-                    }
-                    sql += "Order by a.StartDate ";
+                //sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                //if (ActivityCode.SqlQuote() != "")//活動代號
+                //{
+                //    sql += "and a.ActivityCode like '%" + ActivityCode.SqlQuote() + "%' ";
+                //}
+                //if (PSName.SqlQuote() != "")//活動名稱
+                //{
+                //    sql += "and a.PS_Name like '%" + PSName.SqlQuote() + "%' ";
+                //}
+                //if (PSDate.SqlQuote() != "")     //活動日期
+                //{
+                //    sql += "and '" + PSDate.SqlQuote() + "' between StartDate and EndDate ";
+                //}
+                //sql += "Order by a.StartDate ";
                 //}
                 //else if (OptAB == "DB")     //DM
                 //{
@@ -9986,6 +9986,20 @@ namespace SVMAdmin.Controllers
                 //    }
                 //    sql += "Order by a.StartDate ";
                 //}
+                sql += "select * from MSData2Web h join SetEDMHWeb b on h.companycode=b.companycode and h.PS_NO=b.PS_NO ";
+                sql += "Where h.Companycode='" + uu.CompanyId + "' and b.EDMType='E' and isnull(b.ApproveDate,'')<>'";
+                if (ActivityCode.SqlQuote() != "")//活動代號
+                {
+                    sql += "and h.ActivityCode like '%" + ActivityCode.SqlQuote() + "%' ";
+                }
+                if (PSName.SqlQuote() != "")//活動名稱
+                {
+                    sql += "and h.PS_Name like '%" + PSName.SqlQuote() + "%' ";
+                }
+                if (PSDate.SqlQuote() != "")     //活動日期
+                {
+                    sql += "and '" + PSDate.SqlQuote() + "' between StartDate and EndDate ";
+                }
 
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
