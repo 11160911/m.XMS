@@ -137,7 +137,7 @@
                                 }
 
                                 #tbQuery tbody tr td {
-                                    font-size: 14px;
+                                    font-size: 16px;
                                     padding: 3px;
                                     font-weight: bold;
                                 }
@@ -157,7 +157,7 @@
                                 }
 
                                 #tbQueryMW tbody tr td {
-                                    font-size: 14px;
+                                    font-size: 16px;
                                     padding: 3px;
                                     font-weight: bold;
                                 }
@@ -219,7 +219,7 @@
 
                             <div class="form-group row" style="margin-bottom: 0px; width: 100%; margin-left: 12px ">
                                 <label id="lblVIPQty" class="DyForm3-LabelRed" style="font-size: 20px "></label>
-                                <label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>
+                                <!--<label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>-->
                             </div>
 
                             <div class="card-block forminput">
@@ -231,34 +231,43 @@
                                                 <tr>
                                                     <th id="thtype" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
                                                     <th class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">會員數</th>
-                                                    <td class="text-center" colspan="7">年齡層數量/佔比</td>
-                                                    <td class="text-center" colspan="2">性別數量/佔比</td>
+                                                    <td class="text-center" colspan="14">年齡層數量/佔比</td>
+                                                    <td class="text-center" colspan="4">性別數量/佔比</td>
                                                 </tr>
                                                 <!--第二層-->
                                                 <tr>
-                                                    <th class="text-center">17歲以下</th>
-                                                    <th class="text-center">18~30歲</th>
-                                                    <th class="text-center">31~40歲</th>
-                                                    <th class="text-center">41~50歲</th>
-                                                    <th class="text-center">51~60歲</th>
-                                                    <th class="text-center">61~70歲</th>
-                                                    <th class="text-center">71歲以上</th>
-                                                    <th class="text-center">男性</th>
-                                                    <th class="text-center">女性</th>
+                                                    <th class="text-center" colspan="2">17歲以下</th>
+                                                    <th class="text-center" colspan="2">18~30歲</th>
+                                                    <th class="text-center" colspan="2">31~40歲</th>
+                                                    <th class="text-center" colspan="2">41~50歲</th>
+                                                    <th class="text-center" colspan="2">51~60歲</th>
+                                                    <th class="text-center" colspan="2">61~70歲</th>
+                                                    <th class="text-center" colspan="2">71歲以上</th>
+                                                    <th class="text-center" colspan="2">男性</th>
+                                                    <th class="text-center" colspan="2">女性</th>
                                                 </tr>
                                                 <!--第三層-->
                                                 <tr>
                                                     <td class="text-center" colspan="1">總數</td>
                                                     <td id="td1" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td2" colspan="1" style="text-align: right;color:red "></td>
+                                                    <td id="td2" colspan="1" style="text-align: right; color: red "></td>
+                                                    <td id="td2p" class="text-center" colspan="1" style="color: red "></td>
                                                     <td id="td3" colspan="1" style="text-align: right;color:red "></td>
+                                                    <td id="td3p" class="text-center" colspan="1" style="color:red "></td>
                                                     <td id="td4" colspan="1" style="text-align: right;color:red "></td>
+                                                    <td id="td4p" class="text-center" colspan="1" style="color:red "></td>
                                                     <td id="td5" colspan="1" style="text-align: right;color:red "></td>
+                                                    <td id="td5p" class="text-center" colspan="1" style="color:red "></td>
                                                     <td id="td6" colspan="1" style="text-align: right;color:red "></td>
+                                                    <td id="td6p" class="text-center" colspan="1" style="color:red "></td>
                                                     <td id="td7" colspan="1" style="text-align: right;color:red "></td>
+                                                    <td id="td7p" class="text-center" colspan="1" style="color:red "></td>
                                                     <td id="td8" colspan="1" style="text-align: right; color: red "></td>
+                                                    <td id="td8p" class="text-center" colspan="1" style="color: red "></td>
                                                     <td id="td9" colspan="1" style="text-align: right;color:red "></td>
+                                                    <td id="td9p" class="text-center" colspan="1" style="color:red "></td>
                                                     <td id="td10" colspan="1" style="text-align: right;color:red "></td>
+                                                    <td id="td10p" class="text-center" colspan="1" style="color:red "></td>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -271,32 +280,38 @@
                                             <thead>
                                                 <!--第一層-->
                                                 <tr>
-                                                    <!--<td class="text-center" colspan="1"></td>-->
                                                     <th class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">性別</th>
                                                     <th class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">會員數</th>
-                                                    <td class="text-center" colspan="7">年齡層數量/佔比</td>
+                                                    <td class="text-center" colspan="14">年齡層數量/佔比</td>
                                                 </tr>
                                                 <!--第二層-->
                                                 <tr>
-                                                    <th class="text-center">17歲以下</th>
-                                                    <th class="text-center">18~30歲</th>
-                                                    <th class="text-center">31~40歲</th>
-                                                    <th class="text-center">41~50歲</th>
-                                                    <th class="text-center">51~60歲</th>
-                                                    <th class="text-center">61~70歲</th>
-                                                    <th class="text-center">71歲以上</th>
+                                                    <th class="text-center" colspan="2">17歲以下</th>
+                                                    <th class="text-center" colspan="2">18~30歲</th>
+                                                    <th class="text-center" colspan="2">31~40歲</th>
+                                                    <th class="text-center" colspan="2">41~50歲</th>
+                                                    <th class="text-center" colspan="2">51~60歲</th>
+                                                    <th class="text-center" colspan="2">61~70歲</th>
+                                                    <th class="text-center" colspan="2">71歲以上</th>
                                                 </tr>
                                                 <!--第三層-->
                                                 <tr>
                                                     <td class="text-center" colspan="1">總數</td>
-                                                    <td id="td1" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td2" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td3" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td4" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td5" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td6" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td7" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td8" colspan="1" style="text-align: right; color: red "></td>
+                                                    <td id="td1_MW" colspan="1" style="text-align: right;color:red "></td>
+                                                    <td id="td2_MW" colspan="1" style="text-align: right;color:red "></td>
+                                                    <td id="td2p_MW" class="text-center" colspan="1" style="color:red "></td>
+                                                    <td id="td3_MW" colspan="1" style="text-align: right;color:red "></td>
+                                                    <td id="td3p_MW" class="text-center" colspan="1" style="color:red "></td>
+                                                    <td id="td4_MW" colspan="1" style="text-align: right;color:red "></td>
+                                                    <td id="td4p_MW" class="text-center" colspan="1" style="color:red "></td>
+                                                    <td id="td5_MW" colspan="1" style="text-align: right;color:red "></td>
+                                                    <td id="td5p_MW" class="text-center" colspan="1" style="color:red "></td>
+                                                    <td id="td6_MW" colspan="1" style="text-align: right;color:red "></td>
+                                                    <td id="td6p_MW" class="text-center" colspan="1" style="color:red "></td>
+                                                    <td id="td7_MW" colspan="1" style="text-align: right;color:red "></td>
+                                                    <td id="td7p_MW" class="text-center" colspan="1" style="color:red "></td>
+                                                    <td id="td8_MW" colspan="1" style="text-align: right; color: red "></td>
+                                                    <td id="td8p_MW" class="text-center" colspan="1" style="color: red "></td>
                                                 </tr>
                                             </thead>
                                             <tbody>

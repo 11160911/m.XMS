@@ -10608,8 +10608,15 @@ namespace SVMAdmin.Controllers
                     sql += "group by a.VIP_FaceID; ";
                     //明細資料
                     sqlD = "select v1.id + '-' + w.st_sname id,isnull(v1.Cnt1,0)Cnt1,isnull(v2.Cnt2,0)Cnt2, ";
-                    sqlD += "isnull(v3.Cnt3,0)Cnt3,isnull(v4.Cnt4,0)Cnt4,isnull(v5.Cnt5,0)Cnt5,isnull(v6.Cnt6,0)Cnt6, ";
-                    sqlD += "isnull(v7.Cnt7,0)Cnt7,isnull(v8.Cnt8,0)Cnt8,isnull(v9.Cnt9,0)Cnt9,isnull(v10.Cnt10,0)Cnt10 ";
+                    sqlD += "case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v2.Cnt2,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt2p, ";
+                    sqlD += "isnull(v3.Cnt3,0)Cnt3,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v3.Cnt3,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt3p, ";
+                    sqlD += "isnull(v4.Cnt4,0)Cnt4,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v4.Cnt4,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt4p, ";
+                    sqlD += "isnull(v5.Cnt5,0)Cnt5,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v5.Cnt5,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt5p, ";
+                    sqlD += "isnull(v6.Cnt6,0)Cnt6,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v6.Cnt6,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt6p, ";
+                    sqlD += "isnull(v7.Cnt7,0)Cnt7,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v7.Cnt7,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt7p, ";
+                    sqlD += "isnull(v8.Cnt8,0)Cnt8,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v8.Cnt8,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt8p, ";
+                    sqlD += "isnull(v9.Cnt9,0)Cnt9,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v9.Cnt9,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt9p, ";
+                    sqlD += "isnull(v10.Cnt10,0)Cnt10,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v10.Cnt10,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt10p ";
                     sqlD += "from #v1 v1 ";
                     sqlD += "left join #v2 v2 on v1.id=v2.id ";
                     sqlD += "left join #v3 v3 on v1.id=v3.id ";
@@ -10626,9 +10633,16 @@ namespace SVMAdmin.Controllers
                     dtE.TableName = "dtE";
                     ds.Tables.Add(dtE);
                     //彙總資料
-                    sqlH = "select sum(isnull(v1.Cnt1,0))SumCnt1,sum(isnull(v2.Cnt2,0))SumCnt2, ";
-                    sqlH += "sum(isnull(v3.Cnt3,0))SumCnt3,sum(isnull(v4.Cnt4,0))SumCnt4,sum(isnull(v5.Cnt5,0))SumCnt5,sum(isnull(v6.Cnt6,0))SumCnt6, ";
-                    sqlH += "sum(isnull(v7.Cnt7,0))SumCnt7,sum(isnull(v8.Cnt8,0))SumCnt8,sum(isnull(v9.Cnt9,0))SumCnt9,sum(isnull(v10.Cnt10,0))SumCnt10 ";
+                    sqlH = "select sum(isnull(v1.Cnt1,0))SumCnt1, ";
+                    sqlH += "sum(isnull(v2.Cnt2,0))SumCnt2,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v2.Cnt2,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt2p, ";
+                    sqlH += "sum(isnull(v3.Cnt3,0))SumCnt3,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v3.Cnt3,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt3p, ";
+                    sqlH += "sum(isnull(v4.Cnt4,0))SumCnt4,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v4.Cnt4,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt4p, ";
+                    sqlH += "sum(isnull(v5.Cnt5,0))SumCnt5,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v5.Cnt5,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt5p, ";
+                    sqlH += "sum(isnull(v6.Cnt6,0))SumCnt6,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v6.Cnt6,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt6p, ";
+                    sqlH += "sum(isnull(v7.Cnt7,0))SumCnt7,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v7.Cnt7,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt7p, ";
+                    sqlH += "sum(isnull(v8.Cnt8,0))SumCnt8,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v8.Cnt8,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt8p, ";
+                    sqlH += "sum(isnull(v9.Cnt9,0))SumCnt9,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v9.Cnt9,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt9p, ";
+                    sqlH += "sum(isnull(v10.Cnt10,0))SumCnt10,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v10.Cnt10,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt10p ";
                     sqlH += "from #v1 v1 ";
                     sqlH += "left join #v2 v2 on v1.id=v2.id ";
                     sqlH += "left join #v3 v3 on v1.id=v3.id ";
@@ -10717,8 +10731,15 @@ namespace SVMAdmin.Controllers
                     sql += "group by a.City; ";
                     //明細資料
                     sqlD = "select v1.id,isnull(v1.Cnt1,0)Cnt1,isnull(v2.Cnt2,0)Cnt2, ";
-                    sqlD += "isnull(v3.Cnt3,0)Cnt3,isnull(v4.Cnt4,0)Cnt4,isnull(v5.Cnt5,0)Cnt5,isnull(v6.Cnt6,0)Cnt6, ";
-                    sqlD += "isnull(v7.Cnt7,0)Cnt7,isnull(v8.Cnt8,0)Cnt8,isnull(v9.Cnt9,0)Cnt9,isnull(v10.Cnt10,0)Cnt10 ";
+                    sqlD += "case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v2.Cnt2,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt2p, ";
+                    sqlD += "isnull(v3.Cnt3,0)Cnt3,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v3.Cnt3,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt3p, ";
+                    sqlD += "isnull(v4.Cnt4,0)Cnt4,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v4.Cnt4,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt4p, ";
+                    sqlD += "isnull(v5.Cnt5,0)Cnt5,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v5.Cnt5,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt5p, ";
+                    sqlD += "isnull(v6.Cnt6,0)Cnt6,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v6.Cnt6,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt6p, ";
+                    sqlD += "isnull(v7.Cnt7,0)Cnt7,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v7.Cnt7,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt7p, ";
+                    sqlD += "isnull(v8.Cnt8,0)Cnt8,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v8.Cnt8,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt8p, ";
+                    sqlD += "isnull(v9.Cnt9,0)Cnt9,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v9.Cnt9,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt9p, ";
+                    sqlD += "isnull(v10.Cnt10,0)Cnt10,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v10.Cnt10,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt10p ";
                     sqlD += "from #v1 v1 ";
                     sqlD += "left join #v2 v2 on v1.id=v2.id ";
                     sqlD += "left join #v3 v3 on v1.id=v3.id ";
@@ -10735,9 +10756,16 @@ namespace SVMAdmin.Controllers
                     dtE.TableName = "dtE";
                     ds.Tables.Add(dtE);
                     //彙總資料
-                    sqlH = "select sum(isnull(v1.Cnt1,0))SumCnt1,sum(isnull(v2.Cnt2,0))SumCnt2, ";
-                    sqlH += "sum(isnull(v3.Cnt3,0))SumCnt3,sum(isnull(v4.Cnt4,0))SumCnt4,sum(isnull(v5.Cnt5,0))SumCnt5,sum(isnull(v6.Cnt6,0))SumCnt6, ";
-                    sqlH += "sum(isnull(v7.Cnt7,0))SumCnt7,sum(isnull(v8.Cnt8,0))SumCnt8,sum(isnull(v9.Cnt9,0))SumCnt9,sum(isnull(v10.Cnt10,0))SumCnt10 ";
+                    sqlH = "select sum(isnull(v1.Cnt1,0))SumCnt1, ";
+                    sqlH += "sum(isnull(v2.Cnt2,0))SumCnt2,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v2.Cnt2,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt2p, ";
+                    sqlH += "sum(isnull(v3.Cnt3,0))SumCnt3,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v3.Cnt3,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt3p, ";
+                    sqlH += "sum(isnull(v4.Cnt4,0))SumCnt4,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v4.Cnt4,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt4p, ";
+                    sqlH += "sum(isnull(v5.Cnt5,0))SumCnt5,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v5.Cnt5,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt5p, ";
+                    sqlH += "sum(isnull(v6.Cnt6,0))SumCnt6,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v6.Cnt6,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt6p, ";
+                    sqlH += "sum(isnull(v7.Cnt7,0))SumCnt7,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v7.Cnt7,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt7p, ";
+                    sqlH += "sum(isnull(v8.Cnt8,0))SumCnt8,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v8.Cnt8,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt8p, ";
+                    sqlH += "sum(isnull(v9.Cnt9,0))SumCnt9,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v9.Cnt9,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt9p, ";
+                    sqlH += "sum(isnull(v10.Cnt10,0))SumCnt10,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v10.Cnt10,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt10p ";
                     sqlH += "from #v1 v1 ";
                     sqlH += "left join #v2 v2 on v1.id=v2.id ";
                     sqlH += "left join #v3 v3 on v1.id=v3.id ";
@@ -10812,8 +10840,13 @@ namespace SVMAdmin.Controllers
                     sql += "group by a.VIP_MW; ";
                     //明細資料
                     sqlD = "select case v1.id when '0' then '男性' when '1' then '女性' end as id,isnull(v1.Cnt1,0)Cnt1,isnull(v2.Cnt2,0)Cnt2, ";
-                    sqlD += "isnull(v3.Cnt3,0)Cnt3,isnull(v4.Cnt4,0)Cnt4,isnull(v5.Cnt5,0)Cnt5,isnull(v6.Cnt6,0)Cnt6, ";
-                    sqlD += "isnull(v7.Cnt7,0)Cnt7,isnull(v8.Cnt8,0)Cnt8 ";
+                    sqlD += "case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v2.Cnt2,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt2p, ";
+                    sqlD += "isnull(v3.Cnt3,0)Cnt3,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v3.Cnt3,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt3p, ";
+                    sqlD += "isnull(v4.Cnt4,0)Cnt4,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v4.Cnt4,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt4p, ";
+                    sqlD += "isnull(v5.Cnt5,0)Cnt5,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v5.Cnt5,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt5p, ";
+                    sqlD += "isnull(v6.Cnt6,0)Cnt6,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v6.Cnt6,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt6p, ";
+                    sqlD += "isnull(v7.Cnt7,0)Cnt7,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v7.Cnt7,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt7p, ";
+                    sqlD += "isnull(v8.Cnt8,0)Cnt8,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v8.Cnt8,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt8p ";
                     sqlD += "from #v1 v1 ";
                     sqlD += "left join #v2 v2 on v1.id=v2.id ";
                     sqlD += "left join #v3 v3 on v1.id=v3.id ";
@@ -10828,9 +10861,14 @@ namespace SVMAdmin.Controllers
                     dtE.TableName = "dtE";
                     ds.Tables.Add(dtE);
                     //彙總資料
-                    sqlH = "select sum(isnull(v1.Cnt1,0))SumCnt1,sum(isnull(v2.Cnt2,0))SumCnt2, ";
-                    sqlH += "sum(isnull(v3.Cnt3,0))SumCnt3,sum(isnull(v4.Cnt4,0))SumCnt4,sum(isnull(v5.Cnt5,0))SumCnt5,sum(isnull(v6.Cnt6,0))SumCnt6, ";
-                    sqlH += "sum(isnull(v7.Cnt7,0))SumCnt7,sum(isnull(v8.Cnt8,0))SumCnt8 ";
+                    sqlH = "select sum(isnull(v1.Cnt1,0))SumCnt1, ";
+                    sqlH += "sum(isnull(v2.Cnt2,0))SumCnt2,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v2.Cnt2,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt2p, ";
+                    sqlH += "sum(isnull(v3.Cnt3,0))SumCnt3,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v3.Cnt3,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt3p, ";
+                    sqlH += "sum(isnull(v4.Cnt4,0))SumCnt4,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v4.Cnt4,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt4p, ";
+                    sqlH += "sum(isnull(v5.Cnt5,0))SumCnt5,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v5.Cnt5,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt5p, ";
+                    sqlH += "sum(isnull(v6.Cnt6,0))SumCnt6,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v6.Cnt6,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt6p, ";
+                    sqlH += "sum(isnull(v7.Cnt7,0))SumCnt7,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v7.Cnt7,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt7p, ";
+                    sqlH += "sum(isnull(v8.Cnt8,0))SumCnt8,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v8.Cnt8,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt8p ";
                     sqlH += "from #v1 v1 ";
                     sqlH += "left join #v2 v2 on v1.id=v2.id ";
                     sqlH += "left join #v3 v3 on v1.id=v3.id ";

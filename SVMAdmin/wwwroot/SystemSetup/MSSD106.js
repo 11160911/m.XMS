@@ -18,46 +18,62 @@
         grdM = new DynGrid(
             {
                 table_lement: $('#tbQuery')[0],
-                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9 label-align", "tdCol10 label-align", "tdCol11 label-align"],
+                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 text-center", "tdCol5 label-align", "tdCol6 text-center", "tdCol7 label-align", "tdCol8 text-center", "tdCol9 label-align", "tdCol10 text-center", "tdCol11 label-align", "tdCol12 text-center", "tdCol13 label-align", "tdCol14 text-center", "tdCol15 label-align", "tdCol16 text-center", "tdCol17 label-align", "tdCol18 text-center", "tdCol19 label-align", "tdCol20 text-center"],
                 fields_info: [
                     { type: "Text", name: "ID", style: "" },
                     { type: "TextAmt", name: "Cnt1"},
-                    { type: "TextAmt", name: "Cnt2"},
-                    { type: "TextAmt", name: "Cnt3"},
-                    { type: "TextAmt", name: "Cnt4"},
-                    { type: "TextAmt", name: "Cnt5"},
-                    { type: "TextAmt", name: "Cnt6"},
+                    { type: "TextAmt", name: "Cnt2" },
+                    { type: "TextAmt", name: "Cnt2p" },
+                    { type: "TextAmt", name: "Cnt3" },
+                    { type: "TextAmt", name: "Cnt3p" },
+                    { type: "TextAmt", name: "Cnt4" },
+                    { type: "TextAmt", name: "Cnt4p" },
+                    { type: "TextAmt", name: "Cnt5" },
+                    { type: "TextAmt", name: "Cnt5p" },
+                    { type: "TextAmt", name: "Cnt6" },
+                    { type: "TextAmt", name: "Cnt6p" },
                     { type: "TextAmt", name: "Cnt7" },
+                    { type: "TextAmt", name: "Cnt7p" },
                     { type: "TextAmt", name: "Cnt8" },
+                    { type: "TextAmt", name: "Cnt8p" },
                     { type: "TextAmt", name: "Cnt9" },
-                    { type: "TextAmt", name: "Cnt10" }
+                    { type: "TextAmt", name: "Cnt9p" },
+                    { type: "TextAmt", name: "Cnt10" },
+                    { type: "TextAmt", name: "Cnt10p" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
-                sortable: "Y"
+                sortable: "N"
             }
         );
 
         grdMW = new DynGrid(
             {
                 table_lement: $('#tbQueryMW')[0],
-                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9 label-align"],
+                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 text-center", "tdCol5 label-align", "tdCol6 text-center", "tdCol7 label-align", "tdCol8 text-center", "tdCol9 label-align", "tdCol10 text-center", "tdCol11 label-align", "tdCol12 text-center", "tdCol13 label-align", "tdCol14 text-center", "tdCol15 label-align", "tdCol16 text-center"],
                 fields_info: [
                     { type: "Text", name: "ID", style: "" },
                     { type: "TextAmt", name: "Cnt1" },
                     { type: "TextAmt", name: "Cnt2" },
+                    { type: "TextAmt", name: "Cnt2p" },
                     { type: "TextAmt", name: "Cnt3" },
+                    { type: "TextAmt", name: "Cnt3p" },
                     { type: "TextAmt", name: "Cnt4" },
+                    { type: "TextAmt", name: "Cnt4p" },
                     { type: "TextAmt", name: "Cnt5" },
+                    { type: "TextAmt", name: "Cnt5p" },
                     { type: "TextAmt", name: "Cnt6" },
+                    { type: "TextAmt", name: "Cnt6p" },
                     { type: "TextAmt", name: "Cnt7" },
-                    { type: "TextAmt", name: "Cnt8" }
+                    { type: "TextAmt", name: "Cnt7p" },
+                    { type: "TextAmt", name: "Cnt8" },
+                    { type: "TextAmt", name: "Cnt8p" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
-                sortable: "Y"
+                sortable: "N"
             }
         );
 
@@ -922,52 +938,84 @@ Timerset(sessionStorage.getItem('isamcomp'));
                     $(".modal-backdrop").remove();
                     $('#tbQuery thead td#td1').html('');
                     $('#tbQuery thead td#td2').html('');
+                    $('#tbQuery thead td#td2p').html('');
                     $('#tbQuery thead td#td3').html('');
+                    $('#tbQuery thead td#td3p').html('');
                     $('#tbQuery thead td#td4').html('');
+                    $('#tbQuery thead td#td4p').html('');
                     $('#tbQuery thead td#td5').html('');
+                    $('#tbQuery thead td#td5p').html('');
                     $('#tbQuery thead td#td6').html('');
+                    $('#tbQuery thead td#td6p').html('');
                     $('#tbQuery thead td#td7').html('');
+                    $('#tbQuery thead td#td7p').html('');
                     $('#tbQuery thead td#td8').html('');
+                    $('#tbQuery thead td#td8p').html('');
                     $('#tbQuery thead td#td9').html('');
+                    $('#tbQuery thead td#td9p').html('');
                     $('#tbQuery thead td#td10').html('');
+                    $('#tbQuery thead td#td10p').html('');
                     return;
                 }
                 var dtH = data.getElementsByTagName('dtH');
                 $('#tbQuery thead td#td1').html(parseInt(GetNodeValue(dtH[0], "SumCnt1")).toLocaleString('en-US'));
                 $('#tbQuery thead td#td2').html(parseInt(GetNodeValue(dtH[0], "SumCnt2")).toLocaleString('en-US'));
+                $('#tbQuery thead td#td2p').html(GetNodeValue(dtH[0], "SumCnt2p"));
                 $('#tbQuery thead td#td3').html(parseInt(GetNodeValue(dtH[0], "SumCnt3")).toLocaleString('en-US'));
+                $('#tbQuery thead td#td3p').html(GetNodeValue(dtH[0], "SumCnt3p"));
                 $('#tbQuery thead td#td4').html(parseInt(GetNodeValue(dtH[0], "SumCnt4")).toLocaleString('en-US'));
+                $('#tbQuery thead td#td4p').html(GetNodeValue(dtH[0], "SumCnt4p"));
                 $('#tbQuery thead td#td5').html(parseInt(GetNodeValue(dtH[0], "SumCnt5")).toLocaleString('en-US'));
+                $('#tbQuery thead td#td5p').html(GetNodeValue(dtH[0], "SumCnt5p"));
                 $('#tbQuery thead td#td6').html(parseInt(GetNodeValue(dtH[0], "SumCnt6")).toLocaleString('en-US'));
+                $('#tbQuery thead td#td6p').html(GetNodeValue(dtH[0], "SumCnt6p"));
                 $('#tbQuery thead td#td7').html(parseInt(GetNodeValue(dtH[0], "SumCnt7")).toLocaleString('en-US'));
+                $('#tbQuery thead td#td7p').html(GetNodeValue(dtH[0], "SumCnt7p"));
                 $('#tbQuery thead td#td8').html(parseInt(GetNodeValue(dtH[0], "SumCnt8")).toLocaleString('en-US'));
+                $('#tbQuery thead td#td8p').html(GetNodeValue(dtH[0], "SumCnt8p"));
                 $('#tbQuery thead td#td9').html(parseInt(GetNodeValue(dtH[0], "SumCnt9")).toLocaleString('en-US'));
+                $('#tbQuery thead td#td9p').html(GetNodeValue(dtH[0], "SumCnt9p"));
                 $('#tbQuery thead td#td10').html(parseInt(GetNodeValue(dtH[0], "SumCnt10")).toLocaleString('en-US'));
+                $('#tbQuery thead td#td10p').html(GetNodeValue(dtH[0], "SumCnt10p"));
             }
             else if ($('#rdoMW').prop('checked')) {
                 grdMW.BindData(dtE);
                 if (dtE.length == 0) {
                     DyAlert("無符合資料!");
                     $(".modal-backdrop").remove();
-                    $('#tbQueryMW thead td#td1').html('');
-                    $('#tbQueryMW thead td#td2').html('');
-                    $('#tbQueryMW thead td#td3').html('');
-                    $('#tbQueryMW thead td#td4').html('');
-                    $('#tbQueryMW thead td#td5').html('');
-                    $('#tbQueryMW thead td#td6').html('');
-                    $('#tbQueryMW thead td#td7').html('');
-                    $('#tbQueryMW thead td#td8').html('');
+                    $('#tbQueryMW thead td#td1_MW').html('');
+                    $('#tbQueryMW thead td#td2_MW').html('');
+                    $('#tbQueryMW thead td#td2p_MW').html('');
+                    $('#tbQueryMW thead td#td3_MW').html('');
+                    $('#tbQueryMW thead td#td3p_MW').html('');
+                    $('#tbQueryMW thead td#td4_MW').html('');
+                    $('#tbQueryMW thead td#td4p_MW').html('');
+                    $('#tbQueryMW thead td#td5_MW').html('');
+                    $('#tbQueryMW thead td#td5p_MW').html('');
+                    $('#tbQueryMW thead td#td6_MW').html('');
+                    $('#tbQueryMW thead td#td6p_MW').html('');
+                    $('#tbQueryMW thead td#td7_MW').html('');
+                    $('#tbQueryMW thead td#td7p_MW').html('');
+                    $('#tbQueryMW thead td#td8_MW').html('');
+                    $('#tbQueryMW thead td#td8p_MW').html('');
                     return;
                 }
                 var dtH = data.getElementsByTagName('dtH');
-                $('#tbQueryMW thead td#td1').html(parseInt(GetNodeValue(dtH[0], "SumCnt1")).toLocaleString('en-US'));
-                $('#tbQueryMW thead td#td2').html(parseInt(GetNodeValue(dtH[0], "SumCnt2")).toLocaleString('en-US'));
-                $('#tbQueryMW thead td#td3').html(parseInt(GetNodeValue(dtH[0], "SumCnt3")).toLocaleString('en-US'));
-                $('#tbQueryMW thead td#td4').html(parseInt(GetNodeValue(dtH[0], "SumCnt4")).toLocaleString('en-US'));
-                $('#tbQueryMW thead td#td5').html(parseInt(GetNodeValue(dtH[0], "SumCnt5")).toLocaleString('en-US'));
-                $('#tbQueryMW thead td#td6').html(parseInt(GetNodeValue(dtH[0], "SumCnt6")).toLocaleString('en-US'));
-                $('#tbQueryMW thead td#td7').html(parseInt(GetNodeValue(dtH[0], "SumCnt7")).toLocaleString('en-US'));
-                $('#tbQueryMW thead td#td8').html(parseInt(GetNodeValue(dtH[0], "SumCnt8")).toLocaleString('en-US'));
+                $('#tbQueryMW thead td#td1_MW').html(parseInt(GetNodeValue(dtH[0], "SumCnt1")).toLocaleString('en-US'));
+                $('#tbQueryMW thead td#td2_MW').html(parseInt(GetNodeValue(dtH[0], "SumCnt2")).toLocaleString('en-US'));
+                $('#tbQueryMW thead td#td2p_MW').html(GetNodeValue(dtH[0], "SumCnt2p"));
+                $('#tbQueryMW thead td#td3_MW').html(parseInt(GetNodeValue(dtH[0], "SumCnt3")).toLocaleString('en-US'));
+                $('#tbQueryMW thead td#td3p_MW').html(GetNodeValue(dtH[0], "SumCnt3p"));
+                $('#tbQueryMW thead td#td4_MW').html(parseInt(GetNodeValue(dtH[0], "SumCnt4")).toLocaleString('en-US'));
+                $('#tbQueryMW thead td#td4p_MW').html(GetNodeValue(dtH[0], "SumCnt4p"));
+                $('#tbQueryMW thead td#td5_MW').html(parseInt(GetNodeValue(dtH[0], "SumCnt5")).toLocaleString('en-US'));
+                $('#tbQueryMW thead td#td5p_MW').html(GetNodeValue(dtH[0], "SumCnt5p"));
+                $('#tbQueryMW thead td#td6_MW').html(parseInt(GetNodeValue(dtH[0], "SumCnt6")).toLocaleString('en-US'));
+                $('#tbQueryMW thead td#td6p_MW').html(GetNodeValue(dtH[0], "SumCnt6p"));
+                $('#tbQueryMW thead td#td7_MW').html(parseInt(GetNodeValue(dtH[0], "SumCnt7")).toLocaleString('en-US'));
+                $('#tbQueryMW thead td#td7p_MW').html(GetNodeValue(dtH[0], "SumCnt7p"));
+                $('#tbQueryMW thead td#td8_MW').html(parseInt(GetNodeValue(dtH[0], "SumCnt8")).toLocaleString('en-US'));
+                $('#tbQueryMW thead td#td8p_MW').html(GetNodeValue(dtH[0], "SumCnt8p"));
             }
         }
     };
