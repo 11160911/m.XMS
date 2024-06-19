@@ -33,7 +33,7 @@
         grdLookUp_ActivityCode = new DynGrid(
             {
                 table_lement: $('#tbDataLookup_ActivityCode')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5"],
+                class_collection: ["tdCol1 text-center", "tdCol2", "tdCol3", "tdCol4", "tdCol5"],
                 fields_info: [
                     { type: "radio", name: "chkset", style: "width:16px;height:16px" },
                     { type: "Text", name: "ActivityCode", style: "" },
@@ -50,7 +50,7 @@
         grdLookUp_ShopNo = new DynGrid(
             {
                 table_lement: $('#tbDataLookup_ShopNo')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3"],
+                class_collection: ["tdCol1 text-center", "tdCol2", "tdCol3"],
                 fields_info: [
                     { type: "radio", name: "chkset", style: "width:16px;height:16px" },
                     { type: "Text", name: "ST_ID", style: "" },
@@ -65,7 +65,7 @@
         grdLookUp_ShopNo_EDM = new DynGrid(
             {
                 table_lement: $('#tbDataLookup_ShopNo_EDM')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3"],
+                class_collection: ["tdCol1 text-center", "tdCol2", "tdCol3"],
                 fields_info: [
                     { type: "checkbox", name: "chkset", style: "width:16px;height:16px" },
                     { type: "Text", name: "ST_ID", style: "" },
@@ -80,7 +80,7 @@
         grdLookUp_PSNO_EDM = new DynGrid(
             {
                 table_lement: $('#tbDataLookup_PSNO_EDM')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6"],
+                class_collection: ["tdCol1 text-center", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6"],
                 fields_info: [
                     { type: "radio", name: "chkset", style: "width:16px;height:16px" },
                     { type: "Text", name: "PS_NO", style: "" },

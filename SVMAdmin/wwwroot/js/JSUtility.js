@@ -268,11 +268,11 @@ var DynGrid = function (option) {
         var fdName = fdinfo.name;
         if (fdType != "Text" & fdType != "TextAmt")
             return;
-        var srot = "asc";
+        var srot = "desc";
         var em = $(td).find('em');
         if (em.length > 0) {
-            if (em.hasClass("fa-sort-asc"))
-                srot = "desc";
+            if (em.hasClass("fa-sort-desc"))
+                srot = "asc";
         }
         var tr = $(td).closest('tr');
         $(tr).find('em').remove();

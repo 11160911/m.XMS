@@ -80,7 +80,7 @@
         grdLookUp_VIPFaceID = new DynGrid(
             {
                 table_lement: $('#tbLookup_VIPFaceID')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3"],
+                class_collection: ["tdCol1 text-center", "tdCol2", "tdCol3"],
                 fields_info: [
                     { type: "checkbox", name: "chkset", style: "width:16px;height:16px" },
                     { type: "Text", name: "ST_ID", style: "" },
@@ -96,7 +96,7 @@
         grdLookUp_City = new DynGrid(
             {
                 table_lement: $('#tbLookup_City')[0],
-                class_collection: ["tdCol1", "tdCol2"],
+                class_collection: ["tdCol1 text-center", "tdCol2"],
                 fields_info: [
                     { type: "checkbox", name: "chkset", style: "width:16px;height:16px" },
                     { type: "Text", name: "City", style: "" }
@@ -957,7 +957,9 @@ Timerset(sessionStorage.getItem('isamcomp'));
                     $('#tbQuery thead td#td10p').html('');
                     return;
                 }
+
                 var dtH = data.getElementsByTagName('dtH');
+                $('#lblVIPQty').html('會員總數 : ' + parseInt(GetNodeValue(dtH[0], "SumCnt1")).toLocaleString('en-US'));
                 $('#tbQuery thead td#td1').html(parseInt(GetNodeValue(dtH[0], "SumCnt1")).toLocaleString('en-US'));
                 $('#tbQuery thead td#td2').html(parseInt(GetNodeValue(dtH[0], "SumCnt2")).toLocaleString('en-US'));
                 $('#tbQuery thead td#td2p').html(GetNodeValue(dtH[0], "SumCnt2p"));
@@ -1001,6 +1003,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                     return;
                 }
                 var dtH = data.getElementsByTagName('dtH');
+                $('#lblVIPQty').html('會員總數 : ' + parseInt(GetNodeValue(dtH[0], "SumCnt1")).toLocaleString('en-US'));
                 $('#tbQueryMW thead td#td1_MW').html(parseInt(GetNodeValue(dtH[0], "SumCnt1")).toLocaleString('en-US'));
                 $('#tbQueryMW thead td#td2_MW').html(parseInt(GetNodeValue(dtH[0], "SumCnt2")).toLocaleString('en-US'));
                 $('#tbQueryMW thead td#td2p_MW').html(GetNodeValue(dtH[0], "SumCnt2p"));

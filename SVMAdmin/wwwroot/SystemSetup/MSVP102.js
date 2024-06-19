@@ -38,7 +38,7 @@
         grdLookUp_VIPFaceID_SendSet = new DynGrid(
             {
                 table_lement: $('#tbDataLookup_VIPFaceID_SendSet')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3"],
+                class_collection: ["tdCol1 text-center", "tdCol2", "tdCol3"],
                 fields_info: [
                     { type: "checkbox", name: "chkset", style: "width:16px;height:16px" },
                     { type: "Text", name: "ST_ID", style: "" },
@@ -77,7 +77,7 @@
         grdDMSel = new DynGrid(
             {
                 table_lement: $('#tbDMSel')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7", "tdCol8", "tdCol9 label-align"],
+                class_collection: ["tdCol1 text-center", "tdCol2", "tdCol3", "tdCol4", "tdCol5", "tdCol6", "tdCol7", "tdCol8", "tdCol9 label-align"],
                 fields_info: [
                     { type: "radio", name: "chkset", style: "width:15px;height:15px" },
                     { type: "Text", name: "DocNo" },

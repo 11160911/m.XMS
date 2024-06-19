@@ -118,7 +118,7 @@
         grdLookUp_ActivityCode = new DynGrid(
             {
                 table_lement: $('#tbDataLookup_ActivityCode')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5"],
+                class_collection: ["tdCol1 text-center", "tdCol2", "tdCol3", "tdCol4", "tdCol5"],
                 fields_info: [
                     { type: "radio", name: "chkset", style: "width:16px;height:16px" },
                     { type: "Text", name: "ActivityCode", style: "" },

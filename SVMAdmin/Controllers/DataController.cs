@@ -10614,6 +10614,7 @@ namespace SVMAdmin.Controllers
                 //會員總數
                 sql = "Select Count(*) as VIPCntAll ";
                 sql += "from EDDMS.dbo.VIP v (nolock) ";
+                sql += "inner join EDDMS.dbo.Warehouse w (nolock) on v.vip_faceid=w.ST_ID and w.Companycode=v.Companycode and w.ST_Type not in('2','3') ";
                 sql += "Where v.Companycode='" + uu.CompanyId + "' ";
                 DataTable dtV = PubUtility.SqlQry(sql, uu, "SYS");
                 dtV.TableName = "dtV";
@@ -10626,6 +10627,7 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+
 
         [Route("SystemSetup/MSSD106Query")]
         public ActionResult SystemSetup_MSSD106Query()
@@ -10671,7 +10673,8 @@ namespace SVMAdmin.Controllers
                 }
 
                 //店別
-                if (Flag == "S") {
+                if (Flag == "S")
+                {
                     //總數
                     sql = "select a.VIP_FaceID ID,Count(*)Cnt1 into #v1 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
@@ -10762,7 +10765,7 @@ namespace SVMAdmin.Controllers
                     sqlD += "left join #v8 v8 on v1.id=v8.id ";
                     sqlD += "left join #v9 v9 on v1.id=v9.id ";
                     sqlD += "left join #v10 v10 on v1.id=v10.id ";
-                    sqlD += "inner join WarehouseWeb w (nolock) on v1.id=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                    sqlD += "inner join EDDMS.dbo.Warehouse w (nolock) on v1.id=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
                     sqlD += "order by v1.id ";
                     DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
                     dtE.TableName = "dtE";
@@ -10788,13 +10791,14 @@ namespace SVMAdmin.Controllers
                     sqlH += "left join #v8 v8 on v1.id=v8.id ";
                     sqlH += "left join #v9 v9 on v1.id=v9.id ";
                     sqlH += "left join #v10 v10 on v1.id=v10.id ";
-                    sqlH += "inner join WarehouseWeb w (nolock) on v1.id=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                    sqlH += "inner join EDDMS.dbo.Warehouse w (nolock) on v1.id=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
                     DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
                     dtH.TableName = "dtH";
                     ds.Tables.Add(dtH);
                 }
                 //縣市
-                else if (Flag == "C") {
+                else if (Flag == "C")
+                {
                     //總數
                     sql = "select a.City ID,Count(*)Cnt1 into #v1 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
@@ -10917,7 +10921,8 @@ namespace SVMAdmin.Controllers
                     ds.Tables.Add(dtH);
                 }
                 //性別
-                else if (Flag == "M") {
+                else if (Flag == "M")
+                {
                     //總數
                     sql = "select a.VIP_MW ID,Count(*)Cnt1 into #v1 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
