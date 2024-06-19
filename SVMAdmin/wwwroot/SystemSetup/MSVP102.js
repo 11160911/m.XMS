@@ -953,11 +953,11 @@ Timerset(sessionStorage.getItem('isamcomp'));
         var obchkedtd = $('#tbDataLookup_VIPFaceID_SendSet .checkbox:checked');
         chkedRow = obchkedtd.length.toString();   //本次已勾選的總筆數
         if (chkedRow == 0) {
+            $('#lblVIPFaceIDCnt_SendSet').html('');
+            $('#lblVIPFaceIDName_SendSet').html('');
+            chkVIPFaceID = "";
+            $('#btLpOK_VIPFaceID_SendSet').prop('disabled', false);
             $('#modal_Lookup_VIPFaceID_SendSet').modal('hide');
-            DyAlert("請選擇店櫃資料!", function () {
-                $('#btLpOK_VIPFaceID_SendSet').prop('disabled', false);
-                $('#modal_Lookup_VIPFaceID_SendSet').modal('show');
-            });
             return
         } else {
             $('#lblVIPFaceIDCnt_SendSet').html(chkedRow)

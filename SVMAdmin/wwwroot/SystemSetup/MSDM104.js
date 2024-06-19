@@ -1402,11 +1402,10 @@
         var obchkedtd = $('#tbDataLookup_ShopNo_EDM .checkbox:checked');
         chkedRow = obchkedtd.length.toString();   //本次已勾選的總筆數
         if (chkedRow == 0) {
+            $('#lblShopNoCnt_EDM').html('')
+            chkShopNo = "";
+            $('#btLpOK_ShopNo_EDM').prop('disabled', false);
             $('#modal_Lookup_ShopNo_EDM').modal('hide');
-            DyAlert("請選擇店倉資料!", function () {
-                $('#btLpOK_ShopNo_EDM').prop('disabled', false);
-                $('#modal_Lookup_ShopNo_EDM').modal('show');
-            });
             return
         } else {
             $('#lblShopNoCnt_EDM').html(chkedRow)

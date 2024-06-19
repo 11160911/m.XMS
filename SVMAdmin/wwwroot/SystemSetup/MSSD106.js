@@ -1090,11 +1090,11 @@ Timerset(sessionStorage.getItem('isamcomp'));
         var obchkedtd = $('#tbLookup_VIPFaceID .checkbox:checked');
         chkedRow = obchkedtd.length.toString();   //本次已勾選的總筆數
         if (chkedRow == 0) {
+            $('#lblVIPFaceIDCnt').html('');
+            $('#lblVIPFaceIDName').html('');
+            chkVIPFaceID = "";
+            $('#btLpOK_VIPFaceID').prop('disabled', false);
             $('#modal_Lookup_VIPFaceID').modal('hide');
-            DyAlert("請選擇店櫃資料!", function () {
-                $('#btLpOK_VIPFaceID').prop('disabled', false);
-                $('#modal_Lookup_VIPFaceID').modal('show');
-            });
             return
         } else {
             $('#lblVIPFaceIDCnt').html(chkedRow)
@@ -1192,11 +1192,11 @@ Timerset(sessionStorage.getItem('isamcomp'));
         var obchkedtd = $('#tbLookup_City .checkbox:checked');
         chkedRow = obchkedtd.length.toString();   //本次已勾選的總筆數
         if (chkedRow == 0) {
+            $('#lblCityCnt').html('');
+            $('#lblCityName').html('');
+            chkCity = "";
+            $('#btLpOK_City').prop('disabled', false);
             $('#modal_Lookup_City').modal('hide');
-            DyAlert("請選擇店櫃資料!", function () {
-                $('#btLpOK_City').prop('disabled', false);
-                $('#modal_Lookup_City').modal('show');
-            });
             return
         } else {
             $('#lblCityCnt').html(chkedRow)
