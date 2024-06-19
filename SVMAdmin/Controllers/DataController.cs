@@ -10007,20 +10007,29 @@ namespace SVMAdmin.Controllers
                 //    }
                 //    sql += "Order by a.StartDate ";
                 //}
-                sql += "select * from MSData2Web h join SetEDMHWeb b on h.companycode=b.companycode and h.PS_NO=b.PS_NO ";
-                sql += "Where h.Companycode='" + uu.CompanyId + "' and b.EDMType='E' and isnull(b.ApproveDate,'')<>'";
+                sql = "Select a.PS_NO,a.ActivityCode,b.PS_Name,a.StartDate + '~' + a.EndDate PSDate, ";
+                sql += "sum(isnull(a.issueQty,0)) SendCnt,sum(isnull(a.ReclaimQty,0)) BackCnt, ";
+                sql += "case when sum(isnull(a.issueQty,0))=0 then format(0,'0.0%') else format(cast(sum(isnull(a.ReclaimQty,0)) as Float)/cast(sum(isnull(a.issueQty,0)) as Float),'0.0%') end as BackPer, ";
+                sql += "sum(isnull(a.ShareAmt,0)) Discount,sum(isnull(a.ReclaimCash,0)) Cash,sum(isnull(a.ReclaimTrans,0)) SalesCnt, ";
+                sql += "case when sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(sum(isnull(a.ReclaimCash,0))/sum(isnull(a.ReclaimTrans,0)),0) end as Balance ";
+                sql += "From MsData2Web a (nolock) ";
+                sql += "inner join PromoteSCouponHWeb b (nolock) on a.PS_NO=b.PS_NO and b.Companycode=a.Companycode ";
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                sql += "and b.PS_NO in (Select PS_NO From SetEDMHWeb (nolock) Where EDMType='E' and isnull(ApproveDate,'')<>'' and Companycode='" + uu.CompanyId + "') ";
                 if (ActivityCode.SqlQuote() != "")//活動代號
                 {
-                    sql += "and h.ActivityCode like '%" + ActivityCode.SqlQuote() + "%' ";
+                    sql += "and b.ActivityCode like '%" + ActivityCode.SqlQuote() + "%' ";
                 }
                 if (PSName.SqlQuote() != "")//活動名稱
                 {
-                    sql += "and h.PS_Name like '%" + PSName.SqlQuote() + "%' ";
+                    sql += "and b.PS_Name like '%" + PSName.SqlQuote() + "%' ";
                 }
                 if (PSDate.SqlQuote() != "")     //活動日期
                 {
-                    sql += "and '" + PSDate.SqlQuote() + "' between StartDate and EndDate ";
+                    sql += "and '" + PSDate.SqlQuote() + "' between a.StartDate and a.EndDate ";
                 }
+                sql += "group by a.PS_NO,a.ActivityCode,b.PS_Name,a.StartDate,a.EndDate ";
+                sql += "Order by a.StartDate desc";
 
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
@@ -10095,6 +10104,245 @@ namespace SVMAdmin.Controllers
             catch (Exception err)
             {
                 dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSSD101_Query_PS_Step1")]
+        public ActionResult SystemSetup_MSSD101_Query_PS_Step1()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "Query_PS_Step1OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string PS_NO = rq["PS_NO"];
+                string ActivityCode = rq["ActivityCode"];
+                string Type_Step1 = rq["Type_Step1"];
+                bool AllShop = false;
+                string SDate = rq["PSDateS"];
+                string EDate = rq["PSDateE"];
+                string sql = "";
+
+                //彙總資料
+                sql = "Select a.PS_NO,Sum(isnull(a.issueQty,0)) SendCnt,Sum(isnull(a.ReclaimQty,0)) BackCnt, ";
+                sql += "case when Sum(isnull(a.issueQty,0))=0 then format(0,'0.0%') else format(cast(Sum(isnull(a.ReclaimQty,0)) as Float)/cast(Sum(isnull(a.issueQty,0)) as Float),'0.0%') end as BackPer, ";
+                sql += "Sum(isnull(a.ShareAmt,0)) Discount,sum(isnull(a.ReclaimCash,0)) Cash,sum(isnull(a.ReclaimTrans,0)) Cnt, ";
+                sql += "case when sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(sum(isnull(a.ReclaimCash,0))/sum(isnull(a.ReclaimTrans,0)),0) end as VIPPer, ";
+                sql += "sum(isnull(a.TotalCash,0)) SalesCash,sum(isnull(a.TotalTrans,0)) SalesCNT, ";
+                sql += "case when sum(isnull(a.TotalTrans,0))=0 then 0 else Round(sum(isnull(a.TotalCash,0))/sum(isnull(a.TotalTrans,0)),0) end as SalesPer ";
+                sql += "From MSData2Web a (nolock) ";
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                if (PS_NO != "")
+                {
+                    sql += "and a.PS_NO='" + PS_NO + "' ";
+                }
+                sql += "group by a.PS_NO ";
+                DataTable dtHeadSum = PubUtility.SqlQry(sql, uu, "SYS");
+                dtHeadSum.TableName = "dtHeadSum";
+                ds.Tables.Add(dtHeadSum);
+
+                if (Type_Step1 == "S")  //店明細
+                {
+                    sql = "Select a.ShopNo + '-' + b.ST_SName as ShopNO,Sum(isnull(a.issueQty,0)) SendCnt, ";
+                    sql += "Sum(isnull(a.ReclaimQty,0)) BackCnt, ";
+                    sql += "case when Sum(isnull(a.issueQty,0))=0 then format(0,'0.0%') else format(cast(Sum(isnull(a.ReclaimQty,0)) as Float)/cast(Sum(isnull(a.issueQty,0)) as Float),'0.0%') end as BackPer, ";
+                    sql += "Sum(isnull(a.ShareAmt,0)) Discount,Sum(isnull(a.ReclaimCash,0)) Cash,Sum(isnull(a.ReclaimTrans,0)) VIPCNT, ";
+                    sql += "case when Sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(Sum(isnull(a.ReclaimCash,0))/Sum(isnull(a.ReclaimTrans,0)),0) end as VIPPer, ";
+                    sql += "Sum(isnull(a.TotalCash,0)) SalesCash,Sum(isnull(a.TotalTrans,0)) SalesCNT, ";
+                    sql += "case when Sum(isnull(a.TotalTrans,0))=0 then 0 else Round(Sum(isnull(a.TotalCash,0))/Sum(isnull(a.TotalTrans,0)),0) end as SalesPer ";
+
+                    sql += "From MSData2Web a (nolock) ";
+                    sql += "left join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode ";
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                    if (PS_NO != "")
+                    {
+                        sql += "and a.PS_NO='" + PS_NO + "' ";
+                    }
+                    sql += "group by a.ShopNo,b.ST_SName ";
+                    sql += "Order by a.ShopNo ";
+                    DataTable dtGridData = PubUtility.SqlQry(sql, uu, "SYS");
+                    dtGridData.TableName = "dtGridData";
+                    ds.Tables.Add(dtGridData);
+                }
+                else if (Type_Step1 == "D") //日期明細
+                {
+                    //日期區間表
+                    string sqlD = "WITH dates([Date]) AS( ";
+                    sqlD += "SELECT convert(DATE, '" + SDate + "') AS[Date] ";
+                    sqlD += "UNION ALL ";
+                    sqlD += "SELECT dateadd(day, 1, [Date]) FROM dates WHERE[Date] < ";
+                    if (Convert.ToDateTime(EDate) >= DateTime.Now)  //結束日大於今日,只取到昨天
+                        sqlD += "convert(nvarchar(10),dateadd(DAY,-1,getdate()),111)";
+                    else
+                        sqlD += "'" + EDate + "'";
+                    sqlD += " ) ";
+                    sqlD += "SELECT convert(nvarchar(10),[date],111) AS[id] ";
+                    sqlD += "into #dates ";
+                    sqlD += "FROM dates ";
+                    sqlD += "[date] OPTION(MAXRECURSION 32767); ";
+                    //明細資料
+                    sql = "Select a.id Salesdate,Sum(isnull(b.ReclaimQty,0)) BackCnt,Sum(isnull(b.ShareAmt,0)) Discount, ";
+                    sql += "Sum(isnull(b.ReclaimCash,0)) Cash,Sum(isnull(b.ReclaimTrans,0)) VIPCNT, ";
+                    sql += "case when Sum(isnull(b.ReclaimTrans,0))=0 then 0 else Round(Sum(isnull(b.ReclaimCash,0)) / Sum(isnull(b.ReclaimTrans,0)), 0) end as VIPPer, ";
+                    sql += "Sum(isnull(b.TotalCash,0)) SalesCash,Sum(isnull(b.TotalTrans,0)) SalesCNT, ";
+                    sql += "case when Sum(isnull(b.TotalTrans,0))=0 then 0 else Round(Sum(isnull(b.TotalCash,0)) / Sum(isnull(b.TotalTrans,0)), 0) end as SalesPer ";
+
+                    sql += "From #dates a ";
+                    sql += "left join MSData1Web b (nolock) on a.id=b.SalesDate and b.Companycode='" + uu.CompanyId + "' ";
+                    if (PS_NO != "")
+                    {
+                        sql += "and b.PS_NO='" + PS_NO + "' ";
+                    }
+                    sql += "group by a.id ";
+                    sql += "order by a.id ";
+                    DataTable dtGridData = PubUtility.SqlQry(sqlD + sql, uu, "SYS");
+                    dtGridData.TableName = "dtGridData";
+                    ds.Tables.Add(dtGridData);
+                }
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSSD101_Query_Step2")]
+        public ActionResult SystemSetup_MSSD101_Query_Step2()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "Query_Step2OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string PS_NO = rq["PS_NO"];
+                string ID = rq["ID"];
+                string OpenDate1 = rq["OpenDate1"];
+                string OpenDate2 = rq["OpenDate2"];
+                string Flag = rq["Flag"];
+
+                string sql = "";
+                string sqlD = "";
+
+                //店櫃
+                if (Flag == "S")
+                {
+                    //日期區間表
+                    sqlD = "WITH dates([Date]) AS( ";
+                    sqlD += "SELECT convert(DATE, '" + OpenDate1 + "') AS[Date] ";
+                    sqlD += "UNION ALL ";
+                    sqlD += "SELECT dateadd(day, 1, [Date]) FROM dates WHERE[Date] < ";
+                    if (Convert.ToDateTime(OpenDate2) >= DateTime.Now)  //結束日大於今日,只取到昨天
+                        sqlD += "convert(nvarchar(10),dateadd(DAY,-1,getdate()),111)";
+                    else
+                        sqlD += "'" + OpenDate2 + "'";
+                    sqlD += " ) ";
+                    sqlD += "SELECT convert(nvarchar(10),[date],111) AS[id] ";
+                    sqlD += "into #dates ";
+                    sqlD += "FROM dates ";
+                    sqlD += "[date] OPTION(MAXRECURSION 32767); ";
+                    //明細資料
+                    sql = "Select a.id SalesDate,sum(isnull(b.ReclaimQty,0))ReclaimQty,sum(isnull(b.ShareAmt,0))ShareAmt, ";
+                    sql += "sum(isnull(b.ReclaimCash,0))ReclaimCash,sum(isnull(b.ReclaimTrans,0))ReclaimTrans, ";
+                    sql += "case when sum(isnull(b.ReclaimTrans,0))=0 then 0 else Round(sum(isnull(b.ReclaimCash,0))/sum(isnull(b.ReclaimTrans,0)),0) end as ReclaimPrice, ";
+                    sql += "sum(isnull(b.TotalCash,0))TotalCash,sum(isnull(b.TotalTrans,0))TotalTrans, ";
+                    sql += "case when sum(isnull(b.TotalTrans,0))=0 then 0 else Round(sum(isnull(b.TotalCash,0))/sum(isnull(b.TotalTrans,0)),0) end as TotalPrice ";
+                    sql += "From #dates a ";
+                    sql += "left join MSData1Web b (nolock) on a.id=b.SalesDate and b.Companycode='" + uu.CompanyId + "' ";
+                    if (PS_NO != "")
+                    {
+                        sql += "and b.PS_NO='" + PS_NO + "' ";
+                    }
+                    if (ID != "")
+                    {
+                        sql += "and b.ShopNo='" + ID + "' ";
+                    }
+                    sql += "group by a.id ";
+                    sql += "order by a.id ";
+                    DataTable dtE = PubUtility.SqlQry(sqlD + sql, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+
+                    //彙總資料
+                    sql = "Select sum(isnull(b.ReclaimQty,0))SumReclaimQty,sum(isnull(b.ShareAmt,0))SumShareAmt, ";
+                    sql += "sum(isnull(b.ReclaimCash,0))SumReclaimCash,sum(isnull(b.ReclaimTrans,0))SumReclaimTrans, ";
+                    sql += "case when sum(isnull(b.ReclaimTrans,0))=0 then 0 else Round(sum(isnull(b.ReclaimCash,0))/sum(isnull(b.ReclaimTrans,0)),0) end as SumReclaimPrice, ";
+                    sql += "sum(isnull(b.TotalCash,0))SumTotalCash,sum(isnull(b.TotalTrans,0))SumTotalTrans, ";
+                    sql += "case when sum(isnull(b.TotalTrans,0))=0 then 0 else Round(sum(isnull(b.TotalCash,0))/sum(isnull(b.TotalTrans,0)),0) end as SumTotalPrice ";
+                    sql += "From #dates a ";
+                    sql += "left join MSData1Web b (nolock) on a.id=b.SalesDate and b.Companycode='" + uu.CompanyId + "' ";
+                    if (PS_NO != "")
+                    {
+                        sql += "and b.PS_NO='" + PS_NO + "' ";
+                    }
+                    if (ID != "")
+                    {
+                        sql += "and b.ShopNo='" + ID + "' ";
+                    }
+                    DataTable dtSumQ = PubUtility.SqlQry(sqlD + sql, uu, "SYS");
+                    dtSumQ.TableName = "dtSumQ";
+                    ds.Tables.Add(dtSumQ);
+                }
+                //日期
+                else if (Flag == "D")
+                {
+                    //明細資料
+                    sql = "Select a.ShopNo + '-' + b.ST_SName as Shop,sum(isnull(a.ReclaimQty,0))ReclaimQty, ";
+                    sql += "sum(isnull(a.ShareAmt,0))ShareAmt,sum(isnull(a.ReclaimCash,0))ReclaimCash, ";
+                    sql += "sum(isnull(a.ReclaimTrans,0))ReclaimTrans, ";
+                    sql += "case when sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(sum(isnull(a.ReclaimCash,0)) / sum(isnull(a.ReclaimTrans,0)), 0) end as ReclaimPrice, ";
+                    sql += "sum(isnull(a.TotalCash,0))TotalCash,sum(isnull(a.TotalTrans,0))TotalTrans, ";
+                    sql += "case when sum(isnull(a.TotalTrans,0))=0 then 0 else Round(sum(isnull(a.TotalCash,0)) / sum(isnull(a.TotalTrans,0)), 0) end as TotalPrice ";
+                    sql += "From MSData1Web a (nolock) ";
+                    sql += "left join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode ";
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                    if (PS_NO != "")
+                    {
+                        sql += "and a.PS_NO='" + PS_NO + "' ";
+                    }
+                    if (ID != "")
+                    {
+                        sql += "and a.SalesDate='" + ID + "' ";
+                    }
+                    sql += "group by a.ShopNo,b.ST_SName ";
+                    sql += "Order by a.ShopNo ";
+                    DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+                    //彙總資料
+                    sql = "Select sum(isnull(a.ReclaimQty,0))SumReclaimQty, ";
+                    sql += "sum(isnull(a.ShareAmt,0))SumShareAmt,sum(isnull(a.ReclaimCash,0))SumReclaimCash, ";
+                    sql += "sum(isnull(a.ReclaimTrans,0))SumReclaimTrans, ";
+                    sql += "case when sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(sum(isnull(a.ReclaimCash,0)) / sum(isnull(a.ReclaimTrans,0)), 0) end as SumReclaimPrice, ";
+                    sql += "sum(isnull(a.TotalCash,0))SumTotalCash,sum(isnull(a.TotalTrans,0))SumTotalTrans, ";
+                    sql += "case when sum(isnull(a.TotalTrans,0))=0 then 0 else Round(sum(isnull(a.TotalCash,0)) / sum(isnull(a.TotalTrans,0)), 0) end as SumTotalPrice ";
+                    sql += "From MSData1Web a (nolock) ";
+                    sql += "left join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode ";
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                    if (PS_NO != "")
+                    {
+                        sql += "and a.PS_NO='" + PS_NO + "' ";
+                    }
+                    if (ID != "")
+                    {
+                        sql += "and a.SalesDate='" + ID + "' ";
+                    }
+                    sql += "group by a.ShopNo,b.ST_SName ";
+                    sql += "Order by a.ShopNo ";
+                    DataTable dtSumQ = PubUtility.SqlQry(sql, uu, "SYS");
+                    dtSumQ.TableName = "dtSumQ";
+                    ds.Tables.Add(dtSumQ);
+                }
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
                 dtMessage.Rows[0][1] = err.Message;
             }
             return PubUtility.DatasetXML(ds);
@@ -10271,133 +10519,6 @@ namespace SVMAdmin.Controllers
             catch (Exception err)
             {
                 dtMessage.Rows[0][0] = "Exception";
-                dtMessage.Rows[0][1] = err.Message;
-            }
-            return PubUtility.DatasetXML(ds);
-        }
-
-        [Route("SystemSetup/MSSD101_Query_PS_Step1")]
-        public ActionResult SystemSetup_MSSD101_Query_PS_Step1()
-        {
-            UserInfo uu = PubUtility.GetCurrentUser(this);
-            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "Query_PS_Step1OK", "" });
-            DataTable dtMessage = ds.Tables["dtMessage"];
-            try
-            {
-                IFormCollection rq = HttpContext.Request.Form;
-                string PS_NO = rq["PS_NO"];
-                string ActivityCode = rq["ActivityCode"];
-                string Type_Step1 = rq["Type_Step1"];
-                bool AllShop = false;
-                string SDate = "";
-                string EDate = "";
-                string sql = "";
-                //取是全店還是部份店
-                sql = "select whnoflag,StartDate,EndDate from PromoteSCouponHWeb  where  Companycode='" + uu.CompanyId + "' and  PS_NO='" + PS_NO + "'";
-                DataTable dtSetWhno = PubUtility.SqlQry(sql, uu, "SYS");
-                if (dtSetWhno.Rows[0][0].ToString() == "Y")
-                {
-                    AllShop = true;
-                }
-                SDate = dtSetWhno.Rows[0][1].ToString();
-                EDate = dtSetWhno.Rows[0][2].ToString();
-
-                //總計-券
-                sql = "select distinct a.CompanyCode,PCHDocNO,ShopNo,SalesDate,MachineNo,ChrNO,Cash into #tmpSCouponH ";
-                sql += "from PromoteSCouponHWeb (nolock) h join PromoteSLogHWeb a on  h.Companycode=a.CompanyCode and h.PS_No=a.PCHDocNO ";
-                sql += "where  h.Companycode='" + uu.CompanyId + "' and h.PS_NO='" + PS_NO + "';";
-                if (Type_Step1 == "S")  //店
-                    sql += "select h.PS_NO, SendCnt, c.BackCnt, format(convert(numeric(10,1), c.BackCnt)/SendCnt,'0.0%') BackPer,c.discount,tc.cash,tc.cnt,convert(int,tc.cash)/tc.cnt VIPPer ";
-                else
-                    sql += "select h.PS_NO, c.BackCnt, c.discount,tc.cash,tc.cnt,convert(int,tc.cash)/tc.cnt VIPPer ";
-
-                sql += "from PromoteSCouponHWeb h(nolock) ";
-                sql += "join (select Companycode,PS_NO,count(*) SendCnt from SetEDMVIP_VIPWeb(nolock) group by Companycode,PS_NO )S on s.Companycode=h.CompanyCode and s.PS_NO=h.PS_No ";
-                sql += "join (select a.Companycode,a.PCHDocNO,count(b.CouponNo) BackCnt,sum(ActualDiscount) discount from PromoteSLogHWeb a(nolock) ";
-                sql += "join PromoteSLogCardNoWeb b(nolock) on a.CompanyCode=b.CompanyCode and a.DocNo=b.DocNo group by a.Companycode,a.PCHDocNO) C ";
-                sql += "on  h.Companycode=c.CompanyCode and h.PS_No=c.PCHDocNO ";
-                sql += "join (select CompanyCode,PCHDocNO,sum(cash) cash,count(*) Cnt from #tmpSCouponH group by CompanyCode,PCHDocNO) tc on h.Companycode=tc.CompanyCode and h.PS_No=tc.PCHDocNO ";
-                sql += "where  h.Companycode='" + uu.CompanyId + "' and h.PS_NO='" + PS_NO + "';";
-
-                sql += "drop table #tmpSCouponH;";
-                DataTable dtHeadCoupon = PubUtility.SqlQry(sql, uu, "SYS");
-                dtHeadCoupon.TableName = "dtHeadCoupon";
-                ds.Tables.Add(dtHeadCoupon);
-                //總計-銷售
-                sql = "select isnull(sum(cash),0) SalesCash,isnull(sum(RecS),0) SalesCNT,isnull(convert(int,sum(cash)/sum(RecS)),0) SalesPer from SalesHWeb(nolock) ";
-                sql += " where Companycode='" + uu.CompanyId + "' and OpenDate between '" + SDate + "' and '" + EDate + "'";
-                if (AllShop == false)
-                {
-                    sql += " and Shopno in (select ShopNo  from PromoteSCouponShopWeb  where  Companycode='" + uu.CompanyId + "' and  PS_NO='" + PS_NO + "')";
-                }
-                DataTable dtHeadSales = PubUtility.SqlQry(sql, uu, "SYS");
-                dtHeadSales.TableName = "dtHeadSales";
-                ds.Tables.Add(dtHeadSales);
-
-                if (Type_Step1 == "S")  //店明細
-                {
-                    sql = "select w.CompanyCode, ST_ID +'-'+ ST_Sname ShopNO,isnull(SendCnt,0) SendCnt,";
-                    sql += "isnull(BackCnt,0) BackCnt,isnull(format(convert(numeric(10,1),BackCnt)*100/SendCnt,'0.0'),0) BackPer,isnull(Discount,0) Discount";
-                    sql += ",isnull(Cash,0) Cash,isnull(VIPCNT,0) VIPCNT,isnull(convert(int,Cash)/VIPCNT,0) VIPPer";
-                    sql += ",isnull(SalesCash,0) SalesCash,isnull(SalesCNT,0) SalesCNT,isnull(convert(int,SalesCash)/convert(int,SalesCNT),0) SalesPer ";
-                    sql += "from WarehouseWeb w ";
-                    if (AllShop != true)
-                    {
-                        sql += "join PromoteSCouponShopWeb s on w.CompanyCode=s.CompanyCode and w.st_id=s.ShopNo ";
-                    }
-                    sql += "LEFT JOIN (select a.Companycode,b.VIP_faceID,count(*) SendCnt from SetEDMVIP_VIPWeb a(nolock) join eddms.dbo.VIP b(nolock) on a.CompanyCode=b.CompanyCode and a.VIP_ID2=b.vip_ID2 ";
-                    sql += "where  a.Companycode='" + uu.CompanyId + "'  and PS_NO='" + PS_NO + "' group by a.Companycode,b.VIP_faceID) a on a.CompanyCode=w.CompanyCode and a.VIP_faceID=w.ST_ID ";
-                    sql += "LEFT JOIN (select h.CompanyCode,h.ShopNO,count(distinct CouponNo)BackCnt ,sum(h.ActualDiscount) Discount from PromoteSLogCardNoWeb h(nolock) join SetEDMVIP_VIPWeb c(nolock) on h.CompanyCode=c.CompanyCode and h.CouponNo=c.CouponID ";
-                    sql += "where h.Companycode='" + uu.CompanyId + "'  and c.PS_NO='" + PS_NO + "' group by h.CompanyCode,h.ShopNO) b on w.CompanyCode=b.CompanyCode and w.ST_ID=b.ShopNO ";
-                    sql += "LEFT JOIN (select Companycode,ShopNO,sum(Cash) Cash,count(ShopNO+SalesDate+MachineNo+ChrNO) VIPCNT from PromoteSLogHWeb h(nolock) where  PCHDocNO='" + PS_NO + "' group by Companycode,ShopNO) c ";
-                    sql += "on w.CompanyCode = c.CompanyCode and w.ST_ID = c.ShopNO ";
-                    sql += "LEFT JOIN  (select CompanyCode,ShopNo,sum(Cash) SalesCash,sum(RecS) SalesCNT from SalesHWeb(nolock) where Companycode='" + uu.CompanyId + "' and OpenDate between '" + SDate + "' and  '" + EDate + "' ";
-                    sql += " group by CompanyCode,ShopNo) d on w.CompanyCode=d.CompanyCode and w.ST_ID=d.ShopNO ";
-                    sql += "where  w.Companycode='" + uu.CompanyId + "' ";
-                    if (AllShop != true)
-                    {
-                        sql += "and s.PS_No='" + PS_NO + "'";
-                    }
-                    else
-                    {
-                        sql += "and w.ST_OpenDay<>''";
-                    }
-                    DataTable dtGridData = PubUtility.SqlQry(sql, uu, "SYS");
-                    dtGridData.TableName = "dtGridData";
-                    ds.Tables.Add(dtGridData);
-                }
-                else if (Type_Step1 == "D") //日期明細
-                {
-                    sql = "WITH dates ([Date]) AS ( SELECT convert(DATE, '" + SDate + "') AS [Date]  UNION ALL  SELECT dateadd(day, 1, [Date])  FROM dates  WHERE [Date] < ";
-                    if (Convert.ToDateTime(EDate) >= DateTime.Now)  //結束日大於今日,只取到昨天
-                        sql += "convert(nvarchar(10),dateadd(DAY,-1,getdate()),111)";
-                    else
-                        sql += "'" + EDate + "'";
-                    sql +=  " ) ";
-                    sql += "SELECT e.PS_No,convert(nvarchar(10),[date],111)  AS [SalesDate] into #PSDate FROM dates d CROSS JOIN PromoteSCouponHWeb e ";
-                    sql += "where e.Companycode='" + uu.CompanyId + "' and PS_NO='" + PS_NO + "' ORDER BY PS_No, [date] OPTION (MAXRECURSION 32767)  ;";
-
-                    sql += "select  e.Salesdate , isnull(BackCnt,0) BackCnt,isnull(Discount,0) Discount,isnull(Cash,0) Cash,isnull(VIPCNT,0) VIPCNT";
-                    sql += ",isnull(convert(int,Cash)/VIPCNT,0) VIPPer,isnull(SalesCash,0) SalesCash,isnull(SalesCNT,0) SalesCNT,isnull(convert(int,SalesCash)/convert(int,SalesCNT),0) SalesPer ";
-                    sql += "from #PSDate e ";
-                    sql += "left join (select ph.PCHDocNO,ph.SalesDate,count(CouponNo) BackCnt,sum(ActualDiscount) Discount  from PromoteSLogCardNoWeb PC(nolock) ";
-                    sql += "join PromoteSLogHWeb PH(nolock) on pc.CompanyCode=ph.CompanyCode and pc.ShopNO=ph.ShopNO and pc.DocNo=ph.DocNo ";
-                    sql += "where ph.Companycode='" + uu.CompanyId + "'  and PH.PCHDocNO='" + PS_NO + "' group by ph.PCHDocNO,ph.SalesDate) SC ";
-                    sql += "on e.PS_No=sc.PCHDocNO and e.salesdate=sc.SalesDate ";
-                    sql += "LEFT JOIN (select PCHDocNO,SalesDate,sum(Cash) Cash,count(ShopNO+SalesDate+MachineNo+ChrNO) VIPCNT from PromoteSLogHWeb h(nolock) ";
-                    sql += "where Companycode='" + uu.CompanyId + "' and PCHDocNO='" + PS_NO + "' group by PCHDocNO,SalesDate) c on e.PS_No=c.PCHDocNO and e.SalesDate=c.SalesDate ";
-                    sql += "LEFT JOIN (select OpenDate,sum(Cash) SalesCash,sum(RecS) SalesCNT from SalesHWeb(nolock) where Companycode='" + uu.CompanyId + "'  and OpenDate between '" + SDate+"' and  '"+EDate+"' ";
-                    sql += "group by OpenDate) d on e.salesdate=d.OpenDate;";
-                    sql += "drop table #PSDate;";
-                    DataTable dtGridData = PubUtility.SqlQry(sql, uu, "SYS");
-                    dtGridData.TableName = "dtGridData";
-                    ds.Tables.Add(dtGridData);
-                }
-
-            }
-            catch (Exception err)
-            {
-                dtMessage.Rows[0][0] = err.Message;
                 dtMessage.Rows[0][1] = err.Message;
             }
             return PubUtility.DatasetXML(ds);

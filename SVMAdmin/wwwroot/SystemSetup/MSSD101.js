@@ -5,8 +5,8 @@
     let grdLookUp_DocNO;
 
     let grdM_Shop;
-    let grdM_PS_Step1;
-    let grdM_PS_Step1_2;
+    let grdM_PS_Step1_Shop;
+    let grdM_PS_Step1_Date;
     let grdM_PS_Shop_Step2;
     let grdM_PS_Date_Step2;
     let grdM_DM_Step1;
@@ -80,29 +80,7 @@
             }
         );
 
-        grdM_Shop = new DynGrid(
-            {
-                table_lement: $('#tbSales_Shop')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9"],
-                fields_info: [
-                    { type: "Text", name: "ID1", style: "display:none" },
-                    { type: "Text", name: "Name1" },
-                    { type: "TextAmt", name: "Cash1" },
-                    { type: "TextAmt", name: "Cnt1" },
-                    { type: "TextAmt", name: "CashCnt1" },
-                    { type: "TextAmt", name: "Cash2" },
-                    { type: "TextAmt", name: "Cnt2" },
-                    { type: "TextAmt", name: "CashCnt2" },
-                    { type: "Text", name: "VIPPercent" }
-                ],
-                //rows_per_page: 10,
-                method_clickrow: click_Row,
-                afterBind: InitModifyDeleteButton_Shop,
-                sortable: "N"
-            }
-        );
-
-        grdM_PS_Step1 = new DynGrid(
+        grdM_PS_Step1_Shop = new DynGrid(
             {
                 table_lement: $('#tbShop_PS_Step1')[0],
                 class_collection: ["tdCol1", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9 label-align", "tdCol10 label-align", "tdCol11 label-align"],
@@ -125,7 +103,7 @@
                 sortable: "Y"
             }
         );
-        grdM_PS_Step1_2 = new DynGrid(
+        grdM_PS_Step1_Date = new DynGrid(
             {
                 table_lement: $('#tbShop_PS_Step1_2')[0],
                 class_collection: ["tdCol1", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9 label-align"],
@@ -142,118 +120,53 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_Row,
-                afterBind: Init_Shop_Step1,
+                afterBind: Init_Date_Step1,
                 sortable: "Y"
             }
         );
 
         grdM_PS_Shop_Step2 = new DynGrid(
             {
-                table_lement: $('#tbSales_Area_Shop_Step2')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9"],
+                table_lement: $('#tbSales_Shop_Step2')[0],
+                class_collection: ["tdCol1", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9 label-align"],
                 fields_info: [
-                    { type: "Text", name: "ID1", style: "display:none" },
-                    { type: "Text", name: "Name1" },
-                    { type: "TextAmt", name: "Cash1" },
-                    { type: "TextAmt", name: "Cnt1" },
-                    { type: "TextAmt", name: "CashCnt1" },
-                    { type: "TextAmt", name: "Cash2" },
-                    { type: "TextAmt", name: "Cnt2" },
-                    { type: "TextAmt", name: "CashCnt2" },
-                    { type: "Text", name: "VIPPercent" }
+                    { type: "Text", name: "SalesDate", style: "text-align:center" },
+                    { type: "TextAmt", name: "ReclaimQty" },
+                    { type: "TextAmt", name: "ShareAmt" },
+                    { type: "TextAmt", name: "ReclaimCash" },
+                    { type: "TextAmt", name: "ReclaimTrans" },
+                    { type: "TextAmt", name: "ReclaimPrice" },
+                    { type: "TextAmt", name: "TotalCash" },
+                    { type: "TextAmt", name: "TotalTrans" },
+                    { type: "TextAmt", name: "TotalPrice" },
+
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_Row,
-                afterBind: InitModifyDeleteButton_Area_Shop_Step2,
-                sortable: "N"
+                afterBind: Init_Shop_Step2,
+                sortable: "Y"
             }
         );
 
         grdM_PS_Date_Step2 = new DynGrid(
             {
-                table_lement: $('#tbSales_Area_Date_Step2')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9"],
+                table_lement: $('#tbSales_Date_Step2')[0],
+                class_collection: ["tdCol1", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9"],
                 fields_info: [
-                    { type: "Text", name: "ID1", style: "display:none" },
-                    { type: "Text", name: "Name1" },
-                    { type: "TextAmt", name: "Cash1" },
-                    { type: "TextAmt", name: "Cnt1" },
-                    { type: "TextAmt", name: "CashCnt1" },
-                    { type: "TextAmt", name: "Cash2" },
-                    { type: "TextAmt", name: "Cnt2" },
-                    { type: "TextAmt", name: "CashCnt2" },
-                    { type: "Text", name: "VIPPercent" }
+                    { type: "Text", name: "Shop", style: "text-align:center" },
+                    { type: "TextAmt", name: "ReclaimQty" },
+                    { type: "TextAmt", name: "ShareAmt" },
+                    { type: "TextAmt", name: "ReclaimCash" },
+                    { type: "TextAmt", name: "ReclaimTrans" },
+                    { type: "TextAmt", name: "ReclaimPrice" },
+                    { type: "TextAmt", name: "TotalCash" },
+                    { type: "TextAmt", name: "TotalTrans" },
+                    { type: "TextAmt", name: "TotalPrice" },
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_Row,
-                afterBind: InitModifyDeleteButton_Area_Date_Step2,
-                sortable: "N"
-            }
-        );
-
-        grdM_Shop_Step1 = new DynGrid(
-            {
-                table_lement: $('#tbSales_Shop_Step1')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9"],
-                fields_info: [
-                    { type: "Text", name: "ID1", style: "display:none" },
-                    { type: "Text", name: "Name1" },
-                    { type: "TextAmt", name: "Cash1" },
-                    { type: "TextAmt", name: "Cnt1" },
-                    { type: "TextAmt", name: "CashCnt1" },
-                    { type: "TextAmt", name: "Cash2" },
-                    { type: "TextAmt", name: "Cnt2" },
-                    { type: "TextAmt", name: "CashCnt2" },
-                    { type: "Text", name: "VIPPercent" }
-                ],
-                //rows_per_page: 10,
-                method_clickrow: click_Row,
-                afterBind: InitModifyDeleteButton_Shop_Step1,
-                sortable: "N"
-            }
-        );
-
-        grdM_DM_Step1 = new DynGrid(
-            {
-                table_lement: $('#tbSales_Date_Step1')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9"],
-                fields_info: [
-                    { type: "Text", name: "ID1", style: "display:none" },
-                    { type: "Text", name: "Name1" },
-                    { type: "TextAmt", name: "Cash1" },
-                    { type: "TextAmt", name: "Cnt1" },
-                    { type: "TextAmt", name: "CashCnt1" },
-                    { type: "TextAmt", name: "Cash2" },
-                    { type: "TextAmt", name: "Cnt2" },
-                    { type: "TextAmt", name: "CashCnt2" },
-                    { type: "Text", name: "VIPPercent" }
-                ],
-                //rows_per_page: 10,
-                method_clickrow: click_Row,
-                afterBind: InitModifyDeleteButton_Date_Step1,
-                sortable: "N"
-            }
-        );
-
-        grdM_Date_Area_Step2 = new DynGrid(
-            {
-                table_lement: $('#tbSales_Date_Area_Step2')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9"],
-                fields_info: [
-                    { type: "Text", name: "ID1", style: "display:none" },
-                    { type: "Text", name: "Name1" },
-                    { type: "TextAmt", name: "Cash1" },
-                    { type: "TextAmt", name: "Cnt1" },
-                    { type: "TextAmt", name: "CashCnt1" },
-                    { type: "TextAmt", name: "Cash2" },
-                    { type: "TextAmt", name: "Cnt2" },
-                    { type: "TextAmt", name: "CashCnt2" },
-                    { type: "Text", name: "VIPPercent" }
-                ],
-                //rows_per_page: 10,
-                method_clickrow: click_Row,
-                afterBind: InitModifyDeleteButton_Date_Area_Step2,
-                sortable: "N"
+                afterBind: Init_Date_Step2,
+                sortable: "Y"
             }
         );
 
@@ -269,30 +182,22 @@
         //$('#tbISAM01Mod .fa-trash-o').click(function () { btPLUDelete_click(this) });
     }
 
-    let InitModifyDeleteButton_Shop = function () {
-    }
-
     let Init_Shop_Step1 = function () {
-        //$('#tbShop_PS_Step1 tbody tr td').click(function () { Shop_Step1_click(this) });
+        $('#tbShop_PS_Step1 tbody tr td').click(function () { Shop_Step1_click(this) });
+    }
+    let Init_Date_Step1 = function () {
+        $('#tbShop_PS_Step1_2 tbody tr td').click(function () { Date_Step1_click(this) });
+    }
+    let Init_Shop_Step2 = function () {
+
+        //$('#tbSales_Shop_Step2 tbody tr td').click(function () { Shop_Step2_click(this) });
     }
 
-    let InitModifyDeleteButton_Area_Shop_Step2 = function () {
+    let Init_Date_Step2 = function () {
+        //$('#tbSales_Date_Step2 tbody tr td').click(function () { Date_Step2_click(this) });
 
     }
 
-    let InitModifyDeleteButton_Area_Date_Step2 = function () {
-
-    }
-
-    let InitModifyDeleteButton_Shop_Step1 = function () {
-    }
-
-    let InitModifyDeleteButton_Date_Step1 = function () {
-        $('#tbSales_Date_Step1 tbody tr td').click(function () { Date_Step1_click(this) });
-    }
-
-    let InitModifyDeleteButton_Date_Area_Step2 = function () {
-    }
 
     let Step1_click = function (bt) {
         $('#tbQuery td').closest('tr').css('background-color', 'white');
@@ -301,25 +206,25 @@
         $('.msg-valid').hide();
         var node = $(grdM.ActiveRowTR()).prop('Record');
         $('#tbQuery td:contains(' + GetNodeValue(node, 'PS_NO') + ')').closest('tr').css('background-color', '#DEEBF7');
-      //var rdoAB = $('input[name="TypeCode"]:checked').val();
+        //var rdoAB = $('input[name="TypeCode"]:checked').val();
         //if (rdoAB == "DA") {
 
-            //$('#pgMSSD101Init').hide();
-            //if ($('#pgMSSD101_PS_STEP1').attr('hidden') == undefined) {
-            //    $('#pgMSSD101_PS_STEP1').show();
-            //}
-            //else {
-            //    $('#pgMSSD101_PS_STEP1').removeAttr('hidden');
-            //}
-            $('#modal_PS_Step1').modal('show');
-            $('#lblActivityCode_Step1').html(GetNodeValue(node, 'ActivityCode'));
-            $('#lblPSDate_Step1').html(GetNodeValue(node, 'PSDate'));
-            $('#lblPSName_Step1').html(GetNodeValue(node, 'PS_Name'));
-            $('#lblPSNO_Step1').html(GetNodeValue(node, 'PS_No'));
-            $('#rdoShop_PS_Step1').prop('checked', true);
-            setTimeout(function () {
-                Query_PS_Step1_click();
-            }, 500);
+        //$('#pgMSSD101Init').hide();
+        //if ($('#pgMSSD101_PS_STEP1').attr('hidden') == undefined) {
+        //    $('#pgMSSD101_PS_STEP1').show();
+        //}
+        //else {
+        //    $('#pgMSSD101_PS_STEP1').removeAttr('hidden');
+        //}
+        $('#modal_PS_Step1').modal('show');
+        $('#lblActivityCode_Step1').html(GetNodeValue(node, 'ActivityCode'));
+        $('#lblPSDate_Step1').html(GetNodeValue(node, 'PSDate'));
+        $('#lblPSName_Step1').html(GetNodeValue(node, 'PS_Name'));
+        $('#lblPSNO_Step1').html(GetNodeValue(node, 'PS_No'));
+        $('#rdoShop_PS_Step1').prop('checked', true);
+        setTimeout(function () {
+            Query_PS_Step1_click();
+        }, 500);
         //}
         //else if (rdoAB == "DB") {
         //    $('#lblOpenDate_Shop_Step1').html($('#OpenDateS').val() + "~" + $('#OpenDateE').val());
@@ -335,23 +240,18 @@
     let Shop_Step1_click = function (bt) {
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
-        /*  $('#modal_ISAM01PLUDel .modal-title').text('盤點資料單筆刪除');*/
-        var node = $(grdM_PS_Step1.ActiveRowTR()).prop('Record');
 
-        if ($('#rdoShop_PS_Step1').prop('checked')) {
-            $('#lblOpenDate_Area_Shop_Step2').html($('#lblOpenDate_Area_Step1').html());
-            $('#lblArea_Shop_Step2').html($('#lblArea_Step1').html() + '-' + GetNodeValue(node, 'ID1') + ' ' + GetNodeValue(node, 'Name1'));
-            $('#modal_Area_Shop_Step2').modal('show');
+        var node = $(grdM_PS_Step1_Shop.ActiveRowTR()).prop('Record');
+
+        if ($('#rdoShop_PS_Step1').prop('checked') == true) {
+            $('#lblShop_ActivityCode_Step2').html($('#lblActivityCode_Step1').html());
+            $('#lblShop_PSName_Step2').html($('#lblPSName_Step1').html());
+            $('#lblShop_Date_Step2').html($('#lblPSDate_Step1').html());
+            $('#lblShop_Step2').html(GetNodeValue(node, 'ShopNO'));
+            $('#modal_Shop_Step2').modal('show');
+
             setTimeout(function () {
-                Query_Area_Shop_Step2_click();
-            }, 500);
-        }
-        else if ($('#rdoDate_PS_Step1').prop('checked')) {
-            $('#lblOpenDate_Area_Date_Step2').html($('#lblOpenDate_Area_Step1').html());
-            $('#lblArea_Date_Step2').html($('#lblArea_Step1').html() + '-' + GetNodeValue(node, 'ID1'));
-            $('#modal_Area_Date_Step2').modal('show');
-            setTimeout(function () {
-                Query_Area_Date_Step2_click();
+                Query_Shop_Step2_click($('#lblPSNO_Step1').html(), GetNodeValue(node, 'ShopNO').split('-')[0]);
             }, 500);
         }
     };
@@ -359,23 +259,25 @@
     let Date_Step1_click = function (bt) {
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
-        var node = $(grdM_Date_Step1.ActiveRowTR()).prop('Record');
 
-        if ($('#rdoArea_Date_Step1').prop('checked')) {
-            $('#lblOpenDate_Date_Area_Step2').html($('#lblOpenDate_Date_Step1').html());
-            $('#lblDate_Area_Step2').html($('#lblDate_Step1').html() + '-' + GetNodeValue(node, 'ID1') + ' ' + GetNodeValue(node, 'Name1'));
-            $('#modal_Date_Area_Step2').modal('show');
+        var node = $(grdM_PS_Step1_Date.ActiveRowTR()).prop('Record');
+
+        if ($('#rdoDate_PS_Step1').prop('checked')) {
+            $('#lblDate_ActivityCode_Step2').html($('#lblActivityCode_Step1').html());
+            $('#lblDate_PSName_Step2').html($('#lblPSName_Step1').html());
+            $('#lblDate_Date_Step2').html($('#lblPSDate_Step1').html());
+            $('#lblOpenDate_Date_Step2').html(GetNodeValue(node, 'Salesdate'));
+            $('#modal_Date_Step2').modal('show');
             setTimeout(function () {
-                Query_Date_Area_Step2_click();
+                Query_Date_Step2_click($('#lblPSNO_Step1').html(), GetNodeValue(node, 'Salesdate'));
             }, 500);
         }
-        else if ($('#rdoShop_Date_Step1').prop('checked')) {
-        }
+
     };
 
-    let btExit_Shop_click = function (bt) {
-        $('#modal_Shop').modal('hide');
-    };
+    //let btExit_Shop_click = function (bt) {
+    //    $('#modal_Shop').modal('hide');
+    //};
     //各畫面的回上頁
     let btExit_PS_Step1_click = function (bt) {
         $('#modal_PS_Step1').modal('hide');
@@ -383,26 +285,26 @@
         //$('#pgMSSD101_PS_STEP1').hide();
     };
 
-    let btExit_Area_Shop_Step2_click = function (bt) {
-        $('#modal_Area_Shop_Step2').modal('hide');
+    let btExit_Shop_Step2_click = function (bt) {
+        $('#modal_Shop_Step2').modal('hide');
     };
 
-    let btExit_Area_Date_Step2_click = function (bt) {
-        $('#modal_Area_Date_Step2').modal('hide');
+    let btExit_Date_Step2_click = function (bt) {
+        $('#modal_Date_Step2').modal('hide');
     };
 
-    let btExit_Shop_Step1_click = function (bt) {
-        $('#modal_Shop_Step1').modal('hide');
-    };
+    //let btExit_Area_Date_Step2_click = function (bt) {
+    //    $('#modal_Area_Date_Step2').modal('hide');
+    //};
 
-    let btExit_Date_Step1_click = function (bt) {
-        $('#modal_Date_Step1').modal('hide');
-    };
+    //let btExit_Shop_Step1_click = function (bt) {
+    //    $('#modal_Shop_Step1').modal('hide');
+    //};
 
-    let btExit_Date_Area_Step2_click = function (bt) {
-        $('#modal_Date_Area_Step2').modal('hide');
-    };
-
+    //let btExit_Date_Step1_click = function (bt) {
+    //    $('#modal_Date_Step1').modal('hide');
+    //};
+    //未使用
     let ChkLogOut_1 = function (AfterChkLogOut_1) {
         var LoginDT = sessionStorage.getItem('LoginDT');
         var cData = {
@@ -1051,7 +953,6 @@
     };
     //#endregion
 
-    //未使用
     //#region 輸入盤點日期,分區
     let afterSearchBINWeb = function (data) {
         //EditMode = "Q";
@@ -1120,7 +1021,8 @@
         PostToWebApi({ url: "api/SystemSetup/SearchBINWeb", data: pData, success: afterSearchBINWeb });
     };
     //#endregion
-    //#region 
+
+    //#region
     let Query1_click = function () {
         if ($('#OpenDateS').val() == "" | $('#OpenDateS').val() == null) {
             DyAlert("請輸入日期!!", function () { $('#OpenDateS').focus() });
@@ -1276,11 +1178,15 @@
                 $('#tbShop_PS_Step1_2').show();
             }
             $('#tbShop_PS_Step1').hide();
-      }
+        }
+        var PSDateS = $('#lblPSDate_Step1').html().split('~')[0]
+        var PSDateE = $('#lblPSDate_Step1').html().split('~')[1]
 
         var pData = {
             PS_No: $('#lblPSNO_Step1').html(),
             ActivityCode: $('#lblActivityCode_Step1').html(),
+            PSDateS: PSDateS,
+            PSDateE: PSDateE,
             Type_Step1: Type_Step1
         }
         PostToWebApi({ url: "api/SystemSetup/MSSD101_Query_PS_Step1", data: pData, success: afterQuery_PS_Step1 });
@@ -1295,10 +1201,10 @@
 
             var dtGridData = data.getElementsByTagName('dtGridData');
             if ($('#rdoShop_PS_Step1').prop('checked')) {
-                grdM_PS_Step1.BindData(dtGridData);
+                grdM_PS_Step1_Shop.BindData(dtGridData);
             }
             else {
-                grdM_PS_Step1_2.BindData(dtGridData);
+                grdM_PS_Step1_Date.BindData(dtGridData);
             }
 
             if (dtGridData.length == 0) {
@@ -1307,6 +1213,35 @@
                 return;
             }
 
+            if ($('#rdoShop_PS_Step1').prop('checked')) {
+                var dtHeadSum = data.getElementsByTagName('dtHeadSum');
+                $('#tbShop_PS_Step1 thead td#td1S').html(parseInt(GetNodeValue(dtHeadSum[0], "SendCnt")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1 thead td#td2S').html(parseInt(GetNodeValue(dtHeadSum[0], "BackCnt")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1 thead td#td3S').html(GetNodeValue(dtHeadSum[0], "BackPer").toLocaleString('en-US'));
+                $('#tbShop_PS_Step1 thead td#td4S').html(parseInt(GetNodeValue(dtHeadSum[0], "Discount")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1 thead td#td5S').html(parseInt(GetNodeValue(dtHeadSum[0], "Cash")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1 thead td#td6S').html(parseInt(GetNodeValue(dtHeadSum[0], "Cnt")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1 thead td#td7S').html(parseInt(GetNodeValue(dtHeadSum[0], "VIPPer")).toLocaleString('en-US'));
+
+                $('#tbShop_PS_Step1 thead td#td8S').html(parseInt(GetNodeValue(dtHeadSum[0], "SalesCash")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1 thead td#td9S').html(parseInt(GetNodeValue(dtHeadSum[0], "SalesCNT")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1 thead td#td10S').html(parseInt(GetNodeValue(dtHeadSum[0], "SalesPer")).toLocaleString('en-US'));
+
+            }
+            else {
+
+                var dtHeadSum = data.getElementsByTagName('dtHeadSum');
+                $('#tbShop_PS_Step1_2 thead td#td1D').html(parseInt(GetNodeValue(dtHeadSum[0], "BackCnt")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1_2 thead td#td2D').html(parseInt(GetNodeValue(dtHeadSum[0], "Discount")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1_2 thead td#td3D').html(parseInt(GetNodeValue(dtHeadSum[0], "Cash")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1_2 thead td#td4D').html(parseInt(GetNodeValue(dtHeadSum[0], "Cnt")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1_2 thead td#td5D').html(parseInt(GetNodeValue(dtHeadSum[0], "VIPPer")).toLocaleString('en-US'));
+
+                $('#tbShop_PS_Step1_2 thead td#td6D').html(parseInt(GetNodeValue(dtHeadSum[0], "SalesCash")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1_2 thead td#td7D').html(parseInt(GetNodeValue(dtHeadSum[0], "SalesCNT")).toLocaleString('en-US'));
+                $('#tbShop_PS_Step1_2 thead td#td8D').html(parseInt(GetNodeValue(dtHeadSum[0], "SalesPer")).toLocaleString('en-US'));
+
+            }
             // //動態變動欄位
             // var heads = $('#tbShop_PS_Step1 thead tr td#Shop');
             // var coupon = $('#tbShop_PS_Step1 thead tr td#Coupon');
@@ -1328,271 +1263,99 @@
             //     $(coupon).attr('colspan',6);
             //   // $('tr td:nth-child(1)').hide();
             // }
-            if ($('#rdoShop_PS_Step1').prop('checked')) {
-                var dtHeadCoupon = data.getElementsByTagName('dtHeadCoupon');
-                $('#tbShop_PS_Step1 thead td#td1S').html(parseInt(GetNodeValue(dtHeadCoupon[0], "SendCnt")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1 thead td#td2S').html(parseInt(GetNodeValue(dtHeadCoupon[0], "BackCnt")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1 thead td#td3S').html(GetNodeValue(dtHeadCoupon[0], "BackPer").toLocaleString('en-US'));
-                $('#tbShop_PS_Step1 thead td#td4S').html(parseInt(GetNodeValue(dtHeadCoupon[0], "discount")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1 thead td#td5S').html(parseInt(GetNodeValue(dtHeadCoupon[0], "cash")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1 thead td#td6S').html(parseInt(GetNodeValue(dtHeadCoupon[0], "cnt")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1 thead td#td7S').html(parseInt(GetNodeValue(dtHeadCoupon[0], "VIPPer")).toLocaleString('en-US'));
-
-                var dtHeadSales = data.getElementsByTagName('dtHeadSales');
-                $('#tbShop_PS_Step1 thead td#td8S').html(parseInt(GetNodeValue(dtHeadSales[0], "SalesCash")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1 thead td#td9S').html(parseInt(GetNodeValue(dtHeadSales[0], "SalesCNT")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1 thead td#td10S').html(parseInt(GetNodeValue(dtHeadSales[0], "SalesPer")).toLocaleString('en-US'));
-
-                //$('.tdCol1').show();
-                //$('.tdCol2').show();
-                //$('.tdCol3').show();
-                //$('.tdCol4').show();
-                //$('.tdCol5').show();
-                //$('.tdCol6').show();
-                //$('.tdCol7').show();
-                //$('.tdCol8').show();
-                //$('.tdCol9').show();
-                //$('.tdCol10').show();
-                //$('.tdCol11').show();
-
-
-            }
-            else {
-
-
-                var dtHeadCoupon = data.getElementsByTagName('dtHeadCoupon');
-                $('#tbShop_PS_Step1_2 thead td#td1D').html(parseInt(GetNodeValue(dtHeadCoupon[0], "BackCnt")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1_2 thead td#td2D').html(parseInt(GetNodeValue(dtHeadCoupon[0], "discount")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1_2 thead td#td3D').html(parseInt(GetNodeValue(dtHeadCoupon[0], "cash")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1_2 thead td#td4D').html(parseInt(GetNodeValue(dtHeadCoupon[0], "cnt")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1_2 thead td#td5D').html(parseInt(GetNodeValue(dtHeadCoupon[0], "VIPPer")).toLocaleString('en-US'));
-
-                var dtHeadSales = data.getElementsByTagName('dtHeadSales');
-                $('#tbShop_PS_Step1_2 thead td#td6D').html(parseInt(GetNodeValue(dtHeadSales[0], "SalesCash")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1_2 thead td#td7D').html(parseInt(GetNodeValue(dtHeadSales[0], "SalesCNT")).toLocaleString('en-US'));
-                $('#tbShop_PS_Step1_2 thead td#td8D').html(parseInt(GetNodeValue(dtHeadSales[0], "SalesPer")).toLocaleString('en-US'));
-
-                //$('.tdCol1').show();
-                //$('.tdCol2').show();
-                //$('.tdCol3').show();
-                //$('.tdCol4').show();
-                //$('.tdCol5').show();
-                //$('.tdCol6').show();
-                //$('.tdCol7').show();
-                //$('.tdCol8').show();
-                //$('.tdCol9').show();
-
-
-
-            }
         }
     };
 
-    let Query_Area_Shop_Step2_click = function () {
+    let Query_Shop_Step2_click = function (PS_NO, ID) {
         ShowLoading();
-        var Area = $('#lblArea_Shop_Step2').html().split('-')[0].split(' ')[0];
-        var Shop = $('#lblArea_Shop_Step2').html().split('-')[1].split(' ')[0];
+        var Flag = "S";
+
+        var SDate = $('#lblPSDate_Step1').html().split('~')[0]
+        var EDate = $('#lblPSDate_Step1').html().split('~')[1]
 
         var pData = {
-            OpenDateS: $('#lblOpenDate_Area_Shop_Step2').html().split('~')[0],
-            OpenDateE: $('#lblOpenDate_Area_Shop_Step2').html().split('~')[1],
-            Area: Area,
-            Shop: Shop
+            PS_NO: PS_NO,
+            ID: ID,
+            OpenDate1: SDate,
+            OpenDate2: EDate,
+            Flag: Flag
         }
-        PostToWebApi({ url: "api/Query_Area_Shop_Step2", data: pData, success: afterQuery_Area_Shop_Step2 });
+        PostToWebApi({ url: "api/SystemSetup/MSSD101_Query_Step2", data: pData, success: afterQuery_Shop_Step2 });
     };
 
-    let afterQuery_Area_Shop_Step2 = function (data) {
+    let afterQuery_Shop_Step2 = function (data) {
         CloseLoading();
-        if (ReturnMsg(data, 0) != "Query_Area_Shop_Step2OK") {
+        if (ReturnMsg(data, 0) != "Query_Step2OK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
 
-            var dtQ = data.getElementsByTagName('dtQ');
-            grdM_Area_Shop_Step2.BindData(dtQ);
+            var dtE = data.getElementsByTagName('dtE');
+            grdM_PS_Shop_Step2.BindData(dtE);
 
-            if (dtQ.length == 0) {
+            if (dtE.length == 0) {
                 DyAlert("無符合資料!");
                 $(".modal-backdrop").remove();
                 return;
             }
 
             var dtSumQ = data.getElementsByTagName('dtSumQ');
-            $('#tbSales_Area_Shop_Step2 thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
-            $('#tbSales_Area_Shop_Step2 thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Area_Shop_Step2 thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Area_Shop_Step2 thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
-            $('#tbSales_Area_Shop_Step2 thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Area_Shop_Step2 thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Area_Shop_Step2 thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
+            $('#tbSales_Shop_Step2 thead td#tdShopNo1').html(parseInt(GetNodeValue(dtSumQ[0], "SumReclaimQty")).toLocaleString('en-US'));
+            $('#tbSales_Shop_Step2 thead td#tdShopNo2').html(parseInt(GetNodeValue(dtSumQ[0], "SumShareAmt")).toLocaleString('en-US'));
+            $('#tbSales_Shop_Step2 thead td#tdShopNo3').html(parseInt(GetNodeValue(dtSumQ[0], "SumReclaimCash")).toLocaleString('en-US'));
+            $('#tbSales_Shop_Step2 thead td#tdShopNo4').html(parseInt(GetNodeValue(dtSumQ[0], "SumReclaimTrans")).toLocaleString('en-US'));
+            $('#tbSales_Shop_Step2 thead td#tdShopNo5').html(parseInt(GetNodeValue(dtSumQ[0], "SumReclaimPrice")).toLocaleString('en-US'));
+            $('#tbSales_Shop_Step2 thead td#tdShopNo6').html(parseInt(GetNodeValue(dtSumQ[0], "SumTotalCash")).toLocaleString('en-US'));
+            $('#tbSales_Shop_Step2 thead td#tdShopNo7').html(parseInt(GetNodeValue(dtSumQ[0], "SumTotalTrans")).toLocaleString('en-US'));
+            $('#tbSales_Shop_Step2 thead td#tdShopNo8').html(parseInt(GetNodeValue(dtSumQ[0], "SumTotalPrice")).toLocaleString('en-US'));
         }
     };
 
-    let Query_Area_Date_Step2_click = function () {
+    let Query_Date_Step2_click = function (PS_NO, ID) {
         ShowLoading();
-        var Area = $('#lblArea_Date_Step2').html().split('-')[0].split(' ')[0];
-        var Date = $('#lblArea_Date_Step2').html().split('-')[1];
+        var Flag = "D";
+
+        var SDate = $('#lblPSDate_Step1').html().split('~')[0]
+        var EDate = $('#lblPSDate_Step1').html().split('~')[1]
 
         var pData = {
-            OpenDate: Date,
-            Area: Area
+            PS_NO: PS_NO,
+            ID: ID,
+            OpenDate1: SDate,
+            OpenDate2: EDate,
+            Flag: Flag
         }
-        PostToWebApi({ url: "api/Query_Area_Date_Step2", data: pData, success: afterQuery_Area_Date_Step2 });
+        PostToWebApi({ url: "api/SystemSetup/MSSD101_Query_Step2", data: pData, success: afterQuery_Date_Step2 });
     };
 
-    let afterQuery_Area_Date_Step2 = function (data) {
+    let afterQuery_Date_Step2 = function (data) {
         CloseLoading();
-        if (ReturnMsg(data, 0) != "Query_Area_Date_Step2OK") {
+        if (ReturnMsg(data, 0) != "Query_Step2OK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
 
-            var dtQ = data.getElementsByTagName('dtQ');
-            grdM_Area_Date_Step2.BindData(dtQ);
+            var dtE = data.getElementsByTagName('dtE');
+            grdM_PS_Date_Step2.BindData(dtE);
 
-            if (dtQ.length == 0) {
+            if (dtE.length == 0) {
                 DyAlert("無符合資料!");
                 $(".modal-backdrop").remove();
                 return;
             }
 
             var dtSumQ = data.getElementsByTagName('dtSumQ');
-            $('#tbSales_Area_Date_Step2 thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
-            $('#tbSales_Area_Date_Step2 thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Area_Date_Step2 thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Area_Date_Step2 thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
-            $('#tbSales_Area_Date_Step2 thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Area_Date_Step2 thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Area_Date_Step2 thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
+            $('#tbSales_Date_Step2 thead td#tdDate1').html(parseInt(GetNodeValue(dtSumQ[0], "SumReclaimQty")).toLocaleString('en-US'));
+            $('#tbSales_Date_Step2 thead td#tdDate2').html(parseInt(GetNodeValue(dtSumQ[0], "SumShareAmt")).toLocaleString('en-US'));
+            $('#tbSales_Date_Step2 thead td#tdDate3').html(parseInt(GetNodeValue(dtSumQ[0], "SumReclaimCash")).toLocaleString('en-US'));
+            $('#tbSales_Date_Step2 thead td#tdDate4').html(parseInt(GetNodeValue(dtSumQ[0], "SumReclaimTrans")).toLocaleString('en-US'));
+            $('#tbSales_Date_Step2 thead td#tdDate5').html(parseInt(GetNodeValue(dtSumQ[0], "SumReclaimPrice")).toLocaleString('en-US'));
+            $('#tbSales_Date_Step2 thead td#tdDate6').html(parseInt(GetNodeValue(dtSumQ[0], "SumTotalCash")).toLocaleString('en-US'));
+            $('#tbSales_Date_Step2 thead td#tdDate7').html(parseInt(GetNodeValue(dtSumQ[0], "SumTotalTrans")).toLocaleString('en-US'));
+            $('#tbSales_Date_Step2 thead td#tdDate8').html(parseInt(GetNodeValue(dtSumQ[0], "SumTotalPrice")).toLocaleString('en-US'));
         }
     };
 
-    let Query_DM_Step1_click = function () {
-        ShowLoading();
-        var pData = {
-            OpenDateS: $('#lblOpenDate_Shop_Step1').html().split('~')[0],
-            OpenDateE: $('#lblOpenDate_Shop_Step1').html().split('~')[1],
-            Shop: $('#lblShop_Step1').html().split(' ')[0]
-        }
-        PostToWebApi({ url: "api/Query_Shop_Step1", data: pData, success: afterQuery_Shop_Step1 });
-    };
-
-    let afterQuery_Shop_Step1 = function (data) {
-        CloseLoading();
-        if (ReturnMsg(data, 0) != "Query_Shop_Step1OK") {
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
-            var dtQ = data.getElementsByTagName('dtQ');
-            grdM_Shop_Step1.BindData(dtQ);
-
-            if (dtQ.length == 0) {
-                DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
-                return;
-            }
-            var dtSumQ = data.getElementsByTagName('dtSumQ');
-            $('#tbSales_Shop_Step1 thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
-            $('#tbSales_Shop_Step1 thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Shop_Step1 thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Shop_Step1 thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
-            $('#tbSales_Shop_Step1 thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Shop_Step1 thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Shop_Step1 thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
-        }
-    };
-
-    let Query_Date_Step1_click = function () {
-        ShowLoading();
-        var Type_Step1 = "";
-        if ($('#rdoArea_Date_Step1').prop('checked')) {
-            Type_Step1 = "A";
-        }
-        else if ($('#rdoShop_Date_Step1').prop('checked')) {
-            Type_Step1 = "S";
-        }
-
-        var pData = {
-            OpenDateS: $('#lblOpenDate_Date_Step1').html().split('~')[0],
-            OpenDateE: $('#lblOpenDate_Date_Step1').html().split('~')[1],
-            Date: $('#lblDate_Step1').html(),
-            Type_Step1: Type_Step1
-        }
-        PostToWebApi({ url: "api/Query_Date_Step1", data: pData, success: afterQuery_Date_Step1 });
-    };
-
-    let afterQuery_Date_Step1 = function (data) {
-        CloseLoading();
-        if (ReturnMsg(data, 0) != "Query_Date_Step1OK") {
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
-
-            var dtQ = data.getElementsByTagName('dtQ');
-            grdM_Date_Step1.BindData(dtQ);
-
-            var heads = $('#tbSales_Date_Step1 thead tr th#thtype');
-
-            if ($('#rdoArea_Date_Step1').prop('checked')) {
-                $(heads).text('區');
-            }
-            else if ($('#rdoShop_Date_Step1').prop('checked')) {
-                $(heads).text('店');
-            }
-
-            if (dtQ.length == 0) {
-                DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
-                return;
-            }
-
-            var dtSumQ = data.getElementsByTagName('dtSumQ');
-            $('#tbSales_Date_Step1 thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
-            $('#tbSales_Date_Step1 thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Date_Step1 thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Date_Step1 thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
-            $('#tbSales_Date_Step1 thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Date_Step1 thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Date_Step1 thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
-        }
-    };
-
-    let Query_Date_Area_Step2_click = function () {
-        ShowLoading();
-        var pData = {
-            OpenDateS: $('#lblOpenDate_Date_Area_Step2').html().split('~')[0],
-            OpenDateE: $('#lblOpenDate_Date_Area_Step2').html().split('~')[1],
-            Date: $('#lblDate_Area_Step2').html().split('-')[0],
-            Area: $('#lblDate_Area_Step2').html().split('-')[1].split(' ')[0]
-        }
-        PostToWebApi({ url: "api/Query_Date_Area_Step2", data: pData, success: afterQuery_Date_Area_Step2 });
-    };
-
-    let afterQuery_Date_Area_Step2 = function (data) {
-        CloseLoading();
-        if (ReturnMsg(data, 0) != "Query_Date_Area_Step2OK") {
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
-            var dtQ = data.getElementsByTagName('dtQ');
-            grdM_Date_Area_Step2.BindData(dtQ);
-            if (dtQ.length == 0) {
-                DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
-                return;
-            }
-
-            var dtSumQ = data.getElementsByTagName('dtSumQ');
-            $('#tbSales_Date_Area_Step2 thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
-            $('#tbSales_Date_Area_Step2 thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Date_Area_Step2 thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Date_Area_Step2 thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
-            $('#tbSales_Date_Area_Step2 thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Date_Area_Step2 thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Date_Area_Step2 thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
-        }
-    };
 
     //清除
     let btClear_click = function (bt) {
@@ -1620,9 +1383,9 @@
         //    OptAB: $('input[name="TypeCode"]:checked').val()   //群組rdo
         //var rdoAB = $('input[name="TypeCode"]:checked').val();
         //if (rdoAB == "DB") {
-            //$('table tr th:contains("活動代號 ")').text('DM單號 ');   //空一格是避免抓到相同名稱
-            //$('table tr th:contains("活動名稱 ")').text('DM名稱 ');
-            //$('table tr th:contains("活動期間 ")').text('DM期間 ');
+        //$('table tr th:contains("活動代號 ")').text('DM單號 ');   //空一格是避免抓到相同名稱
+        //$('table tr th:contains("活動名稱 ")').text('DM名稱 ');
+        //$('table tr th:contains("活動期間 ")').text('DM期間 ');
         //}
         //else if (rdoAB == "DA") {
         //    $('table tr th:contains("DM單號 ")').text('活動代號 ');
@@ -1824,6 +1587,9 @@
             $('#btExit_PS_Step1').click(function () { btExit_PS_Step1_click(this) });
             $('#rdoShop_PS_Step1').change(function () { Query_PS_Step1_click(this) });
             $('#rdoDate_PS_Step1').change(function () { Query_PS_Step1_click(this) });
+
+            $('#btExit_Shop_Step2').click(function () { btExit_Shop_Step2_click(this) });
+            $('#btExit_Date_Step2').click(function () { btExit_Date_Step2_click(this) });
             return;
 
 
@@ -1835,7 +1601,6 @@
             //$('#btExit_Shop').click(function () { btExit_Shop_click(this) });
 
 
-            //$('#btExit_Area_Shop_Step2').click(function () { btExit_Area_Shop_Step2_click(this) });
 
             //$('#btExit_Area_Date_Step2').click(function () { btExit_Area_Date_Step2_click(this) });
 
@@ -1845,7 +1610,6 @@
             //$('#rdoArea_Date_Step1').change(function () { Query_Date_Step1_click(this) });
             //$('#rdoShop_Date_Step1').change(function () { Query_Date_Step1_click(this) });
 
-            //$('#btExit_Date_Area_Step2').click(function () { btExit_Date_Area_Step2_click(this) });
 
             //var dtQ = data.getElementsByTagName('dtQ');
             //grdM.BindData(dtQ);
