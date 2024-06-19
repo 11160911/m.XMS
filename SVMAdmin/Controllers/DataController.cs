@@ -10459,6 +10459,427 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("SystemSetup/GetInitMSSD106")]
+        public ActionResult SystemSetup_GetInitMSSD106()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetInitMSSD106OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ProgramID = rq["ProgramID"];
+                string Yesterday = PubUtility.GetYesterday(uu);
+                string Today = PubUtility.GetToday(uu);
+                string sql = "select ChineseName from ProgramIDWeb (nolock) where ProgramID='" + ProgramID.SqlQuote() + "'";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+
+                //會員總數
+                sql = "Select Count(*) as VIPCntAll ";
+                sql += "from EDDMS.dbo.VIP v (nolock) ";
+                sql += "Where v.Companycode='" + uu.CompanyId + "' ";
+                DataTable dtV = PubUtility.SqlQry(sql, uu, "SYS");
+                dtV.TableName = "dtV";
+                ds.Tables.Add(dtV);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSSD106Query")]
+        public ActionResult SystemSetup_MSSD106Query()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSD106QueryOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string VIPFaceID = rq["VIPFaceID"];
+                string City = rq["City"];
+                string VIPDate = rq["VIPDate"];
+                string Flag = rq["Flag"];
+                string sql = "";
+                string sqlCon = "";
+                string sqlD = "";
+                string sqlH = "";
+
+                if (VIPFaceID != "")
+                {
+                    sqlCon += "and a.VIP_FaceID in(" + VIPFaceID + ") ";
+                }
+                if (City != "")
+                {
+                    sqlCon += "and a.City in(" + City + ") ";
+                }
+                if (VIPDate == "2M")
+                {
+                    sqlCon += "and a.VIP_Qday between convert(char,dateadd(MONTH,-2,getdate()),111) and convert(char(10),getdate(),111) ";
+                }
+                else if (VIPDate == "3M")
+                {
+                    sqlCon += "and a.VIP_Qday between convert(char,dateadd(MONTH,-3,getdate()),111) and convert(char(10),getdate(),111) ";
+                }
+                else if (VIPDate == "6M")
+                {
+                    sqlCon += "and a.VIP_Qday between convert(char,dateadd(MONTH,-6,getdate()),111) and convert(char(10),getdate(),111) ";
+                }
+                else if (VIPDate == "1Y")
+                {
+                    sqlCon += "and a.VIP_Qday between convert(char,dateadd(MONTH,-12,getdate()),111) and convert(char(10),getdate(),111) ";
+                }
+
+                //店別
+                if (Flag == "S") {
+                    //總數
+                    sql = "select a.VIP_FaceID ID,Count(*)Cnt1 into #v1 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += sqlCon;
+                    sql += "group by a.VIP_FaceID; ";
+                    //17歲以下
+                    sql += "select a.VIP_FaceID ID,Count(*)Cnt2 into #v2 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int)<=17 ";
+                    sql += sqlCon;
+                    sql += "group by a.VIP_FaceID; ";
+                    //18~30歲
+                    sql += "select a.VIP_FaceID ID,Count(*)Cnt3 into #v3 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 18 and 30 ";
+                    sql += sqlCon;
+                    sql += "group by a.VIP_FaceID; ";
+                    //31~40歲
+                    sql += "select a.VIP_FaceID ID,Count(*)Cnt4 into #v4 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 31 and 40 ";
+                    sql += sqlCon;
+                    sql += "group by a.VIP_FaceID; ";
+                    //41~50歲
+                    sql += "select a.VIP_FaceID ID,Count(*)Cnt5 into #v5 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 41 and 50 ";
+                    sql += sqlCon;
+                    sql += "group by a.VIP_FaceID; ";
+                    //51~60歲
+                    sql += "select a.VIP_FaceID ID,Count(*)Cnt6 into #v6 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 51 and 60 ";
+                    sql += sqlCon;
+                    sql += "group by a.VIP_FaceID; ";
+                    //61~70歲
+                    sql += "select a.VIP_FaceID ID,Count(*)Cnt7 into #v7 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 61 and 70 ";
+                    sql += sqlCon;
+                    sql += "group by a.VIP_FaceID; ";
+                    //71歲以上
+                    sql += "select a.VIP_FaceID ID,Count(*)Cnt8 into #v8 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int)>=71 ";
+                    sql += sqlCon;
+                    sql += "group by a.VIP_FaceID; ";
+                    //男性
+                    sql += "select a.VIP_FaceID ID,Count(*)Cnt9 into #v9 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and a.VIP_MW='0' ";
+                    sql += sqlCon;
+                    sql += "group by a.VIP_FaceID; ";
+                    //女性
+                    sql += "select a.VIP_FaceID ID,Count(*)Cnt10 into #v10 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and a.VIP_MW='1' ";
+                    sql += sqlCon;
+                    sql += "group by a.VIP_FaceID; ";
+                    //明細資料
+                    sqlD = "select v1.id + '-' + w.st_sname id,isnull(v1.Cnt1,0)Cnt1,isnull(v2.Cnt2,0)Cnt2, ";
+                    sqlD += "isnull(v3.Cnt3,0)Cnt3,isnull(v4.Cnt4,0)Cnt4,isnull(v5.Cnt5,0)Cnt5,isnull(v6.Cnt6,0)Cnt6, ";
+                    sqlD += "isnull(v7.Cnt7,0)Cnt7,isnull(v8.Cnt8,0)Cnt8,isnull(v9.Cnt9,0)Cnt9,isnull(v10.Cnt10,0)Cnt10 ";
+                    sqlD += "from #v1 v1 ";
+                    sqlD += "left join #v2 v2 on v1.id=v2.id ";
+                    sqlD += "left join #v3 v3 on v1.id=v3.id ";
+                    sqlD += "left join #v4 v4 on v1.id=v4.id ";
+                    sqlD += "left join #v5 v5 on v1.id=v5.id ";
+                    sqlD += "left join #v6 v6 on v1.id=v6.id ";
+                    sqlD += "left join #v7 v7 on v1.id=v7.id ";
+                    sqlD += "left join #v8 v8 on v1.id=v8.id ";
+                    sqlD += "left join #v9 v9 on v1.id=v9.id ";
+                    sqlD += "left join #v10 v10 on v1.id=v10.id ";
+                    sqlD += "inner join WarehouseWeb w (nolock) on v1.id=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                    sqlD += "order by v1.id ";
+                    DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+                    //彙總資料
+                    sqlH = "select sum(isnull(v1.Cnt1,0))SumCnt1,sum(isnull(v2.Cnt2,0))SumCnt2, ";
+                    sqlH += "sum(isnull(v3.Cnt3,0))SumCnt3,sum(isnull(v4.Cnt4,0))SumCnt4,sum(isnull(v5.Cnt5,0))SumCnt5,sum(isnull(v6.Cnt6,0))SumCnt6, ";
+                    sqlH += "sum(isnull(v7.Cnt7,0))SumCnt7,sum(isnull(v8.Cnt8,0))SumCnt8,sum(isnull(v9.Cnt9,0))SumCnt9,sum(isnull(v10.Cnt10,0))SumCnt10 ";
+                    sqlH += "from #v1 v1 ";
+                    sqlH += "left join #v2 v2 on v1.id=v2.id ";
+                    sqlH += "left join #v3 v3 on v1.id=v3.id ";
+                    sqlH += "left join #v4 v4 on v1.id=v4.id ";
+                    sqlH += "left join #v5 v5 on v1.id=v5.id ";
+                    sqlH += "left join #v6 v6 on v1.id=v6.id ";
+                    sqlH += "left join #v7 v7 on v1.id=v7.id ";
+                    sqlH += "left join #v8 v8 on v1.id=v8.id ";
+                    sqlH += "left join #v9 v9 on v1.id=v9.id ";
+                    sqlH += "left join #v10 v10 on v1.id=v10.id ";
+                    sqlH += "inner join WarehouseWeb w (nolock) on v1.id=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                    DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
+                    dtH.TableName = "dtH";
+                    ds.Tables.Add(dtH);
+                }
+                //縣市
+                else if (Flag == "C") {
+                    //總數
+                    sql = "select a.City ID,Count(*)Cnt1 into #v1 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += sqlCon;
+                    sql += "group by a.City; ";
+                    //17歲以下
+                    sql += "select a.City ID,Count(*)Cnt2 into #v2 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int)<=17 ";
+                    sql += sqlCon;
+                    sql += "group by a.City; ";
+                    //18~30歲
+                    sql += "select a.City ID,Count(*)Cnt3 into #v3 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 18 and 30 ";
+                    sql += sqlCon;
+                    sql += "group by a.City; ";
+                    //31~40歲
+                    sql += "select a.City ID,Count(*)Cnt4 into #v4 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 31 and 40 ";
+                    sql += sqlCon;
+                    sql += "group by a.City; ";
+                    //41~50歲
+                    sql += "select a.City ID,Count(*)Cnt5 into #v5 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 41 and 50 ";
+                    sql += sqlCon;
+                    sql += "group by a.City; ";
+                    //51~60歲
+                    sql += "select a.City ID,Count(*)Cnt6 into #v6 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 51 and 60 ";
+                    sql += sqlCon;
+                    sql += "group by a.City; ";
+                    //61~70歲
+                    sql += "select a.City ID,Count(*)Cnt7 into #v7 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 61 and 70 ";
+                    sql += sqlCon;
+                    sql += "group by a.City; ";
+                    //71歲以上
+                    sql += "select a.City ID,Count(*)Cnt8 into #v8 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int)>=71 ";
+                    sql += sqlCon;
+                    sql += "group by a.City; ";
+                    //男性
+                    sql += "select a.City ID,Count(*)Cnt9 into #v9 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and a.VIP_MW='0' ";
+                    sql += sqlCon;
+                    sql += "group by a.City; ";
+                    //女性
+                    sql += "select a.City ID,Count(*)Cnt10 into #v10 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and a.VIP_MW='1' ";
+                    sql += sqlCon;
+                    sql += "group by a.City; ";
+                    //明細資料
+                    sqlD = "select v1.id,isnull(v1.Cnt1,0)Cnt1,isnull(v2.Cnt2,0)Cnt2, ";
+                    sqlD += "isnull(v3.Cnt3,0)Cnt3,isnull(v4.Cnt4,0)Cnt4,isnull(v5.Cnt5,0)Cnt5,isnull(v6.Cnt6,0)Cnt6, ";
+                    sqlD += "isnull(v7.Cnt7,0)Cnt7,isnull(v8.Cnt8,0)Cnt8,isnull(v9.Cnt9,0)Cnt9,isnull(v10.Cnt10,0)Cnt10 ";
+                    sqlD += "from #v1 v1 ";
+                    sqlD += "left join #v2 v2 on v1.id=v2.id ";
+                    sqlD += "left join #v3 v3 on v1.id=v3.id ";
+                    sqlD += "left join #v4 v4 on v1.id=v4.id ";
+                    sqlD += "left join #v5 v5 on v1.id=v5.id ";
+                    sqlD += "left join #v6 v6 on v1.id=v6.id ";
+                    sqlD += "left join #v7 v7 on v1.id=v7.id ";
+                    sqlD += "left join #v8 v8 on v1.id=v8.id ";
+                    sqlD += "left join #v9 v9 on v1.id=v9.id ";
+                    sqlD += "left join #v10 v10 on v1.id=v10.id ";
+                    sqlD += "Where isnull(v1.id,'')<>'' ";
+                    sqlD += "order by v1.id ";
+                    DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+                    //彙總資料
+                    sqlH = "select sum(isnull(v1.Cnt1,0))SumCnt1,sum(isnull(v2.Cnt2,0))SumCnt2, ";
+                    sqlH += "sum(isnull(v3.Cnt3,0))SumCnt3,sum(isnull(v4.Cnt4,0))SumCnt4,sum(isnull(v5.Cnt5,0))SumCnt5,sum(isnull(v6.Cnt6,0))SumCnt6, ";
+                    sqlH += "sum(isnull(v7.Cnt7,0))SumCnt7,sum(isnull(v8.Cnt8,0))SumCnt8,sum(isnull(v9.Cnt9,0))SumCnt9,sum(isnull(v10.Cnt10,0))SumCnt10 ";
+                    sqlH += "from #v1 v1 ";
+                    sqlH += "left join #v2 v2 on v1.id=v2.id ";
+                    sqlH += "left join #v3 v3 on v1.id=v3.id ";
+                    sqlH += "left join #v4 v4 on v1.id=v4.id ";
+                    sqlH += "left join #v5 v5 on v1.id=v5.id ";
+                    sqlH += "left join #v6 v6 on v1.id=v6.id ";
+                    sqlH += "left join #v7 v7 on v1.id=v7.id ";
+                    sqlH += "left join #v8 v8 on v1.id=v8.id ";
+                    sqlH += "left join #v9 v9 on v1.id=v9.id ";
+                    sqlH += "left join #v10 v10 on v1.id=v10.id ";
+                    sqlH += "Where isnull(v1.id,'')<>'' ";
+                    DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
+                    dtH.TableName = "dtH";
+                    ds.Tables.Add(dtH);
+                }
+                //性別
+                else if (Flag == "M") {
+                    //總數
+                    sql = "select a.VIP_MW ID,Count(*)Cnt1 into #v1 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += sqlCon;
+                    sql += "group by a.VIP_MW; ";
+                    //17歲以下
+                    sql += "select a.VIP_MW ID,Count(*)Cnt2 into #v2 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int)<=17 ";
+                    sql += sqlCon;
+                    sql += "group by a.VIP_MW; ";
+                    //18~30歲
+                    sql += "select a.VIP_MW ID,Count(*)Cnt3 into #v3 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 18 and 30 ";
+                    sql += sqlCon;
+                    sql += "group by a.VIP_MW; ";
+                    //31~40歲
+                    sql += "select a.VIP_MW ID,Count(*)Cnt4 into #v4 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 31 and 40 ";
+                    sql += sqlCon;
+                    sql += "group by a.VIP_MW; ";
+                    //41~50歲
+                    sql += "select a.VIP_MW ID,Count(*)Cnt5 into #v5 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 41 and 50 ";
+                    sql += sqlCon;
+                    sql += "group by a.VIP_MW; ";
+                    //51~60歲
+                    sql += "select a.VIP_MW ID,Count(*)Cnt6 into #v6 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 51 and 60 ";
+                    sql += sqlCon;
+                    sql += "group by a.VIP_MW; ";
+                    //61~70歲
+                    sql += "select a.VIP_MW ID,Count(*)Cnt7 into #v7 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 61 and 70 ";
+                    sql += sqlCon;
+                    sql += "group by a.VIP_MW; ";
+                    //71歲以上
+                    sql += "select a.VIP_MW ID,Count(*)Cnt8 into #v8 ";
+                    sql += "from EDDMS.dbo.VIP a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int)>=71 ";
+                    sql += sqlCon;
+                    sql += "group by a.VIP_MW; ";
+                    //明細資料
+                    sqlD = "select case v1.id when '0' then '男性' when '1' then '女性' end as id,isnull(v1.Cnt1,0)Cnt1,isnull(v2.Cnt2,0)Cnt2, ";
+                    sqlD += "isnull(v3.Cnt3,0)Cnt3,isnull(v4.Cnt4,0)Cnt4,isnull(v5.Cnt5,0)Cnt5,isnull(v6.Cnt6,0)Cnt6, ";
+                    sqlD += "isnull(v7.Cnt7,0)Cnt7,isnull(v8.Cnt8,0)Cnt8 ";
+                    sqlD += "from #v1 v1 ";
+                    sqlD += "left join #v2 v2 on v1.id=v2.id ";
+                    sqlD += "left join #v3 v3 on v1.id=v3.id ";
+                    sqlD += "left join #v4 v4 on v1.id=v4.id ";
+                    sqlD += "left join #v5 v5 on v1.id=v5.id ";
+                    sqlD += "left join #v6 v6 on v1.id=v6.id ";
+                    sqlD += "left join #v7 v7 on v1.id=v7.id ";
+                    sqlD += "left join #v8 v8 on v1.id=v8.id ";
+                    sqlD += "Where isnull(v1.id,'')<>'' ";
+                    sqlD += "order by v1.id ";
+                    DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+                    //彙總資料
+                    sqlH = "select sum(isnull(v1.Cnt1,0))SumCnt1,sum(isnull(v2.Cnt2,0))SumCnt2, ";
+                    sqlH += "sum(isnull(v3.Cnt3,0))SumCnt3,sum(isnull(v4.Cnt4,0))SumCnt4,sum(isnull(v5.Cnt5,0))SumCnt5,sum(isnull(v6.Cnt6,0))SumCnt6, ";
+                    sqlH += "sum(isnull(v7.Cnt7,0))SumCnt7,sum(isnull(v8.Cnt8,0))SumCnt8 ";
+                    sqlH += "from #v1 v1 ";
+                    sqlH += "left join #v2 v2 on v1.id=v2.id ";
+                    sqlH += "left join #v3 v3 on v1.id=v3.id ";
+                    sqlH += "left join #v4 v4 on v1.id=v4.id ";
+                    sqlH += "left join #v5 v5 on v1.id=v5.id ";
+                    sqlH += "left join #v6 v6 on v1.id=v6.id ";
+                    sqlH += "left join #v7 v7 on v1.id=v7.id ";
+                    sqlH += "left join #v8 v8 on v1.id=v8.id ";
+                    sqlH += "Where isnull(v1.id,'')<>'' ";
+                    DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
+                    dtH.TableName = "dtH";
+                    ds.Tables.Add(dtH);
+                }
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/GetCity")]
+        public ActionResult SystemSetup_GetCity()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetCityOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string City = rq["City"];
+                string sql = "select distinct a.City from AreaWEB a (nolock) where 1=1 ";
+                if (City != "") {
+                    sql += "and a.City='" + City + "' ";
+                }
+                sql += "order by a.City ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
         [Route("FileUpload_EDM")]
         public ActionResult FileUpload_EDM()
         {
