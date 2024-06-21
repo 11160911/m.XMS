@@ -8258,28 +8258,17 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
-        [Route("SystemSetup/MSDM104ShowEDM")]
-        public ActionResult SystemSetup_MSDM104ShowEDM()
+        [Route("SystemSetup/GetCompanyShowEDM")]
+        public ActionResult SystemSetup_GetCompanyShowEDM()
         {
             UserInfo uu = PubUtility.GetCurrentUser(this);
-            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSDM104ShowEDMOK", "" });
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetCompanyShowEDMOK", "" });
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
                 IFormCollection rq = HttpContext.Request.Form;
-                string DocNo = rq["DocNo"];
-                string sql = "";
-
-                //SetEDMHWeb
-                sql = "Select a.DocNo,a.EDMMemo,b.DataType,b.DocImage,b.TXT ";
-                sql += "From SetEDMHWeb a (nolock) ";
-                sql += "inner join SetEDMDWeb b (nolock) on a.DocNo=b.DocNo and b.Companycode=a.Companycode ";
-                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
-                if (DocNo.SqlQuote() != "")
-                {
-                    sql += "and a.DocNo='" + DocNo.SqlQuote() + "' ";
-                }
-                sql += "Order by b.DataType ";
+                string CompanyID = PubUtility.enCode170215(uu.CompanyId);
+                string sql = "Select '" + CompanyID + "' as CompanyID";
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
                 ds.Tables.Add(dtE);
@@ -11043,7 +11032,7 @@ namespace SVMAdmin.Controllers
                 string City = rq["City"];
                 string sql = "select distinct a.City from AreaWEB a (nolock) where 1=1 ";
                 if (City != "") {
-                    sql += "and a.City='" + City + "' ";
+                    sql += "and a.City like '" + City + "%' ";
                 }
                 sql += "order by a.City ";
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");

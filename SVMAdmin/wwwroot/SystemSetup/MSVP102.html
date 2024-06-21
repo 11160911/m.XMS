@@ -174,7 +174,7 @@
                             <div class="card-block forminput">
                                 <div class="x_content">
                                     <div style="overflow: auto; height: 600px;">
-                                        <table id="tbQuery" class="table table-bordered" style="width:100%">
+                                        <table id="tbQuery" class="table table-bordered" style="width:100%;">
                                             <thead>
                                                 <tr>
                                                     <th class="text-center">發送單號</th>
@@ -216,13 +216,8 @@
                                     }
                                 </style>
 
-                                <!--<div class="modal-header">
-                                    <label class="DyForm3-ProgramName">發送設定</label>
-                                    <label class="DyForm3-LabelBlack" id="lblVMEVNO_SendSet" hidden></label>
-                                    <h4 class="modal-title" style="width: 100%; text-align: center;color:black"></h4>
-                                </div>-->
-
-                                <div class="modal-body modal-tab-container" style="padding:8px">
+                                <div class="modal-header" style="display:block">
+                                    <!--<h4 class="modal-title" style="width: 100%; text-align: center;color:black"></h4>-->
                                     <div class="form-group row" style="width: 100%;margin-left: 5px ">
                                         <label class="DyForm3-ProgramName">發送設定</label>
                                         <label class="DyForm3-LabelBlack" id="lblVMEVNO_SendSet" hidden></label>
@@ -243,12 +238,13 @@
                                         </button>
                                         <button id="btRe_SendSet" type="button" class="DyForm3-BtnRe" style="position: absolute; right: 60px">回上頁</button>
                                     </div>
+                                </div>
 
-                                    <div class="form-group row" style="width: 100%;margin-left: 12px;margin-top:30px;margin-bottom:0px ">
+                                <div class="modal-body modal-tab-container" style="padding:8px;flex:0 1 auto;">
+                                    <div class="form-group row" style="width: 100%;margin-left: 12px;margin-bottom:0px ">
                                         <label class="DyForm3-ProgramName">會員條件篩選</label>
                                     </div>
-
-                                    <div class="form-group row" style="width: 100%;margin-left: 12px ">
+                                    <div class="form-group row" style="width: 100%;margin-left: 12px;margin-top:5px ">
                                         <button class="DyForm3-BtnClear" id="btClear_SendSet" type="button">
                                             清除
                                             <i class="fa fa-close"></i>
@@ -273,38 +269,38 @@
                                         <input id="chk2_SendSet" type="checkbox" style="height:30px;margin-left:10px" checked><label class="DyForm3-LabelBlack" for="chk2_SendSet" style="margin-top: 5px; margin-left: 10px">貴賓</label>
                                         <input id="chk3_SendSet" type="checkbox" style="height:30px;margin-left:10px"><label class="DyForm3-LabelBlack" for="chk3_SendSet" style="margin-top: 5px; margin-left: 10px">白金卡</label>
                                     </div>
+                                </div>
 
-                                    <div class="card-block forminput">
-                                        <div class="x_content">
-                                            <div class="form-group row" style="width: 100%;margin-left: 12px ">
-                                                <label class="DyForm3-ProgramName">會員篩選清單</label>
-                                                <label class="DyForm3-ProgramName" style="color: red; position: absolute; right: 140px">篩選會員數&ensp;</label>
-                                                <label id="lblVIPCnt_SendSet" class="DyForm3-ProgramName" style="color: red; position: absolute; right: 60px"></label>
-                                                <label class="DyForm3-ProgramName" style="color: red; position: absolute; right: 40px">筆</label>
-                                            </div>
-                                            <div style="overflow: auto; height: 400px;">
-                                                <table id="tbSendSet" class="table table-bordered" style="width:100%">
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="text-center">會員編號</th>
-                                                            <th class="text-center">會員姓名</th>
-                                                            <th class="text-center">手機號碼</th>
-                                                            <th class="text-center">email</th>
-                                                            <th class="text-center">性別</th>
-                                                            <th class="text-center">縣市</th>
-                                                            <th class="text-center">鄉鎮</th>
-                                                            <th class="text-center">最近來店日</th>
-                                                            <th class="text-center">剩餘點數</th>
-                                                            <th class="text-center">會員卡別</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                        </tr>
-                                                    </tbody>
+                                <div class="modal-footer">
+                                    <div class="x_content">
+                                        <div class="form-group row" style="width: 100%;margin-left: 12px ">
+                                            <label class="DyForm3-ProgramName">會員篩選清單</label>
+                                            <label class="DyForm3-ProgramName" style="color: red; margin-left: 60px">篩選會員數&ensp;</label>
+                                            <label id="lblVIPCnt_SendSet" class="DyForm3-ProgramName" style="color: red;"></label>
+                                            <label class="DyForm3-ProgramName" style="color: red;">筆</label>
+                                        </div>
+                                        <div style="overflow: auto; height: 400px;">
+                                            <table id="tbSendSet" class="table table-bordered" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">會員編號</th>
+                                                        <th class="text-center">會員姓名</th>
+                                                        <th class="text-center">手機號碼</th>
+                                                        <th class="text-center">email</th>
+                                                        <th class="text-center">性別</th>
+                                                        <th class="text-center">縣市</th>
+                                                        <th class="text-center">鄉鎮</th>
+                                                        <th class="text-center">最近來店日</th>
+                                                        <th class="text-center">剩餘點數</th>
+                                                        <th class="text-center">會員卡別</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                    </tr>
+                                                </tbody>
 
-                                                </table>
-                                            </div>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -325,7 +321,7 @@
                                     }
 
                                     #tbDMSel tbody tr td {
-                                        font-size: 14px;
+                                        font-size: 16px;
                                         padding: 3px;
                                         font-weight: bold;
                                     }
@@ -382,7 +378,11 @@
 
                     <div class="modal fade" id="modal_Lookup_VIPFaceID_SendSet" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 480px; width: 600px">
+                            <div class="modal-content" style="height: 580px">
+                                <div class="modal-header" style="padding-bottom:0px">
+                                    <label id="lblProgramName" class="DyForm3-ProgramName">會籍店櫃查詢</label>
+                                </div>
+
                                 <div class="modal-body modal-tab-container" style="padding:8px">
                                     <style>
                                         #tbDataLookup_VIPFaceID_SendSet thead tr th {
@@ -398,11 +398,27 @@
                                         }
                                     </style>
 
-                                    <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 5px; margin-top: 15px ">
-                                        <input id="txtLpQ_VIPFaceID_SendSet" class="form-control small" style="border-radius: 10px; font-size: 16px; width: 70%; line-height: 0px; padding: 3px; height: 28px ">
-                                        <button id="btLpQ_VIPFaceID_SendSet" type="button" class="DyForm3-BtnQuery" style="margin-left:5px">
+                                    <div class="form-group row" style="width: 100%; margin-left: 20px; margin-bottom: 5px; margin-top: 15px ">
+                                        <button class="DyForm3-BtnClear" id="btLpClear_VIPFaceID_SendSet" type="button">
+                                            清除
+                                            <i class="fa fa-close"></i>
+                                        </button>
+                                        <button id="btLpQ_VIPFaceID_SendSet" type="button" class="DyForm3-BtnQuery" style="margin-left:280px">
                                             查詢
                                             <i class="fa fa-search"></i>
+                                        </button>
+                                        <button class="DyForm3-BtnExit" id="btLpExit_VIPFaceID_SendSet" type="button" style="margin-left: 20px">
+                                            離開
+                                            <i class="fa fa-sign-out"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 5px; margin-top: 15px ">
+                                        <input id="txtLpQ_VIPFaceID_SendSet" class="form-control small" style="border-radius: 10px; font-size: 16px; width: 50%; line-height: 0px; padding: 3px; height: 28px " placeholder="請輸入店別">
+                                    </div>
+                                    <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 5px; margin-top: 15px ">
+                                        <button class="DyForm3-BtnQuery" id="btLpOK_VIPFaceID_SendSet" type="button" style="margin-left: 375px">
+                                            確定
+                                            <!--<i class="fa fa-search"></i>-->
                                         </button>
                                     </div>
 
@@ -412,26 +428,15 @@
                                                 <table id="tbDataLookup_VIPFaceID_SendSet" class="table table-bordered" style="width: 100%;">
                                                     <thead>
                                                         <tr>
-                                                            <th></th>
-                                                            <th>店別代號</th>
-                                                            <th>店別名稱</th>
+                                                            <th style="width:50px"></th>
+                                                            <th class="text-center">店別</th>
+                                                            <th class="text-center">店別名稱</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                     </tbody>
                                                 </table>
                                             </div>
-                                        </div>
-
-                                        <div class="form-group row" style="width: 100%; margin-top: 15px; ">
-                                            <button class="DyForm3-BtnQuery" id="btLpOK_VIPFaceID_SendSet" type="button" style=" position: absolute; right: 100px">
-                                                確定
-                                                <!--<i class="fa fa-search"></i>-->
-                                            </button>
-                                            <button class="DyForm3-BtnExit" id="btLpExit_VIPFaceID_SendSet" type="button" style=" position: absolute; right: 5px">
-                                                離開
-                                                <i class="fa fa-sign-out"></i>
-                                            </button>
                                         </div>
                                     </div>
 

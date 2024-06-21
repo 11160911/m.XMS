@@ -71,7 +71,7 @@
 
     let InitModifyDeleteButton = function () {
         $('#tbQMSDM107 .fa-trash-o').click(function () { btDelete_click(this) });
-        $('#tbQMSDM107 tbody tr .tdCol1').click(function () { MSDM107Query_EDM_click(this) });
+        $('#tbQMSDM107 tbody tr .tdCol1, .tdCol2, .tdCol3, .tdCol4, .tdCol5, .tdCol6, .tdCol7, .tdCol8, .tdCol9').click(function () { MSDM107Query_EDM_click(this) });
     }
 
     let btDelete_click = function (bt) {
@@ -531,6 +531,7 @@
                 return;
             }
             cs_EditMode = "Q"
+            ClearData_EDM()
             BindForm_EDM(data)
             FunctionEnable_EDM(cs_EditMode)
             EnableForm_EDM(true)
@@ -810,67 +811,73 @@
     //EDM預覽
     let btShow_EDM_click = function (bt) {
         //Timerset();
-        $('#lbl_Purpose_ShowEDM').html('');
-        GetImage_EDM("P1_ShowEDM", "");
-        GetImage_EDM("P2_ShowEDM", "");
-        GetImage_QRCodeandBarcode("Code_ShowEDM", "");
+        MSDM107ShowEDM();
+        //$('#lbl_Purpose_ShowEDM').html('');
+        //GetImage_EDM("P1_ShowEDM", "");
+        //GetImage_EDM("P2_ShowEDM", "");
+        //GetImage_QRCodeandBarcode("Code_ShowEDM", "");
         
-        var T1 = document.getElementById("T1_ShowEDM");
-        T1.replaceChildren();
-        var T2 = document.getElementById("T2_ShowEDM");
-        T2.replaceChildren();
+        //var T1 = document.getElementById("T1_ShowEDM");
+        //T1.replaceChildren();
+        //var T2 = document.getElementById("T2_ShowEDM");
+        //T2.replaceChildren();
 
-        $('#modal_ShowEDM').modal('show');
-        setTimeout(function () {
-            MSDM107ShowEDM();
-        }, 500);
+        //$('#modal_ShowEDM').modal('show');
+        //setTimeout(function () {
+        //    MSDM107ShowEDM();
+        //}, 500);
     };
 
     let MSDM107ShowEDM = function () {
         var pData = {
-            DocNo: $('#lblDocNo_EDM').html()
         }
-        PostToWebApi({ url: "api/SystemSetup/MSDM104ShowEDM", data: pData, success: afterMSDM107ShowEDM });
+        PostToWebApi({ url: "api/SystemSetup/GetCompanyShowEDM", data: pData, success: afterMSDM107ShowEDM });
     };
 
     let afterMSDM107ShowEDM = function (data) {
-        if (ReturnMsg(data, 0) != "MSDM104ShowEDMOK") {
-            DyAlert(ReturnMsg(data, 1), function () {
-                $('#modal_ShowEDM').modal('hide');
-            });
+        if (ReturnMsg(data, 0) != "GetCompanyShowEDMOK") {
+            DyAlert(ReturnMsg(data, 1));
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
             if (dtE.length == 0) {
-                DyAlert("請設定DM資料!", function () {
-                    $('#modal_ShowEDM').modal('hide');
-                });
+                DyAlert("此DM單據無資料，無法預覽!");
                 $(".modal-backdrop").remove();
                 return;
             }
-            $('#lbl_Purpose_ShowEDM').html(GetNodeValue(dtE[0], "EDMMemo"));
-            GetImage_QRCodeandBarcode("Code_ShowEDM", "123ABC");
-
-            for (var i = 0; i < dtE.length; i++) {
-                if (GetNodeValue(dtE[i], "DataType") == "P1") {
-                    GetImage_EDM("P1_ShowEDM", GetNodeValue(dtE[i], "DocNo"), GetNodeValue(dtE[i], "DataType"), "Y");
-                }
-                else if (GetNodeValue(dtE[i], "DataType") == "T1") {
-                    var p = document.createElement('p')
-                    p.innerHTML = GetNodeValue(dtE[i], "TXT")
-                    var T1 = document.getElementById("T1_ShowEDM");
-                    T1.appendChild(p);
-                }
-                else if (GetNodeValue(dtE[i], "DataType") == "P2") {
-                    GetImage_EDM("P2_ShowEDM", GetNodeValue(dtE[i], "DocNo"), GetNodeValue(dtE[i], "DataType"), "Y");
-                }
-                else if (GetNodeValue(dtE[i], "DataType") == "T2") {
-                    var p = document.createElement('p')
-                    p.innerHTML = GetNodeValue(dtE[i], "TXT")
-                    var T2 = document.getElementById("T2_ShowEDM");
-                    T2.appendChild(p);
-                }
+            var hostname = location.hostname;
+            //測試環境
+            if (hostname.indexOf("94") >= 0 || hostname.indexOf("localhost") >= 0) {
+                window.open("http://192.168.1.94/ShowEDMWEB/ShowEDMWEB?company=" + GetNodeValue(dtE[0], "CompanyID") + ";" + $('#lblDocNo_EDM').html() + "");
             }
+            //正式環境
+            else {
+                window.open("https://www.portal.e-dynasty.com.tw/ShowEDMWEB/ShowEDMWEB?company=" + GetNodeValue(dtE[0], "CompanyID") + ";" + $('#lblDocNo_EDM').html() + "");
+            }
+
+            //$('#lbl_Purpose_ShowEDM').html(GetNodeValue(dtE[0], "EDMMemo"));
+            //GetImage_QRCodeandBarcode("Code_ShowEDM", "123ABC");
+
+            //for (var i = 0; i < dtE.length; i++) {
+            //    if (GetNodeValue(dtE[i], "DataType") == "P1") {
+            //        GetImage_EDM("P1_ShowEDM", GetNodeValue(dtE[i], "DocNo"), GetNodeValue(dtE[i], "DataType"), "Y");
+            //    }
+            //    else if (GetNodeValue(dtE[i], "DataType") == "T1") {
+            //        var p = document.createElement('p')
+            //        p.innerHTML = GetNodeValue(dtE[i], "TXT")
+            //        var T1 = document.getElementById("T1_ShowEDM");
+            //        T1.appendChild(p);
+            //    }
+            //    else if (GetNodeValue(dtE[i], "DataType") == "P2") {
+            //        GetImage_EDM("P2_ShowEDM", GetNodeValue(dtE[i], "DocNo"), GetNodeValue(dtE[i], "DataType"), "Y");
+            //    }
+            //    else if (GetNodeValue(dtE[i], "DataType") == "T2") {
+            //        var p = document.createElement('p')
+            //        p.innerHTML = GetNodeValue(dtE[i], "TXT")
+            //        var T2 = document.getElementById("T2_ShowEDM");
+            //        T2.appendChild(p);
+            //    }
+            //}
         }
     };
 
@@ -1052,6 +1059,12 @@
         $('#modal_Lookup_ActivityCode').modal('hide')
     };
 
+    let btLpClear_ActivityCode_click = function (bt) {
+        //Timerset();
+        $("#txtQLookup_ActivityCode").val('');
+        $("#tbDataLookup_ActivityCode .checkbox").prop('checked', false);
+    };
+
     let btPSNO_EDM_click = function (bt) {
         //Timerset();
         if ($('#txtStartDate_EDM').val() == "" | $('#txtEndDate_EDM').val() == "") {
@@ -1156,6 +1169,12 @@
         $('#modal_Lookup_PSNO_EDM').modal('hide');
     };
 
+    let btLpClear_PSNO_EDM_click = function (bt) {
+        //Timerset();
+        $("#txtQLookup_PSNO_EDM").val('');
+        $("#tbDataLookup_PSNO_EDM .checkbox").prop('checked', false);
+    };
+
     let ChangeDate = function (bt) {
         if ($('#txtPSNO_EDM').val() != "") {
             DyConfirm("將自動清除小計折價單號，請確認是否變更!", function () { $('#txtPSNO_EDM').val('');},DummyFunction())
@@ -1182,6 +1201,7 @@
             $('#btQLookup_ActivityCode').click(function () { btQLookup_ActivityCode_click(this) });
             $('#btLpOK_ActivityCode').click(function () { btLpOK_ActivityCode_click(this) });
             $('#btLpExit_ActivityCode').click(function () { btLpExit_ActivityCode_click(this) });
+            $('#btLpClear_ActivityCode').click(function () { btLpClear_ActivityCode_click(this) });
 
             $('#btMod_EDM').click(function () { btMod_EDM_click(this) });
             $('#btSave_EDM').click(function () { btSave_EDM_click(this) });
@@ -1194,6 +1214,7 @@
             $('#btQLookup_PSNO_EDM').click(function () { btQLookup_PSNO_EDM_click(this) });
             $('#btLpOK_PSNO_EDM').click(function () { btLpOK_PSNO_EDM_click(this) });
             $('#btLpExit_PSNO_EDM').click(function () { btLpExit_PSNO_EDM_click(this) });
+            $('#btLpClear_PSNO_EDM').click(function () { btLpClear_PSNO_EDM_click(this) });
             $('#btP2_EDM').click(function () { btP2_EDM_click(this) });
             $('#txtStartDate_EDM').change(function () { ChangeDate(this) }); 
             $('#txtEndDate_EDM').change(function () { ChangeDate(this) }); 

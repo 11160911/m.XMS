@@ -988,6 +988,12 @@ Timerset(sessionStorage.getItem('isamcomp'));
         $('#modal_Lookup_VIPFaceID_SendSet').modal('hide');
     };
 
+    let btLpClear_VIPFaceID_SendSet_click = function (bt) {
+        //Timerset();
+        $("#txtLpQ_VIPFaceID_SendSet").val('');
+        $("#tbDataLookup_VIPFaceID_SendSet .checkbox").prop('checked', false);
+    };
+
     //清除(發送設定)
     let btClear_SendSet_click = function (bt) {
         //Timerset();
@@ -1187,6 +1193,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#btLpQ_VIPFaceID_SendSet').click(function () { btLpQ_VIPFaceID_SendSet_click(this) });
             $('#btLpOK_VIPFaceID_SendSet').click(function () { btLpOK_VIPFaceID_SendSet_click(this) });
             $('#btLpExit_VIPFaceID_SendSet').click(function () { btLpExit_VIPFaceID_SendSet_click(this) });
+            $('#btLpClear_VIPFaceID_SendSet').click(function () { btLpClear_VIPFaceID_SendSet_click(this) });
             $('#btClear_SendSet').click(function () { btClear_SendSet_click(this) });
             $('#btQuery_SendSet').click(function () { btQuery_SendSet_click(this) });
             $('#btRe_SendSet').click(function () { btRe_SendSet_click(this) });

@@ -118,7 +118,7 @@
         grdLookUp_ActivityCode = new DynGrid(
             {
                 table_lement: $('#tbDataLookup_ActivityCode')[0],
-                class_collection: ["tdCol1 text-center", "tdCol2", "tdCol3", "tdCol4", "tdCol5"],
+                class_collection: ["tdCol1 text-center", "tdCol2", "tdCol3", "tdCol4 text-center", "tdCol5 text-center"],
                 fields_info: [
                     { type: "radio", name: "chkset", style: "width:16px;height:16px" },
                     { type: "Text", name: "ActivityCode", style: "" },
@@ -1822,6 +1822,11 @@ Timerset(sessionStorage.getItem('isamcomp'));
         $('#modal_Lookup_ActivityCode').modal('hide')
     };
 
+    let btLpClear_ActivityCode_click = function (bt) {
+        $("#txtQLookup_ActivityCode").val('');
+        $("#tbDataLookup_ActivityCode .checkbox").prop('checked', false);
+    };
+
     let btRe_PSNO_click = function (bt) {
         //Timerset();
         $('#modal_PSNO').modal('hide')
@@ -1847,6 +1852,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#btQLookup_ActivityCode').click(function () { btQLookup_ActivityCode_click(this) });
             $('#btLpOK_ActivityCode').click(function () { btLpOK_ActivityCode_click(this) });
             $('#btLpExit_ActivityCode').click(function () { btLpExit_ActivityCode_click(this) });
+            $('#btLpClear_ActivityCode').click(function () { btLpClear_ActivityCode_click(this) });
 
             $('#btRe_PSNO').click(function () { btRe_PSNO_click(this) });
             $('#rdoShop_PSNO,#rdoDate_PSNO').change(function () { QueryPSNO($('#lblPSNO_PSNO').html()) });

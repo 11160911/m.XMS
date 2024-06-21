@@ -935,6 +935,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 }
                 if (dtE.length == 0) {
                     DyAlert("無符合資料!");
+                    $('#lblVIPQty').html('會員總數 : 0');
                     $(".modal-backdrop").remove();
                     $('#tbQuery thead td#td1').html('');
                     $('#tbQuery thead td#td2').html('');
@@ -984,6 +985,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 grdMW.BindData(dtE);
                 if (dtE.length == 0) {
                     DyAlert("無符合資料!");
+                    $('#lblVIPQty').html('會員總數 : 0');
                     $(".modal-backdrop").remove();
                     $('#tbQueryMW thead td#td1_MW').html('');
                     $('#tbQueryMW thead td#td2_MW').html('');
@@ -1125,6 +1127,11 @@ Timerset(sessionStorage.getItem('isamcomp'));
         $('#modal_Lookup_VIPFaceID').modal('hide');
     };
 
+    let btLpClear_VIPFaceID_click = function (bt) {
+        //Timerset();
+        $("#txtLpQ_VIPFaceID").val('');
+        $("#tbLookup_VIPFaceID .checkbox").prop('checked', false);
+    };
     //縣市多選
     let btCity_click = function (bt) {
         //Timerset();
@@ -1226,6 +1233,12 @@ Timerset(sessionStorage.getItem('isamcomp'));
         //Timerset();
         $('#modal_Lookup_City').modal('hide');
     };
+
+    let btLpClear_City_click = function (bt) {
+        //Timerset();
+        $("#txtLpQ_City").val('');
+        $("#tbLookup_City .checkbox").prop('checked', false);
+    };
 //#region FormLoad
     let GetInitMSSD106 = function (data) {
         if (ReturnMsg(data, 0) != "GetInitMSSD106OK") {
@@ -1250,10 +1263,12 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#btLpQ_VIPFaceID').click(function () { btLpQ_VIPFaceID_click(this) });
             $('#btLpOK_VIPFaceID').click(function () { btLpOK_VIPFaceID_click(this) });
             $('#btLpExit_VIPFaceID').click(function () { btLpExit_VIPFaceID_click(this) });
+            $('#btLpClear_VIPFaceID').click(function () { btLpClear_VIPFaceID_click(this) });
             $('#btCity').click(function () { btCity_click(this) });
             $('#btLpQ_City').click(function () { btLpQ_City_click(this) });
             $('#btLpOK_City').click(function () { btLpOK_City_click(this) });
             $('#btLpExit_City').click(function () { btLpExit_City_click(this) });
+            $('#btLpClear_City').click(function () { btLpClear_City_click(this) });
 
         }
     };

@@ -178,7 +178,7 @@
                                 </button>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%;margin-top:20px">
                                 <button class="DyForm3-BtnShop" id="btVIPFaceID" type="button">會籍店櫃</button>
                                 <label class="DyForm3-LabelRed" id="lblVIPFaceIDCnt" style=" margin-left: 10px; margin-top: 5px"></label>
                                 <label class="DyForm3-Label" id="lblVIPFaceIDName" style=" margin-left: 10px; margin-top: 5px"></label>
@@ -206,10 +206,9 @@
                                 <label class="DyForm3-LabelBlack" for="rdoDate1Y" style="margin-top:2px">&ensp;1年內</label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%">
+                            <div class="form-group row" style="margin-left: 25px; width: 100%">
                                 <mark class="DyForm3-DyNotEmptyMark" style="margin-left:5px" hidden>*</mark>
-                                <label class="DyForm3-Label">統計條件</label>
-                                <input id="rdoShop" type="radio" name="Q" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
+                                <input id="rdoShop" type="radio" name="Q" style="vertical-align: middle; margin-top: 6px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
                                 <label class="DyForm3-LabelBlack" for="rdoShop" style="margin-top: 2px">&ensp;店別</label>
                                 <input id="rdoCity" type="radio" name="Q" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
                                 <label class="DyForm3-LabelBlack" for="rdoCity" style="margin-top:2px">&ensp;縣市</label>
@@ -328,7 +327,11 @@
 
                     <div class="modal fade" id="modal_Lookup_VIPFaceID" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 480px; width: 600px">
+                            <div class="modal-content" style="height: 550px;">
+                                <div class="modal-header" style="padding-bottom:0px">
+                                    <label id="lblProgramName" class="DyForm3-ProgramName">會籍店櫃查詢</label>
+                                </div>
+
                                 <div class="modal-body modal-tab-container" style="padding:8px">
                                     <style>
                                         #tbLookup_VIPFaceID thead tr th {
@@ -344,11 +347,29 @@
                                         }
                                     </style>
 
-                                    <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 5px; margin-top: 15px ">
-                                        <input id="txtLpQ_VIPFaceID" class="form-control small" style="border-radius: 10px; font-size: 16px; width: 70%; line-height: 0px; padding: 3px; height: 28px ">
-                                        <button id="btLpQ_VIPFaceID" type="button" class="DyForm3-BtnQuery" style="margin-left:5px">
+                                    <div class="form-group row" style="width: 100%; margin-left: 20px; margin-bottom: 5px; margin-top: 15px ">
+                                        <button class="DyForm3-BtnClear" id="btLpClear_VIPFaceID" type="button">
+                                            清除
+                                            <i class="fa fa-close"></i>
+                                        </button>
+                                        <button id="btLpQ_VIPFaceID" type="button" class="DyForm3-BtnQuery" style="margin-left:280px">
                                             查詢
                                             <i class="fa fa-search"></i>
+                                        </button>
+                                        <button class="DyForm3-BtnExit" id="btLpExit_VIPFaceID" type="button" style="margin-left: 20px">
+                                            離開
+                                            <i class="fa fa-sign-out"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 5px; margin-top: 15px ">
+                                        <input id="txtLpQ_VIPFaceID" class="form-control small" style="border-radius: 10px; font-size: 16px; width: 50%; line-height: 0px; padding: 3px; height: 28px " placeholder="請輸入店別">
+                                    </div>
+
+                                    <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 5px; margin-top: 15px ">
+                                        <button class="DyForm3-BtnQuery" id="btLpOK_VIPFaceID" type="button" style="margin-left: 375px">
+                                            確定
+                                            <!--<i class="fa fa-search"></i>-->
                                         </button>
                                     </div>
 
@@ -358,26 +379,15 @@
                                                 <table id="tbLookup_VIPFaceID" class="table table-bordered" style="width: 100%;">
                                                     <thead>
                                                         <tr>
-                                                            <th></th>
-                                                            <th>店別代號</th>
-                                                            <th>店別名稱</th>
+                                                            <th style="width:50px"></th>
+                                                            <th class="text-center">店別</th>
+                                                            <th class="text-center">店別名稱</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                     </tbody>
                                                 </table>
                                             </div>
-                                        </div>
-
-                                        <div class="form-group row" style="width: 100%; margin-top: 15px; ">
-                                            <button class="DyForm3-BtnQuery" id="btLpOK_VIPFaceID" type="button" style=" position: absolute; right: 100px">
-                                                確定
-                                                <!--<i class="fa fa-search"></i>-->
-                                            </button>
-                                            <button class="DyForm3-BtnExit" id="btLpExit_VIPFaceID" type="button" style=" position: absolute; right: 5px">
-                                                離開
-                                                <i class="fa fa-sign-out"></i>
-                                            </button>
                                         </div>
                                     </div>
 
@@ -388,7 +398,11 @@
                 
                     <div class="modal fade" id="modal_Lookup_City" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 480px; width: 600px">
+                            <div class="modal-content" style="height: 580px">
+                                <div class="modal-header" style="padding-bottom:0px">
+                                    <label id="lblProgramName" class="DyForm3-ProgramName">縣市查詢</label>
+                                </div>
+
                                 <div class="modal-body modal-tab-container" style="padding:8px">
                                     <style>
                                         #tbLookup_City thead tr th {
@@ -404,11 +418,29 @@
                                         }
                                     </style>
 
-                                    <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 5px; margin-top: 15px ">
-                                        <input id="txtLpQ_City" class="form-control small" style="border-radius: 10px; font-size: 16px; width: 70%; line-height: 0px; padding: 3px; height: 28px ">
-                                        <button id="btLpQ_City" type="button" class="DyForm3-BtnQuery" style="margin-left:5px">
+                                    <div class="form-group row" style="width: 100%; margin-left: 20px; margin-bottom: 5px; margin-top: 15px ">
+                                        <button class="DyForm3-BtnClear" id="btLpClear_City" type="button">
+                                            清除
+                                            <i class="fa fa-close"></i>
+                                        </button>
+                                        <button id="btLpQ_City" type="button" class="DyForm3-BtnQuery" style="margin-left:280px">
                                             查詢
                                             <i class="fa fa-search"></i>
+                                        </button>
+                                        <button class="DyForm3-BtnExit" id="btLpExit_City" type="button" style="margin-left: 20px">
+                                            離開
+                                            <i class="fa fa-sign-out"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 5px; margin-top: 15px ">
+                                        <input id="txtLpQ_City" class="form-control small" style="border-radius: 10px; font-size: 16px; width: 50%; line-height: 0px; padding: 3px; height: 28px " placeholder="請輸入縣市">
+                                    </div>
+
+                                    <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 5px; margin-top: 15px ">
+                                        <button class="DyForm3-BtnQuery" id="btLpOK_City" type="button" style="margin-left: 375px">
+                                            確定
+                                            <!--<i class="fa fa-search"></i>-->
                                         </button>
                                     </div>
 
@@ -418,25 +450,14 @@
                                                 <table id="tbLookup_City" class="table table-bordered" style="width: 100%;">
                                                     <thead>
                                                         <tr>
-                                                            <th></th>
-                                                            <th>縣市</th>
+                                                            <th style="width:50px"></th>
+                                                            <th class="text-center">縣市</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                     </tbody>
                                                 </table>
                                             </div>
-                                        </div>
-
-                                        <div class="form-group row" style="width: 100%; margin-top: 15px; ">
-                                            <button class="DyForm3-BtnQuery" id="btLpOK_City" type="button" style=" position: absolute; right: 100px">
-                                                確定
-                                                <!--<i class="fa fa-search"></i>-->
-                                            </button>
-                                            <button class="DyForm3-BtnExit" id="btLpExit_City" type="button" style=" position: absolute; right: 5px">
-                                                離開
-                                                <i class="fa fa-sign-out"></i>
-                                            </button>
                                         </div>
                                     </div>
 
