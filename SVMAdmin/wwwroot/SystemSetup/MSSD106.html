@@ -141,6 +141,36 @@
                                     padding: 3px;
                                     font-weight: bold;
                                 }
+
+                                th:first-child {
+                                    position: sticky;
+                                    left: 0; /*首行永遠固定於左 */
+                                }
+                                .table thead th, .table thead td {
+                                    position: sticky;
+                                    border-top: 0;
+                                    border-bottom: 0;
+                                    /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
+                                    box-shadow: 0 0px 2px 0px inset #ddd;
+                                }
+                                #thtype, #thead1, #thead2, #thead3 {
+                                    top: 0;
+                                    z-index: 2;
+                                    height: 35px;
+                                }
+                                #th1, #th2, #th3, #th4, #th5, #th6, #th7, #th8, #th9 {
+                                    top: 35px;
+                                    z-index: 2;
+                                }
+                                #td1, #td2, #td2p, #td3, #td3p, #td4, #td4p, #td5, #td5p, #td6, #td6p, #td7, #td7p, #td8, #td8p, #td9, #td9p, #td10, #td10p {
+                                    top: 65px;
+                                    z-index: 2;
+                                    color: red;
+                                }
+                                #td0 {
+                                    top: 65px;
+                                    z-index: 2;
+                                }
                             </style>
 
                             <div class="form-group row" style="margin-left: 5px; width: 100%">
@@ -203,50 +233,50 @@
 
                             <div class="card-block forminput">
                                 <div class="x_content">
-                                    <div style="overflow: auto; height: 520px;">
+                                    <div style="overflow: auto; height: 480px;">
                                         <table id="tbQuery" class="table table-bordered" style="width:100%">
                                             <thead>
                                                 <!--第一層-->
                                                 <tr>
                                                     <th id="thtype" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
-                                                    <th class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">會員數</th>
-                                                    <td class="text-center" colspan="14">年齡層數量 / 佔比</td>
-                                                    <td class="text-center" colspan="4">性別數量 / 佔比</td>
+                                                    <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">會員數</th>
+                                                    <td id="thead2" class="text-center" colspan="14">年齡層數量 / 佔比</td>
+                                                    <td id="thead3" class="text-center" colspan="4">性別數量 / 佔比</td>
                                                 </tr>
                                                 <!--第二層-->
                                                 <tr>
-                                                    <th class="text-center" colspan="2">17歲以下</th>
-                                                    <th class="text-center" colspan="2">18~30歲</th>
-                                                    <th class="text-center" colspan="2">31~40歲</th>
-                                                    <th class="text-center" colspan="2">41~50歲</th>
-                                                    <th class="text-center" colspan="2">51~60歲</th>
-                                                    <th class="text-center" colspan="2">61~70歲</th>
-                                                    <th class="text-center" colspan="2">71歲以上</th>
-                                                    <th class="text-center" colspan="2">男性</th>
-                                                    <th class="text-center" colspan="2">女性</th>
+                                                    <th id="th1" class="text-center" colspan="2">17歲以下</th>
+                                                    <th id="th2" class="text-center" colspan="2">18~30歲</th>
+                                                    <th id="th3" class="text-center" colspan="2">31~40歲</th>
+                                                    <th id="th4" class="text-center" colspan="2">41~50歲</th>
+                                                    <th id="th5" class="text-center" colspan="2">51~60歲</th>
+                                                    <th id="th6" class="text-center" colspan="2">61~70歲</th>
+                                                    <th id="th7" class="text-center" colspan="2">71歲以上</th>
+                                                    <th id="th8" class="text-center" colspan="2">男性</th>
+                                                    <th id="th9" class="text-center" colspan="2">女性</th>
                                                 </tr>
                                                 <!--第三層-->
                                                 <tr>
-                                                    <td class="text-center" colspan="1">總數</td>
-                                                    <td id="td1" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td2" colspan="1" style="text-align: right; color: red "></td>
-                                                    <td id="td2p" class="text-center" colspan="1" style="color: red "></td>
-                                                    <td id="td3" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td3p" class="text-center" colspan="1" style="color:red "></td>
-                                                    <td id="td4" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td4p" class="text-center" colspan="1" style="color:red "></td>
-                                                    <td id="td5" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td5p" class="text-center" colspan="1" style="color:red "></td>
-                                                    <td id="td6" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td6p" class="text-center" colspan="1" style="color:red "></td>
-                                                    <td id="td7" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td7p" class="text-center" colspan="1" style="color:red "></td>
-                                                    <td id="td8" colspan="1" style="text-align: right; color: red "></td>
-                                                    <td id="td8p" class="text-center" colspan="1" style="color: red "></td>
-                                                    <td id="td9" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td9p" class="text-center" colspan="1" style="color:red "></td>
-                                                    <td id="td10" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td10p" class="text-center" colspan="1" style="color:red "></td>
+                                                    <td id="td0" class="text-center" colspan="1">總數</td>
+                                                    <td id="td1" colspan="1" style="text-align: right"></td>
+                                                    <td id="td2" colspan="1" style="text-align: right"></td>
+                                                    <td id="td2p" class="text-center" colspan="1"></td>
+                                                    <td id="td3" colspan="1" style="text-align: right "></td>
+                                                    <td id="td3p" class="text-center" colspan="1"></td>
+                                                    <td id="td4" colspan="1" style="text-align: right "></td>
+                                                    <td id="td4p" class="text-center" colspan="1"></td>
+                                                    <td id="td5" colspan="1" style="text-align: right "></td>
+                                                    <td id="td5p" class="text-center" colspan="1"></td>
+                                                    <td id="td6" colspan="1" style="text-align: right "></td>
+                                                    <td id="td6p" class="text-center" colspan="1"></td>
+                                                    <td id="td7" colspan="1" style="text-align: right "></td>
+                                                    <td id="td7p" class="text-center" colspan="1"></td>
+                                                    <td id="td8" colspan="1" style="text-align: right"></td>
+                                                    <td id="td8p" class="text-center" colspan="1"></td>
+                                                    <td id="td9" colspan="1" style="text-align: right"></td>
+                                                    <td id="td9p" class="text-center" colspan="1"></td>
+                                                    <td id="td10" colspan="1" style="text-align: right"></td>
+                                                    <td id="td10p" class="text-center" colspan="1"></td>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -316,7 +346,7 @@
                                     <style>
                                         #tbLookup_VIPFaceID thead tr th {
                                             font-size: 16px;
-                                            padding: 0px;
+                                            padding: 6px;
                                             background-color: #ffb620;
                                             font-weight: bold;
                                         }
@@ -324,6 +354,21 @@
                                         #tbLookup_VIPFaceID tbody tr td {
                                             font-size: 16px;
                                             padding: 0px;
+                                        }
+
+                                        th:first-child {
+                                            position: sticky;
+                                            left: 0; /*首行永遠固定於左 */
+                                        }
+                                        .table thead th {
+                                            position: sticky;
+                                            border-top: 0;
+                                            border-bottom: 0;
+                                            /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
+                                            box-shadow: 0 0px 2px 0px inset #ddd;
+                                            top: 0;
+                                            z-index: 2;
+                                            height: 35px;
                                         }
                                     </style>
 
@@ -387,7 +432,7 @@
                                     <style>
                                         #tbLookup_City thead tr th {
                                             font-size: 16px;
-                                            padding: 0px;
+                                            padding: 6px;
                                             background-color: #ffb620;
                                             font-weight: bold;
                                         }
@@ -395,6 +440,22 @@
                                         #tbLookup_City tbody tr td {
                                             font-size: 16px;
                                             padding: 0px;
+                                        }
+
+                                        th:first-child {
+                                            position: sticky;
+                                            left: 0; /*首行永遠固定於左 */
+                                        }
+
+                                        .table thead th {
+                                            position: sticky;
+                                            border-top: 0;
+                                            border-bottom: 0;
+                                            /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
+                                            box-shadow: 0 0px 2px 0px inset #ddd;
+                                            top: 0;
+                                            z-index: 2;
+                                            height: 35px;
                                         }
                                     </style>
 

@@ -134,6 +134,22 @@
                                     padding: 3px;
                                     font-weight: bold;
                                 }
+
+                                th:first-child {
+                                    position: sticky;
+                                    left: 0; /*首行永遠固定於左 */
+                                }
+
+                                .table thead th {
+                                    position: sticky;
+                                    border-top: 0;
+                                    border-bottom: 0;
+                                    /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
+                                    box-shadow: 0 0px 2px 0px inset #ddd;
+                                    top: 0;
+                                    z-index: 2;
+                                    height: 35px;
+                                }
                             </style>
 
                             <div class="form-group row" style="margin-left: 5px; width: 100%">
@@ -213,6 +229,22 @@
                                         font-size: 16px;
                                         padding: 3px;
                                         font-weight: bold;
+                                    }
+
+                                    th:first-child {
+                                        position: sticky;
+                                        left: 0; /*首行永遠固定於左 */
+                                    }
+
+                                    .table thead th {
+                                        position: sticky;
+                                        border-top: 0;
+                                        border-bottom: 0;
+                                        /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
+                                        box-shadow: 0 0px 2px 0px inset #ddd;
+                                        top: 0;
+                                        z-index: 2;
+                                        height: 35px;
                                     }
                                 </style>
 
@@ -325,6 +357,22 @@
                                         padding: 3px;
                                         font-weight: bold;
                                     }
+
+                                    th:first-child {
+                                        position: sticky;
+                                        left: 0; /*首行永遠固定於左 */
+                                    }
+
+                                    .table thead th {
+                                        position: sticky;
+                                        border-top: 0;
+                                        border-bottom: 0;
+                                        /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
+                                        box-shadow: 0 0px 2px 0px inset #ddd;
+                                        top: 0;
+                                        z-index: 2;
+                                        height: 35px;
+                                    }
                                 </style>
 
                                 <!--<div class="modal-header">
@@ -395,6 +443,22 @@
                                         #tbDataLookup_VIPFaceID_SendSet tbody tr td {
                                             font-size: 16px;
                                             padding: 0px;
+                                        }
+
+                                        th:first-child {
+                                            position: sticky;
+                                            left: 0; /*首行永遠固定於左 */
+                                        }
+
+                                        .table thead th {
+                                            position: sticky;
+                                            border-top: 0;
+                                            border-bottom: 0;
+                                            /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
+                                            box-shadow: 0 0px 2px 0px inset #ddd;
+                                            top: 0;
+                                            z-index: 2;
+                                            height: 35px;
                                         }
                                     </style>
 

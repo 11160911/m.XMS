@@ -141,6 +141,41 @@
                                     padding: 3px;
                                     font-weight: bold;
                                 }
+
+                                th:first-child {
+                                    position: sticky;
+                                    left: 0; /*首行永遠固定於左 */
+                                }
+
+                                .table thead th, .table thead td {
+                                    position: sticky;
+                                    border-top: 0;
+                                    border-bottom: 0;
+                                    /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
+                                    box-shadow: 0 0px 2px 0px inset #ddd;
+                                }
+
+                                #tdflag, #thead1, #thead2, #thead3, #thead4 {
+                                    top: 0;
+                                    z-index: 2;
+                                    height: 35px;
+                                }
+
+                                #th1, #th2, #th3, #th4, #th5, #th6, #th7, #th8, #th9, #th10, #th11, #th12 {
+                                    top: 35px;
+                                    z-index: 2;
+                                }
+
+                                #td1, #td2, #td3, #td4, #td5, #td6, #td7, #td8, #td9, #td10, #td11, #td12 {
+                                    top: 65px;
+                                    z-index: 2;
+                                    color: red;
+                                }
+
+                                #td0 {
+                                    top: 65px;
+                                    z-index: 2;
+                                }
                             </style>
 
                             <div class="form-group row" style="margin-left: 5px; width: 100%">
@@ -185,45 +220,42 @@
                                             <thead>
                                                 <!--第一層-->
                                                 <tr>
-                                                    <!--<td class="text-center" colspan="1"></td>-->
                                                     <th id="tdflag" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
-                                                    <td class="text-center" colspan="1">新會員</td>
-                                                    <td class="text-center" colspan="3">新會員首日業績</td>
-                                                    <td class="text-center" colspan="4">會員當月業績</td>
-                                                    <td class="text-center" colspan="4">非會員當月業績</td>
+                                                    <td id="thead1" class="text-center" colspan="1">新會員</td>
+                                                    <td id="thead2" class="text-center" colspan="3">新會員首日業績</td>
+                                                    <td id="thead3" class="text-center" colspan="4">會員當月業績</td>
+                                                    <td id="thead4" class="text-center" colspan="4">非會員當月業績</td>
                                                 </tr>
                                                 <!--第二層-->
                                                 <tr>
-                                                    <!--<th style="display:none"></th>-->
-                                                    <!--<th id="tdflag" class="text-center" colspan="1">店別</th>-->
-                                                    <th class="text-center">入會數</th>
-                                                    <th class="text-center">交易筆數</th>
-                                                    <th class="text-center">交易金額</th>
-                                                    <th class="text-center">客單價</th>
-                                                    <th class="text-center">交易筆數</th>
-                                                    <th class="text-center">交易金額</th>
-                                                    <th class="text-center">客單價</th>
-                                                    <th class="text-center">交易額佔比</th>
-                                                    <th class="text-center">交易筆數</th>
-                                                    <th class="text-center">交易金額</th>
-                                                    <th class="text-center">客單價</th>
-                                                    <th class="text-center">交易額佔比</th>
+                                                    <th id="th1" class="text-center">入會數</th>
+                                                    <th id="th2" class="text-center">交易筆數</th>
+                                                    <th id="th3" class="text-center">交易金額</th>
+                                                    <th id="th4" class="text-center">客單價</th>
+                                                    <th id="th5" class="text-center">交易筆數</th>
+                                                    <th id="th6" class="text-center">交易金額</th>
+                                                    <th id="th7" class="text-center">客單價</th>
+                                                    <th id="th8" class="text-center">交易額佔比</th>
+                                                    <th id="th9" class="text-center">交易筆數</th>
+                                                    <th id="th10" class="text-center">交易金額</th>
+                                                    <th id="th11" class="text-center">客單價</th>
+                                                    <th id="th12" class="text-center">交易額佔比</th>
                                                 </tr>
                                                 <!--第三層-->
                                                 <tr>
-                                                    <td class="text-center" colspan="1">總數</td>
-                                                    <td id="td1" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td2" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td3" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td4" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td5" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td6" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td7" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td class="text-center" id="td8" colspan="1" style="color:red "></td>
-                                                    <td id="td9" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td10" colspan="1" style="text-align: right; color: red "></td>
-                                                    <td id="td11" colspan="1" style="text-align: right; color: red "></td>
-                                                    <td class="text-center" id="td12" colspan="1" style="color: red "></td>
+                                                    <td id="td0" class="text-center" colspan="1">總數</td>
+                                                    <td id="td1" colspan="1" style="text-align: right "></td>
+                                                    <td id="td2" colspan="1" style="text-align: right "></td>
+                                                    <td id="td3" colspan="1" style="text-align: right "></td>
+                                                    <td id="td4" colspan="1" style="text-align: right "></td>
+                                                    <td id="td5" colspan="1" style="text-align: right "></td>
+                                                    <td id="td6" colspan="1" style="text-align: right "></td>
+                                                    <td id="td7" colspan="1" style="text-align: right "></td>
+                                                    <td class="text-center" id="td8" colspan="1"></td>
+                                                    <td id="td9" colspan="1" style="text-align: right"></td>
+                                                    <td id="td10" colspan="1" style="text-align: right"></td>
+                                                    <td id="td11" colspan="1" style="text-align: right"></td>
+                                                    <td class="text-center" id="td12" colspan="1"></td>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -261,6 +293,41 @@
                                         padding: 3px;
                                         font-weight: bold;
                                     }
+
+                                    th:first-child {
+                                        position: sticky;
+                                        left: 0; /*首行永遠固定於左 */
+                                    }
+
+                                    .table thead th, .table thead td {
+                                        position: sticky;
+                                        border-top: 0;
+                                        border-bottom: 0;
+                                        /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
+                                        box-shadow: 0 0px 2px 0px inset #ddd;
+                                    }
+
+                                    #thead1_Shop1, #thead2_Shop1, #thead3_Shop1, #thead4_Shop1, #thead5_Shop1 {
+                                        top: 0;
+                                        z-index: 2;
+                                        height: 35px;
+                                    }
+
+                                    #th1_Shop1, #th2_Shop1, #th3_Shop1, #th4_Shop1, #th5_Shop1, #th6_Shop1, #th7_Shop1, #th8_Shop1, #th9_Shop1, #th10_Shop1, #th11_Shop1, #th12_Shop1 {
+                                        top: 35px;
+                                        z-index: 2;
+                                    }
+
+                                    #td1_Shop1, #td2_Shop1, #td3_Shop1, #td4_Shop1, #td5_Shop1, #td6_Shop1, #td7_Shop1, #td8_Shop1, #td9_Shop1, #td10_Shop1, #td11_Shop1, #td12_Shop1 {
+                                        top: 65px;
+                                        z-index: 2;
+                                        color: red;
+                                    }
+
+                                    #td0_Shop1 {
+                                        top: 65px;
+                                        z-index: 2;
+                                    }
                                 </style>
 
                                 <!--<div class="modal-header">
@@ -295,45 +362,42 @@
                                                     <thead>
                                                         <!--第一層-->
                                                         <tr>
-                                                            <!--<td class="text-center" colspan="1"></td>-->
-                                                            <th class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">日期</th>
-                                                            <td class="text-center" colspan="1">新會員</td>
-                                                            <td class="text-center" colspan="3">新會員首日業績</td>
-                                                            <td class="text-center" colspan="4">會員業績</td>
-                                                            <td class="text-center" colspan="4">非會員業績</td>
+                                                            <th id="thead1_Shop1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">日期</th>
+                                                            <td id="thead2_Shop1" class="text-center" colspan="1">新會員</td>
+                                                            <td id="thead3_Shop1" class="text-center" colspan="3">新會員首日業績</td>
+                                                            <td id="thead4_Shop1" class="text-center" colspan="4">會員業績</td>
+                                                            <td id="thead5_Shop1" class="text-center" colspan="4">非會員業績</td>
                                                         </tr>
                                                         <!--第二層-->
                                                         <tr>
-                                                            <!--<th style="display:none"></th>-->
-                                                            <!--<th class="text-center" colspan="1">日期</th>-->
-                                                            <th class="text-center">入會數</th>
-                                                            <th class="text-center">交易筆數</th>
-                                                            <th class="text-center">交易金額</th>
-                                                            <th class="text-center">客單價</th>
-                                                            <th class="text-center">交易筆數</th>
-                                                            <th class="text-center">交易金額</th>
-                                                            <th class="text-center">客單價</th>
-                                                            <th class="text-center">交易額佔比</th>
-                                                            <th class="text-center">交易筆數</th>
-                                                            <th class="text-center">交易金額</th>
-                                                            <th class="text-center">客單價</th>
-                                                            <th class="text-center">交易額佔比</th>
+                                                            <th id="th1_Shop1" class="text-center">入會數</th>
+                                                            <th id="th2_Shop1" class="text-center">交易筆數</th>
+                                                            <th id="th3_Shop1" class="text-center">交易金額</th>
+                                                            <th id="th4_Shop1" class="text-center">客單價</th>
+                                                            <th id="th5_Shop1" class="text-center">交易筆數</th>
+                                                            <th id="th6_Shop1" class="text-center">交易金額</th>
+                                                            <th id="th7_Shop1" class="text-center">客單價</th>
+                                                            <th id="th8_Shop1" class="text-center">交易額佔比</th>
+                                                            <th id="th9_Shop1" class="text-center">交易筆數</th>
+                                                            <th id="th10_Shop1" class="text-center">交易金額</th>
+                                                            <th id="th11_Shop1" class="text-center">客單價</th>
+                                                            <th id="th12_Shop1" class="text-center">交易額佔比</th>
                                                         </tr>
                                                         <!--第三層-->
                                                         <tr>
-                                                            <td class="text-center" colspan="1">總數</td>
-                                                            <td id="td1_Shop1" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="td2_Shop1" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="td3_Shop1" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="td4_Shop1" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="td5_Shop1" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="td6_Shop1" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="td7_Shop1" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="td8_Shop1" class="text-center" colspan="1" style="color:red "></td>
-                                                            <td id="td9_Shop1" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="td10_Shop1" colspan="1" style="text-align: right; color: red "></td>
-                                                            <td id="td11_Shop1" colspan="1" style="text-align: right; color: red "></td>
-                                                            <td id="td12_Shop1" class="text-center" colspan="1" style="color: red "></td>
+                                                            <td id="td0_Shop1" class="text-center" colspan="1">總數</td>
+                                                            <td id="td1_Shop1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td2_Shop1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td3_Shop1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td4_Shop1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td5_Shop1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td6_Shop1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td7_Shop1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td8_Shop1" class="text-center" colspan="1"></td>
+                                                            <td id="td9_Shop1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td10_Shop1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td11_Shop1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td12_Shop1" class="text-center" colspan="1"></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -373,6 +437,41 @@
                                         padding: 3px;
                                         font-weight: bold;
                                     }
+
+                                    th:first-child {
+                                        position: sticky;
+                                        left: 0; /*首行永遠固定於左 */
+                                    }
+
+                                    .table thead th, .table thead td {
+                                        position: sticky;
+                                        border-top: 0;
+                                        border-bottom: 0;
+                                        /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
+                                        box-shadow: 0 0px 2px 0px inset #ddd;
+                                    }
+
+                                    #thead1_Date1, #thead2_Date1, #thead3_Date1, #thead4_Date1, #thead5_Date1 {
+                                        top: 0;
+                                        z-index: 2;
+                                        height: 35px;
+                                    }
+
+                                    #th1_Date1, #th2_Date1, #th3_Date1, #th4_Date1, #th5_Date1, #th6_Date1, #th7_Date1, #th8_Date1, #th9_Date1, #th10_Date1, #th11_Date1, #th12_Date1 {
+                                        top: 35px;
+                                        z-index: 2;
+                                    }
+
+                                    #td1_Date1, #td2_Date1, #td3_Date1, #td4_Date1, #td5_Date1, #td6_Date1, #td7_Date1, #td8_Date1, #td9_Date1, #td10_Date1, #td11_Date1, #td12_Date1 {
+                                        top: 65px;
+                                        z-index: 2;
+                                        color: red;
+                                    }
+
+                                    #td0_Date1 {
+                                        top: 65px;
+                                        z-index: 2;
+                                    }
                                 </style>
 
                                 <!--<div class="modal-header">
@@ -407,45 +506,42 @@
                                                     <thead>
                                                         <!--第一層-->
                                                         <tr>
-                                                            <!--<td class="text-center" colspan="1"></td>-->
-                                                            <th class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
-                                                            <td class="text-center" colspan="1">新會員</td>
-                                                            <td class="text-center" colspan="3">新會員首日業績</td>
-                                                            <td class="text-center" colspan="4">會員業績</td>
-                                                            <td class="text-center" colspan="4">非會員業績</td>
+                                                            <th id="thead1_Date1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
+                                                            <td id="thead2_Date1" class="text-center" colspan="1">新會員</td>
+                                                            <td id="thead3_Date1" class="text-center" colspan="3">新會員首日業績</td>
+                                                            <td id="thead4_Date1" class="text-center" colspan="4">會員業績</td>
+                                                            <td id="thead5_Date1" class="text-center" colspan="4">非會員業績</td>
                                                         </tr>
                                                         <!--第二層-->
                                                         <tr>
-                                                            <!--<th style="display:none"></th>-->
-                                                            <!--<th class="text-center" colspan="1">店別</th>-->
-                                                            <th class="text-center">入會數</th>
-                                                            <th class="text-center">交易筆數</th>
-                                                            <th class="text-center">交易金額</th>
-                                                            <th class="text-center">客單價</th>
-                                                            <th class="text-center">交易筆數</th>
-                                                            <th class="text-center">交易金額</th>
-                                                            <th class="text-center">客單價</th>
-                                                            <th class="text-center">交易額佔比</th>
-                                                            <th class="text-center">交易筆數</th>
-                                                            <th class="text-center">交易金額</th>
-                                                            <th class="text-center">客單價</th>
-                                                            <th class="text-center">交易額佔比</th>
+                                                            <th id="th1_Date1" class="text-center">入會數</th>
+                                                            <th id="th2_Date1" class="text-center">交易筆數</th>
+                                                            <th id="th3_Date1" class="text-center">交易金額</th>
+                                                            <th id="th4_Date1" class="text-center">客單價</th>
+                                                            <th id="th5_Date1" class="text-center">交易筆數</th>
+                                                            <th id="th6_Date1" class="text-center">交易金額</th>
+                                                            <th id="th7_Date1" class="text-center">客單價</th>
+                                                            <th id="th8_Date1" class="text-center">交易額佔比</th>
+                                                            <th id="th9_Date1" class="text-center">交易筆數</th>
+                                                            <th id="th10_Date1" class="text-center">交易金額</th>
+                                                            <th id="th11_Date1" class="text-center">客單價</th>
+                                                            <th id="th12_Date1" class="text-center">交易額佔比</th>
                                                         </tr>
                                                         <!--第三層-->
                                                         <tr>
-                                                            <td class="text-center" colspan="1">總數</td>
-                                                            <td id="td1_Date1" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="td2_Date1" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="td3_Date1" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="td4_Date1" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="td5_Date1" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="td6_Date1" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="td7_Date1" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td class="text-center" id="td8_Date1" colspan="1" style="color:red "></td>
-                                                            <td id="td9_Date1" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="td10_Date1" colspan="1" style="text-align: right; color: red "></td>
-                                                            <td id="td11_Date1" colspan="1" style="text-align: right; color: red "></td>
-                                                            <td class="text-center" id="td12_Date1" colspan="1" style="color: red "></td>
+                                                            <td id="td0_Date1" class="text-center" colspan="1">總數</td>
+                                                            <td id="td1_Date1" colspan="1" style="text-align: right "></td>
+                                                            <td id="td2_Date1" colspan="1" style="text-align: right "></td>
+                                                            <td id="td3_Date1" colspan="1" style="text-align: right "></td>
+                                                            <td id="td4_Date1" colspan="1" style="text-align: right "></td>
+                                                            <td id="td5_Date1" colspan="1" style="text-align: right "></td>
+                                                            <td id="td6_Date1" colspan="1" style="text-align: right "></td>
+                                                            <td id="td7_Date1" colspan="1" style="text-align: right "></td>
+                                                            <td class="text-center" id="td8_Date1" colspan="1" ></td>
+                                                            <td id="td9_Date1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td10_Date1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td11_Date1" colspan="1" style="text-align: right"></td>
+                                                            <td class="text-center" id="td12_Date1" colspan="1"></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>

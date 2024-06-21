@@ -142,6 +142,21 @@
                                     padding: 3px;
                                     font-weight: bold;
                                 }
+
+                                th:first-child {
+                                    position: sticky;
+                                    left: 0; /*首行永遠固定於左 */
+                                }
+                                .table thead th {
+                                    position: sticky;
+                                    border-top: 0;
+                                    border-bottom: 0;
+                                    /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
+                                    box-shadow: 0 0px 2px 0px inset #ddd;
+                                    top: 0;
+                                    z-index: 2;
+                                    height: 35px;
+                                }
                             </style>
 
                             <div class="form-group row" style="margin-left: 5px; width: 100%">
@@ -229,6 +244,36 @@
                                         padding: 3px;
                                         font-weight: bold;
                                     }
+
+                                    th:first-child {
+                                        position: sticky;
+                                        left: 0; /*首行永遠固定於左 */
+                                    }
+                                    .table thead th, .table thead td {
+                                        position: sticky;
+                                        border-top: 0;
+                                        border-bottom: 0;
+                                        /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
+                                        box-shadow: 0 0px 2px 0px inset #ddd;
+                                    }
+                                    #thead1, #thead2, #thead3 {
+                                        top: 0;
+                                        z-index: 2;
+                                        height: 35px;
+                                    }
+                                    #th1, #th2, #th3, #th4, #th5, #th6, #th7, #th8, #th9, #th10 {
+                                        top: 35px;
+                                        z-index: 2;
+                                    }
+                                    #tdShopNo1_PSNO, #tdShopNo2_PSNO, #tdShopNo3_PSNO, #tdShopNo4_PSNO, #tdShopNo5_PSNO, #tdShopNo6_PSNO, #tdShopNo7_PSNO, #tdShopNo8_PSNO, #tdShopNo9_PSNO, #tdShopNo10_PSNO, #tdDate1_PSNO, #tdDate2_PSNO, #tdDate3_PSNO, #tdDate4_PSNO, #tdDate5_PSNO, #tdDate6_PSNO, #tdDate7_PSNO, #tdDate8_PSNO {
+                                        top: 65px;
+                                        z-index: 2;
+                                        color: red;
+                                    }
+                                    #tdShopNo0_PSNO,#tdDate0_PSNO {
+                                        top: 65px;
+                                        z-index: 2;
+                                    }
                                 </style>
 
                                 <!--<div class="modal-header">
@@ -273,39 +318,36 @@
                                                     <thead>
                                                         <!--第一層-->
                                                         <tr>
-                                                            <!--<td class="text-center" colspan="1"></td>-->
-                                                            <th class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
-                                                            <td class="text-center" colspan="7">折價券分析</td>
-                                                            <td class="text-center" colspan="3">總業績分析</td>
+                                                            <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
+                                                            <td id="thead2" class="text-center" colspan="7">折價券分析</td>
+                                                            <td id="thead3" class="text-center" colspan="3">總業績分析</td>
                                                         </tr>
                                                         <!--第二層-->
                                                         <tr>
-                                                            <!--<th style="display:none"></th>-->
-                                                            <!--<th class="text-center" colspan="1">店別</th>-->
-                                                            <th class="text-center">發出張數</th>
-                                                            <th class="text-center">回收張數</th>
-                                                            <th class="text-center">回收率%</th>
-                                                            <th class="text-center">折抵金額</th>
-                                                            <th class="text-center">銷售業績</th>
-                                                            <th class="text-center">來客數</th>
-                                                            <th class="text-center">客單價</th>
-                                                            <th class="text-center">總銷售業績</th>
-                                                            <th class="text-center">總來客數</th>
-                                                            <th class="text-center">總客單價</th>
+                                                            <th id="th1" class="text-center">發出張數</th>
+                                                            <th id="th2" class="text-center">回收張數</th>
+                                                            <th id="th3" class="text-center">回收率%</th>
+                                                            <th id="th4" class="text-center">折抵金額</th>
+                                                            <th id="th5" class="text-center">銷售業績</th>
+                                                            <th id="th6" class="text-center">來客數</th>
+                                                            <th id="th7" class="text-center">客單價</th>
+                                                            <th id="th8" class="text-center">總銷售業績</th>
+                                                            <th id="th9" class="text-center">總來客數</th>
+                                                            <th id="th10" class="text-center">總客單價</th>
                                                         </tr>
                                                         <!--第三層-->
                                                         <tr>
-                                                            <td class="text-center" colspan="1">總計</td>
-                                                            <td id="tdShopNo1_PSNO" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="tdShopNo2_PSNO" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="tdShopNo3_PSNO" class="text-center" colspan="1" style="color:red "></td>
-                                                            <td id="tdShopNo4_PSNO" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="tdShopNo5_PSNO" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="tdShopNo6_PSNO" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="tdShopNo7_PSNO" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="tdShopNo8_PSNO" colspan="1" style="text-align: right; color: red "></td>
-                                                            <td id="tdShopNo9_PSNO" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="tdShopNo10_PSNO" colspan="1" style="text-align: right;color:red "></td>
+                                                            <td id="tdShopNo0_PSNO" class="text-center" colspan="1">總計</td>
+                                                            <td id="tdShopNo1_PSNO" colspan="1" style="text-align: right "></td>
+                                                            <td id="tdShopNo2_PSNO" colspan="1" style="text-align: right "></td>
+                                                            <td id="tdShopNo3_PSNO" class="text-center" colspan="1"></td>
+                                                            <td id="tdShopNo4_PSNO" colspan="1" style="text-align: right "></td>
+                                                            <td id="tdShopNo5_PSNO" colspan="1" style="text-align: right "></td>
+                                                            <td id="tdShopNo6_PSNO" colspan="1" style="text-align: right "></td>
+                                                            <td id="tdShopNo7_PSNO" colspan="1" style="text-align: right "></td>
+                                                            <td id="tdShopNo8_PSNO" colspan="1" style="text-align: right "></td>
+                                                            <td id="tdShopNo9_PSNO" colspan="1" style="text-align: right "></td>
+                                                            <td id="tdShopNo10_PSNO" colspan="1" style="text-align: right "></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -318,35 +360,32 @@
                                                     <thead>
                                                         <!--第一層-->
                                                         <tr>
-                                                            <!--<td class="text-center" colspan="1"></td>-->
-                                                            <th class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">銷售日期</th>
-                                                            <td class="text-center" colspan="5">折價券分析</td>
-                                                            <td class="text-center" colspan="3">總業績分析</td>
+                                                            <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">銷售日期</th>
+                                                            <td id="thead2" class="text-center" colspan="5">折價券分析</td>
+                                                            <td id="thead3" class="text-center" colspan="3">總業績分析</td>
                                                         </tr>
                                                         <!--第二層-->
                                                         <tr>
-                                                            <!--<th style="display:none"></th>-->
-                                                            <!--<th class="text-center" colspan="1">銷售日期</th>-->
-                                                            <th class="text-center">回收張數</th>
-                                                            <th class="text-center">折抵金額</th>
-                                                            <th class="text-center">銷售業績</th>
-                                                            <th class="text-center">來客數</th>
-                                                            <th class="text-center">客單價</th>
-                                                            <th class="text-center">總銷售業績</th>
-                                                            <th class="text-center">總來客數</th>
-                                                            <th class="text-center">總客單價</th>
+                                                            <th id="th1" class="text-center">回收張數</th>
+                                                            <th id="th2" class="text-center">折抵金額</th>
+                                                            <th id="th3" class="text-center">銷售業績</th>
+                                                            <th id="th4" class="text-center">來客數</th>
+                                                            <th id="th5" class="text-center">客單價</th>
+                                                            <th id="th6" class="text-center">總銷售業績</th>
+                                                            <th id="th7" class="text-center">總來客數</th>
+                                                            <th id="th8" class="text-center">總客單價</th>
                                                         </tr>
                                                         <!--第三層-->
                                                         <tr>
-                                                            <td class="text-center" colspan="1">總計</td>
-                                                            <td id="tdDate1_PSNO" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="tdDate2_PSNO" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="tdDate3_PSNO" colspan="1" style="text-align: right; color: red "></td>
-                                                            <td id="tdDate4_PSNO" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="tdDate5_PSNO" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="tdDate6_PSNO" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="tdDate7_PSNO" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="tdDate8_PSNO" colspan="1" style="text-align: right; color: red "></td>
+                                                            <td id="tdDate0_PSNO" class="text-center" colspan="1">總計</td>
+                                                            <td id="tdDate1_PSNO" colspan="1" style="text-align: right"></td>
+                                                            <td id="tdDate2_PSNO" colspan="1" style="text-align: right"></td>
+                                                            <td id="tdDate3_PSNO" colspan="1" style="text-align: right"></td>
+                                                            <td id="tdDate4_PSNO" colspan="1" style="text-align: right"></td>
+                                                            <td id="tdDate5_PSNO" colspan="1" style="text-align: right"></td>
+                                                            <td id="tdDate6_PSNO" colspan="1" style="text-align: right"></td>
+                                                            <td id="tdDate7_PSNO" colspan="1" style="text-align: right"></td>
+                                                            <td id="tdDate8_PSNO" colspan="1" style="text-align: right"></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -385,6 +424,41 @@
                                         font-size: 16px;
                                         padding: 3px;
                                         font-weight: bold;
+                                    }
+
+                                    th:first-child {
+                                        position: sticky;
+                                        left: 0; /*首行永遠固定於左 */
+                                    }
+
+                                    .table thead th, .table thead td {
+                                        position: sticky;
+                                        border-top: 0;
+                                        border-bottom: 0;
+                                        /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
+                                        box-shadow: 0 0px 2px 0px inset #ddd;
+                                    }
+
+                                    #thname_PSNO_ShopNoDate, #thead1_PSNO_ShopNoDate, #thead2_PSNO_ShopNoDate {
+                                        top: 0;
+                                        z-index: 2;
+                                        height: 35px;
+                                    }
+
+                                    #th1_PSNO_ShopNoDate, #th2_PSNO_ShopNoDate, #th3_PSNO_ShopNoDate, #th4_PSNO_ShopNoDate, #th5_PSNO_ShopNoDate, #th6_PSNO_ShopNoDate, #th7_PSNO_ShopNoDate, #th8_PSNO_ShopNoDate {
+                                        top: 35px;
+                                        z-index: 2;
+                                    }
+
+                                    #tdShopNo1_PSNO_ShopNoDate, #tdShopNo2_PSNO_ShopNoDate, #tdShopNo3_PSNO_ShopNoDate, #tdShopNo4_PSNO_ShopNoDate, #tdShopNo5_PSNO_ShopNoDate, #tdShopNo6_PSNO_ShopNoDate, #tdShopNo7_PSNO_ShopNoDate, #tdShopNo8_PSNO_ShopNoDate {
+                                        top: 65px;
+                                        z-index: 2;
+                                        color: red;
+                                    }
+
+                                    #tdShopNo0_PSNO_ShopNoDate {
+                                        top: 65px;
+                                        z-index: 2;
                                     }
                                 </style>
 
@@ -428,35 +502,32 @@
                                                     <thead>
                                                         <!--第一層-->
                                                         <tr>
-                                                            <!--<td class="text-center" colspan="1"></td>-->
                                                             <th id="thname_PSNO_ShopNoDate" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">銷售日期</th>
-                                                            <td class="text-center" colspan="5">折價券分析</td>
-                                                            <td class="text-center" colspan="3">總業績分析</td>
+                                                            <td id="thead1_PSNO_ShopNoDate" class="text-center" colspan="5">折價券分析</td>
+                                                            <td id="thead2_PSNO_ShopNoDate" class="text-center" colspan="3">總業績分析</td>
                                                         </tr>
                                                         <!--第二層-->
                                                         <tr>
-                                                            <!--<th style="display:none"></th>-->
-                                                            <!--<th class="text-center" colspan="1">店別</th>-->
-                                                            <th class="text-center">回收張數</th>
-                                                            <th class="text-center">折抵金額</th>
-                                                            <th class="text-center">銷售業績</th>
-                                                            <th class="text-center">來客數</th>
-                                                            <th class="text-center">客單價</th>
-                                                            <th class="text-center">總銷售業績</th>
-                                                            <th class="text-center">總來客數</th>
-                                                            <th class="text-center">總客單價</th>
+                                                            <th id="th1_PSNO_ShopNoDate" class="text-center">回收張數</th>
+                                                            <th id="th2_PSNO_ShopNoDate" class="text-center">折抵金額</th>
+                                                            <th id="th3_PSNO_ShopNoDate" class="text-center">銷售業績</th>
+                                                            <th id="th4_PSNO_ShopNoDate" class="text-center">來客數</th>
+                                                            <th id="th5_PSNO_ShopNoDate" class="text-center">客單價</th>
+                                                            <th id="th6_PSNO_ShopNoDate" class="text-center">總銷售業績</th>
+                                                            <th id="th7_PSNO_ShopNoDate" class="text-center">總來客數</th>
+                                                            <th id="th8_PSNO_ShopNoDate" class="text-center">總客單價</th>
                                                         </tr>
                                                         <!--第三層-->
                                                         <tr>
-                                                            <td class="text-center" colspan="1">總計</td>
-                                                            <td id="tdShopNo1_PSNO_ShopNoDate" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="tdShopNo2_PSNO_ShopNoDate" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="tdShopNo3_PSNO_ShopNoDate" colspan="1" style="text-align: right; color: red "></td>
-                                                            <td id="tdShopNo4_PSNO_ShopNoDate" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="tdShopNo5_PSNO_ShopNoDate" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="tdShopNo6_PSNO_ShopNoDate" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="tdShopNo7_PSNO_ShopNoDate" colspan="1" style="text-align: right;color:red "></td>
-                                                            <td id="tdShopNo8_PSNO_ShopNoDate" colspan="1" style="text-align: right; color: red "></td>
+                                                            <td id="tdShopNo0_PSNO_ShopNoDate" class="text-center" colspan="1">總計</td>
+                                                            <td id="tdShopNo1_PSNO_ShopNoDate" colspan="1" style="text-align: right"></td>
+                                                            <td id="tdShopNo2_PSNO_ShopNoDate" colspan="1" style="text-align: right"></td>
+                                                            <td id="tdShopNo3_PSNO_ShopNoDate" colspan="1" style="text-align: right"></td>
+                                                            <td id="tdShopNo4_PSNO_ShopNoDate" colspan="1" style="text-align: right"></td>
+                                                            <td id="tdShopNo5_PSNO_ShopNoDate" colspan="1" style="text-align: right"></td>
+                                                            <td id="tdShopNo6_PSNO_ShopNoDate" colspan="1" style="text-align: right"></td>
+                                                            <td id="tdShopNo7_PSNO_ShopNoDate" colspan="1" style="text-align: right"></td>
+                                                            <td id="tdShopNo8_PSNO_ShopNoDate" colspan="1" style="text-align: right"></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -485,7 +556,7 @@
                                     <style>
                                         #tbDataLookup_ActivityCode thead tr th {
                                             font-size: 16px;
-                                            padding: 0px;
+                                            padding: 6px;
                                             background-color: #ffb620;
                                             font-weight: bold;
                                         }
@@ -493,6 +564,20 @@
                                         #tbDataLookup_ActivityCode tbody tr td {
                                             font-size: 16px;
                                             padding: 0px;
+                                        }
+                                        th:first-child {
+                                            position: sticky;
+                                            left: 0; /*首行永遠固定於左 */
+                                        }
+                                        .table thead th {
+                                            position: sticky;
+                                            border-top: 0;
+                                            border-bottom: 0;
+                                            /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
+                                            box-shadow: 0 0px 2px 0px inset #ddd;
+                                            top: 0;
+                                            z-index: 2;
+                                            height: 35px;
                                         }
                                     </style>
 
