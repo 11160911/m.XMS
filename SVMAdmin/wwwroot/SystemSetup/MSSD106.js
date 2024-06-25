@@ -1040,6 +1040,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
+            $('#txtLpQ_VIPFaceID').val('');
             $('#modal_Lookup_VIPFaceID').modal('show');
             setTimeout(function () {
                 grdLookUp_VIPFaceID.BindData(dtE);
@@ -1064,19 +1065,15 @@ Timerset(sessionStorage.getItem('isamcomp'));
 
     let afterLpQ_VIPFaceID = function (data) {
         if (ReturnMsg(data, 0) != "MSVP102_GetVIPFaceIDOK") {
-            $('#modal_Lookup_VIPFaceID').modal('hide');
             DyAlert(ReturnMsg(data, 1), function () {
                 $('#btLpQ_VIPFaceID').prop('disabled', false);
-                $('#modal_Lookup_VIPFaceID').modal('show');
             });
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
             if (dtE.length == 0) {
-                $('#modal_Lookup_VIPFaceID').modal('hide');
                 DyAlert("無符合資料!", function () {
                     $('#btLpQ_VIPFaceID').prop('disabled', false);
-                    $('#modal_Lookup_VIPFaceID').modal('show');
                 });
                 $(".modal-backdrop").remove();
                 return;
@@ -1147,6 +1144,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
+            $('#txtLpQ_City').val('')
             $('#modal_Lookup_City').modal('show');
             setTimeout(function () {
                 grdLookUp_City.BindData(dtE);
@@ -1171,19 +1169,15 @@ Timerset(sessionStorage.getItem('isamcomp'));
 
     let afterLpQ_City = function (data) {
         if (ReturnMsg(data, 0) != "GetCityOK") {
-            $('#modal_Lookup_City').modal('hide');
             DyAlert(ReturnMsg(data, 1), function () {
                 $('#btLpQ_City').prop('disabled', false);
-                $('#modal_Lookup_City').modal('show');
             });
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
             if (dtE.length == 0) {
-                $('#modal_Lookup_City').modal('hide');
                 DyAlert("無符合資料!", function () {
                     $('#btLpQ_City').prop('disabled', false);
-                    $('#modal_Lookup_City').modal('show');
                 });
                 $(".modal-backdrop").remove();
                 return;

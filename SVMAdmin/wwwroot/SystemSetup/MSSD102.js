@@ -1771,19 +1771,15 @@ Timerset(sessionStorage.getItem('isamcomp'));
 
     let afterMSSD102_QLookUpActivityCode = function (data) {
         if (ReturnMsg(data, 0) != "MSSD102_LookUpActivityCodeOK") {
-            $('#modal_Lookup_ActivityCode').modal('hide');
             DyAlert(ReturnMsg(data, 1), function () {
                 $('#btQLookup_ActivityCode').prop('disabled', false);
-                $('#modal_Lookup_ActivityCode').modal('show');
             });
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
             if (dtE.length == 0) {
-                $('#modal_Lookup_ActivityCode').modal('hide');
                 DyAlert("無符合資料!", function () {
                     $('#btQLookup_ActivityCode').prop('disabled', false);
-                    $('#modal_Lookup_ActivityCode').modal('show');
                 });
                 $(".modal-backdrop").remove();
                 return;
@@ -1802,10 +1798,8 @@ Timerset(sessionStorage.getItem('isamcomp'));
         var chkedRow = obchkedtd.length.toString();
 
         if (chkedRow == 0) {
-            $('#modal_Lookup_ActivityCode').modal('hide');
             DyAlert("未選取活動代號，請重新確認!", function () {
                 $('#btLpOK_ActivityCode').prop('disabled', false);
-                $('#modal_Lookup_ActivityCode').modal('show');
             });
         }
         else {

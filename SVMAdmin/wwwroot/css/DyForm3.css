@@ -5,7 +5,7 @@
     font-weight: bold;
     font-size: 18px;
 }
-/*按鍵:新增、修改、儲存、取消、預覽、作廢*/
+/*按鍵:新增、修改、儲存、取消、預覽、作廢、回上頁、清除、*/
 .DyForm3-BtnAdd, .DyForm3-BtnMod, .DyForm3-BtnSave, .DyForm3-BtnCancel, .DyForm3-BtnShow, .DyForm3-BtnDef, .DyForm3-BtnRe, .DyForm3-BtnClear {
     box-shadow: inset 0px 1px 0px 0px #ffffff;
     background-color: red;
@@ -24,12 +24,12 @@
     width:75px;
     height:30px;
 }
-    .DyForm3-BtnAdd:focus, .DyForm3-BtnMod:focus, .DyForm3-BtnSave:focus, .DyForm3-BtnCancel:focus, .DyForm3-BtnShow:focus, .DyForm3-BtnDef:focus, .DyForm3-BtnRe:focus, .DyForm3-BtnClear:focus {
+.DyForm3-BtnAdd:focus, .DyForm3-BtnMod:focus, .DyForm3-BtnSave:focus, .DyForm3-BtnCancel:focus, .DyForm3-BtnShow:focus, .DyForm3-BtnDef:focus, .DyForm3-BtnRe:focus, .DyForm3-BtnClear:focus {
         outline-color: transparent;
         outline-style: solid;
         box-shadow: 0 0 0 3px #fc8c86;
     }
-/*按鍵:清除、查詢、批核*/
+/*按鍵:查詢、批核*/
 .DyForm3-BtnQuery, .DyForm3-BtnApp {
     box-shadow: inset 0px 1px 0px 0px #f2f2f2;
     /*background: linear-gradient(to bottom, #3d94f6 5%, #1e62d0 100%);*/
@@ -149,12 +149,11 @@
     width: 90px;
     height: 30px;
 }
-    .DyForm3-BtnShop:focus {
+.DyForm3-BtnShop:focus {
         outline-color: transparent;
         outline-style: solid;
         box-shadow: 0 0 0 3px #DEEBF7;
     }
-
 /*點擊欄位標題可進行排序*/
 .DyForm3-LabelSort {
     font-size: 16px;
@@ -163,3 +162,30 @@
     position: absolute;
     right: 30px
 }
+
+/*按鍵:DM預覽*/
+.DyForm3-BtnShowEDM {
+    box-shadow: inset 0px 1px 0px 0px #ffffff;
+    background-color: #FFCD2F;
+    border-radius: 8px;
+    border: 1px solid #FFCD2F;
+    display: inline-block;
+    cursor: pointer;
+    color: black;
+    font-family: Arial;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 3px 14px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #631b16;
+    margin: 0px;
+    width: 90px;
+    height: 30px;
+}
+
+    .DyForm3-BtnShowEDM:focus {
+        outline-color: transparent;
+        outline-style: solid;
+        box-shadow: 0 0 0 3px #FFDD71;
+        color: white;
+    }

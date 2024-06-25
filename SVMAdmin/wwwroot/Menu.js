@@ -395,6 +395,19 @@
                     PageMSDM107($(".workarea"));
                 }
             }
+            else if (pg == "MSVP101") {
+                if (window.PageMSVP101 == undefined) {
+                    $.getScript('SystemSetup/MSVP101.js',
+                        function () {
+                            PageMSVP101($(".workarea"));
+                        }
+                    );
+                }
+
+                else {
+                    PageMSVP101($(".workarea"));
+                }
+            }
             else if (pg == "MSVP102") {
                 if (window.PageMSVP102 == undefined) {
                     $.getScript('SystemSetup/MSVP102.js',

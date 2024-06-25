@@ -1003,11 +1003,6 @@
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
-            if (dtE.length == 0) {
-                DyAlert("此DM單據無資料，無法預覽!");
-                $(".modal-backdrop").remove();
-                return;
-            }
             var hostname = location.hostname;
             //測試環境
             if (hostname.indexOf("94") >= 0 || hostname.indexOf("localhost") >= 0) {
@@ -1174,19 +1169,15 @@
 
     let afterMSDM104_QLookUpActivityCode = function (data) {
         if (ReturnMsg(data, 0) != "MSDM104_LookUpActivityCodeOK") {
-            $('#modal_Lookup_ActivityCode').modal('hide');
             DyAlert(ReturnMsg(data, 1), function () {
                 $('#btQLookup_ActivityCode').prop('disabled', false);
-                $('#modal_Lookup_ActivityCode').modal('show');
             });
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
             if (dtE.length == 0) {
-                $('#modal_Lookup_ActivityCode').modal('hide');
                 DyAlert("無符合資料!", function () {
                     $('#btQLookup_ActivityCode').prop('disabled', false);
-                    $('#modal_Lookup_ActivityCode').modal('show');
                 });
                 $(".modal-backdrop").remove();
                 return;
@@ -1203,10 +1194,8 @@
         var chkedRow = obchkedtd.length.toString();
 
         if (chkedRow == 0) {
-            $('#modal_Lookup_ActivityCode').modal('hide');
             DyAlert("未選取活動代號，請重新確認!", function () {
                 $('#btLpOK_ActivityCode').prop('disabled', false);
-                $('#modal_Lookup_ActivityCode').modal('show');
             });
         }
         else {
@@ -1269,19 +1258,15 @@
 
     let afterMSDM104_QLookUpShopNo = function (data) {
         if (ReturnMsg(data, 0) != "MSDM104_LookUpShopNoOK") {
-            $('#modal_Lookup_ShopNo').modal('hide');
             DyAlert(ReturnMsg(data, 1), function () {
                 $('#btQLookup_ShopNo').prop('disabled', false)
-                $('#modal_Lookup_ShopNo').modal('show');
             });
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
             if (dtE.length == 0) {
-                $('#modal_Lookup_ShopNo').modal('hide');
                 DyAlert("無符合資料!", function () {
                     $('#btQLookup_ShopNo').prop('disabled', false)
-                    $('#modal_Lookup_ShopNo').modal('show');
                 });
                 $(".modal-backdrop").remove();
                 return;
@@ -1298,10 +1283,8 @@
         var chkedRow = obchkedtd.length.toString();
 
         if (chkedRow == 0) {
-            $('#modal_Lookup_ShopNo').modal('hide');
             DyAlert("未選取店別，請重新確認!", function () {
                 $('#btLpOK_ShopNo').prop('disabled', false)
-                $('#modal_Lookup_ShopNo').modal('show');
             });
         }
         else {
@@ -1386,19 +1369,15 @@
 
     let afterMSDM104_LookUpShopNo_EDM = function (data) {
         if (ReturnMsg(data, 0) != "MSDM104_LookUpShopNo_EDMOK") {
-            $('#modal_Lookup_ShopNo_EDM').modal('hide');
             DyAlert(ReturnMsg(data, 1), function () {
                 $('#btQLookup_ShopNo_EDM').prop('disabled', false);
-                $('#modal_Lookup_ShopNo_EDM').modal('show');
             });
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
             if (dtE.length == 0) {
-                $('#modal_Lookup_ShopNo_EDM').modal('hide');
                 DyAlert("無符合資料!", function () {
                     $('#btQLookup_ShopNo_EDM').prop('disabled', false);
-                    $('#modal_Lookup_ShopNo_EDM').modal('show');
                 });
                 $(".modal-backdrop").remove();
                 return;

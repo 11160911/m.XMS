@@ -10524,10 +10524,23 @@ namespace SVMAdmin.Controllers
                 IFormCollection rq = HttpContext.Request.Form;
                 string VMDocNo = rq["VMDocNo"];
                 string DMDocNo = rq["DMDocNo"];
-                var EVNO = PubUtility.GetNewDocNo(uu, "EV", 3);
-
-
+                string EV_Model = rq["EV_Model"];
+                string EVNO = "";
                 string sql = "";
+                sql = "Select * From SetEDMVIP_VIPWeb (nolock) Where Companycode='" + uu.CompanyId + "' and EVNO='" + VMDocNo + "' ";
+                DataTable dtV = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtV.Rows.Count == 0)
+                {
+                    throw new Exception("未篩選會員資料，請重新確認!");
+                }
+
+                if (EV_Model == "VP101") {
+                    EVNO = PubUtility.GetNewDocNo(uu, "EE", 3);
+                }
+                else if (EV_Model == "VP102") {
+                    EVNO = PubUtility.GetNewDocNo(uu, "EV", 3);
+                }
+     
                 sql = "Select * From SetEDMHWeb (nolock) Where Companycode='" + uu.CompanyId + "' and DocNo='" + DMDocNo + "' ";
                 DataTable dtH = PubUtility.SqlQry(sql, uu, "SYS");
 
@@ -10539,7 +10552,7 @@ namespace SVMAdmin.Controllers
                 sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
                 sql += "'" + EVNO + "',convert(char(10),getdate(),111),convert(char(10),getdate(),111),'" + dtH.Rows[0]["EDMMemo"].ToString() + "','" + DMDocNo + "','" + dtH.Rows[0]["PS_NO"].ToString() + "','E', ";
                 sql += "convert(char(10),getdate(),111) + ' ' + convert(char(12),getdate(),108),'" + uu.UserID + "','','', ";
-                sql += "'','','VP102','','',''; ";
+                sql += "'','','" + EV_Model + "','','',''; ";
                 
                 sql += "Update SetEDMVIP_VIPWeb Set EVNO='" + EVNO + "',PS_NO='" + dtH.Rows[0]["PS_NO"].ToString() + "' ";
                 sql += "Where Companycode='" + uu.CompanyId + "' and EVNO='" + VMDocNo + "'; ";
@@ -11035,6 +11048,449 @@ namespace SVMAdmin.Controllers
                     sql += "and a.City like '" + City + "%' ";
                 }
                 sql += "order by a.City ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSVP101Query")]
+        public ActionResult SystemSetup_MSVP101Query()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSVP101QueryOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string EVNO = rq["EVNO"];
+                string EDM_DocNo = rq["EDM_DocNo"];
+                string StartDate = rq["StartDate"];
+                string EDMMemo = rq["EDMMemo"];
+
+                string sql = "";
+                sql = "Select a.EVNO,isnull(b.Cnt,0)Cnt,isnull(a.ApproveDate,'')ApproveDate,isnull(a.TOMailDate,'')TOMailDate,a.EDM_DocNo,c.EDMMemo,c.StartDate + ' ~ ' + c.EndDate as EDDate ";
+                sql += "From SetEDMVIP_HWeb a (nolock) ";
+                sql += "left join (Select EVNO,Count(*)Cnt From SetEDMVIP_VIPWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by EVNO)b on a.EVNO=b.EVNO ";
+                sql += "inner join SetEDMHWeb c (nolock) on a.EDM_DocNo=c.DocNo and c.Companycode=a.Companycode ";
+                if (EDMMemo.SqlQuote() != "")
+                {
+                    sql += "and c.EDMMemo like '%" + EDMMemo.SqlQuote() + "%' ";
+                }
+                sql += "Where a.Companycode='" + uu.CompanyId + "' and a.EDMType='E' and isnull(a.EV_Model,'')='VP101'";
+                if (EVNO.SqlQuote() != "")
+                {
+                    sql += "and a.EVNO='" + EVNO.SqlQuote() + "' ";
+                }
+                if (EDM_DocNo.SqlQuote() != "")
+                {
+                    sql += "and a.EDM_DocNo='" + EDM_DocNo.SqlQuote() + "' ";
+                }
+                if (StartDate.SqlQuote() != "")
+                {
+                    sql += "and a.StartDate='" + StartDate.SqlQuote() + "' ";
+                }
+
+                sql += "Order by a.EVNO desc ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSVP101EDMHistoryQuery")]
+        public ActionResult SystemSetup_MSVP101EDMHistoryQuery()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSVP101EDMHistoryQueryOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string EVNO = rq["EVNO"];
+
+                string sql = "";
+                sql = "Select * From SetEDMVIP_setWeb (nolock) Where Companycode='" + uu.CompanyId + "' ";
+                if (EVNO != "") {
+                    sql += "and EVNO='" + EVNO + "' ";
+                }
+                sql += "order by SeqNo ";
+                DataTable dtV = PubUtility.SqlQry(sql, uu, "SYS");
+                dtV.TableName = "dtV";
+                ds.Tables.Add(dtV);
+
+                sql = "Select a.VIP_ID2,b.VIP_Name,b.VIP_Tel,b.VIP_Eadd,case b.VIP_MW when '0' then '男' when '1' then '女' end as VIP_MW, ";
+                sql += "b.City,b.AreaName,case b.VIP_Type when '0' then '一般' when '1' then '會員' when '2' then '貴賓' when '3' then '員工' end as VIP_Type ";
+                sql += "From SetEDMVIP_VIPWeb a (nolock) ";
+                sql += "inner join EDDMS.dbo.VIP b (nolock) on a.VIP_ID2=b.VIP_ID2 and b.Companycode=a.Companycode ";
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                if (EVNO != "")
+                {
+                    sql += "and a.EVNO='" + EVNO + "' ";
+                }
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+
+                sql = "Select Count(*)Cnt ";
+                sql += "From SetEDMVIP_VIPWeb a (nolock) ";
+                sql += "inner join EDDMS.dbo.VIP b (nolock) on a.VIP_ID2=b.VIP_ID2 and b.Companycode=a.Companycode ";
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                if (EVNO != "")
+                {
+                    sql += "and a.EVNO='" + EVNO + "' ";
+                }
+                DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                dtC.TableName = "dtC";
+                ds.Tables.Add(dtC);
+
+
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSVP101Query_SendSet")]
+        public ActionResult SystemSetup_MSVP101Query_SendSet()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSVP101Query_SendSetOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string chkVIPFaceID = rq["chkVIPFaceID"];
+                string chkCity = rq["chkCity"];
+                string VIP_Type = rq["VIP_Type"];
+                string VIP_MW = rq["VIP_MW"];
+                string QDay = rq["QDay"];
+                string LCDay = rq["LCDay"];
+                string SDate = rq["SDate"];
+                string chkDept = rq["chkDept"];
+                string chkBgno = rq["chkBgno"];
+                string VMEVNO = rq["VMEVNO"];
+                string Flag = rq["Flag"];
+                string sql = "";
+                string sqlcon1 = "";
+                string sqlcon2 = "";
+
+                //sqlcon1
+                if (chkVIPFaceID != "")
+                {
+                    sqlcon1 += "and a.VIP_FaceID in(" + chkVIPFaceID + ") ";
+                }
+                if (chkCity != "")
+                {
+                    sqlcon1 += "and a.City in(" + chkCity + ") ";
+                }
+                if (VIP_Type != "")
+                {
+                    sqlcon1 += "and a.VIP_Type in(" + VIP_Type + ") ";
+                }
+                if (VIP_MW != "")
+                {
+                    sqlcon1 += "and a.VIP_MW='" + VIP_MW + "' ";
+                }
+                if (QDay == "2M")
+                {
+                    sqlcon1 += "and a.VIP_Qday between convert(char,dateadd(MONTH,-2,getdate()),111) and convert(char(10),getdate(),111) ";
+                }
+                else if (QDay == "3M")
+                {
+                    sqlcon1 += "and a.VIP_Qday between convert(char,dateadd(MONTH,-3,getdate()),111) and convert(char(10),getdate(),111) ";
+                }
+                else if (QDay == "6M")
+                {
+                    sqlcon1 += "and a.VIP_Qday between convert(char,dateadd(MONTH,-6,getdate()),111) and convert(char(10),getdate(),111) ";
+                }
+                else if (QDay == "1Y")
+                {
+                    sqlcon1 += "and a.VIP_Qday between convert(char,dateadd(MONTH,-12,getdate()),111) and convert(char(10),getdate(),111) ";
+                }
+                if (LCDay == "3M")
+                {
+                    sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(MONTH,-3,getdate()),111) and convert(char(10),getdate(),111) ";
+                }
+                else if (LCDay == "6M")
+                {
+                    sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(MONTH,-6,getdate()),111) and convert(char(10),getdate(),111) ";
+                }
+                else if (LCDay == "1Y")
+                {
+                    sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(MONTH,-12,getdate()),111) and convert(char(10),getdate(),111) ";
+                }
+                else if (LCDay == "2Y")
+                {
+                    sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(MONTH,-24,getdate()),111) and convert(char(10),getdate(),111) ";
+                }
+                //sqlcon2
+                if (SDate == "2M")
+                {
+                    sqlcon2 += "and b.S_YYYYMM between convert(char(7),dateadd(MONTH,-2,getdate()),111) and convert(char(7),getdate(),111) ";
+                }
+                else if (SDate == "3M")
+                {
+                    sqlcon2 += "and b.S_YYYYMM between convert(char(7),dateadd(MONTH,-3,getdate()),111) and convert(char(7),getdate(),111) ";
+                }
+                else if (SDate == "6M")
+                {
+                    sqlcon2 += "and b.S_YYYYMM between convert(char(7),dateadd(MONTH,-6,getdate()),111) and convert(char(7),getdate(),111) ";
+                }
+                else if (SDate == "1Y")
+                {
+                    sqlcon2 += "and b.S_YYYYMM between convert(char(7),dateadd(MONTH,-12,getdate()),111) and convert(char(7),getdate(),111) ";
+                }
+                if (chkDept != "")
+                {
+                    sqlcon2 += "and b.GD_Dept in(" + chkDept + ") ";
+                }
+                if (chkBgno != "")
+                {
+                    sqlcon2 += "and b.GD_Bgno in(" + chkBgno + ") ";
+                }
+
+                //顯示會員清單
+                if (Flag == "Q") {
+                    sql = "Delete From SetEDMVIP_VIPWeb Where Companycode='" + uu.CompanyId + "' and EVNO='" + VMEVNO + "'; ";
+                    sql += "Delete From SetEDMVIP_SetWeb Where Companycode='" + uu.CompanyId + "' and EVNO='" + VMEVNO + "' ";
+                    PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                    //SetEDMVIP_VIPWeb
+                    sql = "Insert into SetEDMVIP_VIPWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,VIP_ID2,CouponID,VIP_Name,VIP_EMail,SendDate,PS_NO,SeqNo,EDMType) ";
+                    sql += "Select a.Companycode,'" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                    sql += "'" + VMEVNO + "',a.VIP_ID2,'',VIP_Name,VIP_Eadd,'','',ROW_NUMBER() OVER(PARTITION BY '" + VMEVNO + "' order by a.VIP_ID2),'E' ";
+                    sql += "From EDDMS.dbo.VIP a (nolock) ";
+                    sql += "inner join MSData3Web b (nolock) on a.VIP_ID2=b.VIP_ID2 and b.Companycode=a.Companycode ";
+                    sql += sqlcon2;
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and isnull(a.VIP_Eadd,'')<>'' and isnull(a.P_Flag2,'')='1' and isnull(a.VIP_Eday,'')>convert(char(10),getdate(),111) ";
+                    sql += sqlcon1;
+
+                    //SetEDMVIP_SetWeb
+                    if (chkVIPFaceID != "")
+                    {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',1,'','','','','會籍店櫃','" + chkVIPFaceID.Replace("'", "") + "' ";
+                    }
+                    if (chkCity != "")
+                    {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',2,'','','','','縣市','" + chkCity.Replace("'", "") + "' ";
+                    }
+                    if (VIP_Type != "")
+                    {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',3,'','','','','會員卡別','" + VIP_Type.Replace("'", "") + "' ";
+                    }
+                    if (VIP_MW != "")
+                    {
+                        if (VIP_MW == "0") {
+                            sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                            sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                            sql += "'" + VMEVNO + "',4,'','','','','性別','先生' ";
+                        }
+                        else if (VIP_MW == "1") {
+                            sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                            sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                            sql += "'" + VMEVNO + "',4,'','','','','性別','小姐' ";
+                        }
+                    }
+                    else {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',4,'','','','','性別','不限' ";
+                    }
+                    if (QDay == "") {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',5,'','','','','入會期間','不限' ";
+                    }
+                    else if (QDay == "2M")
+                    {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',5,'','','','','入會期間','2個月內' ";
+                    }
+                    else if (QDay == "3M")
+                    {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',5,'','','','','入會期間','3個月內' ";
+                    }
+                    else if (QDay == "6M")
+                    {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',5,'','','','','入會期間','6個月內' ";
+                    }
+                    else if (QDay == "1Y")
+                    {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',5,'','','','','入會期間','1年內' ";
+                    }
+                    if (LCDay == "")
+                    {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',6,'','','','','最近來店日','不限' ";
+                    }
+                    else if (LCDay == "3M")
+                    {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',6,'','','','','最近來店日','3個月內' ";
+                    }
+                    else if (LCDay == "6M")
+                    {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',6,'','','','','最近來店日','6個月內' ";
+                    }
+                    else if (LCDay == "1Y")
+                    {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',6,'','','','','最近來店日','1年內' ";
+                    }
+                    else if (LCDay == "2Y")
+                    {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',6,'','','','','最近來店日','2年內' ";
+                    }
+                    if (SDate == "")
+                    {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',7,'','','','','消費月份','無' ";
+                    }
+                    else if (SDate == "2M")
+                    {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',7,'','','','','消費月份','2個月內' ";
+                    }
+                    else if (SDate == "3M")
+                    {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',7,'','','','','消費月份','3個月內' ";
+                    }
+                    else if (SDate == "6M")
+                    {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',7,'','','','','消費月份','6個月內' ";
+                    }
+                    else if (SDate == "1Y")
+                    {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',7,'','','','','消費月份','1年內' ";
+                    }
+                    if (chkDept != "")
+                    {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',8,'','','','','消費部門','" + chkDept.Replace("'", "") + "' ";
+                    }
+                    if (chkBgno != "")
+                    {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',9,'','','','','消費大類','" + chkBgno.Replace("'", "") + "' ";
+                    }
+                    PubUtility.ExecuteSql(sql, uu, "SYS");
+            
+                    sql = "Select a.VIP_ID2,a.VIP_Name,a.VIP_Tel,a.VIP_Eadd,case a.VIP_MW when '0' then '男' when '1' then '女' end as VIP_NM,a.City,a.AreaName,a.VIP_LCDay,isnull(a.PointsBalance,0)PointsBalance, ";
+                    sql += "case a.VIP_Type when '0' then '一般卡' when '1' then '會員卡' when '2' then '貴賓卡' when '3' then '白金卡' end as VIP_Type ";
+                    sql += "From EDDMS.dbo.VIP a (nolock) ";
+                    sql += "inner join MSData3Web b (nolock) on a.VIP_ID2=b.VIP_ID2 and b.Companycode=a.Companycode ";
+                    sql += sqlcon2;
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and isnull(a.VIP_Eadd,'')<>'' and isnull(a.P_Flag2,'')='1' and isnull(a.VIP_Eday,'')>convert(char(10),getdate(),111) ";
+                    sql += sqlcon1;
+                    sql += "Order by a.VIP_ID2 ";
+                    DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+                }
+                //只計算會員數量
+                else if (Flag == "C") {
+                    sql = "Delete From SetEDMVIP_VIPWeb Where Companycode='" + uu.CompanyId + "' and EVNO='" + VMEVNO + "'; ";
+                    sql += "Delete From SetEDMVIP_SetWeb Where Companycode='" + uu.CompanyId + "' and EVNO='" + VMEVNO + "' ";
+                    PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                    sql = "Select Count(*)VIPCnt ";
+                    sql += "From EDDMS.dbo.VIP a (nolock) ";
+                    sql += "inner join MSData3Web b (nolock) on a.VIP_ID2=b.VIP_ID2 and b.Companycode=a.Companycode ";
+                    sql += sqlcon2;
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and isnull(a.VIP_Eadd,'')<>'' and isnull(a.P_Flag2,'')='1' and isnull(a.VIP_Eday,'')>convert(char(10),getdate(),111) ";
+                    sql += sqlcon1;
+                    DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                    dtC.TableName = "dtC";
+                    ds.Tables.Add(dtC);
+
+                    sql = "Select a.VIP_ID2,a.VIP_Name,a.VIP_Tel,a.VIP_Eadd,case a.VIP_MW when '0' then '男' when '1' then '女' end as VIP_NM,a.City,a.AreaName,a.VIP_LCDay,isnull(a.PointsBalance,0)PointsBalance, ";
+                    sql += "case a.VIP_Type when '0' then '一般卡' when '1' then '會員卡' when '2' then '貴賓卡' when '3' then '白金卡' end as VIP_Type ";
+                    sql += "From EDDMS.dbo.VIP a (nolock) ";
+                    sql += "Where 1=2 ";
+                    DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+                }
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/GetTypeDataWeb")]
+        public ActionResult SystemSetup_GetTypeDataWeb()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetTypeDataWebOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Type_Code = rq["Type_Code"];
+                string Type_ID = rq["Type_ID"];
+                string sql = "select * from TypeDataWeb (nolock) where Companycode='" + uu.CompanyId + "' ";
+                if (Type_Code != "")
+                {
+                    sql += "and Type_Code='" + Type_Code + "' ";
+                }
+                if (Type_ID != "")
+                {
+                    sql += "and Type_ID like '" + Type_ID + "%' ";
+                }
+                sql += "order by Type_ID ";
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
                 ds.Tables.Add(dtE);
