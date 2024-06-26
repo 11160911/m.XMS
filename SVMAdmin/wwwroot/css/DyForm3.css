@@ -56,7 +56,7 @@
 .DyForm3-BtnExit {
     box-shadow: inset 0px 1px 0px 0px #ffffff;
     /*background: linear-gradient(to bottom, #6ed117 5%, #336906 100%);*/
-    background-color: #6ed117;
+    background-color: #348000;
     border-radius: 6px;
     border: 1px solid #268a16;
     display: inline-block;
@@ -167,12 +167,12 @@
 /*按鍵:DM預覽*/
 .DyForm3-BtnShowEDM {
     box-shadow: inset 0px 1px 0px 0px #ffffff;
-    background-color: #ffb620;
+    background-color: #348000;
     border-radius: 8px;
-    border: 1px solid #ffb620;
+    border: 1px solid #348000;
     display: inline-block;
     cursor: pointer;
-    color: black;
+    color: white;
     font-family: Arial;
     font-size: 14px;
     font-weight: bold;
@@ -187,5 +187,5 @@
     .DyForm3-BtnShowEDM:focus {
         outline-color: transparent;
         outline-style: solid;
-        box-shadow: 0 0 0 3px #FFDD71;
+        box-shadow: 0 0 0 3px #8ccd55;
     }

@@ -30,16 +30,16 @@
         grdM = new DynGrid(
             {
                 table_lement: $('#tbQuery')[0],
-                class_collection: ["tdCol1 text-center", "tdCol2 text-center", "tdCol3 text-center", "tdCol4 text-center", "tdCol5 text-center", "tdCol6", "tdCol7 text-center", "tdColbt icon_in_td btShowEDM"],
+                class_collection: ["tdCol1 text-center", "tdCol2 text-center", "tdCol3 text-center", "tdCol4 text-center", "tdColbt icon_in_td btShowEDM", "tdCol5 text-center", "tdCol6", "tdCol7 text-center"],
                 fields_info: [
                     { type: "Text", name: "EVNO", style: "" },
                     { type: "TextAmt", name: "Cnt"},
                     { type: "Text", name: "ApproveDate" },
                     { type: "Text", name: "TOMailDate" },
+                    { type: "JQ", name: "fa-binoculars", element: '<i class="fa fa-binoculars" style="font-size:24px;color:#348000"></i>' },
                     { type: "Text", name: "EDM_DocNo"},
                     { type: "Text", name: "EDMMemo"},
-                    { type: "Text", name: "EDDate" },
-                    { type: "JQ", name: "fa-binoculars", element: '<i class="fa fa-binoculars" style="font-size:24px;color:#348000"></i>' }
+                    { type: "Text", name: "EDDate" }
                 ],
                 rows_per_page: 50,
                 method_clickrow: click_PLU,
