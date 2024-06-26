@@ -36,7 +36,7 @@
                     { type: "Text", name: "EDM_DocNo"},
                     { type: "Text", name: "EDMMemo"},
                     { type: "Text", name: "EDDate" },
-                    { type: "JQ", name: "fa-binoculars", element: '<i class="fa fa-binoculars" style="font-size:24px"></i>' }
+                    { type: "JQ", name: "fa-binoculars", element: '<i class="fa fa-binoculars" style="font-size:24px;color:#348000"></i>' }
                 ],
                 rows_per_page: 50,
                 method_clickrow: click_PLU,
@@ -161,7 +161,7 @@
                     { type: "Text", name: "DocNo" },
                     { type: "Text", name: "EDMMemo" },
                     { type: "Text", name: "EDDate1" },
-                    { type: "JQ", name: "fa-binoculars", element: '<i class="fa fa-binoculars" style="font-size:24px"></i>' },
+                    { type: "JQ", name: "fa-binoculars", element: '<i class="fa fa-binoculars" style="font-size:24px;color:#348000"></i>' },
                     { type: "Text", name: "ActivityCode" },
                     { type: "Text", name: "PS_Name" },
                     { type: "Text", name: "EDDate2" },
@@ -196,6 +196,7 @@
         $('#tbQuery td:contains(' + GetNodeValue(node, 'EVNO') + ')').closest('tr').css('background-color', '#DEEBF7');
         $('#lblEVNO_EDMHistoryQuery').html(GetNodeValue(node, 'EVNO'))
         $('#lblEDMDocNo_EDMHistoryQuery').html(GetNodeValue(node, 'EDM_DocNo'))
+        $('#lblEDDate_EDMHistoryQuery').html(GetNodeValue(node, 'EDDate'))
         $('#lblStartDate_EDMHistoryQuery').html(GetNodeValue(node, 'ApproveDate'))
         $('#lblEDMMemo_EDMHistoryQuery').html(GetNodeValue(node, 'EDMMemo'))
         $('#modal_EDMHistoryQuery').modal('show');
@@ -243,6 +244,7 @@
                 p2.style.cssText = 'margin-left: 15px; margin-top: 3px;font-size: 16px;color: black;font-weight: bold; ';
 
                 var p3 = document.createElement('p')
+                p3.style.cssText = 'margin-bottom: 0px';
                 VIPCon.appendChild(p1);
                 VIPCon.appendChild(p2);
                 VIPCon.appendChild(p3);

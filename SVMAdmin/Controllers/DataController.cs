@@ -11097,7 +11097,7 @@ namespace SVMAdmin.Controllers
                     sql += "and a.StartDate='" + StartDate.SqlQuote() + "' ";
                 }
 
-                sql += "Order by a.EVNO desc ";
+                sql += "Order by a.ApproveDate desc ";
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
                 ds.Tables.Add(dtE);
