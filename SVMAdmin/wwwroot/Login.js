@@ -343,8 +343,18 @@
 
     let CheckOTP = function (data) {
         let user = data.getElementsByTagName('dtEmployee')[0];
-        //增加判斷若登入者為世代人員，則跳過OTP驗證
+        //增加判斷若登入者為系統管理員，則跳過OTP驗證
         if (GetNodeValue(user, 'UID').toLowerCase() == GetNodeValue(user, 'CompanyCode').toLowerCase()) {
+            var pData = {
+                USERID: $('#username').val(),
+                PASSWORD: $('#password').val(),
+                CompanyID: $('#CompanyID').val(),
+                GID: localStorage.getItem('GID')
+            };
+            PostToWebApi({ url: "api/SendOTP_EDDMS", data: pData, success: afterSendOTP_EDDMS, error: LoginError });
+        }
+        //20240626 增加判斷若登入者為圖片設計廠商，則跳過OTP驗證
+        else if (GetNodeValue(user, 'UID').toLowerCase() == "amber") {
             var pData = {
                 USERID: $('#username').val(),
                 PASSWORD: $('#password').val(),
