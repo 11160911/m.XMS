@@ -71,7 +71,7 @@
 
     let InitModifyDeleteButton = function () {
         $('#tbQMSDM107 .fa-trash-o').click(function () { btDelete_click(this) });
-        $('#tbQMSDM107 tbody tr .tdCol1, .tdCol2, .tdCol3, .tdCol4, .tdCol5, .tdCol6, .tdCol7, .tdCol8, .tdCol9').click(function () { MSDM107Query_EDM_click(this) });
+        $('#tbQMSDM107 tbody tr .tdCol1,#tbQMSDM107 tbody tr .tdCol2,#tbQMSDM107 tbody tr .tdCol3,#tbQMSDM107 tbody tr .tdCol4,#tbQMSDM107 tbody tr .tdCol5,#tbQMSDM107 tbody tr .tdCol6,#tbQMSDM107 tbody tr .tdCol7,#tbQMSDM107 tbody tr .tdCol8,#tbQMSDM107 tbody tr .tdCol9').click(function () { MSDM107Query_EDM_click(this) });
     }
 
     let btDelete_click = function (bt) {

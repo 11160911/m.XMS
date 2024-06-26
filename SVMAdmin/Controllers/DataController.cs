@@ -11177,14 +11177,18 @@ namespace SVMAdmin.Controllers
             {
                 IFormCollection rq = HttpContext.Request.Form;
                 string chkVIPFaceID = rq["chkVIPFaceID"];
+                string chkVIPFaceIDName = rq["chkVIPFaceIDName"];
                 string chkCity = rq["chkCity"];
                 string VIP_Type = rq["VIP_Type"];
+                string VIP_TypeName = rq["VIP_TypeName"];
                 string VIP_MW = rq["VIP_MW"];
                 string QDay = rq["QDay"];
                 string LCDay = rq["LCDay"];
                 string SDate = rq["SDate"];
                 string chkDept = rq["chkDept"];
+                string chkDeptName = rq["chkDeptName"];
                 string chkBgno = rq["chkBgno"];
+                string chkBgnoName = rq["chkBgnoName"];
                 string VMEVNO = rq["VMEVNO"];
                 string Flag = rq["Flag"];
                 string sql = "";
@@ -11288,7 +11292,7 @@ namespace SVMAdmin.Controllers
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',1,'','','','','會籍店櫃','" + chkVIPFaceID.Replace("'", "") + "' ";
+                        sql += "'" + VMEVNO + "',1,'','','','','會籍店櫃','" + chkVIPFaceIDName.Replace("'", "") + "' ";
                     }
                     if (chkCity != "")
                     {
@@ -11300,7 +11304,7 @@ namespace SVMAdmin.Controllers
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',3,'','','','','會員卡別','" + VIP_Type.Replace("'", "") + "' ";
+                        sql += "'" + VMEVNO + "',3,'','','','','會員卡別','" + VIP_TypeName.Replace("'", "") + "' ";
                     }
                     if (VIP_MW != "")
                     {
@@ -11413,13 +11417,13 @@ namespace SVMAdmin.Controllers
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',8,'','','','','消費部門','" + chkDept.Replace("'", "") + "' ";
+                        sql += "'" + VMEVNO + "',8,'','','','','消費部門','" + chkDeptName.Replace("'", "") + "' ";
                     }
                     if (chkBgno != "")
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',9,'','','','','消費大類','" + chkBgno.Replace("'", "") + "' ";
+                        sql += "'" + VMEVNO + "',9,'','','','','消費大類','" + chkBgnoName.Replace("'", "") + "' ";
                     }
                     PubUtility.ExecuteSql(sql, uu, "SYS");
             

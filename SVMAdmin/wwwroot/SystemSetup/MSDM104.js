@@ -103,7 +103,7 @@
 
     let InitModifyDeleteButton = function () {
         $('#tbQMSDM104 .fa-trash-o').click(function () { btDelete_click(this) });
-        $('#tbQMSDM104 tbody tr .tdCol1, .tdCol2, .tdCol3, .tdCol4, .tdCol5, .tdCol6, .tdCol7, .tdCol8').click(function () { MSDM104Query_EDM_click(this) });
+        $('#tbQMSDM104 tbody tr .tdCol1,#tbQMSDM104 tbody tr .tdCol2,#tbQMSDM104 tbody tr .tdCol3,#tbQMSDM104 tbody tr .tdCol4,#tbQMSDM104 tbody tr .tdCol5,#tbQMSDM104 tbody tr .tdCol6,#tbQMSDM104 tbody tr .tdCol7,#tbQMSDM104 tbody tr .tdCol8').click(function () { MSDM104Query_EDM_click(this) });
     }
 
     let btDelete_click = function (bt) {

@@ -16,9 +16,12 @@
     let ModPLUQty;
 
     let chkVIPFaceID = "";
+    let chkVIPFaceIDName = "";
     let chkCity = "";
     let chkDept = "";
+    let chkDeptName = "";
     let chkBgno = "";
+    let chkBgnoName = "";
     let DMDocNo = "";
 
 
@@ -182,7 +185,7 @@
     };
 
     let InitModifyDeleteButton = function () {
-        $('#tbQuery tbody tr .tdCol1, .tdCol2, .tdCol3, .tdCol4, .tdCol5, .tdCol6, .tdCol7').click(function () { EDMHistoryQuery_click(this) });
+        $('#tbQuery tbody tr .tdCol1,#tbQuery tbody tr .tdCol2,#tbQuery tbody tr .tdCol3,#tbQuery tbody tr .tdCol4,#tbQuery tbody tr .tdCol5,#tbQuery tbody tr .tdCol6,#tbQuery tbody tr .tdCol7').click(function () { EDMHistoryQuery_click(this) });
         $('#tbQuery tbody tr .btShowEDM').click(function () { btShowEDM_click(this) });
         $('#tbDMSel tbody tr .btShowEDM_DMSel').click(function () { btShowEDM_DMSel_click(this) });
     }
@@ -1161,6 +1164,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#lblVIPFaceIDCnt_SendSet').html('');
             $('#lblVIPFaceIDName_SendSet').html('');
             chkVIPFaceID = "";
+            chkVIPFaceIDName = "";
             $('#btLpOK_VIPFaceID_SendSet').prop('disabled', false);
             $('#modal_Lookup_VIPFaceID_SendSet').modal('hide');
             UpdateVIPCnt();
@@ -1168,16 +1172,19 @@ Timerset(sessionStorage.getItem('isamcomp'));
         } else {
             $('#lblVIPFaceIDCnt_SendSet').html(chkedRow)
             chkVIPFaceID = "";
+            chkVIPFaceIDName = "";
             var VIPFaceIDName = "";
             for (var i = 0; i < obchkedtd.length; i++) {
                 var a = $(obchkedtd[i]).closest('tr');
                 var trNode = $(a).prop('Record');
                 chkVIPFaceID += "'" + GetNodeValue(trNode, "ST_ID") + "',";  //已勾選的每一筆店倉
+                chkVIPFaceIDName += "'" + GetNodeValue(trNode, "ST_SName") + "',";
                 if (i <= 5) {
                     VIPFaceIDName += GetNodeValue(trNode, "ST_SName") + "，";
                 }
             }
             chkVIPFaceID = chkVIPFaceID.substr(0, chkVIPFaceID.length - 1)
+            chkVIPFaceIDName = chkVIPFaceIDName.substr(0, chkVIPFaceIDName.length - 1)
             if (chkedRow > 6) {
                 $('#lblVIPFaceIDName_SendSet').html(VIPFaceIDName.substr(0, VIPFaceIDName.length - 1) + '...')
             }
@@ -1377,6 +1384,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#lblDeptCnt_SendSet').html('');
             $('#lblDeptName_SendSet').html('');
             chkDept = "";
+            chkDeptName = "";
             $('#btLpOK_Dept_SendSet').prop('disabled', false);
             $('#modal_Lookup_Dept_SendSet').modal('hide');
             UpdateVIPCnt();
@@ -1384,16 +1392,19 @@ Timerset(sessionStorage.getItem('isamcomp'));
         } else {
             $('#lblDeptCnt_SendSet').html(chkedRow)
             chkDept = "";
+            chkDeptName = "";
             var DeptName = "";
             for (var i = 0; i < obchkedtd.length; i++) {
                 var a = $(obchkedtd[i]).closest('tr');
                 var trNode = $(a).prop('Record');
                 chkDept += "'" + GetNodeValue(trNode, "Type_ID") + "',";  //已勾選的每一筆部門
+                chkDeptName += "'" + GetNodeValue(trNode, "Type_Name") + "',";
                 if (i <= 9) {
                     DeptName += GetNodeValue(trNode, "Type_Name") + "，";
                 }
             }
             chkDept = chkDept.substr(0, chkDept.length - 1)
+            chkDeptName = chkDeptName.substr(0, chkDeptName.length - 1)
             if (chkedRow > 10) {
                 $('#lblDeptName_SendSet').html(DeptName.substr(0, DeptName.length - 1) + '...')
             }
@@ -1486,6 +1497,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#lblBgnoCnt_SendSet').html('');
             $('#lblBgnoName_SendSet').html('');
             chkBgno = "";
+            chkBgnoName = "";
             $('#btLpOK_Bgno_SendSet').prop('disabled', false);
             $('#modal_Lookup_Bgno_SendSet').modal('hide');
             UpdateVIPCnt();
@@ -1493,16 +1505,19 @@ Timerset(sessionStorage.getItem('isamcomp'));
         } else {
             $('#lblBgnoCnt_SendSet').html(chkedRow)
             chkBgno = "";
+            chkBgnoName = "";
             var BgnoName = "";
             for (var i = 0; i < obchkedtd.length; i++) {
                 var a = $(obchkedtd[i]).closest('tr');
                 var trNode = $(a).prop('Record');
                 chkBgno += "'" + GetNodeValue(trNode, "Type_ID") + "',";  //已勾選的每一筆部門
+                chkBgnoName += "'" + GetNodeValue(trNode, "Type_Name") + "',";  //已勾選的每一筆部門
                 if (i <= 9) {
                     BgnoName += GetNodeValue(trNode, "Type_Name") + "，";
                 }
             }
             chkBgno = chkBgno.substr(0, chkBgno.length - 1)
+            chkBgnoName = chkBgnoName.substr(0, chkBgnoName.length - 1)
             if (chkedRow > 10) {
                 $('#lblBgnoName_SendSet').html(BgnoName.substr(0, BgnoName.length - 1) + '...')
             }
@@ -1534,6 +1549,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
         $('#lblVIPFaceIDCnt_SendSet').html('');
         $('#lblVIPFaceIDName_SendSet').html('');
         chkVIPFaceID = "";
+        chkVIPFaceIDName = "";
         $('#lblCityCnt_SendSet').html('');
         $('#lblCityName_SendSet').html('');
         chkCity = "";
@@ -1545,9 +1561,11 @@ Timerset(sessionStorage.getItem('isamcomp'));
         $('#lblDeptCnt_SendSet').html('');
         $('#lblDeptName_SendSet').html('');
         chkDept = "";
+        chkDeptName = "";
         $('#lblBgnoCnt_SendSet').html('');
         $('#lblBgnoName_SendSet').html('');
         chkBgno = "";
+        chkBgnoName = "";
         UpdateVIPCnt();
     };
 
@@ -1566,19 +1584,25 @@ Timerset(sessionStorage.getItem('isamcomp'));
 
         //會員卡別
         var VIP_Type = "";
+        var VIP_TypeName = "";
         if ($('#chk0_SendSet').prop('checked') == true) {
             VIP_Type += "'0',";
+            VIP_TypeName += "'一般',";
         }
         if ($('#chk1_SendSet').prop('checked') == true) {
             VIP_Type += "'1',";
+            VIP_TypeName += "'會員',";
         }
         if ($('#chk2_SendSet').prop('checked') == true) {
             VIP_Type += "'2',";
+            VIP_TypeName += "'貴賓',";
         }
         if ($('#chk3_SendSet').prop('checked') == true) {
             VIP_Type += "'3',";
+            VIP_TypeName += "'白金卡',";
         }
         VIP_Type = VIP_Type.substr(0, VIP_Type.length - 1)
+        VIP_TypeName = VIP_TypeName.substr(0, VIP_TypeName.length - 1)
 
         //會員性別
         var VIP_MW = "";
@@ -1649,14 +1673,18 @@ Timerset(sessionStorage.getItem('isamcomp'));
         setTimeout(function () {
             var pData = {
                 chkVIPFaceID: chkVIPFaceID,
+                chkVIPFaceIDName: chkVIPFaceIDName,
                 chkCity: chkCity,
                 VIP_Type: VIP_Type,
+                VIP_TypeName: VIP_TypeName,
                 VIP_MW: VIP_MW,
                 QDay: QDay,
                 LCDay: LCDay,
                 SDate: SDate,
                 chkDept: chkDept,
+                chkDeptName: chkDeptName,
                 chkBgno: chkBgno,
+                chkBgnoName: chkBgnoName,
                 VMEVNO: $('#lblVMEVNO_SendSet').html(),
                 Flag:"Q"
             }
@@ -1693,19 +1721,25 @@ Timerset(sessionStorage.getItem('isamcomp'));
         }
         //會員卡別
         var VIP_Type = "";
+        var VIP_TypeName = "";
         if ($('#chk0_SendSet').prop('checked') == true) {
             VIP_Type += "'0',";
+            VIP_TypeName += "'一般',"
         }
         if ($('#chk1_SendSet').prop('checked') == true) {
             VIP_Type += "'1',";
+            VIP_TypeName += "'會員',"
         }
         if ($('#chk2_SendSet').prop('checked') == true) {
             VIP_Type += "'2',";
+            VIP_TypeName += "'貴賓',"
         }
         if ($('#chk3_SendSet').prop('checked') == true) {
             VIP_Type += "'3',";
+            VIP_TypeName += "'白金卡',"
         }
         VIP_Type = VIP_Type.substr(0, VIP_Type.length - 1)
+        VIP_TypeName = VIP_TypeName.substr(0, VIP_TypeName.length - 1)
 
         //會員性別
         var VIP_MW = "";
@@ -1776,14 +1810,18 @@ Timerset(sessionStorage.getItem('isamcomp'));
         setTimeout(function () {
             var pData = {
                 chkVIPFaceID: chkVIPFaceID,
+                chkVIPFaceIDName: chkVIPFaceIDName,
                 chkCity: chkCity,
                 VIP_Type: VIP_Type,
+                VIP_TypeName: VIP_TypeName,
                 VIP_MW: VIP_MW,
                 QDay: QDay,
                 LCDay: LCDay,
                 SDate: SDate,
                 chkDept: chkDept,
+                chkDeptName: chkDeptName,
                 chkBgno: chkBgno,
+                chkBgnoName: chkBgnoName,
                 VMEVNO: $('#lblVMEVNO_SendSet').html(),
                 Flag: "C"
             }
