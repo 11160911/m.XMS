@@ -66,7 +66,6 @@
                 ],
                 rows_per_page: 100,
                 method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton,
                 sortable: "N"
             }
         );
@@ -87,7 +86,6 @@
                 ],
                 rows_per_page: 100,
                 method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton,
                 sortable: "N"
             }
         );
@@ -103,7 +101,6 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton,
                 sortable: "N"
             }
         );
@@ -118,7 +115,6 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton,
                 sortable: "N"
             }
         );
@@ -134,7 +130,6 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton,
                 sortable: "N"
             }
         );
@@ -150,7 +145,6 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton,
                 sortable: "N"
             }
         );
@@ -173,7 +167,7 @@
                 ],
                 rows_per_page: 10,
                 method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton,
+                afterBind: gridclick_DMSel,
                 sortable: "N"
             }
         );
@@ -187,6 +181,9 @@
     let InitModifyDeleteButton = function () {
         $('#tbQuery tbody tr .tdCol1,#tbQuery tbody tr .tdCol2,#tbQuery tbody tr .tdCol3,#tbQuery tbody tr .tdCol4,#tbQuery tbody tr .tdCol5,#tbQuery tbody tr .tdCol6,#tbQuery tbody tr .tdCol7').click(function () { EDMHistoryQuery_click(this) });
         $('#tbQuery tbody tr .btShowEDM').click(function () { btShowEDM_click(this) });
+    }
+
+    let gridclick_DMSel = function () {
         $('#tbDMSel tbody tr .btShowEDM_DMSel').click(function () { btShowEDM_DMSel_click(this) });
     }
 
