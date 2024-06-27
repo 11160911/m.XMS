@@ -1144,7 +1144,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 DyAlert("無符合資料!", function () {
                     $('#btLpQ_VIPFaceID_SendSet').prop('disabled', false);
                 });
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             grdLookUp_VIPFaceID_SendSet.BindData(dtE);
@@ -1255,7 +1255,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 DyAlert("無符合資料!", function () {
                     $('#btLpQ_City_SendSet').prop('disabled', false);
                 });
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             grdLookUp_City_SendSet.BindData(dtE);
@@ -1364,7 +1364,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 DyAlert("無符合資料!", function () {
                     $('#btLpQ_Dept_SendSet').prop('disabled', false);
                 });
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             grdLookUp_Dept_SendSet.BindData(dtE);
@@ -1477,7 +1477,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 DyAlert("無符合資料!", function () {
                     $('#btLpQ_Bgno_SendSet').prop('disabled', false);
                 });
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             grdLookUp_Bgno_SendSet.BindData(dtE);

@@ -1116,7 +1116,7 @@
                 DyAlert("無符合資料!", function () {
                     $('#btQLookup_PSNO_EDM').prop('disabled', false);
                 });
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             setTimeout(function () {

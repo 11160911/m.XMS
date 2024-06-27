@@ -936,7 +936,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 DyAlert("無符合資料!", function () {
                     $('#btLpQ_VIPFaceID_SendSet').prop('disabled', false);
                 });
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             grdLookUp_VIPFaceID_SendSet.BindData(dtE);
