@@ -1073,7 +1073,7 @@
             var dtW = data.getElementsByTagName('dtW');
             if (dtW.length == 0) {
                 DyAlert("無符合店櫃資料，請重新確認!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
 
@@ -1106,7 +1106,7 @@
 
             if (dtQ.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             var dtSumQ = data.getElementsByTagName('dtSumQ');
@@ -1144,7 +1144,7 @@
 
             if (dtQ.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             var dtSumQ = data.getElementsByTagName('dtSumQ');
@@ -1209,7 +1209,7 @@
 
             if (dtGridData.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
 
@@ -1295,7 +1295,7 @@
 
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
 
@@ -1340,7 +1340,7 @@
 
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
 
@@ -1406,7 +1406,7 @@
             grdM.BindData(dtE);
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
         }
@@ -1453,7 +1453,7 @@
             var dtE = data.getElementsByTagName('dtE');
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             grdLookUp_ActivityCode.BindData(dtE);
@@ -1474,6 +1474,11 @@
             $('#txtActivityCode').val(GetNodeValue(trNode, "ActivityCode"))
             $('#modal_Lookup_ActivityCode').modal('hide')
         }
+    };
+
+    let btLpClear_ActivityCode_click = function (bt) {
+        $("#txtQLookup_ActivityCode").val('');
+        $("#tbDataLookup_ActivityCode .checkbox").prop('checked', false);
     };
 
     let btLpExit_ActivityCode_click = function (bt) {
@@ -1522,7 +1527,7 @@
             var dtE = data.getElementsByTagName('dtE');
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             grdLookUp_DocNO.BindData(dtE);
@@ -1573,6 +1578,7 @@
             $('#btLpOK_ActivityCode').click(function () { btLpOK_ActivityCode_click(this) });
             //活動代碼介面離開鍵
             $('#btLpExit_ActivityCode').click(function () { btLpExit_ActivityCode_click(this) });
+            $('#btLpClear_ActivityCode').click(function () { btLpClear_ActivityCode_click(this) });
 
             ////開啟DM代碼介面
             //$('#btDocNO').click(function () { btDocNO_click(this) });
