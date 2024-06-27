@@ -716,6 +716,7 @@ var DyAlert = function (txtMessage, HandlerOK, txtMessage2, txtMessage3) {
     var LoadDone = function () {
         var ParentNode = $('body');
         var p = $('#DyAlert_modal').detach();
+        divN.remove();
         ParentNode.append(p);
         
         $('#DyAlert_modal').find('p[name="pMsg"]').text(txtMessage);
@@ -726,9 +727,9 @@ var DyAlert = function (txtMessage, HandlerOK, txtMessage2, txtMessage3) {
         $('button[name="btOk"]').text("確定");
         setTimeout(function () {
             $('#DyAlert_modal').modal('show');
-        }, 200);
+       }, 200);
         $('#DyAlert_modal button').click(function () {
-            $('#DyAlert_modal').modal('hide');
+          $('#DyAlert_modal').modal('hide');
             setTimeout(function () {
                 $('#DyAlert_modal').remove();
                 if (HandlerOK != null)
