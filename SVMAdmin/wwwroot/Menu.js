@@ -317,7 +317,20 @@
                     PageMSDM104($(".workarea"));
                 }
             }
-            else if (pg == "MSPV101") {
+             else if (pg == "MSDM106") {
+                if (window.PageMSDM106 == undefined) {
+                    $.getScript('SystemSetup/MSDM106.js',
+                        function () {
+                            PageMSDM106($(".workarea"));
+                        }
+                    );
+                }
+
+                else {
+                    PageMSDM106($(".workarea"));
+                }
+            }
+           else if (pg == "MSPV101") {
                 if (window.PageMSPV101 == undefined) {
                     $.getScript('SystemSetup/MSPV101.js',
                         function () {
