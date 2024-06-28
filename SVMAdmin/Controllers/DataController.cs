@@ -11148,6 +11148,7 @@ namespace SVMAdmin.Controllers
                 string sqlD = "";
                 string sqlH = "";
 
+                sqlCon = "and VIP_Birthday<>'' ";
                 if (VIPFaceID != "")
                 {
                     sqlCon += "and a.VIP_FaceID in(" + VIPFaceID + ") ";
@@ -11930,7 +11931,7 @@ namespace SVMAdmin.Controllers
                     sql = "Select a.VIP_ID2,a.VIP_Name,a.VIP_Tel,a.VIP_Eadd,case a.VIP_MW when '0' then '男' when '1' then '女' end as VIP_NM,a.City,a.AreaName,a.VIP_LCDay,isnull(a.PointsBalance,0)PointsBalance, ";
                     sql += "case a.VIP_Type when '0' then '一般卡' when '1' then '會員卡' when '2' then '貴賓卡' when '3' then '白金卡' end as VIP_Type ";
                     sql += "From EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join MSData3Web b (nolock) on a.VIP_ID2=b.VIP_ID2 and b.Companycode=a.Companycode ";
+                    sql += "left join MSData3Web b (nolock) on a.VIP_ID2=b.VIP_ID2 and b.Companycode=a.Companycode ";
                     sql += sqlcon2;
                     sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and isnull(a.VIP_Eadd,'')<>'' and isnull(a.P_Flag2,'')='1' and isnull(a.VIP_Eday,'')>convert(char(10),getdate(),111) ";
@@ -11948,7 +11949,7 @@ namespace SVMAdmin.Controllers
 
                     sql = "Select Count(*)VIPCnt ";
                     sql += "From EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join MSData3Web b (nolock) on a.VIP_ID2=b.VIP_ID2 and b.Companycode=a.Companycode ";
+                    sql += "left join MSData3Web b (nolock) on a.VIP_ID2=b.VIP_ID2 and b.Companycode=a.Companycode ";
                     sql += sqlcon2;
                     sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and isnull(a.VIP_Eadd,'')<>'' and isnull(a.P_Flag2,'')='1' and isnull(a.VIP_Eday,'')>convert(char(10),getdate(),111) ";
