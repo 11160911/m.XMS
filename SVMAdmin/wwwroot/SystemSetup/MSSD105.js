@@ -62,7 +62,6 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton,
                 sortable: "Y"
             }
         );
@@ -88,7 +87,6 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton,
                 sortable: "Y"
             }
         );
@@ -107,7 +105,6 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton,
                 sortable: "N"
             }
         );
@@ -131,7 +128,6 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton_Area_Step1,
                 sortable: "N"
             }
         );
@@ -153,7 +149,6 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton_Area_Shop_Step2,
                 sortable: "N"
             }
         );
@@ -175,7 +170,6 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton_Area_Date_Step2,
                 sortable: "N"
             }
         );
@@ -197,7 +191,6 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton_Shop_Step1,
                 sortable: "N"
             }
         );
@@ -219,7 +212,6 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton_Date_Step1,
                 sortable: "N"
             }
         );
@@ -241,7 +233,6 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton_Date_Area_Step2,
                 sortable: "N"
             }
         );
@@ -252,81 +243,9 @@
     let click_PLU = function (tr) {
 
     };
-
     let InitModifyDeleteButton = function () {
         $('#tbQuery tbody tr td').click(function () { Step1_click(this) });
-        //$('#tbISAM01Mod .fa-trash-o').click(function () { btPLUDelete_click(this) });
     }
-
-    let InitModifyDeleteButton_Shop = function () {
-    }
-
-    let InitModifyDeleteButton_Area_Step1 = function () {
-        $('#tbSales_Area_Step1 tbody tr td').click(function () { Area_Step1_click(this) });
-    }
-
-    let InitModifyDeleteButton_Area_Shop_Step2 = function () {
-   
-    }
-
-    let InitModifyDeleteButton_Area_Date_Step2 = function () {
-
-    }
-
-    let InitModifyDeleteButton_Shop_Step1 = function () {
-    }
-
-    let InitModifyDeleteButton_Date_Step1 = function () {
-        $('#tbSales_Date_Step1 tbody tr td').click(function () { Date_Step1_click(this) });
-    }
-
-    let InitModifyDeleteButton_Date_Area_Step2 = function () {
-    }
-
-    
-
-    let Area_Step1_click = function (bt) {
-        $(bt).closest('tr').click();
-        $('.msg-valid').hide();
-        /*  $('#modal_ISAM01PLUDel .modal-title').text('盤點資料單筆刪除');*/
-        var node = $(grdM_Area_Step1.ActiveRowTR()).prop('Record');
-
-        if ($('#rdoShop_Area_Step1').prop('checked')) {
-            $('#lblOpenDate_Area_Shop_Step2').html($('#lblOpenDate_Area_Step1').html());
-            $('#lblArea_Shop_Step2').html($('#lblArea_Step1').html() + '-' + GetNodeValue(node, 'ID1') + ' ' + GetNodeValue(node, 'Name1'));
-            $('#modal_Area_Shop_Step2').modal('show');
-            setTimeout(function () {
-                Query_Area_Shop_Step2_click();
-            }, 500);
-        }
-        else if ($('#rdoDate_Area_Step1').prop('checked')) {
-            $('#lblOpenDate_Area_Date_Step2').html($('#lblOpenDate_Area_Step1').html());
-            $('#lblArea_Date_Step2').html($('#lblArea_Step1').html() + '-' + GetNodeValue(node, 'ID1'));
-            $('#modal_Area_Date_Step2').modal('show');
-            setTimeout(function () {
-                Query_Area_Date_Step2_click();
-            }, 500);
-        }
-    };
-
-    let Date_Step1_click = function (bt) {
-        $(bt).closest('tr').click();
-        $('.msg-valid').hide();
-        var node = $(grdM_Date_Step1.ActiveRowTR()).prop('Record');
-
-        if ($('#rdoArea_Date_Step1').prop('checked')) {
-            $('#lblOpenDate_Date_Area_Step2').html($('#lblOpenDate_Date_Step1').html());
-            $('#lblDate_Area_Step2').html($('#lblDate_Step1').html() + '-' + GetNodeValue(node, 'ID1') + ' ' + GetNodeValue(node, 'Name1'));
-            $('#modal_Date_Area_Step2').modal('show');
-            setTimeout(function () {
-                Query_Date_Area_Step2_click();
-            }, 500);
-        }
-        else if ($('#rdoShop_Date_Step1').prop('checked')) {
-        }
-    };
-
-   
 
     let ChkLogOut_1 = function (AfterChkLogOut_1) {
         var LoginDT = sessionStorage.getItem('LoginDT');
@@ -1045,302 +964,6 @@ Timerset(sessionStorage.getItem('isamcomp'));
     };
 //#endregion
 
-    let Query1_Shop_click = function () {
-        var pData = {
-            OpenDateS: $('#OpenDateS').val(),
-            OpenDateE: $('#OpenDateE').val(),
-            Shop: $('#txtShop1').val()
-        }
-        PostToWebApi({ url: "api/Query1_Shop", data: pData, success: afterQuery1_Shop });
-    };
-
-    let afterQuery1_Shop = function (data) {
-        CloseLoading();
-        if (ReturnMsg(data, 0) != "Query1_ShopOK") {
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
-            var dtQ = data.getElementsByTagName('dtQ');
-            grdM_Shop.BindData(dtQ);
-            
-            if (dtQ.length == 0) {
-                DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
-                return;
-            }
-            var dtSumQ = data.getElementsByTagName('dtSumQ');
-            $('#tbSales_Shop thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
-            $('#tbSales_Shop thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Shop thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Shop thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
-            $('#tbSales_Shop thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Shop thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Shop thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
-        }
-    };
-
-    let Query_Area_Step1_click = function () {
-        ShowLoading();
-
-        var Type_Step1 = "";
-        if ($('#rdoShop_Area_Step1').prop('checked')) {
-            Type_Step1 = "S";
-        }
-        else if ($('#rdoDate_Area_Step1').prop('checked')) {
-            Type_Step1 = "D";
-        }
-
-        var pData = {
-            OpenDateS: $('#lblOpenDate_Area_Step1').html().split('~')[0],
-            OpenDateE: $('#lblOpenDate_Area_Step1').html().split('~')[1],
-            Area: $('#lblArea_Step1').html().split(' ')[0],
-            Type_Step1: Type_Step1
-        }
-        PostToWebApi({ url: "api/Query_Area_Step1", data: pData, success: afterQuery_Area_Step1 });
-    };
-
-    let afterQuery_Area_Step1 = function (data) {
-        CloseLoading();
-        if (ReturnMsg(data, 0) != "Query_Area_Step1OK") {
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
-            
-            var dtQ = data.getElementsByTagName('dtQ');
-            grdM_Area_Step1.BindData(dtQ);
-
-            var heads = $('#tbSales_Area_Step1 thead tr th#thtype');
-            if ($('#rdoShop_Area_Step1').prop('checked')) {
-                $(heads).text('店');
-            }
-            else if ($('#rdoDate_Area_Step1').prop('checked')) {
-                $(heads).text('日');
-            }
-
-            if (dtQ.length == 0) {
-                DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
-                return;
-            }
-
-            var dtSumQ = data.getElementsByTagName('dtSumQ');
-            $('#tbSales_Area_Step1 thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
-            $('#tbSales_Area_Step1 thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Area_Step1 thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Area_Step1 thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
-            $('#tbSales_Area_Step1 thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Area_Step1 thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Area_Step1 thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
-
-        }
-    };
-
-    let Query_Area_Shop_Step2_click = function () {
-        ShowLoading();
-        var Area = $('#lblArea_Shop_Step2').html().split('-')[0].split(' ')[0];
-        var Shop = $('#lblArea_Shop_Step2').html().split('-')[1].split(' ')[0];
-
-        var pData = {
-            OpenDateS: $('#lblOpenDate_Area_Shop_Step2').html().split('~')[0],
-            OpenDateE: $('#lblOpenDate_Area_Shop_Step2').html().split('~')[1],
-            Area: Area,
-            Shop: Shop
-        }
-        PostToWebApi({ url: "api/Query_Area_Shop_Step2", data: pData, success: afterQuery_Area_Shop_Step2 });
-    };
-
-    let afterQuery_Area_Shop_Step2 = function (data) {
-        CloseLoading();
-        if (ReturnMsg(data, 0) != "Query_Area_Shop_Step2OK") {
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
-
-            var dtQ = data.getElementsByTagName('dtQ');
-            grdM_Area_Shop_Step2.BindData(dtQ);
-
-            if (dtQ.length == 0) {
-                DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
-                return;
-            }
-
-            var dtSumQ = data.getElementsByTagName('dtSumQ');
-            $('#tbSales_Area_Shop_Step2 thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
-            $('#tbSales_Area_Shop_Step2 thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Area_Shop_Step2 thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Area_Shop_Step2 thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
-            $('#tbSales_Area_Shop_Step2 thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Area_Shop_Step2 thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Area_Shop_Step2 thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
-        }
-    };
-
-    let Query_Area_Date_Step2_click = function () {
-        ShowLoading();
-        var Area = $('#lblArea_Date_Step2').html().split('-')[0].split(' ')[0];
-        var Date = $('#lblArea_Date_Step2').html().split('-')[1];
-
-        var pData = {
-            OpenDate: Date,
-            Area: Area
-        }
-        PostToWebApi({ url: "api/Query_Area_Date_Step2", data: pData, success: afterQuery_Area_Date_Step2 });
-    };
-
-    let afterQuery_Area_Date_Step2 = function (data) {
-        CloseLoading();
-        if (ReturnMsg(data, 0) != "Query_Area_Date_Step2OK") {
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
-
-            var dtQ = data.getElementsByTagName('dtQ');
-            grdM_Area_Date_Step2.BindData(dtQ);
-
-            if (dtQ.length == 0) {
-                DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
-                return;
-            }
-
-            var dtSumQ = data.getElementsByTagName('dtSumQ');
-            $('#tbSales_Area_Date_Step2 thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
-            $('#tbSales_Area_Date_Step2 thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Area_Date_Step2 thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Area_Date_Step2 thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
-            $('#tbSales_Area_Date_Step2 thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Area_Date_Step2 thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Area_Date_Step2 thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
-        }
-    };
-
-    let Query_Shop_Step1_click = function () {
-        ShowLoading();
-        var pData = {
-            OpenDateS: $('#lblOpenDate_Shop_Step1').html().split('~')[0],
-            OpenDateE: $('#lblOpenDate_Shop_Step1').html().split('~')[1],
-            Shop: $('#lblShop_Step1').html().split(' ')[0]
-        }
-        PostToWebApi({ url: "api/Query_Shop_Step1", data: pData, success: afterQuery_Shop_Step1 });
-    };
-
-    let afterQuery_Shop_Step1 = function (data) {
-        CloseLoading();
-        if (ReturnMsg(data, 0) != "Query_Shop_Step1OK") {
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
-            var dtQ = data.getElementsByTagName('dtQ');
-            grdM_Shop_Step1.BindData(dtQ);
-
-            if (dtQ.length == 0) {
-                DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
-                return;
-            }
-            var dtSumQ = data.getElementsByTagName('dtSumQ');
-            $('#tbSales_Shop_Step1 thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
-            $('#tbSales_Shop_Step1 thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Shop_Step1 thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Shop_Step1 thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
-            $('#tbSales_Shop_Step1 thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Shop_Step1 thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Shop_Step1 thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
-        }
-    };
-
-    let Query_Date_Step1_click = function () {
-        ShowLoading();
-        var Type_Step1 = "";
-        if ($('#rdoArea_Date_Step1').prop('checked')) {
-            Type_Step1 = "A";
-        }
-        else if ($('#rdoShop_Date_Step1').prop('checked')) {
-            Type_Step1 = "S";
-        }
-
-        var pData = {
-            OpenDateS: $('#lblOpenDate_Date_Step1').html().split('~')[0],
-            OpenDateE: $('#lblOpenDate_Date_Step1').html().split('~')[1],
-            Date: $('#lblDate_Step1').html(),
-            Type_Step1: Type_Step1
-        }
-        PostToWebApi({ url: "api/Query_Date_Step1", data: pData, success: afterQuery_Date_Step1 });
-    };
-
-    let afterQuery_Date_Step1 = function (data) {
-        CloseLoading();
-        if (ReturnMsg(data, 0) != "Query_Date_Step1OK") {
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
-
-            var dtQ = data.getElementsByTagName('dtQ');
-            grdM_Date_Step1.BindData(dtQ);
-
-            var heads = $('#tbSales_Date_Step1 thead tr th#thtype');
-            
-            if ($('#rdoArea_Date_Step1').prop('checked')) {
-                $(heads).text('區');
-            }
-            else if ($('#rdoShop_Date_Step1').prop('checked')) {
-                $(heads).text('店');
-            }
-
-            if (dtQ.length == 0) {
-                DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
-                return;
-            }
-
-            var dtSumQ = data.getElementsByTagName('dtSumQ');
-            $('#tbSales_Date_Step1 thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
-            $('#tbSales_Date_Step1 thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Date_Step1 thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Date_Step1 thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
-            $('#tbSales_Date_Step1 thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Date_Step1 thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Date_Step1 thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
-        }
-    };
-
-    let Query_Date_Area_Step2_click = function () {
-        ShowLoading();
-        var pData = {
-            OpenDateS: $('#lblOpenDate_Date_Area_Step2').html().split('~')[0],
-            OpenDateE: $('#lblOpenDate_Date_Area_Step2').html().split('~')[1],
-            Date: $('#lblDate_Area_Step2').html().split('-')[0],
-            Area: $('#lblDate_Area_Step2').html().split('-')[1].split(' ')[0]
-        }
-        PostToWebApi({ url: "api/Query_Date_Area_Step2", data: pData, success: afterQuery_Date_Area_Step2 });
-    };
-
-    let afterQuery_Date_Area_Step2 = function (data) {
-        CloseLoading();
-        if (ReturnMsg(data, 0) != "Query_Date_Area_Step2OK") {
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
-            var dtQ = data.getElementsByTagName('dtQ');
-            grdM_Date_Area_Step2.BindData(dtQ);
-            if (dtQ.length == 0) {
-                DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
-                return;
-            }
-
-            var dtSumQ = data.getElementsByTagName('dtSumQ');
-            $('#tbSales_Date_Area_Step2 thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash1")).toLocaleString('en-US'));
-            $('#tbSales_Date_Area_Step2 thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Date_Area_Step2 thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt1")).toLocaleString('en-US'));
-            $('#tbSales_Date_Area_Step2 thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumCash2")).toLocaleString('en-US'));
-            $('#tbSales_Date_Area_Step2 thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Date_Area_Step2 thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumCashCnt2")).toLocaleString('en-US'));
-            $('#tbSales_Date_Area_Step2 thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPPercent")).toLocaleString('en-US') + '%');
-        }
-    };
-
     //清除
     let btClear_click = function (bt) {
         //Timerset();
@@ -1442,8 +1065,9 @@ Timerset(sessionStorage.getItem('isamcomp'));
         $('.msg-valid').hide();
         var node = $(grdM.ActiveRowTR()).prop('Record');
         $('#tbQuery td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
-        var heads = $('#tbQuery thead tr th#tdflag');
-        if ($(heads).html() == "店別") {
+        var heads = $('#tbQuery thead tr th#tdflag').html();
+
+        if (heads.toString().indexOf("店別") >= 0) {
             $('#lblYM_Shop1').html($('#txtYM').val().toString().replaceAll('-', '/'));
             $('#lblShop1').html(GetNodeValue(node, 'ID'));
             $('#modal_Shop1').modal('show');
@@ -1451,7 +1075,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 QueryShop1();
             }, 500);
         }
-        else if ($(heads).html() == "日期") {
+        else if (heads.toString().indexOf("日期") >= 0) {
             $('#lblYM_Date1').html($('#txtYM').val().toString().replaceAll('-', '/'));
             $('#lblDate1').html(GetNodeValue(node, 'ID'));
             $('#modal_Date1').modal('show');

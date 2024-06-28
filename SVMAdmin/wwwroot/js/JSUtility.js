@@ -468,8 +468,8 @@ var DynGrid = function (option) {
                 if (pgscount > 1) {
                     for (var i = 0; i < pgscount; i++) {
                         if (i >= pagecnt * 8) {
-                            var li = $('<li class="page-item" style="width:35px;height:35px"></li>');
-                            var aa = $('<a class="page-link" style="font-size:13px" href="#"></a>');
+                            var li = $('<li class="page-item" style="width:32px;height:32px"></li>');
+                            var aa = $('<a class="page-link" style="font-size:13px;padding-left:5px" href="#"></a>');
                             var t = i + 1;
                             aa.text(t);
                             aa.prop('start', i * rows_per_page);
@@ -479,8 +479,8 @@ var DynGrid = function (option) {
                             aa.click(function () { ShowPageData(this); });
                         }
                         else if (i >= pagecnt * 7) {
-                            var li = $('<li class="page-item" style="width:35px;height:35px"></li>');
-                            var aa = $('<a class="page-link" style="font-size:13px" href="#"></a>');
+                            var li = $('<li class="page-item" style="width:32px;height:32px"></li>');
+                            var aa = $('<a class="page-link" style="font-size:13px;padding-left:5px" href="#"></a>');
                             var t = i + 1;
                             aa.text(t);
                             aa.prop('start', i * rows_per_page);
@@ -490,8 +490,8 @@ var DynGrid = function (option) {
                             aa.click(function () { ShowPageData(this); });
                         }
                         else if (i >= pagecnt * 6) {
-                            var li = $('<li class="page-item" style="width:35px;height:35px"></li>');
-                            var aa = $('<a class="page-link" style="font-size:13px" href="#"></a>');
+                            var li = $('<li class="page-item" style="width:32px;height:32px"></li>');
+                            var aa = $('<a class="page-link" style="font-size:13px;padding-left:5px" href="#"></a>');
                             var t = i + 1;
                             aa.text(t);
                             aa.prop('start', i * rows_per_page);
@@ -501,8 +501,8 @@ var DynGrid = function (option) {
                             aa.click(function () { ShowPageData(this); });
                         }
                         else if (i >= pagecnt * 5) {
-                            var li = $('<li class="page-item" style="width:35px;height:35px"></li>');
-                            var aa = $('<a class="page-link" style="font-size:13px" href="#"></a>');
+                            var li = $('<li class="page-item" style="width:32px;height:32px"></li>');
+                            var aa = $('<a class="page-link" style="font-size:13px;padding-left:5px" href="#"></a>');
                             var t = i + 1;
                             aa.text(t);
                             aa.prop('start', i * rows_per_page);
@@ -512,8 +512,8 @@ var DynGrid = function (option) {
                             aa.click(function () { ShowPageData(this); });
                         }
                         else if (i >= pagecnt * 4) {
-                            var li = $('<li class="page-item" style="width:35px;height:35px"></li>');
-                            var aa = $('<a class="page-link" style="font-size:13px" href="#"></a>');
+                            var li = $('<li class="page-item" style="width:32px;height:32px"></li>');
+                            var aa = $('<a class="page-link" style="font-size:13px;padding-left:5px" href="#"></a>');
                             var t = i + 1;
                             aa.text(t);
                             aa.prop('start', i * rows_per_page);
@@ -523,8 +523,8 @@ var DynGrid = function (option) {
                             aa.click(function () { ShowPageData(this); });
                         }
                         else if (i >= pagecnt * 3) {
-                            var li = $('<li class="page-item" style="width:35px;height:35px"></li>');
-                            var aa = $('<a class="page-link" style="font-size:13px" href="#"></a>');
+                            var li = $('<li class="page-item" style="width:32px;height:32px"></li>');
+                            var aa = $('<a class="page-link" style="font-size:13px;padding-left:5px" href="#"></a>');
                             var t = i + 1;
                             aa.text(t);
                             aa.prop('start', i * rows_per_page);
@@ -534,8 +534,8 @@ var DynGrid = function (option) {
                             aa.click(function () { ShowPageData(this); });
                         }
                         else if (i >= pagecnt * 2) {
-                            var li = $('<li class="page-item" style="width:35px;height:35px"></li>');
-                            var aa = $('<a class="page-link" style="font-size:13px" href="#"></a>');
+                            var li = $('<li class="page-item" style="width:32px;height:32px"></li>');
+                            var aa = $('<a class="page-link" style="font-size:13px;padding-left:5px" href="#"></a>');
                             var t = i + 1;
                             aa.text(t);
                             aa.prop('start', i * rows_per_page);
@@ -545,8 +545,8 @@ var DynGrid = function (option) {
                             aa.click(function () { ShowPageData(this); });
                         }
                         else if (i >= pagecnt * 1) {
-                            var li = $('<li class="page-item" style="width:35px;height:35px"></li>');
-                            var aa = $('<a class="page-link" style="font-size:13px" href="#"></a>');
+                            var li = $('<li class="page-item" style="width:32px;height:32px"></li>');
+                            var aa = $('<a class="page-link" style="font-size:13px;padding-left:5px" href="#"></a>');
                             var t = i + 1;
                             aa.text(t);
                             aa.prop('start', i * rows_per_page);
@@ -556,8 +556,8 @@ var DynGrid = function (option) {
                             aa.click(function () { ShowPageData(this); });
                         }
                         else {
-                            var li = $('<li class="page-item" style="width:35px;height:35px"></li>');
-                            var aa = $('<a class="page-link" style="font-size:13px" href="#"></a>');
+                            var li = $('<li class="page-item" style="width:32px;height:32px"></li>');
+                            var aa = $('<a class="page-link" style="font-size:13px;padding-left:5px" href="#"></a>');
                             var t = i + 1;
                             aa.text(t);
                             aa.prop('start', i * rows_per_page);
