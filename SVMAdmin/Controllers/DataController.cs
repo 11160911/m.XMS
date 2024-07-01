@@ -11809,7 +11809,7 @@ namespace SVMAdmin.Controllers
                     sql += "Select a.Companycode,'" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
                     sql += "'" + VMEVNO + "',a.VIP_ID2,'',VIP_Name,VIP_Eadd,'','',ROW_NUMBER() OVER(PARTITION BY '" + VMEVNO + "' order by a.VIP_ID2),'E' ";
                     sql += "From EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join MSData3Web b (nolock) on a.VIP_ID2=b.VIP_ID2 and b.Companycode=a.Companycode ";
+                    sql += "left join MSData3Web b (nolock) on a.VIP_ID2=b.VIP_ID2 and b.Companycode=a.Companycode ";
                     sql += sqlcon2;
                     sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and isnull(a.VIP_Eadd,'')<>'' and isnull(a.P_Flag2,'')='1' and isnull(a.VIP_Eday,'')>convert(char(10),getdate(),111) ";
@@ -11993,6 +11993,35 @@ namespace SVMAdmin.Controllers
                     dtE.TableName = "dtE";
                     ds.Tables.Add(dtE);
                 }
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSVP101Delete_SendSet")]
+        public ActionResult SystemSetup_MSVP101Delete_SendSet()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSVP101Delete_SendSetOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string VMEVNO = rq["VMEVNO"];
+                string VIP_ID2 = rq["VIP_ID2"];
+                string sql = "";
+
+                sql = "Delete From SetEDMVIP_VIPWeb Where Companycode='" + uu.CompanyId + "' and EVNO='" + VMEVNO + "' and VIP_ID2='" + VIP_ID2 + "' "  ;
+                PubUtility.ExecuteSql(sql, uu, "SYS");
+
+                sql = "Select Count(*)Cnt From SetEDMVIP_VIPWeb (nolock) where Companycode='" + uu.CompanyId + "' and EVNO='" + VMEVNO + "' ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
             }
             catch (Exception err)
             {
