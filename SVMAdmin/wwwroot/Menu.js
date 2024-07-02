@@ -447,6 +447,19 @@
                     PageMSSD104($(".workarea"));
                 }
             }
+            else if (pg == "MSSA103") {
+                if (window.PageMSSA103 == undefined) {
+                    $.getScript('SystemSetup/MSSA103.js',
+                        function () {
+                            PageMSSA103($(".workarea"));
+                        }
+                    );
+                }
+
+                else {
+                    PageMSSA103($(".workarea"));
+                }
+            }
             else if (pg == "SysChangePWD") {
                 $('#OLD_PWD').val("");
                 $('#NEW_PWD').val("");
