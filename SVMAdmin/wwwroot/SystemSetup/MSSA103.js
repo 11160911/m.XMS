@@ -31,20 +31,20 @@
             }
         );
 
-        //grdLookUp_ShopNo = new DynGrid(
-        //    {
-        //        table_lement: $('#tbLookup_ShopNo')[0],
-        //        class_collection: ["tdCol1 text-center", "tdCol2", "tdCol3"],
-        //        fields_info: [
-        //            { type: "checkbox", name: "chkset", style: "width:16px;height:16px" },
-        //            { type: "Text", name: "ST_ID", style: "" },
-        //            { type: "Text", name: "ST_SName", style: "" }
-        //        ],
-        //        //rows_per_page: 10,
-        //        method_clickrow: click_PLU,
-        //        sortable: "N"
-        //    }
-        //);
+        grdLookUp_ShopNo = new DynGrid(
+            {
+                table_lement: $('#tbLookup_ShopNo')[0],
+                class_collection: ["tdCol1 text-center", "tdCol2", "tdCol3"],
+                fields_info: [
+                    { type: "checkbox", name: "chkset", style: "width:16px;height:16px" },
+                    { type: "Text", name: "ST_ID", style: "" },
+                    { type: "Text", name: "ST_SName", style: "" }
+                ],
+                //rows_per_page: 10,
+                method_clickrow: click_PLU,
+                sortable: "N"
+            }
+        );
 
         //grdLookUp_City = new DynGrid(
         //    {

@@ -8790,7 +8790,6 @@ namespace SVMAdmin.Controllers
                     sql += "sum(isnull(a.TotalCash,0))SumTotalCash,sum(isnull(a.TotalTrans,0))SumTotalTrans, ";
                     sql += "case when sum(isnull(a.TotalTrans,0))=0 then 0 else Round(sum(isnull(a.TotalCash,0)) / sum(isnull(a.TotalTrans,0)), 0) end as SumTotalPrice ";
                     sql += "From MSData1Web a (nolock) ";
-                    sql += "left join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode ";
                     sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                     if (PS_NO != "")
                     {
@@ -8800,8 +8799,6 @@ namespace SVMAdmin.Controllers
                     {
                         sql += "and a.SalesDate='" + ID + "' ";
                     }
-                    sql += "group by a.ShopNo,b.ST_SName ";
-                    sql += "Order by a.ShopNo ";
                     DataTable dtSumQ = PubUtility.SqlQry(sql, uu, "SYS");
                     dtSumQ.TableName = "dtSumQ";
                     ds.Tables.Add(dtSumQ);
@@ -12233,7 +12230,7 @@ namespace SVMAdmin.Controllers
                 else if (Flag == "D")
                 {
                     //期間1
-                    sql = "select p.GD_Dept,Sum(a.Num)Qty1,Sum(a.Cash)Cash1 into #s1 ";
+                    sql = "select p.GD_Dept id,Sum(a.Num)Qty1,Sum(a.Cash)Cash1 into #s1 ";
                     sql += "from SalesDWeb a (nolock) ";
                     sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
                     sql += "inner join EDDMS.dbo.PLU p (nolock) on a.GoodsNo=p.GD_NO and p.Companycode='" + uu.CompanyId + "' ";
@@ -12249,7 +12246,7 @@ namespace SVMAdmin.Controllers
                     sql += "group by p.GD_Dept; ";
 
                     //期間2
-                    sql += "select p.GD_Dept,Sum(a.Num)Qty2,Sum(a.Cash)Cash2 into #s2 ";
+                    sql += "select p.GD_Dept id,Sum(a.Num)Qty2,Sum(a.Cash)Cash2 into #s2 ";
                     sql += "from SalesDWeb a (nolock) ";
                     sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
                     sql += "inner join EDDMS.dbo.PLU p (nolock) on a.GoodsNo=p.GD_NO and p.Companycode='" + uu.CompanyId + "' ";
@@ -12265,12 +12262,14 @@ namespace SVMAdmin.Controllers
                     sql += "group by p.GD_Dept; ";
 
                     //明細資料
-                    sqlD = "select case when isnull(s1.ID,'')='' then isnull(s2.ID,'') + '-' + isnull(s2.Name,'') else isnull(s1.ID,'') + '-' + isnull(s1.Name,'') end as id,isnull(s1.Qty1,0)Qty1,isnull(s1.Cash1,0)Cash1, ";
+                    sqlD = "select a.type_id + '-' + a.type_name id,isnull(s1.Qty1,0)Qty1,isnull(s1.Cash1,0)Cash1, ";
                     sqlD += "isnull(s2.Qty2,0)Qty2,isnull(s2.Cash2,0)Cash2, ";
                     sqlD += "case when isnull(s1.Cash1,0)=0 then format(0,'p') else format(cast(isnull(s2.Cash2,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float),'p') end as Per ";
-                    sqlD += "from #s1 s1 ";
-                    sqlD += "Full join #s2 s2 on s1.id=s2.id ";
-                    sqlD += "order by s1.id ";
+                    sqlD += "from TypeDataWeb a (nolock) ";
+                    sqlD += "left join #s1 s1 on a.type_id=s1.id ";
+                    sqlD += "left join #s2 s2 on a.type_id=s2.id ";
+                    sqlD += "where a.CompanyCode='" + uu.CompanyId + "' and a.type_code='G' ";
+                    sqlD += "order by a.type_id ";
                     DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
                     dtE.TableName = "dtE";
                     ds.Tables.Add(dtE);
@@ -12279,8 +12278,10 @@ namespace SVMAdmin.Controllers
                     sqlH = "select sum(isnull(s1.Qty1,0))SumQty1,sum(isnull(s1.Cash1,0))SumCash1, ";
                     sqlH += "sum(isnull(s2.Qty2,0))SumQty2,sum(isnull(s2.Cash2,0))SumCash2, ";
                     sqlH += "case when sum(isnull(s1.Cash1,0))=0 then format(0,'p') else format(cast(sum(isnull(s2.Cash2,0))-sum(isnull(s1.Cash1,0)) as Float)/cast(sum(isnull(s1.Cash1,0)) as Float),'p') end as SumPer ";
-                    sqlH += "from #s1 s1 ";
-                    sqlH += "Full join #s2 s2 on s1.id=s2.id ";
+                    sqlH += "from TypeDataWeb a (nolock) ";
+                    sqlH += "left join #s1 s1 on a.type_id=s1.id ";
+                    sqlH += "left join #s2 s2 on a.type_id=s2.id ";
+                    sqlH += "where a.CompanyCode='" + uu.CompanyId + "' and a.type_code='G' ";
                     DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
                     dtH.TableName = "dtH";
                     ds.Tables.Add(dtH);
@@ -12288,109 +12289,59 @@ namespace SVMAdmin.Controllers
                 //大類
                 else if (Flag == "B")
                 {
-                    //總數
-                    sql = "select a.VIP_MW ID,Count(*)Cnt1 into #v1 ";
-                    sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    //期間1
+                    sql = "select p.GD_BGNO id,Sum(a.Num)Qty1,Sum(a.Cash)Cash1 into #s1 ";
+                    sql += "from SalesDWeb a (nolock) ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                    sql += "inner join EDDMS.dbo.PLU p (nolock) on a.GoodsNo=p.GD_NO and p.Companycode='" + uu.CompanyId + "' ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
-                    sql += sqlCon;
-                    sql += "group by a.VIP_MW; ";
-                    //17歲以下
-                    sql += "select a.VIP_MW ID,Count(*)Cnt2 into #v2 ";
-                    sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    if (OpenDateS1 != "")
+                    {
+                        sql += "and a.OpenDate between '" + OpenDateS1 + "' and '" + OpenDateE1 + "' ";
+                    }
+                    if (ShopNo != "")
+                    {
+                        sql += "and a.ShopNo in(" + ShopNo + ") ";
+                    }
+                    sql += "group by p.GD_BGNO; ";
+
+                    //期間2
+                    sql += "select p.GD_BGNO id,Sum(a.Num)Qty2,Sum(a.Cash)Cash2 into #s2 ";
+                    sql += "from SalesDWeb a (nolock) ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                    sql += "inner join EDDMS.dbo.PLU p (nolock) on a.GoodsNo=p.GD_NO and p.Companycode='" + uu.CompanyId + "' ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
-                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int)<=17 ";
-                    sql += sqlCon;
-                    sql += "group by a.VIP_MW; ";
-                    //18~30歲
-                    sql += "select a.VIP_MW ID,Count(*)Cnt3 into #v3 ";
-                    sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
-                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
-                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 18 and 30 ";
-                    sql += sqlCon;
-                    sql += "group by a.VIP_MW; ";
-                    //31~40歲
-                    sql += "select a.VIP_MW ID,Count(*)Cnt4 into #v4 ";
-                    sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
-                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
-                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 31 and 40 ";
-                    sql += sqlCon;
-                    sql += "group by a.VIP_MW; ";
-                    //41~50歲
-                    sql += "select a.VIP_MW ID,Count(*)Cnt5 into #v5 ";
-                    sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
-                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
-                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 41 and 50 ";
-                    sql += sqlCon;
-                    sql += "group by a.VIP_MW; ";
-                    //51~60歲
-                    sql += "select a.VIP_MW ID,Count(*)Cnt6 into #v6 ";
-                    sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
-                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
-                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 51 and 60 ";
-                    sql += sqlCon;
-                    sql += "group by a.VIP_MW; ";
-                    //61~70歲
-                    sql += "select a.VIP_MW ID,Count(*)Cnt7 into #v7 ";
-                    sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
-                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
-                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 61 and 70 ";
-                    sql += sqlCon;
-                    sql += "group by a.VIP_MW; ";
-                    //71歲以上
-                    sql += "select a.VIP_MW ID,Count(*)Cnt8 into #v8 ";
-                    sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
-                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
-                    sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int)>=71 ";
-                    sql += sqlCon;
-                    sql += "group by a.VIP_MW; ";
+                    if (OpenDateS2 != "")
+                    {
+                        sql += "and a.OpenDate between '" + OpenDateS2 + "' and '" + OpenDateE2 + "' ";
+                    }
+                    if (ShopNo != "")
+                    {
+                        sql += "and a.ShopNo in(" + ShopNo + ") ";
+                    }
+                    sql += "group by p.GD_BGNO; ";
+
                     //明細資料
-                    sqlD = "select case v1.id when '0' then '男性' when '1' then '女性' end as id,isnull(v1.Cnt1,0)Cnt1,isnull(v2.Cnt2,0)Cnt2, ";
-                    sqlD += "case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v2.Cnt2,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt2p, ";
-                    sqlD += "isnull(v3.Cnt3,0)Cnt3,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v3.Cnt3,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt3p, ";
-                    sqlD += "isnull(v4.Cnt4,0)Cnt4,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v4.Cnt4,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt4p, ";
-                    sqlD += "isnull(v5.Cnt5,0)Cnt5,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v5.Cnt5,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt5p, ";
-                    sqlD += "isnull(v6.Cnt6,0)Cnt6,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v6.Cnt6,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt6p, ";
-                    sqlD += "isnull(v7.Cnt7,0)Cnt7,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v7.Cnt7,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt7p, ";
-                    sqlD += "isnull(v8.Cnt8,0)Cnt8,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v8.Cnt8,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt8p ";
-                    sqlD += "from #v1 v1 ";
-                    sqlD += "left join #v2 v2 on v1.id=v2.id ";
-                    sqlD += "left join #v3 v3 on v1.id=v3.id ";
-                    sqlD += "left join #v4 v4 on v1.id=v4.id ";
-                    sqlD += "left join #v5 v5 on v1.id=v5.id ";
-                    sqlD += "left join #v6 v6 on v1.id=v6.id ";
-                    sqlD += "left join #v7 v7 on v1.id=v7.id ";
-                    sqlD += "left join #v8 v8 on v1.id=v8.id ";
-                    sqlD += "Where 1=1 ";
-                    sqlD += "order by v1.id desc ";
+                    sqlD = "select a.type_id + '-' + a.type_name id,isnull(s1.Qty1,0)Qty1,isnull(s1.Cash1,0)Cash1, ";
+                    sqlD += "isnull(s2.Qty2,0)Qty2,isnull(s2.Cash2,0)Cash2, ";
+                    sqlD += "case when isnull(s1.Cash1,0)=0 then format(0,'p') else format(cast(isnull(s2.Cash2,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float),'p') end as Per ";
+                    sqlD += "from TypeDataWeb a (nolock) ";
+                    sqlD += "left join #s1 s1 on a.type_id=s1.id ";
+                    sqlD += "left join #s2 s2 on a.type_id=s2.id ";
+                    sqlD += "where a.CompanyCode='" + uu.CompanyId + "' and a.type_code='L' ";
+                    sqlD += "order by a.type_id ";
                     DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
                     dtE.TableName = "dtE";
                     ds.Tables.Add(dtE);
+
                     //彙總資料
-                    sqlH = "select convert(char(10),getdate(),111) + ' ' + convert(char(5),getdate(),108) as SysDate,sum(isnull(v1.Cnt1,0))SumCnt1, ";
-                    sqlH += "sum(isnull(v2.Cnt2,0))SumCnt2,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v2.Cnt2,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt2p, ";
-                    sqlH += "sum(isnull(v3.Cnt3,0))SumCnt3,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v3.Cnt3,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt3p, ";
-                    sqlH += "sum(isnull(v4.Cnt4,0))SumCnt4,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v4.Cnt4,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt4p, ";
-                    sqlH += "sum(isnull(v5.Cnt5,0))SumCnt5,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v5.Cnt5,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt5p, ";
-                    sqlH += "sum(isnull(v6.Cnt6,0))SumCnt6,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v6.Cnt6,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt6p, ";
-                    sqlH += "sum(isnull(v7.Cnt7,0))SumCnt7,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v7.Cnt7,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt7p, ";
-                    sqlH += "sum(isnull(v8.Cnt8,0))SumCnt8,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v8.Cnt8,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt8p ";
-                    sqlH += "from #v1 v1 ";
-                    sqlH += "left join #v2 v2 on v1.id=v2.id ";
-                    sqlH += "left join #v3 v3 on v1.id=v3.id ";
-                    sqlH += "left join #v4 v4 on v1.id=v4.id ";
-                    sqlH += "left join #v5 v5 on v1.id=v5.id ";
-                    sqlH += "left join #v6 v6 on v1.id=v6.id ";
-                    sqlH += "left join #v7 v7 on v1.id=v7.id ";
-                    sqlH += "left join #v8 v8 on v1.id=v8.id ";
-                    sqlH += "Where 1=1 ";
+                    sqlH = "select sum(isnull(s1.Qty1,0))SumQty1,sum(isnull(s1.Cash1,0))SumCash1, ";
+                    sqlH += "sum(isnull(s2.Qty2,0))SumQty2,sum(isnull(s2.Cash2,0))SumCash2, ";
+                    sqlH += "case when sum(isnull(s1.Cash1,0))=0 then format(0,'p') else format(cast(sum(isnull(s2.Cash2,0))-sum(isnull(s1.Cash1,0)) as Float)/cast(sum(isnull(s1.Cash1,0)) as Float),'p') end as SumPer ";
+                    sqlH += "from TypeDataWeb a (nolock) ";
+                    sqlH += "left join #s1 s1 on a.type_id=s1.id ";
+                    sqlH += "left join #s2 s2 on a.type_id=s2.id ";
+                    sqlH += "where a.CompanyCode='" + uu.CompanyId + "' and a.type_code='L' ";
                     DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
                     dtH.TableName = "dtH";
                     ds.Tables.Add(dtH);
