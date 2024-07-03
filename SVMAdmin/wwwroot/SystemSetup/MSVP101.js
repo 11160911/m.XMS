@@ -1462,7 +1462,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
     let btBgno_SendSet_click = function (bt) {
         //Timerset();
         var pData = {
-            Type_Code: "B",
+            Type_Code: "L",
             Type_ID: ""
         }
         PostToWebApi({ url: "api/SystemSetup/GetTypeDataWeb", data: pData, success: afterGetBgno });

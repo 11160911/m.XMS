@@ -949,7 +949,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 DyAlert("無符合資料!", function () {
                     $('#btLpQ_ShopNo').prop('disabled', false);
                 });
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             grdLookUp_ShopNo.BindData(dtE);
@@ -977,12 +977,12 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 var a = $(obchkedtd[i]).closest('tr');
                 var trNode = $(a).prop('Record');
                 chkShopNo += "'" + GetNodeValue(trNode, "ST_ID") + "',";  //已勾選的每一筆店倉
-                if (i <= 4) {
+                if (i <= 1) {
                     ShopNoName += GetNodeValue(trNode, "ST_SName") + "，";
                 }
             }
             chkShopNo = chkShopNo.substr(0, chkShopNo.length - 1)
-            if (chkedRow > 5) {
+            if (chkedRow > 2) {
                 $('#lblShopNoName').html(ShopNoName.substr(0, ShopNoName.length - 1) + '...')
             }
             else {
