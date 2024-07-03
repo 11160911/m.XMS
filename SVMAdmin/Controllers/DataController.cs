@@ -11387,7 +11387,7 @@ namespace SVMAdmin.Controllers
                     sql += sqlCon;
                     sql += "group by a.City; ";
                     //明細資料
-                    sqlD = "select v1.id,isnull(v1.Cnt1,0)Cnt1,isnull(v2.Cnt2,0)Cnt2, ";
+                    sqlD = "select case when v1.id='' then '無資料' else v1.id end as id,isnull(v1.Cnt1,0)Cnt1,isnull(v2.Cnt2,0)Cnt2, ";
                     sqlD += "case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v2.Cnt2,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt2p, ";
                     sqlD += "isnull(v3.Cnt3,0)Cnt3,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v3.Cnt3,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt3p, ";
                     sqlD += "isnull(v4.Cnt4,0)Cnt4,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v4.Cnt4,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt4p, ";

@@ -75,7 +75,7 @@
         grdEDMHistoryQuery = new DynGrid(
             {
                 table_lement: $('#tbEDMHistoryQuery')[0],
-                class_collection: ["tdCol8", "tdCol9", "tdCol10", "tdCol11", "tdCol12", "tdCol13", "tdCol14", "tdCol15"],
+                class_collection: ["tdCol8 text-center", "tdCol9 text-center", "tdCol10 text-center", "tdCol11 text-center", "tdCol12 text-center", "tdCol13 text-center", "tdCol14 text-center", "tdCol15 text-center"],
                 fields_info: [
                     { type: "Text", name: "VIP_ID2", style: "" },
                     { type: "Text", name: "VIP_Name" },

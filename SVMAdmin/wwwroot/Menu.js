@@ -460,6 +460,19 @@
                     PageMSSA103($(".workarea"));
                 }
             }
+            else if (pg == "MSSA108") {
+                if (window.PageMSSA108 == undefined) {
+                    $.getScript('SystemSetup/MSSA108.js',
+                        function () {
+                            PageMSSA108($(".workarea"));
+                        }
+                    );
+                }
+
+                else {
+                    PageMSSA108($(".workarea"));
+                }
+            }
             else if (pg == "SysChangePWD") {
                 $('#OLD_PWD').val("");
                 $('#NEW_PWD').val("");
