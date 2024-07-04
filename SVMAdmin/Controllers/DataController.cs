@@ -12160,6 +12160,29 @@ namespace SVMAdmin.Controllers
         }
         #endregion
 
+        [Route("SystemSetup/GetInitMSSA103")]
+        public ActionResult SystemSetup_GetInitMSSA103()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetInitMSSA103OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ProgramID = rq["ProgramID"];
+                string sql = "select ChineseName,convert(char,dateadd(DD,-1,convert(char,dateadd(YEAR,-1,getdate()),111)),111) as SysDate1,convert(char,dateadd(DD,-1,getdate()),111) as SysDate2,convert(char(10),getdate(),111) SysDate from ProgramIDWeb (nolock) where ProgramID='" + ProgramID.SqlQuote() + "'";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
         [Route("SystemSetup/MSSA103Query")]
         public ActionResult SystemSetup_MSSA103Query()
         {

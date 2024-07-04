@@ -792,14 +792,29 @@ Timerset(sessionStorage.getItem('isamcomp'));
     //清除
     let btClear_click = function (bt) {
         //Timerset();
-        $('#txtOpenDateS1').val('');
-        $('#txtOpenDateE1').val('');
-        $('#txtOpenDateS2').val('');
-        $('#txtOpenDateE2').val('');
-        $('#lblShopNoCnt').html('');
-        $('#lblShopNoName').html('');
-        chkShopNo = "";
-        $('#rdoS').prop('checked', 'true');
+        var pData = {
+            ProgramID: "MSSA103"
+        }
+        PostToWebApi({ url: "api/SystemSetup/GetInitMSSA103", data: pData, success: MSSA103Clear });
+    };
+
+    let MSSA103Clear = function (data) {
+        if (ReturnMsg(data, 0) != "GetInitMSSA103OK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtE = data.getElementsByTagName('dtE');
+            if (dtE.length > 0) {
+                $('#txtOpenDateS1').val(GetNodeValue(dtE[0], "SysDate1").toString().trim().replaceAll('/', '-'));
+                $('#txtOpenDateE1').val(GetNodeValue(dtE[0], "SysDate1").toString().trim().replaceAll('/', '-'));
+                $('#txtOpenDateS2').val(GetNodeValue(dtE[0], "SysDate2").toString().trim().replaceAll('/', '-'));
+                $('#txtOpenDateE2').val(GetNodeValue(dtE[0], "SysDate2").toString().trim().replaceAll('/', '-'));
+            }
+            $('#lblShopNoCnt').html('');
+            $('#lblShopNoName').html('');
+            chkShopNo = "";
+            $('#rdoS').prop('checked', 'true');
+        }
     };
 
     //查詢
@@ -1005,17 +1020,17 @@ Timerset(sessionStorage.getItem('isamcomp'));
     };
 //#region FormLoad
     let GetInitMSSA103 = function (data) {
-        if (ReturnMsg(data, 0) != "GetInitmsDMOK") {
+        if (ReturnMsg(data, 0) != "GetInitMSSA103OK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
             if (dtE.length > 0) {
                 $('#lblProgramName').html(GetNodeValue(dtE[0], "ChineseName"));
-                $('#txtOpenDateS1').val(GetNodeValue(dtE[0], "SysDate").toString().replaceAll('/', '-'));
-                $('#txtOpenDateE1').val(GetNodeValue(dtE[0], "SysDate").toString().replaceAll('/', '-'));
-                $('#txtOpenDateS2').val(GetNodeValue(dtE[0], "SysDate").toString().replaceAll('/', '-'));
-                $('#txtOpenDateE2').val(GetNodeValue(dtE[0], "SysDate").toString().replaceAll('/', '-'));
+                $('#txtOpenDateS1').val(GetNodeValue(dtE[0], "SysDate1").toString().trim().replaceAll('/', '-'));
+                $('#txtOpenDateE1').val(GetNodeValue(dtE[0], "SysDate1").toString().trim().replaceAll('/', '-'));
+                $('#txtOpenDateS2').val(GetNodeValue(dtE[0], "SysDate2").toString().trim().replaceAll('/', '-'));
+                $('#txtOpenDateE2').val(GetNodeValue(dtE[0], "SysDate2").toString().trim().replaceAll('/', '-'));
             }
             AssignVar();
 
@@ -1034,7 +1049,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
         var pData = {
             ProgramID: "MSSA103"
         }
-        PostToWebApi({ url: "api/SystemSetup/GetInitmsDM", data: pData, success: GetInitMSSA103 });
+        PostToWebApi({ url: "api/SystemSetup/GetInitMSSA103", data: pData, success: GetInitMSSA103 });
     };
 //#endregion
     
