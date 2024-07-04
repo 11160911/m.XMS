@@ -1,85 +1,39 @@
-﻿var PageMSSD106 = function (ParentNode) {
+﻿var PageMSSA103 = function (ParentNode) {
 
     let grdM;
-    let grdMW;
-    let grdLookUp_VIPFaceID;
-    let grdLookUp_City;
+    let grdLookUp_ShopNo;
 
     let EditMode = "";
     let DelPLU = "";
     let DelPLUQty;
     let ModPLU = "";
     let ModPLUQty;
-    let chkVIPFaceID = "";
-    let chkCity = "";
+    let chkShopNo = "";
 
     let AssignVar = function () {
 
         grdM = new DynGrid(
             {
                 table_lement: $('#tbQuery')[0],
-                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 text-center", "tdCol5 label-align", "tdCol6 text-center", "tdCol7 label-align", "tdCol8 text-center", "tdCol9 label-align", "tdCol10 text-center", "tdCol11 label-align", "tdCol12 text-center", "tdCol13 label-align", "tdCol14 text-center", "tdCol15 label-align", "tdCol16 text-center", "tdCol17 label-align", "tdCol18 text-center", "tdCol19 label-align", "tdCol20 text-center"],
+                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 text-center"],
                 fields_info: [
                     { type: "Text", name: "ID", style: "" },
-                    { type: "TextAmt", name: "Cnt1"},
-                    { type: "TextAmt", name: "Cnt2" },
-                    { type: "TextAmt", name: "Cnt2p" },
-                    { type: "TextAmt", name: "Cnt3" },
-                    { type: "TextAmt", name: "Cnt3p" },
-                    { type: "TextAmt", name: "Cnt4" },
-                    { type: "TextAmt", name: "Cnt4p" },
-                    { type: "TextAmt", name: "Cnt5" },
-                    { type: "TextAmt", name: "Cnt5p" },
-                    { type: "TextAmt", name: "Cnt6" },
-                    { type: "TextAmt", name: "Cnt6p" },
-                    { type: "TextAmt", name: "Cnt7" },
-                    { type: "TextAmt", name: "Cnt7p" },
-                    { type: "TextAmt", name: "Cnt8" },
-                    { type: "TextAmt", name: "Cnt8p" },
-                    { type: "TextAmt", name: "Cnt9" },
-                    { type: "TextAmt", name: "Cnt9p" },
-                    { type: "TextAmt", name: "Cnt10" },
-                    { type: "TextAmt", name: "Cnt10p" }
+                    { type: "TextAmt", name: "Qty1"},
+                    { type: "TextAmt", name: "Cash1" },
+                    { type: "TextAmt", name: "Qty2" },
+                    { type: "TextAmt", name: "Cash2" },
+                    { type: "TextAmt", name: "Per" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
-                sortable: "N"
+                sortable: "Y"
             }
         );
 
-        grdMW = new DynGrid(
+        grdLookUp_ShopNo = new DynGrid(
             {
-                table_lement: $('#tbQueryMW')[0],
-                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 text-center", "tdCol5 label-align", "tdCol6 text-center", "tdCol7 label-align", "tdCol8 text-center", "tdCol9 label-align", "tdCol10 text-center", "tdCol11 label-align", "tdCol12 text-center", "tdCol13 label-align", "tdCol14 text-center", "tdCol15 label-align", "tdCol16 text-center"],
-                fields_info: [
-                    { type: "Text", name: "ID", style: "" },
-                    { type: "TextAmt", name: "Cnt1" },
-                    { type: "TextAmt", name: "Cnt2" },
-                    { type: "TextAmt", name: "Cnt2p" },
-                    { type: "TextAmt", name: "Cnt3" },
-                    { type: "TextAmt", name: "Cnt3p" },
-                    { type: "TextAmt", name: "Cnt4" },
-                    { type: "TextAmt", name: "Cnt4p" },
-                    { type: "TextAmt", name: "Cnt5" },
-                    { type: "TextAmt", name: "Cnt5p" },
-                    { type: "TextAmt", name: "Cnt6" },
-                    { type: "TextAmt", name: "Cnt6p" },
-                    { type: "TextAmt", name: "Cnt7" },
-                    { type: "TextAmt", name: "Cnt7p" },
-                    { type: "TextAmt", name: "Cnt8" },
-                    { type: "TextAmt", name: "Cnt8p" }
-                ],
-                //rows_per_page: 10,
-                method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton,
-                sortable: "N"
-            }
-        );
-
-        grdLookUp_VIPFaceID = new DynGrid(
-            {
-                table_lement: $('#tbLookup_VIPFaceID')[0],
+                table_lement: $('#tbLookup_ShopNo')[0],
                 class_collection: ["tdCol1 text-center", "tdCol2", "tdCol3"],
                 fields_info: [
                     { type: "checkbox", name: "chkset", style: "width:16px;height:16px" },
@@ -88,25 +42,23 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton,
                 sortable: "N"
             }
         );
 
-        grdLookUp_City = new DynGrid(
-            {
-                table_lement: $('#tbLookup_City')[0],
-                class_collection: ["tdCol1 text-center", "tdCol2"],
-                fields_info: [
-                    { type: "checkbox", name: "chkset", style: "width:16px;height:16px" },
-                    { type: "Text", name: "City", style: "" }
-                ],
-                //rows_per_page: 10,
-                method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton,
-                sortable: "N"
-            }
-        );
+        //grdLookUp_City = new DynGrid(
+        //    {
+        //        table_lement: $('#tbLookup_City')[0],
+        //        class_collection: ["tdCol1 text-center", "tdCol2"],
+        //        fields_info: [
+        //            { type: "checkbox", name: "chkset", style: "width:16px;height:16px" },
+        //            { type: "Text", name: "City", style: "" }
+        //        ],
+        //        //rows_per_page: 10,
+        //        method_clickrow: click_PLU,
+        //        sortable: "N"
+        //    }
+        //);
 
         return;
     };
@@ -840,452 +792,255 @@ Timerset(sessionStorage.getItem('isamcomp'));
     //清除
     let btClear_click = function (bt) {
         //Timerset();
-        $('#rdoDateAll').prop('checked', 'true');
-        $('#rdoShop').prop('checked', 'true');
-        $('#lblVIPFaceIDCnt').html('');
-        $('#lblVIPFaceIDName').html('');
-        chkVIPFaceID = "";
-        $('#lblCityCnt').html('');
-        $('#lblCityName').html('');
-        chkCity = "";
+        $('#txtOpenDateS1').val('');
+        $('#txtOpenDateE1').val('');
+        $('#txtOpenDateS2').val('');
+        $('#txtOpenDateE2').val('');
+        $('#lblShopNoCnt').html('');
+        $('#lblShopNoName').html('');
+        chkShopNo = "";
+        $('#rdoS').prop('checked', 'true');
     };
 
     //查詢
     let btQuery_click = function (bt) {
         //Timerset();
         $('#btQuery').prop('disabled', true)
-     
-        if ($('#rdoDateAll').prop('checked') == false && $('#rdoDate2M').prop('checked') == false && $('#rdoDate3M').prop('checked') == false && $('#rdoDate6M').prop('checked') == false && $('#rdoDate1Y').prop('checked') == false) {
-            DyAlert("入會期間請至少選擇一項!", function () { $('#btQuery').prop('disabled', false); })
+
+        //期間1
+        if ($('#txtOpenDateS1').val() == "" || $('#txtOpenDateE1').val() == "") {
+            DyAlert("期間1兩欄皆需輸入!", function () { $('#btQuery').prop('disabled', false); })
+            return;
+        }
+        else {
+            if ($('#txtOpenDateS1').val() > $('#txtOpenDateE1').val()) {
+                DyAlert("期間1開始日不可大於結束日!", function () { $('#btQuery').prop('disabled', false); })
+                return;
+            }
+        }
+
+        //期間2
+        if ($('#txtOpenDateS2').val() == "" || $('#txtOpenDateE2').val() == "") {
+            DyAlert("期間2兩欄皆需輸入!", function () { $('#btQuery').prop('disabled', false); })
             return
         }
-        if ($('#rdoShop').prop('checked') == false && $('#rdoCity').prop('checked') == false && $('#rdoMW').prop('checked') == false) {
-            DyAlert("統計條件請至少選擇一項!", function () { $('#btQuery').prop('disabled', false); })
-            return
+        else {
+            if ($('#txtOpenDateS2').val() > $('#txtOpenDateE2').val()) {
+                DyAlert("期間2開始日不可大於結束日!", function () { $('#btQuery').prop('disabled', false); })
+                return;
+            }
         }
         ShowLoading();
 
-        var VIPDate = ""
-        if ($('#rdoDateAll').prop('checked') == true) {
-            VIPDate = ""
-        }
-        else if ($('#rdoDate2M').prop('checked') == true) {
-            VIPDate = "2M"
-        }
-        else if ($('#rdoDate3M').prop('checked') == true) {
-            VIPDate = "3M"
-        }
-        else if ($('#rdoDate6M').prop('checked') == true) {
-            VIPDate = "6M"
-        }
-        else if ($('#rdoDate1Y').prop('checked') == true) {
-            VIPDate = "1Y"
-        }
-
         var Flag = ""
-        if ($('#rdoShop').prop('checked') == true) {
+        //店櫃
+        if ($('#rdoS').prop('checked') == true) {
             Flag = "S";
-            $('#tbQuery').show();
-            $('#tbQueryMW').hide();
         }
-        else if ($('#rdoCity').prop('checked') == true) {
-            Flag = "C";
-            $('#tbQuery').show();
-            $('#tbQueryMW').hide();
+        //部門
+        else if ($('#rdoD').prop('checked') == true) {
+            Flag = "D";
         }
-        else if ($('#rdoMW').prop('checked') == true) {
-            Flag = "M";
-            $('#tbQuery').hide();
-            if ($('#tbQueryMW').attr('hidden') == undefined) {
-                $('#tbQueryMW').show();
-            }
-            else {
-                $('#tbQueryMW').removeAttr('hidden');
-                $('#tbQueryMW').show();
-            }
+        //大類
+        else if ($('#rdoB').prop('checked') == true) {
+            Flag = "B";
         }
 
         setTimeout(function () {
             var pData = {
-                VIPFaceID: chkVIPFaceID,
-                City: chkCity,
-                VIPDate: VIPDate,
+                OpenDateS1: $('#txtOpenDateS1').val().toString().replaceAll('-', '/'),
+                OpenDateE1: $('#txtOpenDateE1').val().toString().replaceAll('-', '/'),
+                OpenDateS2: $('#txtOpenDateS2').val().toString().replaceAll('-', '/'),
+                OpenDateE2: $('#txtOpenDateE2').val().toString().replaceAll('-', '/'),
+                ShopNo: chkShopNo,
                 Flag: Flag
             }
-            PostToWebApi({ url: "api/SystemSetup/MSSD106Query", data: pData, success: afterMSSD106Query });
+            PostToWebApi({ url: "api/SystemSetup/MSSA103Query", data: pData, success: afterMSSA103Query });
         }, 1000);
     };
 
-    let afterMSSD106Query = function (data) {
+    let afterMSSA103Query = function (data) {
         CloseLoading();
-        if (ReturnMsg(data, 0) != "MSSD106QueryOK") {
+        if (ReturnMsg(data, 0) != "MSSA103QueryOK") {
             DyAlert(ReturnMsg(data, 1), function () { $('#btQuery').prop('disabled', false); });
         }
         else {
             $('#btQuery').prop('disabled', false);
             var dtE = data.getElementsByTagName('dtE');
-            $('#lblBirNo').show();
-            if ($('#rdoShop').prop('checked') || $('#rdoCity').prop('checked')) {
-                grdM.BindData(dtE);
-                var heads = $('#tbQuery thead tr th#thtype');
-                if ($('#rdoShop').prop('checked')) {
-                    $(heads).html('店別');
-                }
-                else if ($('#rdoCity').prop('checked')) {
-                    $(heads).html('縣市');
-                }
-                if (dtE.length == 0) {
-                    DyAlert("無符合資料!");
-                    $('#lblEnd').html('');
-                    $('#lblVIPQty').html('');
-                    $(".modal-backdrop").remove();
-                    $('#tbQuery thead td#td1').html('');
-                    $('#tbQuery thead td#td2').html('');
-                    $('#tbQuery thead td#td2p').html('');
-                    $('#tbQuery thead td#td3').html('');
-                    $('#tbQuery thead td#td3p').html('');
-                    $('#tbQuery thead td#td4').html('');
-                    $('#tbQuery thead td#td4p').html('');
-                    $('#tbQuery thead td#td5').html('');
-                    $('#tbQuery thead td#td5p').html('');
-                    $('#tbQuery thead td#td6').html('');
-                    $('#tbQuery thead td#td6p').html('');
-                    $('#tbQuery thead td#td7').html('');
-                    $('#tbQuery thead td#td7p').html('');
-                    $('#tbQuery thead td#td8').html('');
-                    $('#tbQuery thead td#td8p').html('');
-                    $('#tbQuery thead td#td9').html('');
-                    $('#tbQuery thead td#td9p').html('');
-                    $('#tbQuery thead td#td10').html('');
-                    $('#tbQuery thead td#td10p').html('');
-                    return;
-                }
+            grdM.BindData(dtE);
+            var heads = $('#tbQuery thead tr th#thead1');
+            if ($('#rdoS').prop('checked')) {
+                $(heads).html('店櫃');
+            }
+            else if ($('#rdoD').prop('checked')) {
+                $(heads).html('部門');
+            }
+            else if ($('#rdoB').prop('checked')) {
+                $(heads).html('大類');
+            }
 
-                var dtH = data.getElementsByTagName('dtH');
-                $('#lblEnd').html('截止至' + GetNodeValue(dtH[0], "SysDate") + '止');
-                $('#lblVIPQty').html('會員總數 : ' + parseInt(GetNodeValue(dtH[0], "SumCnt1")).toLocaleString('en-US'));
-                $('#tbQuery thead td#td1').html(parseInt(GetNodeValue(dtH[0], "SumCnt1")).toLocaleString('en-US'));
-                $('#tbQuery thead td#td2').html(parseInt(GetNodeValue(dtH[0], "SumCnt2")).toLocaleString('en-US'));
-                $('#tbQuery thead td#td2p').html(GetNodeValue(dtH[0], "SumCnt2p"));
-                $('#tbQuery thead td#td3').html(parseInt(GetNodeValue(dtH[0], "SumCnt3")).toLocaleString('en-US'));
-                $('#tbQuery thead td#td3p').html(GetNodeValue(dtH[0], "SumCnt3p"));
-                $('#tbQuery thead td#td4').html(parseInt(GetNodeValue(dtH[0], "SumCnt4")).toLocaleString('en-US'));
-                $('#tbQuery thead td#td4p').html(GetNodeValue(dtH[0], "SumCnt4p"));
-                $('#tbQuery thead td#td5').html(parseInt(GetNodeValue(dtH[0], "SumCnt5")).toLocaleString('en-US'));
-                $('#tbQuery thead td#td5p').html(GetNodeValue(dtH[0], "SumCnt5p"));
-                $('#tbQuery thead td#td6').html(parseInt(GetNodeValue(dtH[0], "SumCnt6")).toLocaleString('en-US'));
-                $('#tbQuery thead td#td6p').html(GetNodeValue(dtH[0], "SumCnt6p"));
-                $('#tbQuery thead td#td7').html(parseInt(GetNodeValue(dtH[0], "SumCnt7")).toLocaleString('en-US'));
-                $('#tbQuery thead td#td7p').html(GetNodeValue(dtH[0], "SumCnt7p"));
-                $('#tbQuery thead td#td8').html(parseInt(GetNodeValue(dtH[0], "SumCnt8")).toLocaleString('en-US'));
-                $('#tbQuery thead td#td8p').html(GetNodeValue(dtH[0], "SumCnt8p"));
-                $('#tbQuery thead td#td9').html(parseInt(GetNodeValue(dtH[0], "SumCnt9")).toLocaleString('en-US'));
-                $('#tbQuery thead td#td9p').html(GetNodeValue(dtH[0], "SumCnt9p"));
-                $('#tbQuery thead td#td10').html(parseInt(GetNodeValue(dtH[0], "SumCnt10")).toLocaleString('en-US'));
-                $('#tbQuery thead td#td10p').html(GetNodeValue(dtH[0], "SumCnt10p"));
+            if (dtE.length == 0) {
+                DyAlert("無符合資料!");
+                $(".modal-backdrop").remove();
+                $('#tbQuery thead td#td1').html('');
+                $('#tbQuery thead td#td2').html('');
+                $('#tbQuery thead td#td3').html('');
+                $('#tbQuery thead td#td4').html('');
+                $('#tbQuery thead td#td5').html('');
+                return;
             }
-            else if ($('#rdoMW').prop('checked')) {
-                grdMW.BindData(dtE);
-                if (dtE.length == 0) {
-                    DyAlert("無符合資料!");
-                    $('#lblEnd').html('');
-                    $('#lblVIPQty').html('');
-                    $(".modal-backdrop").remove();
-                    $('#tbQueryMW thead td#td1_MW').html('');
-                    $('#tbQueryMW thead td#td2_MW').html('');
-                    $('#tbQueryMW thead td#td2p_MW').html('');
-                    $('#tbQueryMW thead td#td3_MW').html('');
-                    $('#tbQueryMW thead td#td3p_MW').html('');
-                    $('#tbQueryMW thead td#td4_MW').html('');
-                    $('#tbQueryMW thead td#td4p_MW').html('');
-                    $('#tbQueryMW thead td#td5_MW').html('');
-                    $('#tbQueryMW thead td#td5p_MW').html('');
-                    $('#tbQueryMW thead td#td6_MW').html('');
-                    $('#tbQueryMW thead td#td6p_MW').html('');
-                    $('#tbQueryMW thead td#td7_MW').html('');
-                    $('#tbQueryMW thead td#td7p_MW').html('');
-                    $('#tbQueryMW thead td#td8_MW').html('');
-                    $('#tbQueryMW thead td#td8p_MW').html('');
-                    return;
-                }
-                var dtH = data.getElementsByTagName('dtH');
-                $('#lblEnd').html('截止至' + GetNodeValue(dtH[0], "SysDate") + '止');
-                $('#lblVIPQty').html('會員總數 : ' + parseInt(GetNodeValue(dtH[0], "SumCnt1")).toLocaleString('en-US'));
-                $('#tbQueryMW thead td#td1_MW').html(parseInt(GetNodeValue(dtH[0], "SumCnt1")).toLocaleString('en-US'));
-                $('#tbQueryMW thead td#td2_MW').html(parseInt(GetNodeValue(dtH[0], "SumCnt2")).toLocaleString('en-US'));
-                $('#tbQueryMW thead td#td2p_MW').html(GetNodeValue(dtH[0], "SumCnt2p"));
-                $('#tbQueryMW thead td#td3_MW').html(parseInt(GetNodeValue(dtH[0], "SumCnt3")).toLocaleString('en-US'));
-                $('#tbQueryMW thead td#td3p_MW').html(GetNodeValue(dtH[0], "SumCnt3p"));
-                $('#tbQueryMW thead td#td4_MW').html(parseInt(GetNodeValue(dtH[0], "SumCnt4")).toLocaleString('en-US'));
-                $('#tbQueryMW thead td#td4p_MW').html(GetNodeValue(dtH[0], "SumCnt4p"));
-                $('#tbQueryMW thead td#td5_MW').html(parseInt(GetNodeValue(dtH[0], "SumCnt5")).toLocaleString('en-US'));
-                $('#tbQueryMW thead td#td5p_MW').html(GetNodeValue(dtH[0], "SumCnt5p"));
-                $('#tbQueryMW thead td#td6_MW').html(parseInt(GetNodeValue(dtH[0], "SumCnt6")).toLocaleString('en-US'));
-                $('#tbQueryMW thead td#td6p_MW').html(GetNodeValue(dtH[0], "SumCnt6p"));
-                $('#tbQueryMW thead td#td7_MW').html(parseInt(GetNodeValue(dtH[0], "SumCnt7")).toLocaleString('en-US'));
-                $('#tbQueryMW thead td#td7p_MW').html(GetNodeValue(dtH[0], "SumCnt7p"));
-                $('#tbQueryMW thead td#td8_MW').html(parseInt(GetNodeValue(dtH[0], "SumCnt8")).toLocaleString('en-US'));
-                $('#tbQueryMW thead td#td8p_MW').html(GetNodeValue(dtH[0], "SumCnt8p"));
-            }
+
+            var dtH = data.getElementsByTagName('dtH');
+            $('#tbQuery thead td#td1').html(parseInt(GetNodeValue(dtH[0], "SumQty1")).toLocaleString('en-US'));
+            $('#tbQuery thead td#td2').html(parseInt(GetNodeValue(dtH[0], "SumCash1")).toLocaleString('en-US'));
+            $('#tbQuery thead td#td3').html(parseInt(GetNodeValue(dtH[0], "SumQty2")).toLocaleString('en-US'));
+            $('#tbQuery thead td#td4').html(parseInt(GetNodeValue(dtH[0], "SumCash2")).toLocaleString('en-US'));
+            $('#tbQuery thead td#td5').html(GetNodeValue(dtH[0], "SumPer"));
         }
     };
 
-    //會籍店櫃多選
-    let btVIPFaceID_click = function (bt) {
+    //店櫃多選
+    let btShopNo_click = function (bt) {
         //Timerset();
         var pData = {
             ST_ID: ""
         }
-        PostToWebApi({ url: "api/SystemSetup/MSVP102_GetVIPFaceID", data: pData, success: afterMSSD106_GetVIPFaceID });
+        PostToWebApi({ url: "api/SystemSetup/MSVP102_GetVIPFaceID", data: pData, success: afterMSSA103_GetShopNo });
     };
 
-    let afterMSSD106_GetVIPFaceID = function (data) {
+    let afterMSSA103_GetShopNo = function (data) {
         if (ReturnMsg(data, 0) != "MSVP102_GetVIPFaceIDOK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
-            $('#txtLpQ_VIPFaceID').val('');
-            $('#modal_Lookup_VIPFaceID').modal('show');
+            $('#txtLpQ_ShopNo').val('');
+            $('#modalLookup_ShopNo').modal('show');
             setTimeout(function () {
-                grdLookUp_VIPFaceID.BindData(dtE);
-                if (chkVIPFaceID != "") {
-                    var VIPFaceID = chkVIPFaceID.split(',');
-                    for (var i = 0; i < VIPFaceID.length; i++) {
-                        $('#tbLookup_VIPFaceID tbody tr .tdCol2').filter(function () { return $(this).text() == VIPFaceID[i].replaceAll("'", ""); }).closest('tr').find('.tdCol1 input:checkbox').prop('checked', true);
+                grdLookUp_ShopNo.BindData(dtE);
+                if (chkShopNo != "") {
+                    var ShopNo = chkShopNo.split(',');
+                    for (var i = 0; i < ShopNo.length; i++) {
+                        $('#tbLookup_ShopNo tbody tr .tdCol2').filter(function () { return $(this).text() == ShopNo[i].replaceAll("'", ""); }).closest('tr').find('.tdCol1 input:checkbox').prop('checked', true);
                     }
                 }
             }, 500);
         }
     };
 
-    let btLpQ_VIPFaceID_click = function (bt) {
+    let btLpQ_ShopNo_click = function (bt) {
         //Timerset();
-        $('#btLpQ_VIPFaceID').prop('disabled', true);
+        $('#btLpQ_ShopNo').prop('disabled', true);
         var pData = {
-            ST_ID: $('#txtLpQ_VIPFaceID').val()
+            ST_ID: $('#txtLpQ_ShopNo').val()
         }
-        PostToWebApi({ url: "api/SystemSetup/MSVP102_GetVIPFaceID", data: pData, success: afterLpQ_VIPFaceID });
+        PostToWebApi({ url: "api/SystemSetup/MSVP102_GetVIPFaceID", data: pData, success: afterLpQ_ShopNo });
     };
 
-    let afterLpQ_VIPFaceID = function (data) {
+    let afterLpQ_ShopNo = function (data) {
         if (ReturnMsg(data, 0) != "MSVP102_GetVIPFaceIDOK") {
             DyAlert(ReturnMsg(data, 1), function () {
-                $('#btLpQ_VIPFaceID').prop('disabled', false);
+                $('#btLpQ_ShopNo').prop('disabled', false);
             });
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
             if (dtE.length == 0) {
                 DyAlert("無符合資料!", function () {
-                    $('#btLpQ_VIPFaceID').prop('disabled', false);
+                    $('#btLpQ_ShopNo').prop('disabled', false);
                 });
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
-            grdLookUp_VIPFaceID.BindData(dtE);
-            $('#btLpQ_VIPFaceID').prop('disabled', false);
+            grdLookUp_ShopNo.BindData(dtE);
+            $('#btLpQ_ShopNo').prop('disabled', false);
         }
     };
 
-    let btLpOK_VIPFaceID_click = function (bt) {
+    let btLpOK_ShopNo_click = function (bt) {
         //Timerset();
-        $('#btLpOK_VIPFaceID').prop('disabled', true);
-        var obchkedtd = $('#tbLookup_VIPFaceID .checkbox:checked');
+        $('#btLpOK_ShopNo').prop('disabled', true);
+        var obchkedtd = $('#tbLookup_ShopNo .checkbox:checked');
         chkedRow = obchkedtd.length.toString();   //本次已勾選的總筆數
         if (chkedRow == 0) {
-            $('#lblVIPFaceIDCnt').html('');
-            $('#lblVIPFaceIDName').html('');
-            chkVIPFaceID = "";
-            $('#btLpOK_VIPFaceID').prop('disabled', false);
-            $('#modal_Lookup_VIPFaceID').modal('hide');
+            $('#lblShopNoCnt').html('');
+            $('#lblShopNoName').html('');
+            chkShopNo = "";
+            $('#btLpOK_ShopNo').prop('disabled', false);
+            $('#modalLookup_ShopNo').modal('hide');
             return
         } else {
-            $('#lblVIPFaceIDCnt').html(chkedRow)
-            chkVIPFaceID = "";
-            var VIPFaceIDName = "";
+            $('#lblShopNoCnt').html(chkedRow)
+            chkShopNo = "";
+            var ShopNoName = "";
             for (var i = 0; i < obchkedtd.length; i++) {
                 var a = $(obchkedtd[i]).closest('tr');
                 var trNode = $(a).prop('Record');
-                chkVIPFaceID += "'" + GetNodeValue(trNode, "ST_ID") + "',";  //已勾選的每一筆店倉
-                if (i <= 9) {
-                    VIPFaceIDName += GetNodeValue(trNode, "ST_SName") + "，";
-                }
-            }
-            chkVIPFaceID = chkVIPFaceID.substr(0, chkVIPFaceID.length - 1)
-            if (chkedRow > 10) {
-                $('#lblVIPFaceIDName').html(VIPFaceIDName.substr(0, VIPFaceIDName.length - 1) + '...')
-            }
-            else {
-                $('#lblVIPFaceIDName').html(VIPFaceIDName.substr(0, VIPFaceIDName.length - 1))
-            }
-            $('#btLpOK_VIPFaceID').prop('disabled', false);
-            $('#modal_Lookup_VIPFaceID').modal('hide');
-        }
-    };
-
-    let btLpExit_VIPFaceID_click = function (bt) {
-        //Timerset();
-        $('#modal_Lookup_VIPFaceID').modal('hide');
-    };
-
-    let btLpClear_VIPFaceID_click = function (bt) {
-        //Timerset();
-        $("#txtLpQ_VIPFaceID").val('');
-        $("#tbLookup_VIPFaceID .checkbox").prop('checked', false);
-    };
-    //縣市多選
-    let btCity_click = function (bt) {
-        //Timerset();
-        var pData = {
-            City: ""
-        }
-        PostToWebApi({ url: "api/SystemSetup/GetCity", data: pData, success: afterGetCity });
-    };
-
-    let afterGetCity = function (data) {
-        if (ReturnMsg(data, 0) != "GetCityOK") {
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
-            var dtE = data.getElementsByTagName('dtE');
-            $('#txtLpQ_City').val('')
-            $('#modal_Lookup_City').modal('show');
-            setTimeout(function () {
-                grdLookUp_City.BindData(dtE);
-                if (chkCity != "") {
-                    var City = chkCity.split(',');
-                    for (var i = 0; i < City.length; i++) {
-                        $('#tbLookup_City tbody tr .tdCol2').filter(function () { return $(this).text() == City[i].replaceAll("'", ""); }).closest('tr').find('.tdCol1 input:checkbox').prop('checked', true);
-                    }
-                }
-            }, 500);
-        }
-    };
-
-    let btLpQ_City_click = function (bt) {
-        //Timerset();
-        $('#btLpQ_City').prop('disabled', true);
-        var pData = {
-            City: $('#txtLpQ_City').val()
-        }
-        PostToWebApi({ url: "api/SystemSetup/GetCity", data: pData, success: afterLpQ_City });
-    };
-
-    let afterLpQ_City = function (data) {
-        if (ReturnMsg(data, 0) != "GetCityOK") {
-            DyAlert(ReturnMsg(data, 1), function () {
-                $('#btLpQ_City').prop('disabled', false);
-            });
-        }
-        else {
-            var dtE = data.getElementsByTagName('dtE');
-            if (dtE.length == 0) {
-                DyAlert("無符合資料!", function () {
-                    $('#btLpQ_City').prop('disabled', false);
-                });
-                $(".modal-backdrop").remove();
-                return;
-            }
-            grdLookUp_City.BindData(dtE);
-            $('#btLpQ_City').prop('disabled', false);
-        }
-    };
-
-    let btLpOK_City_click = function (bt) {
-        //Timerset();
-        $('#btLpOK_City').prop('disabled', true);
-        var obchkedtd = $('#tbLookup_City .checkbox:checked');
-        chkedRow = obchkedtd.length.toString();   //本次已勾選的總筆數
-        if (chkedRow == 0) {
-            $('#lblCityCnt').html('');
-            $('#lblCityName').html('');
-            chkCity = "";
-            $('#btLpOK_City').prop('disabled', false);
-            $('#modal_Lookup_City').modal('hide');
-            return
-        } else {
-            $('#lblCityCnt').html(chkedRow)
-            chkCity = "";
-            var CityName = "";
-            for (var i = 0; i < obchkedtd.length; i++) {
-                var a = $(obchkedtd[i]).closest('tr');
-                var trNode = $(a).prop('Record');
-                chkCity += "'" + GetNodeValue(trNode, "City") + "',";  //已勾選的每一筆店倉
+                chkShopNo += "'" + GetNodeValue(trNode, "ST_ID") + "',";  //已勾選的每一筆店倉
                 if (i <= 1) {
-                    CityName += GetNodeValue(trNode, "City") + "，";
+                    ShopNoName += GetNodeValue(trNode, "ST_SName") + "，";
                 }
             }
-            chkCity = chkCity.substr(0, chkCity.length - 1)
+            chkShopNo = chkShopNo.substr(0, chkShopNo.length - 1)
             if (chkedRow > 2) {
-                $('#lblCityName').html(CityName.substr(0, CityName.length - 1) + '...')
+                $('#lblShopNoName').html(ShopNoName.substr(0, ShopNoName.length - 1) + '...')
             }
             else {
-                $('#lblCityName').html(CityName.substr(0, CityName.length - 1))
+                $('#lblShopNoName').html(ShopNoName.substr(0, ShopNoName.length - 1))
             }
-            $('#btLpOK_City').prop('disabled', false);
-            $('#modal_Lookup_City').modal('hide');
+            $('#btLpOK_ShopNo').prop('disabled', false);
+            $('#modalLookup_ShopNo').modal('hide');
         }
     };
 
-    let btLpExit_City_click = function (bt) {
+    let btLpExit_ShopNo_click = function (bt) {
         //Timerset();
-        $('#modal_Lookup_City').modal('hide');
+        $('#modalLookup_ShopNo').modal('hide');
     };
 
-    let btLpClear_City_click = function (bt) {
+    let btLpClear_ShopNo_click = function (bt) {
         //Timerset();
-        $("#txtLpQ_City").val('');
-        $("#tbLookup_City .checkbox").prop('checked', false);
+        $("#txtLpQ_ShopNo").val('');
+        $("#tbLookup_ShopNo .checkbox").prop('checked', false);
     };
 //#region FormLoad
-    let GetInitMSSD106 = function (data) {
-        if (ReturnMsg(data, 0) != "GetInitMSSD106OK") {
+    let GetInitMSSA103 = function (data) {
+        if (ReturnMsg(data, 0) != "GetInitmsDMOK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
-            var dtV = data.getElementsByTagName('dtV');
-            $('#lblBirNo').hide();
             if (dtE.length > 0) {
                 $('#lblProgramName').html(GetNodeValue(dtE[0], "ChineseName"));
-            }
-            if (dtV.length > 0) {
-                $('#lblEnd').html('截止至' + GetNodeValue(dtV[0], "SysDate") + '止');
-                $('#lblVIPQty').html('會員總數 : ' + parseInt(GetNodeValue(dtV[0], "VIPCntAll")).toLocaleString('en-US'));
-            }
-            else {
-                $('#lblEnd').html('')
-                $('#lblVIPQty').html('');
+                $('#txtOpenDateS1').val(GetNodeValue(dtE[0], "SysDate").toString().replaceAll('/', '-'));
+                $('#txtOpenDateE1').val(GetNodeValue(dtE[0], "SysDate").toString().replaceAll('/', '-'));
+                $('#txtOpenDateS2').val(GetNodeValue(dtE[0], "SysDate").toString().replaceAll('/', '-'));
+                $('#txtOpenDateE2').val(GetNodeValue(dtE[0], "SysDate").toString().replaceAll('/', '-'));
             }
             AssignVar();
+
             $('#btQuery').click(function () { btQuery_click(this) });
             $('#btClear').click(function () { btClear_click(this) });
-            $('#btVIPFaceID').click(function () { btVIPFaceID_click(this) });
-            $('#btLpQ_VIPFaceID').click(function () { btLpQ_VIPFaceID_click(this) });
-            $('#btLpOK_VIPFaceID').click(function () { btLpOK_VIPFaceID_click(this) });
-            $('#btLpExit_VIPFaceID').click(function () { btLpExit_VIPFaceID_click(this) });
-            $('#btLpClear_VIPFaceID').click(function () { btLpClear_VIPFaceID_click(this) });
-            $('#btCity').click(function () { btCity_click(this) });
-            $('#btLpQ_City').click(function () { btLpQ_City_click(this) });
-            $('#btLpOK_City').click(function () { btLpOK_City_click(this) });
-            $('#btLpExit_City').click(function () { btLpExit_City_click(this) });
-            $('#btLpClear_City').click(function () { btLpClear_City_click(this) });
 
+            $('#btShopNo').click(function () { btShopNo_click(this) });
+            $('#btLpQ_ShopNo').click(function () { btLpQ_ShopNo_click(this) });
+            $('#btLpOK_ShopNo').click(function () { btLpOK_ShopNo_click(this) });
+            $('#btLpExit_ShopNo').click(function () { btLpExit_ShopNo_click(this) });
+            $('#btLpClear_ShopNo').click(function () { btLpClear_ShopNo_click(this) });
         }
     };
     
     let afterLoadPage = function () {
         var pData = {
-            ProgramID: "MSSD106"
+            ProgramID: "MSSA103"
         }
-        PostToWebApi({ url: "api/SystemSetup/GetInitMSSD106", data: pData, success: GetInitMSSD106 });
+        PostToWebApi({ url: "api/SystemSetup/GetInitmsDM", data: pData, success: GetInitMSSA103 });
     };
 //#endregion
     
 
-    if ($('#pgMSSD106').length == 0) {  
-        AllPages = new LoadAllPages(ParentNode, "SystemSetup/MSSD106", ["MSSD106btns", "pgMSSD106Init", "pgMSSD106Add", "pgMSSD106Mod"], afterLoadPage);
+    if ($('#pgMSSA103').length == 0) {  
+        AllPages = new LoadAllPages(ParentNode, "SystemSetup/MSSA103", ["MSSA103btns", "pgMSSA103Init", "pgMSSA103Add", "pgMSSA103Mod"], afterLoadPage);
     };
 
 

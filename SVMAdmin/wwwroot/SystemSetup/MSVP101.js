@@ -51,8 +51,9 @@
         grdSendSet = new DynGrid(
             {
                 table_lement: $('#tbSendSet')[0],
-                class_collection: ["tdCol8", "tdCol9", "tdCol10", "tdCol11", "tdCol12", "tdCol13", "tdCol14", "tdCol15", "tdCol15 label-align", "tdCol16"],
+                class_collection: ["tdColbt icon_in_td btDelete_SendSet", "tdCol8", "tdCol9", "tdCol10", "tdCol11", "tdCol12", "tdCol13", "tdCol14", "tdCol15", "tdCol15 label-align", "tdCol16"],
                 fields_info: [
+                    { type: "JQ", name: "fa-trash-o", element: '<i class="fa fa-trash-o" style="font-size:24px"></i>' },
                     { type: "Text", name: "VIP_ID2", style: "" },
                     { type: "Text", name: "VIP_Name" },
                     { type: "Text", name: "VIP_Tel" },
@@ -66,6 +67,7 @@
                 ],
                 rows_per_page: 100,
                 method_clickrow: click_PLU,
+                afterBind: gridclick_SendSet,
                 sortable: "N"
             }
         );
@@ -73,7 +75,7 @@
         grdEDMHistoryQuery = new DynGrid(
             {
                 table_lement: $('#tbEDMHistoryQuery')[0],
-                class_collection: ["tdCol8", "tdCol9", "tdCol10", "tdCol11", "tdCol12", "tdCol13", "tdCol14", "tdCol15"],
+                class_collection: ["tdCol8 text-center", "tdCol9 text-center", "tdCol10 text-center", "tdCol11 text-center", "tdCol12 text-center", "tdCol13 text-center", "tdCol14 text-center", "tdCol15 text-center"],
                 fields_info: [
                     { type: "Text", name: "VIP_ID2", style: "" },
                     { type: "Text", name: "VIP_Name" },
@@ -183,6 +185,10 @@
         $('#tbQuery tbody tr .btShowEDM').click(function () { btShowEDM_click(this) });
     }
 
+    let gridclick_SendSet = function () {
+        $('#tbSendSet tbody tr .btDelete_SendSet').click(function () { btDelete_SendSet_click(this) });
+    }
+
     let gridclick_DMSel = function () {
         $('#tbDMSel tbody tr .btShowEDM_DMSel').click(function () { btShowEDM_DMSel_click(this) });
     }
@@ -252,7 +258,7 @@
         }
     };
 
-    //主畫面DM預覽
+    //DM預覽(主畫面)
     let btShowEDM_click = function (bt) {
         //Timerset();
         $(bt).closest('tr').click();
@@ -283,7 +289,34 @@
         }
     };
 
-    //Dm選取DM預覽
+    //刪除(發送設定)
+    let btDelete_SendSet_click = function (bt) {
+        $(bt).closest('tr').click();
+        $('.msg-valid').hide();
+        var node = $(grdSendSet.ActiveRowTR()).prop('Record');
+
+        DyConfirm("請確認是否刪除會員(" + GetNodeValue(node, 'VIP_ID2') + ")？", function () {
+            var pData = {
+                VMEVNO: $('#lblVMEVNO_SendSet').html(),
+                VIP_ID2: GetNodeValue(node, 'VIP_ID2')
+            }
+            PostToWebApi({ url: "api/SystemSetup/MSVP101Delete_SendSet", data: pData, success: afterMSVP101Delete_SendSet });
+        }, function () { DummyFunction(); })
+    };
+
+    let afterMSVP101Delete_SendSet = function (data) {
+        if (ReturnMsg(data, 0) != "MSVP101Delete_SendSetOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            DyAlert("刪除完成!")
+            var dtE = data.getElementsByTagName('dtE');
+            $('#lblVIPCnt_SendSet').html(GetNodeValue(dtE[0], 'Cnt') + ' 筆')
+            grdSendSet.DeleteRow(grdSendSet.ActiveRowTR());
+        }
+    };
+
+    //DM預覽(DM選取)
     let btShowEDM_DMSel_click = function (bt) {
         //Timerset();
         $(bt).closest('tr').click();
@@ -1429,7 +1462,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
     let btBgno_SendSet_click = function (bt) {
         //Timerset();
         var pData = {
-            Type_Code: "B",
+            Type_Code: "L",
             Type_ID: ""
         }
         PostToWebApi({ url: "api/SystemSetup/GetTypeDataWeb", data: pData, success: afterGetBgno });

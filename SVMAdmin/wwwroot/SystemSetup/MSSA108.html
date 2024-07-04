@@ -106,37 +106,34 @@
 
             <!-- page content -->
             <div class="right_col" role="main">
-
                 <div class="page-title">
                     <div class="title_left">
                         <h3>Plain Page</h3>
                     </div>
-
                 </div>
-
-                <article id="pgMSSD106Init" class="row">
+                <article id="pgMSSA108Init" class="row">
                     <div class="col-md-12 col-sm-12">
-                        <div class="x_panel" style="padding: 0px; height: 100%; width: 100%; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
+                        <div class="x_panel" style="padding: 0px; height: 100%; width: 100%; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 450px 550px ">
                             <style>
                                 .ErrorControl {
                                     background-color: red;
                                 }
 
-                                #tbQuery thead tr th, #tbQueryMW thead tr th {
+                                #tbQuery thead tr th {
                                     font-size: 16px;
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
                                 }
 
-                                #tbQuery thead tr td, #tbQueryMW thead tr td {
+                                #tbQuery thead tr td {
                                     font-size: 16px;
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
                                 }
 
-                                #tbQuery tbody tr td, #tbQueryMW tbody tr td {
+                                #tbQuery tbody tr td {
                                     font-size: 16px;
                                     padding: 3px;
                                     font-weight: bold;
@@ -146,6 +143,7 @@
                                     position: sticky;
                                     left: 0; /*首行永遠固定於左 */
                                 }
+
                                 .table thead th, .table thead td {
                                     position: sticky;
                                     border-top: 0;
@@ -153,84 +151,52 @@
                                     /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
                                     box-shadow: 0 0px 2px 0px inset #ddd;
                                 }
-                                #thtype, #thead1, #thead2, #thead3 {
+
+                                #thead1, #thead2, #thead3, #thead4 {
                                     top: 0;
                                     z-index: 2;
                                     height: 35px;
                                 }
-                                #th1, #th2, #th3, #th4, #th5, #th6, #th7, #th8, #th9 {
+
+                                #th1, #th2, #th3, #th4 {
                                     top: 35px;
                                     z-index: 2;
                                 }
-                                #td1, #td2, #td2p, #td3, #td3p, #td4, #td4p, #td5, #td5p, #td6, #td6p, #td7, #td7p, #td8, #td8p, #td9, #td9p, #td10, #td10p {
-                                    top: 65px;
+
+                                #td1, #td2, #td3, #td4, #td5 {
+                                    top: 70px;
                                     z-index: 2;
                                     color: red;
                                 }
+
                                 #td0 {
-                                    top: 65px;
+                                    top: 70px;
                                     z-index: 2;
                                 }
                             </style>
 
                             <div class="form-group row" style="margin-left: 5px; width: 100%">
-                                <label id="lblProgramName" class="DyForm3-ProgramName">會員數據分析</label>
+                                <label id="lblProgramName" class="DyForm3-ProgramName">即時業績</label>
+                            </div>
+                            
+                            <div class="form-group row" style="margin-left: 5px; width: 100%;margin-top:5px">
+                                <label class="DyForm3-Label">今&ensp;&ensp;&ensp;&ensp;日</label>
+                                <label id="lblToday" class="DyForm3-LabelBlack"></label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 20px; width: 100%">
-                                <button class="DyForm3-BtnClear" id="btClear" type="button" style="margin-left: 0px">
-                                    清除
-                                    <i class="fa fa-close"></i>
-                                </button>
-                                <button class="DyForm3-BtnQuery" id="btQuery" type="button" style="margin-left: 500px">
-                                    查詢
-                                    <i class="fa fa-search"></i>
-                                </button>
+                            <div class="form-group row" style="margin-left: 12px; width: 100%;margin-bottom:0px">
+                                <input id="rdoA" type="radio" name="a" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
+                                <label class="DyForm3-LabelBlack" for="rdoA" style="margin-top: 2px">&ensp;區域</label>
+                                <input id="rdoS" type="radio" name="a" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
+                                <label class="DyForm3-LabelBlack" for="rdoS" style="margin-top:2px">&ensp;店別</label>
+                                <input id="rdo20C" type="radio" name="a" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
+                                <label class="DyForm3-LabelBlack" for="rdo20C" style="margin-top:2px">&ensp;前20名商品(金額)</label>
+                                <input id="rdo20N" type="radio" name="a" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
+                                <label class="DyForm3-LabelBlack" for="rdo20N" style="margin-top:2px">&ensp;前20名商品(數量)</label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%;margin-top:20px">
-                                <button class="DyForm3-BtnShop" id="btVIPFaceID" type="button">會籍店櫃</button>
-                                <label class="DyForm3-LabelRed" id="lblVIPFaceIDCnt" style=" margin-left: 10px; margin-top: 5px"></label>
-                                <label class="DyForm3-Label" id="lblVIPFaceIDName" style=" margin-left: 10px; margin-top: 5px"></label>
-                            </div>
-
-                            <div class="form-group row" style="margin-left: 12px; width: 100%">
-                                <button class="DyForm3-BtnShop" id="btCity" type="button">縣市</button>
-                                <label class="DyForm3-LabelRed" id="lblCityCnt" style=" margin-left: 10px; margin-top: 5px"></label>
-                                <label class="DyForm3-Label" id="lblCityName" style=" margin-left: 10px; margin-top: 5px"></label>
-                            </div>
-
-
-                            <div class="form-group row" style="margin-left: 12px; width: 100%">
-                                <mark class="DyForm3-DyNotEmptyMark" style="margin-left:5px" hidden>*</mark>
-                                <label class="DyForm3-Label">入會期間</label>
-                                <input id="rdoDateAll" type="radio" name="D" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
-                                <label class="DyForm3-LabelBlack" for="rdoDateAll" style="margin-top: 2px">&ensp;不限</label>
-                                <input id="rdoDate2M" type="radio" name="D" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
-                                <label class="DyForm3-LabelBlack" for="rdoDate2M" style="margin-top:2px">&ensp;2個月內</label>
-                                <input id="rdoDate3M" type="radio" name="D" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
-                                <label class="DyForm3-LabelBlack" for="rdoDate3M" style="margin-top:2px">&ensp;3個月內</label>
-                                <input id="rdoDate6M" type="radio" name="D" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
-                                <label class="DyForm3-LabelBlack" for="rdoDate6M" style="margin-top:2px">&ensp;6個月內</label>
-                                <input id="rdoDate1Y" type="radio" name="D" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
-                                <label class="DyForm3-LabelBlack" for="rdoDate1Y" style="margin-top:2px">&ensp;1年內</label>
-                            </div>
-
-                            <div class="form-group row" style="margin-left: 25px; width: 100%">
-                                <mark class="DyForm3-DyNotEmptyMark" style="margin-left:5px" hidden>*</mark>
-                                <input id="rdoShop" type="radio" name="Q" style="vertical-align: middle; margin-top: 6px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
-                                <label class="DyForm3-LabelBlack" for="rdoShop" style="margin-top: 2px">&ensp;店別</label>
-                                <input id="rdoCity" type="radio" name="Q" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
-                                <label class="DyForm3-LabelBlack" for="rdoCity" style="margin-top:2px">&ensp;縣市</label>
-                                <input id="rdoMW" type="radio" name="Q" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
-                                <label class="DyForm3-LabelBlack" for="rdoMW" style="margin-top:2px">&ensp;性別-年齡層</label>
-                            </div>
-
-                            <div class="form-group row" style="margin-bottom: 0px; width: 100%; margin-left: 12px ">
-                                <label id="lblEnd" class="DyForm3-Label" style="font-size: 20px; margin-top:0px "></label>
-                                <label id="lblVIPQty" class="DyForm3-LabelRed" style="font-size: 20px; margin-left: 60px "></label>
-                                <label id="lblBirNo" class="DyForm3-LabelRed" style="font-size: 20px; margin-left: 60px ">生日空白不列入計算</label>
-                                <!--<label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>-->
+                            <div class="form-group row" style="margin-bottom: 20px; width: 100%; ">
+                                <label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>
                             </div>
 
                             <div class="card-block forminput">
@@ -240,89 +206,18 @@
                                             <thead>
                                                 <!--第一層-->
                                                 <tr>
-                                                    <th id="thtype" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
-                                                    <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">會員數</th>
-                                                    <td id="thead2" class="text-center" colspan="14">年齡層數量 / 佔比</td>
-                                                    <td id="thead3" class="text-center" colspan="4">性別數量 / 佔比</td>
+                                                    <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">區域</th>
+                                                    <th id="thead2" class="text-center" colspan="1">來客數</th>
+                                                    <th id="thead3" class="text-center" colspan="1">銷售量</th>
+                                                    <th id="thead4" class="text-center" colspan="1">業績</th>
+                                                    <th id="thead5" class="text-center" colspan="1">客單價</th>
                                                 </tr>
                                                 <!--第二層-->
                                                 <tr>
-                                                    <th id="th1" class="text-center" colspan="2">17歲以下</th>
-                                                    <th id="th2" class="text-center" colspan="2">18~30歲</th>
-                                                    <th id="th3" class="text-center" colspan="2">31~40歲</th>
-                                                    <th id="th4" class="text-center" colspan="2">41~50歲</th>
-                                                    <th id="th5" class="text-center" colspan="2">51~60歲</th>
-                                                    <th id="th6" class="text-center" colspan="2">61~70歲</th>
-                                                    <th id="th7" class="text-center" colspan="2">71歲以上</th>
-                                                    <th id="th8" class="text-center" colspan="2">男性</th>
-                                                    <th id="th9" class="text-center" colspan="2">女性</th>
-                                                </tr>
-                                                <!--第三層-->
-                                                <tr>
-                                                    <td id="td0" class="text-center" colspan="1">總數</td>
+                                                    <td id="td0" colspan="1" style="text-align: right"></td>
                                                     <td id="td1" colspan="1" style="text-align: right"></td>
-                                                    <td id="td2" colspan="1" style="text-align: right"></td>
-                                                    <td id="td2p" class="text-center" colspan="1"></td>
+                                                    <td id="td2" colspan="1" style="text-align: right "></td>
                                                     <td id="td3" colspan="1" style="text-align: right "></td>
-                                                    <td id="td3p" class="text-center" colspan="1"></td>
-                                                    <td id="td4" colspan="1" style="text-align: right "></td>
-                                                    <td id="td4p" class="text-center" colspan="1"></td>
-                                                    <td id="td5" colspan="1" style="text-align: right "></td>
-                                                    <td id="td5p" class="text-center" colspan="1"></td>
-                                                    <td id="td6" colspan="1" style="text-align: right "></td>
-                                                    <td id="td6p" class="text-center" colspan="1"></td>
-                                                    <td id="td7" colspan="1" style="text-align: right "></td>
-                                                    <td id="td7p" class="text-center" colspan="1"></td>
-                                                    <td id="td8" colspan="1" style="text-align: right"></td>
-                                                    <td id="td8p" class="text-center" colspan="1"></td>
-                                                    <td id="td9" colspan="1" style="text-align: right"></td>
-                                                    <td id="td9p" class="text-center" colspan="1"></td>
-                                                    <td id="td10" colspan="1" style="text-align: right"></td>
-                                                    <td id="td10p" class="text-center" colspan="1"></td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    
-                                        <table id="tbQueryMW" class="table table-bordered" style="width:100%" hidden>
-                                            <thead>
-                                                <!--第一層-->
-                                                <tr>
-                                                    <th class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">性別</th>
-                                                    <th class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">會員數</th>
-                                                    <td class="text-center" colspan="14">年齡層數量 / 佔比</td>
-                                                </tr>
-                                                <!--第二層-->
-                                                <tr>
-                                                    <th class="text-center" colspan="2">17歲以下</th>
-                                                    <th class="text-center" colspan="2">18~30歲</th>
-                                                    <th class="text-center" colspan="2">31~40歲</th>
-                                                    <th class="text-center" colspan="2">41~50歲</th>
-                                                    <th class="text-center" colspan="2">51~60歲</th>
-                                                    <th class="text-center" colspan="2">61~70歲</th>
-                                                    <th class="text-center" colspan="2">71歲以上</th>
-                                                </tr>
-                                                <!--第三層-->
-                                                <tr>
-                                                    <td class="text-center" colspan="1">總數</td>
-                                                    <td id="td1_MW" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td2_MW" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td2p_MW" class="text-center" colspan="1" style="color:red "></td>
-                                                    <td id="td3_MW" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td3p_MW" class="text-center" colspan="1" style="color:red "></td>
-                                                    <td id="td4_MW" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td4p_MW" class="text-center" colspan="1" style="color:red "></td>
-                                                    <td id="td5_MW" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td5p_MW" class="text-center" colspan="1" style="color:red "></td>
-                                                    <td id="td6_MW" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td6p_MW" class="text-center" colspan="1" style="color:red "></td>
-                                                    <td id="td7_MW" colspan="1" style="text-align: right;color:red "></td>
-                                                    <td id="td7p_MW" class="text-center" colspan="1" style="color:red "></td>
-                                                    <td id="td8_MW" colspan="1" style="text-align: right; color: red "></td>
-                                                    <td id="td8p_MW" class="text-center" colspan="1" style="color: red "></td>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -334,183 +229,11 @@
                                 </div>
                             </div>
 
-                        </div>
-                    </div>
-
-                    <div class="modal fade" id="modal_Lookup_VIPFaceID" data-keyboard="false" data-backdrop="static" style="z-index:1041">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 580px;">
-                                <div class="modal-header" style="padding-bottom:0px">
-                                    <label class="DyForm3-ProgramName">會籍店櫃查詢</label>
-                                </div>
-
-                                <div class="modal-body modal-tab-container" style="padding:8px">
-                                    <style>
-                                        #tbLookup_VIPFaceID thead tr th {
-                                            font-size: 16px;
-                                            padding: 6px;
-                                            background-color: #ffb620;
-                                            font-weight: bold;
-                                        }
-
-                                        #tbLookup_VIPFaceID tbody tr td {
-                                            font-size: 16px;
-                                            padding: 0px;
-                                        }
-
-                                        th:first-child {
-                                            position: sticky;
-                                            left: 0; /*首行永遠固定於左 */
-                                        }
-                                        .table thead th {
-                                            position: sticky;
-                                            border-top: 0;
-                                            border-bottom: 0;
-                                            /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
-                                            box-shadow: 0 0px 2px 0px inset #ddd;
-                                            top: 0;
-                                            z-index: 2;
-                                            height: 35px;
-                                        }
-                                    </style>
-
-                                    <div class="form-group row" style="width: 100%; margin-left: 20px; margin-bottom: 5px; margin-top: 15px ">
-                                        <button class="DyForm3-BtnClear" id="btLpClear_VIPFaceID" type="button">
-                                            清除
-                                            <i class="fa fa-close"></i>
-                                        </button>
-                                        <button id="btLpQ_VIPFaceID" type="button" class="DyForm3-BtnQuery" style="margin-left:280px">
-                                            查詢
-                                            <i class="fa fa-search"></i>
-                                        </button>
-                                        <button class="DyForm3-BtnExit" id="btLpExit_VIPFaceID" type="button" style="margin-left: 20px">
-                                            離開
-                                            <i class="fa fa-sign-out"></i>
-                                        </button>
-                                    </div>
-
-                                    <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 5px; margin-top: 15px ">
-                                        <input id="txtLpQ_VIPFaceID" class="form-control small" style="border-radius: 10px; font-size: 16px; width: 50%; line-height: 0px; padding: 3px; height: 28px " placeholder="請輸入店別">
-                                    </div>
-
-                                    <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 5px; margin-top: 15px ">
-                                        <button class="DyForm3-BtnQuery" id="btLpOK_VIPFaceID" type="button" style="margin-left: 375px">
-                                            確定
-                                            <!--<i class="fa fa-search"></i>-->
-                                        </button>
-                                    </div>
-
-                                    <div class="card-block forminput">
-                                        <div class="x_content">
-                                            <div style="overflow: auto; height: 350px;">
-                                                <table id="tbLookup_VIPFaceID" class="table table-bordered" style="width: 100%;">
-                                                    <thead>
-                                                        <tr>
-                                                            <th style="width:50px"></th>
-                                                            <th class="text-center">店別</th>
-                                                            <th class="text-center">店別名稱</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                
-                    <div class="modal fade" id="modal_Lookup_City" data-keyboard="false" data-backdrop="static" style="z-index:1042">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 580px">
-                                <div class="modal-header" style="padding-bottom:0px">
-                                    <label class="DyForm3-ProgramName">縣市查詢</label>
-                                </div>
-
-                                <div class="modal-body modal-tab-container" style="padding:8px">
-                                    <style>
-                                        #tbLookup_City thead tr th {
-                                            font-size: 16px;
-                                            padding: 6px;
-                                            background-color: #ffb620;
-                                            font-weight: bold;
-                                        }
-
-                                        #tbLookup_City tbody tr td {
-                                            font-size: 16px;
-                                            padding: 0px;
-                                        }
-
-                                        th:first-child {
-                                            position: sticky;
-                                            left: 0; /*首行永遠固定於左 */
-                                        }
-
-                                        .table thead th {
-                                            position: sticky;
-                                            border-top: 0;
-                                            border-bottom: 0;
-                                            /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
-                                            box-shadow: 0 0px 2px 0px inset #ddd;
-                                            top: 0;
-                                            z-index: 2;
-                                            height: 35px;
-                                        }
-                                    </style>
-
-                                    <div class="form-group row" style="width: 100%; margin-left: 20px; margin-bottom: 5px; margin-top: 15px ">
-                                        <button class="DyForm3-BtnClear" id="btLpClear_City" type="button">
-                                            清除
-                                            <i class="fa fa-close"></i>
-                                        </button>
-                                        <button id="btLpQ_City" type="button" class="DyForm3-BtnQuery" style="margin-left:280px">
-                                            查詢
-                                            <i class="fa fa-search"></i>
-                                        </button>
-                                        <button class="DyForm3-BtnExit" id="btLpExit_City" type="button" style="margin-left: 20px">
-                                            離開
-                                            <i class="fa fa-sign-out"></i>
-                                        </button>
-                                    </div>
-
-                                    <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 5px; margin-top: 15px ">
-                                        <input id="txtLpQ_City" class="form-control small" style="border-radius: 10px; font-size: 16px; width: 50%; line-height: 0px; padding: 3px; height: 28px " placeholder="請輸入縣市">
-                                    </div>
-
-                                    <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 5px; margin-top: 15px ">
-                                        <button class="DyForm3-BtnQuery" id="btLpOK_City" type="button" style="margin-left: 375px">
-                                            確定
-                                            <!--<i class="fa fa-search"></i>-->
-                                        </button>
-                                    </div>
-
-                                    <div class="card-block forminput">
-                                        <div class="x_content">
-                                            <div style="overflow: auto; height: 350px;">
-                                                <table id="tbLookup_City" class="table table-bordered" style="width: 100%;">
-                                                    <thead>
-                                                        <tr>
-                                                            <th style="width:50px"></th>
-                                                            <th class="text-center">縣市</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </article>
 
-                <article id="MSSD106btns" hidden>
+                <article id="MSSA108btns" hidden>
                     <div class="col-md-12 col-sm-12">
                         <div class="form-group row col-md">
                             <button id="btAdd" type="button" class="btn btn-primary" style="width: 55px; font-size: 14px; background-color: blue">新增</button>
@@ -540,7 +263,7 @@
                     </div>
                 </article>
 
-                <article id="pgMSSD106Add" class="row" hidden>
+                <article id="pgMSSA108Add" class="row" hidden>
                     <div class="col-md-12 col-sm-12" style="margin:0;padding:0">
                         <div class="x_panel">
                             <div class="x_title">
@@ -587,7 +310,7 @@
 
                 </article>
 
-                <article id="pgMSSD106Mod" class="row" hidden>
+                <article id="pgMSSA108Mod" class="row" hidden>
                     <div class="modal fade" id="modal_ISAM01PLUMod" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">

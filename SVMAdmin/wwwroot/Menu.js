@@ -434,6 +434,45 @@
                     PageMSVP102($(".workarea"));
                 }
             }
+            else if (pg == "MSSD104") {
+                if (window.PageMSSD104 == undefined) {
+                    $.getScript('SystemSetup/MSSD104.js',
+                        function () {
+                            PageMSSD104($(".workarea"));
+                        }
+                    );
+                }
+
+                else {
+                    PageMSSD104($(".workarea"));
+                }
+            }
+            else if (pg == "MSSA103") {
+                if (window.PageMSSA103 == undefined) {
+                    $.getScript('SystemSetup/MSSA103.js',
+                        function () {
+                            PageMSSA103($(".workarea"));
+                        }
+                    );
+                }
+
+                else {
+                    PageMSSA103($(".workarea"));
+                }
+            }
+            else if (pg == "MSSA108") {
+                if (window.PageMSSA108 == undefined) {
+                    $.getScript('SystemSetup/MSSA108.js',
+                        function () {
+                            PageMSSA108($(".workarea"));
+                        }
+                    );
+                }
+
+                else {
+                    PageMSSA108($(".workarea"));
+                }
+            }
             else if (pg == "MSSA107") {
                 if (window.PageMSSA107 == undefined) {
                     $.getScript('SystemSetup/MSSA107.js',
