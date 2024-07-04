@@ -119,21 +119,21 @@
                                     background-color: red;
                                 }
 
-                                #tbQuery thead tr th {
+                                #tbQuery thead tr th, #tbTop20 thead tr th {
                                     font-size: 16px;
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
                                 }
 
-                                #tbQuery thead tr td {
+                                #tbQuery thead tr td, #tbTop20 thead tr td {
                                     font-size: 16px;
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
                                 }
 
-                                #tbQuery tbody tr td {
+                                #tbQuery tbody tr td, #tbTop20 tbody tr td {
                                     font-size: 16px;
                                     padding: 3px;
                                     font-weight: bold;
@@ -152,44 +152,37 @@
                                     box-shadow: 0 0px 2px 0px inset #ddd;
                                 }
 
-                                #thead1, #thead2, #thead3, #thead4 {
+                                #thead1, #thead2, #thead3, #thead4, #thead5, #thTop20_1, #thTop20_2, #thTop20_3, #thTop20_4 {
                                     top: 0;
                                     z-index: 2;
-                                    height: 35px;
+                                    height: 55px;
                                 }
 
-                                #th1, #th2, #th3, #th4 {
-                                    top: 35px;
-                                    z-index: 2;
-                                }
-
-                                #td1, #td2, #td3, #td4, #td5 {
-                                    top: 70px;
+                                #td1, #td2, #td3, #td4, #tdTop20_1, #tdTop20_2 {
+                                    top: 55px;
                                     z-index: 2;
                                     color: red;
-                                }
-
-                                #td0 {
-                                    top: 70px;
-                                    z-index: 2;
                                 }
                             </style>
 
                             <div class="form-group row" style="margin-left: 5px; width: 100%">
                                 <label id="lblProgramName" class="DyForm3-ProgramName">即時業績</label>
                             </div>
-                            
+
                             <div class="form-group row" style="margin-left: 5px; width: 100%;margin-top:5px">
                                 <label class="DyForm3-Label">今&ensp;&ensp;&ensp;&ensp;日</label>
-                                <label id="lblToday" class="DyForm3-LabelBlack"></label>
+                                <label id="lblToday" class="DyForm3-LabelBlack" style="margin-left:15px;margin-top:3px"></label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%;margin-bottom:0px">
-                                <input id="rdoA" type="radio" name="a" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
+                            <div class="form-group row" style="margin-left: 15px; width: 100%; margin-bottom: 0px">
+                                <input id="rdoA" type="radio" name="a" style="vertical-align: middle; margin-top: 6px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
                                 <label class="DyForm3-LabelBlack" for="rdoA" style="margin-top: 2px">&ensp;區域</label>
                                 <input id="rdoS" type="radio" name="a" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
                                 <label class="DyForm3-LabelBlack" for="rdoS" style="margin-top:2px">&ensp;店別</label>
-                                <input id="rdo20C" type="radio" name="a" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
+                            </div>
+
+                            <div class="form-group row" style="margin-left: 15px; width: 100%; margin-bottom: 0px">
+                                <input id="rdo20C" type="radio" name="a" style="vertical-align: middle; margin-top: 6px; width: 15px; height: 15px; list-style: none; text-align: left ">
                                 <label class="DyForm3-LabelBlack" for="rdo20C" style="margin-top:2px">&ensp;前20名商品(金額)</label>
                                 <input id="rdo20N" type="radio" name="a" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
                                 <label class="DyForm3-LabelBlack" for="rdo20N" style="margin-top:2px">&ensp;前20名商品(數量)</label>
@@ -214,10 +207,10 @@
                                                 </tr>
                                                 <!--第二層-->
                                                 <tr>
-                                                    <td id="td0" colspan="1" style="text-align: right"></td>
                                                     <td id="td1" colspan="1" style="text-align: right"></td>
-                                                    <td id="td2" colspan="1" style="text-align: right "></td>
+                                                    <td id="td2" colspan="1" style="text-align: right"></td>
                                                     <td id="td3" colspan="1" style="text-align: right "></td>
+                                                    <td id="td4" colspan="1" style="text-align: right "></td>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -225,6 +218,28 @@
                                                 </tr>
                                             </tbody>
                                         </table>
+
+                                        <table id="tbTop20" class="table table-bordered" style="width:100%" hidden>
+                                            <thead>
+                                                <!--第一層-->
+                                                <tr>
+                                                    <th id="thTop20_1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">品號</th>
+                                                    <th id="thTop20_2" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">品名</th>
+                                                    <th id="thTop20_3" class="text-center" colspan="1">銷售量</th>
+                                                    <th id="thTop20_4" class="text-center" colspan="1">銷售金額</th>
+                                                </tr>
+                                                <!--第二層-->
+                                                <tr>
+                                                    <td id="tdTop20_1" colspan="1" style="text-align: right"></td>
+                                                    <td id="tdTop20_2" colspan="1" style="text-align: right"></td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
                                     </div>
                                 </div>
                             </div>
