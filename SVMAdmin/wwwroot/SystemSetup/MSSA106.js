@@ -1,4 +1,4 @@
-﻿var PageMSSA107 = function (ParentNode) {
+﻿var PageMSSA106 = function (ParentNode) {
 
     let grdM;
     let grdM_Shop;
@@ -11,13 +11,16 @@
         grdM = new DynGrid(
             {
                 table_lement: $('#tbQuery')[0],
-                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align",  "tdCol4 label-align", "tdCol5 label-align"],
+                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align"],
                 fields_info: [
                     { type: "Text", name: "ID", style: "" },
-                    { type: "TextAmt", name: "W1"},
-                    { type: "TextAmt", name: "W2" },
-                    { type: "TextAmt", name: "W3" },
-                    { type: "TextAmt", name: "W4" }
+                    { type: "TextAmt", name: "D1"},
+                    { type: "TextAmt", name: "D2" },
+                    { type: "TextAmt", name: "D3" },
+                    { type: "TextAmt", name: "D4" },
+                    { type: "TextAmt", name: "D5" },
+                    { type: "TextAmt", name: "D6" },
+                    { type: "TextAmt", name: "D7" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -29,13 +32,16 @@
         grdM_Shop = new DynGrid(
             {
                 table_lement: $('#tbDShop1')[0],
-                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align"],
+                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align"],
                 fields_info: [
                     { type: "Text", name: "ID", style: "" },
-                    { type: "TextAmt", name: "W1" },
-                    { type: "TextAmt", name: "W2" },
-                    { type: "TextAmt", name: "W3" },
-                    { type: "TextAmt", name: "W4" }
+                    { type: "TextAmt", name: "D1" },
+                    { type: "TextAmt", name: "D2" },
+                    { type: "TextAmt", name: "D3" },
+                    { type: "TextAmt", name: "D4" },
+                    { type: "TextAmt", name: "D5" },
+                    { type: "TextAmt", name: "D6" },
+                    { type: "TextAmt", name: "D7" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -98,15 +104,14 @@
         ShowLoading();
         var pData = {
             ShopNo: "'" + $('#lblShop1').html().split('-')[0] + "'",
-            DayNM: $('#tbQuery thead th#th1').html().replace("週",""),
             Flag: "T"
         }
-        PostToWebApi({ url: "api/SystemSetup/MSSA107Query", data: pData, success: afterMSSA107Query_Shop1 });
+        PostToWebApi({ url: "api/SystemSetup/MSSA106Query", data: pData, success: afterMSSA106Query_Shop1 });
     };
 
-    let afterMSSA107Query_Shop1 = function (data) {
+    let afterMSSA106Query_Shop1 = function (data) {
         CloseLoading();
-        if (ReturnMsg(data, 0) != "MSSA107QueryOK") {
+        if (ReturnMsg(data, 0) != "MSSA106QueryOK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
@@ -187,22 +192,22 @@
                 DayNM: $('#cbDayName').val(),
                 Flag: Flag
             }
-            PostToWebApi({ url: "api/SystemSetup/MSSA107Query", data: pData, success: afterMSSA107Query });
+            PostToWebApi({ url: "api/SystemSetup/MSSA106Query", data: pData, success: afterMSSA106Query });
         }, 1000);
     };
 
-    let afterMSSA107Query = function (data) {
+    let afterMSSA106Query = function (data) {
         CloseLoading();
-        if (ReturnMsg(data, 0) != "MSSA107QueryOK") {
+        if (ReturnMsg(data, 0) != "MSSA106QueryOK") {
             DyAlert(ReturnMsg(data, 1), function () { $('#btQuery').prop('disabled', false); });
         }
         else {
             $('#btQuery').prop('disabled', false);
-            SetMSSA107Query(data);
+            SetMSSA106Query(data);
         }
     };
 
-    let SetMSSA107Query = function (data) {
+    let SetMSSA106Query = function (data) {
         var dtDelt = data.getElementsByTagName('dtDelt');
         grdM.BindData(dtDelt);
         var heads = $('#tbQuery thead tr th#th0');
@@ -219,23 +224,34 @@
             $('#tbQuery thead td#td2').html('');
             $('#tbQuery thead td#td3').html('');
             $('#tbQuery thead td#td4').html('');
-            
+            $('#tbQuery thead td#td5').html('');
+            $('#tbQuery thead td#td6').html('');
+            $('#tbQuery thead td#td7').html('');
             return;
         }
         var dtD = data.getElementsByTagName('dtD');
-        $('#tbQuery thead td#thead1').html(GetNodeValue(dtD[0], "RptW1"));
-        $('#tbQuery thead td#thead2').html(GetNodeValue(dtD[1], "RptW1"));
-        $('#tbQuery thead td#thead3').html(GetNodeValue(dtD[2], "RptW1"));
-        $('#tbQuery thead td#thead4').html(GetNodeValue(dtD[3], "RptW1"));
+        $('#tbQuery thead td#thead1').html(GetNodeValue(dtD[0], "RptD1"));
+        $('#tbQuery thead td#thead2').html(GetNodeValue(dtD[1], "RptD1"));
+        $('#tbQuery thead td#thead3').html(GetNodeValue(dtD[2], "RptD1"));
+        $('#tbQuery thead td#thead4').html(GetNodeValue(dtD[3], "RptD1"));
+        $('#tbQuery thead td#thead5').html(GetNodeValue(dtD[4], "RptD1"));
+        $('#tbQuery thead td#thead6').html(GetNodeValue(dtD[5], "RptD1"));
+        $('#tbQuery thead td#thead7').html(GetNodeValue(dtD[6], "RptD1"));
         var dtSum = data.getElementsByTagName('dtSum');
-        $('#tbQuery thead th#th1').html('週' + $('#cbDayName').val());
-        $('#tbQuery thead th#th2').html('週' + $('#cbDayName').val());
-        $('#tbQuery thead th#th3').html('週' + $('#cbDayName').val());
-        $('#tbQuery thead th#th4').html('週' + $('#cbDayName').val());
-        $('#tbQuery thead td#td1').html(parseInt(GetNodeValue(dtSum[0], "W1")).toLocaleString('en-US'));
-        $('#tbQuery thead td#td2').html(parseInt(GetNodeValue(dtSum[0], "W2")).toLocaleString('en-US'));
-        $('#tbQuery thead td#td3').html(parseInt(GetNodeValue(dtSum[0], "W3")).toLocaleString('en-US'));
-        $('#tbQuery thead td#td4').html(parseInt(GetNodeValue(dtSum[0], "W4")).toLocaleString('en-US'));
+        $('#tbQuery thead th#th1').html('週' + GetNodeValue(dtD[0], "DayWeek"));
+        $('#tbQuery thead th#th2').html('週' + GetNodeValue(dtD[1], "DayWeek"));
+        $('#tbQuery thead th#th3').html('週' + GetNodeValue(dtD[2], "DayWeek"));
+        $('#tbQuery thead th#th4').html('週' + GetNodeValue(dtD[3], "DayWeek"));
+        $('#tbQuery thead th#th5').html('週' + GetNodeValue(dtD[4], "DayWeek"));
+        $('#tbQuery thead th#th6').html('週' + GetNodeValue(dtD[5], "DayWeek"));
+        $('#tbQuery thead th#th7').html('週' + GetNodeValue(dtD[6], "DayWeek"));
+        $('#tbQuery thead td#td1').html(parseInt(GetNodeValue(dtSum[0], "D1")).toLocaleString('en-US'));
+        $('#tbQuery thead td#td2').html(parseInt(GetNodeValue(dtSum[0], "D2")).toLocaleString('en-US'));
+        $('#tbQuery thead td#td3').html(parseInt(GetNodeValue(dtSum[0], "D3")).toLocaleString('en-US'));
+        $('#tbQuery thead td#td4').html(parseInt(GetNodeValue(dtSum[0], "D4")).toLocaleString('en-US'));
+        $('#tbQuery thead td#td5').html(parseInt(GetNodeValue(dtSum[0], "D5")).toLocaleString('en-US'));
+        $('#tbQuery thead td#td6').html(parseInt(GetNodeValue(dtSum[0], "D6")).toLocaleString('en-US'));
+        $('#tbQuery thead td#td7').html(parseInt(GetNodeValue(dtSum[0], "D7")).toLocaleString('en-US'));
     };
 //#endregion
 
@@ -346,8 +362,8 @@
 //#endregion
 
 //#region FormLoad
-    let GetInitMSSA107 = function (data) {
-        if (ReturnMsg(data, 0) != "GetInitMSSA107OK") {
+    let GetInitMSSA106 = function (data) {
+        if (ReturnMsg(data, 0) != "GetInitMSSA106OK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
@@ -357,13 +373,14 @@
                 $('#lblProgramName').html(GetNodeValue(dtE[0], "ChineseName"));
             }
             if (dtD.length > 0) {
-                $('#cbDayName').val(GetNodeValue(dtD[0], "DayWeek"));
-                $('#txtDeltDayNM').val(GetNodeValue(dtD[0], "DayWeek"));
+
+                //$('#cbDayName').val(GetNodeValue(dtD[0], "DayWeek"));
+                $('#lblDayRange').html(GetNodeValue(dtD[0], "D1") + ' ~ ' + GetNodeValue(dtD[6], "D1"));
                 //alert($('#cbDayName').val());
             }
             else {
-                $('#cbDayName').val('日');
-                $('#txtDeltDayNM').val('日');
+                //$('#cbDayName').val('日');
+                $('#lblDayRange').html('');
             }
             AssignVar();
             $('#btQuery').click(function () { btQuery_click(this) });
@@ -375,23 +392,23 @@
             $('#btLpClear_ShopNo').click(function () { btLpClear_ShopNo_click(this) });
             $('#btRe_Shop1').click(function () { btRe_Shop1_click(this) });
             //$('#rdoOPTime').prop('checked', 'true');
-            SetMSSA107Query(data);
+            SetMSSA106Query(data);
 
         }
     };
     
     let afterLoadPage = function () {
-        //alert("OPen MSSA107");
+        //alert("OPen MSSA106");
         var pData = {
-            ProgramID: "MSSA107"
+            ProgramID: "MSSA106"
         }
-        PostToWebApi({ url: "api/SystemSetup/GetInitMSSA107", data: pData, success: GetInitMSSA107 });
+        PostToWebApi({ url: "api/SystemSetup/GetInitMSSA106", data: pData, success: GetInitMSSA106 });
     };
 //#endregion
     
 
-    if ($('#pgMSSA107').length == 0) {  
-        AllPages = new LoadAllPages(ParentNode, "SystemSetup/MSSA107", ["pgMSSA107Init"], afterLoadPage);  //, "MSSA107btns", "pgMSSA107Add", "pgMSSA107Mod"
+    if ($('#pgMSSA106').length == 0) {  
+        AllPages = new LoadAllPages(ParentNode, "SystemSetup/MSSA106", ["pgMSSA106Init"], afterLoadPage);  //, "MSSA106btns", "pgMSSA106Add", "pgMSSA106Mod"
     };
 
 

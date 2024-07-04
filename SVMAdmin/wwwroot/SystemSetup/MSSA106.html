@@ -114,7 +114,7 @@
 
                 </div>
 
-                <article id="pgMSSA107Init" class="row">
+                <article id="pgMSSA106Init" class="row">
                     <div class="col-md-12 col-sm-12">
                         <div class="x_panel" style="padding: 0px; height: 100%; width: 100%; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
                             <style>
@@ -155,18 +155,18 @@
                                     box-shadow: 0 0px 2px 0px inset #ddd;
                                 }
 
-                                #thtype, #thead1, #thead2, #thead3, #thead4 {
+                                #thtype, #thead1, #thead2, #thead3, #thead4, #thead5, #thead6, #thead7 {
                                     top: 0;
                                     z-index: 2;
                                     height: 35px;
                                 }
 
-                                #th0, #th1, #th2, #th3, #th4 {
+                                #th0, #th1, #th2, #th3, #th4, #th5, #th6, #th7 {
                                     top: 35px;
                                     z-index: 2;
                                 }
 
-                                #td1, #td2, #td3, #td4 {
+                                #td1, #td2, #td3, #td4, #td5, #td6, #td7 {
                                     top: 65px;
                                     z-index: 2;
                                     color: red;
@@ -179,7 +179,7 @@
                             </style>
 
                             <div class="form-group row" style="margin-left: 5px; width: 100%">
-                                <label id="lblProgramName" class="DyForm3-ProgramName">四周星期時段比較表</label>
+                                <label id="lblProgramName" class="DyForm3-ProgramName">7日時段統計</label>
                             </div>
 
                             <div class="form-group row" style="margin-left: 20px; width: 100%">
@@ -193,18 +193,9 @@
                                 </button>
                             </div>
                             <div class="form-group row" style="margin-left: 12px; width: 100%;margin-top:20px">
-                                <mark class="DyForm3-DyNotEmptyMark" style="margin-left:5px">*</mark>
-                                <label class="DyForm3-Label" style=" margin-left: 10px; margin-top: 5px">星&ensp;&ensp;期</label>
-                                <select id="cbDayName" class="form-control" style="margin-left: 13px;width:90px">
-                                    <option value="日">週日</option>
-                                    <option value="一">週一</option>
-                                    <option value="二">週二</option>
-                                    <option value="三">週三</option>
-                                    <option value="四">週四</option>
-                                    <option value="五">週五</option>
-                                    <option value="六">週六</option>
-                                </select>
-                                <input id="txtDeltDayNM" class="form-control small" style="margin-left: 13px; width: 50px" value="" hidden>
+                                <!--<mark class="DyForm3-DyNotEmptyMark" style="margin-left:5px">*</mark>-->
+                                <label class="DyForm3-Label" style=" margin-left: 10px; margin-top: 5px">銷售期間</label>
+                                <label class="DyForm3-Label" id="lblDayRange" style=" margin-left: 10px; margin-top: 5px">2024/06/27~2024/07/03</label>
                             </div>
                             <div class="form-group row" style="margin-left: 12px; width: 100%;margin-top:20px">
                                 <button class="DyForm3-BtnShop" id="btShopNo" type="button">店&ensp;&ensp;別</button>
@@ -228,18 +219,24 @@
                                                 <!--第一層-->
                                                 <tr>
                                                     <td id="thtype" class="text-center" colspan="1">日期</td>
-                                                    <td id="thead1" class="text-center" colspan="1">5/12</td>
-                                                    <td id="thead2" class="text-center" colspan="1">5/5</td>
-                                                    <td id="thead3" class="text-center" colspan="1">4/28</td>
-                                                    <td id="thead4" class="text-center" colspan="1">4/21</td>
+                                                    <td id="thead1" class="text-center" colspan="1">6/27</td>
+                                                    <td id="thead2" class="text-center" colspan="1">6/28</td>
+                                                    <td id="thead3" class="text-center" colspan="1">6/29</td>
+                                                    <td id="thead4" class="text-center" colspan="1">6/30</td>
+                                                    <td id="thead5" class="text-center" colspan="1">7/1</td>
+                                                    <td id="thead6" class="text-center" colspan="1">7/2</td>
+                                                    <td id="thead7" class="text-center" colspan="1">7/3</td>
                                                 </tr>
                                                 <!--第二層-->
                                                 <tr>
                                                     <th id="th0" class="text-center" colspan="1">時段</th>
-                                                    <th id="th1" class="text-center" colspan="1">週日</th>
-                                                    <th id="th2" class="text-center" colspan="1">週日</th>
-                                                    <th id="th3" class="text-center" colspan="1">週日</th>
+                                                    <th id="th1" class="text-center" colspan="1">週四</th>
+                                                    <th id="th2" class="text-center" colspan="1">週五</th>
+                                                    <th id="th3" class="text-center" colspan="1">週六</th>
                                                     <th id="th4" class="text-center" colspan="1">週日</th>
+                                                    <th id="th5" class="text-center" colspan="1">週一</th>
+                                                    <th id="th6" class="text-center" colspan="1">週二</th>
+                                                    <th id="th7" class="text-center" colspan="1">週三</th>
                                                 </tr>
                                                 <!--第三層-->
                                                 <tr>
@@ -248,6 +245,9 @@
                                                     <td id="td2" colspan="1" style="text-align: right"></td>
                                                     <td id="td3" colspan="1" style="text-align: right"></td>
                                                     <td id="td4" colspan="1" style="text-align: right"></td>
+                                                    <td id="td5" colspan="1" style="text-align: right"></td>
+                                                    <td id="td6" colspan="1" style="text-align: right"></td>
+                                                    <td id="td7" colspan="1" style="text-align: right"></td>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -259,10 +259,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div></div>
+
                         </div>
                     </div>
-                    
+
                     <div class="modal fade" id="modal_Shop1" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content" style="height: 900px; width: 1400px;left:-200px; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
@@ -300,18 +300,18 @@
                                         box-shadow: 0 0px 2px 0px inset #ddd;
                                     }
 
-                                    #thead1_Shop1, #thead2_Shop1, #thead3_Shop1, #thead4_Shop1, #thead5_Shop1 {
+                                    #thead1_Shop1, #thead2_Shop1, #thead3_Shop1, #thead4_Shop1, #thead5_Shop1, #thead6_Shop1, #thead7_Shop1, #thead8_Shop1 {
                                         top: 0;
                                         z-index: 2;
                                         height: 35px;
                                     }
 
-                                    #th1_Shop1, #th2_Shop1, #th3_Shop1, #th4_Shop1, #th5_Shop1, #th6_Shop1, #th7_Shop1, #th8_Shop1, #th9_Shop1, #th10_Shop1, #th11_Shop1, #th12_Shop1 {
+                                    #th1_Shop1, #th2_Shop1, #th3_Shop1, #th4_Shop1, #th5_Shop1, #th6_Shop1, #th7_Shop1, #th8_Shop1 {
                                         top: 35px;
                                         z-index: 2;
                                     }
 
-                                    #td1_Shop1, #td2_Shop1, #td3_Shop1, #td4_Shop1, #td5_Shop1, #td6_Shop1, #td7_Shop1, #td8_Shop1, #td9_Shop1, #td10_Shop1, #td11_Shop1, #td12_Shop1 {
+                                    #td1_Shop1, #td2_Shop1, #td3_Shop1, #td4_Shop1, #td5_Shop1, #td6_Shop1, #td7_Shop1 {
                                         top: 65px;
                                         z-index: 2;
                                         color: red;
@@ -330,7 +330,7 @@
                                 <div class="modal-body modal-tab-container" style="padding:8px">
 
                                     <div class="form-group row" style="margin-left: 5px; width: 100%">
-                                        <label class="DyForm3-ProgramName">四周星期時段比較表</label>
+                                        <label class="DyForm3-ProgramName">7日時段統計</label>
                                     </div>
 
                                     <div class="form-group row" style="width: 100%">
@@ -338,7 +338,7 @@
                                     </div>
 
                                     <div class="form-group row" style="margin-left: 12px; width: 100%">
-                                        <label class="DyForm3-Label">星&ensp;&ensp;&ensp;&ensp;期&ensp;&ensp;</label>
+                                        <label class="DyForm3-Label">銷售期間&ensp;&ensp;</label>
                                         <label id="lblDW_Shop1" class="DyForm3-LabelBlack" style="margin-top:3px"></label>
                                     </div>
 
@@ -356,18 +356,24 @@
                                                         <!--第一層-->
                                                         <tr>
                                                             <td id="thead1_Shop1" class="text-center" colspan="1">日期</td>
-                                                            <td id="thead2_Shop1" class="text-center" colspan="1">5/12</td>
-                                                            <td id="thead3_Shop1" class="text-center" colspan="1">5/5</td>
-                                                            <td id="thead4_Shop1" class="text-center" colspan="1">4/28</td>
-                                                            <td id="thead5_Shop1" class="text-center" colspan="1">4/21</td>
+                                                            <td id="thead2_Shop1" class="text-center" colspan="1">6/27</td>
+                                                            <td id="thead3_Shop1" class="text-center" colspan="1">6/28</td>
+                                                            <td id="thead4_Shop1" class="text-center" colspan="1">6/29</td>
+                                                            <td id="thead5_Shop1" class="text-center" colspan="1">6/30</td>
+                                                            <td id="thead6_Shop1" class="text-center" colspan="1">7/1</td>
+                                                            <td id="thead7_Shop1" class="text-center" colspan="1">7/2</td>
+                                                            <td id="thead8_Shop1" class="text-center" colspan="1">7/3</td>
                                                         </tr>
                                                         <!--第二層-->
                                                         <tr>
                                                             <th id="th1_Shop1" class="text-center">時段</th>
-                                                            <th id="th2_Shop1" class="text-center">週日</th>
-                                                            <th id="th3_Shop1" class="text-center">週日</th>
-                                                            <th id="th4_Shop1" class="text-center">週日</th>
+                                                            <th id="th2_Shop1" class="text-center">週四</th>
+                                                            <th id="th3_Shop1" class="text-center">週五</th>
+                                                            <th id="th4_Shop1" class="text-center">週六</th>
                                                             <th id="th5_Shop1" class="text-center">週日</th>
+                                                            <th id="th6_Shop1" class="text-center">週一</th>
+                                                            <th id="th7_Shop1" class="text-center">週二</th>
+                                                            <th id="th8_Shop1" class="text-center">週三</th>
                                                         </tr>
                                                         <!--第三層-->
                                                         <tr>
@@ -376,6 +382,9 @@
                                                             <td id="td2_Shop1" colspan="1" style="text-align: right"></td>
                                                             <td id="td3_Shop1" colspan="1" style="text-align: right"></td>
                                                             <td id="td4_Shop1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td5_Shop1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td6_Shop1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td7_Shop1" colspan="1" style="text-align: right"></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>

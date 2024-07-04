@@ -12544,6 +12544,175 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("SystemSetup/GetInitMSSA106")]
+        public ActionResult SystemSetup_GetInitMSSA106()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetInitMSSA106OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ProgramID = rq["ProgramID"];
+                string Yesterday = PubUtility.GetYesterday(uu);
+                string Today = PubUtility.GetToday(uu);
+                string sql = "select ChineseName from ProgramIDWeb (nolock) where ProgramID='" + ProgramID.SqlQuote() + "'";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+                string ls_TestDT = "2023/12/27";  //black--2024/01/24
+                //系統日-1(星期幾) 7日內
+                string sqldw = "select datepart(weekday,Dateadd(d,number*-1,'" + ls_TestDT + "')) dw,convert(varchar,Dateadd(d,number*-1,'" + ls_TestDT + "'),111) D1,";
+                sqldw += "convert(varchar,MONTH(Dateadd(d,number*-1,'" + ls_TestDT + "')))+'/'+convert(varchar,Day(Dateadd(d,number*-1,'" + ls_TestDT + "'))) RptD1,";
+                sqldw += "'D'+convert(varchar,ROW_NUMBER() over(order by number desc)) DayCnt,";
+                sqldw += "case Datepart(weekday,Dateadd(d,number*-1,'" + ls_TestDT + "')) when 1 then N'日' when 2 then N'一' when 3 then N'二' when 4 then N'三' when 5 then N'四' when 6 then N'五' when 7 then N'六' else '' end DayWeek {0} ";
+                sqldw += "from master..spt_values where type = 'p' and number<= 6 ";
+                //string sqldw = "select datepart(weekday,Dateadd(d,number*-1,dateadd(d,-1,getdate()))) dw,convert(varchar,Dateadd(d,number*-1,dateadd(d,-1,getdate())),111) D1,";
+                //sqldw += "convert(varchar,MONTH(Dateadd(d,number*-1,dateadd(d,-1,getdate()))))+'/'+convert(varchar,Day(Dateadd(d,number*-1,dateadd(d,-1,getdate())))) RptD1,";
+                //sqldw += "'D'+convert(varchar,ROW_NUMBER() over(order by number desc)) DayCnt,";
+                //sqldw += "case Datepart(weekday,Dateadd(d,number*-1,Dateadd(d,-1,getdate()))) when 1 then N'日' when 2 then N'一' when 3 then N'二' when 4 then N'三' when 5 then N'四' when 6 then N'五' when 7 then N'六' else '' end DayWeek {0} ";
+                //sqldw += "from master..spt_values where type = 'p' and number<= 6";
+                DataTable dtD = PubUtility.SqlQry(string.Format(sqldw, ""), uu, "SYS");
+                dtD.TableName = "dtD";
+                ds.Tables.Add(dtD);
+
+                //系統日-1的7日時段表
+                string sqlRtn = "SELECT PVT.T1 [ID],isnull([D1],0) D1,isnull([D2],0) D2,isnull([D3],0) D3,isnull([D4],0) D4,isnull([D5],0) D5,isnull([D6],0) D6,isnull([D7],0) D7 ";
+                sqlRtn += "into #tmpRtn FROM (select T1,DayCnt,Cash from #tmpRpt a left join SalesH_AllWeb b (nolock) on a.T1=b.TimeGroup and a.D1=b.OpenDate and b.CompanyCode='" + uu.CompanyId + "') H ";
+                sqlRtn += "PIVOT(";
+                sqlRtn += "Sum(Cash)";
+                sqlRtn += "FOR DayCnt IN ([D1], [D2], [D3], [D4], [D5], [D6], [D7])";
+                sqlRtn += ") AS PVT; ";
+                string sqlRtnAll = "insert into #tmpRtn select 'SumAll',sum([D1]), sum([D2]), sum([D3]), sum([D4]), sum([D5]), sum([D6]), sum([D7]) from #tmpRtn;";
+
+                sql = "select case len(number) when 1 then '0'+convert(varchar,number) else convert(varchar,number) end T1 into #tmpT from master..spt_values where type='p' and number<=23;";
+                sql += string.Format(sqldw, "into #tmpDW") + ";";
+                sql += "select * into #tmpRpt from #tmpT cross join (select D1,DayCnt from #tmpDW) a;";
+                sql += sqlRtn;
+                sql += sqlRtnAll;
+                sql += "Select * from #tmpRtn";
+                DataTable dtDelt = PubUtility.SqlQry(sql, uu, "SYS");
+                dtDelt.TableName = "dtDelt";
+
+                DataTable dtSum = dtDelt.Clone();
+                dtSum.ImportRow(dtDelt.Select("ID='SumAll'")[0]);
+                dtSum.TableName = "dtSum";
+                ds.Tables.Add(dtSum);
+
+                dtDelt.Rows.Remove(dtDelt.Select("ID='SumAll'")[0]);
+                ds.Tables.Add(dtDelt);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSSA106Query")]
+        public ActionResult SystemSetup_MSSA106Query()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSA106QueryOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ShopNo = rq["ShopNo"];
+                string Flag = rq["Flag"];
+                string sql = "";
+                string sqlCon = "";
+
+                if (ShopNo != "")
+                {
+                    sqlCon += "and {0} in(" + ShopNo + ") ";
+                }
+                if (Flag == "S")
+                {
+                    sql = "";
+                }
+                else if (Flag == "T")
+                {
+                    sql = "select case len(number) when 1 then '0'+convert(varchar,number) else convert(varchar,number) end T1 into #tmpT from master..spt_values where type='p' and number<=23;";
+                }
+
+                string ls_TestDT = "2023/12/25";  //black--2024/01/24
+                //系統日-1(星期幾) 7日內
+                string sqldw = "select datepart(weekday,Dateadd(d,number*-1,'" + ls_TestDT + "')) dw,convert(varchar,Dateadd(d,number*-1,'" + ls_TestDT + "'),111) D1,";
+                sqldw += "convert(varchar,MONTH(Dateadd(d,number*-1,'" + ls_TestDT + "')))+'/'+convert(varchar,Day(Dateadd(d,number*-1,'" + ls_TestDT + "'))) RptD1,";
+                sqldw += "'D'+convert(varchar,ROW_NUMBER() over(order by number desc)) DayCnt,";
+                sqldw += "case Datepart(weekday,Dateadd(d,number*-1,'" + ls_TestDT + "')) when 1 then N'日' when 2 then N'一' when 3 then N'二' when 4 then N'三' when 5 then N'四' when 6 then N'五' when 7 then N'六' else '' end DayWeek {0} ";
+                sqldw += "from master..spt_values where type = 'p' and number<= 6 ";
+                //string sqldw = "select datepart(weekday,Dateadd(d,number*-1,dateadd(d,-1,getdate()))) dw,convert(varchar,Dateadd(d,number*-1,dateadd(d,-1,getdate())),111) D1,";
+                //sqldw += "convert(varchar,MONTH(Dateadd(d,number*-1,dateadd(d,-1,getdate()))))+'/'+convert(varchar,Day(Dateadd(d,number*-1,dateadd(d,-1,getdate())))) RptD1,";
+                //sqldw += "'D'+convert(varchar,ROW_NUMBER() over(order by number desc)) DayCnt,";
+                //sqldw += "case Datepart(weekday,Dateadd(d,number*-1,Dateadd(d,-1,getdate()))) when 1 then N'日' when 2 then N'一' when 3 then N'二' when 4 then N'三' when 5 then N'四' when 6 then N'五' when 7 then N'六' else '' end DayWeek {0} ";
+                //sqldw += "from master..spt_values where type = 'p' and number<= 6";
+                DataTable dtD = PubUtility.SqlQry(string.Format(sqldw, ""), uu, "SYS");
+                dtD.TableName = "dtD";
+                ds.Tables.Add(dtD);
+
+                //7日時段表
+                string sqlRtnT = "SELECT PVT.T1 [ID],isnull([D1],0) D1,isnull([D2],0) D2,isnull([D3],0) D3,isnull([D4],0) D4,isnull([D5],0) D5,isnull([D6],0) D6,isnull([D7],0) D7 into #tmpRtn ";
+                sqlRtnT += "FROM (select T1,DayCnt,Cash from #tmpRpt a left join SalesH_AllWeb b (nolock) on a.T1=b.TimeGroup and a.w1=b.OpenDate and b.CompanyCode='" + uu.CompanyId + "'";
+                if (sqlCon != "") { sqlRtnT += " " + string.Format(sqlCon, "b.ShopNo"); }
+                sqlRtnT += ") H PIVOT(";
+                sqlRtnT += "Sum(Cash)";
+                sqlRtnT += "FOR DayCnt IN ([D1], [D2], [D3], [D4], [D5], [D6], [D7])";
+                sqlRtnT += ") AS PVT; ";
+
+                //7日店別表
+                string sqlRtnS = "SELECT PVT.WhName [ID],isnull([D1],0) D1,isnull([D2],0) D2,isnull([D3],0) D3,isnull([D4],0) D4,isnull([D5],0) D5,isnull([D6],0) D6,isnull([D7],0) D7 into #tmpRtn ";
+                sqlRtnS += "FROM (select ST_ID,WhName,DayCnt,Cash from #tmpRpt a left join SalesH_AllWeb b (nolock) on a.ST_ID=b.ShopNo and a.D1=b.OpenDate and b.CompanyCode='" + uu.CompanyId + "') H ";
+                sqlRtnS += "PIVOT(";
+                sqlRtnS += "Sum(Cash)";
+                sqlRtnS += "FOR DayCnt IN ([D1], [D2], [D3], [D4], [D5], [D6], [D7])";
+                sqlRtnS += ") AS PVT; ";
+
+                sql += string.Format(sqldw, "into #tmpDW") + ";";
+                if (Flag == "T")
+                {
+                    sql += "select * into #tmpRpt from #tmpT cross join (select D1,DayCnt from #tmpDW) a;";
+                    sql += sqlRtnT;
+                }
+                else if (Flag == "S")
+                {
+                    sql += "select * into #tmpRpt from (select ST_ID,ST_ID+'-'+ST_Sname WhName from WarehouseWeb (nolock) where CompanyCode='" + uu.CompanyId + "'";
+                    if (sqlCon != "")
+                    {
+                        sql += " " + string.Format(sqlCon, "ST_ID");
+                    }
+                    else
+                    {
+                        sql += " and ST_Type not in('2','3')";
+                    }
+                    sql += ") w cross join (select D1,DayCnt from #tmpDW) a;";
+                    sql += sqlRtnS;
+                }
+
+                sql += "insert into #tmpRtn select 'SumAll',sum([D1]), sum([D2]), sum([D3]), sum([D4]), sum([D5]), sum([D6]), sum([D7]) from #tmpRtn;";
+                sql += "Select * from #tmpRtn order by [ID];";
+                DataTable dtDelt = PubUtility.SqlQry(sql, uu, "SYS");
+                dtDelt.TableName = "dtDelt";
+
+                DataTable dtSum = dtDelt.Clone();
+                dtSum.ImportRow(dtDelt.Select("ID='SumAll'")[0]);
+                dtSum.TableName = "dtSum";
+                ds.Tables.Add(dtSum);
+
+                dtDelt.Rows.Remove(dtDelt.Select("ID='SumAll'")[0]);
+                ds.Tables.Add(dtDelt);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
         [Route("FileUpload_EDM")]
         public ActionResult FileUpload_EDM()
         {
