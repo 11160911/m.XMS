@@ -12709,18 +12709,18 @@ namespace SVMAdmin.Controllers
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
                 ds.Tables.Add(dtE);
-                string ls_TestDT = "2023/12/27";  //black--2024/01/24
+                //string ls_TestDT = "2023/12/27";  //black--2024/01/24
                 //系統日-1(星期幾) 7日內
-                string sqldw = "select datepart(weekday,Dateadd(d,number*-1,'" + ls_TestDT + "')) dw,convert(varchar,Dateadd(d,number*-1,'" + ls_TestDT + "'),111) D1,";
-                sqldw += "convert(varchar,MONTH(Dateadd(d,number*-1,'" + ls_TestDT + "')))+'/'+convert(varchar,Day(Dateadd(d,number*-1,'" + ls_TestDT + "'))) RptD1,";
-                sqldw += "'D'+convert(varchar,ROW_NUMBER() over(order by number desc)) DayCnt,";
-                sqldw += "case Datepart(weekday,Dateadd(d,number*-1,'" + ls_TestDT + "')) when 1 then N'日' when 2 then N'一' when 3 then N'二' when 4 then N'三' when 5 then N'四' when 6 then N'五' when 7 then N'六' else '' end DayWeek {0} ";
-                sqldw += "from master..spt_values where type = 'p' and number<= 6 ";
-                //string sqldw = "select datepart(weekday,Dateadd(d,number*-1,dateadd(d,-1,getdate()))) dw,convert(varchar,Dateadd(d,number*-1,dateadd(d,-1,getdate())),111) D1,";
-                //sqldw += "convert(varchar,MONTH(Dateadd(d,number*-1,dateadd(d,-1,getdate()))))+'/'+convert(varchar,Day(Dateadd(d,number*-1,dateadd(d,-1,getdate())))) RptD1,";
+                //string sqldw = "select datepart(weekday,Dateadd(d,number*-1,'" + ls_TestDT + "')) dw,convert(varchar,Dateadd(d,number*-1,'" + ls_TestDT + "'),111) D1,";
+                //sqldw += "convert(varchar,MONTH(Dateadd(d,number*-1,'" + ls_TestDT + "')))+'/'+convert(varchar,Day(Dateadd(d,number*-1,'" + ls_TestDT + "'))) RptD1,";
                 //sqldw += "'D'+convert(varchar,ROW_NUMBER() over(order by number desc)) DayCnt,";
-                //sqldw += "case Datepart(weekday,Dateadd(d,number*-1,Dateadd(d,-1,getdate()))) when 1 then N'日' when 2 then N'一' when 3 then N'二' when 4 then N'三' when 5 then N'四' when 6 then N'五' when 7 then N'六' else '' end DayWeek {0} ";
-                //sqldw += "from master..spt_values where type = 'p' and number<= 6";
+                //sqldw += "case Datepart(weekday,Dateadd(d,number*-1,'" + ls_TestDT + "')) when 1 then N'日' when 2 then N'一' when 3 then N'二' when 4 then N'三' when 5 then N'四' when 6 then N'五' when 7 then N'六' else '' end DayWeek {0} ";
+                //sqldw += "from master..spt_values where type = 'p' and number<= 6 ";
+                string sqldw = "select datepart(weekday,Dateadd(d,number*-1,dateadd(d,-1,getdate()))) dw,convert(varchar,Dateadd(d,number*-1,dateadd(d,-1,getdate())),111) D1,";
+                sqldw += "convert(varchar,MONTH(Dateadd(d,number*-1,dateadd(d,-1,getdate()))))+'/'+convert(varchar,Day(Dateadd(d,number*-1,dateadd(d,-1,getdate())))) RptD1,";
+                sqldw += "'D'+convert(varchar,ROW_NUMBER() over(order by number desc)) DayCnt,";
+                sqldw += "case Datepart(weekday,Dateadd(d,number*-1,Dateadd(d,-1,getdate()))) when 1 then N'日' when 2 then N'一' when 3 then N'二' when 4 then N'三' when 5 then N'四' when 6 then N'五' when 7 then N'六' else '' end DayWeek {0} ";
+                sqldw += "from master..spt_values where type = 'p' and number<= 6";
                 DataTable dtD = PubUtility.SqlQry(string.Format(sqldw, ""), uu, "SYS");
                 dtD.TableName = "dtD";
                 ds.Tables.Add(dtD);
@@ -12786,25 +12786,25 @@ namespace SVMAdmin.Controllers
                     sql = "select case len(number) when 1 then '0'+convert(varchar,number) else convert(varchar,number) end T1 into #tmpT from master..spt_values where type='p' and number<=23;";
                 }
 
-                string ls_TestDT = "2023/12/25";  //black--2024/01/24
+                //string ls_TestDT = "2023/12/27";  //black--2024/01/24
                 //系統日-1(星期幾) 7日內
-                string sqldw = "select datepart(weekday,Dateadd(d,number*-1,'" + ls_TestDT + "')) dw,convert(varchar,Dateadd(d,number*-1,'" + ls_TestDT + "'),111) D1,";
-                sqldw += "convert(varchar,MONTH(Dateadd(d,number*-1,'" + ls_TestDT + "')))+'/'+convert(varchar,Day(Dateadd(d,number*-1,'" + ls_TestDT + "'))) RptD1,";
-                sqldw += "'D'+convert(varchar,ROW_NUMBER() over(order by number desc)) DayCnt,";
-                sqldw += "case Datepart(weekday,Dateadd(d,number*-1,'" + ls_TestDT + "')) when 1 then N'日' when 2 then N'一' when 3 then N'二' when 4 then N'三' when 5 then N'四' when 6 then N'五' when 7 then N'六' else '' end DayWeek {0} ";
-                sqldw += "from master..spt_values where type = 'p' and number<= 6 ";
-                //string sqldw = "select datepart(weekday,Dateadd(d,number*-1,dateadd(d,-1,getdate()))) dw,convert(varchar,Dateadd(d,number*-1,dateadd(d,-1,getdate())),111) D1,";
-                //sqldw += "convert(varchar,MONTH(Dateadd(d,number*-1,dateadd(d,-1,getdate()))))+'/'+convert(varchar,Day(Dateadd(d,number*-1,dateadd(d,-1,getdate())))) RptD1,";
+                //string sqldw = "select datepart(weekday,Dateadd(d,number*-1,'" + ls_TestDT + "')) dw,convert(varchar,Dateadd(d,number*-1,'" + ls_TestDT + "'),111) D1,";
+                //sqldw += "convert(varchar,MONTH(Dateadd(d,number*-1,'" + ls_TestDT + "')))+'/'+convert(varchar,Day(Dateadd(d,number*-1,'" + ls_TestDT + "'))) RptD1,";
                 //sqldw += "'D'+convert(varchar,ROW_NUMBER() over(order by number desc)) DayCnt,";
-                //sqldw += "case Datepart(weekday,Dateadd(d,number*-1,Dateadd(d,-1,getdate()))) when 1 then N'日' when 2 then N'一' when 3 then N'二' when 4 then N'三' when 5 then N'四' when 6 then N'五' when 7 then N'六' else '' end DayWeek {0} ";
-                //sqldw += "from master..spt_values where type = 'p' and number<= 6";
+                //sqldw += "case Datepart(weekday,Dateadd(d,number*-1,'" + ls_TestDT + "')) when 1 then N'日' when 2 then N'一' when 3 then N'二' when 4 then N'三' when 5 then N'四' when 6 then N'五' when 7 then N'六' else '' end DayWeek {0} ";
+                //sqldw += "from master..spt_values where type = 'p' and number<= 6 ";
+                string sqldw = "select datepart(weekday,Dateadd(d,number*-1,dateadd(d,-1,getdate()))) dw,convert(varchar,Dateadd(d,number*-1,dateadd(d,-1,getdate())),111) D1,";
+                sqldw += "convert(varchar,MONTH(Dateadd(d,number*-1,dateadd(d,-1,getdate()))))+'/'+convert(varchar,Day(Dateadd(d,number*-1,dateadd(d,-1,getdate())))) RptD1,";
+                sqldw += "'D'+convert(varchar,ROW_NUMBER() over(order by number desc)) DayCnt,";
+                sqldw += "case Datepart(weekday,Dateadd(d,number*-1,Dateadd(d,-1,getdate()))) when 1 then N'日' when 2 then N'一' when 3 then N'二' when 4 then N'三' when 5 then N'四' when 6 then N'五' when 7 then N'六' else '' end DayWeek {0} ";
+                sqldw += "from master..spt_values where type = 'p' and number<= 6";
                 DataTable dtD = PubUtility.SqlQry(string.Format(sqldw, ""), uu, "SYS");
                 dtD.TableName = "dtD";
                 ds.Tables.Add(dtD);
 
                 //7日時段表
                 string sqlRtnT = "SELECT PVT.T1 [ID],isnull([D1],0) D1,isnull([D2],0) D2,isnull([D3],0) D3,isnull([D4],0) D4,isnull([D5],0) D5,isnull([D6],0) D6,isnull([D7],0) D7 into #tmpRtn ";
-                sqlRtnT += "FROM (select T1,DayCnt,Cash from #tmpRpt a left join SalesH_AllWeb b (nolock) on a.T1=b.TimeGroup and a.w1=b.OpenDate and b.CompanyCode='" + uu.CompanyId + "'";
+                sqlRtnT += "FROM (select T1,DayCnt,Cash from #tmpRpt a left join SalesH_AllWeb b (nolock) on a.T1=b.TimeGroup and a.D1=b.OpenDate and b.CompanyCode='" + uu.CompanyId + "'";
                 if (sqlCon != "") { sqlRtnT += " " + string.Format(sqlCon, "b.ShopNo"); }
                 sqlRtnT += ") H PIVOT(";
                 sqlRtnT += "Sum(Cash)";
