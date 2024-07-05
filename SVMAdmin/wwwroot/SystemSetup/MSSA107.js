@@ -317,12 +317,12 @@
                 var a = $(obchkedtd[i]).closest('tr');
                 var trNode = $(a).prop('Record');
                 chkShopNo += "'" + GetNodeValue(trNode, "ST_ID") + "',";  //已勾選的每一筆店倉
-                if (i <= 4) {
+                if (i <= 1) {
                     ShopName += GetNodeValue(trNode, "ST_SName") + "，";
                 }
             }
             chkShopNo = chkShopNo.substr(0, chkShopNo.length - 1)
-            if (chkedRow > 5) {
+            if (chkedRow > 2) {
                 $('#lblShopName').html(ShopName.substr(0, ShopName.length - 1) + '...')
             }
             else {

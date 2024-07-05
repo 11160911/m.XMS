@@ -116,7 +116,7 @@
 
                 <article id="pgMSSA106Init" class="row">
                     <div class="col-md-12 col-sm-12">
-                        <div class="x_panel" style="padding: 0px; height: 100%; width: 100%; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
+                        <div class="x_panel" style="padding: 0px; height: 100%; width: 100%; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 450px 550px ">
                             <style>
                                 .ErrorControl {
                                     background-color: red;
@@ -158,28 +158,29 @@
                                 #thtype, #thead1, #thead2, #thead3, #thead4, #thead5, #thead6, #thead7 {
                                     top: 0;
                                     z-index: 2;
-                                    height: 35px;
+                                    height: 50px;
                                 }
 
                                 #th0, #th1, #th2, #th3, #th4, #th5, #th6, #th7 {
-                                    top: 35px;
+                                    top: 50px;
                                     z-index: 2;
+                                    height:50px;
                                 }
 
                                 #td1, #td2, #td3, #td4, #td5, #td6, #td7 {
-                                    top: 65px;
+                                    top: 95px;
                                     z-index: 2;
                                     color: red;
                                 }
 
                                 #td0 {
-                                    top: 65px;
+                                    top: 95px;
                                     z-index: 2;
                                 }
                             </style>
 
                             <div class="form-group row" style="margin-left: 5px; width: 100%">
-                                <label id="lblProgramName" class="DyForm3-ProgramName">7日時段統計</label>
+                                <label id="lblProgramName" class="DyForm3-ProgramName">七日時段統計</label>
                             </div>
 
                             <div class="form-group row" style="margin-left: 20px; width: 100%">
@@ -187,7 +188,7 @@
                                     清除
                                     <i class="fa fa-close"></i>
                                 </button>
-                                <button class="DyForm3-BtnQuery" id="btQuery" type="button" style="margin-left: 270px">
+                                <button class="DyForm3-BtnQuery" id="btQuery" type="button" style="margin-left: 40px">
                                     查詢
                                     <i class="fa fa-search"></i>
                                 </button>
@@ -195,7 +196,7 @@
                             <div class="form-group row" style="margin-left: 12px; width: 100%;margin-top:20px">
                                 <!--<mark class="DyForm3-DyNotEmptyMark" style="margin-left:5px">*</mark>-->
                                 <label class="DyForm3-Label" style=" margin-left: 10px; margin-top: 5px">銷售期間</label>
-                                <label class="DyForm3-Label" id="lblDayRange" style=" margin-left: 10px; margin-top: 5px">2024/06/27~2024/07/03</label>
+                                <label class="DyForm3-LabelBlack" id="lblDayRange" style=" margin-left: 10px; margin-top: 5px">2024/06/27~2024/07/03</label>
                             </div>
                             <div class="form-group row" style="margin-left: 12px; width: 100%;margin-top:20px">
                                 <button class="DyForm3-BtnShop" id="btShopNo" type="button">店&ensp;&ensp;別</button>
@@ -265,7 +266,7 @@
 
                     <div class="modal fade" id="modal_Shop1" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 900px; width: 1400px;left:-200px; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
+                            <div class="modal-content" style="width:100%;height:100%;background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 450px 550px ">
                                 <style>
                                     #tbDShop1 thead tr th {
                                         font-size: 14px;
@@ -303,22 +304,23 @@
                                     #thead1_Shop1, #thead2_Shop1, #thead3_Shop1, #thead4_Shop1, #thead5_Shop1, #thead6_Shop1, #thead7_Shop1, #thead8_Shop1 {
                                         top: 0;
                                         z-index: 2;
-                                        height: 35px;
+                                        height: 50px;
                                     }
 
                                     #th1_Shop1, #th2_Shop1, #th3_Shop1, #th4_Shop1, #th5_Shop1, #th6_Shop1, #th7_Shop1, #th8_Shop1 {
-                                        top: 35px;
+                                        top: 50px;
                                         z-index: 2;
+                                        height:50px;
                                     }
 
                                     #td1_Shop1, #td2_Shop1, #td3_Shop1, #td4_Shop1, #td5_Shop1, #td6_Shop1, #td7_Shop1 {
-                                        top: 65px;
+                                        top: 95px;
                                         z-index: 2;
                                         color: red;
                                     }
 
                                     #td0_Shop1 {
-                                        top: 65px;
+                                        top: 95px;
                                         z-index: 2;
                                     }
                                 </style>
@@ -333,8 +335,8 @@
                                         <label class="DyForm3-ProgramName">7日時段統計</label>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%">
-                                        <button id="btRe_Shop1" type="button" class="DyForm3-BtnRe" style="position: absolute; right: 60px">回上頁</button>
+                                    <div class="form-group row" style="width: 100%; margin-left: 12px">
+                                        <button id="btRe_Shop1" type="button" class="DyForm3-BtnRe">回上頁</button>
                                     </div>
 
                                     <div class="form-group row" style="margin-left: 12px; width: 100%">
@@ -350,7 +352,7 @@
 
                                     <div class="card-block forminput">
                                         <div class="x_content">
-                                            <div style="overflow: auto; height: 650px;">
+                                            <div style="overflow: auto;height:400px">
                                                 <table id="tbDShop1" class="table table-bordered" style="width:100%">
                                                     <thead>
                                                         <!--第一層-->
@@ -402,7 +404,7 @@
                     </div>
                     <div class="modal fade" id="modal_Lookup_ShopNo" data-keyboard="false" data-backdrop="static" style="z-index:1041">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 580px;">
+                            <div class="modal-content" style="width: 100%; height: 100%">
                                 <div class="modal-header" style="padding-bottom:0px">
                                     <label class="DyForm3-ProgramName">店別查詢</label>
                                 </div>
@@ -443,22 +445,22 @@
                                             清除
                                             <i class="fa fa-close"></i>
                                         </button>
-                                        <button id="btLpQ_ShopNo" type="button" class="DyForm3-BtnQuery" style="margin-left:195px">
+                                        <button id="btLpQ_ShopNo" type="button" class="DyForm3-BtnQuery" style="margin-left: 40px">
                                             查詢
                                             <i class="fa fa-search"></i>
                                         </button>
-                                        <button class="DyForm3-BtnExit" id="btLpExit_ShopNo" type="button" style="margin-left: 10px">
+                                        <button class="DyForm3-BtnExit" id="btLpExit_ShopNo" type="button" style="margin-left: 20px">
                                             離開
                                             <i class="fa fa-sign-out"></i>
                                         </button>
                                     </div>
 
                                     <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 5px; margin-top: 15px ">
-                                        <input id="txtLpQ_ShopNo" class="form-control small" style="border-radius: 10px; font-size: 16px; width: 50%; line-height: 0px; padding: 3px; height: 28px " placeholder="請輸入店別">
+                                        <input id="txtLpQ_ShopNo" class="form-control small" style="border-radius: 10px; font-size: 16px; width: 75%; line-height: 0px; padding: 3px; height: 28px " placeholder="請輸入店別">
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 5px; margin-top: 15px ">
-                                        <button class="DyForm3-BtnQuery" id="btLpOK_ShopNo" type="button" style="margin-left: 375px">
+                                    <div class="form-group row" style="width: 100%; margin: 0; margin-bottom: 30px; margin-top: 15px; ">
+                                        <button class="DyForm3-BtnQuery" id="btLpOK_ShopNo" type="button" style="position: absolute; right: 35px">
                                             確定
                                             <!--<i class="fa fa-search"></i>-->
                                         </button>
@@ -466,7 +468,7 @@
 
                                     <div class="card-block forminput">
                                         <div class="x_content">
-                                            <div style="overflow: auto; height: 350px;">
+                                            <div style="overflow: auto; height: 400px;">
                                                 <table id="tbLookup_ShopNo" class="table table-bordered" style="width: 100%;">
                                                     <thead>
                                                         <tr>
