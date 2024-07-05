@@ -907,6 +907,56 @@ namespace SVMAdmin.Controllers
             return Content(strHtml, "text/html", System.Text.Encoding.UTF8);
         }
 
+        [Route("SystemSetup/MSSA105")]
+        public IActionResult MSSA105()
+        {
+            HtmlAgilityPack.HtmlDocument doc1 = new HtmlAgilityPack.HtmlDocument();
+            string strHtml = System.IO.File.ReadAllText(ConstList.HostEnvironment.WebRootPath + @"\SystemSetup\MSSA105.html".AdjPathByOS());
+            doc1.LoadHtml(strHtml);
+
+            //Remove Node
+            string[] NodeRemove = new string[] {
+                "//script",
+                "//link"
+            };
+            for (int i = 0; i < NodeRemove.Length; i++)
+            {
+                HtmlAgilityPack.HtmlNodeCollection ndm = doc1.DocumentNode.SelectNodes(NodeRemove[i]);
+                if (ndm != null)
+                {
+                    for (int j = 0; j < ndm.Count; j++)
+                        ndm[j].Remove();
+                }
+            }
+
+            //RemoveAllChildren
+            NodeRemove = new string[] {
+                 "//ul[contains(@class,'app-menu')]",
+                 "//table[@id='tbMSSA105Mod']/tbody"
+            };
+            for (int i = 0; i < NodeRemove.Length; i++)
+            {
+                HtmlAgilityPack.HtmlNodeCollection ndm = doc1.DocumentNode.SelectNodes(NodeRemove[i]);
+                if (ndm != null)
+                {
+                    for (int j = 0; j < ndm.Count; j++)
+                        ndm[j].RemoveAllChildren();
+                }
+
+            }
+
+            HtmlAgilityPack.HtmlNode ndh = doc1.DocumentNode.SelectSingleNode("//head");
+            //PubUtility.AppendCss(ndh, "css/main.css");
+            //PubUtility.AppendCss(ndh, "css/font-awesome.css");
+            ndh = doc1.DocumentNode.SelectSingleNode("//body");
+            //PubUtility.AppendCssAtHeadEnd(doc1, "../css/DyForm3.css");
+
+            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+            doc1.Save(ms);
+            strHtml = System.Text.Encoding.UTF8.GetString(ms.ToArray());
+            return Content(strHtml, "text/html", System.Text.Encoding.UTF8);
+        }
+
         [Route("SystemSetup/MSSA108")]
         public IActionResult MSSA108()
         {
