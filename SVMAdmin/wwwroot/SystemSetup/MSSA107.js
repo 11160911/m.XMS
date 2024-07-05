@@ -261,7 +261,7 @@
                 if (chkShopNo != "") {
                     var VIPFaceID = chkShopNo.split(',');
                     for (var i = 0; i < VIPFaceID.length; i++) {
-                        $('#tbLookup_VIPFaceID tbody tr .tdCol2').filter(function () { return $(this).text() == VIPFaceID[i].replaceAll("'", ""); }).closest('tr').find('.tdCol1 input:checkbox').prop('checked', true);
+                        $('#tbLookup_ShopNo tbody tr .tdCol2').filter(function () { return $(this).text() == VIPFaceID[i].replaceAll("'", ""); }).closest('tr').find('.tdCol1 input:checkbox').prop('checked', true);
                     }
                 }
             }, 500);
