@@ -13070,7 +13070,7 @@ namespace SVMAdmin.Controllers
                 string sql = "";
                 string sqlIDColname = "";  //ID要取的實際資料欄位名稱
                 string sqlBaseData = "";  //實際資料的Sql指令
-                string sqlGroup = "";
+                string sqlGroup = "";  //
                 
                 if (Flag == "A")
                 {
