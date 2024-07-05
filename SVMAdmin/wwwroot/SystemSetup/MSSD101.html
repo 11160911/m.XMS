@@ -143,6 +143,22 @@
                                     padding: 3px;
                                     font-weight: bold;
                                 }
+
+                                #btQuery {
+                                    margin-left: 500px;
+                                }
+                                #txtPSName {
+                                    width: 360px;
+                                }
+
+                                @media (max-width:700px) {
+                                    #btQuery {
+                                        margin-left: 300px;
+                                    }
+                                    #txtPSName {
+                                        width :300px;
+                                    }
+                                }
                             </style>
 
                             <div class="form-group row" style="margin-left: 5px; width: 100%">
@@ -155,7 +171,7 @@
                                     清除
                                     <i class="fa fa-close"></i>
                                 </button>
-                                <button class="DyForm3-BtnQuery" id="btQuery" type="button" style="margin-left: 500px;">
+                                <button class="DyForm3-BtnQuery" id="btQuery" type="button" style="">
                                     查詢
                                     <i class="fa fa-search"></i>
                                 </button>
@@ -176,7 +192,7 @@
                             </div>
                             <div class="form-group row" style="margin-left: 12px; width: 100%">
                                 <label class="DyForm3-Label">活動名稱</label>
-                                <input class="DyForm3-TextBox" id="txtPSName" style="margin-left: 15px; width: 460px" type="text" maxlength="50" />
+                                <input class="DyForm3-TextBox" id="txtPSName" style="margin-left: 15px;" type="text" maxlength="50" />
                                 <!--<label class="DyForm3-Label" style="margin-left:58px">DM主旨</label>
                                 <input class="DyForm3-TextBox" id="txtEDMMemo" type="text" maxlength="50" />-->
                             </div>
@@ -227,7 +243,7 @@
                     <!--活動代碼 Lookup -->
                     <div class="modal fade" id="modal_Lookup_ActivityCode" data-keyboard="false" data-backdrop="static" style="z-index:1041">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height:480px">
+                            <div class="modal-content" style="height:520px">
                                 <div class="modal-body modal-tab-container" style="padding:8px">
                                     <style>
                                         #tbDataLookup_ActivityCode thead tr th {
