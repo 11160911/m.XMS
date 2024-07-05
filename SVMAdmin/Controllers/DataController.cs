@@ -12241,7 +12241,7 @@ namespace SVMAdmin.Controllers
                     sqlD += "case when isnull(s1.Cash1,0)=0 then format(0,'p') else format(cast(isnull(s2.Cash2,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float),'p') end as Per ";
                     sqlD += "from #s1 s1 ";
                     sqlD += "Full join #s2 s2 on s1.id=s2.id ";
-                    sqlD += "order by s1.id ";
+                    sqlD += "order by id ";
                     DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
                     dtE.TableName = "dtE";
                     ds.Tables.Add(dtE);

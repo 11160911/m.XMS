@@ -822,6 +822,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
         //Timerset();
         $('#btQuery').prop('disabled', true)
 
+        var QDays = "100";
         //期間1
         if ($('#txtOpenDateS1').val() == "" || $('#txtOpenDateE1').val() == "") {
             DyAlert("期間1兩欄皆需輸入!", function () { $('#btQuery').prop('disabled', false); })
@@ -830,6 +831,10 @@ Timerset(sessionStorage.getItem('isamcomp'));
         else {
             if ($('#txtOpenDateS1').val() > $('#txtOpenDateE1').val()) {
                 DyAlert("期間1開始日不可大於結束日!", function () { $('#btQuery').prop('disabled', false); })
+                return;
+            }
+            if (DateDiff("d", $('#txtOpenDateS1').val(), $('#txtOpenDateE1').val()) > parseInt(QDays)) {
+                DyAlert("期間1必須小於等於" + QDays + "天!!");
                 return;
             }
         }
@@ -844,9 +849,12 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 DyAlert("期間2開始日不可大於結束日!", function () { $('#btQuery').prop('disabled', false); })
                 return;
             }
+            if (DateDiff("d", $('#txtOpenDateS2').val(), $('#txtOpenDateE2').val()) > parseInt(QDays)) {
+                DyAlert("期間2必須小於等於" + QDays + "天!!");
+                return;
+            }
         }
         ShowLoading();
-
         var Flag = ""
         //店櫃
         if ($('#rdoS').prop('checked') == true) {
@@ -860,7 +868,6 @@ Timerset(sessionStorage.getItem('isamcomp'));
         else if ($('#rdoB').prop('checked') == true) {
             Flag = "B";
         }
-
         setTimeout(function () {
             var pData = {
                 OpenDateS1: $('#txtOpenDateS1').val().toString().replaceAll('-', '/'),
