@@ -68,11 +68,11 @@
             $('#navbarDropdown').text(GetNodeValue(dtEmployeeSV[0], 'ChineseName') + '-' + GetNodeValue(dtEmployeeSV[0], 'UName'));
             dtFun = data.getElementsByTagName('dtAllFunction');
             SetMenu();
-            init_sidebar();
             //$('#lblTime').html(GetNodeValue(dtEmployeeSV[0], 'SysDate'))
             //Setline(data);
             //SetBar(data);
             //SetPie(data);
+            init_sidebar();
             return;
         }
 
@@ -267,7 +267,6 @@
     };
 
     var GetHeads = function (jqxhr) {
-       
         var headers = {};
         jqxhr.getAllResponseHeaders()
             .trim()
@@ -782,9 +781,9 @@
 
         Timerset();
         // recompute content when resizing
-        //$(window).smartresize(function () {
-        //    setContentHeight();
-        //});
+        $(window).smartresize(function () {
+            setContentHeight();
+        });
 
         setContentHeight();
 
