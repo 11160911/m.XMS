@@ -88,6 +88,7 @@ namespace SVMAdmin.Controllers
             PubUtility.AppendScriptAtBodyEnd(doc1, "lib/jsTree/jstree.min.js");
             PubUtility.AppendScriptAtBodyEnd(doc1, "js/JSUtility.js");
             PubUtility.AppendScriptAtBodyEnd(doc1, "build/ckeditor.js");
+            PubUtility.AppendScriptAtBodyEnd(doc1, "js/echarts.min.js");
             //PubUtility.AppendScriptAtBodyEnd(doc1, "ckeditor5-master/packages/ckeditor5-build-classic/build/ckeditor.js");
             PubUtility.AppendScriptAtBodyEnd(doc1, "Menu.js");
 

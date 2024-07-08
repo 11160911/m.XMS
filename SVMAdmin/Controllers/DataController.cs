@@ -412,13 +412,18 @@ namespace SVMAdmin.Controllers
                 //    if (dt.DataSet == null)
                 //        ds.Tables.Add(dt);
 
-                sql = "select a.UName,a.Companycode,b.ChineseName ";
+                sql = "select a.UName,a.Companycode,b.ChineseName,convert(char(10),getdate(),111) + ' ' + convert(char(12),getdate(),108) SysDate ";
                 sql += " from Account a (nolock) ";
                 sql += " left join CompanyWeb b (nolock) on a.Companycode=b.Companycode ";
                 sql += " where a.UID='" + uu.UserID + "' ";
                 DataTable dtU = PubUtility.SqlQry(sql, uu, "SYS");
                 dtU.TableName = "dtEmployee";
                 ds.Tables.Add(dtU);
+
+                //sql = "select top 5 opendate name,sum(cash)value,sum(cash)/sum(recs) a2 from SalesHWeb (nolock) where CompanyCode='" + uu.CompanyId + "' group by opendate order by opendate ";
+                //DataTable dtH = PubUtility.SqlQry(sql, uu, "SYS");
+                //dtH.TableName = "dtH";
+                //ds.Tables.Add(dtH);
             }
             catch (Exception err)
             {

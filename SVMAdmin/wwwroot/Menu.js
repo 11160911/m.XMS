@@ -68,6 +68,10 @@
             $('#navbarDropdown').text(GetNodeValue(dtEmployeeSV[0], 'ChineseName') + '-' + GetNodeValue(dtEmployeeSV[0], 'UName'));
             dtFun = data.getElementsByTagName('dtAllFunction');
             SetMenu();
+            //$('#lblTime').html(GetNodeValue(dtEmployeeSV[0], 'SysDate'))
+            //Setline(data);
+            //SetBar(data);
+            //SetPie(data);
             init_sidebar();
             return;
         }
@@ -99,6 +103,153 @@
         }
     };
 
+    //繪製折線圖
+    let Setline = function (data) {
+        var dtH = data.getElementsByTagName('dtH');
+        a1 = [];
+        a2 = [];
+        ss = [];
+        for (var i = 0; i < dtH.length; i++) {
+            a1.push(GetNodeValue(dtH[i], 'value'));
+            a2.push(GetNodeValue(dtH[i], 'a2'));
+            ss.push(GetNodeValue(dtH[i], 'name'));
+        }
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('divline'));
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: ''
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['金額', '客單價']
+            },
+            xAxis: {
+                data: ss
+            },
+            yAxis: {
+            },
+            series: [
+                {
+                    name: '金額',
+                    type: 'line',
+                    data: a1
+                },
+                {
+                    name: '客單價',
+                    type: 'line',
+                    data: a2
+                }
+            ],
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
+    //繪製圓餅圖
+    let SetPie = function (data) {
+        var dtH = data.getElementsByTagName('dtH');
+        Records = [];
+        for (var r = 0; r < dtH.length; r++) {
+            var record = {};
+            for (var c = 0; c < 2; c++) {
+                var fdname = "";
+                if (c == 0) {
+                    fdname = "value";
+                }
+                else if (c == 1) {
+                    fdname = "name";
+                }
+                if (fdname != null) {
+                    var value = GetNodeValue(dtH[r], fdname);
+                    record[fdname] = value;
+                }
+            }
+            Records.push(record);
+        }
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('divPie'));
+        option = {
+            title: {
+                text: 'Referer of a Website',
+                subtext: 'Fake Data',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left'
+            },
+            series:
+            {
+                name: 'Access From',
+                type: 'pie',
+                radius: '50%',
+                data: Records,
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
+    //繪製長條圖
+    let SetBar = function (data) {
+        var dtH = data.getElementsByTagName('dtH');
+        a1 = [];
+        a2 = [];
+        ss = [];
+        for (var i = 0; i < dtH.length; i++) {
+            a1.push(GetNodeValue(dtH[i], 'value'));
+            a2.push(GetNodeValue(dtH[i], 'a2'));
+            ss.push(GetNodeValue(dtH[i], 'name'));
+        }
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('divBar'));
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: ''
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['金額', '客單價']
+            },
+            xAxis: {
+                data: ss
+            },
+            yAxis: {
+                //data: [5000, 10000, 20000, 30000, 100000, 300000, 500000]
+            },
+            series: [
+                {
+                    name: '金額',
+                    type: 'bar',
+                    data: a1
+                },
+                {
+                    name: '客單價',
+                    type: 'bar',
+                    data: a2
+                }
+            ],
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
 
     let LogOutX = function () {
         
@@ -116,7 +267,6 @@
     };
 
     var GetHeads = function (jqxhr) {
-       
         var headers = {};
         jqxhr.getAllResponseHeaders()
             .trim()
