@@ -12567,35 +12567,10 @@ namespace SVMAdmin.Controllers
                 sqldw += "case DATEPART(weekday, Dateadd(d, -1, getdate())) when 1 then N'日' when 2 then N'一' when 3 then N'二' when 4 then N'三' when 5 then N'四' when 6 then N'五' when 7 then N'六' else '' end DayWeek {0} ";
                 sqldw += "from master..spt_values where type = 'p' and number<= 30 and datepart(weekday,Dateadd(d,number*-1,dateadd(d,-1,getdate())))=datepart(weekday,Dateadd(d,-1,getdate())) ";
                 sqldw += "and convert(varchar, Dateadd(d, number*-1,dateadd(d, -1, getdate())),111)< convert(varchar, getdate(), 111)";
-                DataTable dtD = PubUtility.SqlQry(string.Format(sqldw,""), uu, "SYS");
+                DataTable dtD = PubUtility.SqlQry(string.Format(sqldw, ""), uu, "SYS");
                 dtD.TableName = "dtD";
                 ds.Tables.Add(dtD);
 
-                //系統日-1的4週時段表
-                string sqlRtn = "SELECT PVT.T1 [ID],isnull([W1],0) W1,isnull([W2],0) W2,isnull([W3],0) W3,isnull([W4],0) W4 ";
-                sqlRtn += "into #tmpRtn FROM (select T1,WeekCnt,Cash from #tmpRpt a left join SalesH_AllWeb b (nolock) on a.T1=b.TimeGroup and a.w1=b.OpenDate and b.CompanyCode='" + uu.CompanyId + "') H ";
-                sqlRtn += "PIVOT(";
-                sqlRtn += "Sum(Cash)";
-                sqlRtn += "FOR WeekCnt IN ([W1], [W2], [W3], [W4])";
-                sqlRtn += ") AS PVT; ";
-                string sqlRtnAll = "insert into #tmpRtn select 'SumAll',sum([W1]), sum([W2]), sum([W3]), sum([W4]) from #tmpRtn;";
-
-                sql = "select case len(number) when 1 then '0'+convert(varchar,number) else convert(varchar,number) end T1 into #tmpT from master..spt_values where type='p' and number<=23;";
-                sql += string.Format(sqldw, "into #tmpDW") +";";
-                sql += "select * into #tmpRpt from #tmpT cross join (select W1,WeekCnt from #tmpDW) a;";
-                sql += sqlRtn;
-                sql += sqlRtnAll;
-                sql += "Select * from #tmpRtn";
-                DataTable dtDelt = PubUtility.SqlQry(sql, uu, "SYS");
-                dtDelt.TableName = "dtDelt";
-                
-                DataTable dtSum = dtDelt.Clone();
-                dtSum.ImportRow(dtDelt.Select("ID='SumAll'")[0]);
-                dtSum.TableName = "dtSum";
-                ds.Tables.Add(dtSum);
-
-                dtDelt.Rows.Remove(dtDelt.Select("ID='SumAll'")[0]);
-                ds.Tables.Add(dtDelt);
             }
             catch (Exception err)
             {
@@ -12748,31 +12723,6 @@ namespace SVMAdmin.Controllers
                 dtD.TableName = "dtD";
                 ds.Tables.Add(dtD);
 
-                //系統日-1的7日時段表
-                string sqlRtn = "SELECT PVT.T1 [ID],isnull([D1],0) D1,isnull([D2],0) D2,isnull([D3],0) D3,isnull([D4],0) D4,isnull([D5],0) D5,isnull([D6],0) D6,isnull([D7],0) D7 ";
-                sqlRtn += "into #tmpRtn FROM (select T1,DayCnt,Cash from #tmpRpt a left join SalesH_AllWeb b (nolock) on a.T1=b.TimeGroup and a.D1=b.OpenDate and b.CompanyCode='" + uu.CompanyId + "') H ";
-                sqlRtn += "PIVOT(";
-                sqlRtn += "Sum(Cash)";
-                sqlRtn += "FOR DayCnt IN ([D1], [D2], [D3], [D4], [D5], [D6], [D7])";
-                sqlRtn += ") AS PVT; ";
-                string sqlRtnAll = "insert into #tmpRtn select 'SumAll',sum([D1]), sum([D2]), sum([D3]), sum([D4]), sum([D5]), sum([D6]), sum([D7]) from #tmpRtn;";
-
-                sql = "select case len(number) when 1 then '0'+convert(varchar,number) else convert(varchar,number) end T1 into #tmpT from master..spt_values where type='p' and number<=23;";
-                sql += string.Format(sqldw, "into #tmpDW") + ";";
-                sql += "select * into #tmpRpt from #tmpT cross join (select D1,DayCnt from #tmpDW) a;";
-                sql += sqlRtn;
-                sql += sqlRtnAll;
-                sql += "Select * from #tmpRtn";
-                DataTable dtDelt = PubUtility.SqlQry(sql, uu, "SYS");
-                dtDelt.TableName = "dtDelt";
-
-                DataTable dtSum = dtDelt.Clone();
-                dtSum.ImportRow(dtDelt.Select("ID='SumAll'")[0]);
-                dtSum.TableName = "dtSum";
-                ds.Tables.Add(dtSum);
-
-                dtDelt.Rows.Remove(dtDelt.Select("ID='SumAll'")[0]);
-                ds.Tables.Add(dtDelt);
             }
             catch (Exception err)
             {

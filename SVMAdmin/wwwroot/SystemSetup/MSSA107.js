@@ -3,7 +3,8 @@
     let grdM;
     let grdM_Shop;
     let grdLookUp_ShopNo;
-    
+
+    let InitFlag = "Y";
     let chkShopNo = "";
  
     let AssignVar = function () {
@@ -212,7 +213,7 @@
         else if ($('#rdoOPTime').prop('checked')) {
             $(heads).html('時段');
         }    
-        if (dtDelt.length == 0) {
+        if (dtDelt.length == 0 && InitFlag != "Y") {
             DyAlert("無符合資料!");
             $(".modal-backdrop").remove();
             $('#tbQuery thead td#td1').html('');
@@ -227,15 +228,19 @@
         $('#tbQuery thead td#thead2').html(GetNodeValue(dtD[1], "RptW1"));
         $('#tbQuery thead td#thead3').html(GetNodeValue(dtD[2], "RptW1"));
         $('#tbQuery thead td#thead4').html(GetNodeValue(dtD[3], "RptW1"));
-        var dtSum = data.getElementsByTagName('dtSum');
         $('#tbQuery thead th#th1').html('週' + $('#cbDayName').val());
         $('#tbQuery thead th#th2').html('週' + $('#cbDayName').val());
         $('#tbQuery thead th#th3').html('週' + $('#cbDayName').val());
         $('#tbQuery thead th#th4').html('週' + $('#cbDayName').val());
-        $('#tbQuery thead td#td1').html(parseInt(GetNodeValue(dtSum[0], "W1")).toLocaleString('en-US'));
-        $('#tbQuery thead td#td2').html(parseInt(GetNodeValue(dtSum[0], "W2")).toLocaleString('en-US'));
-        $('#tbQuery thead td#td3').html(parseInt(GetNodeValue(dtSum[0], "W3")).toLocaleString('en-US'));
-        $('#tbQuery thead td#td4').html(parseInt(GetNodeValue(dtSum[0], "W4")).toLocaleString('en-US'));
+
+        if (InitFlag != "Y") {
+            var dtSum = data.getElementsByTagName('dtSum');
+            $('#tbQuery thead td#td1').html(parseInt(GetNodeValue(dtSum[0], "W1")).toLocaleString('en-US'));
+            $('#tbQuery thead td#td2').html(parseInt(GetNodeValue(dtSum[0], "W2")).toLocaleString('en-US'));
+            $('#tbQuery thead td#td3').html(parseInt(GetNodeValue(dtSum[0], "W3")).toLocaleString('en-US'));
+            $('#tbQuery thead td#td4').html(parseInt(GetNodeValue(dtSum[0], "W4")).toLocaleString('en-US'));
+        }
+
     };
 //#endregion
 

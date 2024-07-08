@@ -3,7 +3,8 @@
     let grdM;
     let grdM_Shop;
     let grdLookUp_ShopNo;
-    
+
+    let InitFlag="Y";
     let chkShopNo = "";
  
     let AssignVar = function () {
@@ -228,8 +229,8 @@
         }
         else if ($('#rdoOPTime').prop('checked')) {
             $(heads).html('時段');
-        }    
-        if (dtDelt.length == 0) {
+        }
+        if (dtDelt.length == 0 && InitFlag!="Y") {
             DyAlert("無符合資料!");
             $(".modal-backdrop").remove();
             $('#tbQuery thead td#td1').html('');
@@ -249,7 +250,6 @@
         $('#tbQuery thead td#thead5').html(GetNodeValue(dtD[4], "RptD1"));
         $('#tbQuery thead td#thead6').html(GetNodeValue(dtD[5], "RptD1"));
         $('#tbQuery thead td#thead7').html(GetNodeValue(dtD[6], "RptD1"));
-        var dtSum = data.getElementsByTagName('dtSum');
         $('#tbQuery thead th#th1').html('週' + GetNodeValue(dtD[0], "DayWeek"));
         $('#tbQuery thead th#th2').html('週' + GetNodeValue(dtD[1], "DayWeek"));
         $('#tbQuery thead th#th3').html('週' + GetNodeValue(dtD[2], "DayWeek"));
@@ -257,13 +257,18 @@
         $('#tbQuery thead th#th5').html('週' + GetNodeValue(dtD[4], "DayWeek"));
         $('#tbQuery thead th#th6').html('週' + GetNodeValue(dtD[5], "DayWeek"));
         $('#tbQuery thead th#th7').html('週' + GetNodeValue(dtD[6], "DayWeek"));
-        $('#tbQuery thead td#td1').html(parseInt(GetNodeValue(dtSum[0], "D1")).toLocaleString('en-US'));
-        $('#tbQuery thead td#td2').html(parseInt(GetNodeValue(dtSum[0], "D2")).toLocaleString('en-US'));
-        $('#tbQuery thead td#td3').html(parseInt(GetNodeValue(dtSum[0], "D3")).toLocaleString('en-US'));
-        $('#tbQuery thead td#td4').html(parseInt(GetNodeValue(dtSum[0], "D4")).toLocaleString('en-US'));
-        $('#tbQuery thead td#td5').html(parseInt(GetNodeValue(dtSum[0], "D5")).toLocaleString('en-US'));
-        $('#tbQuery thead td#td6').html(parseInt(GetNodeValue(dtSum[0], "D6")).toLocaleString('en-US'));
-        $('#tbQuery thead td#td7').html(parseInt(GetNodeValue(dtSum[0], "D7")).toLocaleString('en-US'));
+        
+        if (InitFlag != "Y") {
+            var dtSum = data.getElementsByTagName('dtSum');
+            $('#tbQuery thead td#td1').html(parseInt(GetNodeValue(dtSum[0], "D1")).toLocaleString('en-US'));
+            $('#tbQuery thead td#td2').html(parseInt(GetNodeValue(dtSum[0], "D2")).toLocaleString('en-US'));
+            $('#tbQuery thead td#td3').html(parseInt(GetNodeValue(dtSum[0], "D3")).toLocaleString('en-US'));
+            $('#tbQuery thead td#td4').html(parseInt(GetNodeValue(dtSum[0], "D4")).toLocaleString('en-US'));
+            $('#tbQuery thead td#td5').html(parseInt(GetNodeValue(dtSum[0], "D5")).toLocaleString('en-US'));
+            $('#tbQuery thead td#td6').html(parseInt(GetNodeValue(dtSum[0], "D6")).toLocaleString('en-US'));
+            $('#tbQuery thead td#td7').html(parseInt(GetNodeValue(dtSum[0], "D7")).toLocaleString('en-US'));
+        }
+
     };
 //#endregion
 
@@ -405,6 +410,7 @@
             $('#btRe_Shop1').click(function () { btRe_Shop1_click(this) });
             //$('#rdoOPTime').prop('checked', 'true');
             SetMSSA106Query(data);
+            InitFlag = "";
 
         }
     };
