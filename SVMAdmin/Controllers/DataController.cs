@@ -12668,7 +12668,7 @@ namespace SVMAdmin.Controllers
                     if (sqlCon != "") { 
                         sql += " " + string.Format(sqlCon, "ST_ID"); 
                     } else {
-                        sql += " and ST_Type not in('2','3')";
+                        sql += " and ST_Type not in('0','2','3')";
                     }
                     sql += ") w cross join (select W1,WeekCnt from #tmpDW) a;";
                     sql += sqlRtnS;
@@ -12812,7 +12812,7 @@ namespace SVMAdmin.Controllers
                     }
                     else
                     {
-                        sql += " and ST_Type not in('2','3')";
+                        sql += " and ST_Type not in('0','2','3')";
                     }
                     sql += ") w cross join (select D1,DayCnt from #tmpDW) a;";
                     sql += sqlRtnS;
@@ -13061,9 +13061,9 @@ namespace SVMAdmin.Controllers
 
 
                 sql += "select * into #tmpW from (";
-                sql += "select isnull(Type_ID,'') AreaID,isnull(Type_Name, '') AreaName,isnull(ST_ID, '') ST_ID,isnull(ST_Sname, '') ST_Sname from TypeDataWeb a (nolock) full join WarehouseWeb b (nolock) on a.CompanyCode = b.CompanyCode and a.Type_ID = b.ST_placeID and b.ST_Type not in ('2', '3') where a.companycode = '" + uu.CompanyId + "' and a.Type_Code = 'A'";
+                sql += "select isnull(Type_ID,'') AreaID,isnull(Type_Name, '') AreaName,isnull(ST_ID, '') ST_ID,isnull(ST_Sname, '') ST_Sname from TypeDataWeb a (nolock) full join WarehouseWeb b (nolock) on a.CompanyCode = b.CompanyCode and a.Type_ID = b.ST_placeID and b.ST_Type not in ('0','2', '3') where a.companycode = '" + uu.CompanyId + "' and a.Type_Code = 'A'";
                 sql += " union ";
-                sql += "select isnull(Type_ID, '') AreaID,isnull(Type_Name, '') AreaName,isnull(ST_ID, '') ST_ID,isnull(ST_Sname, '') ST_Sname from WarehouseWeb a (nolock) full join TypeDataWeb b (nolock) on a.CompanyCode = b.CompanyCode and b.Type_Code = 'A' and a.ST_placeID = b.Type_ID where a.companycode = '" + uu.CompanyId + "' and a.ST_Type not in ('2', '3')) a;";
+                sql += "select isnull(Type_ID, '') AreaID,isnull(Type_Name, '') AreaName,isnull(ST_ID, '') ST_ID,isnull(ST_Sname, '') ST_Sname from WarehouseWeb a (nolock) full join TypeDataWeb b (nolock) on a.CompanyCode = b.CompanyCode and b.Type_Code = 'A' and a.ST_placeID = b.Type_ID where a.companycode = '" + uu.CompanyId + "' and a.ST_Type not in ('0','2', '3')) a;";
                 sql += "Select " + sqlIDColname + " ID,isnull(sum(Cash),0) Cash1,isnull(sum(Recs),0) Cnt1,";
                 sql += "case when isnull(sum(Recs),0)=0 then 0 else round(isnull(sum(Cash),0)/isnull(sum(Recs),0),0) end  CusCash1,";
                 sql += "isnull(sum(VIP_Cash),0) VCash,isnull(sum(VIP_Recs),0) VCnt,";

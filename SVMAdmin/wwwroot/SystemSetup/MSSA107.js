@@ -381,7 +381,7 @@
             $('#btRe_Shop1').click(function () { btRe_Shop1_click(this) });
             //$('#rdoOPTime').prop('checked', 'true');
             SetMSSA107Query(data);
-
+            InitFlag = "";
         }
     };
     
