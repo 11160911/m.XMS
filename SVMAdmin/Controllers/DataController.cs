@@ -13068,12 +13068,12 @@ namespace SVMAdmin.Controllers
                 sql += "case when isnull(sum(Recs),0)=0 then 0 else round(isnull(sum(Cash),0)/isnull(sum(Recs),0),0) end  CusCash1,";
                 sql += "isnull(sum(VIP_Cash),0) VCash,isnull(sum(VIP_Recs),0) VCnt,";
                 sql += "case when isnull(sum(VIP_Recs),0)=0 then 0 else round(isnull(sum(VIP_Cash),0)/isnull(sum(VIP_Recs),0),0) end VCusCash,";
-                sql += "case when isnull(sum(Cash),0)=0 then format(0,'p0') else format(isnull(sum(VIP_Cash),0)/isnull(sum(Cash),0),'p0') end VPer into #tmpSel ";
+                sql += "case when isnull(sum(Cash),0)=0 then format(0,'p2') else format(isnull(sum(VIP_Cash),0)/isnull(sum(Cash),0),'p2') end VPer into #tmpSel ";
                 sql += "from (" + sqlBaseData + ") a "+sqlGroup+";";
                 sql += "insert into #tmpSel select 'SumAll',sum([Cash1]), sum([Cnt1]),";
                 sql += "case when isnull(sum([Cnt1]),0)= 0 then 0 else round(isnull(sum(Cash1), 0) / isnull(sum([Cnt1]), 0),0) end,";
                 sql += "sum([VCash]), sum([VCnt]),case when isnull(sum([VCnt]),0)= 0 then 0 else round(isnull(sum(VCash), 0) / isnull(sum([VCnt]), 0),0) end,";
-                sql += "case when isnull(sum(Cash1),0)= 0 then format(0,'p0') else format(isnull(sum(VCash),0)/isnull(sum(Cash1),0),'p0') end from #tmpSel;";
+                sql += "case when isnull(sum(Cash1),0)= 0 then format(0,'p2') else format(isnull(sum(VCash),0)/isnull(sum(Cash1),0),'p2') end from #tmpSel;";
                 sql += "select * from #tmpSel order by [ID];";
                 DataTable dtDelt = PubUtility.SqlQry(sql, uu, "SYS");
                 dtDelt.TableName = "dtDelt";
