@@ -312,6 +312,10 @@
             DyAlert("刪除完成!")
             var dtE = data.getElementsByTagName('dtE');
             $('#lblVIPCnt_SendSet').html(GetNodeValue(dtE[0], 'Cnt') + ' 筆')
+            if (GetNodeValue(dtE[0], 'Cnt') == "0") {
+                $('#btDMSend_SendSet').prop('disabled', true);
+                $('#btDMSend_SendSet').css('background-color', 'gray');
+            }
             grdSendSet.DeleteRow(grdSendSet.ActiveRowTR());
         }
     };
@@ -1733,9 +1737,19 @@ Timerset(sessionStorage.getItem('isamcomp'));
             grdSendSet.BindData(dtE);
             if (dtE.length == 0) {
                 $('#lblVIPCnt_SendSet').html('0 筆')
+                $('#btDMSend_SendSet').prop('disabled', true);
+                $('#btDMSend_SendSet').css('background-color', 'gray');
                 DyAlert("無符合資料!", function () { $('#btQuery_SendSet').prop('disabled', false); });
                 $(".modal-backdrop").remove();
                 return;
+            }
+            if ($('#lblDocNo_SendSet').html() == "") {
+                $('#btDMSend_SendSet').prop('disabled', true);
+                $('#btDMSend_SendSet').css('background-color', 'gray');
+            }
+            else {
+                $('#btDMSend_SendSet').prop('disabled', false);
+                $('#btDMSend_SendSet').css('background-color', '#3d94f6');
             }
             $('#lblVIPCnt_SendSet').html(dtE.length + ' 筆')
             $('#btQuery_SendSet').prop('disabled', false);
@@ -1866,6 +1880,10 @@ Timerset(sessionStorage.getItem('isamcomp'));
         else {
             var dtE = data.getElementsByTagName('dtE');
             var dtC = data.getElementsByTagName('dtC');
+
+            $('#btDMSend_SendSet').prop('disabled', true);
+            $('#btDMSend_SendSet').css('background-color', 'gray');
+
             grdSendSet.BindData(dtE);
             if (dtC.length == 0) {
                 $('#lblVIPCnt_SendSet').html('0 筆')
@@ -1999,13 +2017,37 @@ Timerset(sessionStorage.getItem('isamcomp'));
             });
         }
         else {
+            var pData = {
+                VMDocNo: $('#lblVMEVNO_SendSet').html()
+            }
+            PostToWebApi({ url: "api/SystemSetup/MSVP101ChkDMSend", data: pData, success: afterMSVP101ChkDMSend });
+
+        }
+    };
+
+    let afterMSVP101ChkDMSend = function (data) {
+        if (ReturnMsg(data, 0) != "MSVP101ChkDMSendOK") {
+            DyAlert(ReturnMsg(data, 1), function () {
+                $('#btOK_DMSel').prop('disabled', false);
+            });
+        }
+        else {
+            var dtE = data.getElementsByTagName('dtE');
+            if (dtE.length == 0) {
+                $('#btDMSend_SendSet').prop('disabled', true);
+                $('#btDMSend_SendSet').css('background-color', 'gray');
+            }
+            else {
+                $('#btDMSend_SendSet').prop('disabled', false);
+                $('#btDMSend_SendSet').css('background-color', '#3d94f6');
+            }
+
+            var obchkedtd = $('#tbDMSel input[type="radio"]:checked');
             var a = $(obchkedtd[0]).closest('tr');
             var trNode = $(a).prop('Record');
-
             $('#lblDocNo_SendSet').html(GetNodeValue(trNode, "DocNo"))
             $('#lblEDMMemo_SendSet').html(GetNodeValue(trNode, "EDMMemo"))
             $('#lblEDDate_SendSet').html(GetNodeValue(trNode, "EDDate1"))
-
             $('#btOK_DMSel').prop('disabled', false);
             $('#modal_DMSel').modal('hide')
         }

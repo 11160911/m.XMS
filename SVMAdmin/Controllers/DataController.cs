@@ -10849,7 +10849,7 @@ namespace SVMAdmin.Controllers
                 string ST_ID = rq["ST_ID"];
                 string sql = "";
                 sql = "Select a.ST_ID,a.ST_SName ";
-                sql += "From WarehouseWeb a (nolock) Where a.Companycode='" + uu.CompanyId + "' and a.ST_Type not in('2','3') ";
+                sql += "From WarehouseWeb a (nolock) Where a.Companycode='" + uu.CompanyId + "' and a.ST_Type not in('0','2','3') ";
                 if (ST_ID.SqlQuote() != "")
                 {
                     sql += "and a.ST_ID like '" + ST_ID.SqlQuote() + "%' ";
@@ -12039,6 +12039,30 @@ namespace SVMAdmin.Controllers
             catch (Exception err)
             {
                 dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSVP101ChkDMSend")]
+        public ActionResult SystemSetup_MSVP101ChkDMSend()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSVP101ChkDMSendOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string VMDocNo = rq["VMDocNo"];
+                string sql = "";
+                sql = "Select * From SetEDMVIP_VIPWeb (nolock) Where Companycode='" + uu.CompanyId + "' and EVNO='" + VMDocNo + "' ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
                 dtMessage.Rows[0][1] = err.Message;
             }
             return PubUtility.DatasetXML(ds);
