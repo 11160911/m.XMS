@@ -12235,7 +12235,7 @@ namespace SVMAdmin.Controllers
                 //店櫃
                 if (Flag == "S")
                 {
-                    //期間1
+                    //前期
                     sql = "select a.ShopNo ID,w.ST_SName Name,Sum(a.Qty1)Qty1,Sum(a.Cash)Cash1 into #s1 ";
                     sql += "from SalesHWeb a (nolock) ";
                     sql += "inner join WarehouseWeb w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
@@ -12249,7 +12249,7 @@ namespace SVMAdmin.Controllers
                     }
                     sql += "group by a.ShopNo,w.ST_SName; ";
 
-                    //期間2
+                    //本期
                     sql += "select a.ShopNo ID,w.ST_SName Name,Sum(a.Qty1)Qty2,Sum(a.Cash)Cash2 into #s2 ";
                     sql += "from SalesHWeb a (nolock) ";
                     sql += "inner join WarehouseWeb w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
