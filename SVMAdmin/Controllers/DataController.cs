@@ -12995,7 +12995,7 @@ namespace SVMAdmin.Controllers
             {
                 IFormCollection rq = HttpContext.Request.Form;
                 string ProgramID = rq["ProgramID"];
-                string sql = "select ChineseName from ProgramIDWeb (nolock) where ProgramID='" + ProgramID.SqlQuote() + "'";
+                string sql = "select ChineseName,convert(char(10),dateadd(d,-1,getdate()),111) SysDate from ProgramIDWeb (nolock) where ProgramID='" + ProgramID.SqlQuote() + "'";
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
                 ds.Tables.Add(dtE);
@@ -13073,7 +13073,7 @@ namespace SVMAdmin.Controllers
                 sql += "insert into #tmpSel select 'SumAll',sum([Cash1]), sum([Cnt1]),";
                 sql += "case when isnull(sum([Cnt1]),0)= 0 then 0 else round(isnull(sum(Cash1), 0) / isnull(sum([Cnt1]), 0),0) end,";
                 sql += "sum([VCash]), sum([VCnt]),case when isnull(sum([VCnt]),0)= 0 then 0 else round(isnull(sum(VCash), 0) / isnull(sum([VCnt]), 0),0) end,";
-                sql += "case when isnull(sum(Cash1),0)= 0 then format(0,'p0') else format(isnull(sum(VCash), 0) / isnull(sum(Cash1), 0), 'p0') end from #tmpSel;";
+                sql += "case when isnull(sum(Cash1),0)= 0 then format(0,'p0') else format(isnull(sum(VCash),0)/isnull(sum(Cash1),0),'p0') end from #tmpSel;";
                 sql += "select * from #tmpSel order by [ID];";
                 DataTable dtDelt = PubUtility.SqlQry(sql, uu, "SYS");
                 dtDelt.TableName = "dtDelt";
