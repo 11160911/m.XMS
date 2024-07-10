@@ -13020,6 +13020,7 @@ namespace SVMAdmin.Controllers
                 string OpenDateS1 = rq["OpenDateS1"];
                 string OpenDateE1 = rq["OpenDateE1"];
                 string ShopNo = rq["ShopNo"];
+                string Area = rq["Area"];
                 string Flag = rq["Flag"];  //A-區域 S-店別 D-日期
 
                 string sql = "";
@@ -13055,6 +13056,10 @@ namespace SVMAdmin.Controllers
                         sqlBaseData += " and b.ShopNo in (" + ShopNo + ")";
                     }
                     sqlBaseData += " left join #tmpW c on b.ShopNo=c.ST_ID";
+                    if (Area != null)
+                    {
+                        sqlBaseData += " where Shopno in (Select ST_ID from WarehouseWeb (nolock) where companycode='" + uu.CompanyId + "' and ST_Type not in ('0','2','3') and isnull(ST_placeID,'')='" + Area + "')";
+                    }
                     sqlGroup = "group by D1";
                     sql = "select convert(varchar,dateadd(d,number,'"+ OpenDateS1 + "'),111) D1 into #tmpD from master..spt_values where type='p' and number<=datediff(d,'" + OpenDateS1 + "','" + OpenDateE1 + "');";
                 }
@@ -13063,16 +13068,24 @@ namespace SVMAdmin.Controllers
                 sql += "select * into #tmpW from (";
                 sql += "select isnull(Type_ID,'') AreaID,isnull(Type_Name, '') AreaName,isnull(ST_ID, '') ST_ID,isnull(ST_Sname, '') ST_Sname from TypeDataWeb a (nolock) full join WarehouseWeb b (nolock) on a.CompanyCode = b.CompanyCode and a.Type_ID = b.ST_placeID and b.ST_Type not in ('0','2', '3') where a.companycode = '" + uu.CompanyId + "' and a.Type_Code = 'A'";
                 sql += " union ";
-                sql += "select isnull(Type_ID, '') AreaID,isnull(Type_Name, '') AreaName,isnull(ST_ID, '') ST_ID,isnull(ST_Sname, '') ST_Sname from WarehouseWeb a (nolock) full join TypeDataWeb b (nolock) on a.CompanyCode = b.CompanyCode and b.Type_Code = 'A' and a.ST_placeID = b.Type_ID where a.companycode = '" + uu.CompanyId + "' and a.ST_Type not in ('0','2', '3')) a;";
+                sql += "select isnull(Type_ID, '') AreaID,isnull(Type_Name, '') AreaName,isnull(ST_ID, '') ST_ID,isnull(ST_Sname, '') ST_Sname from WarehouseWeb a (nolock) full join TypeDataWeb b (nolock) on a.CompanyCode = b.CompanyCode and b.Type_Code = 'A' and a.ST_placeID = b.Type_ID where a.companycode = '" + uu.CompanyId + "' and a.ST_Type not in ('0','2', '3')";
+                
+                sql += ") a";
+                if (Area != null)
+                {
+                    sql += " where AreaID='" + Area + "'";
+                }
+                sql += ";";
+                
                 sql += "Select " + sqlIDColname + " ID,isnull(sum(Cash),0) Cash1,isnull(sum(Recs),0) Cnt1,";
                 sql += "case when isnull(sum(Recs),0)=0 then 0 else round(isnull(sum(Cash),0)/isnull(sum(Recs),0),0) end  CusCash1,";
                 sql += "isnull(sum(VIP_Cash),0) VCash,isnull(sum(VIP_Recs),0) VCnt,";
                 sql += "case when isnull(sum(VIP_Recs),0)=0 then 0 else round(isnull(sum(VIP_Cash),0)/isnull(sum(VIP_Recs),0),0) end VCusCash,";
                 sql += "case when isnull(sum(Cash),0)=0 then format(0,'p2') else format(isnull(sum(VIP_Cash),0)/isnull(sum(Cash),0),'p2') end VPer into #tmpSel ";
                 sql += "from (" + sqlBaseData + ") a "+sqlGroup+";";
-                sql += "insert into #tmpSel select 'SumAll',sum([Cash1]), sum([Cnt1]),";
+                sql += "insert into #tmpSel select 'SumAll',isnull(sum([Cash1]),0), isnull(sum([Cnt1]),0),";
                 sql += "case when isnull(sum([Cnt1]),0)= 0 then 0 else round(isnull(sum(Cash1), 0) / isnull(sum([Cnt1]), 0),0) end,";
-                sql += "sum([VCash]), sum([VCnt]),case when isnull(sum([VCnt]),0)= 0 then 0 else round(isnull(sum(VCash), 0) / isnull(sum([VCnt]), 0),0) end,";
+                sql += "isnull(sum([VCash]),0), isnull(sum([VCnt]),0),case when isnull(sum([VCnt]),0)= 0 then 0 else round(isnull(sum(VCash), 0) / isnull(sum([VCnt]), 0),0) end,";
                 sql += "case when isnull(sum(Cash1),0)= 0 then format(0,'p2') else format(isnull(sum(VCash),0)/isnull(sum(Cash1),0),'p2') end from #tmpSel;";
                 sql += "select * from #tmpSel order by [ID];";
                 DataTable dtDelt = PubUtility.SqlQry(sql, uu, "SYS");
