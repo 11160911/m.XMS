@@ -173,6 +173,18 @@
                                     top: 65px;
                                     z-index: 2;
                                 }
+
+                                #tbQuery {
+                                    width: 50%
+                                }
+
+                                @media (max-width:650px) {
+                                    #tbQuery {
+                                        width: 95%;
+                                        margin-left: auto;
+                                        margin-right: auto
+                                    }
+                                }
                             </style>
 
                             <div class="form-group row" style="margin-left: 5px; width: 100%">
@@ -209,7 +221,7 @@
                             <div class="card-block forminput">
                                 <div class="x_content">
                                     <div style="overflow: auto; height: 630px;">
-                                        <table id="tbQuery" class="table table-bordered DyForm3-Table">
+                                        <table id="tbQuery" class="table table-bordered">
                                             <thead>
                                                 <!--第一層-->
                                                 <tr>
