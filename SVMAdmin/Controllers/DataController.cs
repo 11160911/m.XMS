@@ -13072,7 +13072,7 @@ namespace SVMAdmin.Controllers
 
                     //彙總資料
                     sqlH = "select sum(isnull(s1.Cash1,0))SumCash1,sum(isnull(s2.Cash1,0))SumCash2, ";
-                    sqlH += "case when sum(isnull(s1.Cash1,0))=0 then format(100,'p') else format(cast(sum(isnull(s2.Cash1,0))-sum(isnull(s1.Cash1,0)) as Float)/cast(sum(isnull(s1.Cash1,0)) as Float),'p') end as SumPer ";
+                    sqlH += "case when sum(isnull(s1.Cash1,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.Cash1,0))-sum(isnull(s1.Cash1,0)) as Float)/cast(sum(isnull(s1.Cash1,0)) as Float),'p') end as SumPer ";
                     sqlH += "from #s1 s1 ";
                     sqlH += "Full join #s2 s2 on s1.id=s2.id ";
                     DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
@@ -13152,7 +13152,7 @@ namespace SVMAdmin.Controllers
 
                     //彙總資料
                     sqlH = "select sum(isnull(s1.Cash1,0))SumCash1,sum(isnull(s2.Cash1,0))SumCash2, ";
-                    sqlH += "case when sum(isnull(s1.Cash1,0))=0 then format(100,'p') else format(cast(sum(isnull(s2.Cash1,0))-sum(isnull(s1.Cash1,0)) as Float)/cast(sum(isnull(s1.Cash1,0)) as Float),'p') end as SumPer ";
+                    sqlH += "case when sum(isnull(s1.Cash1,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.Cash1,0))-sum(isnull(s1.Cash1,0)) as Float)/cast(sum(isnull(s1.Cash1,0)) as Float),'p') end as SumPer ";
                     sqlH += "from #s1 s1 ";
                     sqlH += "Full join #s2 s2 on s1.id=s2.id ";
                     DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
@@ -13217,7 +13217,7 @@ namespace SVMAdmin.Controllers
 
                 //彙總資料
                 sqlH = "select sum(isnull(s1.Cash1,0))SumCash1,sum(isnull(s2.Cash1,0))SumCash2, ";
-                sqlH += "case when sum(isnull(s1.Cash1,0))=0 then format(100,'p') else format(cast(sum(isnull(s2.Cash1,0))-sum(isnull(s1.Cash1,0)) as Float)/cast(sum(isnull(s1.Cash1,0)) as Float),'p') end as SumPer ";
+                sqlH += "case when sum(isnull(s1.Cash1,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.Cash1,0))-sum(isnull(s1.Cash1,0)) as Float)/cast(sum(isnull(s1.Cash1,0)) as Float),'p') end as SumPer ";
                 sqlH += "from #s1 s1 ";
                 sqlH += "Full join #s2 s2 on s1.Month=s2.Month ";
                 DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
