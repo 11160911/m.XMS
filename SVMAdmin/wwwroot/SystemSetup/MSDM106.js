@@ -9,7 +9,7 @@
         grdM = new DynGrid(
             {
                 table_lement: $('#tbQMSDM106')[0],
-                class_collection: ["tdColbt icon_in_td btDelete", "tdCol1", "tdCol2", "tdCol3 text-center", "tdCol4 text-center", "tdCol5 text-center", "tdCol6 text-center", "tdCol7 text-center", "tdCol8 text-center", "tdCol9 text-center", "tdCol10 text-center"],
+                class_collection: ["tdColbt icon_in_td btDelete", "tdCol1", "tdCol2", "tdCol3 text-center", "tdCol4 text-center", "tdCol5 text-center", "tdCol6 text-center",  "tdCol8 text-center", "tdCol9 text-center", "tdCol10 text-center"],
                 fields_info: [
                     { type: "JQ", name: "fa-trash-o", element: '<i class="fa fa-trash-o" style="font-size:24px"></i>' },
                     { type: "Text", name: "DocNO", style: "" },
@@ -18,7 +18,6 @@
                     { type: "Text", name: "BIR_Month", style: "" },
                     { type: "Text", name: "PS_Name", style: "" },
                     { type: "Text", name: "ActivityCode", style: "" },
-                    { type: "TextAmt", name: "Cnt1", style: "" },
                     { type: "TextAmt", name: "Cnt2", style: "" },
                     { type: "Text", name: "ApproveDate", style: "" },
                     { type: "Text", name: "DefeasanceDate", style: "" }
@@ -401,7 +400,7 @@
         $('#txtEDMMemo_EDM').prop('disabled', mod);
         $('#cboBIRYear_EDM').prop('disabled', mod);
         $('#cboBIRMonth_EDM').prop('disabled', mod);
-
+        
         $('#btPSNO_EDM').prop('disabled', mod);
         $('#txtPSNO_EDM').prop('disabled', mod);
         if (mod == true) {
@@ -719,8 +718,7 @@
         var getDate = new Date();
         if (BDate < getDate) {
             DyAlert("年度+月份請選擇大於等於目前年月!", function () {
-                EnableForm_EDM(false)
-                $('#btSave_EDM').prop('disabled', false);
+
             })
             return;
         }

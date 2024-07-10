@@ -9383,7 +9383,7 @@ namespace SVMAdmin.Controllers
                 string BirMonth = rq["BirMonth"];
 
                 string sql = "";
-                sql = "Select a.DocNO,a.EDMMemo,a.BIR_Year,a.BIR_Month,b.PS_Name,b.ActivityCode,isnull(c.Cnt1,0)Cnt1,isnull(d.Cnt2,0)Cnt2, ";
+                sql = "Select a.DocNO,a.EDMMemo,a.BIR_Year,a.BIR_Month,b.PS_Name,b.ActivityCode,isnull(d.Cnt2,0)Cnt2, ";
                 sql += "isnull(a.ApproveDate,'')ApproveDate,isnull(a.DefeasanceDate,'')DefeasanceDate ";
                 sql += "From SetEDMHWeb a (nolock) ";
                 sql += "inner join PromoteSCouponHWeb b (nolock) on a.PS_NO=b.PS_NO and b.Companycode=a.Companycode ";
@@ -9392,7 +9392,7 @@ namespace SVMAdmin.Controllers
                 {
                     sql += "and b.ActivityCode like '" + ActivityCode.SqlQuote() + "%' ";
                 }
-                sql += "left join (Select EDM_DocNo,COUNT(*)Cnt1 From SetEDMVIP_HWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by EDM_DocNo)c on a.DocNo=c.EDM_DocNo ";
+                //sql += "left join (Select EDM_DocNo,COUNT(*)Cnt1 From SetEDMVIP_HWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by EDM_DocNo)c on a.DocNo=c.EDM_DocNo ";
                 sql += "left join (Select EVNO,COUNT(*)Cnt2 From SetEDMVIP_VIPWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by EVNO)d on a.DocNo=d.EVNO ";
 
                 sql += "Where a.Companycode='" + uu.CompanyId + "' and isnull(a.DelDate,'')='' and a.EDMType='B' ";
