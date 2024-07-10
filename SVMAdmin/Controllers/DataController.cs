@@ -10498,7 +10498,7 @@ namespace SVMAdmin.Controllers
                 //}
                 sql = "Select a.PS_NO,a.ActivityCode,b.PS_Name,a.StartDate + '~' + a.EndDate PSDate, ";
                 sql += "sum(isnull(a.issueQty,0)) SendCnt,sum(isnull(a.ReclaimQty,0)) BackCnt, ";
-                sql += "case when sum(isnull(a.issueQty,0))=0 then format(0,'0.0%') else format(cast(sum(isnull(a.ReclaimQty,0)) as Float)/cast(sum(isnull(a.issueQty,0)) as Float),'0.0%') end as BackPer, ";
+                sql += "case when sum(isnull(a.issueQty,0))=0 then format(0,'p') else format(cast(sum(isnull(a.ReclaimQty,0)) as Float)/cast(sum(isnull(a.issueQty,0)) as Float),'p') end as BackPer, ";
                 sql += "sum(isnull(a.ShareAmt,0)) Discount,sum(isnull(a.ReclaimCash,0)) Cash,sum(isnull(a.ReclaimTrans,0)) SalesCnt, ";
                 sql += "case when sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(sum(isnull(a.ReclaimCash,0))/sum(isnull(a.ReclaimTrans,0)),0) end as Balance ";
                 sql += "From MsData2Web a (nolock) ";
@@ -10617,7 +10617,7 @@ namespace SVMAdmin.Controllers
 
                 //彙總資料
                 sql = "Select a.PS_NO,Sum(isnull(a.issueQty,0)) SendCnt,Sum(isnull(a.ReclaimQty,0)) BackCnt, ";
-                sql += "case when Sum(isnull(a.issueQty,0))=0 then format(0,'0.0%') else format(cast(Sum(isnull(a.ReclaimQty,0)) as Float)/cast(Sum(isnull(a.issueQty,0)) as Float),'0.0%') end as BackPer, ";
+                sql += "case when Sum(isnull(a.issueQty,0))=0 then format(0,'p') else format(cast(Sum(isnull(a.ReclaimQty,0)) as Float)/cast(Sum(isnull(a.issueQty,0)) as Float),'p') end as BackPer, ";
                 sql += "Sum(isnull(a.ShareAmt,0)) Discount,sum(isnull(a.ReclaimCash,0)) Cash,sum(isnull(a.ReclaimTrans,0)) Cnt, ";
                 sql += "case when sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(sum(isnull(a.ReclaimCash,0))/sum(isnull(a.ReclaimTrans,0)),0) end as VIPPer, ";
                 sql += "sum(isnull(a.TotalCash,0)) SalesCash,sum(isnull(a.TotalTrans,0)) SalesCNT, ";
@@ -10637,7 +10637,7 @@ namespace SVMAdmin.Controllers
                 {
                     sql = "Select a.ShopNo + '-' + b.ST_SName as ShopNO,Sum(isnull(a.issueQty,0)) SendCnt, ";
                     sql += "Sum(isnull(a.ReclaimQty,0)) BackCnt, ";
-                    sql += "case when Sum(isnull(a.issueQty,0))=0 then format(0,'0.0%') else format(cast(Sum(isnull(a.ReclaimQty,0)) as Float)/cast(Sum(isnull(a.issueQty,0)) as Float),'0.0%') end as BackPer, ";
+                    sql += "case when Sum(isnull(a.issueQty,0))=0 then format(0,'p') else format(cast(Sum(isnull(a.ReclaimQty,0)) as Float)/cast(Sum(isnull(a.issueQty,0)) as Float),'p') end as BackPer, ";
                     sql += "Sum(isnull(a.ShareAmt,0)) Discount,Sum(isnull(a.ReclaimCash,0)) Cash,Sum(isnull(a.ReclaimTrans,0)) VIPCNT, ";
                     sql += "case when Sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(Sum(isnull(a.ReclaimCash,0))/Sum(isnull(a.ReclaimTrans,0)),0) end as VIPPer, ";
                     sql += "Sum(isnull(a.TotalCash,0)) SalesCash,Sum(isnull(a.TotalTrans,0)) SalesCNT, ";
