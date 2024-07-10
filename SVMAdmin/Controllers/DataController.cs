@@ -10849,7 +10849,7 @@ namespace SVMAdmin.Controllers
                 string ST_ID = rq["ST_ID"];
                 string sql = "";
                 sql = "Select a.ST_ID,a.ST_SName ";
-                sql += "From WarehouseWeb a (nolock) Where a.Companycode='" + uu.CompanyId + "' and a.ST_Type not in('2','3') ";
+                sql += "From WarehouseWeb a (nolock) Where a.Companycode='" + uu.CompanyId + "' and a.ST_Type not in('0','2','3') ";
                 if (ST_ID.SqlQuote() != "")
                 {
                     sql += "and a.ST_ID like '" + ST_ID.SqlQuote() + "%' ";
@@ -12044,6 +12044,30 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("SystemSetup/MSVP101ChkDMSend")]
+        public ActionResult SystemSetup_MSVP101ChkDMSend()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSVP101ChkDMSendOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string VMDocNo = rq["VMDocNo"];
+                string sql = "";
+                sql = "Select * From SetEDMVIP_VIPWeb (nolock) Where Companycode='" + uu.CompanyId + "' and EVNO='" + VMDocNo + "' ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
         [Route("SystemSetup/GetTypeDataWeb")]
         public ActionResult SystemSetup_GetTypeDataWeb()
         {
@@ -12211,7 +12235,7 @@ namespace SVMAdmin.Controllers
                 //店櫃
                 if (Flag == "S")
                 {
-                    //期間1
+                    //前期
                     sql = "select a.ShopNo ID,w.ST_SName Name,Sum(a.Qty1)Qty1,Sum(a.Cash)Cash1 into #s1 ";
                     sql += "from SalesHWeb a (nolock) ";
                     sql += "inner join WarehouseWeb w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
@@ -12225,7 +12249,7 @@ namespace SVMAdmin.Controllers
                     }
                     sql += "group by a.ShopNo,w.ST_SName; ";
 
-                    //期間2
+                    //本期
                     sql += "select a.ShopNo ID,w.ST_SName Name,Sum(a.Qty1)Qty2,Sum(a.Cash)Cash2 into #s2 ";
                     sql += "from SalesHWeb a (nolock) ";
                     sql += "inner join WarehouseWeb w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";

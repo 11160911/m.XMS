@@ -250,15 +250,15 @@
                                 </style>
 
                                 <div class="modal-header" style="display:block;padding-bottom:25px">
-                                    <div class="form-group row" style="width: 100%;margin-left: 5px ">
+                                    <div class="form-group row" style="width: 100%;margin-left: 5px;margin-bottom:0px ">
                                         <label class="DyForm3-ProgramName">EDM發送歷史查詢</label>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100% ">
-                                        <button class="DyForm3-BtnShowEDM" id="btShowEDM_EDMHistoryQuery" type="button" style="position: absolute; right: 330px ">
+                                    <div class="form-group row" style="width: 100%; margin-left: 15px; margin-bottom: 0px ">
+                                        <button class="DyForm3-BtnShowEDM" id="btShowEDM_EDMHistoryQuery" type="button">
                                             DM預覽
                                         </button>
-                                        <button id="btRe_EDMHistoryQuery" type="button" class="DyForm3-BtnRe" style="position: absolute; right: 60px">回上頁</button>
+                                        <button id="btRe_EDMHistoryQuery" type="button" class="DyForm3-BtnRe" style="margin-left: 55px;">回上頁</button>
                                     </div>
                                 </div>
 
@@ -352,57 +352,73 @@
                                         z-index: 2;
                                         height: 35px;
                                     }
+
+                                    .DMStep {
+                                        width: 25px;
+                                        height: 25px;
+                                        margin-top:5px;
+                                    }
                                 </style>
 
                                 <div class="modal-header" style="display: block;">
                                     <!--<h4 class="modal-title" style="width: 100%; text-align: center;color:black"></h4>-->
-                                    <div class="form-group row" style="width: 100%;margin-left: 5px ">
+                                    <div class="form-group row" style="width: 100%; margin-left: 38px; margin-bottom: 0px ">
                                         <label class="DyForm3-ProgramName">發送設定</label>
                                         <label class="DyForm3-LabelBlack" id="lblVMEVNO_SendSet" hidden></label>
+
+                                        <label class="DyForm3-Label" style="margin-top:6px;margin-left:25px">設定步驟 : </label>
+                                        <img src="images/DM發送1.jpg" class="DMStep" style="margin-left:10px" />
+                                        <label class="DyForm3-Label" style="margin-top:6px">DM選取</label>
+                                        <label class="DyForm3-LabelBlack" style="margin-left:5px;margin-top:3px;font-size:20px">⮕</label>
+                                        <img src="images/DM發送2.jpg" class="DMStep" />
+                                        <label class="DyForm3-Label" style="margin-top:6px">會員條件篩選</label>
+                                        <label class="DyForm3-LabelBlack" style="margin-left:5px;margin-top:3px;font-size:20px">⮕</label>
+                                        <img src="images/DM發送3.jpg" class="DMStep" />
+                                        <label class="DyForm3-Label" style="margin-top: 6px">顯示會員清單</label>
+                                        <label class="DyForm3-LabelBlack" style="margin-left:5px;margin-top:3px;font-size:20px">⮕</label>
+                                        <img src="images/DM發送4.jpg" class="DMStep" />
+                                        <label class="DyForm3-Label" style="margin-top: 6px">發送EDM</label>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%;margin-left:12px ">
-                                        <button class="DyForm3-BtnAdd" style="width:90px" id="btDMSel_SendSet" type="button">
+                                    <div class="form-group row" style="width: 100%; margin-left: 0px; margin-bottom: 0px ">
+                                        <img src="images/DM發送1.jpg" class="DMStep" style="margin-top:0px" />
+                                        <button class="DyForm3-BtnAdd" style="width: 90px; margin-left: 15px" id="btDMSel_SendSet" type="button">
                                             DM選取
                                         </button>
                                         <label id="lblDocNo_SendSet" class="DyForm3-LabelBlack" style="margin-left:5px"></label>
                                         <label id="lblEDMMemo_SendSet" class="DyForm3-LabelRed" style="margin-left:5px"></label>
                                         <label id="lblEDDate_SendSet" class="DyForm3-LabelBlack" style="margin-left:5px"></label>
-                                        <button class="DyForm3-BtnShowEDM" id="btShowEDM_SendSet" type="button" style="position: absolute; right: 330px ">
+                                        <button class="DyForm3-BtnShowEDM" id="btShowEDM_SendSet" type="button" style="position: absolute; right: 160px ">
                                             DM預覽
                                         </button>
-                                        <button class="DyForm3-BtnQuery" id="btDMSend_SendSet" type="button" style="width: 90px;position: absolute; right: 180px">
-                                            發送EDM
-                                        </button>
+
                                         <button id="btRe_SendSet" type="button" class="DyForm3-BtnRe" style="position: absolute; right: 60px">回上頁</button>
                                     </div>
                                 </div>
 
                                 <div class="modal-body modal-tab-container" style="padding:8px;flex:0 1 auto;">
-                                    <div class="form-group row" style="width: 100%;margin-left: 12px;margin-bottom:0px ">
-                                        <label class="DyForm3-ProgramName">會員條件篩選</label>
-                                    </div>
-                                    <div class="form-group row" style="width: 100%;margin-left: 12px;margin-top:5px ">
-                                        <button class="DyForm3-BtnClear" id="btClear_SendSet" type="button">
+                                    <div class="form-group row" style="width: 100%;margin-left: 8px;margin-bottom:0px ">
+                                        <img src="images/DM發送2.jpg" class="DMStep" style="margin-top:5px" />
+                                        <label class="DyForm3-ProgramName" style="margin-left:16px">會員條件篩選</label>
+                                        <button class="DyForm3-BtnClear" id="btClear_SendSet" type="button" style="margin-left:30px">
                                             清除
                                             <i class="fa fa-close"></i>
                                         </button>
-
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-top: 15px ">
+                                    <div class="form-group row" style="width: 100%; margin-left: 45px; margin-top: 15px ">
                                         <button class="DyForm3-BtnShop" id="btVIPFaceID_SendSet" type="button">會籍店櫃</button>
                                         <label class="DyForm3-LabelRed" id="lblVIPFaceIDCnt_SendSet" style=" margin-left: 10px; margin-top: 5px"></label>
                                         <label class="DyForm3-Label" id="lblVIPFaceIDName_SendSet" style=" margin-left: 10px; margin-top: 5px"></label>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%; margin-left: 12px; ">
+                                    <div class="form-group row" style="width: 100%; margin-left: 45px; ">
                                         <button class="DyForm3-BtnShop" id="btCity_SendSet" type="button">縣市</button>
                                         <label class="DyForm3-LabelRed" id="lblCityCnt_SendSet" style=" margin-left: 10px; margin-top: 5px"></label>
                                         <label class="DyForm3-Label" id="lblCityName_SendSet" style=" margin-left: 10px; margin-top: 5px"></label>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%;margin-left:0px;margin-bottom:5px ">
+                                    <div class="form-group row" style="width: 100%;margin-left:33px;margin-bottom:0px ">
                                         <mark class="DyForm3-DyNotEmptyMark" style="margin-top: 5px">*</mark>
                                         <label class="DyForm3-Label" style="margin-top:5px">會員卡別</label>
                                         <input id="chk0_SendSet" type="checkbox" style="height: 30px; margin-left: 15px" checked><label class="DyForm3-LabelBlack" for="chk0_SendSet" style="margin-top:5px;margin-left:10px">一般</label>
@@ -411,7 +427,7 @@
                                         <input id="chk3_SendSet" type="checkbox" style="height:30px;margin-left:10px" checked><label class="DyForm3-LabelBlack" for="chk3_SendSet" style="margin-top: 5px; margin-left: 10px">白金卡</label>
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px">
+                                    <div class="form-group row" style="margin-left: 45px; width: 100%; margin-bottom: 0px">
                                         <mark class="DyForm3-DyNotEmptyMark" style="margin-top: 5px" hidden>*</mark>
                                         <label class="DyForm3-Label">性&ensp;&ensp;&ensp;&ensp;別</label>
                                         <input id="rdoMWAll_SendSet" type="radio" name="a" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
@@ -422,7 +438,7 @@
                                         <label class="DyForm3-LabelBlack" for="rdoMW1_SendSet" style="margin-top:2px">&ensp;小姐</label>
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px">
+                                    <div class="form-group row" style="margin-left: 45px; width: 100%; margin-bottom: 0px">
                                         <mark class="DyForm3-DyNotEmptyMark" style="margin-left:5px" hidden>*</mark>
                                         <label class="DyForm3-Label">入會期間</label>
                                         <input id="rdoQDayAll_SendSet" type="radio" name="b" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
@@ -437,7 +453,7 @@
                                         <label class="DyForm3-LabelBlack" for="rdoQDay1Y_SendSet" style="margin-top:2px">&ensp;1年內</label>
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px">
+                                    <div class="form-group row" style="margin-left: 29px; width: 100%; margin-bottom: 0px">
                                         <mark class="DyForm3-DyNotEmptyMark" style="margin-left:5px" hidden>*</mark>
                                         <label class="DyForm3-Label">最近來店日</label>
                                         <input id="rdoLCDayAll_SendSet" type="radio" name="c" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
@@ -452,13 +468,13 @@
                                         <label class="DyForm3-LabelBlack" for="rdoLCDay2Y_SendSet" style="margin-top:2px">&ensp;2年內</label>
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px">
+                                    <div class="form-group row" style="margin-left: 29px; width: 100%; margin-bottom: 0px">
                                         <label style="font-size: 16px; color: #009900;font-weight:bold">
                                             若要篩選購買指定類別商品的會員，請先選擇[消費月份]，再選擇[消費部門]或[消費大類]
                                         </label>
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px">
+                                    <div class="form-group row" style="margin-left: 45px; width: 100%; margin-bottom: 0px">
                                         <mark class="DyForm3-DyNotEmptyMark" style="margin-left:5px" hidden>*</mark>
                                         <label class="DyForm3-Label">消費月份</label>
                                         <input id="rdoSDateAll_SendSet" type="radio" name="d" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
@@ -473,13 +489,13 @@
                                         <label class="DyForm3-LabelBlack" for="rdoSDate1Y_SendSet" style="margin-top:2px">&ensp;1年內</label>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%; margin-left: 12px; ">
+                                    <div class="form-group row" style="width: 100%; margin-left: 45px; ">
                                         <button class="DyForm3-BtnShop" id="btDept_SendSet" type="button">消費部門</button>
                                         <label class="DyForm3-LabelRed" id="lblDeptCnt_SendSet" style=" margin-left: 10px; margin-top: 5px"></label>
                                         <label class="DyForm3-Label" id="lblDeptName_SendSet" style=" margin-left: 10px; margin-top: 5px"></label>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 5px ">
+                                    <div class="form-group row" style="width: 100%; margin-left: 45px; margin-bottom: 0px ">
                                         <button class="DyForm3-BtnShop" id="btBgno_SendSet" type="button">消費大類</button>
                                         <label class="DyForm3-LabelRed" id="lblBgnoCnt_SendSet" style=" margin-left: 10px; margin-top: 5px"></label>
                                         <label class="DyForm3-Label" id="lblBgnoName_SendSet" style=" margin-left: 10px; margin-top: 5px"></label>
@@ -488,11 +504,16 @@
 
                                 <div class="modal-footer" style="padding-top:0px">
                                     <div class="x_content">
-                                        <div class="form-group row" style="width: 100%;margin-left: 12px ">
+                                        <div class="form-group row" style="width: 100%;margin-left: 38px ">
                                             <label class="DyForm3-ProgramName">會員篩選清單</label>
                                             <label id="lblVIPCnt_SendSet" class="DyForm3-ProgramName" style="color: red; margin-left: 60px"></label>
-                                            <button class="DyForm3-BtnQuery" id="btQuery_SendSet" type="button" style="width:120px;position: absolute; right: 270px">
+                                            <img src="images/DM發送3.jpg" class="DMStep" style="position: absolute; right: 550px" />
+                                            <button class="DyForm3-BtnQuery" id="btQuery_SendSet" type="button" style="width:120px;position: absolute; right: 410px">
                                                 顯示會員清單
+                                            </button>
+                                            <img src="images/DM發送4.jpg" class="DMStep" style="position: absolute; right: 320px" />
+                                            <button class="DyForm3-BtnQuery" id="btDMSend_SendSet" type="button" style="width: 90px;position: absolute; right: 210px">
+                                                發送EDM
                                             </button>
                                         </div>
                                         <div style="overflow: auto; height: 400px;">
@@ -568,11 +589,11 @@
                                         <label class="DyForm3-ProgramName">DM選取</label>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%;margin-top:5px ">
-                                        <button class="DyForm3-BtnQuery" id="btOK_DMSel" type="button" style="position: absolute; right: 410px">
+                                    <div class="form-group row" style="width: 100%;margin-top:5px;margin-left:15px;margin-bottom:0px ">
+                                        <button class="DyForm3-BtnQuery" id="btOK_DMSel" type="button">
                                             確定
                                         </button>
-                                        <button id="btRe_DMSel" type="button" class="DyForm3-BtnRe" style="position: absolute; right: 20px">回上頁</button>
+                                        <button id="btRe_DMSel" type="button" class="DyForm3-BtnRe" style="margin-left:55px">回上頁</button>
                                     </div>
 
 

@@ -823,37 +823,39 @@ Timerset(sessionStorage.getItem('isamcomp'));
         $('#btQuery').prop('disabled', true)
 
         var QDays = "100";
-        //期間1
-        if ($('#txtOpenDateS1').val() == "" || $('#txtOpenDateE1').val() == "") {
-            DyAlert("期間1兩欄皆需輸入!", function () { $('#btQuery').prop('disabled', false); })
-            return;
-        }
-        else {
-            if ($('#txtOpenDateS1').val() > $('#txtOpenDateE1').val()) {
-                DyAlert("期間1開始日不可大於結束日!", function () { $('#btQuery').prop('disabled', false); })
-                return;
-            }
-            if (DateDiff("d", $('#txtOpenDateS1').val(), $('#txtOpenDateE1').val()) > parseInt(QDays)) {
-                DyAlert("期間1必須小於等於" + QDays + "天!!");
-                return;
-            }
-        }
 
-        //期間2
+        //本期
         if ($('#txtOpenDateS2').val() == "" || $('#txtOpenDateE2').val() == "") {
-            DyAlert("期間2兩欄皆需輸入!", function () { $('#btQuery').prop('disabled', false); })
+            DyAlert("本期兩欄皆需輸入!", function () { $('#btQuery').prop('disabled', false); })
             return
         }
         else {
             if ($('#txtOpenDateS2').val() > $('#txtOpenDateE2').val()) {
-                DyAlert("期間2開始日不可大於結束日!", function () { $('#btQuery').prop('disabled', false); })
+                DyAlert("本期開始日不可大於結束日!", function () { $('#btQuery').prop('disabled', false); })
                 return;
             }
             if (DateDiff("d", $('#txtOpenDateS2').val(), $('#txtOpenDateE2').val()) > parseInt(QDays)) {
-                DyAlert("期間2必須小於等於" + QDays + "天!!");
+                DyAlert("本期必須小於等於" + QDays + "天!!");
                 return;
             }
         }
+
+        //前期
+        if ($('#txtOpenDateS1').val() == "" || $('#txtOpenDateE1').val() == "") {
+            DyAlert("前期兩欄皆需輸入!", function () { $('#btQuery').prop('disabled', false); })
+            return;
+        }
+        else {
+            if ($('#txtOpenDateS1').val() > $('#txtOpenDateE1').val()) {
+                DyAlert("前期開始日不可大於結束日!", function () { $('#btQuery').prop('disabled', false); })
+                return;
+            }
+            if (DateDiff("d", $('#txtOpenDateS1').val(), $('#txtOpenDateE1').val()) > parseInt(QDays)) {
+                DyAlert("前期必須小於等於" + QDays + "天!!");
+                return;
+            }
+        }
+        
         ShowLoading();
         var Flag = ""
         //店櫃
