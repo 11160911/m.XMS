@@ -198,6 +198,31 @@ var DynGrid = function (option) {
                 function () { SortData(this); }
             );
         }
+        if (option.sortable == "Y1") {
+            var col1 = $('#thead1').prop('fdinfo',{ type: "Text", name: "ID" });
+            col1.click(
+                function () { SortData(this); }
+            );
+            var col2 = $('#thead4').prop('fdinfo', { type: "TextPercent", name: "Per" });
+            col2.click(
+            );
+            var col3 = $('#th1').prop('fdinfo', { type: "TextAmt", name: "Qty1" });
+            col3.click(
+                function () { SortData(this); }
+            );
+            var col4 = $('#th3').prop('fdinfo', { type: "TextAmt", name: "Qty2" });
+            col4.click(
+                function () { SortData(this); }
+            );
+            var col5 = $('#th2').prop('fdinfo', { type: "TextAmt", name: "Cash1" });
+            col5.click(
+                function () { SortData(this); }
+            );
+            var col6 = $('#th4').prop('fdinfo', { type: "TextAmt", name: "Cash2" });
+            col6.click(
+                function () { SortData(this); }
+            );
+        }
     }
 
     if (option.fixPage != null)
@@ -259,14 +284,14 @@ var DynGrid = function (option) {
     };
 
     var SortData = function (td) {
-        if (thisXmls == null)
+       if (thisXmls == null)
             return;
         if (thisXmls.length == 0)
             return;
         var fdinfo = $(td).prop('fdinfo');
         var fdType = fdinfo.type;
         var fdName = fdinfo.name;
-        if (fdType != "Text" & fdType != "TextAmt")
+        if (fdType != "Text" & fdType != "TextAmt" & fdType != "TextPercent")
             return;
         var srot = "desc";
         var em = $(td).find('em');
@@ -281,17 +306,21 @@ var DynGrid = function (option) {
         var xmlsort = $(thisXmls).clone();
         if (srot == "asc") {
             emn.addClass("fa-sort-asc");
-            if (fdType == "Text")
+            if (fdType == "Text") 
                 xmlsort.sort(function (a, b) { return GetNodeValue(a, fdName) > GetNodeValue(b, fdName) ? 1 : -1 });
-            else if (fdType == "TextAmt")
-                xmlsort.sort(function (a, b) { return parseFloat(GetNodeValue(a, fdName)) > parseFloat(GetNodeValue(b, fdName)) ? 1 : -1 });
-        }
+           else if (fdType == "TextAmt") 
+               xmlsort.sort(function (a, b) { return parseFloat(GetNodeValue(a, fdName)) > parseFloat(GetNodeValue(b, fdName)) ? 1 : -1 });                       
+            else if (fdType == "TextPercent") 
+               xmlsort.sort(function (a, b) { return parseFloat(GetNodeValue(a, fdName).split('%')[0]) > parseFloat(GetNodeValue(b, fdName).split('%')[0]) ? 1 : -1 });            
+       }
         else {
             emn.addClass("fa-sort-desc");
             if (fdType == "Text")
                 xmlsort.sort(function (a, b) { return GetNodeValue(a, fdName) > GetNodeValue(b, fdName) ? -1 : 1 });
-            else if (fdType == "TextAmt")
-                xmlsort.sort(function (a, b) { return parseFloat(GetNodeValue(a, fdName)) > parseFloat(GetNodeValue(b, fdName)) ? -1 : 1 });
+            else if (fdType == "TextAmt") 
+                 xmlsort.sort(function (a, b) { return parseFloat(GetNodeValue(a, fdName)) > parseFloat(GetNodeValue(b, fdName)) ? -1 : 1 });           
+            else if (fdType == "TextPercent")
+                xmlsort.sort(function (a, b) { return parseFloat(GetNodeValue(a, fdName).split('%')[0]) > parseFloat(GetNodeValue(b, fdName).split('%')[0]) ? -1 : 1 });
         }
         $(td).prepend(emn);
         thisBindData(xmlsort);
@@ -322,13 +351,18 @@ var DynGrid = function (option) {
                 tr.prop(fdName, img);
                 img.css('height', '50px');
             }
-            else if (fdType == 'Text' || fdType == 'TextAmt' || fdType == 'TextTime') {
+            else if (fdType == 'Text' || fdType == 'TextAmt' || fdType == 'TextTime' || fdType == 'TextPercent') {
                 td.text(GetNodeValue(xml, fdName));
                 if (fdType == 'TextAmt') {
                     td.css('textAlign', 'right');
                     var str = GetNodeValue(xml, fdName);
                     var amt = parseFloat(str);
                     td.text(new Intl.NumberFormat().format(amt));
+                }
+                if (fdType == 'TextPercent') {
+                    td.css('textAlign', 'center');
+                    var str = GetNodeValue(xml, fdName);
+                    td.text(str);
                 }
                 if (fdType == 'TextTime') {
                     td.css('textAlign', 'center');

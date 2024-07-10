@@ -158,19 +158,19 @@
                                     height: 45px;
                                 }
 
-                                #th1, #th2 {
+                                #th1, #th2, #th4 {
                                     top: 45px;
                                     z-index: 2;
                                 }
 
                                 #td1, #td2, #td3 {
-                                    top: 65px;
+                                    top: 72px;
                                     z-index: 2;
                                     color: red;
                                 }
 
                                 #td0 {
-                                    top: 65px;
+                                    top: 72px;
                                     z-index: 2;
                                 }
 
@@ -193,7 +193,7 @@
 
                             <div class="form-group row" style="margin-left: 20px; width: 100%">
                                 <label class="DyForm3-Label" style="margin-left: 10px">年&nbsp;&nbsp;&nbsp;&nbsp;度</label>
-                                <select id="cboYear" class="txtstyle" style="margin-left: 13px">
+                                <select id="cboYear" class="txtstyle" style="margin-left: 13px;width:150px;">
                                     <option value="">年度</option>
                                 </select>
                                 <button class="DyForm3-BtnQuery" id="btQuery" type="button" style="margin-left: 80px">
@@ -213,9 +213,13 @@
                             </div>
 
                             <div class="form-group row" style="width: 100%;margin-bottom:30px">
-                                <label class="DyForm3-Label" style="font-size: 16px; margin-top: 0px; position: absolute; right: 30px ">成長率=(期間2-期間1)/期間1</label>
+                                <label class="DyForm3-Label" style="font-size: 16px; margin-top: 0px; position: absolute; right: 30px ">成長率=(指定年度-前一年度)/前一年度</label>
                                 <!--<label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>-->
                             </div>
+                            <p></p>
+                            <!--<div class="form-group row" style="margin-left: 12px; width: 100%; height: 25px; margin-bottom: 0px;" >
+                <label class="DyForm3-Label" style="font-size: 16px; position: absolute; right: 30px ">成長率=(指定年度-前一年度)/前一年度</label>
+            </div>-->
 
 
                             <div class="card-block forminput">
@@ -228,12 +232,13 @@
                                                     <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">月份</th>
                                                     <td id="thead2" class="text-center" colspan="1">前一年度業績</td>
                                                     <td id="thead3" class="text-center" colspan="1">指定年度業績</td>
-                                                    <th id="thead4" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">成長%</th>
+                                                    <td id="thead4" class="text-center" colspan="1" style="vertical-align: middle;"></td>
                                                 </tr>
                                                 <!--第二層-->
                                                 <tr>
                                                     <th id="th1" class="text-center" colspan="1">金額</th>
                                                     <th id="th2" class="text-center" colspan="1">金額</th>
+                                                    <th id="th4" class="text-center" colspan="1" style="vertical-align: middle;">成長%</th>
                                                 </tr>
                                                 <!--第三層-->
                                                 <tr>
@@ -255,6 +260,261 @@
                         </div>
                     </div>
                     
+                    <div class="modal fade" id="modal_Step1" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content" style=" background-image: url(images /Web底圖-地球-2.png); background-size: contain ">
+                                <style>
+                                    .ErrorControl {
+                                        background-color: red;
+                                    }
+
+                                    #tbQuerySTEP1 thead tr th {
+                                        font-size: 16px;
+                                        padding: 3px;
+                                        background-color: #ffb620;
+                                        font-weight: bold;
+                                    }
+
+                                    #tbQuerySTEP1 thead tr td {
+                                        font-size: 16px;
+                                        padding: 3px;
+                                        background-color: #ffb620;
+                                        font-weight: bold;
+                                    }
+
+                                    #tbQuerySTEP1 tbody tr td {
+                                        font-size: 16px;
+                                        padding: 3px;
+                                        font-weight: bold;
+                                    }
+
+                                    th:first-child {
+                                        position: sticky;
+                                        left: 0; /*首行永遠固定於左 */
+                                    }
+
+                                    /*.table thead th, .table thead td {
+                                        position: sticky;
+                                        border-top: 0;
+                                        border-bottom: 0;*/
+                                    /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
+                                    /*box-shadow: 0 0px 2px 0px inset #ddd;
+                                    }
+
+                                    #thead1, #thead2, #thead3, #thead4 {
+                                        top: 0;
+                                        z-index: 2;
+                                        height: 35px;
+                                    }
+
+                                    #th1, #th2 {
+                                        top: 35px;
+                                        z-index: 2;
+                                    }
+
+                                    #td1, #td2, #td3 {
+                                        top: 65px;
+                                        z-index: 2;
+                                        color: red;
+                                    }
+
+                                    #td0 {
+                                        top: 65px;
+                                        z-index: 2;
+                                    }*/
+                                </style>
+                                <div class="modal-body modal-tab-container" style="padding:8px">
+
+                                    <div class="form-group row" style="margin-left: 5px; width: 100%">
+                                        <label id="lblProgramName" class="DyForm3-ProgramName">年度銷售統計</label>
+                                    </div>
+
+                                    <div class="form-group row" style="width: 100%">
+                                        <button id="btExit_Step1" type="button" class="DyForm3-BtnRe" style="position: absolute; right: 60px">回上頁</button>
+                                    </div>
+
+                                    <div class="form-group row" style="width: 100%;margin-left:5px ">
+                                        <label class="DyForm3-Label" style="margin-left: 15px;">年度：</label>
+                                        <label id="lblYear" class="DyForm3-LabelBlack" style="margin-left: 5px; margin-top: 3px"></label>
+                                    </div>
+                                    <div class="form-group row" style="width: 100%;margin-left: 5px ">
+                                        <label id="lblTypeName" class="DyForm3-Label" style="margin-left: 15px;">月份：</label>
+                                        <label id="lblMonth" class="DyForm3-LabelBlack" style="margin-left: 5px; margin-top: 3px "></label>
+                                        <!--<input id="rdoShop_PS_Step1" type="radio" name="Step1" value="Shop" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left; " checked>
+                        <label class="DyForm3-LabelBlack" for="rdoShop_PS_Step1" style="margin-top: 2px;">&ensp;店別</label>
+                        <input id="rdoDate_PS_Step1" type="radio" name="Step1" value="Date" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left;  ">
+                        <label class="DyForm3-LabelBlack" for="rdoDate_PS_Step1" style=" margin-top: 2px;">&ensp;銷售日期</label>
+                        <label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>-->
+                                    </div>
+
+                                    <div class="card-block forminput">
+                                        <div class="x_content">
+                                            <div style="overflow: auto; height: 630px;">
+                                                <table id="tbQuerySTEP1" class="table table-bordered" style="width:100%">
+                                                    <thead>
+                                                        <!--第一層-->
+                                                        <tr>
+                                                            <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
+                                                            <td id="thead2" class="text-center" colspan="1">前一年度業績</td>
+                                                            <td id="thead3" class="text-center" colspan="1">指定年度業績</td>
+                                                            <td id="thead4" class="text-center" colspan="1" style="vertical-align: middle;"></td>
+                                                        </tr>
+                                                        <!--第二層-->
+                                                        <tr>
+                                                            <th id="th1" class="text-center" colspan="1">金額</th>
+                                                            <th id="th2" class="text-center" colspan="1">金額</th>
+                                                            <th id="th4" class="text-center" colspan="1" style="vertical-align: middle;">成長%</th>
+                                                        </tr>
+                                                        <!--第三層-->
+                                                        <tr>
+                                                            <td id="td0" class="text-center" colspan="1">月總業績</td>
+                                                            <td id="td1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td2" colspan="1" style="text-align: right"></td>
+                                                            <td id="td3" class="text-center" colspan="1"></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="modal_Step2" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content" style=" background-image: url(images /Web底圖-地球-2.png); background-size: contain ">
+                                <style>
+                                    .ErrorControl {
+                                        background-color: red;
+                                    }
+
+                                    #tbQuerySTEP2 thead tr th {
+                                        font-size: 16px;
+                                        padding: 3px;
+                                        background-color: #ffb620;
+                                        font-weight: bold;
+                                    }
+
+                                    #tbQuerySTEP2 thead tr td {
+                                        font-size: 16px;
+                                        padding: 3px;
+                                        background-color: #ffb620;
+                                        font-weight: bold;
+                                    }
+
+                                    #tbQuerySTEP2 tbody tr td {
+                                        font-size: 16px;
+                                        padding: 3px;
+                                        font-weight: bold;
+                                    }
+
+                                    th:first-child {
+                                        position: sticky;
+                                        left: 0; /*首行永遠固定於左 */
+                                    }
+
+                                    /*.table thead th, .table thead td {
+                                        position: sticky;
+                                        border-top: 0;
+                                        border-bottom: 0;*/
+                                    /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
+                                    /*box-shadow: 0 0px 2px 0px inset #ddd;
+                                    }
+
+                                    #thead1, #thead2, #thead3, #thead4 {
+                                        top: 0;
+                                        z-index: 2;
+                                        height: 35px;
+                                    }
+
+                                    #th1, #th2 {
+                                        top: 35px;
+                                        z-index: 2;
+                                    }
+
+                                    #td1, #td2, #td3 {
+                                        top: 65px;
+                                        z-index: 2;
+                                        color: red;
+                                    }
+
+                                    #td0 {
+                                        top: 65px;
+                                        z-index: 2;
+                                    }*/
+                                </style>
+                                <div class="modal-body modal-tab-container" style="padding:8px">
+
+                                    <div class="form-group row" style="margin-left: 5px; width: 100%">
+                                        <label id="lblProgramName" class="DyForm3-ProgramName">年度銷售統計</label>
+                                    </div>
+
+                                    <div class="form-group row" style="width: 100%">
+                                        <button id="btExit_Step2" type="button" class="DyForm3-BtnRe" style="position: absolute; right: 60px">回上頁</button>
+                                    </div>
+
+                                    <div class="form-group row" style="width: 100%;margin-left:5px ">
+                                        <label class="DyForm3-Label" style="margin-left: 15px;">年度：</label>
+                                        <label id="lblYear2" class="DyForm3-LabelBlack" style="margin-left: 5px; margin-top: 3px"></label>
+                                    </div>
+                                    <div class="form-group row" style="width: 100%;margin-left: 5px ">
+                                        <label class="DyForm3-Label" style="margin-left: 15px;">區課：</label>
+                                        <label id="lblType" class="DyForm3-LabelBlack" style="margin-left: 5px; margin-top: 3px "></label>
+                                    </div>
+                                    <div class="form-group row" style="width: 100%;margin-left: 5px ">
+                                        <label class="DyForm3-Label" style="margin-left: 15px;">店別：</label>
+                                        <label id="lblShop" class="DyForm3-LabelBlack" style="margin-left: 5px; margin-top: 3px "></label>
+                                    </div>
+
+                                    <div class="card-block forminput">
+                                        <div class="x_content">
+                                            <div style="overflow: auto; height: 630px;">
+                                                <table id="tbQuerySTEP2" class="table table-bordered" style="width:100%">
+                                                    <thead>
+                                                        <!--第一層-->
+                                                        <tr>
+                                                            <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">月份</th>
+                                                            <td id="thead2" class="text-center" colspan="1">前一年度業績</td>
+                                                            <td id="thead3" class="text-center" colspan="1">指定年度業績</td>
+                                                            <td id="thead4" class="text-center" colspan="1" style="vertical-align: middle;"></td>
+                                                        </tr>
+                                                        <!--第二層-->
+                                                        <tr>
+                                                            <th id="th1" class="text-center" colspan="1">金額</th>
+                                                            <th id="th2" class="text-center" colspan="1">金額</th>
+                                                            <th id="th4" class="text-center" colspan="1" style="vertical-align: middle;">成長%</th>
+                                                        </tr>
+                                                        <!--第三層-->
+                                                        <tr>
+                                                            <td id="td0" class="text-center" colspan="1">店總業績</td>
+                                                            <td id="td1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td2" colspan="1" style="text-align: right"></td>
+                                                            <td id="td3" class="text-center" colspan="1"></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
                 </article>
 
             </div>
