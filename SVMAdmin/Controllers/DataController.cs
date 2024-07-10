@@ -12666,6 +12666,70 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+        [Route("SystemSetup/MSSA105Query_Step2")]
+        public ActionResult SystemSetup_MSSA105Query_Step2()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSA105Query_Step2OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Year = rq["Year"];
+                Year = Year.Substring(0, 4);
+                string YearBef = (Convert.ToInt32(Year) - 1).ToString();
+                string Type = rq["Type"];
+                string Shop = rq["Shop"];
+
+                string sql = "";
+                string sqlD = "";
+                string sqlH = "";
+
+                //期間1
+                sql = "select substring(a.Opendate,6,2) Month,Sum(a.Cash)Cash1 into #s1 ";
+                sql += "from SalesHWeb a (nolock) ";
+                sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
+                sql += "where a.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Type + "' ";
+                sql += "and opendate like '" + YearBef + "%' and a.Shopno='" + Shop + "' ";
+                sql += "group by substring(a.Opendate,6,2); ";
+
+                //期間2
+                sql += "select substring(a.Opendate,6,2) Month,Sum(a.Cash)Cash1 into #s2 ";
+                sql += "from SalesHWeb a (nolock) ";
+                sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
+                sql += "where a.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Type + "' ";
+                sql += "and opendate like '" + Year + "%' and a.Shopno='" + Shop + "'";
+                sql += "group by substring(a.Opendate,6,2) ; ";
+
+                //明細資料
+                sqlD = "select case when isnull(s1.Month,'')='' then isnull(s2.Month,'')+'月' else isnull(s1.Month,'')+'月' end as id, ";
+                sqlD += "isnull(s1.Cash1,0)Cash1,isnull(s2.Cash1,0)Cash2, ";
+                sqlD += "case when isnull(s1.Cash1,0)=0 and isnull(s2.Cash1,0)=0 then format(0,'p') when isnull(s1.Cash1,0)=0 then format(1,'p') else format(cast(isnull(s2.Cash1,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float),'p') end as Per ";
+                sqlD += "from #s1 s1 ";
+                sqlD += "Full join #s2 s2 on s1.Month=s2.Month ";
+                sqlD += "order by id ";
+                DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+
+                //彙總資料
+                sqlH = "select sum(isnull(s1.Cash1,0))SumCash1,sum(isnull(s2.Cash1,0))SumCash2, ";
+                sqlH += "case when sum(isnull(s1.Cash1,0))=0 then format(100,'p') else format(cast(sum(isnull(s2.Cash1,0))-sum(isnull(s1.Cash1,0)) as Float)/cast(sum(isnull(s1.Cash1,0)) as Float),'p') end as SumPer ";
+                sqlH += "from #s1 s1 ";
+                sqlH += "Full join #s2 s2 on s1.Month=s2.Month ";
+                DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
+                dtH.TableName = "dtH";
+                ds.Tables.Add(dtH);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
 
         [Route("FileUpload_EDM")]
         public ActionResult FileUpload_EDM()
