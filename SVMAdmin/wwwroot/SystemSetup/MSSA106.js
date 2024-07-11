@@ -75,7 +75,7 @@
     };
 
     let InitModifyDeleteButton = function () {
-        //$('#tbQuery tbody tr td').click(function () { Step1_click(this) });
+        $('#tbQuery tbody tr td').click(function () { Step1_click(this) });
         ////$('#tbISAM01Mod .fa-trash-o').click(function () { btPLUDelete_click(this) });
     }
 
