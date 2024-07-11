@@ -311,7 +311,7 @@ var DynGrid = function (option) {
            else if (fdType == "TextAmt") 
                xmlsort.sort(function (a, b) { return parseFloat(GetNodeValue(a, fdName)) > parseFloat(GetNodeValue(b, fdName)) ? 1 : -1 });                       
             else if (fdType == "TextPercent") 
-               xmlsort.sort(function (a, b) { return parseFloat(GetNodeValue(a, fdName).split('%')[0]) > parseFloat(GetNodeValue(b, fdName).split('%')[0]) ? 1 : -1 });            
+                xmlsort.sort(function (a, b) { return parseFloat(GetNodeValue(a, fdName).split('%')[0].replaceAll(",", "")) > parseFloat(GetNodeValue(b, fdName).split('%')[0].replaceAll(",", "")) ? 1 : -1 });            
        }
         else {
             emn.addClass("fa-sort-desc");
@@ -320,7 +320,7 @@ var DynGrid = function (option) {
             else if (fdType == "TextAmt") 
                  xmlsort.sort(function (a, b) { return parseFloat(GetNodeValue(a, fdName)) > parseFloat(GetNodeValue(b, fdName)) ? -1 : 1 });           
             else if (fdType == "TextPercent")
-                xmlsort.sort(function (a, b) { return parseFloat(GetNodeValue(a, fdName).split('%')[0]) > parseFloat(GetNodeValue(b, fdName).split('%')[0]) ? -1 : 1 });
+                xmlsort.sort(function (a, b) { return parseFloat(GetNodeValue(a, fdName).split('%')[0].replaceAll(",", "")) > parseFloat(GetNodeValue(b, fdName).split('%')[0].replaceAll(",", "")) ? -1 : 1 });
         }
         $(td).prepend(emn);
         thisBindData(xmlsort);
