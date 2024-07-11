@@ -1256,8 +1256,8 @@ var Timerset = function () {
     var divN = $('<div></div>');
     divN.load(pg + " #Timer", function () {
         var timer = $('#Timer');
-        var ShowNumber = 1800;
-        var number = 1800;
+        var ShowNumber = 3600;
+        var number = 3600;
         timer.text(SecToHMS(number));
         
         LogOutTimer = setInterval(function () {
