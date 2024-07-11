@@ -1323,6 +1323,20 @@ var AfterChkDevice = function (data) {
     }
 }
 
-
+var RgbToHex = function (str) {
+    var Hex = str.toString(16);
+    return Hex.length == 1 ? "0" + Hex : Hex;
+}
+//將RGB轉換為16進制
+var SetRgbTo16 = function (rgb) {
+    var r = parseInt(rgb.match(/\d+/g)[0]);
+    var g = parseInt(rgb.match(/\d+/g)[1]);
+    var b = parseInt(rgb.match(/\d+/g)[2]);
+    var hexr = RgbToHex(r);
+    var hexg = RgbToHex(g);
+    var hexb = RgbToHex(b);
+    var hexcolor = "#" + hexr + hexg + hexb
+    return hexcolor;
+}
 
 

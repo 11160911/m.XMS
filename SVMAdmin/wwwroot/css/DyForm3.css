@@ -133,8 +133,8 @@
 /*指定店倉*/
 .DyForm3-BtnShop {
     box-shadow: inset 0px 1px 0px 0px #ffffff;
-    background: linear-gradient(to bottom, #CCFFCC 5%, #CCFFCC 100%);
-    background-color: #CCFFCC;
+    background: linear-gradient(to bottom, #dcedff 5%, #dcedff 100%);
+    background-color: #dcedff;
     border-radius: 6px;
     border: 1px solid #a1a0a0;
     display: inline-block;
@@ -153,7 +153,7 @@
     .DyForm3-BtnShop:focus {
         outline-color: transparent;
         outline-style: solid;
-        box-shadow: 0 0 0 3px #CCFFCC;
+        box-shadow: 0 0 0 3px #dcedff;
     }
 /*點擊欄位標題可進行排序*/
 .DyForm3-LabelSort {

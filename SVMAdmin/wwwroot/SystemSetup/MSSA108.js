@@ -45,10 +45,185 @@
     };
 
     let InitModifyDeleteButton = function () {
+        $('#tbQuery thead tr th').mouseenter(function () {
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "ID") {
+                var rgb = $('#tbQuery thead tr th#thead1').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#92d050') {
+                    $('#tbQuery thead tr th#thead1').css('background-color', '#ccffcc')
+                }
+            }
+            else if (fdinfo.name == "RecCount") {
+                var rgb = $('#tbQuery thead tr th#thead2').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#92d050') {
+                    $('#tbQuery thead tr th#thead2').css('background-color', '#ccffcc')
+                }
+            }
+            else if (fdinfo.name == "Qty") {
+                var rgb = $('#tbQuery thead tr th#thead3').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#92d050') {
+                    $('#tbQuery thead tr th#thead3').css('background-color', '#ccffcc')
+                }
+            }
+            else if (fdinfo.name == "Cash") {
+                var rgb = $('#tbQuery thead tr th#thead4').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#92d050') {
+                    $('#tbQuery thead tr th#thead4').css('background-color', '#ccffcc')
+                }
+            }
+            else if (fdinfo.name == "Price") {
+                var rgb = $('#tbQuery thead tr th#thead5').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#92d050') {
+                    $('#tbQuery thead tr th#thead5').css('background-color', '#ccffcc')
+                }
+            }
+        });
+        $('#tbQuery thead tr th').mouseleave(function () {
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "ID") {
+                var rgb = $('#tbQuery thead tr th#thead1').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#92d050') {
+                    $('#tbQuery thead tr th#thead1').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "RecCount") {
+                var rgb = $('#tbQuery thead tr th#thead2').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#92d050') {
+                    $('#tbQuery thead tr th#thead2').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "Qty") {
+                var rgb = $('#tbQuery thead tr th#thead3').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#92d050') {
+                    $('#tbQuery thead tr th#thead3').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "Cash") {
+                var rgb = $('#tbQuery thead tr th#thead4').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#92d050') {
+                    $('#tbQuery thead tr th#thead4').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "Price") {
+                var rgb = $('#tbQuery thead tr th#thead5').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#92d050') {
+                    $('#tbQuery thead tr th#thead5').css('background-color', '#ffb620')
+                }
+            }
+        });
+        $('#tbQuery thead tr th').click(function () {
+            $('#tbQuery thead tr th').css('background-color', '#ffb620')
+
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "ID") {
+                $('#tbQuery thead tr th#thead1').css('background-color', '#92D050')
+            }
+            else if (fdinfo.name == "RecCount") {
+                $('#tbQuery thead tr th#thead2').css('background-color', '#92D050')
+            }
+            else if (fdinfo.name == "Qty") {
+                $('#tbQuery thead tr th#thead3').css('background-color', '#92D050')
+            }
+            else if (fdinfo.name == "Cash") {
+                $('#tbQuery thead tr th#thead4').css('background-color', '#92D050')
+            }
+            else if (fdinfo.name == "Price") {
+                $('#tbQuery thead tr th#thead5').css('background-color', '#92D050')
+            }
+        });
         //$('#tbQuery tbody tr td').click(function () { Step1_click(this) });
     }
 
     let gridclick1 = function () {
+        $('#tbTop20 thead tr th').mouseenter(function () {
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "ID") {
+                var rgb = $('#tbTop20 thead tr th#thTop20_1').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#92d050') {
+                    $('#tbTop20 thead tr th#thTop20_1').css('background-color', '#ccffcc')
+                }
+            }
+            else if (fdinfo.name == "Name") {
+                var rgb = $('#tbTop20 thead tr th#thTop20_2').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#92d050') {
+                    $('#tbTop20 thead tr th#thTop20_2').css('background-color', '#ccffcc')
+                }
+            }
+            else if (fdinfo.name == "Qty") {
+                var rgb = $('#tbTop20 thead tr th#thTop20_3').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#92d050') {
+                    $('#tbTop20 thead tr th#thTop20_3').css('background-color', '#ccffcc')
+                }
+            }
+            else if (fdinfo.name == "Cash") {
+                var rgb = $('#tbTop20 thead tr th#thTop20_4').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#92d050') {
+                    $('#tbTop20 thead tr th#thTop20_4').css('background-color', '#ccffcc')
+                }
+            }
+        });
+        $('#tbTop20 thead tr th').mouseleave(function () {
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "ID") {
+                var rgb = $('#tbTop20 thead tr th#thTop20_1').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#92d050') {
+                    $('#tbTop20 thead tr th#thTop20_1').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "Name") {
+                var rgb = $('#tbTop20 thead tr th#thTop20_2').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#92d050') {
+                    $('#tbTop20 thead tr th#thTop20_2').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "Qty") {
+                var rgb = $('#tbTop20 thead tr th#thTop20_3').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#92d050') {
+                    $('#tbTop20 thead tr th#thTop20_3').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "Cash") {
+                var rgb = $('#tbTop20 thead tr th#thTop20_4').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#92d050') {
+                    $('#tbTop20 thead tr th#thTop20_4').css('background-color', '#ffb620')
+                }
+            }
+
+        });
+        $('#tbTop20 thead tr th').click(function () {
+            $('#tbTop20 thead tr th').css('background-color', '#ffb620')
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "ID") {
+                $('#tbTop20 thead tr th#thTop20_1').css('background-color', '#92D050')
+            }
+            else if (fdinfo.name == "Name") {
+                $('#tbTop20 thead tr th#thTop20_2').css('background-color', '#92D050')
+            }
+            else if (fdinfo.name == "Qty") {
+                $('#tbTop20 thead tr th#thTop20_3').css('background-color', '#92D050')
+            }
+            else if (fdinfo.name == "Cash") {
+                $('#tbTop20 thead tr th#thTop20_4').css('background-color', '#92D050')
+            }
+        });
     }
 
     let ChkLogOut_1 = function (AfterChkLogOut_1) {

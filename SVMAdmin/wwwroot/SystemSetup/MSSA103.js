@@ -22,7 +22,7 @@
                     { type: "TextAmt", name: "Cash1" },
                     { type: "TextAmt", name: "Qty2" },
                     { type: "TextAmt", name: "Cash2" },
-                    { type: "TextAmt", name: "Per" }
+                    { type: "TextPercent", name: "Per" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,

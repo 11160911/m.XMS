@@ -12,6 +12,8 @@ using System.Security.Cryptography;
 using System.Text;
 using ZXing.QrCode.Internal;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
+using System.Drawing;
 
 
 namespace SVMAdmin.Controllers
@@ -12278,7 +12280,7 @@ namespace SVMAdmin.Controllers
                     //明細資料
                     sqlD = "select case when isnull(s1.ID,'')='' then isnull(s2.ID,'') + '-' + isnull(s2.Name,'') else isnull(s1.ID,'') + '-' + isnull(s1.Name,'') end as id,isnull(s1.Qty1,0)Qty1,isnull(s1.Cash1,0)Cash1, ";
                     sqlD += "isnull(s2.Qty2,0)Qty2,isnull(s2.Cash2,0)Cash2, ";
-                    sqlD += "case when isnull(s1.Cash1,0)=0 then Round(0,2) else Round((cast(isnull(s2.Cash2,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float))*100,2) end as Per ";
+                    sqlD += "case when isnull(s1.Cash1,0)=0 then format(0,'p') else format((cast(isnull(s2.Cash2,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float)),'p') end as Per ";
                     sqlD += "from #s1 s1 ";
                     sqlD += "Full join #s2 s2 on s1.id=s2.id ";
                     sqlD += "order by id ";
@@ -12334,7 +12336,7 @@ namespace SVMAdmin.Controllers
                     //明細資料
                     sqlD = "select a.type_id + '-' + a.type_name id,isnull(s1.Qty1,0)Qty1,isnull(s1.Cash1,0)Cash1, ";
                     sqlD += "isnull(s2.Qty2,0)Qty2,isnull(s2.Cash2,0)Cash2, ";
-                    sqlD += "case when isnull(s1.Cash1,0)=0 then Round(0,2) else Round((cast(isnull(s2.Cash2,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float))*100,2) end as Per ";
+                    sqlD += "case when isnull(s1.Cash1,0)=0 then format(0,'p') else format((cast(isnull(s2.Cash2,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float)),'p') end as Per ";
                     sqlD += "from TypeDataWeb a (nolock) ";
                     sqlD += "left join #s1 s1 on a.type_id=s1.id ";
                     sqlD += "left join #s2 s2 on a.type_id=s2.id ";
@@ -12394,7 +12396,7 @@ namespace SVMAdmin.Controllers
                     //明細資料
                     sqlD = "select a.type_id + '-' + a.type_name id,isnull(s1.Qty1,0)Qty1,isnull(s1.Cash1,0)Cash1, ";
                     sqlD += "isnull(s2.Qty2,0)Qty2,isnull(s2.Cash2,0)Cash2, ";
-                    sqlD += "case when isnull(s1.Cash1,0)=0 then Round(0,2) else Round((cast(isnull(s2.Cash2,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float))*100,2) end as Per ";
+                    sqlD += "case when isnull(s1.Cash1,0)=0 then format(0,'p') else format((cast(isnull(s2.Cash2,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float)),'p') end as Per ";
                     sqlD += "from TypeDataWeb a (nolock) ";
                     sqlD += "left join #s1 s1 on a.type_id=s1.id ";
                     sqlD += "left join #s2 s2 on a.type_id=s2.id ";
