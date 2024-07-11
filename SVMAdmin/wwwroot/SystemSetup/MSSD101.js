@@ -32,7 +32,7 @@
                     { type: "Text", name: "PSDate", style: "text-align:center" },
                     { type: "TextAmt", name: "SendCnt" },
                     { type: "TextAmt", name: "BackCnt" },
-                    { type: "TextAmt", name: "BackPer" },
+                    { type: "TextPercent", name: "BackPer" },
                     { type: "TextAmt", name: "Discount" },
                     { type: "TextAmt", name: "Cash" },
                     { type: "TextAmt", name: "SalesCnt" },
@@ -83,12 +83,12 @@
         grdM_PS_Step1_Shop = new DynGrid(
             {
                 table_lement: $('#tbShop_PS_Step1')[0],
-                class_collection: ["tdCol1", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9 label-align", "tdCol10 label-align", "tdCol11 label-align"],
+                class_collection: ["tdCol1", "tdCol2 label-align", "tdCol3 label-align", "tdCol4", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9 label-align", "tdCol10 label-align", "tdCol11 label-align"],
                 fields_info: [
                     { type: "Text", name: "ShopNO", style: "text-align:center" },
                     { type: "TextAmt", name: "SendCnt" },
                     { type: "TextAmt", name: "BackCnt" },
-                    { type: "TextAmt", name: "BackPer", style: "text-align:center" },
+                    { type: "TextPercent", name: "BackPer" },
                     { type: "TextAmt", name: "Discount" },
                     { type: "TextAmt", name: "Cash" },
                     { type: "TextAmt", name: "VIPCNT" },

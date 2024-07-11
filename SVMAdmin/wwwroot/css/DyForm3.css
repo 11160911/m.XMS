@@ -189,3 +189,10 @@
         outline-style: solid;
         box-shadow: 0 0 0 3px #8ccd55;
     }
+
+/*Table*/
+.DyForm3-Table {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto
+}

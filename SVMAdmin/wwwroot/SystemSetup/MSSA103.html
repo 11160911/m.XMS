@@ -124,6 +124,7 @@
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
+                                    padding-bottom: 15px;
                                 }
 
                                 #tbQuery thead tr td {
@@ -158,10 +159,10 @@
                                     height: 35px;
                                 }
 
-                                #th1, #th2, #th3, #th4 {
+                                #th1, #th2, #th3, #th4, #th5 {
                                     top: 35px;
                                     z-index: 2;
-                                    height:55px;
+                                    height: 55px;
                                 }
 
                                 #td1, #td2, #td3, #td4, #td5 {
@@ -173,6 +174,18 @@
                                 #td0 {
                                     top: 85px;
                                     z-index: 2;
+                                }
+
+                                #tbQuery {
+                                    width: 50%
+                                }
+
+                                @media (max-width:650px) {
+                                    #tbQuery {
+                                        width: 95%;
+                                        margin-left: auto;
+                                        margin-right: auto
+                                    }
                                 }
                             </style>
 
@@ -226,21 +239,21 @@
                                 <label class="DyForm3-Label" style="font-size: 16px; margin-top: 0px ">成長率=(本期-前期)/前期</label>
                             </div>
 
-                            <div class="form-group row" style="margin-bottom: 30px; width: 100%; ">
+                            <!--<div class="form-group row" style="margin-bottom: 30px; width: 100%; ">
                                 <label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>
-                            </div>
+                            </div>-->
 
                             <div class="card-block forminput">
                                 <div class="x_content">
                                     <div style="overflow: auto; height: 400px;">
-                                        <table id="tbQuery" class="table table-bordered" style="width:100%">
+                                        <table id="tbQuery" class="table table-bordered" >
                                             <thead>
                                                 <!--第一層-->
                                                 <tr>
                                                     <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店櫃</th>
                                                     <td id="thead2" class="text-center" colspan="2">前期</td>
                                                     <td id="thead3" class="text-center" colspan="2">本期</td>
-                                                    <th id="thead4" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">成長%</th>
+                                                    <td id="thead4" class="text-center" colspan="1"></td>
                                                 </tr>
                                                 <!--第二層-->
                                                 <tr>
@@ -248,6 +261,7 @@
                                                     <th id="th2" class="text-center" colspan="1">金額</th>
                                                     <th id="th3" class="text-center" colspan="1">數量</th>
                                                     <th id="th4" class="text-center" colspan="1">金額</th>
+                                                    <th id="th5" class="text-center" colspan="1">成長%</th>
                                                 </tr>
                                                 <!--第三層-->
                                                 <tr>
@@ -337,7 +351,7 @@
                                     <div class="card-block forminput">
                                         <div class="x_content">
                                             <div style="overflow: auto; height: 400px;">
-                                                <table id="tbLookup_ShopNo" class="table table-bordered" style="width: 100%;">
+                                                <table id="tbLookup_ShopNo" class="table table-bordered DyForm3-Table">
                                                     <thead>
                                                         <tr>
                                                             <th style="width:50px"></th>
