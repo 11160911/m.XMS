@@ -7992,6 +7992,16 @@ namespace SVMAdmin.Controllers
                     sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
                     sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
                     sql += "'" + DocNo + "','T2','','T','','" + T2.SqlQuote() + "','',''; ";
+
+                    //SetEDMDWeb(TE)
+                    sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
+                    sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
+
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + DocNo + "','TE','','T','',TE,'','' ";
+                    sql += "From EDMSetWeb (nolock) Where Companycode='" + uu.CompanyId + "' and ProgramID='MSDM104';";
+
                     //SetEDMShopWeb
                     if (WhNoFlag.SqlQuote() != "Y")
                     {
@@ -8062,6 +8072,15 @@ namespace SVMAdmin.Controllers
                     sql += "TXT='" + T2.SqlQuote() + "' ";
                     sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
                     sql += "and DataType='T2'; ";
+
+                    //SetEDMDWeb(TE)
+                    sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                    sql += "TXT=b.TE ";
+                    sql += "From SetEDMDWeb a (nolock) ";
+                    sql += "inner join EDMSetWeb b (nolock) on a.Companycode=b.Companycode and b.Programid='MSDM104' ";
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' and a.DocNo='" + DocNo.SqlQuote() + "' ";
+                    sql += "and a.DataType='TE'; ";
+
                     //SetEDMShopWeb
                     sql += "Delete From SetEDMShopWeb Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "'; ";
                     if (WhNoFlag.SqlQuote() != "Y")
@@ -8595,7 +8614,7 @@ namespace SVMAdmin.Controllers
                     sql += "case when Sum(isnull(a.TotalTrans,0))=0 then 0 else Round(Sum(isnull(a.TotalCash,0))/Sum(isnull(a.TotalTrans,0)),0) end as SalesPrice2 ";
 
                     sql += "From MSData2Web a (nolock) ";
-                    sql += "left join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode ";
+                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode and b.ST_Type not in('0','2','3') ";
                     sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                     if (PS_NO != "")
                     {
@@ -8615,6 +8634,7 @@ namespace SVMAdmin.Controllers
                     sql += "sum(isnull(a.TotalCash,0))SumSalesCash2,sum(isnull(a.TotalTrans,0))SumSalesCnt2, ";
                     sql += "case when sum(isnull(a.TotalTrans,0))=0 then 0 else Round(sum(isnull(a.TotalCash,0))/sum(isnull(a.TotalTrans,0)),0) end as SumSalesPrice2 ";
                     sql += "From MSData2Web a (nolock) ";
+                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode and b.ST_Type not in('0','2','3') ";
                     sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                     if (PS_NO != "")
                     {
@@ -8650,7 +8670,7 @@ namespace SVMAdmin.Controllers
                     sql += "case when Sum(isnull(b.TotalTrans,0))=0 then 0 else Round(Sum(isnull(b.TotalCash,0)) / Sum(isnull(b.TotalTrans,0)), 0) end as SalesPrice2 ";
 
                     sql += "From #dates a ";
-                    sql += "left join MSData1Web b (nolock) on a.id=b.SalesDate and b.Companycode='" + uu.CompanyId + "' ";
+                    sql += "inner join MSData1Web b (nolock) on a.id=b.SalesDate and b.Companycode='" + uu.CompanyId + "' ";
                     if (PS_NO != "")
                     {
                         sql += "and b.PS_NO='" + PS_NO + "' ";
@@ -8668,7 +8688,7 @@ namespace SVMAdmin.Controllers
                     sql += "case when sum(isnull(b.TotalTrans,0))=0 then 0 else Round(sum(isnull(b.TotalCash,0))/sum(isnull(b.TotalTrans,0)), 0) end as SumSalesPrice2 ";
 
                     sql += "From #dates a ";
-                    sql += "left join MSData1Web b (nolock) on a.id=b.SalesDate and b.Companycode='" + uu.CompanyId + "' ";
+                    sql += "inner join MSData1Web b (nolock) on a.id=b.SalesDate and b.Companycode='" + uu.CompanyId + "' ";
                     if (PS_NO != "")
                     {
                         sql += "and b.PS_NO='" + PS_NO + "' ";
@@ -8728,7 +8748,7 @@ namespace SVMAdmin.Controllers
                     sql += "sum(isnull(b.TotalCash,0))TotalCash,sum(isnull(b.TotalTrans,0))TotalTrans, ";
                     sql += "case when sum(isnull(b.TotalTrans,0))=0 then 0 else Round(sum(isnull(b.TotalCash,0))/sum(isnull(b.TotalTrans,0)),0) end as TotalPrice ";
                     sql += "From #dates a ";
-                    sql += "left join MSData1Web b (nolock) on a.id=b.SalesDate and b.Companycode='" + uu.CompanyId + "' ";
+                    sql += "inner join MSData1Web b (nolock) on a.id=b.SalesDate and b.Companycode='" + uu.CompanyId + "' ";
                     if (PS_NO != "")
                     {
                         sql += "and b.PS_NO='" + PS_NO + "' ";
@@ -8750,7 +8770,7 @@ namespace SVMAdmin.Controllers
                     sql += "sum(isnull(b.TotalCash,0))SumTotalCash,sum(isnull(b.TotalTrans,0))SumTotalTrans, ";
                     sql += "case when sum(isnull(b.TotalTrans,0))=0 then 0 else Round(sum(isnull(b.TotalCash,0))/sum(isnull(b.TotalTrans,0)),0) end as SumTotalPrice ";
                     sql += "From #dates a ";
-                    sql += "left join MSData1Web b (nolock) on a.id=b.SalesDate and b.Companycode='" + uu.CompanyId + "' ";
+                    sql += "inner join MSData1Web b (nolock) on a.id=b.SalesDate and b.Companycode='" + uu.CompanyId + "' ";
                     if (PS_NO != "")
                     {
                         sql += "and b.PS_NO='" + PS_NO + "' ";
@@ -8774,7 +8794,7 @@ namespace SVMAdmin.Controllers
                     sql += "sum(isnull(a.TotalCash,0))TotalCash,sum(isnull(a.TotalTrans,0))TotalTrans, ";
                     sql += "case when sum(isnull(a.TotalTrans,0))=0 then 0 else Round(sum(isnull(a.TotalCash,0)) / sum(isnull(a.TotalTrans,0)), 0) end as TotalPrice ";
                     sql += "From MSData1Web a (nolock) ";
-                    sql += "left join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode ";
+                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode and b.ST_Type not in('0','2','3') ";
                     sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                     if (PS_NO != "")
                     {
@@ -8797,6 +8817,7 @@ namespace SVMAdmin.Controllers
                     sql += "sum(isnull(a.TotalCash,0))SumTotalCash,sum(isnull(a.TotalTrans,0))SumTotalTrans, ";
                     sql += "case when sum(isnull(a.TotalTrans,0))=0 then 0 else Round(sum(isnull(a.TotalCash,0)) / sum(isnull(a.TotalTrans,0)), 0) end as SumTotalPrice ";
                     sql += "From MSData1Web a (nolock) ";
+                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode and b.ST_Type not in('0','2','3') ";
                     sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                     if (PS_NO != "")
                     {
@@ -9607,6 +9628,14 @@ namespace SVMAdmin.Controllers
                     sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
                     sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
                     sql += "'" + DocNo + "','T2','','T','','" + T2.SqlQuote() + "','',''; ";
+
+                    //SetEDMDWeb(TE)
+                    sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
+                    sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + DocNo + "','TE','','T','',TE,'','' ";
+                    sql += "From EDMSetWeb (nolock) Where Companycode='" + uu.CompanyId + "' and ProgramID='MSDM106';";
                     PubUtility.ExecuteSql(sql, uu, "SYS");
                 }
                 //修改
@@ -9659,6 +9688,14 @@ namespace SVMAdmin.Controllers
                     sql += "TXT='" + T2.SqlQuote() + "' ";
                     sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
                     sql += "and DataType='T2'; ";
+
+                    //SetEDMDWeb(TE)
+                    sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                    sql += "TXT=b.TE ";
+                    sql += "From SetEDMDWeb a (nolock) ";
+                    sql += "inner join EDMSetWeb b (nolock) on a.Companycode=b.Companycode and b.Programid='MSDM106' ";
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' and a.DocNo='" + DocNo.SqlQuote() + "' ";
+                    sql += "and a.DataType='TE'; ";
                     PubUtility.ExecuteSql(sql, uu, "SYS");
                 }
 
@@ -10053,6 +10090,15 @@ namespace SVMAdmin.Controllers
                     sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
                     sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
                     sql += "'" + DocNo + "','T2','','T','','" + T2.SqlQuote() + "','',''; ";
+
+                    //SetEDMDWeb(TE)
+                    sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
+                    sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
+
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + DocNo + "','TE','','T','',TE,'','' ";
+                    sql += "From EDMSetWeb (nolock) Where Companycode='" + uu.CompanyId + "' and ProgramID='MSDM107';";
                     PubUtility.ExecuteSql(sql, uu, "SYS");
                 }
                 //修改
@@ -10099,12 +10145,19 @@ namespace SVMAdmin.Controllers
                         }
                         sql += "Delete From SetEDM Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' and DataType='P2'; ";
                     }
-
                     //SetEDMDWeb(T2)
                     sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
                     sql += "TXT='" + T2.SqlQuote() + "' ";
                     sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
                     sql += "and DataType='T2'; ";
+
+                    //SetEDMDWeb(TE)
+                    sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                    sql += "TXT=b.TE ";
+                    sql += "From SetEDMDWeb a (nolock) ";
+                    sql += "inner join EDMSetWeb b (nolock) on a.Companycode=b.Companycode and b.Programid='MSDM107' ";
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' and a.DocNo='" + DocNo.SqlQuote() + "' ";
+                    sql += "and a.DataType='TE'; ";
                     PubUtility.ExecuteSql(sql, uu, "SYS");
                 }
 
