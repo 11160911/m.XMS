@@ -173,35 +173,35 @@
                                 }
                             </style>
 
-                            <div class="form-group row" style="margin-left: 5px; width: 100%">
-                                <label id="lblProgramName" class="DyForm3-ProgramName">會員數據分析</label>
+                            <div class="form-group row" style="margin-left: 5px; width: 100%;margin-bottom:0px">
+                                <label id="lblProgramName" class="DyForm3-ProgramName">VIP年齡層分析</label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 20px; width: 100%">
+                            <div class="form-group row" style="margin-left: 20px; width: 100%; margin-bottom: 5px">
                                 <button class="DyForm3-BtnClear" id="btClear" type="button" style="margin-left: 0px">
                                     清除
                                     <i class="fa fa-close"></i>
                                 </button>
-                                <button class="DyForm3-BtnQuery" id="btQuery" type="button" style="margin-left: 500px">
+                                <button class="DyForm3-BtnQuery" id="btQuery" type="button" style="margin-left: 40px">
                                     查詢
                                     <i class="fa fa-search"></i>
                                 </button>
+                                <label class="DyForm3-Horizontal" >完整顯示請打橫看</label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%;margin-top:20px">
-                                <button class="DyForm3-BtnShop" id="btVIPFaceID" type="button">會籍店櫃</button>
+                            <div class="form-group row" style="margin-left: 12px; width: 100%;margin-top:0px">
+                                <button class="DyForm3-BtnShop" id="btVIPFaceID" type="button" style=" width: 120px;">會籍店櫃選取</button>
                                 <label class="DyForm3-LabelRed" id="lblVIPFaceIDCnt" style=" margin-left: 10px; margin-top: 5px"></label>
                                 <label class="DyForm3-Label" id="lblVIPFaceIDName" style=" margin-left: 10px; margin-top: 5px"></label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%">
-                                <button class="DyForm3-BtnShop" id="btCity" type="button">縣市</button>
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-top: 0px">
+                                <button class="DyForm3-BtnShop" id="btCity" type="button">縣市選取</button>
                                 <label class="DyForm3-LabelRed" id="lblCityCnt" style=" margin-left: 10px; margin-top: 5px"></label>
                                 <label class="DyForm3-Label" id="lblCityName" style=" margin-left: 10px; margin-top: 5px"></label>
                             </div>
 
-
-                            <div class="form-group row" style="margin-left: 12px; width: 100%">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
                                 <mark class="DyForm3-DyNotEmptyMark" style="margin-left:5px" hidden>*</mark>
                                 <label class="DyForm3-Label">入會期間</label>
                                 <input id="rdoDateAll" type="radio" name="D" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
@@ -216,7 +216,7 @@
                                 <label class="DyForm3-LabelBlack" for="rdoDate1Y" style="margin-top:2px">&ensp;1年內</label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 25px; width: 100%">
+                            <div class="form-group row" style="margin-left: 25px; width: 100%; margin-bottom: 0px">
                                 <mark class="DyForm3-DyNotEmptyMark" style="margin-left:5px" hidden>*</mark>
                                 <input id="rdoShop" type="radio" name="Q" style="vertical-align: middle; margin-top: 6px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
                                 <label class="DyForm3-LabelBlack" for="rdoShop" style="margin-top: 2px">&ensp;店別</label>
@@ -227,9 +227,9 @@
                             </div>
 
                             <div class="form-group row" style="margin-bottom: 0px; width: 100%; margin-left: 12px ">
-                                <label id="lblEnd" class="DyForm3-Label" style="font-size: 20px; margin-top:0px "></label>
-                                <label id="lblVIPQty" class="DyForm3-LabelRed" style="font-size: 20px; margin-left: 60px "></label>
-                                <label id="lblBirNo" class="DyForm3-LabelRed" style="font-size: 20px; margin-left: 60px ">生日空白不列入計算</label>
+                                <label id="lblEnd" class="DyForm3-Label" style="font-size: 16px; margin-top: 0px "></label>
+                                <label id="lblVIPQty" class="DyForm3-LabelRed" style="font-size: 16px; margin-left: 20px "></label>
+                                <label id="lblBirNo" class="DyForm3-LabelRed" style="font-size: 16px; margin-left: 25px ">生日空白不列入計算</label>
                                 <!--<label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>-->
                             </div>
 
@@ -242,8 +242,8 @@
                                                 <tr>
                                                     <th id="thtype" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
                                                     <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">會員數</th>
-                                                    <td id="thead2" class="text-center" colspan="14">年齡層數量 / 佔比</td>
-                                                    <td id="thead3" class="text-center" colspan="4">性別數量 / 佔比</td>
+                                                    <td id="thead2" class="text-center" colspan="14">年齡層人數 / 佔比</td>
+                                                    <td id="thead3" class="text-center" colspan="4">性別人數 / 佔比</td>
                                                 </tr>
                                                 <!--第二層-->
                                                 <tr>
@@ -293,7 +293,7 @@
                                                 <tr>
                                                     <th class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">性別</th>
                                                     <th class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">會員數</th>
-                                                    <td class="text-center" colspan="14">年齡層數量 / 佔比</td>
+                                                    <td class="text-center" colspan="14">年齡層人數 / 佔比</td>
                                                 </tr>
                                                 <!--第二層-->
                                                 <tr>

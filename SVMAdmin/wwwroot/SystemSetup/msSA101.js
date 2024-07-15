@@ -22,7 +22,7 @@
                     { type: "TextAmt", name: "VCash" },
                     { type: "TextAmt", name: "VCnt" },
                     { type: "TextAmt", name: "VCusCash" },
-                    { type: "TextAmt", name: "VPer" }
+                    { type: "TextPercent", name: "VPer" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -32,7 +32,7 @@
         );
         grdD = new DynGrid(
             {
-                table_lement: $('#tbQuery')[0],
+                table_lement: $('#tbQueryD')[0],
                 class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 text-center"],
                 fields_info: [
                     { type: "Text", name: "ID", style: "" },
@@ -42,7 +42,7 @@
                     { type: "TextAmt", name: "VCash" },
                     { type: "TextAmt", name: "VCnt" },
                     { type: "TextAmt", name: "VCusCash" },
-                    { type: "TextAmt", name: "VPer" }
+                    { type: "TextPercent", name: "VPer" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -52,7 +52,7 @@
         );
         grdDD = new DynGrid(
             {
-                table_lement: $('#tbQuery')[0],
+                table_lement: $('#tbQueryDD')[0],
                 class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 text-center"],
                 fields_info: [
                     { type: "Text", name: "ID", style: "" },
@@ -62,7 +62,7 @@
                     { type: "TextAmt", name: "VCash" },
                     { type: "TextAmt", name: "VCnt" },
                     { type: "TextAmt", name: "VCusCash" },
-                    { type: "TextAmt", name: "VPer" }
+                    { type: "TextPercent", name: "VPer" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -86,20 +86,6 @@
             }
         );
 
-        //grdLookUp_City = new DynGrid(
-        //    {
-        //        table_lement: $('#tbLookup_City')[0],
-        //        class_collection: ["tdCol1 text-center", "tdCol2"],
-        //        fields_info: [
-        //            { type: "checkbox", name: "chkset", style: "width:16px;height:16px" },
-        //            { type: "Text", name: "City", style: "" }
-        //        ],
-        //        //rows_per_page: 10,
-        //        method_clickrow: click_PLU,
-        //        sortable: "N"
-        //    }
-        //);
-
         return;
     };
 
@@ -111,84 +97,297 @@
         $('#tbQuery tbody tr td').click(function () { Step1_click(this) });
         //$('#tbISAM01Mod .fa-trash-o').click(function () { btPLUDelete_click(this) });
     }
+//#region 下展第二層
+    let Step1_click = function (bt) {
+        var heads = $('#tbQuery thead tr th#thead1').html();
+        if (heads.toString().indexOf("銷售日期") >= 0) {
+            $('#lblD_DateTitle').html('日&emsp;&emsp;期');
+        } else {
+            $('#lblD_DateTitle').html('日期區間');
+        }
+
+        $('#tbQuery td').closest('tr').css('background-color', 'white');
+        $(bt).closest('tr').click();
+        $('.msg-valid').hide();
+        var node = $(grdM.ActiveRowTR()).prop('Record');
+        $('#tbQuery td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
+        if (heads.toString().indexOf("銷售日期") >= 0) {
+            $('#lblD_Date').html(GetNodeValue(node, 'ID'));
+            $('#D_lblrdo1').html('&ensp;區域');
+        }
+        else {
+            $('#lblD_Date').html($('#txtOpenDateS1').val().toString().replaceAll('-', '/') + ' ~ ' + $('#txtOpenDateE1').val().toString().replaceAll('-', '/'));
+            $('#D_lblrdo1').html('&ensp;日期');
+        }
+        $('#lblD_ShopName').html('');
+        $('#lblD_ShopCnt').html('');
+        $('#D_rdoShop').prop('checked', 'true');
+        if (heads.toString().indexOf("店別") >= 0) {
+            $('#lblD_ShopName').html(GetNodeValue(node, 'ID'));
+            $('#D_rdogrp').hide();
+        }
+        else {
+            if ($('#lblShopNoName').html() != "") {
+                $('#lblD_ShopName').html($('#lblShopNoName').html());
+            }
+            if ($('#lblShopNoCnt').html() != "") {
+                $('#lblD_ShopCnt').html($('#lblShopNoCnt').html());
+            }
+            if (heads.toString().indexOf("銷售日期") >= 0 && chkShopNo!="") {
+                $('#D_rdogrp').hide();
+            } else {
+                $('#D_rdogrp').show();
+            }
+        }
+        if (heads.toString().indexOf("區域") >= 0) {
+            $('#D_grp3').show();
+            $('#lblD_Area').html(GetNodeValue(node, 'ID'));
+        } else {
+            $('#D_grp3').hide();
+        }
+
+        $('#modal_D').modal('show');
+        setTimeout(function () {
+            MSSA101Query_D();
+        }, 500);
+    };
+
+    let MSSA101Query_D = function () {
+        var heads = $('#tbQuery thead tr th#thead1').html();
+        var SDate;
+        var EDate;
+        if ($('#lblD_DateTitle').html().indexOf("日期區間") >= 0) {
+            SDate=$('#lblD_Date').html().split('~')[0].toString().trim();
+            EDate=$('#lblD_Date').html().split('~')[1].toString().trim();
+        } else {
+            SDate = $('#lblD_Date').html();
+            EDate = $('#lblD_Date').html();
+        }
+        var Flag_D = "";
+        var D_Area;
+        var D_Shop = "";
+        //店櫃
+        if (heads.toString().indexOf("店別") >= 0) {
+            $('#tbQueryD thead tr th#Dthead1').html('銷售日期');
+            Flag_D = "D";
+            D_Shop = "'" + $('#lblD_ShopName').html().split('-')[0] + "'";
+        }
+        //區域
+        else if (heads.toString().indexOf("區域") >= 0) {
+            D_Area = $('#lblD_Area').html().split('-')[0];
+            if ($('#D_rdoShop').prop('checked') == true) {
+                $('#tbQueryD thead tr th#Dthead1').html('店別');
+                Flag_D = "S";
+            } else {
+                $('#tbQueryD thead tr th#Dthead1').html('銷售日期');
+                Flag_D = "D";
+            }
+            if (chkShopNo != "") { D_Shop = chkShopNo; }
+        }
+        //日期
+        else if (heads.toString().indexOf("銷售日期") >= 0) {
+            if ($('#D_rdoShop').prop('checked') == true) {
+                $('#tbQueryD thead tr th#Dthead1').html('店別');
+                Flag_D = "S";
+            } else {
+                $('#tbQueryD thead tr th#Dthead1').html('區域');
+                Flag_D = "A";
+            }
+            if (chkShopNo != "") { D_Shop = chkShopNo; }
+        }
+
+        ShowLoading();
+        var pData = {
+            OpenDateS1: SDate,
+            OpenDateE1: EDate,
+            ShopNo: D_Shop,
+            Area: D_Area,
+            Flag: Flag_D
+        }
+        PostToWebApi({ url: "api/SystemSetup/MSSA101Query", data: pData, success: afterMSSA101Query_D });
+    };
+
+    let afterMSSA101Query_D = function (data) {
+        CloseLoading();
+        if (ReturnMsg(data, 0) != "MSSA101QueryOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtDelt = data.getElementsByTagName('dtDelt');
+            grdD.BindData(dtDelt);
+
+            if (dtDelt.length == 0) {
+                DyAlert("無符合資料!");
+                //$(".modal-backdrop").remove();
+                var sumtdQD = document.querySelector('.QDSum');
+                for (i = 0; i < sumtdQD.childElementCount; i++) {
+                    sumtdQD.children[i].innerHTML = "";
+                }
+                return;
+            }
+            var dtSum = data.getElementsByTagName('dtSum');
+            $('#tbQueryD thead td#Dtd1').html(parseInt(GetNodeValue(dtSum[0], "Cash1")).toLocaleString('en-US'));
+            $('#tbQueryD thead td#Dtd2').html(parseInt(GetNodeValue(dtSum[0], "Cnt1")).toLocaleString('en-US'));
+            $('#tbQueryD thead td#Dtd3').html(parseInt(GetNodeValue(dtSum[0], "CusCash1")).toLocaleString('en-US'));
+            $('#tbQueryD thead td#Dtd4').html(parseInt(GetNodeValue(dtSum[0], "VCash")).toLocaleString('en-US'));
+            $('#tbQueryD thead td#Dtd5').html(parseInt(GetNodeValue(dtSum[0], "VCnt")).toLocaleString('en-US'));
+            $('#tbQueryD thead td#Dtd6').html(parseInt(GetNodeValue(dtSum[0], "VCusCash")).toLocaleString('en-US'));
+            $('#tbQueryD thead td#Dtd7').html(GetNodeValue(dtSum[0], "VPer"));
+        }
+    };
+
+    let btRe_D_click = function (bt) {
+        $('#modal_D').modal('hide');
+        setTimeout(function () {
+            $('#tbQueryD tbody').find('tr').remove();
+            var sumtdQD = document.querySelector('.QDSum');
+            for (i = 0; i < sumtdQD.childElementCount; i++) {
+                sumtdQD.children[i].innerHTML = "";
+            }
+        }, 500);
+    };
+//#endregion
 
     let gridclick1 = function () {
-        $('#tbShopNo_PSNO tbody tr td').click(function () { Step2_click(this) });
+        $('#tbQueryD tbody tr td').click(function () { Step2_click(this) });
     }
 
-//#region 下展第二層
-//    let Step1_click = function (bt) {
-//        var heads = $('#tbQuery thead tr th#th0').html();
-//        //if (heads.toString().indexOf("時段") >= 0) {
-//        //    return;
-//        //}
+//#region 下展第三層
+    let Step2_click = function (bt) {
+        var head = $('#tbQuery thead tr th#thead1').html();
+        var heads = $('#tbQueryD thead tr th#Dthead1').html();
+        if (head.toString().indexOf("店別") >= 0 && heads.toString().indexOf("銷售日期") >= 0) {
+            return;
+        } else if (head.toString().indexOf("銷售日期") >= 0 && heads.toString().indexOf("店別") >= 0) {
+            return;
+        }
 
-//        $('#tbQuery td').closest('tr').css('background-color', 'white');
-//        $(bt).closest('tr').click();
-//        $('.msg-valid').hide();
-//        var node = $(grdM.ActiveRowTR()).prop('Record');
-//        $('#tbQuery td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
-//        $('#lblDW_Shop1').html($('#tbQuery thead th#th1').html());
-//        $('#lblShop1').html(GetNodeValue(node, 'ID'));
-//        //alert($('#lblShop1').html());
+        $('#tbQueryD td').closest('tr').css('background-color', 'white');
+        $(bt).closest('tr').click();
+        $('.msg-valid').hide();
+        var node = $(grdD.ActiveRowTR()).prop('Record');
+        $('#tbQueryD td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
 
-//        $('#modal_Shop1').modal('show');
-//        setTimeout(function () {
-//            QueryShop1();
-//        }, 500);
-//    };
+        if (heads.toString().indexOf("銷售日期") >= 0 || head.toString().indexOf("銷售日期") >= 0) {
+            $('#lblDD_DateTitle').html('日&emsp;&emsp;期');
+        } else {
+            $('#lblDD_DateTitle').html('日期區間');
+        }
+        if (heads.toString().indexOf("銷售日期") >= 0) {
+            $('#lblDD_Date').html(GetNodeValue(node, 'ID'));
+        }
+        else {
+            $('#lblDD_Date').html($('#lblD_Date').html());
+        }
+        $('#lblDD_ShopName').html('');
+        $('#lblDD_ShopCnt').html('');
+        if (head.toString().indexOf("區域") >= 0 && heads.toString().indexOf("店別") >= 0) {
+            $('#lblDD_ShopName').html(GetNodeValue(node, 'ID'));
+        }
+        else {
+            if ($('#lblShopNoName').html() != "") {
+                $('#lblDD_ShopName').html($('#lblShopNoName').html());
+            }
+            if ($('#lblShopNoCnt').html() != "") {
+                $('#lblDD_ShopCnt').html($('#lblShopNoCnt').html());
+            }
+        }
+        if (heads.toString().indexOf("區域") >= 0) {
+            $('#lblDD_Area').html(GetNodeValue(node, 'ID'));
+        } else {
+            $('#lblDD_Area').html($('#lblD_Area').html());
+        }
 
-//    let QueryShop1 = function () {
-//        ShowLoading();
-//        var pData = {
-//            ShopNo: "'" + $('#lblShop1').html().split('-')[0] + "'",
-//            DayNM: $('#tbQuery thead th#th1').html().replace("週", ""),
-//            Flag: "T"
-//        }
-//        PostToWebApi({ url: "api/SystemSetup/MSSA107Query", data: pData, success: afterMSSA107Query_Shop1 });
-//    };
+        $('#modal_DD').modal('show');
+        setTimeout(function () {
+            MSSA101Query_DD();
+        }, 500);
+    };
 
-//    let afterMSSA107Query_Shop1 = function (data) {
-//        CloseLoading();
-//        if (ReturnMsg(data, 0) != "MSSA107QueryOK") {
-//            DyAlert(ReturnMsg(data, 1));
-//        }
-//        else {
-//            var dtDelt = data.getElementsByTagName('dtDelt');
-//            grdM_Shop.BindData(dtDelt);
+    let MSSA101Query_DD = function () {
+        var SDate;
+        var EDate;
+        var heads = $('#tbQueryD thead tr th#Dthead1').html();
+        if ($('#lblDD_DateTitle').html().indexOf("日期區間") >= 0) {
+            SDate = $('#lblDD_Date').html().split('~')[0].toString().trim();
+            EDate = $('#lblDD_Date').html().split('~')[1].toString().trim();
+        } else {
+            SDate = $('#lblDD_Date').html();
+            EDate = $('#lblDD_Date').html();
+        }
+        var Flag_D = "";
+        var D_Area;
+        var D_Shop = "";
+        D_Area = $('#lblDD_Area').html().split('-')[0];
+        //店櫃
+        if (heads.toString().indexOf("店別") >= 0) {
+            $('#tbQueryDD thead tr th#DDthead1').html('銷售日期');
+            Flag_D = "D";
+            D_Shop = "'" + $('#lblDD_ShopName').html().split('-')[0] + "'";
+        }
+        //區域
+        else if (heads.toString().indexOf("區域") >= 0) {
+            $('#tbQueryDD thead tr th#DDthead1').html('店別');
+            Flag_D = "S";
+            if (chkShopNo != "") { D_Shop = chkShopNo; }
+        }
+        //日期
+        else if (heads.toString().indexOf("銷售日期") >= 0) {
+            $('#tbQueryDD thead tr th#DDthead1').html('店別');
+            Flag_D = "S";
+            if (chkShopNo != "") { D_Shop = chkShopNo; }
+        }
 
-//            if (dtDelt.length == 0) {
-//                DyAlert("無符合資料!");
-//                $(".modal-backdrop").remove();
-//                $('#tbDShop1 thead td#td1_Shop1').html('');
-//                $('#tbDShop1 thead td#td2_Shop1').html('');
-//                $('#tbDShop1 thead td#td3_Shop1').html('');
-//                $('#tbDShop1 thead td#td4_Shop1').html('');
-//                return;
-//            }
-//            //var dtD = data.getElementsByTagName('dtD');
-//            $('#tbDShop1 thead td#thead2_Shop1').html($('#tbQuery thead td#thead1').html());
-//            $('#tbDShop1 thead td#thead3_Shop1').html($('#tbQuery thead td#thead2').html());
-//            $('#tbDShop1 thead td#thead4_Shop1').html($('#tbQuery thead td#thead3').html());
-//            $('#tbDShop1 thead td#thead5_Shop1').html($('#tbQuery thead td#thead4').html());
-//            var dtSum = data.getElementsByTagName('dtSum');
-//            $('#tbDShop1 thead th#th2_Shop1').html($('#tbQuery thead th#th1').html());
-//            $('#tbDShop1 thead th#th3_Shop1').html($('#tbQuery thead th#th1').html());
-//            $('#tbDShop1 thead th#th4_Shop1').html($('#tbQuery thead th#th1').html());
-//            $('#tbDShop1 thead th#th5_Shop1').html($('#tbQuery thead th#th1').html());
-//            $('#tbDShop1 thead td#td1_Shop1').html(parseInt(GetNodeValue(dtSum[0], "W1")).toLocaleString('en-US'));
-//            $('#tbDShop1 thead td#td2_Shop1').html(parseInt(GetNodeValue(dtSum[0], "W2")).toLocaleString('en-US'));
-//            $('#tbDShop1 thead td#td3_Shop1').html(parseInt(GetNodeValue(dtSum[0], "W3")).toLocaleString('en-US'));
-//            $('#tbDShop1 thead td#td4_Shop1').html(parseInt(GetNodeValue(dtSum[0], "W4")).toLocaleString('en-US'));
-//        }
-//    };
+        ShowLoading();
+        var pData = {
+            OpenDateS1: SDate,
+            OpenDateE1: EDate,
+            ShopNo: D_Shop,
+            Area: D_Area,
+            Flag: Flag_D
+        }
+        PostToWebApi({ url: "api/SystemSetup/MSSA101Query", data: pData, success: afterMSSA101Query_DD });
+    };
 
-//    let btRe_Shop1_click = function (bt) {
-//        $('#modal_Shop1').modal('hide');
-//        //setTimeout(function () {
-//        //    ClearShop1();
-//        //}, 500);
-//    };
+    let afterMSSA101Query_DD = function (data) {
+        CloseLoading();
+        if (ReturnMsg(data, 0) != "MSSA101QueryOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtDelt = data.getElementsByTagName('dtDelt');
+            grdDD.BindData(dtDelt);
+
+            if (dtDelt.length == 0) {
+                DyAlert("無符合資料!");
+                //$(".modal-backdrop").remove();
+                var sumtdQDD = document.querySelector('.QDDSum');
+                for (i = 0; i < sumtdQDD.childElementCount; i++) {
+                    sumtdQDD.children[i].innerHTML = "";
+                }
+                return;
+            }
+            var dtSum = data.getElementsByTagName('dtSum');
+            $('#tbQueryDD thead td#DDtd1').html(parseInt(GetNodeValue(dtSum[0], "Cash1")).toLocaleString('en-US'));
+            $('#tbQueryDD thead td#DDtd2').html(parseInt(GetNodeValue(dtSum[0], "Cnt1")).toLocaleString('en-US'));
+            $('#tbQueryDD thead td#DDtd3').html(parseInt(GetNodeValue(dtSum[0], "CusCash1")).toLocaleString('en-US'));
+            $('#tbQueryDD thead td#DDtd4').html(parseInt(GetNodeValue(dtSum[0], "VCash")).toLocaleString('en-US'));
+            $('#tbQueryDD thead td#DDtd5').html(parseInt(GetNodeValue(dtSum[0], "VCnt")).toLocaleString('en-US'));
+            $('#tbQueryDD thead td#DDtd6').html(parseInt(GetNodeValue(dtSum[0], "VCusCash")).toLocaleString('en-US'));
+            $('#tbQueryDD thead td#DDtd7').html(GetNodeValue(dtSum[0], "VPer"));
+        }
+    };
+
+    let btRe_DD_click = function (bt) {
+        $('#modal_DD').modal('hide');
+        setTimeout(function () {
+            $('#tbQueryDD tbody').find('tr').remove();
+            var sumtdQDD = document.querySelector('.QDDSum');
+            for (i = 0; i < sumtdQDD.childElementCount; i++) {
+                sumtdQDD.children[i].innerHTML = "";
+            }
+        }, 500);
+    };
 //#endregion
 
     let ChkLogOut_1 = function (AfterChkLogOut_1) {
@@ -215,13 +414,14 @@
         else {
             var dtE = data.getElementsByTagName('dtE');
             if (dtE.length > 0) {
-                $('#txtOpenDateS1').val(GetNodeValue(dtE[0], "SysDate1").toString().trim().replaceAll('/', '-'));
-                $('#txtOpenDateE1').val(GetNodeValue(dtE[0], "SysDate1").toString().trim().replaceAll('/', '-'));
+                $('#txtOpenDateS1').val(GetNodeValue(dtE[0], "SysDate").toString().trim().replaceAll('/', '-'));
+                $('#txtOpenDateE1').val(GetNodeValue(dtE[0], "SysDate").toString().trim().replaceAll('/', '-'));
             }
             $('#lblShopNoCnt').html('');
             $('#lblShopNoName').html('');
             chkShopNo = "";
             $('#rdoA').prop('checked', 'true');
+            ClearQuery();
         }
     };
 //#endregion
@@ -298,13 +498,10 @@
             if (dtDelt.length == 0) {
                 DyAlert("無符合資料!");
                 $(".modal-backdrop").remove();
-                $('#tbQuery thead td#td1').html('');
-                $('#tbQuery thead td#td2').html('');
-                $('#tbQuery thead td#td3').html('');
-                $('#tbQuery thead td#td4').html('');
-                $('#tbQuery thead td#td5').html('');
-                $('#tbQuery thead td#td6').html('');
-                $('#tbQuery thead td#td7').html('');
+                var sumtdQ = document.querySelector('.QSum');
+                for (i = 0; i < sumtdQ.childElementCount; i++) {
+                    sumtdQ.children[i].innerHTML = "";
+                }
                 return;
             }
 
@@ -318,6 +515,31 @@
             $('#tbQuery thead td#td7').html(GetNodeValue(dtSum[0], "VPer"));
         }
     };
+
+    let ClearQuery = function () {
+        $('#tbQuery tbody').find('tr').remove();
+        var heads = $('#tbQuery thead tr th#thead1');
+        if ($('#rdoS').prop('checked')) {
+            $(heads).html('店別');
+        }
+        else if ($('#rdoD').prop('checked')) {
+            $(heads).html('銷售日期');
+        }
+        else if ($('#rdoA').prop('checked')) {
+            $(heads).html('區域');
+        }
+        var sumtdQ = document.querySelector('.QSum');
+        for (i = 0; i < sumtdQ.childElementCount; i++) {
+            sumtdQ.children[i].innerHTML = "";
+        }
+        //$('#tbQuery thead td#td1').html('');
+        //$('#tbQuery thead td#td2').html('');
+        //$('#tbQuery thead td#td3').html('');
+        //$('#tbQuery thead td#td4').html('');
+        //$('#tbQuery thead td#td5').html('');
+        //$('#tbQuery thead td#td6').html('');
+        //$('#tbQuery thead td#td7').html('');
+    }
 //#endregion
 
 //#region 店櫃多選
@@ -389,29 +611,32 @@
             chkShopNo = "";
             $('#btLpOK_ShopNo').prop('disabled', false);
             $('#modalLookup_ShopNo').modal('hide');
+            ClearQuery();
             return
         } else {
-            $('#lblShopNoCnt').html(chkedRow)
             chkShopNo = "";
             var ShopNoName = "";
             for (var i = 0; i < obchkedtd.length; i++) {
                 var a = $(obchkedtd[i]).closest('tr');
                 var trNode = $(a).prop('Record');
                 chkShopNo += "'" + GetNodeValue(trNode, "ST_ID") + "',";  //已勾選的每一筆店倉
-                if (i <= 1) {
+                if (i <= 4) {
                     ShopNoName += GetNodeValue(trNode, "ST_SName") + "，";
                 }
             }
             chkShopNo = chkShopNo.substr(0, chkShopNo.length - 1)
-            if (chkedRow > 2) {
+            if (chkedRow > 5) {
                 $('#lblShopNoName').html(ShopNoName.substr(0, ShopNoName.length - 1) + '...')
+                $('#lblShopNoCnt').html(chkedRow)
             }
             else {
                 $('#lblShopNoName').html(ShopNoName.substr(0, ShopNoName.length - 1))
+                $('#lblShopNoCnt').html('')
             }
             $('#btLpOK_ShopNo').prop('disabled', false);
             $('#modalLookup_ShopNo').modal('hide');
             if ($('#rdoA').prop('checked') == true) { $('#rdoS').prop('checked', 'true'); }
+            ClearQuery();
         }
     };
 
@@ -443,13 +668,17 @@
 
             $('#btQuery').click(function () { btQuery_click(this) });
             $('#btClear').click(function () { btClear_click(this) });
+            $('#rdoS,#rdoA,#rdoD,#txtOpenDateS1,#txtOpenDateE1').change(function () { ClearQuery() });
+
 
             $('#btShopNo').click(function () { btShopNo_click(this) });
             $('#btLpQ_ShopNo').click(function () { btLpQ_ShopNo_click(this) });
             $('#btLpOK_ShopNo').click(function () { btLpOK_ShopNo_click(this) });
             $('#btLpExit_ShopNo').click(function () { btLpExit_ShopNo_click(this) });
             $('#btLpClear_ShopNo').click(function () { btLpClear_ShopNo_click(this) });
-
+            $('#btRe_D').click(function () { btRe_D_click(this) });
+            $('#D_rdoShop,#D_rdo1').change(function () { MSSA101Query_D() });
+            $('#btRe_DD').click(function () { btRe_DD_click(this) });
         }
     };
     

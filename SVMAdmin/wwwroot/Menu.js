@@ -349,6 +349,7 @@
     };
 
     var click_menu = function (menuitem1) {
+        Sidebar_Close();
         menuitem = menuitem1;
         var pData = {
             ProgramID: $(menuitem).prop('ItemCode')

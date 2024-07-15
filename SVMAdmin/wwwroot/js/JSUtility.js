@@ -311,7 +311,7 @@ var DynGrid = function (option) {
            else if (fdType == "TextAmt") 
                xmlsort.sort(function (a, b) { return parseFloat(GetNodeValue(a, fdName)) > parseFloat(GetNodeValue(b, fdName)) ? 1 : -1 });                       
             else if (fdType == "TextPercent") 
-               xmlsort.sort(function (a, b) { return parseFloat(GetNodeValue(a, fdName).split('%')[0]) > parseFloat(GetNodeValue(b, fdName).split('%')[0]) ? 1 : -1 });            
+                xmlsort.sort(function (a, b) { return parseFloat(GetNodeValue(a, fdName).split('%')[0].replaceAll(",", "")) > parseFloat(GetNodeValue(b, fdName).split('%')[0].replaceAll(",", "")) ? 1 : -1 });            
        }
         else {
             emn.addClass("fa-sort-desc");
@@ -320,7 +320,7 @@ var DynGrid = function (option) {
             else if (fdType == "TextAmt") 
                  xmlsort.sort(function (a, b) { return parseFloat(GetNodeValue(a, fdName)) > parseFloat(GetNodeValue(b, fdName)) ? -1 : 1 });           
             else if (fdType == "TextPercent")
-                xmlsort.sort(function (a, b) { return parseFloat(GetNodeValue(a, fdName).split('%')[0]) > parseFloat(GetNodeValue(b, fdName).split('%')[0]) ? -1 : 1 });
+                xmlsort.sort(function (a, b) { return parseFloat(GetNodeValue(a, fdName).split('%')[0].replaceAll(",", "")) > parseFloat(GetNodeValue(b, fdName).split('%')[0].replaceAll(",", "")) ? -1 : 1 });
         }
         $(td).prepend(emn);
         thisBindData(xmlsort);
@@ -1256,8 +1256,8 @@ var Timerset = function () {
     var divN = $('<div></div>');
     divN.load(pg + " #Timer", function () {
         var timer = $('#Timer');
-        var ShowNumber = 1800;
-        var number = 1800;
+        var ShowNumber = 3600;
+        var number = 3600;
         timer.text(SecToHMS(number));
         
         LogOutTimer = setInterval(function () {
@@ -1323,6 +1323,20 @@ var AfterChkDevice = function (data) {
     }
 }
 
-
+var RgbToHex = function (str) {
+    var Hex = str.toString(16);
+    return Hex.length == 1 ? "0" + Hex : Hex;
+}
+//將RGB轉換為16進制
+var SetRgbTo16 = function (rgb) {
+    var r = parseInt(rgb.match(/\d+/g)[0]);
+    var g = parseInt(rgb.match(/\d+/g)[1]);
+    var b = parseInt(rgb.match(/\d+/g)[2]);
+    var hexr = RgbToHex(r);
+    var hexg = RgbToHex(g);
+    var hexb = RgbToHex(b);
+    var hexcolor = "#" + hexr + hexg + hexb
+    return hexcolor;
+}
 
 
