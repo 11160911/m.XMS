@@ -12333,7 +12333,7 @@ namespace SVMAdmin.Controllers
                     //明細資料
                     sqlD = "select case when isnull(s1.ID,'')='' then isnull(s2.ID,'') + '-' + isnull(s2.Name,'') else isnull(s1.ID,'') + '-' + isnull(s1.Name,'') end as id,isnull(s1.Qty1,0)Qty1,isnull(s1.Cash1,0)Cash1, ";
                     sqlD += "isnull(s2.Qty2,0)Qty2,isnull(s2.Cash2,0)Cash2, ";
-                    sqlD += "case when isnull(s1.Cash1,0)=0 then format(0,'p') else format((cast(isnull(s2.Cash2,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float)),'p') end as Per ";
+                    sqlD += "case when isnull(s1.Cash1,0)=0 and isnull(s2.Cash2,0)=0 then format(0,'p') when isnull(s1.Cash1,0)=0 then format(1,'p') else format(cast(isnull(s2.Cash2,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float),'p') end as Per ";
                     sqlD += "from #s1 s1 ";
                     sqlD += "Full join #s2 s2 on s1.id=s2.id ";
                     sqlD += "order by id ";
@@ -12344,7 +12344,7 @@ namespace SVMAdmin.Controllers
                     //彙總資料
                     sqlH = "select sum(isnull(s1.Qty1,0))SumQty1,sum(isnull(s1.Cash1,0))SumCash1, ";
                     sqlH += "sum(isnull(s2.Qty2,0))SumQty2,sum(isnull(s2.Cash2,0))SumCash2, ";
-                    sqlH += "case when sum(isnull(s1.Cash1,0))=0 then format(0,'p') else format(cast(sum(isnull(s2.Cash2,0))-sum(isnull(s1.Cash1,0)) as Float)/cast(sum(isnull(s1.Cash1,0)) as Float),'p') end as SumPer ";
+                    sqlH += "case when sum(isnull(s1.Cash1,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.Cash2,0))-sum(isnull(s1.Cash1,0)) as Float)/cast(sum(isnull(s1.Cash1,0)) as Float),'p') end as SumPer ";
                     sqlH += "from #s1 s1 ";
                     sqlH += "Full join #s2 s2 on s1.id=s2.id ";
                     DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
@@ -12389,7 +12389,7 @@ namespace SVMAdmin.Controllers
                     //明細資料
                     sqlD = "select a.type_id + '-' + a.type_name id,isnull(s1.Qty1,0)Qty1,isnull(s1.Cash1,0)Cash1, ";
                     sqlD += "isnull(s2.Qty2,0)Qty2,isnull(s2.Cash2,0)Cash2, ";
-                    sqlD += "case when isnull(s1.Cash1,0)=0 then format(0,'p') else format((cast(isnull(s2.Cash2,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float)),'p') end as Per ";
+                    sqlD += "case when isnull(s1.Cash1,0)=0 and isnull(s2.Cash2,0)=0 then format(0,'p') when isnull(s1.Cash1,0)=0 then format(1,'p') else format(cast(isnull(s2.Cash2,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float),'p') end as Per ";
                     sqlD += "from TypeDataWeb a (nolock) ";
                     sqlD += "left join #s1 s1 on a.type_id=s1.id ";
                     sqlD += "left join #s2 s2 on a.type_id=s2.id ";
@@ -12402,7 +12402,7 @@ namespace SVMAdmin.Controllers
                     //彙總資料
                     sqlH = "select sum(isnull(s1.Qty1,0))SumQty1,sum(isnull(s1.Cash1,0))SumCash1, ";
                     sqlH += "sum(isnull(s2.Qty2,0))SumQty2,sum(isnull(s2.Cash2,0))SumCash2, ";
-                    sqlH += "case when sum(isnull(s1.Cash1,0))=0 then format(0,'p') else format(cast(sum(isnull(s2.Cash2,0))-sum(isnull(s1.Cash1,0)) as Float)/cast(sum(isnull(s1.Cash1,0)) as Float),'p') end as SumPer ";
+                    sqlH += "case when sum(isnull(s1.Cash1,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.Cash2,0))-sum(isnull(s1.Cash1,0)) as Float)/cast(sum(isnull(s1.Cash1,0)) as Float),'p') end as SumPer ";
                     sqlH += "from TypeDataWeb a (nolock) ";
                     sqlH += "left join #s1 s1 on a.type_id=s1.id ";
                     sqlH += "left join #s2 s2 on a.type_id=s2.id ";
@@ -12449,7 +12449,7 @@ namespace SVMAdmin.Controllers
                     //明細資料
                     sqlD = "select a.type_id + '-' + a.type_name id,isnull(s1.Qty1,0)Qty1,isnull(s1.Cash1,0)Cash1, ";
                     sqlD += "isnull(s2.Qty2,0)Qty2,isnull(s2.Cash2,0)Cash2, ";
-                    sqlD += "case when isnull(s1.Cash1,0)=0 then format(0,'p') else format((cast(isnull(s2.Cash2,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float)),'p') end as Per ";
+                    sqlD += "case when isnull(s1.Cash1,0)=0 and isnull(s2.Cash2,0)=0 then format(0,'p') when isnull(s1.Cash1,0)=0 then format(1,'p') else format(cast(isnull(s2.Cash2,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float),'p') end as Per ";
                     sqlD += "from TypeDataWeb a (nolock) ";
                     sqlD += "left join #s1 s1 on a.type_id=s1.id ";
                     sqlD += "left join #s2 s2 on a.type_id=s2.id ";
@@ -12462,7 +12462,7 @@ namespace SVMAdmin.Controllers
                     //彙總資料
                     sqlH = "select sum(isnull(s1.Qty1,0))SumQty1,sum(isnull(s1.Cash1,0))SumCash1, ";
                     sqlH += "sum(isnull(s2.Qty2,0))SumQty2,sum(isnull(s2.Cash2,0))SumCash2, ";
-                    sqlH += "case when sum(isnull(s1.Cash1,0))=0 then format(0,'p') else format(cast(sum(isnull(s2.Cash2,0))-sum(isnull(s1.Cash1,0)) as Float)/cast(sum(isnull(s1.Cash1,0)) as Float),'p') end as SumPer ";
+                    sqlH += "case when sum(isnull(s1.Cash1,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.Cash2,0))-sum(isnull(s1.Cash1,0)) as Float)/cast(sum(isnull(s1.Cash1,0)) as Float),'p') end as SumPer ";
                     sqlH += "from TypeDataWeb a (nolock) ";
                     sqlH += "left join #s1 s1 on a.type_id=s1.id ";
                     sqlH += "left join #s2 s2 on a.type_id=s2.id ";
