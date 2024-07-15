@@ -348,6 +348,7 @@
             $('#rdoS').click(function () { rdo_click(this) });
             $('#rdoD').click(function () { rdo_click(this) });
             $('#rdoB').click(function () { rdo_click(this) });
+            $('#cboYear').change(function () { rdo_click(this) });
 
         }
     };
