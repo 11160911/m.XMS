@@ -28,11 +28,11 @@
                     { type: "TextAmt", name: "SalesCnt2"},
                     { type: "TextAmt", name: "SalesCash2"},
                     { type: "TextAmt", name: "SalesPrice2" },
-                    { type: "TextAmt", name: "SalesPercent2" },
+                    { type: "TextPercent", name: "SalesPercent2" },
                     { type: "TextAmt", name: "SalesCnt3" },
                     { type: "TextAmt", name: "SalesCash3" },
                     { type: "TextAmt", name: "SalesPrice3" },
-                    { type: "TextAmt", name: "SalesPercent3" }
+                    { type: "TextPercent", name: "SalesPercent3" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -91,152 +91,6 @@
             }
         );
 
-
-        grdLookUp_ActivityCode = new DynGrid(
-            {
-                table_lement: $('#tbDataLookup_ActivityCode')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5"],
-                fields_info: [
-                    { type: "radio", name: "chkset", style: "width:16px;height:16px" },
-                    { type: "Text", name: "ActivityCode", style: "" },
-                    { type: "Text", name: "PS_Name", style: "" },
-                    { type: "Text", name: "StartDate", style: "" },
-                    { type: "Text", name: "EndDate", style: "" }
-                ],
-                //rows_per_page: 10,
-                method_clickrow: click_PLU,
-                sortable: "N"
-            }
-        );
-
-        
-
-        grdM_Area_Step1 = new DynGrid(
-            {
-                table_lement: $('#tbSales_Area_Step1')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9"],
-                fields_info: [
-                    { type: "Text", name: "ID1", style: "display:none" },
-                    { type: "Text", name: "Name1" },
-                    { type: "TextAmt", name: "Cash1" },
-                    { type: "TextAmt", name: "Cnt1" },
-                    { type: "TextAmt", name: "CashCnt1" },
-                    { type: "TextAmt", name: "Cash2" },
-                    { type: "TextAmt", name: "Cnt2" },
-                    { type: "TextAmt", name: "CashCnt2" },
-                    { type: "Text", name: "VIPPercent" }
-                ],
-                //rows_per_page: 10,
-                method_clickrow: click_PLU,
-                sortable: "N"
-            }
-        );
-
-        grdM_Area_Shop_Step2 = new DynGrid(
-            {
-                table_lement: $('#tbSales_Area_Shop_Step2')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9"],
-                fields_info: [
-                    { type: "Text", name: "ID1", style: "display:none" },
-                    { type: "Text", name: "Name1" },
-                    { type: "TextAmt", name: "Cash1" },
-                    { type: "TextAmt", name: "Cnt1" },
-                    { type: "TextAmt", name: "CashCnt1" },
-                    { type: "TextAmt", name: "Cash2" },
-                    { type: "TextAmt", name: "Cnt2" },
-                    { type: "TextAmt", name: "CashCnt2" },
-                    { type: "Text", name: "VIPPercent" }
-                ],
-                //rows_per_page: 10,
-                method_clickrow: click_PLU,
-                sortable: "N"
-            }
-        );
-
-        grdM_Area_Date_Step2 = new DynGrid(
-            {
-                table_lement: $('#tbSales_Area_Date_Step2')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9"],
-                fields_info: [
-                    { type: "Text", name: "ID1", style: "display:none" },
-                    { type: "Text", name: "Name1" },
-                    { type: "TextAmt", name: "Cash1" },
-                    { type: "TextAmt", name: "Cnt1" },
-                    { type: "TextAmt", name: "CashCnt1" },
-                    { type: "TextAmt", name: "Cash2" },
-                    { type: "TextAmt", name: "Cnt2" },
-                    { type: "TextAmt", name: "CashCnt2" },
-                    { type: "Text", name: "VIPPercent" }
-                ],
-                //rows_per_page: 10,
-                method_clickrow: click_PLU,
-                sortable: "N"
-            }
-        );
-
-        grdM_Shop_Step1 = new DynGrid(
-            {
-                table_lement: $('#tbSales_Shop_Step1')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9"],
-                fields_info: [
-                    { type: "Text", name: "ID1", style: "display:none" },
-                    { type: "Text", name: "Name1" },
-                    { type: "TextAmt", name: "Cash1" },
-                    { type: "TextAmt", name: "Cnt1" },
-                    { type: "TextAmt", name: "CashCnt1" },
-                    { type: "TextAmt", name: "Cash2" },
-                    { type: "TextAmt", name: "Cnt2" },
-                    { type: "TextAmt", name: "CashCnt2" },
-                    { type: "Text", name: "VIPPercent" }
-                ],
-                //rows_per_page: 10,
-                method_clickrow: click_PLU,
-                sortable: "N"
-            }
-        );
-
-        grdM_Date_Step1 = new DynGrid(
-            {
-                table_lement: $('#tbSales_Date_Step1')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9"],
-                fields_info: [
-                    { type: "Text", name: "ID1", style: "display:none" },
-                    { type: "Text", name: "Name1" },
-                    { type: "TextAmt", name: "Cash1" },
-                    { type: "TextAmt", name: "Cnt1" },
-                    { type: "TextAmt", name: "CashCnt1" },
-                    { type: "TextAmt", name: "Cash2" },
-                    { type: "TextAmt", name: "Cnt2" },
-                    { type: "TextAmt", name: "CashCnt2" },
-                    { type: "Text", name: "VIPPercent" }
-                ],
-                //rows_per_page: 10,
-                method_clickrow: click_PLU,
-                sortable: "N"
-            }
-        );
-
-        grdM_Date_Area_Step2 = new DynGrid(
-            {
-                table_lement: $('#tbSales_Date_Area_Step2')[0],
-                class_collection: ["tdCol1", "tdCol2", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 label-align", "tdCol9"],
-                fields_info: [
-                    { type: "Text", name: "ID1", style: "display:none" },
-                    { type: "Text", name: "Name1" },
-                    { type: "TextAmt", name: "Cash1" },
-                    { type: "TextAmt", name: "Cnt1" },
-                    { type: "TextAmt", name: "CashCnt1" },
-                    { type: "TextAmt", name: "Cash2" },
-                    { type: "TextAmt", name: "Cnt2" },
-                    { type: "TextAmt", name: "CashCnt2" },
-                    { type: "Text", name: "VIPPercent" }
-                ],
-                //rows_per_page: 10,
-                method_clickrow: click_PLU,
-                sortable: "N"
-            }
-        );
-
         return;
     };
 
@@ -245,6 +99,240 @@
     };
     let InitModifyDeleteButton = function () {
         $('#tbQuery tbody tr td').click(function () { Step1_click(this) });
+
+        $('#tbQuery thead tr th').mouseenter(function () {
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "ID") {
+                var rgb = $('#tbQuery thead tr th#tdflag').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#tdflag').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "VIPCnt") {
+                var rgb = $('#tbQuery thead tr th#th1').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th1').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesCnt1") {
+                var rgb = $('#tbQuery thead tr th#th2').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th2').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesCash1") {
+                var rgb = $('#tbQuery thead tr th#th3').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th3').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesPrice1") {
+                var rgb = $('#tbQuery thead tr th#th4').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th4').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesCnt2") {
+                var rgb = $('#tbQuery thead tr th#th5').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th5').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesCash2") {
+                var rgb = $('#tbQuery thead tr th#th6').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th6').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesPrice2") {
+                var rgb = $('#tbQuery thead tr th#th7').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th7').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesPercent2") {
+                var rgb = $('#tbQuery thead tr th#th8').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th8').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesCnt3") {
+                var rgb = $('#tbQuery thead tr th#th9').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th9').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesCash3") {
+                var rgb = $('#tbQuery thead tr th#th10').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th10').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesPrice3") {
+                var rgb = $('#tbQuery thead tr th#th11').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th11').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesPercent3") {
+                var rgb = $('#tbQuery thead tr th#th12').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th12').css('background-color', '#ffff00')
+                }
+            }
+        });
+        $('#tbQuery thead tr th').mouseleave(function () {
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "ID") {
+                var rgb = $('#tbQuery thead tr th#tdflag').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#tdflag').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "VIPCnt") {
+                var rgb = $('#tbQuery thead tr th#th1').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th1').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesCnt1") {
+                var rgb = $('#tbQuery thead tr th#th2').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th2').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesCash1") {
+                var rgb = $('#tbQuery thead tr th#th3').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th3').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesPrice1") {
+                var rgb = $('#tbQuery thead tr th#th4').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th4').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesCnt2") {
+                var rgb = $('#tbQuery thead tr th#th5').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th5').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesCash2") {
+                var rgb = $('#tbQuery thead tr th#th6').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th6').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesPrice2") {
+                var rgb = $('#tbQuery thead tr th#th7').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th7').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesPercent2") {
+                var rgb = $('#tbQuery thead tr th#th8').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th8').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesCnt3") {
+                var rgb = $('#tbQuery thead tr th#th9').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th9').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesCash3") {
+                var rgb = $('#tbQuery thead tr th#th10').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th10').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesPrice3") {
+                var rgb = $('#tbQuery thead tr th#th11').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th11').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesPercent3") {
+                var rgb = $('#tbQuery thead tr th#th12').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#th12').css('background-color', '#ffb620')
+                }
+            }
+
+
+        });
+        $('#tbQuery thead tr th').click(function () {
+            $('#tbQuery thead tr th').css('background-color', '#ffb620')
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "ID") {
+                $('#tbQuery thead tr th#tdflag').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "VIPCnt") {
+                $('#tbQuery thead tr th#th1').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesCnt1") {
+                $('#tbQuery thead tr th#th2').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesCash1") {
+                $('#tbQuery thead tr th#th3').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesPrice1") {
+                $('#tbQuery thead tr th#th4').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesCnt2") {
+                $('#tbQuery thead tr th#th5').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesCash2") {
+                $('#tbQuery thead tr th#th6').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesPrice2") {
+                $('#tbQuery thead tr th#th7').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesPercent2") {
+                $('#tbQuery thead tr th#th8').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesCnt3") {
+                $('#tbQuery thead tr th#th9').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesCash3") {
+                $('#tbQuery thead tr th#th10').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesPrice3") {
+                $('#tbQuery thead tr th#th11').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesPercent3") {
+                $('#tbQuery thead tr th#th12').css('background-color', '#ffeaa7')
+            }
+        });
     }
 
     let ChkLogOut_1 = function (AfterChkLogOut_1) {
@@ -974,6 +1062,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
     //查詢
     let btQuery_click = function (bt) {
         //Timerset();
+        $('#tbQuery thead tr th').css('background-color', '#ffb620')
         $('#btQuery').prop('disabled', true)
         if ($('#txtYM').val() == "") {
             DyAlert("請輸入年月!", function () { $('#btQuery').prop('disabled', false); })
