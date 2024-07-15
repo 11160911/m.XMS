@@ -1010,7 +1010,7 @@
 
 .nav-md .container.body .col-md-3.left_col {
   min-height: 100%;
-  width: 230px;
+  width: 240px;
   padding: 0;
   position: absolute;
   display: -webkit-box;
@@ -1480,7 +1480,7 @@ a:hover, a:focus {
     /*font-size: 12px;*/
     font-size: 15px;
     padding: 9px;
-    padding-left: 20px;
+    padding-left: 15px;
 }
 
 .panel_toolbox {
