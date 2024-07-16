@@ -9918,7 +9918,10 @@ namespace SVMAdmin.Controllers
                     sql += "and b.ActivityCode like '" + ActivityCode.SqlQuote() + "%' ";
                 }
                 sql += "left join (Select EDM_DocNo,COUNT(*)Cnt1 From SetEDMVIP_HWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by EDM_DocNo)c on a.DocNo=c.EDM_DocNo ";
-                sql += "left join (Select EVNO,COUNT(*)Cnt2 From SetEDMVIP_VIPWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by EVNO)d on a.DocNo=d.EVNO ";
+                sql += "left join (Select EDM_DocNo,COUNT(*)Cnt2 From SetEDMVIP_HWeb (nolock) ";
+                sql += "inner join SetEDMVIP_VIPWeb (nolock) on SetEDMVIP_HWeb.EVNO=SetEDMVIP_VIPWeb.EVNO and SetEDMVIP_VIPWeb.Companycode=SetEDMVIP_HWeb.Companycode ";
+                sql += "Where SetEDMVIP_HWeb.Companycode='" + uu.CompanyId + "' group by SetEDMVIP_HWeb.EDM_DocNo ";
+                sql += ")d on a.DocNo=d.EDM_DocNo ";
 
                 sql += "Where a.Companycode='" + uu.CompanyId + "' and isnull(a.DelDate,'')='' and a.EDMType='E' ";
                 sql += "and a.EDM_Model='" + EDM_Model.SqlQuote() + "' ";
