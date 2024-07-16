@@ -1590,6 +1590,8 @@ Timerset(sessionStorage.getItem('isamcomp'));
         $('#chk0_SendSet,#chk1_SendSet,#chk2_SendSet,#chk3_SendSet').prop('checked', true);
         $('#rdoMWAll_SendSet').prop('checked', true);
         $('#rdoQDayAll_SendSet').prop('checked', true);
+        $('#txtQDayS_SendSet').val('');
+        $('#txtQDayE_SendSet').val('');
         $('#rdoLCDayAll_SendSet').prop('checked', true);
         $('#rdoSDate2M_SendSet').prop('checked', true);
         $('#lblDeptCnt_SendSet').html('');
@@ -1613,7 +1615,21 @@ Timerset(sessionStorage.getItem('isamcomp'));
             })
             return;
         }
-
+        if ($('#txtQDayS_SendSet').val() == "" && $('#txtQDayE_SendSet').val() != "") {
+            DyAlert("入會日期區間兩欄皆需輸入!", function () { $('#btQuery_SendSet').prop('disabled', false); })
+            return;
+        }
+        else if ($('#txtQDayS_SendSet').val() != "" && $('#txtQDayE_SendSet').val() == "") {
+            DyAlert("入會日期區間兩欄皆需輸入!", function () { $('#btQuery_SendSet').prop('disabled', false); })
+            return;
+        }
+        else if ($('#txtQDayS_SendSet').val() != "" && $('#txtQDayE_SendSet').val() != "") {
+            if ($('#txtQDayS_SendSet').val() > $('#txtQDayE_SendSet').val()) {
+                DyAlert("入會日期開始日不可大於結束日!", function () { $('#btQuery_SendSet').prop('disabled', false); })
+                return;
+            }
+        }
+        
         ShowLoading();
 
         //會員卡別
@@ -1713,6 +1729,8 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 VIP_TypeName: VIP_TypeName,
                 VIP_MW: VIP_MW,
                 QDay: QDay,
+                QDayS: $('#txtQDayS_SendSet').val().toString().replaceAll('-', '/'),
+                QDayE: $('#txtQDayE_SendSet').val().toString().replaceAll('-', '/'),
                 LCDay: LCDay,
                 SDate: SDate,
                 chkDept: chkDept,
@@ -1763,6 +1781,14 @@ Timerset(sessionStorage.getItem('isamcomp'));
             DyAlert("請選擇會員卡別!")
             return;
         }
+        if ($('#txtQDayS_SendSet').val() != "" && $('#txtQDayE_SendSet').val() != "") {
+            if ($('#txtQDayS_SendSet').val() > $('#txtQDayE_SendSet').val()) {
+                DyAlert("入會日期開始日不可大於結束日!")
+                return;
+            }
+        }
+
+
         //會員卡別
         var VIP_Type = "";
         var VIP_TypeName = "";
@@ -1815,6 +1841,14 @@ Timerset(sessionStorage.getItem('isamcomp'));
             QDay = "1Y"
         }
 
+        //入會日期
+        var QDayS = ""
+        var QDayE = ""
+        if ($('#txtQDayS_SendSet').val() != "" && $('#txtQDayE_SendSet').val() != "") {
+            QDayS = $('#txtQDayS_SendSet').val().toString().replaceAll('-', '/');
+            QDayE = $('#txtQDayE_SendSet').val().toString().replaceAll('-', '/');
+        }
+
         //最近來店日
         var LCDay = ""
         if ($('#rdoLCDayAll_SendSet').prop('checked') == true) {
@@ -1860,6 +1894,8 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 VIP_TypeName: VIP_TypeName,
                 VIP_MW: VIP_MW,
                 QDay: QDay,
+                QDayS: QDayS,
+                QDayE: QDayE,
                 LCDay: LCDay,
                 SDate: SDate,
                 chkDept: chkDept,
@@ -2112,6 +2148,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#chk0_SendSet,#chk1_SendSet,#chk2_SendSet,#chk3_SendSet').change(function () { UpdateVIPCnt(); });
             $('#rdoMWAll_SendSet,#rdoMW0_SendSet,#rdoMW1_SendSet').change(function () { UpdateVIPCnt(); });
             $('#rdoQDayAll_SendSet,#rdoQDay2M_SendSet,#rdoQDay3M_SendSet,#rdoQDay6M_SendSet,#rdoQDay1Y_SendSet').change(function () { UpdateVIPCnt(); });
+            $('#txtQDayS_SendSet,#txtQDayE_SendSet').change(function () { UpdateVIPCnt(); });
             $('#rdoLCDayAll_SendSet,#rdoLCDay3M_SendSet,#rdoLCDay6M_SendSet,#rdoLCDay1Y_SendSet,#rdoLCDay2Y_SendSet').change(function () { UpdateVIPCnt(); });
             $('#rdoSDateAll_SendSet,#rdoSDate2M_SendSet,#rdoSDate3M_SendSet,#rdoSDate6M_SendSet,#rdoSDate1Y_SendSet').change(function () { UpdateVIPCnt(); });
 

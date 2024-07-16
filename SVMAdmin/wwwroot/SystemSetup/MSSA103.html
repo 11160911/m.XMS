@@ -176,11 +176,13 @@
                                     z-index: 2;
                                 }
 
-                                #tbQuery {
+                                #divQ {
                                     width: 50%
                                 }
-
-                                @media (max-width:650px) {
+                                @media (max-width:767px) {
+                                    #divQ {
+                                        width: 100%
+                                    }
                                     #tbQuery {
                                         width: 95%;
                                         margin-left: auto;
@@ -245,7 +247,7 @@
 
                             <div class="card-block forminput">
                                 <div class="x_content">
-                                    <div style="overflow: auto; height: 400px;">
+                                    <div id="divQ" style="overflow: auto; height: 400px;">
                                         <table id="tbQuery" class="table table-bordered" >
                                             <thead>
                                                 <!--第一層-->

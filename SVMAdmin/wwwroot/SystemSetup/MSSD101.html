@@ -116,7 +116,7 @@
 
                 </div>
 
-                <article id="pgMSSD101Init" class="row" style="height:800px">
+                <article id="pgMSSD101Init" class="row">
                     <div class="col-md-12 col-sm-12">
                         <div class="x_panel" style="padding: 0px; height: 100%; width: 100%; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 410px 500px ">
                             <style>
@@ -139,45 +139,29 @@
                                 }
 
                                 #tbQuery tbody tr td {
-                                    font-size: 14px;
+                                    font-size: 16px;
                                     padding: 3px;
                                     font-weight: bold;
                                 }
-
-                                #btQuery {
-                                    margin-left: 500px;
-                                }
-                                #txtPSName {
-                                    width: 360px;
-                                }
-
-                                @media (max-width:700px) {
-                                    #btQuery {
-                                        margin-left: 300px;
-                                    }
-                                    #txtPSName {
-                                        width :300px;
-                                    }
-                                }
                             </style>
 
-                            <div class="form-group row" style="margin-left: 5px; width: 100%">
+                            <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom: 0px">
                                 <label id="lblProgramName" class="DyForm3-ProgramName">折價券回收分析</label>
                             </div>
 
 
-                            <div class="form-group row" style="margin-left: 20px; width: 100%">
+                            <div class="form-group row" style="margin-left: 20px; width: 100%; margin-bottom: 5px">
                                 <button class="DyForm3-BtnClear" id="btClear" type="button">
                                     清除
                                     <i class="fa fa-close"></i>
                                 </button>
-                                <button class="DyForm3-BtnQuery" id="btQuery" type="button" style="">
+                                <button class="DyForm3-BtnQuery" id="btQuery" type="button" style="margin-left: 40px">
                                     查詢
                                     <i class="fa fa-search"></i>
                                 </button>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px">
                                 <label class="DyForm3-Label">活動代號</label>
                                 <input id="txtActivityCode" class="DyForm3-TextBox" style="margin-left: 15px" type="text" maxlength="20" />
                                 <button id="btActivityCode" class="DyForm3-BtnLookUp" type="button">
@@ -190,19 +174,19 @@
                                 </button>-->
 
                             </div>
-                            <div class="form-group row" style="margin-left: 12px; width: 100%">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px">
                                 <label class="DyForm3-Label">活動名稱</label>
                                 <input class="DyForm3-TextBox" id="txtPSName" style="margin-left: 15px;" type="text" maxlength="50" />
                                 <!--<label class="DyForm3-Label" style="margin-left:58px">DM主旨</label>
                                 <input class="DyForm3-TextBox" id="txtEDMMemo" type="text" maxlength="50" />-->
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
                                 <label class="DyForm3-Label">活動日期</label>
-                                <input class="DyForm3-TextBox" id="txtPSDate" style="margin-left: 15px" type="date" />
+                                <input class="DyForm3-TextBox" id="txtPSDate" style="margin-left: 15px; font-size: 14px" type="date" />
                                 <!--<label class="DyForm3-Label" style="margin-left:58px">DM日期</label>
                                 <input class="DyForm3-TextBox" id="txtEDDate" type="date" />-->
-                                <label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>
+                                <!--<label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>-->
                             </div>
 
                             <!--<div>
@@ -214,8 +198,8 @@
 
                             <div class="card-block forminput">
                                 <div class="x_content">
-                                    <div style="overflow: auto; height: 600px;">
-                                        <table id="tbQuery" class="table table-bordered" style="width:100%">
+                                    <div style="overflow: auto; height: 550px;">
+                                        <table id="tbQuery" class="table table-bordered DyForm3-Table">
                                             <thead>
                                                 <tr>
                                                     <th class="text-center">活動代號 </th>
@@ -243,7 +227,7 @@
                     <!--活動代碼 Lookup -->
                     <div class="modal fade" id="modal_Lookup_ActivityCode" data-keyboard="false" data-backdrop="static" style="z-index:1041">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height:520px">
+                            <div class="modal-content" style="height: 580px">
                                 <div class="modal-body modal-tab-container" style="padding:8px">
                                     <style>
                                         #tbDataLookup_ActivityCode thead tr th {
