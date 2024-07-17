@@ -10876,8 +10876,6 @@ namespace SVMAdmin.Controllers
                     {
                         sql += "and a.SalesDate='" + ID + "' ";
                     }
-                    sql += "group by a.ShopNo,b.ST_SName ";
-                    sql += "Order by a.ShopNo ";
                     DataTable dtSumQ = PubUtility.SqlQry(sql, uu, "SYS");
                     dtSumQ.TableName = "dtSumQ";
                     ds.Tables.Add(dtSumQ);
