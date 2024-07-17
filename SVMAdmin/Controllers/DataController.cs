@@ -8614,7 +8614,7 @@ namespace SVMAdmin.Controllers
                     sql += "case when Sum(isnull(a.TotalTrans,0))=0 then 0 else Round(Sum(isnull(a.TotalCash,0))/Sum(isnull(a.TotalTrans,0)),0) end as SalesPrice2 ";
 
                     sql += "From MSData2Web a (nolock) ";
-                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode and b.ST_Type not in('0','2','3') ";
+                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode and b.ST_Type not in('2','3') ";
                     sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                     if (PS_NO != "")
                     {
@@ -8634,7 +8634,7 @@ namespace SVMAdmin.Controllers
                     sql += "sum(isnull(a.TotalCash,0))SumSalesCash2,sum(isnull(a.TotalTrans,0))SumSalesCnt2, ";
                     sql += "case when sum(isnull(a.TotalTrans,0))=0 then 0 else Round(sum(isnull(a.TotalCash,0))/sum(isnull(a.TotalTrans,0)),0) end as SumSalesPrice2 ";
                     sql += "From MSData2Web a (nolock) ";
-                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode and b.ST_Type not in('0','2','3') ";
+                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode and b.ST_Type not in('2','3') ";
                     sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                     if (PS_NO != "")
                     {
@@ -8794,7 +8794,7 @@ namespace SVMAdmin.Controllers
                     sql += "sum(isnull(a.TotalCash,0))TotalCash,sum(isnull(a.TotalTrans,0))TotalTrans, ";
                     sql += "case when sum(isnull(a.TotalTrans,0))=0 then 0 else Round(sum(isnull(a.TotalCash,0)) / sum(isnull(a.TotalTrans,0)), 0) end as TotalPrice ";
                     sql += "From MSData1Web a (nolock) ";
-                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode and b.ST_Type not in('0','2','3') ";
+                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode and b.ST_Type not in('2','3') ";
                     sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                     if (PS_NO != "")
                     {
@@ -8817,7 +8817,7 @@ namespace SVMAdmin.Controllers
                     sql += "sum(isnull(a.TotalCash,0))SumTotalCash,sum(isnull(a.TotalTrans,0))SumTotalTrans, ";
                     sql += "case when sum(isnull(a.TotalTrans,0))=0 then 0 else Round(sum(isnull(a.TotalCash,0)) / sum(isnull(a.TotalTrans,0)), 0) end as SumTotalPrice ";
                     sql += "From MSData1Web a (nolock) ";
-                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode and b.ST_Type not in('0','2','3') ";
+                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode and b.ST_Type not in('2','3') ";
                     sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                     if (PS_NO != "")
                     {
@@ -9197,9 +9197,9 @@ namespace SVMAdmin.Controllers
                     sqlQ = "Select s2.ID as ID,isnull(v.VIPCnt,0)VIPCnt, ";
                     sqlQ += "isnull(s1.SalesCnt1,0)SalesCnt1,isnull(s1.SalesCash1,0)SalesCash1,isnull(s1.SalesPrice1,0)SalesPrice1, ";
                     sqlQ += "isnull(s2.SalesCnt2,0)SalesCnt2,isnull(s2.SalesCash2,0)SalesCash2,isnull(s2.SalesPrice2,0)SalesPrice2, ";
-                    sqlQ += "case when isnull(s2.SalesCashAll,0)=0 then format(0,'p') else format(cast(isnull(s2.SalesCash2,0) as Float)/cast(isnull(s2.SalesCashAll,0) as Float),'p') end as SalesPercent2, ";
+                    sqlQ += "case when isnull(s2.SalesCashAll,0)=0 and isnull(s2.SalesCash2,0)=0 then format(0,'p') when isnull(s2.SalesCashAll,0)=0 then format(1,'p') else format(cast(isnull(s2.SalesCash2,0) as Float)/cast(isnull(s2.SalesCashAll,0) as Float),'p') end as SalesPercent2, ";
                     sqlQ += "isnull(s2.SalesCnt3,0)SalesCnt3,isnull(s2.SalesCash3,0)SalesCash3,isnull(s2.SalesPrice3,0)SalesPrice3, ";
-                    sqlQ += "case when isnull(s2.SalesCashAll,0)=0 then format(0,'p') else format(cast(isnull(s2.SalesCash3,0) as Float)/cast(isnull(s2.SalesCashAll,0) as Float),'p') end as SalesPercent3 ";
+                    sqlQ += "case when isnull(s2.SalesCashAll,0)=0 and isnull(s2.SalesCash3,0)=0 then format(0,'p') when isnull(s2.SalesCashAll,0)=0 then format(1,'p') else format(cast(isnull(s2.SalesCash3,0) as Float)/cast(isnull(s2.SalesCashAll,0) as Float),'p') end as SalesPercent3 ";
 
                     sqlQ += "From #s2 s2 (nolock) ";
                     sqlQ += "left join #v v on s2.ID=v.ID ";
@@ -9214,9 +9214,9 @@ namespace SVMAdmin.Controllers
                     sqlSumQ = "Select sum(isnull(v.VIPCnt,0))SumVIPCnt, ";
                     sqlSumQ += "sum(isnull(s1.SalesCnt1,0))SumSalesCnt1,sum(isnull(s1.SalesCash1,0))SumSalesCash1,case when sum(isnull(s1.SalesCnt1,0))=0 then 0 else Round(sum(isnull(s1.SalesCash1,0))/sum(isnull(s1.SalesCnt1,0)),0) end as SumSalesPrice1, ";
                     sqlSumQ += "sum(isnull(s2.SalesCnt2,0))SumSalesCnt2,sum(isnull(s2.SalesCash2,0))SumSalesCash2,case when sum(isnull(s2.SalesCnt2,0))=0 then 0 else Round(sum(isnull(s2.SalesCash2,0))/sum(isnull(s2.SalesCnt2,0)),0) end as SumSalesPrice2, ";
-                    sqlSumQ += "case when sum(isnull(s2.SalesCashAll,0))=0 then format(0,'p') else format(cast(sum(isnull(s2.SalesCash2,0)) as Float)/cast(sum(isnull(s2.SalesCashAll,0)) as Float),'p') end as SumSalesPercent2, ";
+                    sqlSumQ += "case when sum(isnull(s2.SalesCashAll,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.SalesCash2,0)) as Float)/cast(sum(isnull(s2.SalesCashAll,0)) as Float),'p') end as SumSalesPercent2, ";
                     sqlSumQ += "sum(isnull(s2.SalesCnt3,0))SumSalesCnt3,sum(isnull(s2.SalesCash3,0))SumSalesCash3,case when sum(isnull(s2.SalesCnt3,0))=0 then 0 else Round(sum(isnull(s2.SalesCash3,0))/sum(isnull(s2.SalesCnt3,0)),0) end as SumSalesPrice3, ";
-                    sqlSumQ += "case when sum(isnull(s2.SalesCashAll,0))=0 then format(0,'p') else format(cast(sum(isnull(s2.SalesCash3,0)) as Float)/cast(sum(isnull(s2.SalesCashAll,0)) as Float),'p') end as SumSalesPercent3 ";
+                    sqlSumQ += "case when sum(isnull(s2.SalesCashAll,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.SalesCash3,0)) as Float)/cast(sum(isnull(s2.SalesCashAll,0)) as Float),'p') end as SumSalesPercent3 ";
 
                     sqlSumQ += "From #s2 s2 (nolock) ";
                     sqlSumQ += "left join #v v on s2.ID=v.ID ";
@@ -9233,7 +9233,7 @@ namespace SVMAdmin.Controllers
                     sql = "Select v.VIP_FaceID as ID,count(*) as VIPCnt ";
                     sql += "into #v ";
                     sql += "from EDDMS.dbo.VIP v (nolock) ";
-                    sql += "inner join WarehouseWeb w (nolock) on v.VIP_FaceID=w.ST_ID and w.ST_Type not in('2','3') and w.Companycode=v.Companycode ";
+                    sql += "inner join WarehouseWeb w (nolock) on v.VIP_FaceID=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=v.Companycode ";
                     sql += "Where v.Companycode='" + uu.CompanyId + "' ";
                     if (OpenDate != "")
                     {
@@ -9245,7 +9245,7 @@ namespace SVMAdmin.Controllers
                     sql += "Select h.ShopNo as ID,Count(*) as SalesCnt1,Sum(h.Cash) as SalesCash1,case when Count(*)=0 then 0 else Round(Sum(h.Cash)/Count(*),0) end as SalesPrice1 ";
                     sql += "into #s1 ";
                     sql += "From SalesH_NEWVIPWeb h (nolock) ";
-                    sql += "inner join WarehouseWeb w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('2','3') and w.Companycode=h.Companycode ";
+                    sql += "inner join WarehouseWeb w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=h.Companycode ";
                     sql += "Where h.Companycode='" + uu.CompanyId + "' ";
                     if (OpenDate != "")
                     {
@@ -9260,7 +9260,7 @@ namespace SVMAdmin.Controllers
                     sql += "case when Sum(h.RecS)-Sum(h.VIP_RecS)=0 then 0 else Round((Sum(h.Cash)-Sum(h.VIP_Cash))/(Sum(h.RecS)-Sum(h.VIP_RecS)),0) end as SalesPrice3 ";
                     sql += "into #s2 ";
                     sql += "From SalesHWeb h (nolock) ";
-                    sql += "inner join WarehouseWeb w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('2','3') and w.Companycode=h.Companycode ";
+                    sql += "inner join WarehouseWeb w (nolock) on h.ShopNo=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=h.Companycode ";
                     sql += "Where h.Companycode='" + uu.CompanyId + "' ";
                     if (OpenDate != "")
                     {
@@ -9272,9 +9272,9 @@ namespace SVMAdmin.Controllers
                     sqlQ = "Select s2.ID,isnull(v.VIPCnt,0)VIPCnt, ";
                     sqlQ += "isnull(s1.SalesCnt1,0)SalesCnt1,isnull(s1.SalesCash1,0)SalesCash1,isnull(s1.SalesPrice1,0)SalesPrice1, ";
                     sqlQ += "isnull(s2.SalesCnt2,0)SalesCnt2,isnull(s2.SalesCash2,0)SalesCash2,isnull(s2.SalesPrice2,0)SalesPrice2, ";
-                    sqlQ += "case when isnull(s2.SalesCashAll,0)=0 then format(0,'p') else format(cast(isnull(s2.SalesCash2,0) as Float)/cast(isnull(s2.SalesCashAll,0) as Float),'p') end as SalesPercent2, ";
+                    sqlQ += "case when isnull(s2.SalesCashAll,0)=0 and isnull(s2.SalesCash2,0)=0 then format(0,'p') when isnull(s2.SalesCashAll,0)=0 then format(1,'p') else format(cast(isnull(s2.SalesCash2,0) as Float)/cast(isnull(s2.SalesCashAll,0) as Float),'p') end as SalesPercent2, ";
                     sqlQ += "isnull(s2.SalesCnt3,0)SalesCnt3,isnull(s2.SalesCash3,0)SalesCash3,isnull(s2.SalesPrice3,0)SalesPrice3, ";
-                    sqlQ += "case when isnull(s2.SalesCashAll,0)=0 then format(0,'p') else format(cast(isnull(s2.SalesCash3,0) as Float)/cast(isnull(s2.SalesCashAll,0) as Float),'p') end as SalesPercent3 ";
+                    sqlQ += "case when isnull(s2.SalesCashAll,0)=0 and isnull(s2.SalesCash3,0)=0 then format(0,'p') when isnull(s2.SalesCashAll,0)=0 then format(1,'p') else format(cast(isnull(s2.SalesCash3,0) as Float)/cast(isnull(s2.SalesCashAll,0) as Float),'p') end as SalesPercent3 ";
 
                     sqlQ += "From #s2 s2 (nolock) ";
                     sqlQ += "left join #v v on s2.ShopNo=v.ID ";
@@ -9291,9 +9291,9 @@ namespace SVMAdmin.Controllers
                     sqlSumQ = "Select sum(isnull(v.VIPCnt,0))SumVIPCnt, ";
                     sqlSumQ += "sum(isnull(s1.SalesCnt1,0))SumSalesCnt1,sum(isnull(s1.SalesCash1,0))SumSalesCash1,case when sum(isnull(s1.SalesCnt1,0))=0 then 0 else Round(sum(isnull(s1.SalesCash1,0))/sum(isnull(s1.SalesCnt1,0)),0) end as SumSalesPrice1, ";
                     sqlSumQ += "sum(isnull(s2.SalesCnt2,0))SumSalesCnt2,sum(isnull(s2.SalesCash2,0))SumSalesCash2,case when sum(isnull(s2.SalesCnt2,0))=0 then 0 else Round(sum(isnull(s2.SalesCash2,0))/sum(isnull(s2.SalesCnt2,0)),0) end as SumSalesPrice2, ";
-                    sqlSumQ += "case when sum(isnull(s2.SalesCashAll,0))=0 then format(0,'p') else format(cast(sum(isnull(s2.SalesCash2,0)) as Float)/cast(sum(isnull(s2.SalesCashAll,0)) as Float),'p') end as SumSalesPercent2, ";
+                    sqlSumQ += "case when sum(isnull(s2.SalesCashAll,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.SalesCash2,0)) as Float)/cast(sum(isnull(s2.SalesCashAll,0)) as Float),'p') end as SumSalesPercent2, ";
                     sqlSumQ += "sum(isnull(s2.SalesCnt3,0))SumSalesCnt3,sum(isnull(s2.SalesCash3,0))SumSalesCash3,case when sum(isnull(s2.SalesCnt3,0))=0 then 0 else Round(sum(isnull(s2.SalesCash3,0))/sum(isnull(s2.SalesCnt3,0)),0) end as SumSalesPrice3, ";
-                    sqlSumQ += "case when sum(isnull(s2.SalesCashAll,0))=0 then format(0,'p') else format(cast(sum(isnull(s2.SalesCash3,0)) as Float)/cast(sum(isnull(s2.SalesCashAll,0)) as Float),'p') end as SumSalesPercent3 ";
+                    sqlSumQ += "case when sum(isnull(s2.SalesCashAll,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.SalesCash3,0)) as Float)/cast(sum(isnull(s2.SalesCashAll,0)) as Float),'p') end as SumSalesPercent3 ";
 
                     sqlSumQ += "From #s2 s2 (nolock) ";
                     sqlSumQ += "left join #v v on s2.ShopNo=v.ID ";
@@ -9918,7 +9918,10 @@ namespace SVMAdmin.Controllers
                     sql += "and b.ActivityCode like '" + ActivityCode.SqlQuote() + "%' ";
                 }
                 sql += "left join (Select EDM_DocNo,COUNT(*)Cnt1 From SetEDMVIP_HWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by EDM_DocNo)c on a.DocNo=c.EDM_DocNo ";
-                sql += "left join (Select EVNO,COUNT(*)Cnt2 From SetEDMVIP_VIPWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by EVNO)d on a.DocNo=d.EVNO ";
+                sql += "left join (Select EDM_DocNo,COUNT(*)Cnt2 From SetEDMVIP_HWeb (nolock) ";
+                sql += "inner join SetEDMVIP_VIPWeb (nolock) on SetEDMVIP_HWeb.EVNO=SetEDMVIP_VIPWeb.EVNO and SetEDMVIP_VIPWeb.Companycode=SetEDMVIP_HWeb.Companycode ";
+                sql += "Where SetEDMVIP_HWeb.Companycode='" + uu.CompanyId + "' group by SetEDMVIP_HWeb.EDM_DocNo ";
+                sql += ")d on a.DocNo=d.EDM_DocNo ";
 
                 sql += "Where a.Companycode='" + uu.CompanyId + "' and isnull(a.DelDate,'')='' and a.EDMType='E' ";
                 sql += "and a.EDM_Model='" + EDM_Model.SqlQuote() + "' ";
@@ -10873,8 +10876,6 @@ namespace SVMAdmin.Controllers
                     {
                         sql += "and a.SalesDate='" + ID + "' ";
                     }
-                    sql += "group by a.ShopNo,b.ST_SName ";
-                    sql += "Order by a.ShopNo ";
                     DataTable dtSumQ = PubUtility.SqlQry(sql, uu, "SYS");
                     dtSumQ.TableName = "dtSumQ";
                     ds.Tables.Add(dtSumQ);
@@ -11235,14 +11236,14 @@ namespace SVMAdmin.Controllers
                     //總數
                     sql = "select a.VIP_FaceID ID,Count(*)Cnt1 into #v1 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += sqlCon;
                     sql += "group by a.VIP_FaceID; ";
                     //17歲以下
                     sql += "select a.VIP_FaceID ID,Count(*)Cnt2 into #v2 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int)<=17 ";
                     sql += sqlCon;
@@ -11250,7 +11251,7 @@ namespace SVMAdmin.Controllers
                     //18~30歲
                     sql += "select a.VIP_FaceID ID,Count(*)Cnt3 into #v3 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 18 and 30 ";
                     sql += sqlCon;
@@ -11258,7 +11259,7 @@ namespace SVMAdmin.Controllers
                     //31~40歲
                     sql += "select a.VIP_FaceID ID,Count(*)Cnt4 into #v4 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 31 and 40 ";
                     sql += sqlCon;
@@ -11266,7 +11267,7 @@ namespace SVMAdmin.Controllers
                     //41~50歲
                     sql += "select a.VIP_FaceID ID,Count(*)Cnt5 into #v5 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 41 and 50 ";
                     sql += sqlCon;
@@ -11274,7 +11275,7 @@ namespace SVMAdmin.Controllers
                     //51~60歲
                     sql += "select a.VIP_FaceID ID,Count(*)Cnt6 into #v6 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 51 and 60 ";
                     sql += sqlCon;
@@ -11282,7 +11283,7 @@ namespace SVMAdmin.Controllers
                     //61~70歲
                     sql += "select a.VIP_FaceID ID,Count(*)Cnt7 into #v7 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 61 and 70 ";
                     sql += sqlCon;
@@ -11290,7 +11291,7 @@ namespace SVMAdmin.Controllers
                     //71歲以上
                     sql += "select a.VIP_FaceID ID,Count(*)Cnt8 into #v8 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int)>=71 ";
                     sql += sqlCon;
@@ -11298,7 +11299,7 @@ namespace SVMAdmin.Controllers
                     //男性
                     sql += "select a.VIP_FaceID ID,Count(*)Cnt9 into #v9 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and a.VIP_MW='0' ";
                     sql += sqlCon;
@@ -11306,22 +11307,22 @@ namespace SVMAdmin.Controllers
                     //女性
                     sql += "select a.VIP_FaceID ID,Count(*)Cnt10 into #v10 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and a.VIP_MW='1' ";
                     sql += sqlCon;
                     sql += "group by a.VIP_FaceID; ";
                     //明細資料
                     sqlD = "select v1.id + '-' + w.st_sname id,isnull(v1.Cnt1,0)Cnt1,isnull(v2.Cnt2,0)Cnt2, ";
-                    sqlD += "case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v2.Cnt2,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt2p, ";
-                    sqlD += "isnull(v3.Cnt3,0)Cnt3,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v3.Cnt3,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt3p, ";
-                    sqlD += "isnull(v4.Cnt4,0)Cnt4,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v4.Cnt4,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt4p, ";
-                    sqlD += "isnull(v5.Cnt5,0)Cnt5,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v5.Cnt5,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt5p, ";
-                    sqlD += "isnull(v6.Cnt6,0)Cnt6,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v6.Cnt6,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt6p, ";
-                    sqlD += "isnull(v7.Cnt7,0)Cnt7,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v7.Cnt7,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt7p, ";
-                    sqlD += "isnull(v8.Cnt8,0)Cnt8,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v8.Cnt8,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt8p, ";
-                    sqlD += "isnull(v9.Cnt9,0)Cnt9,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v9.Cnt9,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt9p, ";
-                    sqlD += "isnull(v10.Cnt10,0)Cnt10,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v10.Cnt10,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt10p ";
+                    sqlD += "case when isnull(v1.Cnt1,0)=0 and isnull(v2.Cnt2,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v2.Cnt2,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt2p, ";
+                    sqlD += "isnull(v3.Cnt3,0)Cnt3,case when isnull(v1.Cnt1,0)=0 and isnull(v3.Cnt3,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v3.Cnt3,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt3p, ";
+                    sqlD += "isnull(v4.Cnt4,0)Cnt4,case when isnull(v1.Cnt1,0)=0 and isnull(v4.Cnt4,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v4.Cnt4,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt4p, ";
+                    sqlD += "isnull(v5.Cnt5,0)Cnt5,case when isnull(v1.Cnt1,0)=0 and isnull(v5.Cnt5,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v5.Cnt5,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt5p, ";
+                    sqlD += "isnull(v6.Cnt6,0)Cnt6,case when isnull(v1.Cnt1,0)=0 and isnull(v6.Cnt6,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v6.Cnt6,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt6p, ";
+                    sqlD += "isnull(v7.Cnt7,0)Cnt7,case when isnull(v1.Cnt1,0)=0 and isnull(v7.Cnt7,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v7.Cnt7,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt7p, ";
+                    sqlD += "isnull(v8.Cnt8,0)Cnt8,case when isnull(v1.Cnt1,0)=0 and isnull(v8.Cnt8,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v8.Cnt8,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt8p, ";
+                    sqlD += "isnull(v9.Cnt9,0)Cnt9,case when isnull(v1.Cnt1,0)=0 and isnull(v9.Cnt9,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v9.Cnt9,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt9p, ";
+                    sqlD += "isnull(v10.Cnt10,0)Cnt10,case when isnull(v1.Cnt1,0)=0 and isnull(v10.Cnt10,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v10.Cnt10,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt10p ";
                     sqlD += "from #v1 v1 ";
                     sqlD += "left join #v2 v2 on v1.id=v2.id ";
                     sqlD += "left join #v3 v3 on v1.id=v3.id ";
@@ -11332,22 +11333,22 @@ namespace SVMAdmin.Controllers
                     sqlD += "left join #v8 v8 on v1.id=v8.id ";
                     sqlD += "left join #v9 v9 on v1.id=v9.id ";
                     sqlD += "left join #v10 v10 on v1.id=v10.id ";
-                    sqlD += "inner join EDDMS.dbo.Warehouse w (nolock) on v1.id=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                    sqlD += "inner join WarehouseWeb w (nolock) on v1.id=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('0','2','3') ";
                     sqlD += "order by v1.id ";
                     DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
                     dtE.TableName = "dtE";
                     ds.Tables.Add(dtE);
                     //彙總資料
                     sqlH = "select convert(char(10),getdate(),111) + ' ' + convert(char(5),getdate(),108) as SysDate,sum(isnull(v1.Cnt1,0))SumCnt1, ";
-                    sqlH += "sum(isnull(v2.Cnt2,0))SumCnt2,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v2.Cnt2,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt2p, ";
-                    sqlH += "sum(isnull(v3.Cnt3,0))SumCnt3,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v3.Cnt3,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt3p, ";
-                    sqlH += "sum(isnull(v4.Cnt4,0))SumCnt4,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v4.Cnt4,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt4p, ";
-                    sqlH += "sum(isnull(v5.Cnt5,0))SumCnt5,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v5.Cnt5,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt5p, ";
-                    sqlH += "sum(isnull(v6.Cnt6,0))SumCnt6,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v6.Cnt6,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt6p, ";
-                    sqlH += "sum(isnull(v7.Cnt7,0))SumCnt7,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v7.Cnt7,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt7p, ";
-                    sqlH += "sum(isnull(v8.Cnt8,0))SumCnt8,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v8.Cnt8,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt8p, ";
-                    sqlH += "sum(isnull(v9.Cnt9,0))SumCnt9,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v9.Cnt9,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt9p, ";
-                    sqlH += "sum(isnull(v10.Cnt10,0))SumCnt10,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v10.Cnt10,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt10p ";
+                    sqlH += "sum(isnull(v2.Cnt2,0))SumCnt2,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v2.Cnt2,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt2p, ";
+                    sqlH += "sum(isnull(v3.Cnt3,0))SumCnt3,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v3.Cnt3,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt3p, ";
+                    sqlH += "sum(isnull(v4.Cnt4,0))SumCnt4,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v4.Cnt4,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt4p, ";
+                    sqlH += "sum(isnull(v5.Cnt5,0))SumCnt5,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v5.Cnt5,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt5p, ";
+                    sqlH += "sum(isnull(v6.Cnt6,0))SumCnt6,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v6.Cnt6,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt6p, ";
+                    sqlH += "sum(isnull(v7.Cnt7,0))SumCnt7,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v7.Cnt7,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt7p, ";
+                    sqlH += "sum(isnull(v8.Cnt8,0))SumCnt8,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v8.Cnt8,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt8p, ";
+                    sqlH += "sum(isnull(v9.Cnt9,0))SumCnt9,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v9.Cnt9,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt9p, ";
+                    sqlH += "sum(isnull(v10.Cnt10,0))SumCnt10,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v10.Cnt10,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt10p ";
                     sqlH += "from #v1 v1 ";
                     sqlH += "left join #v2 v2 on v1.id=v2.id ";
                     sqlH += "left join #v3 v3 on v1.id=v3.id ";
@@ -11368,14 +11369,14 @@ namespace SVMAdmin.Controllers
                     //總數
                     sql = "select a.City ID,Count(*)Cnt1 into #v1 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += sqlCon;
                     sql += "group by a.City; ";
                     //17歲以下
                     sql += "select a.City ID,Count(*)Cnt2 into #v2 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int)<=17 ";
                     sql += sqlCon;
@@ -11383,7 +11384,7 @@ namespace SVMAdmin.Controllers
                     //18~30歲
                     sql += "select a.City ID,Count(*)Cnt3 into #v3 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 18 and 30 ";
                     sql += sqlCon;
@@ -11391,7 +11392,7 @@ namespace SVMAdmin.Controllers
                     //31~40歲
                     sql += "select a.City ID,Count(*)Cnt4 into #v4 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 31 and 40 ";
                     sql += sqlCon;
@@ -11399,7 +11400,7 @@ namespace SVMAdmin.Controllers
                     //41~50歲
                     sql += "select a.City ID,Count(*)Cnt5 into #v5 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 41 and 50 ";
                     sql += sqlCon;
@@ -11407,7 +11408,7 @@ namespace SVMAdmin.Controllers
                     //51~60歲
                     sql += "select a.City ID,Count(*)Cnt6 into #v6 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 51 and 60 ";
                     sql += sqlCon;
@@ -11415,7 +11416,7 @@ namespace SVMAdmin.Controllers
                     //61~70歲
                     sql += "select a.City ID,Count(*)Cnt7 into #v7 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 61 and 70 ";
                     sql += sqlCon;
@@ -11423,7 +11424,7 @@ namespace SVMAdmin.Controllers
                     //71歲以上
                     sql += "select a.City ID,Count(*)Cnt8 into #v8 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int)>=71 ";
                     sql += sqlCon;
@@ -11431,7 +11432,7 @@ namespace SVMAdmin.Controllers
                     //男性
                     sql += "select a.City ID,Count(*)Cnt9 into #v9 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and a.VIP_MW='0' ";
                     sql += sqlCon;
@@ -11439,22 +11440,22 @@ namespace SVMAdmin.Controllers
                     //女性
                     sql += "select a.City ID,Count(*)Cnt10 into #v10 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and a.VIP_MW='1' ";
                     sql += sqlCon;
                     sql += "group by a.City; ";
                     //明細資料
                     sqlD = "select case when v1.id='' then '無資料' else v1.id end as id,isnull(v1.Cnt1,0)Cnt1,isnull(v2.Cnt2,0)Cnt2, ";
-                    sqlD += "case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v2.Cnt2,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt2p, ";
-                    sqlD += "isnull(v3.Cnt3,0)Cnt3,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v3.Cnt3,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt3p, ";
-                    sqlD += "isnull(v4.Cnt4,0)Cnt4,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v4.Cnt4,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt4p, ";
-                    sqlD += "isnull(v5.Cnt5,0)Cnt5,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v5.Cnt5,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt5p, ";
-                    sqlD += "isnull(v6.Cnt6,0)Cnt6,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v6.Cnt6,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt6p, ";
-                    sqlD += "isnull(v7.Cnt7,0)Cnt7,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v7.Cnt7,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt7p, ";
-                    sqlD += "isnull(v8.Cnt8,0)Cnt8,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v8.Cnt8,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt8p, ";
-                    sqlD += "isnull(v9.Cnt9,0)Cnt9,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v9.Cnt9,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt9p, ";
-                    sqlD += "isnull(v10.Cnt10,0)Cnt10,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v10.Cnt10,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt10p ";
+                    sqlD += "case when isnull(v1.Cnt1,0)=0 and isnull(v2.Cnt2,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v2.Cnt2,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt2p, ";
+                    sqlD += "isnull(v3.Cnt3,0)Cnt3,case when isnull(v1.Cnt1,0)=0 and isnull(v3.Cnt3,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v3.Cnt3,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt3p, ";
+                    sqlD += "isnull(v4.Cnt4,0)Cnt4,case when isnull(v1.Cnt1,0)=0 and isnull(v4.Cnt4,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v4.Cnt4,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt4p, ";
+                    sqlD += "isnull(v5.Cnt5,0)Cnt5,case when isnull(v1.Cnt1,0)=0 and isnull(v5.Cnt5,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v5.Cnt5,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt5p, ";
+                    sqlD += "isnull(v6.Cnt6,0)Cnt6,case when isnull(v1.Cnt1,0)=0 and isnull(v6.Cnt6,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v6.Cnt6,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt6p, ";
+                    sqlD += "isnull(v7.Cnt7,0)Cnt7,case when isnull(v1.Cnt1,0)=0 and isnull(v7.Cnt7,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v7.Cnt7,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt7p, ";
+                    sqlD += "isnull(v8.Cnt8,0)Cnt8,case when isnull(v1.Cnt1,0)=0 and isnull(v8.Cnt8,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v8.Cnt8,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt8p, ";
+                    sqlD += "isnull(v9.Cnt9,0)Cnt9,case when isnull(v1.Cnt1,0)=0 and isnull(v9.Cnt9,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v9.Cnt9,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt9p, ";
+                    sqlD += "isnull(v10.Cnt10,0)Cnt10,case when isnull(v1.Cnt1,0)=0 and isnull(v10.Cnt10,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v10.Cnt10,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt10p ";
                     sqlD += "from #v1 v1 ";
                     sqlD += "left join #v2 v2 on v1.id=v2.id ";
                     sqlD += "left join #v3 v3 on v1.id=v3.id ";
@@ -11472,15 +11473,15 @@ namespace SVMAdmin.Controllers
                     ds.Tables.Add(dtE);
                     //彙總資料
                     sqlH = "select convert(char(10),getdate(),111) + ' ' + convert(char(5),getdate(),108) as SysDate,sum(isnull(v1.Cnt1,0))SumCnt1, ";
-                    sqlH += "sum(isnull(v2.Cnt2,0))SumCnt2,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v2.Cnt2,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt2p, ";
-                    sqlH += "sum(isnull(v3.Cnt3,0))SumCnt3,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v3.Cnt3,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt3p, ";
-                    sqlH += "sum(isnull(v4.Cnt4,0))SumCnt4,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v4.Cnt4,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt4p, ";
-                    sqlH += "sum(isnull(v5.Cnt5,0))SumCnt5,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v5.Cnt5,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt5p, ";
-                    sqlH += "sum(isnull(v6.Cnt6,0))SumCnt6,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v6.Cnt6,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt6p, ";
-                    sqlH += "sum(isnull(v7.Cnt7,0))SumCnt7,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v7.Cnt7,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt7p, ";
-                    sqlH += "sum(isnull(v8.Cnt8,0))SumCnt8,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v8.Cnt8,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt8p, ";
-                    sqlH += "sum(isnull(v9.Cnt9,0))SumCnt9,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v9.Cnt9,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt9p, ";
-                    sqlH += "sum(isnull(v10.Cnt10,0))SumCnt10,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v10.Cnt10,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt10p ";
+                    sqlH += "sum(isnull(v2.Cnt2,0))SumCnt2,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v2.Cnt2,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt2p, ";
+                    sqlH += "sum(isnull(v3.Cnt3,0))SumCnt3,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v3.Cnt3,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt3p, ";
+                    sqlH += "sum(isnull(v4.Cnt4,0))SumCnt4,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v4.Cnt4,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt4p, ";
+                    sqlH += "sum(isnull(v5.Cnt5,0))SumCnt5,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v5.Cnt5,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt5p, ";
+                    sqlH += "sum(isnull(v6.Cnt6,0))SumCnt6,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v6.Cnt6,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt6p, ";
+                    sqlH += "sum(isnull(v7.Cnt7,0))SumCnt7,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v7.Cnt7,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt7p, ";
+                    sqlH += "sum(isnull(v8.Cnt8,0))SumCnt8,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v8.Cnt8,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt8p, ";
+                    sqlH += "sum(isnull(v9.Cnt9,0))SumCnt9,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v9.Cnt9,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt9p, ";
+                    sqlH += "sum(isnull(v10.Cnt10,0))SumCnt10,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v10.Cnt10,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt10p ";
                     sqlH += "from #v1 v1 ";
                     sqlH += "left join #v2 v2 on v1.id=v2.id ";
                     sqlH += "left join #v3 v3 on v1.id=v3.id ";
@@ -11502,14 +11503,14 @@ namespace SVMAdmin.Controllers
                     //總數
                     sql = "select a.VIP_MW ID,Count(*)Cnt1 into #v1 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += sqlCon;
                     sql += "group by a.VIP_MW; ";
                     //17歲以下
                     sql += "select a.VIP_MW ID,Count(*)Cnt2 into #v2 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int)<=17 ";
                     sql += sqlCon;
@@ -11517,7 +11518,7 @@ namespace SVMAdmin.Controllers
                     //18~30歲
                     sql += "select a.VIP_MW ID,Count(*)Cnt3 into #v3 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 18 and 30 ";
                     sql += sqlCon;
@@ -11525,7 +11526,7 @@ namespace SVMAdmin.Controllers
                     //31~40歲
                     sql += "select a.VIP_MW ID,Count(*)Cnt4 into #v4 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 31 and 40 ";
                     sql += sqlCon;
@@ -11533,7 +11534,7 @@ namespace SVMAdmin.Controllers
                     //41~50歲
                     sql += "select a.VIP_MW ID,Count(*)Cnt5 into #v5 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 41 and 50 ";
                     sql += sqlCon;
@@ -11541,7 +11542,7 @@ namespace SVMAdmin.Controllers
                     //51~60歲
                     sql += "select a.VIP_MW ID,Count(*)Cnt6 into #v6 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 51 and 60 ";
                     sql += sqlCon;
@@ -11549,7 +11550,7 @@ namespace SVMAdmin.Controllers
                     //61~70歲
                     sql += "select a.VIP_MW ID,Count(*)Cnt7 into #v7 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int) between 61 and 70 ";
                     sql += sqlCon;
@@ -11557,20 +11558,20 @@ namespace SVMAdmin.Controllers
                     //71歲以上
                     sql += "select a.VIP_MW ID,Count(*)Cnt8 into #v8 ";
                     sql += "from EDDMS.dbo.VIP a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('2','3') ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.VIP_FaceID=w.ST_ID and w.Companycode=a.Companycode and w.ST_Type not in('0','2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and YEAR(GETDATE())-CAST(left(a.VIP_Birthday,4)as int)>=71 ";
                     sql += sqlCon;
                     sql += "group by a.VIP_MW; ";
                     //明細資料
                     sqlD = "select case v1.id when '0' then '男性' when '1' then '女性' end as id,isnull(v1.Cnt1,0)Cnt1,isnull(v2.Cnt2,0)Cnt2, ";
-                    sqlD += "case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v2.Cnt2,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt2p, ";
-                    sqlD += "isnull(v3.Cnt3,0)Cnt3,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v3.Cnt3,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt3p, ";
-                    sqlD += "isnull(v4.Cnt4,0)Cnt4,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v4.Cnt4,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt4p, ";
-                    sqlD += "isnull(v5.Cnt5,0)Cnt5,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v5.Cnt5,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt5p, ";
-                    sqlD += "isnull(v6.Cnt6,0)Cnt6,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v6.Cnt6,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt6p, ";
-                    sqlD += "isnull(v7.Cnt7,0)Cnt7,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v7.Cnt7,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt7p, ";
-                    sqlD += "isnull(v8.Cnt8,0)Cnt8,case when isnull(v1.Cnt1,0)=0 then format(0,'p') else format(cast(isnull(v8.Cnt8,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt8p ";
+                    sqlD += "case when isnull(v1.Cnt1,0)=0 and isnull(v2.Cnt2,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v2.Cnt2,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt2p, ";
+                    sqlD += "isnull(v3.Cnt3,0)Cnt3,case when isnull(v1.Cnt1,0)=0 and isnull(v3.Cnt3,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v3.Cnt3,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt3p, ";
+                    sqlD += "isnull(v4.Cnt4,0)Cnt4,case when isnull(v1.Cnt1,0)=0 and isnull(v4.Cnt4,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v4.Cnt4,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt4p, ";
+                    sqlD += "isnull(v5.Cnt5,0)Cnt5,case when isnull(v1.Cnt1,0)=0 and isnull(v5.Cnt5,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v5.Cnt5,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt5p, ";
+                    sqlD += "isnull(v6.Cnt6,0)Cnt6,case when isnull(v1.Cnt1,0)=0 and isnull(v6.Cnt6,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v6.Cnt6,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt6p, ";
+                    sqlD += "isnull(v7.Cnt7,0)Cnt7,case when isnull(v1.Cnt1,0)=0 and isnull(v7.Cnt7,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v7.Cnt7,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt7p, ";
+                    sqlD += "isnull(v8.Cnt8,0)Cnt8,case when isnull(v1.Cnt1,0)=0 and isnull(v8.Cnt8,0)=0 then format(0,'p') when isnull(v1.Cnt1,0)=0 then format(1,'p') else format(cast(isnull(v8.Cnt8,0) as Float)/cast(isnull(v1.Cnt1,0) as Float),'p') end as Cnt8p ";
                     sqlD += "from #v1 v1 ";
                     sqlD += "left join #v2 v2 on v1.id=v2.id ";
                     sqlD += "left join #v3 v3 on v1.id=v3.id ";
@@ -11586,13 +11587,13 @@ namespace SVMAdmin.Controllers
                     ds.Tables.Add(dtE);
                     //彙總資料
                     sqlH = "select convert(char(10),getdate(),111) + ' ' + convert(char(5),getdate(),108) as SysDate,sum(isnull(v1.Cnt1,0))SumCnt1, ";
-                    sqlH += "sum(isnull(v2.Cnt2,0))SumCnt2,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v2.Cnt2,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt2p, ";
-                    sqlH += "sum(isnull(v3.Cnt3,0))SumCnt3,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v3.Cnt3,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt3p, ";
-                    sqlH += "sum(isnull(v4.Cnt4,0))SumCnt4,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v4.Cnt4,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt4p, ";
-                    sqlH += "sum(isnull(v5.Cnt5,0))SumCnt5,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v5.Cnt5,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt5p, ";
-                    sqlH += "sum(isnull(v6.Cnt6,0))SumCnt6,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v6.Cnt6,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt6p, ";
-                    sqlH += "sum(isnull(v7.Cnt7,0))SumCnt7,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v7.Cnt7,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt7p, ";
-                    sqlH += "sum(isnull(v8.Cnt8,0))SumCnt8,case when sum(isnull(v1.Cnt1,0))=0 then format(0,'p') else format(cast(sum(isnull(v8.Cnt8,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt8p ";
+                    sqlH += "sum(isnull(v2.Cnt2,0))SumCnt2,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v2.Cnt2,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt2p, ";
+                    sqlH += "sum(isnull(v3.Cnt3,0))SumCnt3,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v3.Cnt3,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt3p, ";
+                    sqlH += "sum(isnull(v4.Cnt4,0))SumCnt4,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v4.Cnt4,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt4p, ";
+                    sqlH += "sum(isnull(v5.Cnt5,0))SumCnt5,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v5.Cnt5,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt5p, ";
+                    sqlH += "sum(isnull(v6.Cnt6,0))SumCnt6,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v6.Cnt6,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt6p, ";
+                    sqlH += "sum(isnull(v7.Cnt7,0))SumCnt7,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v7.Cnt7,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt7p, ";
+                    sqlH += "sum(isnull(v8.Cnt8,0))SumCnt8,case when sum(isnull(v1.Cnt1,0))=0 then format(1,'p') else format(cast(sum(isnull(v8.Cnt8,0)) as Float)/cast(sum(isnull(v1.Cnt1,0)) as Float),'p') end as SumCnt8p ";
                     sqlH += "from #v1 v1 ";
                     sqlH += "left join #v2 v2 on v1.id=v2.id ";
                     sqlH += "left join #v3 v3 on v1.id=v3.id ";
@@ -11767,6 +11768,8 @@ namespace SVMAdmin.Controllers
                 string VIP_TypeName = rq["VIP_TypeName"];
                 string VIP_MW = rq["VIP_MW"];
                 string QDay = rq["QDay"];
+                string QDayS = rq["QDayS"];
+                string QDayE = rq["QDayE"];
                 string LCDay = rq["LCDay"];
                 string SDate = rq["SDate"];
                 string chkDept = rq["chkDept"];
@@ -11812,6 +11815,11 @@ namespace SVMAdmin.Controllers
                 {
                     sqlcon1 += "and a.VIP_Qday between convert(char,dateadd(MONTH,-12,getdate()),111) and convert(char(10),getdate(),111) ";
                 }
+
+                if (QDayS != "") {
+                    sqlcon1 += "and a.VIP_Qday between '" + QDayS + "' and '" + QDayE + "' ";
+                }
+                
                 if (LCDay == "3M")
                 {
                     sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(MONTH,-3,getdate()),111) and convert(char(10),getdate(),111) ";
@@ -11946,77 +11954,89 @@ namespace SVMAdmin.Controllers
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
                         sql += "'" + VMEVNO + "',5,'','','','','入會期間','1年內' ";
                     }
+
+                    if (QDayS == "") {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',6,'','','','','入會區間','不限' ";
+                    }
+                    else {
+                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                        sql += "'" + VMEVNO + "',6,'','','','','入會區間','" + QDayS + "' + ' ~ ' + '" + QDayE + "' ";
+                    }
+
                     if (LCDay == "")
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',6,'','','','','最近來店日','不限' ";
+                        sql += "'" + VMEVNO + "',7,'','','','','最近來店日','不限' ";
                     }
                     else if (LCDay == "3M")
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',6,'','','','','最近來店日','3個月內' ";
+                        sql += "'" + VMEVNO + "',7,'','','','','最近來店日','3個月內' ";
                     }
                     else if (LCDay == "6M")
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',6,'','','','','最近來店日','6個月內' ";
+                        sql += "'" + VMEVNO + "',7,'','','','','最近來店日','6個月內' ";
                     }
                     else if (LCDay == "1Y")
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',6,'','','','','最近來店日','1年內' ";
+                        sql += "'" + VMEVNO + "',7,'','','','','最近來店日','1年內' ";
                     }
                     else if (LCDay == "2Y")
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',6,'','','','','最近來店日','2年內' ";
+                        sql += "'" + VMEVNO + "',7,'','','','','最近來店日','2年內' ";
                     }
                     if (SDate == "")
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',7,'','','','','消費月份','無' ";
+                        sql += "'" + VMEVNO + "',8,'','','','','消費月份','無' ";
                     }
                     else if (SDate == "2M")
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',7,'','','','','消費月份','2個月內' ";
+                        sql += "'" + VMEVNO + "',8,'','','','','消費月份','2個月內' ";
                     }
                     else if (SDate == "3M")
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',7,'','','','','消費月份','3個月內' ";
+                        sql += "'" + VMEVNO + "',8,'','','','','消費月份','3個月內' ";
                     }
                     else if (SDate == "6M")
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',7,'','','','','消費月份','6個月內' ";
+                        sql += "'" + VMEVNO + "',8,'','','','','消費月份','6個月內' ";
                     }
                     else if (SDate == "1Y")
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',7,'','','','','消費月份','1年內' ";
+                        sql += "'" + VMEVNO + "',8,'','','','','消費月份','1年內' ";
                     }
                     if (chkDept != "")
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',8,'','','','','消費部門','" + chkDeptName.Replace("'", "") + "' ";
+                        sql += "'" + VMEVNO + "',9,'','','','','消費部門','" + chkDeptName.Replace("'", "") + "' ";
                     }
                     if (chkBgno != "")
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',9,'','','','','消費大類','" + chkBgnoName.Replace("'", "") + "' ";
+                        sql += "'" + VMEVNO + "',10,'','','','','消費大類','" + chkBgnoName.Replace("'", "") + "' ";
                     }
                     PubUtility.ExecuteSql(sql, uu, "SYS");
 
@@ -13379,12 +13399,12 @@ namespace SVMAdmin.Controllers
                 sql += "case when isnull(sum(Recs),0)=0 then 0 else round(isnull(sum(Cash),0)/isnull(sum(Recs),0),0) end  CusCash1,";
                 sql += "isnull(sum(VIP_Cash),0) VCash,isnull(sum(VIP_Recs),0) VCnt,";
                 sql += "case when isnull(sum(VIP_Recs),0)=0 then 0 else round(isnull(sum(VIP_Cash),0)/isnull(sum(VIP_Recs),0),0) end VCusCash,";
-                sql += "case when isnull(sum(Cash),0)=0 then format(0,'p2') else format(cast(isnull(sum(VIP_Cash),0) as float)/cast(isnull(sum(Cash),0) as float),'p2') end VPer into #tmpSel ";
+                sql += "case when isnull(sum(Cash),0)=0 and isnull(sum(VIP_Cash),0)=0 then format(0,'p') when isnull(sum(Cash),0)=0 then format(1,'p') else format(cast(isnull(sum(VIP_Cash),0) as float)/cast(isnull(sum(Cash),0) as float),'p') end VPer into #tmpSel ";
                 sql += "from (" + sqlBaseData + ") a "+sqlGroup+";";
                 sql += "insert into #tmpSel select 'SumAll',isnull(sum([Cash1]),0), isnull(sum([Cnt1]),0),";
                 sql += "case when isnull(sum([Cnt1]),0)= 0 then 0 else round(isnull(sum(Cash1), 0) / isnull(sum([Cnt1]), 0),0) end,";
                 sql += "isnull(sum([VCash]),0), isnull(sum([VCnt]),0),case when isnull(sum([VCnt]),0)= 0 then 0 else round(isnull(sum(VCash), 0) / isnull(sum([VCnt]), 0),0) end,";
-                sql += "case when isnull(sum(Cash1),0)= 0 then format(0,'p2') else format(cast(isnull(sum(VCash),0) as float)/cast(isnull(sum(Cash1),0) as float),'p2') end from #tmpSel;";
+                sql += "case when isnull(sum(Cash1),0)= 0 then format(1,'p') else format(cast(isnull(sum(VCash),0) as float)/cast(isnull(sum(Cash1),0) as float),'p') end from #tmpSel;";
                 sql += "select * from #tmpSel order by [ID];";
                 DataTable dtDelt = PubUtility.SqlQry(sql, uu, "SYS");
                 dtDelt.TableName = "dtDelt";

@@ -172,12 +172,8 @@
                                     color: red;
                                 }
 
-                                #td0 {
-                                    top: 65px;
-                                    z-index: 2;
-                                }
-
-                                @media (max-width:650px) {
+                                /*手機畫面*/
+                                @media (max-width:767px) {
                                     #tdflag, #thead1, #thead2, #thead3, #thead4 {
                                         top: 0;
                                         z-index: 2;
@@ -192,18 +188,14 @@
                                         z-index: 2;
                                         color: red;
                                     }
-                                    #td0 {
-                                        top: 130px;
-                                        z-index: 2;
-                                    }
                                 }
                             </style>
 
-                            <div class="form-group row" style="margin-left: 5px; width: 100%">
+                            <div class="form-group row" style="margin-left: 5px; width: 100%;margin-bottom:0px">
                                 <label id="lblProgramName" class="DyForm3-ProgramName">新入會VIP交易分析</label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 20px; width: 100%">
+                            <div class="form-group row" style="margin-left: 20px; width: 100%; margin-bottom: 5px">
                                 <button class="DyForm3-BtnClear" id="btClear" type="button" style="margin-left: 0px">
                                     清除
                                     <i class="fa fa-close"></i>
@@ -215,13 +207,13 @@
                                 <label class="DyForm3-Horizontal">完整顯示請打橫看</label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
                                 <mark class="DyForm3-DyNotEmptyMark" style="margin-left:5px" hidden>*</mark>
                                 <label class="DyForm3-Label">年&ensp;&ensp;&ensp;&ensp;月</label>
                                 <input class="DyForm3-TextBox" style="margin-left:15px" id="txtYM" type="month" />
                             </div>
 
-                            <div class="form-group row" style="margin-left: 25px; width: 100%">
+                            <div class="form-group row" style="margin-left: 25px; width: 100%; margin-bottom: 0px">
                                 <mark class="DyForm3-DyNotEmptyMark" style="margin-left:5px" hidden>*</mark>
                                 <input id="rdoShop" type="radio" name="Q" style="vertical-align: middle; margin-top: 6px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
                                 <label class="DyForm3-LabelBlack" for="rdoShop" style="margin-top: 2px">&ensp;店別</label>
@@ -242,7 +234,7 @@
                                             <thead>
                                                 <!--第一層-->
                                                 <tr>
-                                                    <th id="tdflag" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
+                                                    <th id="tdflag" class="text-center" colspan="1" rowspan="3" style="vertical-align: middle;">店別</th>
                                                     <td id="thead1" class="text-center" colspan="1">新會員</td>
                                                     <td id="thead2" class="text-center" colspan="3">新會員首日業績</td>
                                                     <td id="thead3" class="text-center" colspan="4">會員當月業績</td>
@@ -265,7 +257,7 @@
                                                 </tr>
                                                 <!--第三層-->
                                                 <tr>
-                                                    <td id="td0" class="text-center" colspan="1">總數</td>
+                                                    <!--<td id="td0" class="text-center" colspan="1">總數</td>-->
                                                     <td id="td1" colspan="1" style="text-align: right "></td>
                                                     <td id="td2" colspan="1" style="text-align: right "></td>
                                                     <td id="td3" colspan="1" style="text-align: right "></td>
@@ -294,8 +286,9 @@
 
                     <div class="modal fade" id="modal_Shop1" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 900px; width: 1400px;left:-200px; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
+                            <div class="modal-content" id="modalcon_Shop1" style="background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
                                 <style>
+
                                     #tbShop1 thead tr th {
                                         font-size: 16px;
                                         padding: 3px;
@@ -345,10 +338,52 @@
                                         z-index: 2;
                                         color: red;
                                     }
+                                    
+                                    #modalcon_Shop1 {
+                                        height: 900px;
+                                        width: 1400px;
+                                        left: -200px;
+                                    }
+                                    #divShop1 {
+                                        height: 550px;
+                                    }
+                                    /*手機畫面*/
+                                    @media (max-width:767px) {
+                                        /*螢幕縱向*/
+                                        @media screen and (orientation: portrait) {
+                                            #modalcon_Shop1 {
+                                                height: 650px;
+                                                width: 100%;
+                                                left: 0px;
+                                            }
 
-                                    #td0_Shop1 {
-                                        top: 65px;
-                                        z-index: 2;
+                                            #divShop1 {
+                                                height: 450px;
+                                            }
+
+                                            #th1_Shop1, #th2_Shop1, #th3_Shop1, #th4_Shop1, #th5_Shop1, #th6_Shop1, #th7_Shop1, #th8_Shop1, #th9_Shop1, #th10_Shop1, #th11_Shop1, #th12_Shop1 {
+                                                top: 77px;
+                                                z-index: 2;
+                                            }
+
+                                            #td1_Shop1, #td2_Shop1, #td3_Shop1, #td4_Shop1, #td5_Shop1, #td6_Shop1, #td7_Shop1, #td8_Shop1, #td9_Shop1, #td10_Shop1, #td11_Shop1, #td12_Shop1 {
+                                                top: 177px;
+                                                z-index: 2;
+                                                color: red;
+                                            }
+                                        }
+                                        /*螢幕橫向*/
+                                        @media screen and (orientation: landscape) {
+                                            #modalcon_Shop1 {
+                                                height: 280px;
+                                                width: 100%;
+                                                left: 0px;
+                                            }
+
+                                            #divShop1 {
+                                                height: 110px;
+                                            }
+                                        }
                                     }
                                 </style>
 
@@ -358,33 +393,33 @@
 
                                 <div class="modal-body modal-tab-container" style="padding:8px">
 
-                                    <div class="form-group row" style="margin-left: 5px; width: 100%">
+                                    <div class="form-group row" style="margin-left: 5px; width: 100%;margin-bottom:0px">
                                         <label class="DyForm3-ProgramName">新入會VIP交易分析</label>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%">
-                                        <button id="btRe_Shop1" type="button" class="DyForm3-BtnRe" style="position: absolute; right: 60px">回上頁</button>
+                                    <div class="form-group row" style="width: 100%; margin-left: 20px; margin-bottom: 0px">
+                                        <button id="btRe_Shop1" type="button" class="DyForm3-BtnRe">回上頁</button>
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 12px; width: 100%">
+                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
                                         <label class="DyForm3-Label">年&ensp;&ensp;&ensp;&ensp;月&ensp;&ensp;</label>
                                         <label id="lblYM_Shop1" class="DyForm3-LabelBlack" style="margin-top:3px"></label>
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 12px; width: 100%">
+                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
                                         <label class="DyForm3-Label">店&ensp;&ensp;&ensp;&ensp;別&ensp;&ensp;</label>
                                         <label id="lblShop1" class="DyForm3-LabelBlack" style="margin-top:3px"></label>
-                                        <label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>
+                                        <!--<label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>-->
                                     </div>
 
                                     <div class="card-block forminput">
                                         <div class="x_content">
-                                            <div style="overflow: auto; height: 650px;">
-                                                <table id="tbShop1" class="table table-bordered" style="width:100%">
+                                            <div id="divShop1" style="overflow: auto;">
+                                                <table id="tbShop1" class="table table-bordered DyForm3-Table">
                                                     <thead>
                                                         <!--第一層-->
                                                         <tr>
-                                                            <th id="thead1_Shop1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">日期</th>
+                                                            <th id="thead1_Shop1" class="text-center" colspan="1" rowspan="3" style="vertical-align: middle;">日期</th>
                                                             <td id="thead2_Shop1" class="text-center" colspan="1">新會員</td>
                                                             <td id="thead3_Shop1" class="text-center" colspan="3">新會員首日業績</td>
                                                             <td id="thead4_Shop1" class="text-center" colspan="4">會員業績</td>
@@ -407,7 +442,6 @@
                                                         </tr>
                                                         <!--第三層-->
                                                         <tr>
-                                                            <td id="td0_Shop1" class="text-center" colspan="1">總數</td>
                                                             <td id="td1_Shop1" colspan="1" style="text-align: right"></td>
                                                             <td id="td2_Shop1" colspan="1" style="text-align: right"></td>
                                                             <td id="td3_Shop1" colspan="1" style="text-align: right"></td>
@@ -438,7 +472,7 @@
 
                     <div class="modal fade" id="modal_Date1" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 900px; width: 1400px;left:-200px; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
+                            <div class="modal-content" id="modalcon_Date1" style="background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
                                 <style>
                                     #tbDate1 thead tr th {
                                         font-size: 16px;
@@ -489,10 +523,53 @@
                                         z-index: 2;
                                         color: red;
                                     }
+                                    
+                                    #modalcon_Date1 {
+                                        height: 900px;
+                                        width: 1400px;
+                                        left: -200px;
+                                    }
 
-                                    #td0_Date1 {
-                                        top: 65px;
-                                        z-index: 2;
+                                    #divDate1 {
+                                        height: 550px;
+                                    }
+                                    /*手機畫面*/
+                                    @media (max-width:767px) {
+                                        /*螢幕縱向*/
+                                        @media screen and (orientation: portrait) {
+                                            #modalcon_Date1 {
+                                                height: 650px;
+                                                width: 100%;
+                                                left: 0px;
+                                            }
+
+                                            #divDate1 {
+                                                height: 450px;
+                                            }
+
+                                            #th1_Date1, #th2_Date1, #th3_Date1, #th4_Date1, #th5_Date1, #th6_Date1, #th7_Date1, #th8_Date1, #th9_Date1, #th10_Date1, #th11_Date1, #th12_Date1 {
+                                                top: 77px;
+                                                z-index: 2;
+                                            }
+
+                                            #td1_Date1, #td2_Date1, #td3_Date1, #td4_Date1, #td5_Date1, #td6_Date1, #td7_Date1, #td8_Date1, #td9_Date1, #td10_Date1, #td11_Date1, #td12_Date1 {
+                                                top: 177px;
+                                                z-index: 2;
+                                                color: red;
+                                            }
+                                        }
+                                        /*螢幕橫向*/
+                                        @media screen and (orientation: landscape) {
+                                            #modalcon_Date1 {
+                                                height: 280px;
+                                                width: 100%;
+                                                left: 0px;
+                                            }
+
+                                            #divDate1 {
+                                                height: 110px;
+                                            }
+                                        }
                                     }
                                 </style>
 
@@ -502,33 +579,33 @@
 
                                 <div class="modal-body modal-tab-container" style="padding:8px">
 
-                                    <div class="form-group row" style="margin-left: 5px; width: 100%">
+                                    <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom: 0px">
                                         <label class="DyForm3-ProgramName">新入會VIP交易分析</label>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%">
-                                        <button id="btRe_Date1" type="button" class="DyForm3-BtnRe" style="position: absolute; right: 60px">回上頁</button>
+                                    <div class="form-group row" style="width: 100%;margin-left: 20px; margin-bottom: 0px">
+                                        <button id="btRe_Date1" type="button" class="DyForm3-BtnRe">回上頁</button>
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 12px; width: 100%">
+                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
                                         <label class="DyForm3-Label">年&ensp;&ensp;&ensp;&ensp;月&ensp;&ensp;</label>
                                         <label id="lblYM_Date1" class="DyForm3-LabelBlack" style="margin-top:3px"></label>
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 12px; width: 100%">
+                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
                                         <label class="DyForm3-Label">日&ensp;&ensp;&ensp;&ensp;期&ensp;&ensp;</label>
                                         <label id="lblDate1" class="DyForm3-LabelBlack" style="margin-top:3px"></label>
-                                        <label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>
+                                        <!--<label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>-->
                                     </div>
 
                                     <div class="card-block forminput">
                                         <div class="x_content">
-                                            <div style="overflow: auto; height: 650px;">
-                                                <table id="tbDate1" class="table table-bordered" style="width:100%">
+                                            <div id="divDate1" style="overflow: auto;">
+                                                <table id="tbDate1" class="table table-bordered DyForm3-Table">
                                                     <thead>
                                                         <!--第一層-->
                                                         <tr>
-                                                            <th id="thead1_Date1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
+                                                            <th id="thead1_Date1" class="text-center" colspan="1" rowspan="3" style="vertical-align: middle;">店別</th>
                                                             <td id="thead2_Date1" class="text-center" colspan="1">新會員</td>
                                                             <td id="thead3_Date1" class="text-center" colspan="3">新會員首日業績</td>
                                                             <td id="thead4_Date1" class="text-center" colspan="4">會員業績</td>
@@ -551,7 +628,6 @@
                                                         </tr>
                                                         <!--第三層-->
                                                         <tr>
-                                                            <td id="td0_Date1" class="text-center" colspan="1">總數</td>
                                                             <td id="td1_Date1" colspan="1" style="text-align: right "></td>
                                                             <td id="td2_Date1" colspan="1" style="text-align: right "></td>
                                                             <td id="td3_Date1" colspan="1" style="text-align: right "></td>
