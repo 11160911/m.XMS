@@ -663,6 +663,18 @@
                     PageMSSA106($(".workarea"));
                 }
             }
+            else if (pg == "MSSD103") {
+                if (window.PageMSSD103 == undefined) {
+                    $.getScript('SystemSetup/MSSD103.js',
+                        function () {
+                            PageMSSD103($(".workarea"));
+                        }
+                    );
+                }
+                else {
+                    PageMSSD103($(".workarea"));
+                }
+            }
             else if (pg == "SysChangePWD") {
                 $('#OLD_PWD').val("");
                 $('#NEW_PWD').val("");
