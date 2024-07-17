@@ -1593,7 +1593,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
         $('#txtQDayS_SendSet').val('');
         $('#txtQDayE_SendSet').val('');
         $('#rdoLCDayAll_SendSet').prop('checked', true);
-        $('#rdoSDate2M_SendSet').prop('checked', true);
+        $('#rdoSDateAll_SendSet').prop('checked', true);
         $('#lblDeptCnt_SendSet').html('');
         $('#lblDeptName_SendSet').html('');
         chkDept = "";
