@@ -13405,6 +13405,183 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+
+        [Route("SystemSetup/LookUp")]
+        public ActionResult SystemSetup_LookUp()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "LookUpOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string tbName= rq["GQ_Table"];
+                string ColName = rq["GQ_Column"];
+                string OrderCol = rq["GQ_OrderColumn"];
+                string StrCond = rq["GQ_Condition"];
+                string QueryValue = rq["QueryValue"];
+
+                string sql = "select ";
+                string[] ls_TN = tbName.Split(',');
+                string ls_Tables = "";
+                int li_a = 97;
+                for(int i = 0; i < ls_TN.Length; i++)
+                {
+                    ls_Tables += ls_TN[i] + " " + Convert.ToChar(li_a).ToString() + " ";
+                    if (ls_TN[i].ToLower().IndexOf("nolock") <= -1)
+                    {
+                        ls_Tables += "(nolock)";
+                    }
+                    ls_Tables += ",";
+                    li_a += 1;
+                }
+                ls_Tables = ls_Tables.Substring(0, ls_Tables.Length - 1);
+                sql += ColName + " from " + ls_Tables + " where a.CompanyCode='" + uu.CompanyId + "' ";
+                if (StrCond!=null && StrCond != "")
+                {
+                    if (StrCond.Trim().Substring(0, 3).ToLower() == "and")
+                    {
+                        sql += StrCond;
+                    }
+                    else
+                    {
+                        sql += " and " + StrCond;
+                    }
+                }
+                if (QueryValue != null && QueryValue != "")
+                {
+                    string[] likeCol;
+                    sql += " and (";
+                    likeCol = ColName.Split(',');
+                    for(int i = 0; i < likeCol.Length; i++)
+                    {
+                        sql += " (" + likeCol[i] + " like N'%" + QueryValue + "%') or";
+                    }
+
+                    sql = sql.Substring(0, sql.Length - 3);
+                    sql += ") ";
+                }
+                if(OrderCol != null && OrderCol != "")
+                {
+                    sql += " order by " + OrderCol;
+                }
+             
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSSD103Query")]
+        public ActionResult SystemSetup_MSSD103Query()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSD103QueryOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ActivityCode = rq["ActivityCode"];
+                string PSName = rq["PSName"];
+                string EDDate = rq["EDDate"];
+
+                string sql = "";
+                sql = "Select a.PS_NO,a.ActivityCode,b.PS_Name,isnull(PrintStartDate,'')+'~'+a.EndDate PDate,sum(isnull(a.issueQty,0)) Cnt1, ";
+                sql += "a.StartDate + '~' + a.EndDate EDDate,sum(isnull(a.ReclaimQty,0)) Cnt2, ";
+                sql += "case when sum(isnull(a.issueQty,0))=0 then FORMAT(0,'P1') else format(cast(sum(isnull(a.ReclaimQty,0)) as Float)/cast(sum(isnull(a.issueQty,0)) as Float),'P1') end as RePercent, ";
+                sql += "sum(isnull(a.ShareAmt,0)) ActualDiscount,sum(isnull(a.ReclaimCash,0)) Cash,sum(isnull(a.ReclaimTrans,0)) Cnt3, ";
+                sql += "case when sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(sum(isnull(a.ReclaimCash,0))/sum(isnull(a.ReclaimTrans,0)),0) end as SalesPrice ";
+                sql += "From MsData2Web a (nolock) ";
+                sql += "inner join PromoteSCouponHWeb b (nolock) on a.PS_NO=b.PS_NO and b.Companycode=a.Companycode ";
+                //活動代號
+                if (ActivityCode.SqlQuote() != "")
+                {
+                    sql += "and b.ActivityCode like '%" + ActivityCode.SqlQuote() + "%' ";
+                }
+                //活動名稱
+                if (PSName.SqlQuote() != "")
+                {
+                    sql += "and b.PS_Name like '%" + PSName.SqlQuote() + "%' ";
+                }
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                sql += "and a.PS_NO in (Select distinct PS_No from PrintCouponRecWeb (nolock) Where Companycode='" + uu.CompanyId + "') ";
+                //活動日期
+                if (EDDate.SqlQuote() != "")
+                {
+                    sql += "and '" + EDDate.SqlQuote() + "' between a.StartDate and a.EndDate ";
+                }
+                sql += "group by a.PS_NO,a.ActivityCode,b.PS_Name,PrintStartDate,a.StartDate,a.EndDate ";
+                sql += "Order by a.StartDate desc";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSSD103QueryD")]
+        public ActionResult SystemSetup_MSSD103QueryD()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSD103QueryDOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ActivityCode = rq["ActivityCode"];
+                string PSName = rq["PSName"];
+                string EDDate = rq["EDDate"];
+
+                string sql = "";
+                sql = "Select a.PS_NO,a.ActivityCode,b.PS_Name,isnull(PrintStartDate,'')+'~'+a.EndDate PDate,sum(isnull(a.issueQty,0)) Cnt1, ";
+                sql += "a.StartDate + '~' + a.EndDate EDDate,sum(isnull(a.ReclaimQty,0)) Cnt2, ";
+                sql += "case when sum(isnull(a.issueQty,0))=0 then FORMAT(0,'P1') else format(cast(sum(isnull(a.ReclaimQty,0)) as Float)/cast(sum(isnull(a.issueQty,0)) as Float),'P1') end as RePercent, ";
+                sql += "sum(isnull(a.ShareAmt,0)) ActualDiscount,sum(isnull(a.ReclaimCash,0)) Cash,sum(isnull(a.ReclaimTrans,0)) Cnt3, ";
+                sql += "case when sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(sum(isnull(a.ReclaimCash,0))/sum(isnull(a.ReclaimTrans,0)),0) end as SalesPrice ";
+                sql += "From MsData2Web a (nolock) ";
+                sql += "inner join PromoteSCouponHWeb b (nolock) on a.PS_NO=b.PS_NO and b.Companycode=a.Companycode ";
+                //活動代號
+                if (ActivityCode.SqlQuote() != "")
+                {
+                    sql += "and b.ActivityCode like '%" + ActivityCode.SqlQuote() + "%' ";
+                }
+                //活動名稱
+                if (PSName.SqlQuote() != "")
+                {
+                    sql += "and b.PS_Name like '%" + PSName.SqlQuote() + "%' ";
+                }
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                sql += "and a.PS_NO in (Select distinct PS_No from PrintCouponRecWeb (nolock) Where Companycode='" + uu.CompanyId + "') ";
+                //活動日期
+                if (EDDate.SqlQuote() != "")
+                {
+                    sql += "and '" + EDDate.SqlQuote() + "' between a.StartDate and a.EndDate ";
+                }
+                sql += "group by a.PS_NO,a.ActivityCode,b.PS_Name,PrintStartDate,a.StartDate,a.EndDate ";
+                sql += "Order by a.StartDate desc";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
         [Route("FileUpload_EDM")]
         public ActionResult FileUpload_EDM()
         {
