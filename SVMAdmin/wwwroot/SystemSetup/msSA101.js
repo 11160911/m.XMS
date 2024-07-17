@@ -863,7 +863,7 @@
             $('#lblShopNoCnt').html('');
             $('#lblShopNoName').html('');
             chkShopNo = "";
-            $('#rdoA').prop('checked', 'true');
+            $('#rdoS').prop('checked', 'true');
             ClearQuery();
         }
     };

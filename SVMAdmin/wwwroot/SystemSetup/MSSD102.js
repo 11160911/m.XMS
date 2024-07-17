@@ -26,7 +26,7 @@
                     { type: "Text", name: "EDDate"},
                     { type: "TextAmt", name: "Cnt1"},
                     { type: "TextAmt", name: "Cnt2"},
-                    { type: "TextAmt", name: "RePercent"},
+                    { type: "TextPercent", name: "RePercent"},
                     { type: "TextAmt", name: "ActualDiscount"},
                     { type: "TextAmt", name: "Cash"},
                     { type: "TextAmt", name: "Cnt3" },
@@ -47,7 +47,7 @@
                     { type: "Text", name: "ID", style: "" },
                     { type: "TextAmt", name: "Cnt1" },
                     { type: "TextAmt", name: "Cnt2" },
-                    { type: "TextAmt", name: "RePercent" },
+                    { type: "TextPercent", name: "RePercent" },
                     { type: "TextAmt", name: "ActualDiscount" },
                     { type: "TextAmt", name: "SalesCash1" },
                     { type: "TextAmt", name: "SalesCnt1" },
@@ -102,6 +102,7 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
+                afterBind: gridclick3,
                 sortable: "Y"
             }
         );
@@ -133,14 +134,723 @@
 
     let InitModifyDeleteButton = function () {
         $('#tbQuery tbody tr td').click(function () { Step1_click(this) });
+
+        $('#tbQuery thead tr th').mouseenter(function () {
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "ActivityCode") {
+                var rgb = $('#tbQuery thead tr th#thead2').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead2').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "PS_Name") {
+                var rgb = $('#tbQuery thead tr th#thead3').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead3').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "EDDate") {
+                var rgb = $('#tbQuery thead tr th#thead4').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead4').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "Cnt1") {
+                var rgb = $('#tbQuery thead tr th#thead5').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead5').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "Cnt2") {
+                var rgb = $('#tbQuery thead tr th#thead6').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead6').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "RePercent") {
+                var rgb = $('#tbQuery thead tr th#thead7').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead7').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "ActualDiscount") {
+                var rgb = $('#tbQuery thead tr th#thead8').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead8').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "Cash") {
+                var rgb = $('#tbQuery thead tr th#thead9').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead9').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "Cnt3") {
+                var rgb = $('#tbQuery thead tr th#thead10').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead10').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesPrice") {
+                var rgb = $('#tbQuery thead tr th#thead11').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead11').css('background-color', '#ffff00')
+                }
+            }
+        });
+        $('#tbQuery thead tr th').mouseleave(function () {
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "ActivityCode") {
+                var rgb = $('#tbQuery thead tr th#thead2').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead2').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "PS_Name") {
+                var rgb = $('#tbQuery thead tr th#thead3').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead3').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "EDDate") {
+                var rgb = $('#tbQuery thead tr th#thead4').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead4').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "Cnt1") {
+                var rgb = $('#tbQuery thead tr th#thead5').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead5').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "Cnt2") {
+                var rgb = $('#tbQuery thead tr th#thead6').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead6').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "RePercent") {
+                var rgb = $('#tbQuery thead tr th#thead7').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead7').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "ActualDiscount") {
+                var rgb = $('#tbQuery thead tr th#thead8').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead8').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "Cash") {
+                var rgb = $('#tbQuery thead tr th#thead9').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead9').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "Cnt3") {
+                var rgb = $('#tbQuery thead tr th#thead10').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead10').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesPrice") {
+                var rgb = $('#tbQuery thead tr th#thead11').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead11').css('background-color', '#ffb620')
+                }
+            }
+        });
+        $('#tbQuery thead tr th').click(function () {
+            $('#tbQuery thead tr th').css('background-color', '#ffb620')
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "ActivityCode") {
+                $('#tbQuery thead tr th#thead2').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "PS_Name") {
+                $('#tbQuery thead tr th#thead3').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "EDDate") {
+                $('#tbQuery thead tr th#thead4').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "Cnt1") {
+                $('#tbQuery thead tr th#thead5').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "Cnt2") {
+                $('#tbQuery thead tr th#thead6').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "RePercent") {
+                $('#tbQuery thead tr th#thead7').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "ActualDiscount") {
+                $('#tbQuery thead tr th#thead8').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "Cash") {
+                $('#tbQuery thead tr th#thead9').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "Cnt3") {
+                $('#tbQuery thead tr th#thead10').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesPrice") {
+                $('#tbQuery thead tr th#thead11').css('background-color', '#ffeaa7')
+            }
+        });
     }
 
     let gridclick1 = function () {
         $('#tbShopNo_PSNO tbody tr td').click(function () { Step2_click(this) });
+
+        $('#tbShopNo_PSNO thead tr th').mouseenter(function () {
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "ID") {
+                var rgb = $('#tbShopNo_PSNO thead tr th#theadShopNo1').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO thead tr th#theadShopNo1').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "Cnt1") {
+                var rgb = $('#tbShopNo_PSNO thead tr th#thShopNo1').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO thead tr th#thShopNo1').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "Cnt2") {
+                var rgb = $('#tbShopNo_PSNO thead tr th#thShopNo2').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO thead tr th#thShopNo2').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "RePercent") {
+                var rgb = $('#tbShopNo_PSNO thead tr th#thShopNo3').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO thead tr th#thShopNo3').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "ActualDiscount") {
+                var rgb = $('#tbShopNo_PSNO thead tr th#thShopNo4').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO thead tr th#thShopNo4').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesCash1") {
+                var rgb = $('#tbShopNo_PSNO thead tr th#thShopNo5').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO thead tr th#thShopNo5').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesCnt1") {
+                var rgb = $('#tbShopNo_PSNO thead tr th#thShopNo6').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO thead tr th#thShopNo6').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesPrice1") {
+                var rgb = $('#tbShopNo_PSNO thead tr th#thShopNo7').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO thead tr th#thShopNo7').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesCash2") {
+                var rgb = $('#tbShopNo_PSNO thead tr th#thShopNo8').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO thead tr th#thShopNo8').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesCnt2") {
+                var rgb = $('#tbShopNo_PSNO thead tr th#thShopNo9').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO thead tr th#thShopNo9').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesPrice2") {
+                var rgb = $('#tbShopNo_PSNO thead tr th#thShopNo10').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO thead tr th#thShopNo10').css('background-color', '#ffff00')
+                }
+            }
+        });
+        $('#tbShopNo_PSNO thead tr th').mouseleave(function () {
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "ID") {
+                var rgb = $('#tbShopNo_PSNO thead tr th#theadShopNo1').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO thead tr th#theadShopNo1').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "Cnt1") {
+                var rgb = $('#tbShopNo_PSNO thead tr th#thShopNo1').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO thead tr th#thShopNo1').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "Cnt2") {
+                var rgb = $('#tbShopNo_PSNO thead tr th#thShopNo2').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO thead tr th#thShopNo2').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "RePercent") {
+                var rgb = $('#tbShopNo_PSNO thead tr th#thShopNo3').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO thead tr th#thShopNo3').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "ActualDiscount") {
+                var rgb = $('#tbShopNo_PSNO thead tr th#thShopNo4').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO thead tr th#thShopNo4').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesCash1") {
+                var rgb = $('#tbShopNo_PSNO thead tr th#thShopNo5').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO thead tr th#thShopNo5').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesCnt1") {
+                var rgb = $('#tbShopNo_PSNO thead tr th#thShopNo6').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO thead tr th#thShopNo6').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesPrice1") {
+                var rgb = $('#tbShopNo_PSNO thead tr th#thShopNo7').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO thead tr th#thShopNo7').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesCash2") {
+                var rgb = $('#tbShopNo_PSNO thead tr th#thShopNo8').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO thead tr th#thShopNo8').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesCnt2") {
+                var rgb = $('#tbShopNo_PSNO thead tr th#thShopNo9').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO thead tr th#thShopNo9').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesPrice2") {
+                var rgb = $('#tbShopNo_PSNO thead tr th#thead10').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO thead tr th#thead10').css('background-color', '#ffb620')
+                }
+            }
+        });
+        $('#tbShopNo_PSNO thead tr th').click(function () {
+            $('#tbShopNo_PSNO thead tr th').css('background-color', '#ffb620')
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "ID") {
+                $('#tbShopNo_PSNO thead tr th#theadShopNo1').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "Cnt1") {
+                $('#tbShopNo_PSNO thead tr th#thShopNo1').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "Cnt2") {
+                $('#tbShopNo_PSNO thead tr th#thShopNo2').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "RePercent") {
+                $('#tbShopNo_PSNO thead tr th#thShopNo3').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "ActualDiscount") {
+                $('#tbShopNo_PSNO thead tr th#thShopNo4').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesCash1") {
+                $('#tbShopNo_PSNO thead tr th#thShopNo5').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesCnt1") {
+                $('#tbShopNo_PSNO thead tr th#thShopNo6').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesPrice1") {
+                $('#tbShopNo_PSNO thead tr th#thShopNo7').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesCash2") {
+                $('#tbShopNo_PSNO thead tr th#thShopNo8').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesCnt2") {
+                $('#tbShopNo_PSNO thead tr th#thShopNo9').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesPrice2") {
+                $('#tbShopNo_PSNO thead tr th#thShopNo10').css('background-color', '#ffeaa7')
+            }
+        });
     }
 
     let gridclick2 = function () {
         $('#tbDate_PSNO tbody tr td').click(function () { Step2_click(this) });
+
+        $('#tbDate_PSNO thead tr th').mouseenter(function () {
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "ID") {
+                var rgb = $('#tbDate_PSNO thead tr th#theadDate1').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbDate_PSNO thead tr th#theadDate1').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "Cnt1") {
+                var rgb = $('#tbDate_PSNO thead tr th#thDate1').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbDate_PSNO thead tr th#thDate1').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "ActualDiscount") {
+                var rgb = $('#tbDate_PSNO thead tr th#thDate2').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbDate_PSNO thead tr th#thDate2').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesCash1") {
+                var rgb = $('#tbDate_PSNO thead tr th#thDate3').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbDate_PSNO thead tr th#thDate3').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesCnt1") {
+                var rgb = $('#tbDate_PSNO thead tr th#thDate4').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbDate_PSNO thead tr th#thDate4').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesPrice1") {
+                var rgb = $('#tbDate_PSNO thead tr th#thDate5').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbDate_PSNO thead tr th#thDate5').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesCash2") {
+                var rgb = $('#tbDate_PSNO thead tr th#thDate6').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbDate_PSNO thead tr th#thDate6').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesCnt2") {
+                var rgb = $('#tbDate_PSNO thead tr th#thDate7').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbDate_PSNO thead tr th#thDate7').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "SalesPrice2") {
+                var rgb = $('#tbDate_PSNO thead tr th#thDate8').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbDate_PSNO thead tr th#thDate8').css('background-color', '#ffff00')
+                }
+            }
+        });
+        $('#tbDate_PSNO thead tr th').mouseleave(function () {
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "ID") {
+                var rgb = $('#tbDate_PSNO thead tr th#theadDate1').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbDate_PSNO thead tr th#theadDate1').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "Cnt1") {
+                var rgb = $('#tbDate_PSNO thead tr th#thDate1').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbDate_PSNO thead tr th#thDate1').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "ActualDiscount") {
+                var rgb = $('#tbDate_PSNO thead tr th#thDate2').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbDate_PSNO thead tr th#thDate2').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesCash1") {
+                var rgb = $('#tbDate_PSNO thead tr th#thDate3').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbDate_PSNO thead tr th#thDate3').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesCnt1") {
+                var rgb = $('#tbDate_PSNO thead tr th#thDate4').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbDate_PSNO thead tr th#thDate4').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesPrice1") {
+                var rgb = $('#tbDate_PSNO thead tr th#thDate5').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbDate_PSNO thead tr th#thDate5').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesCash2") {
+                var rgb = $('#tbDate_PSNO thead tr th#thDate6').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbDate_PSNO thead tr th#thDate6').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesCnt2") {
+                var rgb = $('#tbDate_PSNO thead tr th#thDate7').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbDate_PSNO thead tr th#thDate7').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "SalesPrice2") {
+                var rgb = $('#tbDate_PSNO thead tr th#thDate8').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbDate_PSNO thead tr th#thDate8').css('background-color', '#ffb620')
+                }
+            }
+        });
+        $('#tbDate_PSNO thead tr th').click(function () {
+            $('#tbDate_PSNO thead tr th').css('background-color', '#ffb620')
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "ID") {
+                $('#tbDate_PSNO thead tr th#theadDate1').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "Cnt1") {
+                $('#tbDate_PSNO thead tr th#thDate1').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "ActualDiscount") {
+                $('#tbDate_PSNO thead tr th#thDate2').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesCash1") {
+                $('#tbDate_PSNO thead tr th#thDate3').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesCnt1") {
+                $('#tbDate_PSNO thead tr th#thDate4').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesPrice1") {
+                $('#tbDate_PSNO thead tr th#thDate5').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesCash2") {
+                $('#tbDate_PSNO thead tr th#thDate6').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesCnt2") {
+                $('#tbDate_PSNO thead tr th#thDate7').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "SalesPrice2") {
+                $('#tbDate_PSNO thead tr th#thDate8').css('background-color', '#ffeaa7')
+            }
+        });
+    }
+
+    let gridclick3 = function () {
+        $('#tbShopNo_PSNO_ShopNoDate thead tr th').mouseenter(function () {
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "ID") {
+                var rgb = $('#tbShopNo_PSNO_ShopNoDate thead tr th#thname_PSNO_ShopNoDate').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO_ShopNoDate thead tr th#thname_PSNO_ShopNoDate').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "ReclaimQty") {
+                var rgb = $('#tbShopNo_PSNO_ShopNoDate thead tr th#th1_PSNO_ShopNoDate').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO_ShopNoDate thead tr th#th1_PSNO_ShopNoDate').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "ShareAmt") {
+                var rgb = $('#tbShopNo_PSNO_ShopNoDate thead tr th#th2_PSNO_ShopNoDate').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO_ShopNoDate thead tr th#th2_PSNO_ShopNoDate').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "ReclaimCash") {
+                var rgb = $('#tbShopNo_PSNO_ShopNoDate thead tr th#th3_PSNO_ShopNoDate').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO_ShopNoDate thead tr th#th3_PSNO_ShopNoDate').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "ReclaimTrans") {
+                var rgb = $('#tbShopNo_PSNO_ShopNoDate thead tr th#th4_PSNO_ShopNoDate').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO_ShopNoDate thead tr th#th4_PSNO_ShopNoDate').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "ReclaimPrice") {
+                var rgb = $('#tbShopNo_PSNO_ShopNoDate thead tr th#th5_PSNO_ShopNoDate').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO_ShopNoDate thead tr th#th5_PSNO_ShopNoDate').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "TotalCash") {
+                var rgb = $('#tbShopNo_PSNO_ShopNoDate thead tr th#th6_PSNO_ShopNoDate').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO_ShopNoDate thead tr th#th6_PSNO_ShopNoDate').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "TotalTrans") {
+                var rgb = $('#tbShopNo_PSNO_ShopNoDate thead tr th#th7_PSNO_ShopNoDate').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO_ShopNoDate thead tr th#th7_PSNO_ShopNoDate').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "TotalPrice") {
+                var rgb = $('#tbShopNo_PSNO_ShopNoDate thead tr th#th8_PSNO_ShopNoDate').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO_ShopNoDate thead tr th#th8_PSNO_ShopNoDate').css('background-color', '#ffff00')
+                }
+            }
+        });
+        $('#tbShopNo_PSNO_ShopNoDate thead tr th').mouseleave(function () {
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "ID") {
+                var rgb = $('#tbShopNo_PSNO_ShopNoDate thead tr th#thname_PSNO_ShopNoDate').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO_ShopNoDate thead tr th#thname_PSNO_ShopNoDate').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "ReclaimQty") {
+                var rgb = $('#tbShopNo_PSNO_ShopNoDate thead tr th#th1_PSNO_ShopNoDate').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO_ShopNoDate thead tr th#th1_PSNO_ShopNoDate').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "ShareAmt") {
+                var rgb = $('#tbShopNo_PSNO_ShopNoDate thead tr th#th2_PSNO_ShopNoDate').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO_ShopNoDate thead tr th#th2_PSNO_ShopNoDate').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "ReclaimCash") {
+                var rgb = $('#tbShopNo_PSNO_ShopNoDate thead tr th#th3_PSNO_ShopNoDate').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO_ShopNoDate thead tr th#th3_PSNO_ShopNoDate').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "ReclaimTrans") {
+                var rgb = $('#tbShopNo_PSNO_ShopNoDate thead tr th#th4_PSNO_ShopNoDate').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO_ShopNoDate thead tr th#th4_PSNO_ShopNoDate').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "ReclaimPrice") {
+                var rgb = $('#tbShopNo_PSNO_ShopNoDate thead tr th#th5_PSNO_ShopNoDate').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO_ShopNoDate thead tr th#th5_PSNO_ShopNoDate').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "TotalCash") {
+                var rgb = $('#tbShopNo_PSNO_ShopNoDate thead tr th#th6_PSNO_ShopNoDate').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO_ShopNoDate thead tr th#th6_PSNO_ShopNoDate').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "TotalTrans") {
+                var rgb = $('#tbShopNo_PSNO_ShopNoDate thead tr th#th7_PSNO_ShopNoDate').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO_ShopNoDate thead tr th#th7_PSNO_ShopNoDate').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "TotalPrice") {
+                var rgb = $('#tbShopNo_PSNO_ShopNoDate thead tr th#th8_PSNO_ShopNoDate').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbShopNo_PSNO_ShopNoDate thead tr th#th8_PSNO_ShopNoDate').css('background-color', '#ffb620')
+                }
+            }
+        });
+        $('#tbShopNo_PSNO_ShopNoDate thead tr th').click(function () {
+            $('#tbShopNo_PSNO_ShopNoDate thead tr th').css('background-color', '#ffb620')
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "ID") {
+                $('#tbShopNo_PSNO_ShopNoDate thead tr th#thname_PSNO_ShopNoDate').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "ReclaimQty") {
+                $('#tbShopNo_PSNO_ShopNoDate thead tr th#th1_PSNO_ShopNoDate').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "ShareAmt") {
+                $('#tbShopNo_PSNO_ShopNoDate thead tr th#th2_PSNO_ShopNoDate').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "ReclaimCash") {
+                $('#tbShopNo_PSNO_ShopNoDate thead tr th#th3_PSNO_ShopNoDate').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "ReclaimTrans") {
+                $('#tbShopNo_PSNO_ShopNoDate thead tr th#th4_PSNO_ShopNoDate').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "ReclaimPrice") {
+                $('#tbShopNo_PSNO_ShopNoDate thead tr th#th5_PSNO_ShopNoDate').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "TotalCash") {
+                $('#tbShopNo_PSNO_ShopNoDate thead tr th#th6_PSNO_ShopNoDate').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "TotalTrans") {
+                $('#tbShopNo_PSNO_ShopNoDate thead tr th#th7_PSNO_ShopNoDate').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "TotalPrice") {
+                $('#tbShopNo_PSNO_ShopNoDate thead tr th#th8_PSNO_ShopNoDate').css('background-color', '#ffeaa7')
+            }
+        });
     }
 
     let Step1_click = function (bt) {
@@ -161,6 +871,8 @@
     };
 
     let QueryPSNO = function (PS_NO) {
+        $('#tbShopNo_PSNO thead tr th').css('background-color', '#ffb620')
+        $('#tbDate_PSNO thead tr th').css('background-color', '#ffb620')
         ShowLoading();
         var Flag = "";
 
@@ -290,7 +1002,8 @@
         }
     };
 
-    let QueryPSNO_ShopNoDate = function (PS_NO,ID) {
+    let QueryPSNO_ShopNoDate = function (PS_NO, ID) {
+        $('#tbShopNo_PSNO_ShopNoDate thead tr th').css('background-color', '#ffb620')
         ShowLoading();
         var Flag = "";
 
@@ -1083,6 +1796,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
     //查詢
     let btQuery_click = function (bt) {
         //Timerset();
+        $('#tbQuery thead tr th').css('background-color', '#ffb620')
         $('#btQuery').prop('disabled', true)
         ShowLoading();
         var pData = {

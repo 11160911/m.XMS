@@ -143,6 +143,22 @@
                                     padding: 3px;
                                     font-weight: bold;
                                 }
+
+                                th:first-child {
+                                    position: sticky;
+                                    left: 0; /*首行永遠固定於左 */
+                                }
+
+                                .table thead th {
+                                    position: sticky;
+                                    border-top: 0;
+                                    border-bottom: 0;
+                                    /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
+                                    box-shadow: 0 0px 2px 0px inset #ddd;
+                                    top: 0;
+                                    z-index: 2;
+                                    height: 35px;
+                                }
                             </style>
 
                             <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom: 0px">
@@ -478,15 +494,15 @@
                                     </div>
 
                                     <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 0px ">
-                                        <label class="DyForm3-Label">活動代號：</label>
+                                        <label class="DyForm3-Label">活動代號</label>
                                         <label id="lblActivityCode_Step1" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px"></label>
                                     </div>
                                     <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 0px ">
-                                        <label class="DyForm3-Label">活動期間：</label>
+                                        <label class="DyForm3-Label">活動期間</label>
                                         <label id="lblPSDate_Step1" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px "></label>
                                     </div>
                                     <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 0px ">
-                                        <label class="DyForm3-Label">活動名稱：</label>
+                                        <label class="DyForm3-Label">活動名稱</label>
                                         <label id="lblPSName_Step1" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px "></label>
                                         <label id="lblPSNO_Step1" hidden></label>
                                     </div>
@@ -700,20 +716,20 @@
                                     </div>
 
                                     <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 0px ">
-                                        <label class="DyForm3-Label">活動代碼：</label>
+                                        <label class="DyForm3-Label">活動代碼</label>
                                         <label id="lblShop_ActivityCode_Step2" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px "></label>
                                     </div>
                                     <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 0px ">
-                                        <label class="DyForm3-Label" >活動期間：</label>
+                                        <label class="DyForm3-Label" >活動期間</label>
                                         <label id="lblShop_Date_Step2" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px "></label>
                                     </div>
                                     <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 0px ">
-                                        <label class="DyForm3-Label">活動名稱：</label>
+                                        <label class="DyForm3-Label">活動名稱</label>
                                         <label id="lblShop_PSName_Step2" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px "></label>
                                     </div>
 
                                     <div class="form-group row" style="width: 100%; margin-bottom: 0px; margin-left: 12px ">
-                                        <label class="DyForm3-Label">店&ensp;&ensp;&ensp;&ensp;別：</label>
+                                        <label class="DyForm3-Label">店&ensp;&ensp;&ensp;&ensp;別</label>
                                         <label id="lblShop_Step2" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px"></label>
                                         <!--<label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>-->
                                         <!--<i id="Query_Area_Shop_Step2" class="fa fa-search" style="font-size: 1.5rem; margin-left: 80px; color: green"></i>-->
@@ -891,20 +907,20 @@
                                     </div>
 
                                     <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 0px">
-                                        <label class="DyForm3-Label">活動代碼：</label>
+                                        <label class="DyForm3-Label">活動代碼</label>
                                         <label id="lblDate_ActivityCode_Step2" class="DyForm3-LabelBlack" style="margin-top: 3px; margin-left: 15px"></label>
                                     </div>
                                     <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 0px">
-                                        <label class="DyForm3-Label">活動期間：</label>
+                                        <label class="DyForm3-Label">活動期間</label>
                                         <label id="lblDate_Date_Step2" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px "></label>
                                     </div>
                                     <div class="form-group row" style="width: 100%;margin-left:12px; margin-bottom: 0px">
-                                        <label class="DyForm3-Label">活動名稱：</label>
+                                        <label class="DyForm3-Label">活動名稱</label>
                                         <label id="lblDate_PSName_Step2" class="DyForm3-LabelBlack" style="margin-top: 3px; margin-left: 15px "></label>
                                     </div>
 
                                     <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 0px">
-                                        <label class="DyForm3-Label">銷售日期：</label>
+                                        <label class="DyForm3-Label">銷售日期</label>
                                         <label id="lblOpenDate_Date_Step2" class="DyForm3-LabelBlack" style=" margin-top: 3px; margin-left: 15px "></label>
                                         <!--<label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>-->
                                     </div>
