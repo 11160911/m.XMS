@@ -183,6 +183,136 @@
     let InitModifyDeleteButton = function () {
         $('#tbQuery tbody tr .tdCol1,#tbQuery tbody tr .tdCol2,#tbQuery tbody tr .tdCol3,#tbQuery tbody tr .tdCol4,#tbQuery tbody tr .tdCol5,#tbQuery tbody tr .tdCol6,#tbQuery tbody tr .tdCol7').click(function () { EDMHistoryQuery_click(this) });
         $('#tbQuery tbody tr .btShowEDM').click(function () { btShowEDM_click(this) });
+
+        $('#tbQuery thead tr th').mouseenter(function () {
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "EVNO") {
+                var rgb = $('#tbQuery thead tr th#thead1').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead1').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "Cnt") {
+                var rgb = $('#tbQuery thead tr th#thead2').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead2').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "ApproveDate") {
+                var rgb = $('#tbQuery thead tr th#thead3').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead3').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "TOMailDate") {
+                var rgb = $('#tbQuery thead tr th#thead4').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead4').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "EDM_DocNo") {
+                var rgb = $('#tbQuery thead tr th#thead6').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead6').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "EDMMemo") {
+                var rgb = $('#tbQuery thead tr th#thead7').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead7').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "EDDate") {
+                var rgb = $('#tbQuery thead tr th#thead8').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead8').css('background-color', '#ffff00')
+                }
+            }
+        });
+        $('#tbQuery thead tr th').mouseleave(function () {
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "EVNO") {
+                var rgb = $('#tbQuery thead tr th#thead1').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead1').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "Cnt") {
+                var rgb = $('#tbQuery thead tr th#thead2').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead2').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "ApproveDate") {
+                var rgb = $('#tbQuery thead tr th#thead3').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead3').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "TOMailDate") {
+                var rgb = $('#tbQuery thead tr th#thead4').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead4').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "EDM_DocNo") {
+                var rgb = $('#tbQuery thead tr th#thead6').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead6').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "EDMMemo") {
+                var rgb = $('#tbQuery thead tr th#thead7').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead7').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "EDDate") {
+                var rgb = $('#tbQuery thead tr th#thead8').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQuery thead tr th#thead8').css('background-color', '#ffb620')
+                }
+            }
+        });
+        $('#tbQuery thead tr th').click(function () {
+            $('#tbQuery thead tr th').css('background-color', '#ffb620')
+            var fdinfo = $(this).prop('fdinfo');
+            if (fdinfo.name == "EVNO") {
+                $('#tbQuery thead tr th#thead1').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "Cnt") {
+                $('#tbQuery thead tr th#thead2').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "ApproveDate") {
+                $('#tbQuery thead tr th#thead3').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "TOMailDate") {
+                $('#tbQuery thead tr th#thead4').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "EDM_DocNo") {
+                $('#tbQuery thead tr th#thead6').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "EDMMemo") {
+                $('#tbQuery thead tr th#thead7').css('background-color', '#ffeaa7')
+            }
+            else if (fdinfo.name == "EDDate") {
+                $('#tbQuery thead tr th#thead8').css('background-color', '#ffeaa7')
+            }
+        });
     }
 
     let gridclick_SendSet = function () {
@@ -1081,6 +1211,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
     //查詢
     let btQuery_click = function (bt) {
         //Timerset();
+        $('#tbQuery thead tr th').css('background-color', '#ffb620')
         $('#btQuery').prop('disabled', true)
         ShowLoading();
         var pData = {
