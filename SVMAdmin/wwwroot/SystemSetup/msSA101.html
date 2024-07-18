@@ -170,10 +170,10 @@
                                     color: red;
                                 }
 
-                                /*#td0 {
-                                    top: 85px;
+                                #td0 {
+                                    top: 100px;
                                     z-index: 2;
-                                }*/
+                                }
 
                                 /*手機畫面*/
                                 @media (max-width:767px) {
@@ -184,6 +184,10 @@
                                             z-index: 2;
                                             color: red;
                                         }
+                                        #td0 {
+                                            top: 110px;
+                                            z-index: 2;
+                                        }
                                     }
                                     /*螢幕橫向*/
                                     @media screen and (orientation: landscape) {
@@ -191,6 +195,10 @@
                                             top: 100px;
                                             z-index: 2;
                                             color: red;
+                                        }
+                                        #td0 {
+                                            top: 100px;
+                                            z-index: 2;
                                         }
                                     }
                                 }
@@ -258,7 +266,7 @@
                                             <thead>
                                                 <!--第一層-->
                                                 <tr>
-                                                    <th id="thead1" class="text-center" colspan="1" rowspan="3" style="vertical-align: middle;">店別</th>
+                                                    <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
                                                     <td id="thead2" class="text-center" colspan="3">總交易</td>
                                                     <td id="thead3" class="text-center" colspan="4">會員交易</td>
                                                 </tr>
@@ -275,7 +283,7 @@
                                                 </tr>
                                                 <!--第三層-->
                                                 <tr class="QSum">
-                                                    <!--<td id="td0" class="text-center" colspan="1">總數</td>-->
+                                                    <td id="td0" class="text-center" colspan="1">總數</td>
                                                     <td id="td1" colspan="1" style="text-align: right"></td>
                                                     <td id="td2" colspan="1" style="text-align: right"></td>
                                                     <td id="td3" colspan="1" style="text-align: right "></td>
@@ -352,6 +360,10 @@
                                         color: red;
                                     }
 
+                                    #Dtd0 {
+                                        top: 90px;
+                                        z-index: 2;
+                                    }
                                 /*    #tdShopNo0_PSNO, #tdDate0_PSNO {
                                         top: 65px;
                                         z-index: 2;
@@ -382,6 +394,10 @@
                                                 z-index: 2;
                                                 color: red;
                                             }
+                                            #Dtd0 {
+                                                top: 110px;
+                                                z-index: 2;
+                                            }
                                         }
                                         /*螢幕橫向*/
                                         @media screen and (orientation: landscape) {
@@ -394,6 +410,7 @@
                                             #divD {
                                                 height: 110px;
                                             }
+
                                         }
                                     }
                                 </style>
@@ -437,7 +454,7 @@
                                                     <thead>
                                                         <!--第一層-->
                                                         <tr>
-                                                            <th id="Dthead1" class="text-center" colspan="1" rowspan="3" style="vertical-align: middle;">銷售日期</th>
+                                                            <th id="Dthead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">銷售日期</th>
                                                             <td id="Dthead2" class="text-center" colspan="3">總交易</td>
                                                             <td id="Dthead3" class="text-center" colspan="4">會員交易</td>
                                                         </tr>
@@ -453,7 +470,7 @@
                                                         </tr>
                                                         <!--第三層-->
                                                         <tr class="QDSum">
-                                                            <!--<td id="td0" class="text-center" colspan="1">總數</td>-->
+                                                            <td id="Dtd0" class="text-center" colspan="1">總數</td>
                                                             <td id="Dtd1" colspan="1" style="text-align: right"></td>
                                                             <td id="Dtd2" colspan="1" style="text-align: right"></td>
                                                             <td id="Dtd3" colspan="1" style="text-align: right "></td>
@@ -532,6 +549,11 @@
                                         color: red;
                                     }
 
+                                    #DDtd0 {
+                                        top: 90px;
+                                        z-index: 2;
+                                    }
+
                                   /*  #tdShopNo0_PSNO_ShopNoDate {
                                         top: 65px;
                                         z-index: 2;
@@ -562,6 +584,10 @@
                                                 top: 110px;
                                                 z-index: 2;
                                                 color: red;
+                                            }
+                                            #DDtd0 {
+                                                top: 110px;
+                                                z-index: 2;
                                             }
                                         }
                                         /*螢幕橫向*/
@@ -611,7 +637,7 @@
                                                     <thead>
                                                         <!--第一層-->
                                                         <tr>
-                                                            <th id="DDthead1" class="text-center" colspan="1" rowspan="3" style="vertical-align: middle;">銷售日期</th>
+                                                            <th id="DDthead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">銷售日期</th>
                                                             <td id="DDthead2" class="text-center" colspan="3">總交易</td>
                                                             <td id="DDthead3" class="text-center" colspan="4">會員交易</td>
                                                         </tr>
@@ -627,7 +653,7 @@
                                                         </tr>
                                                         <!--第三層-->
                                                         <tr class="QDDSum">
-                                                            <!--<td id="td0" class="text-center" colspan="1">總數</td>-->
+                                                            <td id="DDtd0" class="text-center" colspan="1">總數</td>
                                                             <td id="DDtd1" colspan="1" style="text-align: right"></td>
                                                             <td id="DDtd2" colspan="1" style="text-align: right"></td>
                                                             <td id="DDtd3" colspan="1" style="text-align: right "></td>
