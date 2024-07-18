@@ -67,6 +67,23 @@
               .login_content2 h1:before, .login_content2 h1:after {
                   display: none;
               }
+
+          .btSignIn {
+              background: linear-gradient(to bottom, #11447a 5%, #2da8fa 100%);
+              background-color: #11447a;
+              border: 1px solid #337fed;
+              display: inline-block;
+              cursor: pointer;
+              text-decoration: none;
+          }
+        .btSignIn:hover {
+            background: linear-gradient(to right, #2da8fa 5%, #11447a 100%);
+            background-color: #2da8fa;
+        }
+     /*   .btSignIn:active {
+            position: relative;
+            top: 1px;
+        }*/
       </style>
       
       <div>
@@ -183,7 +200,7 @@
                               <input id="CompanyID" type="hidden" value="xxx" />
                           </div>
                           <div style="margin-top:20px;text-align:center">
-                              <button type="button" id="btSignIn" class="btn btn-round btn-secondary" style="background-color: red; color: white; width: 250px; border-width: 2PX; border-radius: 8PX; border-color: transparent; font-size: 20px; font-weight: bold"> 登入</button>
+                              <button type="button" id="btSignIn" class="btn btn-round btn-secondary btSignIn" style="color: white; width: 250px; border-width: 2PX; border-radius: 8PX; font-size: 20px; font-weight: bold"> 登入</button>
                               <a class="reset_pass" href="#" hidden> Lost your password?</a>
                           </div>
                           <div id="icrpwd" style="display: none; text-align: center">
