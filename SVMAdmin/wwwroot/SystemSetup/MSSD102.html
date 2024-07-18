@@ -159,22 +159,22 @@
                                 }
                             </style>
 
-                            <div class="form-group row" style="margin-left: 5px; width: 100%">
+                            <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom: 0px">
                                 <label id="lblProgramName" class="DyForm3-ProgramName">新入會VIP折價券回收分析</label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 20px; width: 100%">
+                            <div class="form-group row" style="margin-left: 20px; width: 100%; margin-bottom: 5px">
                                 <button class="DyForm3-BtnClear" id="btClear" type="button">
                                     清除
                                     <i class="fa fa-close"></i>
                                 </button>
-                                <button class="DyForm3-BtnQuery" id="btQuery" type="button" style="margin-left: 500px;">
+                                <button class="DyForm3-BtnQuery" id="btQuery" type="button" style="margin-left: 40px;">
                                     查詢
                                     <i class="fa fa-search"></i>
                                 </button>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px">
                                 <label class="DyForm3-Label">活動代號</label>
                                 <input id="txtActivityCode" class="DyForm3-TextBox" style="margin-left: 15px" type="text" maxlength="20" />
                                 <button id="btActivityCode" class="DyForm3-BtnLookUp" type="button">
@@ -182,34 +182,34 @@
                                 </button>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px ">
                                 <label class="DyForm3-Label">活動名稱</label>
-                                <input id="txtPSName" class="DyForm3-TextBox" style="margin-left: 15px; width: 460px" type="text" maxlength="50" />
+                                <input id="txtPSName" class="DyForm3-TextBox" style="margin-left: 15px" type="text" maxlength="50" />
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
                                 <label class="DyForm3-Label">入會日期</label>
                                 <input id="txtEDDate" class="DyForm3-TextBox" style="margin-left: 15px; font-size: 14px" type="date" />
-                                <label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>
+                                <!--<label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>-->
                             </div>
 
                             <div class="card-block forminput">
                                 <div class="x_content">
-                                    <div style="overflow: auto; height: 600px;">
-                                        <table id="tbQuery" class="table table-bordered" style="width:100%">
+                                    <div style="overflow: auto; height: 550px;">
+                                        <table id="tbQuery" class="table table-bordered DyForm3-Table">
                                             <thead>
                                                 <tr>
-                                                    <th style="display: none"></th>
-                                                    <th class="text-center">活動代號</th>
-                                                    <th class="text-center">活動名稱</th>
-                                                    <th class="text-center">活動期間</th>
-                                                    <th class="text-center">發出張數</th>
-                                                    <th class="text-center">回收張數</th>
-                                                    <th class="text-center">回收率%</th>
-                                                    <th class="text-center">折抵金額</th>
-                                                    <th class="text-center">銷售業績</th>
-                                                    <th class="text-center">來客數</th>
-                                                    <th class="text-center">客單價</th>
+                                                    <th id="thead1" style="display: none"></th>
+                                                    <th id="thead2" class="text-center">活動代號</th>
+                                                    <th id="thead3" class="text-center">活動名稱</th>
+                                                    <th id="thead4" class="text-center">活動期間</th>
+                                                    <th id="thead5" class="text-center">發出張數</th>
+                                                    <th id="thead6" class="text-center">回收張數</th>
+                                                    <th id="thead7" class="text-center">回收率%</th>
+                                                    <th id="thead8" class="text-center">折抵金額</th>
+                                                    <th id="thead9" class="text-center">銷售業績</th>
+                                                    <th id="thead10" class="text-center">來客數</th>
+                                                    <th id="thead11" class="text-center">客單價</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -223,7 +223,7 @@
 
                     <div class="modal fade" id="modal_PSNO" data-keyboard="false" data-backdrop="static" style="z-index:1042">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 900px; width: 1400px;left:-200px; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
+                            <div class="modal-content" id="modalcon_PSNO" style="background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
                                 <style>
                                     #tbShopNo_PSNO thead tr th, #tbDate_PSNO thead tr th {
                                         font-size: 16px;
@@ -256,12 +256,12 @@
                                         /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
                                         box-shadow: 0 0px 2px 0px inset #ddd;
                                     }
-                                    #thead1, #thead2, #thead3 {
+                                    #theadShopNo1, #theadShopNo2, #theadShopNo3, #theadDate1, #theadDate2, #theadDate3 {
                                         top: 0;
                                         z-index: 2;
                                         height: 35px;
                                     }
-                                    #th1, #th2, #th3, #th4, #th5, #th6, #th7, #th8, #th9, #th10 {
+                                    #thShopNo1, #thShopNo2, #thShopNo3, #thShopNo4, #thShopNo5, #thShopNo6, #thShopNo7, #thShopNo8, #thShopNo9, #thShopNo10, #thDate1, #thDate2, #thDate3, #thDate4, #thDate5, #thDate6, #thDate7, #thDate8 {
                                         top: 35px;
                                         z-index: 2;
                                     }
@@ -274,6 +274,54 @@
                                         top: 65px;
                                         z-index: 2;
                                     }
+
+                                    #modalcon_PSNO {
+                                        height: 900px;
+                                        width: 1400px;
+                                        left: -200px;
+                                    }
+
+                                    #divPSNO {
+                                        height: 550px;
+                                    }
+                                    /*手機畫面*/
+                                    @media (max-width:767px) {
+                                        /*螢幕縱向*/
+                                        @media screen and (orientation: portrait) {
+                                            #modalcon_PSNO {
+                                                height: 650px;
+                                                width: 100%;
+                                                left: 0px;
+                                            }
+
+                                            #divPSNO {
+                                                height: 400px;
+                                            }
+
+                                            #tdShopNo1_PSNO, #tdShopNo2_PSNO, #tdShopNo3_PSNO, #tdShopNo4_PSNO, #tdShopNo5_PSNO, #tdShopNo6_PSNO, #tdShopNo7_PSNO, #tdShopNo8_PSNO, #tdShopNo9_PSNO, #tdShopNo10_PSNO, #tdDate1_PSNO, #tdDate2_PSNO, #tdDate3_PSNO, #tdDate4_PSNO, #tdDate5_PSNO, #tdDate6_PSNO, #tdDate7_PSNO, #tdDate8_PSNO {
+                                                top: 135px;
+                                                z-index: 2;
+                                                color: red;
+                                            }
+
+                                            #tdShopNo0_PSNO, #tdDate0_PSNO {
+                                                top: 135px;
+                                                z-index: 2;
+                                            }
+                                        }
+                                        /*螢幕橫向*/
+                                        @media screen and (orientation: landscape) {
+                                            #modalcon_PSNO {
+                                                height: 330px;
+                                                width: 100%;
+                                                left: 0px;
+                                            }
+
+                                            #divPSNO {
+                                                height: 90px;
+                                            }
+                                        }
+                                    }
                                 </style>
 
                                 <!--<div class="modal-header">
@@ -282,58 +330,60 @@
 
                                 <div class="modal-body modal-tab-container" style="padding:8px">
 
-                                    <div class="form-group row" style="margin-left: 5px; width: 100%">
+                                    <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom: 0px">
                                         <label class="DyForm3-ProgramName">新入會VIP折價券回收分析</label>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%">
-                                        <button id="btRe_PSNO" type="button" class="DyForm3-BtnRe" style="position: absolute; right: 60px">回上頁</button>
+                                    <div class="form-group row" style="width: 100%;margin-left: 20px; margin-bottom: 0px ">
+                                        <button id="btRe_PSNO" type="button" class="DyForm3-BtnRe">回上頁</button>
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 12px; width: 100%">
+                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
                                         <label id="lblPSNO_PSNO" hidden></label>
                                         <label class="DyForm3-Label">活動代號</label>
                                         <label id="lblActivityCode_PSNO" class="DyForm3-LabelBlack" style="margin-left:15px;margin-top:3px"></label>
-                                        <label class="DyForm3-Label" style="margin-left:350px">活動期間</label>
+                                    </div>
+                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
+                                        <label class="DyForm3-Label">活動期間</label>
                                         <label id="lblEDDate_PSNO" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px"></label>
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 12px; width: 100%">
+                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
                                         <label class="DyForm3-Label">活動名稱</label>
                                         <label id="lblPSName_PSNO" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px"></label>
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 12px; width: 100%">
+                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
                                         <input id="rdoShop_PSNO" type="radio" name="Q" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
                                         <label class="DyForm3-LabelBlack" for="rdoShop_PSNO" style="margin-top: 2px">&ensp;店別</label>
                                         <input id="rdoDate_PSNO" type="radio" name="Q" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
                                         <label class="DyForm3-LabelBlack" for="rdoDate_PSNO" style="margin-top:2px">&ensp;銷售日期</label>
-                                        <label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>
+                                        <!--<label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>-->
                                     </div>
 
                                     <div class="card-block forminput">
                                         <div class="x_content">
-                                            <div style="overflow: auto; height: 650px;">
-                                                <table id="tbShopNo_PSNO" class="table table-bordered" style="width:100%">
+                                            <div id="divPSNO" style="overflow: auto;">
+                                                <table id="tbShopNo_PSNO" class="table table-bordered DyForm3-Table">
                                                     <thead>
                                                         <!--第一層-->
                                                         <tr>
-                                                            <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
-                                                            <td id="thead2" class="text-center" colspan="7">折價券分析</td>
-                                                            <td id="thead3" class="text-center" colspan="3">總業績分析</td>
+                                                            <th id="theadShopNo1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
+                                                            <td id="theadShopNo2" class="text-center" colspan="7">折價券分析</td>
+                                                            <td id="theadShopNo3" class="text-center" colspan="3">總業績分析</td>
                                                         </tr>
                                                         <!--第二層-->
                                                         <tr>
-                                                            <th id="th1" class="text-center">發出張數</th>
-                                                            <th id="th2" class="text-center">回收張數</th>
-                                                            <th id="th3" class="text-center">回收率%</th>
-                                                            <th id="th4" class="text-center">折抵金額</th>
-                                                            <th id="th5" class="text-center">銷售業績</th>
-                                                            <th id="th6" class="text-center">來客數</th>
-                                                            <th id="th7" class="text-center">客單價</th>
-                                                            <th id="th8" class="text-center">總銷售業績</th>
-                                                            <th id="th9" class="text-center">總來客數</th>
-                                                            <th id="th10" class="text-center">總客單價</th>
+                                                            <th id="thShopNo1" class="text-center">發出張數</th>
+                                                            <th id="thShopNo2" class="text-center">回收張數</th>
+                                                            <th id="thShopNo3" class="text-center">回收率%</th>
+                                                            <th id="thShopNo4" class="text-center">折抵金額</th>
+                                                            <th id="thShopNo5" class="text-center">銷售業績</th>
+                                                            <th id="thShopNo6" class="text-center">來客數</th>
+                                                            <th id="thShopNo7" class="text-center">客單價</th>
+                                                            <th id="thShopNo8" class="text-center">總銷售業績</th>
+                                                            <th id="thShopNo9" class="text-center">總來客數</th>
+                                                            <th id="thShopNo10" class="text-center">總客單價</th>
                                                         </tr>
                                                         <!--第三層-->
                                                         <tr>
@@ -356,24 +406,24 @@
                                                     </tbody>
                                                 </table>
 
-                                                <table id="tbDate_PSNO" class="table table-bordered" style="width:100%" hidden>
+                                                <table id="tbDate_PSNO" class="table table-bordered DyForm3-Table" hidden>
                                                     <thead>
                                                         <!--第一層-->
                                                         <tr>
-                                                            <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">銷售日期</th>
-                                                            <td id="thead2" class="text-center" colspan="5">折價券分析</td>
-                                                            <td id="thead3" class="text-center" colspan="3">總業績分析</td>
+                                                            <th id="theadDate1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">銷售日期</th>
+                                                            <td id="theadDate2" class="text-center" colspan="5">折價券分析</td>
+                                                            <td id="theadDate3" class="text-center" colspan="3">總業績分析</td>
                                                         </tr>
                                                         <!--第二層-->
                                                         <tr>
-                                                            <th id="th1" class="text-center">回收張數</th>
-                                                            <th id="th2" class="text-center">折抵金額</th>
-                                                            <th id="th3" class="text-center">銷售業績</th>
-                                                            <th id="th4" class="text-center">來客數</th>
-                                                            <th id="th5" class="text-center">客單價</th>
-                                                            <th id="th6" class="text-center">總銷售業績</th>
-                                                            <th id="th7" class="text-center">總來客數</th>
-                                                            <th id="th8" class="text-center">總客單價</th>
+                                                            <th id="thDate1" class="text-center">回收張數</th>
+                                                            <th id="thDate2" class="text-center">折抵金額</th>
+                                                            <th id="thDate3" class="text-center">銷售業績</th>
+                                                            <th id="thDate4" class="text-center">來客數</th>
+                                                            <th id="thDate5" class="text-center">客單價</th>
+                                                            <th id="thDate6" class="text-center">總銷售業績</th>
+                                                            <th id="thDate7" class="text-center">總來客數</th>
+                                                            <th id="thDate8" class="text-center">總客單價</th>
                                                         </tr>
                                                         <!--第三層-->
                                                         <tr>
@@ -404,7 +454,7 @@
 
                     <div class="modal fade" id="modal_PSNO_ShopNoDate" data-keyboard="false" data-backdrop="static" style="z-index:1043">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 900px; width: 1400px;left:-200px; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
+                            <div class="modal-content" id="modalcon_PSNO_ShopNoDate" style="background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
                                 <style>
                                     #tbShopNo_PSNO_ShopNoDate thead tr th, #tbDate_PSNO_ShopNoDate thead tr th {
                                         font-size: 16px;
@@ -460,6 +510,55 @@
                                         top: 65px;
                                         z-index: 2;
                                     }
+
+                                    #modalcon_PSNO_ShopNoDate {
+                                        height: 900px;
+                                        width: 1400px;
+                                        left: -200px;
+                                    }
+
+                                    #divPSNO_ShopNoDate {
+                                        height: 550px;
+                                    }
+                                    /*手機畫面*/
+                                    @media (max-width:767px) {
+                                        /*螢幕縱向*/
+                                        @media screen and (orientation: portrait) {
+                                            #modalcon_PSNO_ShopNoDate {
+                                                height: 650px;
+                                                width: 100%;
+                                                left: 0px;
+                                            }
+
+                                            #divPSNO_ShopNoDate {
+                                                height: 400px;
+                                            }
+
+                                            #tdShopNo1_PSNO_ShopNoDate, #tdShopNo2_PSNO_ShopNoDate, #tdShopNo3_PSNO_ShopNoDate, #tdShopNo4_PSNO_ShopNoDate, #tdShopNo5_PSNO_ShopNoDate, #tdShopNo6_PSNO_ShopNoDate, #tdShopNo7_PSNO_ShopNoDate, #tdShopNo8_PSNO_ShopNoDate {
+                                                top: 135px;
+                                                z-index: 2;
+                                                color: red;
+                                            }
+
+                                            #tdShopNo0_PSNO_ShopNoDate {
+                                                top: 135px;
+                                                z-index: 2;
+                                            }
+
+                                        }
+                                        /*螢幕橫向*/
+                                        @media screen and (orientation: landscape) {
+                                            #modalcon_PSNO_ShopNoDate {
+                                                height: 330px;
+                                                width: 100%;
+                                                left: 0px;
+                                            }
+
+                                            #divPSNO_ShopNoDate {
+                                                height: 90px;
+                                            }
+                                        }
+                                    }
                                 </style>
 
                                 <!--<div class="modal-header">
@@ -468,37 +567,40 @@
 
                                 <div class="modal-body modal-tab-container" style="padding:8px">
 
-                                    <div class="form-group row" style="margin-left: 5px; width: 100%">
+                                    <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom: 0px">
                                         <label class="DyForm3-ProgramName">新入會VIP折價券回收分析</label>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%">
-                                        <button id="btRe_PSNO_ShopNoDate" type="button" class="DyForm3-BtnRe" style="position: absolute; right: 60px">回上頁</button>
+                                    <div class="form-group row" style="width: 100%; margin-left: 20px; margin-bottom: 0px ">
+                                        <button id="btRe_PSNO_ShopNoDate" type="button" class="DyForm3-BtnRe">回上頁</button>
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 12px; width: 100%">
+                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
                                         <label id="lblPSNO_PSNO_ShopNoDate" hidden></label>
                                         <label class="DyForm3-Label">活動代號</label>
                                         <label id="lblActivityCode_PSNO_ShopNoDate" class="DyForm3-LabelBlack" style="margin-left:15px;margin-top:3px"></label>
-                                        <label class="DyForm3-Label" style="margin-left:350px">活動期間</label>
+                                    </div>
+
+                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
+                                        <label class="DyForm3-Label">活動期間</label>
                                         <label id="lblEDDate_PSNO_ShopNoDate" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px"></label>
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 12px; width: 100%">
+                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
                                         <label class="DyForm3-Label">活動名稱</label>
                                         <label id="lblPSName_PSNO_ShopNoDate" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px"></label>
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 12px; width: 100%">
+                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
                                         <label id="lblType_PSNO_ShopNoDate" class="DyForm3-Label"></label>
                                         <label id="lblTypeID_PSNO_ShopNoDate" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px"></label>
-                                        <label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>
+                                        <!--<label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>-->
                                     </div>
 
                                     <div class="card-block forminput">
                                         <div class="x_content">
-                                            <div style="overflow: auto; height: 650px;">
-                                                <table id="tbShopNo_PSNO_ShopNoDate" class="table table-bordered" style="width:100%">
+                                            <div id="divPSNO_ShopNoDate" style="overflow: auto;">
+                                                <table id="tbShopNo_PSNO_ShopNoDate" class="table table-bordered DyForm3-Table">
                                                     <thead>
                                                         <!--第一層-->
                                                         <tr>

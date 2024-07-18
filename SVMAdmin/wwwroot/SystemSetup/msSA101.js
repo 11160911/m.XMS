@@ -367,7 +367,12 @@
                 //$(".modal-backdrop").remove();
                 var sumtdQD = document.querySelector('.QDSum');
                 for (i = 0; i < sumtdQD.childElementCount; i++) {
-                    sumtdQD.children[i].innerHTML = "";
+                    if (i == 0) {
+                        sumtdQD.children[i].innerHTML = "總數";
+                    }
+                    else {
+                        sumtdQD.children[i].innerHTML = "";
+                    }
                 }
                 return;
             }
@@ -389,7 +394,12 @@
             grdD.BindData(null)
             var sumtdQD = document.querySelector('.QDSum');
             for (i = 0; i < sumtdQD.childElementCount; i++) {
-                sumtdQD.children[i].innerHTML = "";
+                if (i == 0) {
+                    sumtdQD.children[i].innerHTML = "總數";
+                }
+                else {
+                    sumtdQD.children[i].innerHTML = "";
+                }
             }
         }, 500);
     };
@@ -805,7 +815,12 @@
                 //$(".modal-backdrop").remove();
                 var sumtdQDD = document.querySelector('.QDDSum');
                 for (i = 0; i < sumtdQDD.childElementCount; i++) {
-                    sumtdQDD.children[i].innerHTML = "";
+                    if (i == 0) {
+                        sumtdQDD.children[i].innerHTML = "總數";
+                    }
+                    else {
+                        sumtdQDD.children[i].innerHTML = "";
+                    }
                 }
                 return;
             }
@@ -827,7 +842,12 @@
             grdDD.BindData(null)
             var sumtdQDD = document.querySelector('.QDDSum');
             for (i = 0; i < sumtdQDD.childElementCount; i++) {
-                sumtdQDD.children[i].innerHTML = "";
+                if (i == 0) {
+                    sumtdQDD.children[i].innerHTML = "總數";
+                }
+                else {
+                    sumtdQDD.children[i].innerHTML = "";
+                }
             }
         }, 500);
     };
@@ -863,7 +883,7 @@
             $('#lblShopNoCnt').html('');
             $('#lblShopNoName').html('');
             chkShopNo = "";
-            $('#rdoA').prop('checked', 'true');
+            $('#rdoS').prop('checked', 'true');
             ClearQuery();
         }
     };
@@ -944,7 +964,12 @@
                 $(".modal-backdrop").remove();
                 var sumtdQ = document.querySelector('.QSum');
                 for (i = 0; i < sumtdQ.childElementCount; i++) {
-                    sumtdQ.children[i].innerHTML = "";
+                    if (i == 0) {
+                        sumtdQ.children[i].innerHTML = "總數";
+                    }
+                    else {
+                        sumtdQ.children[i].innerHTML = "";
+                    }
                 }
                 return;
             }
@@ -976,7 +1001,12 @@
         }
         var sumtdQ = document.querySelector('.QSum');
         for (i = 0; i < sumtdQ.childElementCount; i++) {
-            sumtdQ.children[i].innerHTML = "";
+            if (i == 0) {
+                sumtdQ.children[i].innerHTML = "總數";
+            }
+            else {
+                sumtdQ.children[i].innerHTML = "";
+            }
         }
         //$('#tbQuery thead td#td1').html('');
         //$('#tbQuery thead td#td2').html('');

@@ -8547,7 +8547,9 @@ namespace SVMAdmin.Controllers
                 string sql = "";
                 sql = "Select a.PS_NO,a.ActivityCode,b.PS_Name,a.StartDate + '~' + a.EndDate EDDate, ";
                 sql += "sum(isnull(a.issueQty,0))Cnt1,sum(isnull(a.ReclaimQty,0))Cnt2, ";
-                sql += "case when sum(isnull(a.issueQty,0))=0 then format(0,'0.0%') else format(cast(sum(isnull(a.ReclaimQty,0)) as Float)/cast(sum(isnull(a.issueQty,0)) as Float),'0.0%') end as RePercent, ";
+                
+                sql += "case when sum(isnull(a.issueQty,0))=0 and sum(isnull(a.ReclaimQty,0))=0 then format(0,'p') when sum(isnull(a.issueQty,0))=0 then format(1,'p') else format(cast(sum(isnull(a.ReclaimQty,0)) as Float)/cast(sum(isnull(a.issueQty,0)) as Float),'p') end as RePercent, ";
+                
                 sql += "sum(isnull(a.ShareAmt,0))ActualDiscount,sum(isnull(a.ReclaimCash,0))Cash,sum(isnull(a.ReclaimTrans,0))Cnt3, ";
                 sql += "case when sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(sum(isnull(a.ReclaimCash,0))/sum(isnull(a.ReclaimTrans,0)),0) end as SalesPrice ";
                 sql += "From MsData2Web a (nolock) ";
@@ -8607,7 +8609,7 @@ namespace SVMAdmin.Controllers
                     //明細資料
                     sql = "Select a.ShopNo + '-' + b.ST_SName as id,Sum(isnull(a.issueQty,0))Cnt1, ";
                     sql += "Sum(isnull(a.ReclaimQty,0))Cnt2, ";
-                    sql += "case when Sum(isnull(a.issueQty,0))=0 then format(0,'0.0%') else format(cast(Sum(isnull(a.ReclaimQty,0)) as Float)/cast(Sum(isnull(a.issueQty,0)) as Float),'0.0%') end as RePercent, ";
+                    sql += "case when Sum(isnull(a.issueQty,0))=0 and Sum(isnull(a.ReclaimQty,0))=0 then format(0,'p') when Sum(isnull(a.issueQty,0))=0 then format(1,'p') else format(cast(Sum(isnull(a.ReclaimQty,0)) as Float)/cast(Sum(isnull(a.issueQty,0)) as Float),'p') end as RePercent, ";
                     sql += "Sum(isnull(a.ShareAmt,0))ActualDiscount,Sum(isnull(a.ReclaimCash,0))SalesCash1,Sum(isnull(a.ReclaimTrans,0))SalesCnt1, ";
                     sql += "case when Sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(Sum(isnull(a.ReclaimCash,0))/Sum(isnull(a.ReclaimTrans,0)),0) end as SalesPrice1, ";
                     sql += "Sum(isnull(a.TotalCash,0))SalesCash2,Sum(isnull(a.TotalTrans,0))SalesCnt2, ";
@@ -8628,7 +8630,7 @@ namespace SVMAdmin.Controllers
 
                     //彙總資料
                     sql = "Select a.PS_NO,Sum(isnull(a.issueQty,0))SumCnt1,Sum(isnull(a.ReclaimQty,0))SumCnt2, ";
-                    sql += "case when Sum(isnull(a.issueQty,0))=0 then format(0,'0.0%') else format(cast(Sum(isnull(a.ReclaimQty,0)) as Float)/cast(Sum(isnull(a.issueQty,0)) as Float),'0.0%') end as SumRePercent, ";
+                    sql += "case when Sum(isnull(a.issueQty,0))=0 then format(1,'p') else format(cast(Sum(isnull(a.ReclaimQty,0)) as Float)/cast(Sum(isnull(a.issueQty,0)) as Float),'p') end as SumRePercent, ";
                     sql += "Sum(isnull(a.ShareAmt,0))SumActualDiscount,sum(isnull(a.ReclaimCash,0))SumSalesCash1,sum(isnull(a.ReclaimTrans,0))SumSalesCnt1, ";
                     sql += "case when sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(sum(isnull(a.ReclaimCash,0))/sum(isnull(a.ReclaimTrans,0)),0) end as SumSalesPrice1, ";
                     sql += "sum(isnull(a.TotalCash,0))SumSalesCash2,sum(isnull(a.TotalTrans,0))SumSalesCnt2, ";
