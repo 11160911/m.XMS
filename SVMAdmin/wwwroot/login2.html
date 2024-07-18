@@ -23,11 +23,34 @@
   <body class="login right_col" style="background-color:white">
       <style>
           html {
-              background: url(images/Web底圖-地球-2.png) no-repeat center center fixed;
+              /*background: url(images/Web底圖-地球-2.png) no-repeat center center fixed;
               -webkit-background-size: cover;
               -moz-background-size: cover;
-              -o-background-size: cover;
-              background-size: 620px 850px;
+              -o-background-size: cover;*/
+              /*background-size: 620px 850px;*/
+
+              background: url(images/mxmslogo10e.JPG) no-repeat center center fixed;
+              background-position: bottom
+          }
+
+          /*手機畫面*/
+          @media (max-width:767px) {
+              /*螢幕縱向*/
+              @media screen and (orientation: portrait) {
+                  html {
+                      background: url(images/mxmslogo10e.JPG) no-repeat center center fixed;
+                      background-position: bottom;
+                      background-size: 350px 350px;
+                  }
+              }
+              /*螢幕橫向*/
+              @media screen and (orientation: landscape) {
+                  html {
+                      background: url(images/mxmslogo10e.JPG) no-repeat center center fixed;
+                      background-position: bottom;
+                      background-size: 300px 300px;
+                  }
+              }
           }
 
           .login_content2 .btn.submit {
@@ -144,9 +167,9 @@
               <div class="animate form login_form">
                   <section class="login_content2">
                       <form id="frmLogin">
-                          <div style="text-align:center;margin-top:120px;">
-                              <!--<img src="images/m.Xms1.jpg" style="width:220px;">-->
-                              <img src="images/mxmsbeta2.jpg" style="width:240px;">
+                          <div style="text-align:center;margin-top:150px;">
+                              <img src="images/m.Xms1.jpg" style="width:240px;">
+                              <!--<img src="images/mxmsbeta2.jpg" style="width:240px;">-->
                               <h3 id="CompanyName" style="color:white" hidden></h3>
                           </div>
 
