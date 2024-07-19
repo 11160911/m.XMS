@@ -854,7 +854,7 @@
     }
 
     let Step1_click = function (bt) {
-        $('#tbQuery td').closest('tr').css('background-color', 'white');
+        $('#tbQuery td').closest('tr').css('background-color', 'transparent');
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         var node = $(grdM.ActiveRowTR()).prop('Record');
@@ -975,7 +975,7 @@
         $('#lblEDDate_PSNO_ShopNoDate').html($('#lblEDDate_PSNO').html())
         $('#lblPSName_PSNO_ShopNoDate').html($('#lblPSName_PSNO').html())
         if ($('#rdoShop_PSNO').prop('checked') == true) {
-            $('#tbShopNo_PSNO td').closest('tr').css('background-color', 'white');
+            $('#tbShopNo_PSNO td').closest('tr').css('background-color', 'transparent');
             $(bt).closest('tr').click();
             $('.msg-valid').hide();
             var node = $(grdShopNo_PSNO.ActiveRowTR()).prop('Record');
@@ -988,7 +988,7 @@
             }, 500);
         }
         else if ($('#rdoDate_PSNO').prop('checked') == true) {
-            $('#tbDate_PSNO td').closest('tr').css('background-color', 'white');
+            $('#tbDate_PSNO td').closest('tr').css('background-color', 'transparent');
             $(bt).closest('tr').click();
             $('.msg-valid').hide();
             var node = $(grdDate_PSNO.ActiveRowTR()).prop('Record');

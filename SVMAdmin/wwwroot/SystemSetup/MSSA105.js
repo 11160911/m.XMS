@@ -71,7 +71,7 @@
     };
     //第二層
     let Step2_click = function (bt) {
-        $('#tbQuerySTEP1 td').closest('tr').css('background-color', 'white');
+        $('#tbQuerySTEP1 td').closest('tr').css('background-color', 'transparent');
 
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
@@ -134,7 +134,7 @@
     };
     //第一層
     let Step1_click = function (bt) {
-        $('#tbQuery td').closest('tr').css('background-color', 'white');
+        $('#tbQuery td').closest('tr').css('background-color', 'transparent');
 
         $(bt).closest('tr').click();
         $('.msg-valid').hide();

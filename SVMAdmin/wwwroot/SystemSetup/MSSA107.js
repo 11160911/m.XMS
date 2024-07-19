@@ -80,7 +80,7 @@
             return;
         }
 
-        $('#tbQuery td').closest('tr').css('background-color', 'white');
+        $('#tbQuery td').closest('tr').css('background-color', 'transparent');
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         var node = $(grdM.ActiveRowTR()).prop('Record');

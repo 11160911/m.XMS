@@ -671,7 +671,7 @@
 
     //EDM查詢
     let MSDM107Query_EDM_click = function (bt) {
-        $('#tbQMSDM107 td').closest('tr').css('background-color', 'white');
+        $('#tbQMSDM107 td').closest('tr').css('background-color', 'transparent');
 
         $(bt).closest('tr').click();
         $('.msg-valid').hide();

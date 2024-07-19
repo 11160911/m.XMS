@@ -252,7 +252,7 @@
             $('#lblD_DateTitle').html('日期區間');
         }
 
-        $('#tbQuery td').closest('tr').css('background-color', 'white');
+        $('#tbQuery td').closest('tr').css('background-color', 'transparent');
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         var node = $(grdM.ActiveRowTR()).prop('Record');
@@ -714,7 +714,7 @@
             return;
         }
 
-        $('#tbQueryD td').closest('tr').css('background-color', 'white');
+        $('#tbQueryD td').closest('tr').css('background-color', 'transparent');
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         var node = $(grdD.ActiveRowTR()).prop('Record');

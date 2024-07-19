@@ -795,7 +795,7 @@
 
     //EDM查詢
     let MSDM104Query_EDM_click = function (bt) {
-        $('#tbQMSDM104 td').closest('tr').css('background-color', 'white');
+        $('#tbQMSDM104 td').closest('tr').css('background-color', 'transparent');
 
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
