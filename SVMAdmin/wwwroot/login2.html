@@ -22,6 +22,20 @@
 
   <body class="login right_col" style="background-color:white">
       <style>
+          .Logintxt {
+              font-size: 20px;
+              width: 250px;
+              margin: auto;
+              border-radius: 8PX;
+              border: 0px solid #ced4da;
+              background-color: #E8F0FE !important
+          }
+
+          #divEdynasty {
+              text-align: center;
+              margin-top: 380px;
+          }
+
           html {
               /*background: url(images/Web底圖-地球-2.png) no-repeat center center fixed;
               -webkit-background-size: cover;
@@ -38,17 +52,25 @@
               /*螢幕縱向*/
               @media screen and (orientation: portrait) {
                   html {
-                      background: url(images/mxmslogo9b-p.JPG) no-repeat center center fixed;
+                      background: url(images/mxmslogo9d-p.jpg) no-repeat center center fixed;
                       background-position: bottom;
-                      background-size: 400px 400px;
+                      background-size: 415px 540px;
+                  }
+                  #divEdynasty {
+                      text-align: center;
+                      margin-top: 250px;
                   }
               }
               /*螢幕橫向*/
               @media screen and (orientation: landscape) {
                   html {
-                      background: url(images/mxmslogo9b-p.JPG) no-repeat center center fixed;
+                      background: url(images/mxmslogo9d-p.JPG) no-repeat center center fixed;
                       background-position: bottom;
                       background-size: 300px 300px;
+                  }
+                  #divEdynasty {
+                      text-align: center;
+                      margin-top: 250px;
                   }
               }
           }
@@ -69,9 +91,9 @@
               }
 
           .btSignIn {
-              background: linear-gradient(to bottom, #11447a 5%, #2da8fa 100%);
+              background: linear-gradient(to left, #11447a 5%, #2da8fa 100%);
               background-color: #11447a;
-              border: 1px solid #337fed;
+              border: 0px solid #337fed;
               display: inline-block;
               cursor: pointer;
               text-decoration: none;
@@ -88,7 +110,7 @@
       
       <div>
           <div style="position:absolute;top:0px;left:0px;width:100%">
-              <div style="position: absolute; width: 100%; text-align: center; margin-top: 50px">
+              <div style="position: absolute; width: 100%; text-align: center; margin-top: 20px">
                   <img id="imgCompany" src="images/Logo.png" style="width: 120px" />
               </div>
           </div>
@@ -184,7 +206,7 @@
               <div class="animate form login_form">
                   <section class="login_content2">
                       <form id="frmLogin">
-                          <div style="text-align:center;margin-top:130px;">
+                          <div style="text-align:center;margin-top:110px;">
                               <img src="images/mXmsLogo.jpg" style="width:240px;">
                               <!--<img src="images/mxmsbeta2.jpg" style="width:240px;">-->
                               <h3 id="CompanyName" style="color:white" hidden></h3>
@@ -193,14 +215,14 @@
                           <div style="margin-top:100px">
                           </div>
                           <div>
-                              <input id="username" type="text" style="font-size: 20px; width: 250px; margin: auto; border-width: 2PX; border-radius: 8PX;" class="form-control" placeholder="帳號" required="" autocomplete="off" value="" />
+                              <input id="username" type="text" class="form-control Logintxt" placeholder="帳號" required="" autocomplete="off" value="" />
                           </div>
                           <div style="margin-top:20px;">
-                              <input id="password" type="password" style="font-size: 20px; width: 250px; margin: auto; border-width: 2PX; border-radius: 8PX " class="form-control" placeholder="密碼" required="" value="" />
+                              <input id="password" type="password" class="form-control Logintxt" placeholder="密碼" required="" value="" />
                               <input id="CompanyID" type="hidden" value="xxx" />
                           </div>
                           <div style="margin-top:20px;text-align:center">
-                              <button type="button" id="btSignIn" class="btn btn-round btn-secondary btSignIn" style="color: white; width: 250px; border-width: 2PX; border-radius: 8PX; font-size: 20px; font-weight: bold"> 登入</button>
+                              <button type="button" id="btSignIn" class="btn btn-round btn-secondary btSignIn" style="color: white; width: 250px; border-radius: 8PX; font-size: 20px; font-weight: bold"> 登入</button>
                               <a class="reset_pass" href="#" hidden> Lost your password?</a>
                           </div>
                           <div id="icrpwd" style="display: none; text-align: center">
@@ -218,7 +240,7 @@
 
                           <div class="clearfix"> </div>
 
-                          <div style="text-align:center;margin-top:130px">
+                          <div id="divEdynasty">
                               <p style="font-size:14px"> ©2024 世代流通資訊股份有限公司 版權所有</p>
                           </div>
 
@@ -233,6 +255,7 @@
             <p style="font-size:14px"> ©2024 世代流通資訊股份有限公司 版權所有</p>
         </div>
     </div>-->
+                          
                       </form>
 
 
@@ -299,8 +322,6 @@
 
                       </form>
 
-
-
                   </section>
               </div>
 
@@ -348,4 +369,4 @@
                             <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js" > </script >
 
                             </body >
-                            </html >
+</html >
