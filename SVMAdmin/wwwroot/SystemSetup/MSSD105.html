@@ -116,7 +116,7 @@
 
                 <article id="pgMSSD105Init" class="row">
                     <div class="col-md-12 col-sm-12">
-                        <div class="x_panel" style="padding: 0px; height: 100%; width: 100%; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
+                        <div id="PanelIni" class="x_panel DyForm3-PanelIni">
                             <style>
                                 .ErrorControl {
                                     background-color: red;
@@ -176,6 +176,14 @@
                                     top: 65px;
                                     z-index: 2;
                                 }
+
+                                #PanelIni {
+                                    background-image: url(images/mxmslogo9a.JPG);
+                                    background-position: center center;
+                                    background-repeat: no-repeat;
+                                    background-attachment: fixed;
+                                    background-position: bottom;
+                                }
                                 /*手機畫面*/
                                 @media (max-width:767px) {
                                     #tdflag, #thead1, #thead2, #thead3, #thead4 {
@@ -195,6 +203,9 @@
                                     #td0 {
                                         top: 130px;
                                         z-index: 2;
+                                    }
+                                    #PanelIni {
+                                        background-size: 400px 430px;
                                     }
                                 }
                             </style>
@@ -237,7 +248,7 @@
 
                             <div class="card-block forminput">
                                 <div class="x_content">
-                                    <div style="overflow: auto; height: 550px;">
+                                    <div class="DyForm3-TableIni">
                                         <table id="tbQuery" class="table table-bordered DyForm3-Table">
                                             <thead>
                                                 <!--第一層-->
@@ -294,7 +305,7 @@
 
                     <div class="modal fade" id="modal_Shop1" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" id="modalcon_Shop1" style="background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
+                            <div class="modal-content" id="modalcon_Shop1">
                                 <style>
 
                                     #tbShop1 thead tr th {
@@ -356,7 +367,13 @@
                                         height: 900px;
                                         width: 1400px;
                                         left: -200px;
+                                        background-image: url(images/mxmslogo9a.JPG);
+                                        background-position: center center;
+                                        background-repeat: no-repeat;
+                                        background-attachment: fixed;
+                                        background-position: bottom;
                                     }
+
                                     #divShop1 {
                                         height: 550px;
                                     }
@@ -368,6 +385,7 @@
                                                 height: 650px;
                                                 width: 100%;
                                                 left: 0px;
+                                                background-size: 400px 430px;
                                             }
 
                                             #divShop1 {
@@ -396,6 +414,7 @@
                                                 height: 280px;
                                                 width: 100%;
                                                 left: 0px;
+                                                background-size: 400px 430px;
                                             }
 
                                             #divShop1 {
@@ -491,7 +510,7 @@
 
                     <div class="modal fade" id="modal_Date1" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" id="modalcon_Date1" style="background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
+                            <div class="modal-content" id="modalcon_Date1">
                                 <style>
                                     #tbDate1 thead tr th {
                                         font-size: 16px;
@@ -547,11 +566,16 @@
                                         top: 65px;
                                         z-index: 2;
                                     }
-                                    
+
                                     #modalcon_Date1 {
                                         height: 900px;
                                         width: 1400px;
                                         left: -200px;
+                                        background-image: url(images/mxmslogo9a.JPG);
+                                        background-position: center center;
+                                        background-repeat: no-repeat;
+                                        background-attachment: fixed;
+                                        background-position: bottom;
                                     }
 
                                     #divDate1 {
@@ -565,6 +589,7 @@
                                                 height: 650px;
                                                 width: 100%;
                                                 left: 0px;
+                                                background-size: 400px 430px;
                                             }
 
                                             #divDate1 {
@@ -593,6 +618,7 @@
                                                 height: 280px;
                                                 width: 100%;
                                                 left: 0px;
+                                                background-size: 400px 430px;
                                             }
 
                                             #divDate1 {

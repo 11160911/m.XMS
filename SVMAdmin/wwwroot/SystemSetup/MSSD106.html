@@ -114,9 +114,9 @@
 
                 </div>
 
-                <article id="pgMSSD106Init" class="row">
+                <article id="pgMSSD106Init" class="row" style="background-color: white;">
                     <div class="col-md-12 col-sm-12">
-                        <div class="x_panel" style="padding: 0px; height: 100%; width: 100%; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
+                        <div id="PanelIni" class="x_panel DyForm3-PanelIni">
                             <style>
                                 .ErrorControl {
                                     background-color: red;
@@ -170,6 +170,24 @@
                                 #td0 {
                                     top: 65px;
                                     z-index: 2;
+                                }
+
+                                #PanelIni {
+                                    background-image: url(images/mxmslogo9a.JPG);
+                                    background-position: center center;
+                                    background-repeat: no-repeat;
+                                    background-attachment: fixed;
+                                    background-position: bottom;
+                                }
+
+                                /*手機畫面*/
+                                @media (max-width:767px) {
+                                    #PanelIni {
+                                        background-size: 400px 430px;
+                                    }
+                                    #TableIni {
+                                        height: 400px;
+                                    }
                                 }
                             </style>
 
@@ -235,7 +253,7 @@
 
                             <div class="card-block forminput">
                                 <div class="x_content">
-                                    <div style="overflow: auto; height: 550px;">
+                                    <div id="TableIni" class="DyForm3-TableIni">
                                         <table id="tbQuery" class="table table-bordered DyForm3-Table">
                                             <thead>
                                                 <!--第一層-->

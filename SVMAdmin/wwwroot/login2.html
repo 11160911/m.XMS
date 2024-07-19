@@ -20,7 +20,7 @@
     <link href="css/custom.css" rel="stylesheet">
   </head>
 
-  <body class="login right_col" style="background-color:white">
+  <body class="login right_col">
       <style>
           .Logintxt {
               font-size: 20px;
@@ -42,37 +42,11 @@
               -moz-background-size: cover;
               -o-background-size: cover;*/
               /*background-size: 620px 850px;*/
-
-              background: url(images/mxmslogo9a.JPG) no-repeat center center fixed;
-              background-position: bottom
-          }
-
-          /*手機畫面*/
-          @media (max-width:767px) {
-              /*螢幕縱向*/
-              @media screen and (orientation: portrait) {
-                  html {
-                      background: url(images/mxmslogo9d-p.jpg) no-repeat center center fixed;
-                      background-position: bottom;
-                      background-size: 415px 540px;
-                  }
-                  #divEdynasty {
-                      text-align: center;
-                      margin-top: 250px;
-                  }
-              }
-              /*螢幕橫向*/
-              @media screen and (orientation: landscape) {
-                  html {
-                      background: url(images/mxmslogo9d-p.JPG) no-repeat center center fixed;
-                      background-position: bottom;
-                      background-size: 300px 300px;
-                  }
-                  #divEdynasty {
-                      text-align: center;
-                      margin-top: 250px;
-                  }
-              }
+              background-image: url(images/mxmslogo9a.JPG);
+              background-position: center center;
+              background-repeat: no-repeat;
+              background-attachment: fixed;
+              background-position: bottom;
           }
 
           .login_content2 .btn.submit {
@@ -97,11 +71,53 @@
               display: inline-block;
               cursor: pointer;
               text-decoration: none;
+              color: white;
+              width: 250px;
+              border-radius: 8PX;
+              font-size: 20px;
+              font-weight: bold
           }
         .btSignIn:hover {
             background: linear-gradient(to right, #2da8fa 5%, #11447a 100%);
             background-color: #2da8fa;
+            color:white;
         }
+
+          /*手機畫面*/
+          @media (max-width:767px) {
+              /*螢幕縱向*/
+              @media screen and (orientation: portrait) {
+                  html {
+                      background-image: url(images/mxmslogo9d-p.JPG);
+                      background-position: center center;
+                      background-repeat: no-repeat;
+                      background-attachment: fixed;
+                      background-position: bottom;
+                      background-size: 415px 540px;
+                  }
+
+                  #divEdynasty {
+                      text-align: center;
+                      margin-top: 250px;
+                  }
+              }
+              /*螢幕橫向*/
+              @media screen and (orientation: landscape) {
+                  html {
+                      background-image: url(images/mxmslogo9d-p.JPG);
+                      background-position: center center;
+                      background-repeat: no-repeat;
+                      background-attachment: fixed;
+                      background-position: bottom;
+                      background-size: 300px 300px;
+                  }
+
+                  #divEdynasty {
+                      text-align: center;
+                      margin-top: 250px;
+                  }
+              }
+          }
      /*   .btSignIn:active {
             position: relative;
             top: 1px;
@@ -222,7 +238,7 @@
                               <input id="CompanyID" type="hidden" value="xxx" />
                           </div>
                           <div style="margin-top:20px;text-align:center">
-                              <button type="button" id="btSignIn" class="btn btn-round btn-secondary btSignIn" style="color: white; width: 250px; border-radius: 8PX; font-size: 20px; font-weight: bold"> 登入</button>
+                              <button type="button" id="btSignIn" class="btn btn-round btSignIn"> 登入</button>
                               <a class="reset_pass" href="#" hidden> Lost your password?</a>
                           </div>
                           <div id="icrpwd" style="display: none; text-align: center">

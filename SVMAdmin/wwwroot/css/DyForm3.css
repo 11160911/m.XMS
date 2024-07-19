@@ -205,3 +205,19 @@
     color: #0033cc;
     font-weight: bold;
 }
+
+/*第一層主畫面*/
+.DyForm3-PanelIni {
+    padding: 0px;
+    height: 750px;
+    width: 100%;
+}
+/*第一層Table*/
+.DyForm3-TableIni {
+    overflow: auto;
+    height: 450px;
+}
+
+
+
+
