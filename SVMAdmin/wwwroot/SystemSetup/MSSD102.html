@@ -117,7 +117,7 @@
 
                 <article id="pgMSSD102Init" class="row">
                     <div class="col-md-12 col-sm-12">
-                        <div class="x_panel" style="padding: 0px; height: 100%; width: 100%; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
+                        <div id="PanelIni" class="x_panel DyForm3-PanelIni">
                             <style>
                                 .ErrorControl {
                                     background-color: red;
@@ -156,6 +156,20 @@
                                     top: 0;
                                     z-index: 2;
                                     height: 35px;
+                                }
+
+                                #PanelIni {
+                                    background-image: url(images/mxmslogo9a.JPG);
+                                    background-position: center center;
+                                    background-repeat: no-repeat;
+                                    background-attachment: fixed;
+                                    background-position: bottom;
+                                }
+                                /*手機畫面*/
+                                @media (max-width:767px) {
+                                    #PanelIni {
+                                        background-size: 400px 430px;
+                                    }
                                 }
                             </style>
 
@@ -196,7 +210,7 @@
 
                             <div class="card-block forminput">
                                 <div class="x_content">
-                                    <div style="overflow: auto; height: 550px;">
+                                    <div class="DyForm3-TableIni">
                                         <table id="tbQuery" class="table table-bordered DyForm3-Table">
                                             <thead>
                                                 <tr>
@@ -224,7 +238,7 @@
 
                     <div class="modal fade" id="modal_PSNO" data-keyboard="false" data-backdrop="static" style="z-index:1042">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" id="modalcon_PSNO" style="background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
+                            <div class="modal-content" id="modalcon_PSNO">
                                 <style>
                                     #tbShopNo_PSNO thead tr th, #tbDate_PSNO thead tr th {
                                         font-size: 16px;
@@ -280,6 +294,11 @@
                                         height: 900px;
                                         width: 1400px;
                                         left: -200px;
+                                        background-image: url(images/mxmslogo9a.JPG);
+                                        background-position: center center;
+                                        background-repeat: no-repeat;
+                                        background-attachment: fixed;
+                                        background-position: bottom;
                                     }
 
                                     #divPSNO {
@@ -293,6 +312,7 @@
                                                 height: 650px;
                                                 width: 100%;
                                                 left: 0px;
+                                                background-size: 400px 430px;
                                             }
 
                                             #divPSNO {
@@ -316,6 +336,7 @@
                                                 height: 330px;
                                                 width: 100%;
                                                 left: 0px;
+                                                background-size: 400px 430px;
                                             }
 
                                             #divPSNO {
@@ -455,7 +476,7 @@
 
                     <div class="modal fade" id="modal_PSNO_ShopNoDate" data-keyboard="false" data-backdrop="static" style="z-index:1043">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" id="modalcon_PSNO_ShopNoDate" style="background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
+                            <div class="modal-content" id="modalcon_PSNO_ShopNoDate">
                                 <style>
                                     #tbShopNo_PSNO_ShopNoDate thead tr th, #tbDate_PSNO_ShopNoDate thead tr th {
                                         font-size: 16px;
@@ -516,6 +537,11 @@
                                         height: 900px;
                                         width: 1400px;
                                         left: -200px;
+                                        background-image: url(images/mxmslogo9a.JPG);
+                                        background-position: center center;
+                                        background-repeat: no-repeat;
+                                        background-attachment: fixed;
+                                        background-position: bottom;
                                     }
 
                                     #divPSNO_ShopNoDate {
@@ -529,6 +555,7 @@
                                                 height: 650px;
                                                 width: 100%;
                                                 left: 0px;
+                                                background-size: 400px 430px;
                                             }
 
                                             #divPSNO_ShopNoDate {
@@ -553,6 +580,7 @@
                                                 height: 330px;
                                                 width: 100%;
                                                 left: 0px;
+                                                background-size: 400px 430px;
                                             }
 
                                             #divPSNO_ShopNoDate {

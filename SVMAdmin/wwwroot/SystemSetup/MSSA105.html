@@ -113,7 +113,7 @@
                 </div>
                 <article id="pgMSSA105Init" class="row">
                     <div class="col-md-12 col-sm-12">
-                        <div class="x_panel" style="padding: 0px; height: 100%; width: 100%; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 450px 550px ">
+                        <div id="PanelIni" class="x_panel DyForm3-PanelIni">
                             <style>
                                 .ErrorControl {
                                     background-color: red;
@@ -174,15 +174,17 @@
                                     z-index: 2;
                                 }
 
-                                #tbQuery {
-                                    width: 50%
+                                #PanelIni {
+                                    background-image: url(images/mxmslogo9a.JPG);
+                                    background-position: center center;
+                                    background-repeat: no-repeat;
+                                    background-attachment: fixed;
+                                    background-position: bottom;
                                 }
-
-                                @media (max-width:650px) {
-                                    #tbQuery {
-                                        width: 95%;
-                                        margin-left: auto;
-                                        margin-right: auto
+                                /*手機畫面*/
+                                @media (max-width:767px) {
+                                    #PanelIni {
+                                        background-size: 400px 430px;
                                     }
                                 }
                             </style>
@@ -222,8 +224,8 @@
 
                             <div class="card-block forminput">
                                 <div class="x_content">
-                                    <div style="overflow: auto; height: 630px;">
-                                        <table id="tbQuery" class="table table-bordered">
+                                    <div class="DyForm3-TableIniMob">
+                                        <table id="tbQuery" class="table table-bordered DyForm3-Table">
                                             <thead>
                                                 <!--第一層-->
                                                 <tr>
@@ -260,7 +262,7 @@
                     
                     <div class="modal fade" id="modal_Step1" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style=" background-image: url(images /Web底圖-地球-2.png); background-size: contain ">
+                            <div class="modal-content" id="modalcon_Step1">
                                 <style>
                                     .ErrorControl {
                                         background-color: red;
@@ -291,35 +293,19 @@
                                         left: 0; /*首行永遠固定於左 */
                                     }
 
-                                    /*.table thead th, .table thead td {
-                                        position: sticky;
-                                        border-top: 0;
-                                        border-bottom: 0;*/
-                                    /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
-                                    /*box-shadow: 0 0px 2px 0px inset #ddd;
+                                    #modalcon_Step1 {
+                                        background-image: url(images/mxmslogo9a.JPG);
+                                        background-position: center center;
+                                        background-repeat: no-repeat;
+                                        background-attachment: fixed;
+                                        background-position: bottom;
                                     }
-
-                                    #thead1, #thead2, #thead3, #thead4 {
-                                        top: 0;
-                                        z-index: 2;
-                                        height: 35px;
+                                    /*手機畫面*/
+                                    @media (max-width:767px) {
+                                        #modalcon_Step1 {
+                                            background-size: 400px 430px;
+                                        }
                                     }
-
-                                    #th1, #th2 {
-                                        top: 35px;
-                                        z-index: 2;
-                                    }
-
-                                    #td1, #td2, #td3 {
-                                        top: 65px;
-                                        z-index: 2;
-                                        color: red;
-                                    }
-
-                                    #td0 {
-                                        top: 65px;
-                                        z-index: 2;
-                                    }*/
                                 </style>
                                 <div class="modal-body modal-tab-container" style="padding:8px">
 
@@ -388,7 +374,7 @@
 
                     <div class="modal fade" id="modal_Step2" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style=" background-image: url(images /Web底圖-地球-2.png); background-size: contain ">
+                            <div class="modal-content" id="modalcon_Step2">
                                 <style>
                                     .ErrorControl {
                                         background-color: red;
@@ -419,35 +405,19 @@
                                         left: 0; /*首行永遠固定於左 */
                                     }
 
-                                    /*.table thead th, .table thead td {
-                                        position: sticky;
-                                        border-top: 0;
-                                        border-bottom: 0;*/
-                                    /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
-                                    /*box-shadow: 0 0px 2px 0px inset #ddd;
+                                    #modalcon_Step2 {
+                                        background-image: url(images/mxmslogo9a.JPG);
+                                        background-position: center center;
+                                        background-repeat: no-repeat;
+                                        background-attachment: fixed;
+                                        background-position: bottom;
                                     }
-
-                                    #thead1, #thead2, #thead3, #thead4 {
-                                        top: 0;
-                                        z-index: 2;
-                                        height: 35px;
+                                    /*手機畫面*/
+                                    @media (max-width:767px) {
+                                        #modalcon_Step2 {
+                                            background-size: 400px 430px;
+                                        }
                                     }
-
-                                    #th1, #th2 {
-                                        top: 35px;
-                                        z-index: 2;
-                                    }
-
-                                    #td1, #td2, #td3 {
-                                        top: 65px;
-                                        z-index: 2;
-                                        color: red;
-                                    }
-
-                                    #td0 {
-                                        top: 65px;
-                                        z-index: 2;
-                                    }*/
                                 </style>
                                 <div class="modal-body modal-tab-container" style="padding:8px">
 

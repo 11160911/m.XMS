@@ -116,7 +116,7 @@
 
                 <article id="pgMSVP101Init" class="row">
                     <div class="col-md-12 col-sm-12">
-                        <div class="x_panel" style="padding: 0px; height: 100%; width: 100%; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
+                        <div id="PanelIni" class="x_panel DyForm3-PanelIni">
                             <style>
                                 .ErrorControl {
                                     background-color: red;
@@ -149,6 +149,20 @@
                                     top: 0;
                                     z-index: 2;
                                     height: 35px;
+                                }
+
+                                #PanelIni {
+                                    background-image: url(images/mxmslogo9a.JPG);
+                                    background-position: center center;
+                                    background-repeat: no-repeat;
+                                    background-attachment: fixed;
+                                    background-position: bottom;
+                                }
+                                /*手機畫面*/
+                                @media (max-width:767px) {
+                                    #PanelIni {
+                                        background-size: 400px 430px;
+                                    }
                                 }
                             </style>
 
@@ -194,7 +208,7 @@
 
                             <div class="card-block forminput">
                                 <div class="x_content">
-                                    <div style="overflow: auto; height: 550px;">
+                                    <div class="DyForm3-TableIni">
                                         <table id="tbQuery" class="table table-bordered DyForm3-Table">
                                             <thead>
                                                 <tr>
@@ -222,7 +236,7 @@
 
                     <div class="modal fade" id="modal_EDMHistoryQuery" data-keyboard="false" data-backdrop="static" style="z-index:1041">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" id="modalcon_EDMHistoryQuery" style="overflow: auto; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
+                            <div class="modal-content" id="modalcon_EDMHistoryQuery">
                                 <style>
                                     #tbEDMHistoryQuery thead tr th {
                                         font-size: 16px;
@@ -254,8 +268,14 @@
                                     }
 
                                     #modalcon_EDMHistoryQuery {
+                                        overflow: auto;
                                         height: 900px;
                                         width: 1080px;
+                                        background-image: url(images/mxmslogo9a.JPG);
+                                        background-position: center center;
+                                        background-repeat: no-repeat;
+                                        background-attachment: fixed;
+                                        background-position: bottom;
                                     }
 
                                     #lblEDMDocNoTxt_EDMHistoryQuery {
@@ -283,6 +303,7 @@
                                             #modalcon_EDMHistoryQuery {
                                                 height: 650px;
                                                 width: 100%;
+                                                background-size: 400px 430px;
                                             }
                                             #lblEDMDocNoTxt_EDMHistoryQuery, #lblEDMDocNo_EDMHistoryQuery, #lblEDDateTxt_EDMHistoryQuery, #lblEDDate_EDMHistoryQuery {
                                                 margin-left: 15px;
@@ -295,6 +316,7 @@
                                             #modalcon_EDMHistoryQuery {
                                                 height: 330px;
                                                 width: 100%;
+                                                background-size: 400px 430px;
                                             }
                                             #lblEDMDocNoTxt_EDMHistoryQuery, #lblEDMDocNo_EDMHistoryQuery, #lblEDDateTxt_EDMHistoryQuery, #lblEDDate_EDMHistoryQuery {
                                                 margin-left: 15px;
@@ -379,7 +401,7 @@
 
                     <div class="modal fade" id="modal_SendSet" data-keyboard="false" data-backdrop="static" style="z-index:1042">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" id="modalcon_SendSet" style="overflow: auto; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
+                            <div class="modal-content" id="modalcon_SendSet">
                                 <style>
                                     #tbSendSet thead tr th {
                                         font-size: 16px;
@@ -417,8 +439,14 @@
                                     }
 
                                     #modalcon_SendSet {
+                                        overflow: auto;
                                         height: 900px;
                                         width: 1080px;
+                                        background-image: url(images/mxmslogo9a.JPG);
+                                        background-position: center center;
+                                        background-repeat: no-repeat;
+                                        background-attachment: fixed;
+                                        background-position: bottom;
                                     }
                                     /*手機畫面*/
                                     @media (max-width:767px) {
@@ -427,6 +455,7 @@
                                             #modalcon_SendSet {
                                                 height: 650px;
                                                 width: 100%;
+                                                background-size: 400px 430px;
                                             }
                                         }
                                         /*螢幕橫向*/
@@ -434,6 +463,7 @@
                                             #modalcon_SendSet {
                                                 height: 330px;
                                                 width: 100%;
+                                                background-size: 400px 430px;
                                             }
                                         }
                                     }
@@ -633,7 +663,7 @@
 
                     <div class="modal fade" id="modal_DMSel" data-keyboard="false" data-backdrop="static" style="z-index:1043">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" id="modalcon_DMSel" style="overflow: auto; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
+                            <div class="modal-content" id="modalcon_DMSel">
                                 <style>
                                     #tbDMSel thead tr th {
                                         font-size: 16px;
@@ -665,9 +695,15 @@
                                     }
 
                                     #modalcon_DMSel {
+                                        overflow: auto;
                                         height: 900px;
                                         width: 1200px;
                                         left: -100px;
+                                        background-image: url(images/mxmslogo9a.JPG);
+                                        background-position: center center;
+                                        background-repeat: no-repeat;
+                                        background-attachment: fixed;
+                                        background-position: bottom;
                                     }
                                     #divDMSel {
                                         height: 650px;
@@ -680,6 +716,7 @@
                                                 height: 650px;
                                                 width: 100%;
                                                 left: 0px;
+                                                background-size: 400px 430px;
                                             }
 
                                             #divDMSel {
@@ -692,6 +729,7 @@
                                                 height: 330px;
                                                 width: 100%;
                                                 left: 0px;
+                                                background-size: 400px 430px;
                                             }
 
                                             #divDMSel {
