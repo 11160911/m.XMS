@@ -178,10 +178,9 @@
 
                                 #PanelIni {
                                     background-image: url(images/mxmslogo9a.JPG);
-                                    background-position: center center;
                                     background-repeat: no-repeat;
                                     background-attachment: fixed;
-                                    background-position: bottom;
+                                    background-position: center;
                                 }
                                 /*手機畫面*/
                                 @media (max-width:767px) {
@@ -191,11 +190,11 @@
                                 }
                             </style>
 
-                            <div class="form-group row" style="margin-left: 5px; width: 100%">
+                            <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom: 0px">
                                 <label id="lblProgramName" class="DyForm3-ProgramName">期間銷售業績比較表</label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 20px; width: 100%">
+                            <div class="form-group row" style="margin-left: 20px; width: 100%; margin-bottom: 5px">
                                 <button class="DyForm3-BtnClear" id="btClear" type="button" style="margin-left: 0px">
                                     清除
                                     <i class="fa fa-close"></i>
@@ -206,7 +205,7 @@
                                 </button>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 5px; width: 100%;margin-top:5px">
+                            <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom: 0px">
                                 <mark class="DyForm3-DyNotEmptyMark">*</mark>
                                 <label class="DyForm3-Label">本期</label>
                                 <input class="DyForm3-TextBox" id="txtOpenDateS2" style="margin-left: 5px; width: 120px; font-size: 14px" type="date" />
@@ -214,7 +213,7 @@
                                 <input class="DyForm3-TextBox" id="txtOpenDateE2" style="width: 120px; font-size: 14px" type="date" />
                             </div>
 
-                            <div class="form-group row" style="margin-left: 5px; width: 100%">
+                            <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom: 5px">
                                 <mark class="DyForm3-DyNotEmptyMark">*</mark>
                                 <label class="DyForm3-Label">前期</label>
                                 <input class="DyForm3-TextBox" id="txtOpenDateS1" style="margin-left: 5px; width: 120px; font-size: 14px" type="date" />
@@ -222,7 +221,7 @@
                                 <input class="DyForm3-TextBox" id="txtOpenDateE1" style="width: 120px; font-size: 14px" type="date" />
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
                                 <button class="DyForm3-BtnShop" id="btShopNo" type="button">店別選取</button>
                                 <label class="DyForm3-LabelRed" id="lblShopNoCnt" style=" margin-left: 10px; margin-top: 5px"></label>
                                 <label class="DyForm3-Label" id="lblShopNoName" style=" margin-left: 10px; margin-top: 5px"></label>
@@ -237,7 +236,7 @@
                                 <label class="DyForm3-LabelBlack" for="rdoB" style="margin-top:2px">&ensp;大類</label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%; ">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px ">
                                 <label class="DyForm3-Label" style="font-size: 16px; margin-top: 0px ">成長率=(本期-前期)/前期</label>
                             </div>
 
@@ -247,7 +246,7 @@
 
                             <div class="card-block forminput">
                                 <div class="x_content">
-                                    <div class="DyForm3-TableIniMob">
+                                    <div class="DyForm3-TableIniMob1">
                                         <table id="tbQuery" class="table table-bordered DyForm3-Table" >
                                             <thead>
                                                 <!--第一層-->

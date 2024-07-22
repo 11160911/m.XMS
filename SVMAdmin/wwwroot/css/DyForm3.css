@@ -215,15 +215,30 @@
 /*第一層Table*/
 .DyForm3-TableIni {
     overflow: auto;
+    height: 530px;
+}
+
+/*第一層Table(表頭資料多時使用)*/
+.DyForm3-TableIni1 {
+    overflow: auto;
     height: 450px;
 }
 
 /*第一層Table(mobile)*/
 .DyForm3-TableIniMob {
     overflow: auto;
+    height: 530px;
+    width:50%;
+}
+
+/*第一層Table(mobile 表頭資料多時使用)*/
+.DyForm3-TableIniMob1 {
+    overflow: auto;
     height: 450px;
     width:50%;
 }
+
+
 /*第一層Table(EDM)*/
 .DyForm3-TableIniEDM {
     overflow: auto;
@@ -231,7 +246,7 @@
 }
 /*手機畫面*/
 @media (max-width:767px) {
-    .DyForm3-TableIniMob {
+    .DyForm3-TableIniMob, .DyForm3-TableIniMob1 {
         width: 100%;
     }
 }
