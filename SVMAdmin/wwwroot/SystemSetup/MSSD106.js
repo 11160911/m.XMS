@@ -1238,6 +1238,55 @@ Timerset(sessionStorage.getItem('isamcomp'));
         $("#txtLpQ_City").val('');
         $("#tbLookup_City .checkbox").prop('checked', false);
     };
+
+    let ClearQuery = function () {
+        $('#tbQuery thead tr th').css('background-color', '#ffb620')
+        $('#tbQueryMW thead tr th').css('background-color', '#ffb620')
+        grdM.BindData(null)
+        grdMW.BindData(null)
+
+        var sumtdQ = document.querySelector('.QSum');
+        for (i = 0; i < sumtdQ.childElementCount; i++) {
+            if (i == 0) {
+                sumtdQ.children[i].innerHTML = "總數";
+            }
+            else {
+                sumtdQ.children[i].innerHTML = "";
+            }
+        }
+        var sumtdQ_MW = document.querySelector('.QSumMW');
+        for (i = 0; i < sumtdQ_MW.childElementCount; i++) {
+            if (i == 0) {
+                sumtdQ_MW.children[i].innerHTML = "總數";
+            }
+            else {
+                sumtdQ_MW.children[i].innerHTML = "";
+            }
+        }
+
+        if ($('#rdoShop').prop('checked') == true || $('#rdoCity').prop('checked') == true) {
+            $('#tbQuery').show();
+            $('#tbQueryMW').hide();
+
+            var heads = $('#tbQuery thead tr th#thtype');
+            if ($('#rdoShop').prop('checked')) {
+                $(heads).html('店別');
+            }
+            else if ($('#rdoCity').prop('checked')) {
+                $(heads).html('縣市');
+            }
+        }
+        else if ($('#rdoMW').prop('checked') == true) {
+            $('#tbQuery').hide();
+            if ($('#tbQueryMW').attr('hidden') == undefined) {
+                $('#tbQueryMW').show();
+            }
+            else {
+                $('#tbQueryMW').removeAttr('hidden');
+                $('#tbQueryMW').show();
+            }
+        }
+    }
 //#region FormLoad
     let GetInitMSSD106 = function (data) {
         if (ReturnMsg(data, 0) != "GetInitMSSD106OK") {
@@ -1272,6 +1321,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#btLpExit_City').click(function () { btLpExit_City_click(this) });
             $('#btLpClear_City').click(function () { btLpClear_City_click(this) });
 
+            $('#rdoShop,#rdoCity,#rdoMW').change(function () { ClearQuery() });
         }
     };
     

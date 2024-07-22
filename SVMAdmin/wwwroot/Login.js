@@ -301,6 +301,8 @@
     }
 
     var LoginSys = function () {
+        $('#username').val($('#username').val().trim());
+
         var pData = {
             USERID: $('#username').val(),
             PASSWORD: $('#password').val(),

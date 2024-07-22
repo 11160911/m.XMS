@@ -1141,6 +1141,30 @@ Timerset(sessionStorage.getItem('isamcomp'));
         $("#txtLpQ_ShopNo").val('');
         $("#tbLookup_ShopNo .checkbox").prop('checked', false);
     };
+
+    let ClearQuery = function () {
+        $('#tbQuery thead tr th').css('background-color', '#ffb620')
+        grdM.BindData(null)
+        var heads = $('#tbQuery thead tr th#thead1');
+        if ($('#rdoS').prop('checked')) {
+            $(heads).html('店櫃');
+        }
+        else if ($('#rdoD').prop('checked')) {
+            $(heads).html('部門');
+        }
+        else if ($('#rdoB').prop('checked')) {
+            $(heads).html('大類');
+        }
+        var sumtdQ = document.querySelector('.QSum');
+        for (i = 0; i < sumtdQ.childElementCount; i++) {
+            if (i == 0) {
+                sumtdQ.children[i].innerHTML = "總數";
+            }
+            else {
+                sumtdQ.children[i].innerHTML = "";
+            }
+        }
+    }
 //#region FormLoad
     let GetInitMSSA103 = function (data) {
         if (ReturnMsg(data, 0) != "GetInitMSSA103OK") {
@@ -1165,6 +1189,8 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#btLpOK_ShopNo').click(function () { btLpOK_ShopNo_click(this) });
             $('#btLpExit_ShopNo').click(function () { btLpExit_ShopNo_click(this) });
             $('#btLpClear_ShopNo').click(function () { btLpClear_ShopNo_click(this) });
+
+            $('#rdoS,#rdoD,#rdoB').change(function () { ClearQuery() });
         }
     };
     

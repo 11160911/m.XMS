@@ -13585,7 +13585,7 @@ namespace SVMAdmin.Controllers
                     sql += "Where a.Companycode='" + uu.CompanyId + "' and PS_No='"+ PS_NO + "' order by a.ShopNo";
 
                     sqlSum = "Select Sum(isnull(a.issueQty,0)) Cnt1,Sum(isnull(a.ReclaimQty,0)) Cnt2, ";
-                    sqlSum += "case when Sum(isnull(a.issueQty,0))=0 then case when Sum(isnull(a.ReclaimQty,0))=0 then format(0,'P1') else format(999,'P1') end"
+                    sqlSum += "case when Sum(isnull(a.issueQty,0))=0 then case when Sum(isnull(a.ReclaimQty,0))=0 then format(0,'P1') else format(999,'P1') end "
                         + "else format(cast(Sum(isnull(a.ReclaimQty,0)) as Float)/cast(Sum(isnull(a.issueQty,0)) as Float),'P1') end as RePercent, ";
                     sqlSum += "Sum(isnull(a.ShareAmt,0)) ActualDiscount,Sum(isnull(a.ReclaimCash,0)) SalesCash1,Sum(isnull(a.ReclaimTrans,0)) SalesCnt1, ";
                     sqlSum += "case when Sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(Sum(isnull(a.ReclaimCash,0))/Sum(isnull(a.ReclaimTrans,0)),0) end as SalesPrice1, ";
@@ -13596,7 +13596,7 @@ namespace SVMAdmin.Controllers
                 }else if (Flag == "DA")
                 {
                     sql = "Select a.SalesDate as id,Sum(isnull(a.PrintQty,0)) Cnt1,Sum(isnull(a.ReclaimQty,0)) Cnt2, ";
-                    sql += "case when Sum(isnull(a.PrintQty,0))=0 then case when Sum(isnull(a.ReclaimQty,0))=0 then format(0,'P1') else format(999,'P1') end"
+                    sql += "case when Sum(isnull(a.PrintQty,0))=0 then case when Sum(isnull(a.ReclaimQty,0))=0 then format(0,'P1') else format(999,'P1') end "
                         + "else format(cast(Sum(isnull(a.ReclaimQty,0)) as Float)/cast(Sum(isnull(a.PrintQty,0)) as Float),'P1') end as RePercent, ";
                     sql += "Sum(isnull(a.ShareAmt,0)) ActualDiscount,Sum(isnull(a.ReclaimCash,0)) SalesCash1,Sum(isnull(a.ReclaimTrans,0)) SalesCnt1, ";
                     sql += "case when Sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(Sum(isnull(a.ReclaimCash,0))/Sum(isnull(a.ReclaimTrans,0)),0) end as SalesPrice1, ";

@@ -378,6 +378,27 @@
     };
 //#endregion
 
+    let ClearQuery = function () {
+        $('#tbQuery thead tr th').css('background-color', '#ffb620')
+        grdM.BindData(null)
+        var heads = $('#tbQuery thead tr th#th0');
+        if ($('#rdoShop').prop('checked')) {
+            $(heads).html('店別');
+        }
+        else if ($('#rdoOPTime').prop('checked')) {
+            $(heads).html('時段');
+        }
+        var sumtdQ = document.querySelector('.QSum');
+        for (i = 0; i < sumtdQ.childElementCount; i++) {
+            if (i == 0) {
+                sumtdQ.children[i].innerHTML = "合計";
+            }
+            else {
+                sumtdQ.children[i].innerHTML = "";
+            }
+        }
+    }
+
 //#region FormLoad
     let GetInitMSSA106 = function (data) {
         if (ReturnMsg(data, 0) != "GetInitMSSA106OK") {
@@ -408,6 +429,7 @@
             $('#btLpExit_ShopNo').click(function () { btLpExit_ShopNo_click(this) });
             $('#btLpClear_ShopNo').click(function () { btLpClear_ShopNo_click(this) });
             $('#btRe_Shop1').click(function () { btRe_Shop1_click(this) });
+            $('#rdoOPTime,#rdoShop').change(function () { ClearQuery() });
             //$('#rdoOPTime').prop('checked', 'true');
             SetMSSA106Query(data);
             InitFlag = "";
