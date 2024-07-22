@@ -315,7 +315,6 @@
             $('#modal_Lookup_ShopNo').modal('hide');
             return
         } else {
-            $('#lblShopCnt').html(chkedRow)
             chkShopNo = "";
             var ShopName = "";
             for (var i = 0; i < obchkedtd.length; i++) {
@@ -328,9 +327,11 @@
             }
             chkShopNo = chkShopNo.substr(0, chkShopNo.length - 1)
             if (chkedRow > 2) {
+                $('#lblShopCnt').html(chkedRow)
                 $('#lblShopName').html(ShopName.substr(0, ShopName.length - 1) + '...')
             }
             else {
+                $('#lblShopCnt').html('')
                 $('#lblShopName').html(ShopName.substr(0, ShopName.length - 1))
             }
             $('#btLpOK_ShopNo').prop('disabled', false);

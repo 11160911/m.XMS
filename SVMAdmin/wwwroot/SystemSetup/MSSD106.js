@@ -1101,7 +1101,6 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#modal_Lookup_VIPFaceID').modal('hide');
             return
         } else {
-            $('#lblVIPFaceIDCnt').html(chkedRow)
             chkVIPFaceID = "";
             var VIPFaceIDName = "";
             for (var i = 0; i < obchkedtd.length; i++) {
@@ -1114,9 +1113,11 @@ Timerset(sessionStorage.getItem('isamcomp'));
             }
             chkVIPFaceID = chkVIPFaceID.substr(0, chkVIPFaceID.length - 1)
             if (chkedRow > 10) {
+                $('#lblVIPFaceIDCnt').html(chkedRow)
                 $('#lblVIPFaceIDName').html(VIPFaceIDName.substr(0, VIPFaceIDName.length - 1) + '...')
             }
             else {
+                $('#lblVIPFaceIDCnt').html('');
                 $('#lblVIPFaceIDName').html(VIPFaceIDName.substr(0, VIPFaceIDName.length - 1))
             }
             $('#btLpOK_VIPFaceID').prop('disabled', false);
@@ -1205,7 +1206,6 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#modal_Lookup_City').modal('hide');
             return
         } else {
-            $('#lblCityCnt').html(chkedRow)
             chkCity = "";
             var CityName = "";
             for (var i = 0; i < obchkedtd.length; i++) {
@@ -1218,9 +1218,11 @@ Timerset(sessionStorage.getItem('isamcomp'));
             }
             chkCity = chkCity.substr(0, chkCity.length - 1)
             if (chkedRow > 2) {
+                $('#lblCityCnt').html(chkedRow)
                 $('#lblCityName').html(CityName.substr(0, CityName.length - 1) + '...')
             }
             else {
+                $('#lblCityCnt').html('')
                 $('#lblCityName').html(CityName.substr(0, CityName.length - 1))
             }
             $('#btLpOK_City').prop('disabled', false);

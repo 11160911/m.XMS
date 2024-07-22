@@ -1108,7 +1108,6 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#modalLookup_ShopNo').modal('hide');
             return
         } else {
-            $('#lblShopNoCnt').html(chkedRow)
             chkShopNo = "";
             var ShopNoName = "";
             for (var i = 0; i < obchkedtd.length; i++) {
@@ -1121,9 +1120,11 @@ Timerset(sessionStorage.getItem('isamcomp'));
             }
             chkShopNo = chkShopNo.substr(0, chkShopNo.length - 1)
             if (chkedRow > 2) {
+                $('#lblShopNoCnt').html(chkedRow)
                 $('#lblShopNoName').html(ShopNoName.substr(0, ShopNoName.length - 1) + '...')
             }
             else {
+                $('#lblShopNoCnt').html('')
                 $('#lblShopNoName').html(ShopNoName.substr(0, ShopNoName.length - 1))
             }
             $('#btLpOK_ShopNo').prop('disabled', false);

@@ -1335,7 +1335,6 @@ Timerset(sessionStorage.getItem('isamcomp'));
             UpdateVIPCnt();
             return
         } else {
-            $('#lblVIPFaceIDCnt_SendSet').html(chkedRow)
             chkVIPFaceID = "";
             chkVIPFaceIDName = "";
             var VIPFaceIDName = "";
@@ -1351,9 +1350,11 @@ Timerset(sessionStorage.getItem('isamcomp'));
             chkVIPFaceID = chkVIPFaceID.substr(0, chkVIPFaceID.length - 1)
             chkVIPFaceIDName = chkVIPFaceIDName.substr(0, chkVIPFaceIDName.length - 1)
             if (chkedRow > 6) {
+                $('#lblVIPFaceIDCnt_SendSet').html(chkedRow)
                 $('#lblVIPFaceIDName_SendSet').html(VIPFaceIDName.substr(0, VIPFaceIDName.length - 1) + '...')
             }
             else {
+                $('#lblVIPFaceIDCnt_SendSet').html('')
                 $('#lblVIPFaceIDName_SendSet').html(VIPFaceIDName.substr(0, VIPFaceIDName.length - 1))
             }
             $('#btLpOK_VIPFaceID_SendSet').prop('disabled', false);
@@ -1445,7 +1446,6 @@ Timerset(sessionStorage.getItem('isamcomp'));
             UpdateVIPCnt();
             return
         } else {
-            $('#lblCityCnt_SendSet').html(chkedRow)
             chkCity = "";
             var CityName = "";
             for (var i = 0; i < obchkedtd.length; i++) {
@@ -1458,9 +1458,11 @@ Timerset(sessionStorage.getItem('isamcomp'));
             }
             chkCity = chkCity.substr(0, chkCity.length - 1)
             if (chkedRow > 10) {
+                $('#lblCityCnt_SendSet').html(chkedRow)
                 $('#lblCityName_SendSet').html(CityName.substr(0, CityName.length - 1) + '...')
             }
             else {
+                $('#lblCityCnt_SendSet').html('')
                 $('#lblCityName_SendSet').html(CityName.substr(0, CityName.length - 1))
             }
             $('#btLpOK_City_SendSet').prop('disabled', false);
@@ -1555,7 +1557,6 @@ Timerset(sessionStorage.getItem('isamcomp'));
             UpdateVIPCnt();
             return
         } else {
-            $('#lblDeptCnt_SendSet').html(chkedRow)
             chkDept = "";
             chkDeptName = "";
             var DeptName = "";
@@ -1571,9 +1572,11 @@ Timerset(sessionStorage.getItem('isamcomp'));
             chkDept = chkDept.substr(0, chkDept.length - 1)
             chkDeptName = chkDeptName.substr(0, chkDeptName.length - 1)
             if (chkedRow > 10) {
+                $('#lblDeptCnt_SendSet').html(chkedRow)
                 $('#lblDeptName_SendSet').html(DeptName.substr(0, DeptName.length - 1) + '...')
             }
             else {
+                $('#lblDeptCnt_SendSet').html('')
                 $('#lblDeptName_SendSet').html(DeptName.substr(0, DeptName.length - 1))
             }
             $('#btLpOK_Dept_SendSet').prop('disabled', false);
@@ -1668,7 +1671,6 @@ Timerset(sessionStorage.getItem('isamcomp'));
             UpdateVIPCnt();
             return
         } else {
-            $('#lblBgnoCnt_SendSet').html(chkedRow)
             chkBgno = "";
             chkBgnoName = "";
             var BgnoName = "";
@@ -1684,9 +1686,11 @@ Timerset(sessionStorage.getItem('isamcomp'));
             chkBgno = chkBgno.substr(0, chkBgno.length - 1)
             chkBgnoName = chkBgnoName.substr(0, chkBgnoName.length - 1)
             if (chkedRow > 10) {
+                $('#lblBgnoCnt_SendSet').html(chkedRow)
                 $('#lblBgnoName_SendSet').html(BgnoName.substr(0, BgnoName.length - 1) + '...')
             }
             else {
+                $('#lblBgnoCnt_SendSet').html('')
                 $('#lblBgnoName_SendSet').html(BgnoName.substr(0, BgnoName.length - 1))
             }
             $('#btLpOK_Bgno_SendSet').prop('disabled', false);
