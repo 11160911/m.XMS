@@ -5,13 +5,6 @@
     let grdDD;
     let grdLookUp_ActivityCode;
 
-    let EditMode = "";
-    let DelPLU = "";
-    let DelPLUQty;
-    let ModPLU = "";
-    let ModPLUQty;
-
-
     let AssignVar = function () {
 
         grdM = new DynGrid(
@@ -63,7 +56,6 @@
             }
         );
 
-
         grdDD = new DynGrid(
             {
                 table_lement: $('#tbDD_PSNO')[0],
@@ -105,7 +97,6 @@
                 sortable: "N"
             }
         );
-
         return;
     };
 
@@ -119,160 +110,160 @@
         $('#tbQuery thead tr th').mouseenter(function () {
             var fdinfo = $(this).prop('fdinfo');
             if (fdinfo.name == "ActivityCode") {
-                var rgb = $('#tbQuery thead tr th#tdflag').css('background-color')
+                var rgb = $('#tbQuery thead tr th#thead2').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#tdflag').css('background-color', '#ffff00')
+                    $('#tbQuery thead tr th#thead2').css('background-color', '#ffff00')
                 }
             }
             else if (fdinfo.name == "PS_Name") {
-                var rgb = $('#tbQuery thead tr th#th1').css('background-color')
+                var rgb = $('#tbQuery thead tr th#thead3').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th1').css('background-color', '#ffff00')
+                    $('#tbQuery thead tr th#thead3').css('background-color', '#ffff00')
                 }
             }
             else if (fdinfo.name == "PDate") {
-                var rgb = $('#tbQuery thead tr th#th2').css('background-color')
+                var rgb = $('#tbQuery thead tr th#thead4').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th2').css('background-color', '#ffff00')
+                    $('#tbQuery thead tr th#thead4').css('background-color', '#ffff00')
                 }
             }
             else if (fdinfo.name == "Cnt1") {
-                var rgb = $('#tbQuery thead tr th#th3').css('background-color')
+                var rgb = $('#tbQuery thead tr th#thead5').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th3').css('background-color', '#ffff00')
+                    $('#tbQuery thead tr th#thead5').css('background-color', '#ffff00')
                 }
             }
             else if (fdinfo.name == "EDDate") {
-                var rgb = $('#tbQuery thead tr th#th4').css('background-color')
+                var rgb = $('#tbQuery thead tr th#thead6').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th4').css('background-color', '#ffff00')
+                    $('#tbQuery thead tr th#thead6').css('background-color', '#ffff00')
                 }
             }
             else if (fdinfo.name == "Cnt2") {
-                var rgb = $('#tbQuery thead tr th#th5').css('background-color')
+                var rgb = $('#tbQuery thead tr th#thead7').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th5').css('background-color', '#ffff00')
+                    $('#tbQuery thead tr th#thead7').css('background-color', '#ffff00')
                 }
             }
             else if (fdinfo.name == "RePercent") {
-                var rgb = $('#tbQuery thead tr th#th6').css('background-color')
+                var rgb = $('#tbQuery thead tr th#thead8').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th6').css('background-color', '#ffff00')
+                    $('#tbQuery thead tr th#thead8').css('background-color', '#ffff00')
                 }
             }
             else if (fdinfo.name == "ActualDiscount") {
-                var rgb = $('#tbQuery thead tr th#th7').css('background-color')
+                var rgb = $('#tbQuery thead tr th#thead9').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th7').css('background-color', '#ffff00')
+                    $('#tbQuery thead tr th#thead9').css('background-color', '#ffff00')
                 }
             }
             else if (fdinfo.name == "Cash") {
-                var rgb = $('#tbQuery thead tr th#th8').css('background-color')
+                var rgb = $('#tbQuery thead tr th#thead10').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th8').css('background-color', '#ffff00')
+                    $('#tbQuery thead tr th#thead10').css('background-color', '#ffff00')
                 }
             }
             else if (fdinfo.name == "Cnt3") {
-                var rgb = $('#tbQuery thead tr th#th9').css('background-color')
+                var rgb = $('#tbQuery thead tr th#thead11').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th9').css('background-color', '#ffff00')
+                    $('#tbQuery thead tr th#thead11').css('background-color', '#ffff00')
                 }
             }
             else if (fdinfo.name == "SalesPrice") {
-                var rgb = $('#tbQuery thead tr th#th10').css('background-color')
+                var rgb = $('#tbQuery thead tr th#thead12').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th10').css('background-color', '#ffff00')
+                    $('#tbQuery thead tr th#thead12').css('background-color', '#ffff00')
                 }
             }
         });
         $('#tbQuery thead tr th').mouseleave(function () {
             var fdinfo = $(this).prop('fdinfo');
             if (fdinfo.name == "ActivityCode") {
-                var rgb = $('#tbQuery thead tr th#tdflag').css('background-color')
+                var rgb = $('#tbQuery thead tr th#thead2').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#tdflag').css('background-color', '#ffb620')
+                    $('#tbQuery thead tr th#thead2').css('background-color', '#ffb620')
                 }
             }
             else if (fdinfo.name == "PS_Name") {
-                var rgb = $('#tbQuery thead tr th#th1').css('background-color')
+                var rgb = $('#tbQuery thead tr th#thead3').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th1').css('background-color', '#ffb620')
+                    $('#tbQuery thead tr th#thead3').css('background-color', '#ffb620')
                 }
             }
             else if (fdinfo.name == "PDate") {
-                var rgb = $('#tbQuery thead tr th#th2').css('background-color')
+                var rgb = $('#tbQuery thead tr th#thead4').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th2').css('background-color', '#ffb620')
+                    $('#tbQuery thead tr th#thead4').css('background-color', '#ffb620')
                 }
             }
             else if (fdinfo.name == "Cnt1") {
-                var rgb = $('#tbQuery thead tr th#th3').css('background-color')
+                var rgb = $('#tbQuery thead tr th#thead5').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th3').css('background-color', '#ffb620')
+                    $('#tbQuery thead tr th#thead5').css('background-color', '#ffb620')
                 }
             }
             else if (fdinfo.name == "EDDate") {
-                var rgb = $('#tbQuery thead tr th#th4').css('background-color')
+                var rgb = $('#tbQuery thead tr th#thead6').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th4').css('background-color', '#ffb620')
+                    $('#tbQuery thead tr th#thead6').css('background-color', '#ffb620')
                 }
             }
             else if (fdinfo.name == "Cnt2") {
-                var rgb = $('#tbQuery thead tr th#th5').css('background-color')
+                var rgb = $('#tbQuery thead tr th#thead7').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th5').css('background-color', '#ffb620')
+                    $('#tbQuery thead tr th#thead7').css('background-color', '#ffb620')
                 }
             }
             else if (fdinfo.name == "RePercent") {
-                var rgb = $('#tbQuery thead tr th#th6').css('background-color')
+                var rgb = $('#tbQuery thead tr th#thead8').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th6').css('background-color', '#ffb620')
+                    $('#tbQuery thead tr th#thead8').css('background-color', '#ffb620')
                 }
             }
             else if (fdinfo.name == "ActualDiscount") {
-                var rgb = $('#tbQuery thead tr th#th7').css('background-color')
+                var rgb = $('#tbQuery thead tr th#thead9').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th7').css('background-color', '#ffb620')
+                    $('#tbQuery thead tr th#thead9').css('background-color', '#ffb620')
                 }
             }
             else if (fdinfo.name == "Cash") {
-                var rgb = $('#tbQuery thead tr th#th8').css('background-color')
+                var rgb = $('#tbQuery thead tr th#thead10').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th8').css('background-color', '#ffb620')
+                    $('#tbQuery thead tr th#thead10').css('background-color', '#ffb620')
                 }
             }
             else if (fdinfo.name == "Cnt3") {
-                var rgb = $('#tbQuery thead tr th#th9').css('background-color')
+                var rgb = $('#tbQuery thead tr th#thead11').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th9').css('background-color', '#ffb620')
+                    $('#tbQuery thead tr th#thead11').css('background-color', '#ffb620')
                 }
             }
             else if (fdinfo.name == "SalesPrice") {
-                var rgb = $('#tbQuery thead tr th#th10').css('background-color')
+                var rgb = $('#tbQuery thead tr th#thead12').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th10').css('background-color', '#ffb620')
+                    $('#tbQuery thead tr th#thead12').css('background-color', '#ffb620')
                 }
             }
         });
@@ -280,37 +271,37 @@
             $('#tbQuery thead tr th').css('background-color', '#ffb620')
             var fdinfo = $(this).prop('fdinfo');
             if (fdinfo.name == "ActivityCode") {
-                $('#tbQuery thead tr th#tdflag').css('background-color', '#ffeaa7')
+                $('#tbQuery thead tr th#thead2').css('background-color', '#ffeaa7')
             }
             else if (fdinfo.name == "PS_Name") {
-                $('#tbQuery thead tr th#th1').css('background-color', '#ffeaa7')
+                $('#tbQuery thead tr th#thead3').css('background-color', '#ffeaa7')
             }
             else if (fdinfo.name == "PDate") {
-                $('#tbQuery thead tr th#th2').css('background-color', '#ffeaa7')
+                $('#tbQuery thead tr th#thead4').css('background-color', '#ffeaa7')
             }
             else if (fdinfo.name == "Cnt1") {
-                $('#tbQuery thead tr th#th3').css('background-color', '#ffeaa7')
+                $('#tbQuery thead tr th#thead5').css('background-color', '#ffeaa7')
             }
             else if (fdinfo.name == "EDDate") {
-                $('#tbQuery thead tr th#th4').css('background-color', '#ffeaa7')
+                $('#tbQuery thead tr th#thead6').css('background-color', '#ffeaa7')
             }
             else if (fdinfo.name == "Cnt2") {
-                $('#tbQuery thead tr th#th5').css('background-color', '#ffeaa7')
+                $('#tbQuery thead tr th#thead7').css('background-color', '#ffeaa7')
             }
             else if (fdinfo.name == "RePercent") {
-                $('#tbQuery thead tr th#th6').css('background-color', '#ffeaa7')
+                $('#tbQuery thead tr th#thead8').css('background-color', '#ffeaa7')
             }
             else if (fdinfo.name == "ActualDiscount") {
-                $('#tbQuery thead tr th#th7').css('background-color', '#ffeaa7')
+                $('#tbQuery thead tr th#thead9').css('background-color', '#ffeaa7')
             }
             else if (fdinfo.name == "Cash") {
-                $('#tbQuery thead tr th#th8').css('background-color', '#ffeaa7')
+                $('#tbQuery thead tr th#thead10').css('background-color', '#ffeaa7')
             }
             else if (fdinfo.name == "Cnt3") {
-                $('#tbQuery thead tr th#th9').css('background-color', '#ffeaa7')
+                $('#tbQuery thead tr th#thead11').css('background-color', '#ffeaa7')
             }
             else if (fdinfo.name == "SalesPrice") {
-                $('#tbQuery thead tr th#th10').css('background-color', '#ffeaa7')
+                $('#tbQuery thead tr th#thead12').css('background-color', '#ffeaa7')
             }
          });
     }
@@ -336,6 +327,7 @@
     };
 
     let QueryD = function () {
+        $('#tbD_PSNO thead tr th').css('background-color', '#ffb620')
         ShowLoading();
         var Flag = "";
 
@@ -630,7 +622,7 @@
         var node = $(grdD.ActiveRowTR()).prop('Record');
         $('#tbD_PSNO td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
         $('#lblTypeID_DD').html(GetNodeValue(node, 'ID'))
-
+        $('#tbDD_PSNO thead tr th').css('background-color', '#ffb620')
         $('#modal_DD').modal('show');
         setTimeout(function () {
             QueryDD(node);
@@ -927,6 +919,7 @@
 //#region 查詢
     let btQuery_click = function (bt) {
         //Timerset();
+        $('#tbQuery thead tr th').css('background-color', '#ffb620')
         $('#btQuery').prop('disabled', true)
         ShowLoading();
         var pData = {

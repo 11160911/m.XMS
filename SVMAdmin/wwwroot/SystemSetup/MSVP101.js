@@ -1343,13 +1343,13 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 var trNode = $(a).prop('Record');
                 chkVIPFaceID += "'" + GetNodeValue(trNode, "ST_ID") + "',";  //已勾選的每一筆店倉
                 chkVIPFaceIDName += "'" + GetNodeValue(trNode, "ST_SName") + "',";
-                if (i <= 5) {
+                if (i <= 4) {
                     VIPFaceIDName += GetNodeValue(trNode, "ST_SName") + "，";
                 }
             }
             chkVIPFaceID = chkVIPFaceID.substr(0, chkVIPFaceID.length - 1)
             chkVIPFaceIDName = chkVIPFaceIDName.substr(0, chkVIPFaceIDName.length - 1)
-            if (chkedRow > 6) {
+            if (chkedRow > 5) {
                 $('#lblVIPFaceIDCnt_SendSet').html(chkedRow)
                 $('#lblVIPFaceIDName_SendSet').html(VIPFaceIDName.substr(0, VIPFaceIDName.length - 1) + '...')
             }
@@ -1452,12 +1452,12 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 var a = $(obchkedtd[i]).closest('tr');
                 var trNode = $(a).prop('Record');
                 chkCity += "'" + GetNodeValue(trNode, "City") + "',";  //已勾選的每一筆縣市
-                if (i <= 9) {
+                if (i <= 4) {
                     CityName += GetNodeValue(trNode, "City") + "，";
                 }
             }
             chkCity = chkCity.substr(0, chkCity.length - 1)
-            if (chkedRow > 10) {
+            if (chkedRow > 5) {
                 $('#lblCityCnt_SendSet').html(chkedRow)
                 $('#lblCityName_SendSet').html(CityName.substr(0, CityName.length - 1) + '...')
             }
@@ -1565,13 +1565,13 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 var trNode = $(a).prop('Record');
                 chkDept += "'" + GetNodeValue(trNode, "Type_ID") + "',";  //已勾選的每一筆部門
                 chkDeptName += "'" + GetNodeValue(trNode, "Type_Name") + "',";
-                if (i <= 9) {
+                if (i <= 4) {
                     DeptName += GetNodeValue(trNode, "Type_Name") + "，";
                 }
             }
             chkDept = chkDept.substr(0, chkDept.length - 1)
             chkDeptName = chkDeptName.substr(0, chkDeptName.length - 1)
-            if (chkedRow > 10) {
+            if (chkedRow > 5) {
                 $('#lblDeptCnt_SendSet').html(chkedRow)
                 $('#lblDeptName_SendSet').html(DeptName.substr(0, DeptName.length - 1) + '...')
             }
@@ -1679,13 +1679,13 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 var trNode = $(a).prop('Record');
                 chkBgno += "'" + GetNodeValue(trNode, "Type_ID") + "',";  //已勾選的每一筆部門
                 chkBgnoName += "'" + GetNodeValue(trNode, "Type_Name") + "',";  //已勾選的每一筆部門
-                if (i <= 9) {
+                if (i <= 4) {
                     BgnoName += GetNodeValue(trNode, "Type_Name") + "，";
                 }
             }
             chkBgno = chkBgno.substr(0, chkBgno.length - 1)
             chkBgnoName = chkBgnoName.substr(0, chkBgnoName.length - 1)
-            if (chkedRow > 10) {
+            if (chkedRow > 5) {
                 $('#lblBgnoCnt_SendSet').html(chkedRow)
                 $('#lblBgnoName_SendSet').html(BgnoName.substr(0, BgnoName.length - 1) + '...')
             }
