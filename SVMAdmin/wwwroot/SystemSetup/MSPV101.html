@@ -112,56 +112,78 @@
 
                 <article id="pgMSPV101Init" class="row">
                     <div class="col-md-12 col-sm-12">
-                        <div class="x_panel" style="padding: 0px; height: 100%; width: 100%; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 410px 500px ">
+                        <div id="PanelIni" class="x_panel DyForm3-PanelIni">
                             <style>
-                                #tbQMSPV101 thead tr th {
-                                    font-size: 16px;
-                                    padding: 0px;
-                                    background-color: #ffb620;
-                                    font-weight: bold;
+                                #PanelIni {
+                                    background-image: url(images/mxmslogo9a.JPG);
+                                    background-repeat: no-repeat;
+                                    background-attachment: fixed;
+                                    background-position: center;
                                 }
-
-                                #tbQMSPV101 tbody tr td {
-                                    font-size: 16px;
-                                    padding: 0px;
+                                /*手機畫面*/
+                                @media (max-width:767px) {
+                                    #PanelIni {
+                                        background-size: 400px 430px;
+                                    }
                                 }
                             </style>
 
-                            <div class="form-group row" style="margin-left: 5px; width: 100%">
-                                <label id="lblProgramName" class="DyForm3-ProgramName">密碼變更</label>
+                            <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom: 0px">
+                                <label id="lblProgramName" class="DyForm3-ProgramName">變更密碼</label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 5px; width: 100%">
-                                <label class="DyForm3-Label">帳號</label>
-                                <label id="lblUID" class="DyForm3-Label"></label>
+                            <div class="form-group row" style="margin-left: 23px; width: 100%; margin-bottom: 5px">
+                                <label class="DyForm3-Label">帳&ensp;&ensp;&ensp;&ensp;號</label>
+                                <label id="lblUID" class="DyForm3-LabelBlack" style="margin-left:31px"></label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 5px; width: 100%">
-                                <label class="DyForm3-Label">舊密碼</label>
+                            <div class="form-group row" style="margin-left: 10px; width: 100%; margin-bottom: 5px">
                                 <mark class="DyForm3-DyNotEmptyMark">*</mark>
-                                <input id="txtOldUPWD" class="DyForm3-TextBox" type="password" />
+                                <label class="DyForm3-Label">舊&ensp;密&ensp;碼</label>
+                                <input id="txtOldUPWD" class="DyForm3-TextBox" style="margin-left:31px" type="password" />
                             </div>
 
-                            <div class="form-group row" style="margin-left: 5px; width: 100%">
-                                <label class="DyForm3-Label">新密碼</label>
+                            <div class="form-group row" style="margin-left: 10px; width: 100%; margin-bottom: 5px">
                                 <mark class="DyForm3-DyNotEmptyMark">*</mark>
-                                <input id="txtNewUPWD" class="DyForm3-TextBox" type="password" />
+                                <label class="DyForm3-Label">新&ensp;密&ensp;碼</label>
+                                <input id="txtNewUPWD" class="DyForm3-TextBox" style="margin-left: 31px" type="password" />
                             </div>
 
-                            <div class="form-group row" style="margin-left: 5px; width: 100%">
+                            <div class="form-group row" style="margin-left: 10px; width: 100%; margin-bottom: 5px ">
+                                <mark class="DyForm3-DyNotEmptyMark">*</mark>
                                 <label class="DyForm3-Label">確認新密碼</label>
-                                <mark class="DyForm3-DyNotEmptyMark">*</mark>
-                                <input id="txtChkNewUPWD" class="DyForm3-TextBox" type="password" />
+                                <input id="txtChkUPWD" class="DyForm3-TextBox" style="margin-left:15px" type="password" />
                             </div>
 
-                            <div class="form-group row" style="margin-left: 5px; width: 100%">
-                                <button class="DyForm3-BtnAdd" id="btAdd" type="button">
+                            <div class="form-group row" style="margin-left: 10px; width: 100%; margin-top: 15px; margin-bottom: 0px">
+                                <label class="DyForm3-LabelRed">1.密碼須包含英文字及數字(6~10)</label>
+                            </div>
+
+                            <div class="form-group row" style="margin-left: 10px; width: 100%; margin-bottom: 0px ">
+                                <label class="DyForm3-LabelRed">2.妥善保管您的密碼</label>
+                            </div>
+
+                            <div class="form-group row" style="margin-left: 10px; width: 100%; margin-bottom: 5px ">
+                                <label class="DyForm3-LabelRed">3.請勿使用特殊字元或符號(例如#,*,?,!,% ...等)</label>
+                            </div>
+
+                            <div class="form-group row" style="width: 100%; margin-left: 22px; margin-top: 15px; margin-bottom: 0px ">
+                                <mark class="DyForm3-DyNotEmptyMark">*</mark>
+                                <input class="DyForm3-TextBox" id="txtCode" maxlength="4" inputmode="numeric" placeholder="輸入驗證碼" />
+
+                                <div style="background-color: #F2F2F2; text-align: center; width: 90px; margin-left: 5px">
+                                    <label id="lblcode1" style="color: blue; font-weight: bold;font-size:20px;margin-bottom:0px;margin-top:3px">1</label>
+                                    <label id="lblcode2" style="color: red; font-weight: bold; font-size: 20px; margin-left: 2px; margin-bottom: 0px ">2</label>
+                                    <label id="lblcode3" style="color: orange; font-weight: bold; font-size: 20px; margin-left: 2px; margin-bottom: 0px ">3</label>
+                                    <label id="lblcode4" style="color: green; font-weight: bold; font-size: 20px; margin-left: 2px; margin-bottom: 0px ">4</label>
+                                </div>
+
+                                <a href="#" id="recode" style="font-size: 14px; margin-left: 5px; color: blue; margin-top: 10px; font-weight: bold;text-decoration:underline">重新產生</a>
+                            </div>
+
+                            <div class="form-group row" style="margin-left: 22px; width: 100%; margin-top: 15px; margin-bottom: 0px ">
+                                <button class="DyForm3-BtnAdd" id="btOK" type="button" style="width:90px">
                                     確認變更
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                                <button class="DyForm3-BtnExit" id="btExit" type="button">
-                                    離開
-                                    <i class="fa fa-sign-out"></i>
                                 </button>
                             </div>
                         </div>

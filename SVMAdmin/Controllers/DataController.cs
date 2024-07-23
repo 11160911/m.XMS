@@ -7031,7 +7031,7 @@ namespace SVMAdmin.Controllers
             {
                 IFormCollection rq = HttpContext.Request.Form;
                 string ProgramID = rq["ProgramID"];
-                string sql = "select ChineseName,convert(char(10),getdate(),111) as SysDate from ProgramIDWeb (nolock) where ProgramID='" + ProgramID.SqlQuote() + "'";
+                string sql = "select ChineseName,convert(char(10),getdate(),111) as SysDate,'" + uu.UserID + "' as SysUser from ProgramIDWeb (nolock) where ProgramID='" + ProgramID.SqlQuote() + "'";
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
                 ds.Tables.Add(dtE);
@@ -13517,7 +13517,7 @@ namespace SVMAdmin.Controllers
                 string sql = "";
                 sql = "Select a.PS_NO,a.ActivityCode,b.PS_Name,isnull(PrintStartDate,'')+'~'+a.EndDate PDate,sum(isnull(a.issueQty,0)) Cnt1, ";
                 sql += "a.StartDate + '~' + a.EndDate EDDate,sum(isnull(a.ReclaimQty,0)) Cnt2, ";
-                sql += "case when sum(isnull(a.issueQty,0))=0 then FORMAT(0,'P1') else format(cast(sum(isnull(a.ReclaimQty,0)) as Float)/cast(sum(isnull(a.issueQty,0)) as Float),'P1') end as RePercent, ";
+                sql += "case when sum(isnull(a.issueQty,0))=0 then FORMAT(0,'p') else format(cast(sum(isnull(a.ReclaimQty,0)) as Float)/cast(sum(isnull(a.issueQty,0)) as Float),'p') end as RePercent, ";
                 sql += "sum(isnull(a.ShareAmt,0)) ActualDiscount,sum(isnull(a.ReclaimCash,0)) Cash,sum(isnull(a.ReclaimTrans,0)) Cnt3, ";
                 sql += "case when sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(sum(isnull(a.ReclaimCash,0))/sum(isnull(a.ReclaimTrans,0)),0) end as SalesPrice ";
                 sql += "From MsData2Web a (nolock) ";
@@ -13574,8 +13574,8 @@ namespace SVMAdmin.Controllers
                 if (Flag == "SA")
                 {
                     sql = "Select a.ShopNo + '-' + b.ST_SName as id,isnull(a.issueQty,0) Cnt1,isnull(a.ReclaimQty,0) Cnt2, ";
-                    sql += "case when isnull(a.issueQty,0)=0 then case when isnull(a.ReclaimQty,0)=0 then format(0,'P1') else format(9.99,'P1') end "
-                        + "else format(cast(isnull(a.ReclaimQty,0) as Float)/cast(isnull(a.issueQty,0) as Float),'P1') end as RePercent, ";
+                    sql += "case when isnull(a.issueQty,0)=0 then case when isnull(a.ReclaimQty,0)=0 then format(0,'p') else format(9.99,'p') end "
+                        + "else format(cast(isnull(a.ReclaimQty,0) as Float)/cast(isnull(a.issueQty,0) as Float),'p') end as RePercent, ";
                     sql += "isnull(a.ShareAmt,0) ActualDiscount,isnull(a.ReclaimCash,0) SalesCash1,isnull(a.ReclaimTrans,0) SalesCnt1, ";
                     sql += "case when isnull(a.ReclaimTrans,0)=0 then 0 else Round(isnull(a.ReclaimCash,0)/isnull(a.ReclaimTrans,0),0) end as SalesPrice1, ";
                     sql += "isnull(a.TotalCash,0) SalesCash2,isnull(a.TotalTrans,0) SalesCnt2, ";
@@ -13585,8 +13585,8 @@ namespace SVMAdmin.Controllers
                     sql += "Where a.Companycode='" + uu.CompanyId + "' and PS_No='"+ PS_NO + "' order by a.ShopNo";
 
                     sqlSum = "Select Sum(isnull(a.issueQty,0)) Cnt1,Sum(isnull(a.ReclaimQty,0)) Cnt2, ";
-                    sqlSum += "case when Sum(isnull(a.issueQty,0))=0 then case when Sum(isnull(a.ReclaimQty,0))=0 then format(0,'P1') else format(9.99,'P1') end "
-                        + "else format(cast(Sum(isnull(a.ReclaimQty,0)) as Float)/cast(Sum(isnull(a.issueQty,0)) as Float),'P1') end as RePercent, ";
+                    sqlSum += "case when Sum(isnull(a.issueQty,0))=0 then case when Sum(isnull(a.ReclaimQty,0))=0 then format(0,'p') else format(9.99,'p') end "
+                        + "else format(cast(Sum(isnull(a.ReclaimQty,0)) as Float)/cast(Sum(isnull(a.issueQty,0)) as Float),'p') end as RePercent, ";
                     sqlSum += "Sum(isnull(a.ShareAmt,0)) ActualDiscount,Sum(isnull(a.ReclaimCash,0)) SalesCash1,Sum(isnull(a.ReclaimTrans,0)) SalesCnt1, ";
                     sqlSum += "case when Sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(Sum(isnull(a.ReclaimCash,0))/Sum(isnull(a.ReclaimTrans,0)),0) end as SalesPrice1, ";
                     sqlSum += "Sum(isnull(a.TotalCash,0)) SalesCash2,Sum(isnull(a.TotalTrans,0)) SalesCnt2, ";
@@ -13596,8 +13596,8 @@ namespace SVMAdmin.Controllers
                 }else if (Flag == "DA")
                 {
                     sql = "Select a.SalesDate as id,Sum(isnull(a.PrintQty,0)) Cnt1,Sum(isnull(a.ReclaimQty,0)) Cnt2, ";
-                    sql += "case when Sum(isnull(a.PrintQty,0))=0 then case when Sum(isnull(a.ReclaimQty,0))=0 then format(0,'P1') else format(9.99,'P1') end "
-                        + "else format(cast(Sum(isnull(a.ReclaimQty,0)) as Float)/cast(Sum(isnull(a.PrintQty,0)) as Float),'P1') end as RePercent, ";
+                    sql += "case when Sum(isnull(a.PrintQty,0))=0 then case when Sum(isnull(a.ReclaimQty,0))=0 then format(0,'p') else format(9.99,'p') end "
+                        + "else format(cast(Sum(isnull(a.ReclaimQty,0)) as Float)/cast(Sum(isnull(a.PrintQty,0)) as Float),'p') end as RePercent, ";
                     sql += "Sum(isnull(a.ShareAmt,0)) ActualDiscount,Sum(isnull(a.ReclaimCash,0)) SalesCash1,Sum(isnull(a.ReclaimTrans,0)) SalesCnt1, ";
                     sql += "case when Sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(Sum(isnull(a.ReclaimCash,0))/Sum(isnull(a.ReclaimTrans,0)),0) end as SalesPrice1, ";
                     sql += "Sum(isnull(a.TotalCash,0)) SalesCash2,Sum(isnull(a.TotalTrans,0)) SalesCnt2, ";
@@ -13617,8 +13617,8 @@ namespace SVMAdmin.Controllers
                     }
 
                     sql = "Select "+ sqlIDColname + " as id,isnull(a.PrintQty,0) Cnt1,isnull(a.ReclaimQty,0) Cnt2, ";
-                    sql += "case when isnull(a.PrintQty,0)=0 then case when isnull(a.ReclaimQty,0)=0 then format(0,'P1') else format(9.99,'P1') end "
-                        + "else format(cast(isnull(a.ReclaimQty,0) as Float)/cast(isnull(a.PrintQty,0) as Float),'P1') end as RePercent, ";
+                    sql += "case when isnull(a.PrintQty,0)=0 then case when isnull(a.ReclaimQty,0)=0 then format(0,'p') else format(9.99,'p') end "
+                        + "else format(cast(isnull(a.ReclaimQty,0) as Float)/cast(isnull(a.PrintQty,0) as Float),'p') end as RePercent, ";
                     sql += "isnull(a.ShareAmt,0) ActualDiscount,isnull(a.ReclaimCash,0) SalesCash1,isnull(a.ReclaimTrans,0) SalesCnt1, ";
                     sql += "case when isnull(a.ReclaimTrans,0)=0 then 0 else Round(isnull(a.ReclaimCash,0)/isnull(a.ReclaimTrans,0),0) end as SalesPrice1, ";
                     sql += "isnull(a.TotalCash,0) SalesCash2,isnull(a.TotalTrans,0) SalesCnt2, ";
