@@ -1849,6 +1849,38 @@ namespace SVMAdmin
             }
             return dsR;
         }
+        public static System.Data.DataSet UpdateUPWD(System.Data.DataSet ds, UserInfo vUserInfo)
+        {
+            if (ApiUrl.ToLower().IndexOf("https:") == 0)
+                SSLValidator.OverrideValidation();
+            iXmsApiParameter AP = new iXmsApiParameter();
+            AP.user = vUserInfo;
+            AP.Method = "UpdateUPWD";
+            AP.ObjName = "";
+            AP.UnknowName = "";
+            string strPara = PubUtility.GetSerString(AP, typeof(iXmsApiParameter), "api");
+
+            Uri aUri = new Uri(ApiUrl);
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(aUri);
+            httpWebRequest.Headers.Add("ParaKey", strPara);
+            //httpWebRequest.Headers.Add("apikeysecret", ApiPara.apikeysecret);
+            //httpWebRequest.Headers.Add("Proxy-Authorization", ApiPara.Proxy_Authorization);
+            httpWebRequest.ContentType = "text/xml";
+            httpWebRequest.Accept = "text/xml";
+            httpWebRequest.Method = "POST";
+            //string strReturn = "";
+            ds.WriteXml(httpWebRequest.GetRequestStream());
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            DataSet dsR = null;
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                //strReturn = streamReader.ReadToEnd();
+                dsR = new DataSet();
+                dsR.ReadXml(streamReader);
+                //AR.Msg_Code = strReturn;
+            }
+            return dsR;
+        }
     }
 
     public static class SSLValidator

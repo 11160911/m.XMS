@@ -13662,6 +13662,61 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("SystemSetup/MSPV101Save")]
+        public ActionResult SystemSetup_MSPV101Save()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSPV101SaveOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string UID = rq["UID"];
+                string OldUPWD = rq["OldUPWD"];
+                string NewUPWD = rq["NewUPWD"];
+
+                string sql = "";
+                sql = "Select * From Account (nolock) Where Companycode='" + uu.CompanyId + "' ";
+                sql += "and UID='" + UID + "' ";
+                sql += "and UPWD='" + OldUPWD + "' ";
+                DataTable dtA = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtA.Rows.Count > 0)
+                {
+                    sql = "Update Account Set UPWD='" + NewUPWD + "',UPWDDate=convert(char(10),getdate(),111) + ' ' + convert(char(12),getdate(),108) ";
+                    sql += "Where Companycode='" + uu.CompanyId + "' and UID='" + UID + "' ";
+                    PubUtility.ExecuteSql(sql, uu, "SYS");
+                }
+                else {
+                    throw new Exception("舊密碼不存在，請重新確認!");
+                }
+
+                //更新EDDMS.AccountIXMS密碼
+                sql = "select '" + uu.CompanyId + "' as CompanyID,'" + UID + "' as UID,'" + NewUPWD + "' as NewUPWD ";
+                DataTable dtUpdateUPWD = PubUtility.SqlQry(sql, uu, "SYS");
+                dtUpdateUPWD.TableName = "dtUpdateUPWD";
+                DataSet dsUpdateUPWD = new DataSet();
+                dsUpdateUPWD.Tables.Add(dtUpdateUPWD);
+
+                ApiSetting aSet = GetApiSetting();
+                iXmsClient.ApiUrl = aSet.url_HTADDVIP_ET;
+                DataSet dsR = iXmsClient.UpdateUPWD(dsUpdateUPWD, uu);
+                DataTable dtP = dsR.Tables["dtProcessStatus"];
+                if (dtP.Rows[0]["Error"].ToString() != "0")
+                {
+                    throw new Exception(dtP.Rows[0]["Msg_Code"].ToString());
+                }
+
+                //dtE.TableName = "dtE";
+                //ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
         [Route("FileUpload_EDM")]
         public ActionResult FileUpload_EDM()
         {

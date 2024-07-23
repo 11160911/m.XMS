@@ -33,7 +33,7 @@
         $('#btOK').prop('disabled', true)
         //帳號
         if ($('#lblUID').html() == "") {
-            DyAlert("請確認帳號是否正確!", function () { $('#btOK').prop('disabled', false); })
+            DyAlert("無此帳號請重新確認!", function () { $('#btOK').prop('disabled', false); })
             return;
         }
         //舊密碼
@@ -47,8 +47,31 @@
             return;
         }
         else {
-            if () {
+            var chkCh = new RegExp("[\u4E00-\u9FA5]");
+            var chkReg = new RegExp("[#*?!%@$^&()_+/]");
+            var chkEn = new RegExp("[A-Za-z]");
+            var chkNum = new RegExp("[0-9]");
 
+            if (chkReg.test($('#txtNewUPWD').val()) == true) {
+                DyAlert("新密碼不可含特殊符號!", function () { $('#btOK').prop('disabled', false); })
+                return;
+            }
+
+            if (chkCh.test($('#txtNewUPWD').val()) == true) {
+                DyAlert("新密碼不可含中文!", function () { $('#btOK').prop('disabled', false); })
+                return;
+            }
+
+            if (chkEn.test($('#txtNewUPWD').val()) == true && chkNum.test($('#txtNewUPWD').val()) == true) {
+            }
+            else {
+                DyAlert("新密碼需包含英文及數字!", function () { $('#btOK').prop('disabled', false); })
+                return;
+            }
+
+            if ($('#txtNewUPWD').val().length < 6 | $('#txtNewUPWD').val().length > 10) {
+                DyAlert("新密碼長度需介於6~10碼!", function () { $('#btOK').prop('disabled', false); })
+                return;
             }
         }
         //確認新密碼
@@ -57,8 +80,22 @@
             return;
         }
         else {
-            if ($('#txtChkUPWD').val() != $('#txtNewUPWD').val()) {
+            if ($('#txtChkUPWD').val().toLowerCase() != $('#txtNewUPWD').val().toLowerCase()) {
                 DyAlert("確認新密碼需與新密碼一致!", function () { $('#btOK').prop('disabled', false); })
+                return;
+            }
+        }
+
+        //驗證碼
+        if ($('#txtCode').val() == "") {
+            DyAlert("請輸入驗證碼!", function () { $('#btOK').prop('disabled', false); })
+            return;
+        }
+        else {
+            var ChkCode = String(ChkCode0) + String(ChkCode1) + String(ChkCode2) + String(ChkCode3)
+            var txtCode = $('#txtCode').val()
+            if (ChkCode != txtCode) {
+                DyAlert("驗證碼不符，請重新確認!", function () { $('#btOK').prop('disabled', false); })
                 return;
             }
         }
@@ -73,6 +110,22 @@
         }, 1000);
     };
 
+    let afterMSPV101Save = function (data) {
+        if (ReturnMsg(data, 0) != "MSPV101SaveOK") {
+            DyAlert(ReturnMsg(data, 1), function () { $('#btOK').prop('disabled', false); });
+        }
+        else {
+            DyAlert("變更密碼成功!", function () {
+                $('#btOK').prop('disabled', false);
+                $('#txtOldUPWD').val('');
+                $('#txtNewUPWD').val('');
+                $('#txtChkUPWD').val('');
+                $('#txtCode').val('')
+                //更新驗證碼
+                createCode();
+            }, "下次登入請使用新密碼")
+        };
+    }
     let GetInitMSPV101 = function (data) {
         if (ReturnMsg(data, 0) != "GetInitmsDMOK") {
             DyAlert(ReturnMsg(data, 1));
@@ -92,7 +145,7 @@
                 document.getElementById("txtCode").value = "";//清空文字框
                 e.preventDefault();
             });
-
+        }
     };
 
     let afterLoadPage = function () {
@@ -105,6 +158,4 @@
     if ($('#pgMSPV101').length == 0) {  
         AllPages = new LoadAllPages(ParentNode, "SystemSetup/MSPV101", ["MSPV101btns", "pgMSPV101Init", "pgMSPV101Add", "pgMSPV101Mod"], afterLoadPage);
     };
-
-
 }
