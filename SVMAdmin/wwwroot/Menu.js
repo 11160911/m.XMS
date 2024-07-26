@@ -675,6 +675,18 @@
                     PageMSSD103($(".workarea"));
                 }
             }
+            else if (pg == "MSSetLogo") {
+                if (window.PageMSSetLogo == undefined) {
+                    $.getScript('SystemSetup/MSSetLogo.js',
+                        function () {
+                            PageMSSetLogo($(".workarea"));
+                        }
+                    );
+                }
+                else {
+                    PageMSSetLogo($(".workarea"));
+                }
+            }
             else if (pg == "SysChangePWD") {
                 $('#OLD_PWD').val("");
                 $('#NEW_PWD').val("");

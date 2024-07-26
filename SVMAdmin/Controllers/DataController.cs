@@ -13717,6 +13717,69 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("SystemSetup/InitMSSetLogo")]
+        public ActionResult SystemSetup_InitMSSetLogo()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "InitMSSetLogoOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ProgramID = rq["ProgramID"];
+                string sql = "select ChineseName from ProgramIDWeb (nolock) where ProgramID='" + ProgramID.SqlQuote() + "'";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+
+                sql = "select * from ProgramIDWeb (nolock) where 1=1 order by ProgramID ";
+                DataTable dtP = PubUtility.SqlQry(sql, uu, "SYS");
+                dtP.TableName = "dtP";
+                ds.Tables.Add(dtP);
+
+                sql = "Select Companycode + ' ' + ChineseName Company From CompanyWeb (nolock) Where Companycode='" + uu.CompanyId + "' ";
+                DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                dtC.TableName = "dtC";
+                ds.Tables.Add(dtC);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSSetLogoQuery")]
+        public ActionResult SystemSetup_MSSetLogoQuery()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSetLogoQueryOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ProgramID = rq["ProgramID"];
+                string sql = "select a.Companycode,b.ChineseName CompanyName,a.ProgramID,c.ChineseName ProgramName  ";
+                sql += "from EDMSetWeb a (nolock) ";
+                sql += "inner join CompanyWeb b (nolock) on a.Companycode=b.Companycode ";
+                sql += "inner join ProgramIDWeb c (nolock) on a.ProgramID=c.ProgramID ";
+                sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                if (ProgramID != "") {
+                    sql += "and a.ProgramID='" + ProgramID.SqlQuote() + "' ";
+                }
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
         [Route("FileUpload_EDM")]
         public ActionResult FileUpload_EDM()
         {

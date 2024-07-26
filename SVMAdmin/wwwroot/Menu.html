@@ -176,92 +176,106 @@
 
             <div class="right_col" role="main" style="background-color: whitesmoke;">
                 <div class="workarea">
-                    <article id="modal_Menu" class="x_panel" style="height: 750px; background-color: white; background-image: url(images/mxmslogo9menu.JPG); background-repeat: no-repeat; background-attachment: fixed; background-position: center; ">
-                        <!--<img src="images/home5.jpg" style="width: 85%;height:90%; display: block; margin: auto " />-->
+                    <style>
+                        #modal_Menu {
+                            height: 750px;
+                            background-color: white;
+                            background-image: url(images/mxmslogo8menu-p17.jpg);
+                            background-repeat: no-repeat;
+                            background-attachment: fixed;
+                            background-position: right top;
+                        }
+                        /*手機畫面*/
+                        @media (max-width:767px) {
+                            #modal_Menu {
+                                height: 580px;
+                                background-image: url(images/mxmslogo8menu-p7.jpg);
+                                background-position: right top;
+                            }
+                        }
+                    </style>
+                        <article id="modal_Menu" class="x_panel" >
+                        <!-- <img src="images/home5.jpg" style="width: 85%;height:90%; display: block; margin: auto " / >-->
+                        <!-- 數位儀表版-- >
+                        <!-- <div class="form-group row" style="width: 100%" >
+                        <label class="DyForm3-LabelBlack" > 最新統計時間&ensp;:&ensp;</label >
+                        <label id="lblTime" class="DyForm3-LabelRed" > </label >
+                        </div >
 
-                        <!--數位儀表版-->
-                        <!--<div class="form-group row" style="width: 100%">
-        <label class="DyForm3-LabelBlack">最新統計時間&ensp;:&ensp;</label>
-        <label id="lblTime" class="DyForm3-LabelRed"></label>
-    </div>
+                        <div class="form-group row" style="width: 100%" >
+                        <div style="border:1px;width:25%" >
+                        <div class="form-group row" >
+                        <label class="DyForm3-LabelBlack" > 即時營業額&ensp;:&ensp;</label >
+                        <label id="lblNowCash" class="DyForm3-LabelRed" > </label >
+                        </div >
+                        </div >
+                        <div class="form-group row" style="border:1px;width:25%" >
+                        <label class="DyForm3-LabelBlack" > 昨日營業額&ensp;:&ensp;</label >
+                        <label id="lbloldCash" class="DyForm3-LabelRed" > </label >
+                        </div >
+                        </div >
 
-    <div class="form-group row" style="width: 100%">
-        <div style="border:1px;width:25%">
-            <div class="form-group row">
-                <label class="DyForm3-LabelBlack">即時營業額&ensp;:&ensp;</label>
-                <label id="lblNowCash" class="DyForm3-LabelRed"></label>
-            </div>
-        </div>
-        <div class="form-group row" style="border:1px;width:25%">
-            <label class="DyForm3-LabelBlack">昨日營業額&ensp;:&ensp;</label>
-            <label id="lbloldCash" class="DyForm3-LabelRed"></label>
-        </div>
-    </div>
+                        <div class="form-group row" style="width: 100%" >
+                        <div id="divline" style="width: 100%;height:250px;" > </div >
+                        </div >
+                        <div class="form-group row" style="width: 100%" >
+                        <div id="divBar" style="width: 100%; height: 250px; " > </div >
+                        </div >
+                        <div class="form-group row" style="width: 100%" >
+                        <div id="divPie" style="width: 100%; height: 250px; " > </div >
+                        </div >-->
+                        </article >
+                        </div >
+                        <div class="pull-right" >
+                        <p > ©2024 世代流通資訊股份有限公司 版權所有</p >
+                        </div >
+                        </div >
 
-    <div class="form-group row" style="width: 100%">
-        <div id="divline" style="width: 100%;height:250px;"></div>
-    </div>
-    <div class="form-group row" style="width: 100%">
-        <div id="divBar" style="width: 100%; height: 250px; "></div>
-    </div>
-    <div class="form-group row" style="width: 100%">
-        <div id="divPie" style="width: 100%; height: 250px; "></div>
-    </div>-->
-                    </article>
-                </div>
-                <!--<article id="modal_Menu" class="x_panel" style="height: 805px; background: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px; background-color: white ">-->
-                <!--<img id="rightLogo" src="images/Web底圖-地球-2.png" style="width: 300px; height: 350px" />-->
-                <!--</article>-->
-                <div class="pull-right">
-                    <p>©2024 世代流通資訊股份有限公司 版權所有</p>
-                </div>
-            </div>
+                        <div id="menufoot" class="modal-footer" role="main" style="width :100%;background-color:white" >
+                        </div >
 
-            <div id="menufoot" class="modal-footer" role="main" style="width :100%;background-color:white">
-            </div>
+                        <div class="modal fade" id="modal-media" >
+                        <style >
+                        #fileupload {
+                            position: absolute;
+                            width: 1px;
+                            height: 1px;
+                            padding: 0;
+                            margin: -1px;
+                            overflow: hidden;
+                            clip: rect(0,0,0,0);
+                            border: 0
+                        }
+                    </style>
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title"></h4>
+                            </div>
+                            <div class="modal-body modal-tab-container">
+                                <div class="upload-container">
+                                    <div id="dropzone">
+                                        <input id="fileURL" type="text" placeholder="請輸入圖片超連結" hidden />
 
-            <div class="modal fade" id="modal-media">
-                <style>
-                    #fileupload {
-                        position: absolute;
-                        width: 1px;
-                        height: 1px;
-                        padding: 0;
-                        margin: -1px;
-                        overflow: hidden;
-                        clip: rect(0,0,0,0);
-                        border: 0
-                    }
-                </style>
-                <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title"></h4>
-                        </div>
-                        <div class="modal-body modal-tab-container">
-                            <div class="upload-container">
-                                <div id="dropzone">
-                                    <input id="fileURL" type="text" placeholder="請輸入圖片超連結" hidden />
-
-                                    <div class="dropzone needsclick dz-clickable" style="margin-top:5px">
-                                        <div class="dz-message-block">
-                                            <div class="dz-message needsclick">
-                                                <label for="fileupload" class="custom-file-upload">
-                                                    ⊕拖曳圖片到這裡！
-                                                </label>
-                                                <input id="fileupload" type="file" name="files[]" multiple>
+                                        <div class="dropzone needsclick dz-clickable" style="margin-top:5px">
+                                            <div class="dz-message-block">
+                                                <div class="dz-message needsclick">
+                                                    <label for="fileupload" class="custom-file-upload">
+                                                        ⊕拖曳圖片到這裡！
+                                                    </label>
+                                                    <input id="fileupload" type="file" name="files[]" multiple>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="DyForm3-BtnCancel" data-dismiss="modal">取消</button>
-                        </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
+                            <div class="modal-footer">
+                                <button type="button" class="DyForm3-BtnCancel" data-dismiss="modal">取消</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
             <style>
                 /*.m-loader {
                     position: relative;

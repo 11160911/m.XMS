@@ -109,6 +109,13 @@
     color: black;
     margin-left: 3px;
 }
+/*下拉選單*/
+.DyForm3-Select {
+    width: 150px;
+    height: 30px;
+    font-size: 16px;
+    color: black;
+}
 /*藍色Label*/
 .DyForm3-Label {
     margin-top: 3px;

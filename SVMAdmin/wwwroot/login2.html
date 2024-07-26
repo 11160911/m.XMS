@@ -31,23 +31,6 @@
               background-color: #E8F0FE !important
           }
 
-          #divEdynasty {
-              text-align: center;
-              margin-top: 380px;
-          }
-
-          html {
-              /*background: url(images/Web底圖-地球-2.png) no-repeat center center fixed;
-              -webkit-background-size: cover;
-              -moz-background-size: cover;
-              -o-background-size: cover;*/
-              /*background-size: 620px 850px;*/
-              background-image: url(images/mxmslogo9a.JPG);
-              background-repeat: no-repeat;
-              background-attachment: fixed;
-              background-position: bottom;
-          }
-
           .login_content2 .btn.submit {
               font-size: large;
               border: 1px solid black;
@@ -82,37 +65,24 @@
             color:white;
         }
 
+          #divimglogin {
+              margin-top: 20px;
+          }
           /*手機畫面*/
           @media (max-width:767px) {
-              /*螢幕縱向*/
-              @media screen and (orientation: portrait) {
-                  html {
-                      background-image: url(images/mxmslogo9d-p.JPG);
-                      background-repeat: no-repeat;
-                      background-attachment: fixed;
-                      background-position: bottom;
-                      background-size: 415px 540px;
+              #divimglogin {
+                  margin-top: 10px;
+              }
+
+              #imglogin {
+                      width:200px;
                   }
 
-                  #divEdynasty {
-                      text-align: center;
-                      margin-top: 250px;
-                  }
+              /*螢幕縱向*/
+              @media screen and (orientation: portrait) {
               }
               /*螢幕橫向*/
               @media screen and (orientation: landscape) {
-                  html {
-                      background-image: url(images/mxmslogo9d-p.JPG);
-                      background-repeat: no-repeat;
-                      background-attachment: fixed;
-                      background-position: bottom;
-                      background-size: 300px 300px;
-                  }
-
-                  #divEdynasty {
-                      text-align: center;
-                      margin-top: 250px;
-                  }
               }
           }
      /*   .btSignIn:active {
@@ -124,7 +94,7 @@
       <div>
           <div style="position:absolute;top:0px;left:0px;width:100%">
               <div style="position: absolute; width: 100%; text-align: center; margin-top: 20px">
-                  <img id="imgCompany" src="images/世代-DYNASTY-3D.png" style="width: 160px" />
+                  <img id="imgCompany" src="images/世代-DYNASTY-3D.png" style="width: 190px" />
               </div>
           </div>
           <div class="login_wrapper">
@@ -225,7 +195,7 @@
                               <h3 id="CompanyName" style="color:white" hidden></h3>
                           </div>
 
-                          <div style="margin-top:100px">
+                          <div style="margin-top:60px">
                           </div>
                           <div>
                               <input id="username" type="text" class="form-control Logintxt" placeholder="帳號" required="" autocomplete="off" value="" maxlength="12" />
@@ -253,10 +223,13 @@
 
                           <div class="clearfix"> </div>
 
-                          <div id="divEdynasty">
-                              <p style="font-size:14px"> ©2024 世代流通資訊股份有限公司 版權所有</p>
+                          <div id="divimglogin" style="text-align:center;">
+                              <img id="imglogin" src="images/mxmslogo3login6.jpg">
                           </div>
 
+                          <div style="text-align: center;margin-top: 15px;">
+                              <p style="font-size:14px"> ©2024 世代流通資訊股份有限公司 版權所有</p>
+                          </div>
                           <!--<div class="separator">
         <p class="change_link" hidden>
               <a href="#signup" class="to_register"> Create Account </a>
@@ -268,9 +241,7 @@
             <p style="font-size:14px"> ©2024 世代流通資訊股份有限公司 版權所有</p>
         </div>
     </div>-->
-                          
                       </form>
-
 
                       <div class="modal fade" id="OTP_modal" data-keyboard="false"  data-backdrop="static">
                           <div class="modal-dialog">
