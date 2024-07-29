@@ -529,7 +529,7 @@
             $('#btDef_EDM').prop('disabled', true)
             $('#btDef_EDM').css('background-color', 'gray')
             $('#btExit_EDM').prop('disabled', false)
-            $('#btExit_EDM').css('background-color', '#6ed117')
+            $('#btExit_EDM').css('background-color', '#348000')
         }
         else if (EditMode == "M") {
             $('#btMod_EDM').prop('disabled', true)
@@ -563,7 +563,7 @@
                 $('#btDef_EDM').prop('disabled', true)
                 $('#btDef_EDM').css('background-color', 'gray')
                 $('#btExit_EDM').prop('disabled', false)
-                $('#btExit_EDM').css('background-color', '#6ed117')
+                $('#btExit_EDM').css('background-color', '#348000')
             }
             //已批核 未作廢
             else if ($('#lblAppDate_EDM').html() != "" && $('#lblDefDate_EDM').html() == "") {
@@ -580,7 +580,7 @@
                 $('#btDef_EDM').prop('disabled', false)
                 $('#btDef_EDM').css('background-color', 'red')
                 $('#btExit_EDM').prop('disabled', false)
-                $('#btExit_EDM').css('background-color', '#6ed117')
+                $('#btExit_EDM').css('background-color', '#348000')
             }
             //已批核 已作廢
             else if ($('#lblAppDate_EDM').html() != "" && $('#lblDefDate_EDM').html() != "") {
@@ -597,7 +597,7 @@
                 $('#btDef_EDM').prop('disabled', true)
                 $('#btDef_EDM').css('background-color', 'gray')
                 $('#btExit_EDM').prop('disabled', false)
-                $('#btExit_EDM').css('background-color', '#6ed117')
+                $('#btExit_EDM').css('background-color', '#348000')
             }
         }
     };

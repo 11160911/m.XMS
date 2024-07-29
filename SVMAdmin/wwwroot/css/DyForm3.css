@@ -219,30 +219,24 @@
     height: 750px;
     width: 100%;
     /*overflow: auto;*/
-    background-image: url(images/MenuLogo-C.jpg);
+    background-image: url(images/MenuLogo-C14.jpg);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: right top;
 }
+
 /*第二層主畫面*/
 .DyForm3-PanelD {
     height: 900px;
     width: 1400px;
     left: -200px;
     overflow:auto;
-    background-image: url(images/MenuLogo-C.jpg);
+    background-image: url(images/MenuLogo-C14.jpg);
     background-repeat: no-repeat;
-    background-attachment: fixed;
+    background-attachment: inherit;
     background-position: right top;
 }
-/*第二層主畫面(mobile)*/
-.DyForm3-PanelDMob {
-    overflow: auto;
-    background-image: url(images/MenuLogo-C.jpg);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: right top;
-}
+
 /*第一層Table*/
 .DyForm3-TableIni {
     overflow: auto;
@@ -252,16 +246,6 @@
 .DyForm3-TableIni1 {
     overflow: auto;
     height: 450px;
-}
-/*第二層Table*/
-.DyForm3-TableD {
-    overflow: auto;
-    height: 550px;
-}
-/*第二層Table(表頭資料多時使用)*/
-.DyForm3-TableD1 {
-    overflow: auto;
-    height: 550px;
 }
 /*第一層Table(mobile)*/
 .DyForm3-TableIniMob {
@@ -275,23 +259,28 @@
     height: 450px;
     width:50%;
 }
-/*第二層Table(mobile)*/
-.DyForm3-TableDMob {
-    overflow: auto;
-    height: 530px;
-}
 /*第一層Table(EDM)*/
 .DyForm3-TableIniEDM {
     overflow: auto;
     height: 400px;
 }
 
+/*第二層Table*/
+.DyForm3-TableD {
+    overflow: auto;
+    height: 550px;
+}
+/*第二層Table(表頭資料多時使用)*/
+.DyForm3-TableD1 {
+    overflow: auto;
+    height: 550px;
+}
 
 /*手機畫面*/
 @media (max-width:767px) {
     .DyForm3-PanelIni {
         height: 580px;
-        background-image: url(images/MenuLogo-P.jpg);
+        background-image: url(images/MenuLogo-P1.jpg);
     }
     .DyForm3-TableIni {
         height: 380px;
@@ -307,9 +296,7 @@
         height: 310px;
         width: 100%;
     }
-    .DyForm3-PanelDMob {
-        background-image: url(images/MenuLogo-P.jpg);
-    }
+   
     .DyForm3-TableIniEDM {
         height: 220px;
     }
@@ -319,7 +306,7 @@
             height: 650px;
             width: 100%;
             left: 0px;
-            background-image: url(images/MenuLogo-P.jpg);
+            background-image: url(images/MenuLogo-P1.jpg);
         }
         .DyForm3-TableD {
             height: 450px;
@@ -334,7 +321,7 @@
             height: 280px;
             width: 100%;
             left: 0px;
-            background-image: url(images/MenuLogo-P.jpg);
+            background-image: url(images/MenuLogo-P1.jpg);
         }
         .DyForm3-TableD {
             height: 110px;
