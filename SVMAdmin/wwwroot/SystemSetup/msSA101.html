@@ -113,7 +113,7 @@
                 </div>
                 <article id="pgMSSA101Init" class="row">
                     <div class="col-md-12 col-sm-12">
-                        <div id="PanelIni"  class="x_panel DyForm3-PanelIni">
+                        <div  class="x_panel DyForm3-PanelIni">
                             <style>
                                 .ErrorControl {
                                     background-color: red;
@@ -175,12 +175,6 @@
                                     z-index: 2;
                                 }
 
-                                #PanelIni {
-                                    background-image: url(images/mxmslogo9a.JPG);
-                                    background-repeat: no-repeat;
-                                    background-attachment: fixed;
-                                    background-position: center;
-                                }
                                 /*手機畫面*/
                                 @media (max-width:767px) {
                                     /*螢幕縱向*/
@@ -194,9 +188,6 @@
                                             top: 110px;
                                             z-index: 2;
                                         }
-                                        #PanelIni {
-                                            background-size: 400px 430px;
-                                        }
                                     }
                                     /*螢幕橫向*/
                                     @media screen and (orientation: landscape) {
@@ -208,9 +199,6 @@
                                         #td0 {
                                             top: 100px;
                                             z-index: 2;
-                                        }
-                                        #PanelIni {
-                                            background-size: 400px 430px;
                                         }
                                     }
                                 }
@@ -320,7 +308,7 @@
 
                     <div class="modal fade" id="modal_D" data-keyboard="false" data-backdrop="static" style="z-index:1042">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" id="modalcon_D">
+                            <div class="modal-content DyForm3-PanelD">
                                 <style>
                                     #tbQueryD thead tr th {
                                         font-size: 16px;
@@ -381,32 +369,10 @@
                                         top: 65px;
                                         z-index: 2;
                                     }*/
-
-                                    #modalcon_D {
-                                        height: 900px;
-                                        width: 1400px;
-                                        left: -200px;
-                                        background-image: url(images/mxmslogo9a.JPG);
-                                        background-repeat: no-repeat;
-                                        background-attachment: fixed;
-                                        background-position: center;
-                                    }
-                                    #divD {
-                                        height: 550px;
-                                    }
                                     /*手機畫面*/
                                     @media (max-width:767px) {
                                         /*螢幕縱向*/
                                         @media screen and (orientation: portrait) {
-                                            #modalcon_D {
-                                                height: 650px;
-                                                width: 100%;
-                                                left: 0px;
-                                                background-size: 400px 430px;
-                                            }
-                                            #divD {
-                                                height: 450px;
-                                            }
                                             #Dtd1, #Dtd2, #Dtd3, #Dtd4, #Dtd5, #Dtd6, #Dtd7 {
                                                 top: 110px;
                                                 z-index: 2;
@@ -419,17 +385,6 @@
                                         }
                                         /*螢幕橫向*/
                                         @media screen and (orientation: landscape) {
-                                            #modalcon_D {
-                                                height: 330px;
-                                                width: 100%;
-                                                left: 0px;
-                                                background-size: 400px 430px;
-                                            }
-
-                                            #divD {
-                                                height: 110px;
-                                            }
-
                                         }
                                     }
                                 </style>
@@ -468,7 +423,7 @@
 
                                     <div class="card-block forminput">
                                         <div class="x_content">
-                                            <div id="divD" style="overflow: auto;">
+                                            <div class="DyForm3-TableD">
                                                 <table id="tbQueryD" class="table table-bordered DyForm3-Table">
                                                     <thead>
                                                         <!--第一層-->
@@ -515,7 +470,7 @@
 
                     <div class="modal fade" id="modal_DD" data-keyboard="false" data-backdrop="static" style="z-index:1043">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" id="modalcon_DD">
+                            <div class="modal-content DyForm3-PanelD">
                                 <style>
                                     #tbQueryDD thead tr th {
                                         font-size: 16px;
@@ -578,32 +533,10 @@
                                         z-index: 2;
                                     }*/
 
-                                    #modalcon_DD {
-                                        height: 900px;
-                                        width: 1400px;
-                                        left: -200px;
-                                        background-image: url(images/mxmslogo9a.JPG);
-                                        background-repeat: no-repeat;
-                                        background-attachment: fixed;
-                                        background-position: center;
-                                    }
-
-                                    #divDD {
-                                        height: 550px;
-                                    }
                                     /*手機畫面*/
                                     @media (max-width:767px) {
                                         /*螢幕縱向*/
                                         @media screen and (orientation: portrait) {
-                                            #modalcon_DD {
-                                                height: 650px;
-                                                width: 100%;
-                                                left: 0px;
-                                                background-size: 400px 430px;
-                                            }
-                                            #divDD {
-                                                height: 450px;
-                                            }
                                             #DDtd1, #DDtd2, #DDtd3, #DDtd4, #DDtd5, #DDtd6, #DDtd7 {
                                                 top: 110px;
                                                 z-index: 2;
@@ -616,15 +549,6 @@
                                         }
                                         /*螢幕橫向*/
                                         @media screen and (orientation: landscape) {
-                                            #modalcon_DD {
-                                                height: 330px;
-                                                width: 100%;
-                                                left: 0px;
-                                                background-size: 400px 430px;
-                                            }
-                                            #divDD {
-                                                height: 110px;
-                                            }
                                         }
                                     }
                                 </style>
@@ -657,7 +581,7 @@
 
                                     <div class="card-block forminput">
                                         <div class="x_content">
-                                            <div id="divDD" style="overflow: auto;">
+                                            <div class="DyForm3-TableD" >
                                                 <table id="tbQueryDD" class="table table-bordered DyForm3-Table">
                                                     <thead>
                                                         <!--第一層-->

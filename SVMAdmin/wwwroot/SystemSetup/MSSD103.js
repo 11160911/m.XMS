@@ -308,7 +308,7 @@
 
     //#region 第二層
     let Step1_click = function (bt) {
-        $('#tbQuery td').closest('tr').css('background-color', 'white');
+        $('#tbQuery td').closest('tr').css('background-color', 'transparent');
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         var node = $(grdM.ActiveRowTR()).prop('Record');
@@ -616,7 +616,7 @@
             $('#lblType_DD').html('銷售日期')
         }
 
-        $('#tbD_PSNO td').closest('tr').css('background-color', 'white');
+        $('#tbD_PSNO td').closest('tr').css('background-color', 'transparent');
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         var node = $(grdD.ActiveRowTR()).prop('Record');

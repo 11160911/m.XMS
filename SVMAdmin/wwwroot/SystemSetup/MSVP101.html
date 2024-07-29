@@ -116,7 +116,7 @@
 
                 <article id="pgMSVP101Init" class="row">
                     <div class="col-md-12 col-sm-12">
-                        <div id="PanelIni" class="x_panel DyForm3-PanelIni">
+                        <div class="x_panel DyForm3-PanelIni">
                             <style>
                                 .ErrorControl {
                                     background-color: red;
@@ -150,18 +150,8 @@
                                     z-index: 2;
                                     height: 35px;
                                 }
-
-                                #PanelIni {
-                                    background-image: url(images/mxmslogo9a.JPG);
-                                    background-repeat: no-repeat;
-                                    background-attachment: fixed;
-                                    background-position: center;
-                                }
                                 /*手機畫面*/
                                 @media (max-width:767px) {
-                                    #PanelIni {
-                                        background-size: 400px 430px;
-                                    }
                                 }
                             </style>
 
@@ -235,7 +225,7 @@
 
                     <div class="modal fade" id="modal_EDMHistoryQuery" data-keyboard="false" data-backdrop="static" style="z-index:1041">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" id="modalcon_EDMHistoryQuery">
+                            <div class="modal-content DyForm3-PanelD">
                                 <style>
                                     #tbEDMHistoryQuery thead tr th {
                                         font-size: 16px;
@@ -266,61 +256,13 @@
                                         height: 35px;
                                     }
 
-                                    #modalcon_EDMHistoryQuery {
-                                        overflow: auto;
-                                        height: 900px;
-                                        width: 1080px;
-                                        background-image: url(images/mxmslogo9a.JPG);
-                                        background-repeat: no-repeat;
-                                        background-attachment: fixed;
-                                        background-position: center;
-                                    }
-
-                                    #lblEDMDocNoTxt_EDMHistoryQuery {
-                                        position: absolute;
-                                        right: 700px;
-                                    }
-                                    #lblEDMDocNo_EDMHistoryQuery {
-                                        position: absolute;
-                                        right: 565px;
-                                        margin-top: 3px;
-                                    }
-                                    #lblEDDateTxt_EDMHistoryQuery {
-                                        position: absolute;
-                                        right: 425px;
-                                    }
-                                    #lblEDDate_EDMHistoryQuery {
-                                        position: absolute;
-                                        right: 235px;
-                                        margin-top: 3px;
-                                    }
                                     /*手機畫面*/
                                     @media (max-width:767px) {
                                         /*螢幕縱向*/
                                         @media screen and (orientation: portrait) {
-                                            #modalcon_EDMHistoryQuery {
-                                                height: 650px;
-                                                width: 100%;
-                                                background-size: 400px 430px;
-                                            }
-                                            #lblEDMDocNoTxt_EDMHistoryQuery, #lblEDMDocNo_EDMHistoryQuery, #lblEDDateTxt_EDMHistoryQuery, #lblEDDate_EDMHistoryQuery {
-                                                margin-left: 15px;
-                                                position: unset;
-                                                right: 0
-                                            }
                                         }
                                         /*螢幕橫向*/
                                         @media screen and (orientation: landscape) {
-                                            #modalcon_EDMHistoryQuery {
-                                                height: 330px;
-                                                width: 100%;
-                                                background-size: 400px 430px;
-                                            }
-                                            #lblEDMDocNoTxt_EDMHistoryQuery, #lblEDMDocNo_EDMHistoryQuery, #lblEDDateTxt_EDMHistoryQuery, #lblEDDate_EDMHistoryQuery {
-                                                margin-left: 15px;
-                                                position: unset;
-                                                right: 0
-                                            }
                                         }
                                     }
                                 </style>
@@ -343,15 +285,15 @@
                                         <label class="DyForm3-Label">發送單號</label>
                                         <label id="lblEVNO_EDMHistoryQuery" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px"></label>
 
-                                        <label class="DyForm3-Label" id="lblEDMDocNoTxt_EDMHistoryQuery">DM單號</label>
-                                        <label id="lblEDMDocNo_EDMHistoryQuery" class="DyForm3-LabelBlack"></label>
-                                        <label class="DyForm3-Label" id="lblEDDateTxt_EDMHistoryQuery">DM期間</label>
-                                        <label id="lblEDDate_EDMHistoryQuery" class="DyForm3-LabelBlack"></label>
+                                        <label class="DyForm3-Label" style="margin-left:50px">DM單號</label>
+                                        <label id="lblEDMDocNo_EDMHistoryQuery" class="DyForm3-LabelBlack" style="margin-left: 15px"></label>
+                                        <label class="DyForm3-Label" style="margin-left:50px">DM期間</label>
+                                        <label id="lblEDDate_EDMHistoryQuery" class="DyForm3-LabelBlack" style="margin-left: 15px"></label>
                                     </div>
                                     <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 0px ">
                                         <label class="DyForm3-Label">發送日期</label>
                                         <label id="lblStartDate_EDMHistoryQuery" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px"></label>
-                                        <label class="DyForm3-Label" style="margin-left: 54px;">DM主旨</label>
+                                        <label class="DyForm3-Label" style="margin-left: 21px;">DM主旨</label>
                                         <label id="lblEDMMemo_EDMHistoryQuery" class="DyForm3-LabelBlack" style="margin-left:15px; margin-top: 3px "></label>
                                     </div>
                                     <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 0px ">
@@ -369,7 +311,7 @@
                                             <label class="DyForm3-ProgramName">會員發送清單</label>
                                             <label id="lblVIPCnt_EDMHistoryQuery" class="DyForm3-ProgramName" style="margin-left: 60px;color: red;"></label>
                                         </div>
-                                        <div style="overflow: auto; height: 400px;">
+                                        <div class="DyForm3-TableD1" >
                                             <table id="tbEDMHistoryQuery" class="table table-bordered DyForm3-Table">
                                                 <thead>
                                                     <tr>
@@ -399,7 +341,7 @@
 
                     <div class="modal fade" id="modal_SendSet" data-keyboard="false" data-backdrop="static" style="z-index:1042">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" id="modalcon_SendSet">
+                            <div class="modal-content DyForm3-PanelD">
                                 <style>
                                     #tbSendSet thead tr th {
                                         font-size: 16px;
@@ -436,32 +378,13 @@
                                         margin-top:5px;
                                     }
 
-                                    #modalcon_SendSet {
-                                        overflow: auto;
-                                        height: 900px;
-                                        width: 1080px;
-                                        background-image: url(images/mxmslogo9a.JPG);
-                                        background-repeat: no-repeat;
-                                        background-attachment: fixed;
-                                        background-position: center;
-                                    }
                                     /*手機畫面*/
                                     @media (max-width:767px) {
                                         /*螢幕縱向*/
                                         @media screen and (orientation: portrait) {
-                                            #modalcon_SendSet {
-                                                height: 650px;
-                                                width: 100%;
-                                                background-size: 400px 430px;
-                                            }
                                         }
                                         /*螢幕橫向*/
                                         @media screen and (orientation: landscape) {
-                                            #modalcon_SendSet {
-                                                height: 330px;
-                                                width: 100%;
-                                                background-size: 400px 430px;
-                                            }
                                         }
                                     }
                                 </style>
@@ -628,7 +551,7 @@
                                                 發送EDM
                                             </button>
                                         </div>
-                                        <div style="overflow: auto; height: 400px;">
+                                        <div class="DyForm3-TableD1">
                                             <table id="tbSendSet" class="table table-bordered DyForm3-Table">
                                                 <thead>
                                                     <tr>
@@ -660,7 +583,7 @@
 
                     <div class="modal fade" id="modal_DMSel" data-keyboard="false" data-backdrop="static" style="z-index:1043">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" id="modalcon_DMSel">
+                            <div class="modal-content DyForm3-PanelD">
                                 <style>
                                     #tbDMSel thead tr th {
                                         font-size: 16px;
@@ -691,46 +614,13 @@
                                         height: 35px;
                                     }
 
-                                    #modalcon_DMSel {
-                                        overflow: auto;
-                                        height: 900px;
-                                        width: 1200px;
-                                        left: -100px;
-                                        background-image: url(images/mxmslogo9a.JPG);
-                                        background-repeat: no-repeat;
-                                        background-attachment: fixed;
-                                        background-position: center;
-                                    }
-                                    #divDMSel {
-                                        height: 650px;
-                                    }
                                     /*手機畫面*/
                                     @media (max-width:767px) {
                                         /*螢幕縱向*/
                                         @media screen and (orientation: portrait) {
-                                            #modalcon_DMSel {
-                                                height: 650px;
-                                                width: 100%;
-                                                left: 0px;
-                                                background-size: 400px 430px;
-                                            }
-
-                                            #divDMSel {
-                                                height: 450px;
-                                            }
                                         }
                                         /*螢幕橫向*/
                                         @media screen and (orientation: landscape) {
-                                            #modalcon_DMSel {
-                                                height: 330px;
-                                                width: 100%;
-                                                left: 0px;
-                                                background-size: 400px 430px;
-                                            }
-
-                                            #divDMSel {
-                                                height: 210px;
-                                            }
                                         }
                                     }
                                 </style>
@@ -752,7 +642,7 @@
                                     </div>
                                     <div class="card-block forminput">
                                         <div class="x_content">
-                                            <div id="divDMSel" style="overflow: auto;">
+                                            <div class="DyForm3-TableD1" >
                                                 <table id="tbDMSel" class="table table-bordered DyForm3-Table">
                                                     <thead>
                                                         <tr>
