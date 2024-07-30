@@ -13429,6 +13429,37 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+
+        [Route("SystemSetup/MSSA102Query")]
+        public ActionResult SystemSetup_MSSA102Query()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSA102QueryOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Opendate = rq["Opendate"];
+
+                string sqldw = "select a.CG_No,sum(a.SalesCash) SalesCash,sum(a.SalesQty) SalesQty,sum( b.sumCash) VIPCash,sum(b.sumQty) VIPQty,sum(b.sumCash1) NotVIPCash,sum(b.sumQty1) NotVIPQty";
+                sqldw += ",sum(case when b.VIPNo<>'' then b.sumCash else 0 end) VIPCash,sum(case when b.VIPNo<>'' then b.sumQty else 0 end) VIPQTY ";
+                sqldw += "from (select CG_No,sum(SalesCash) SalesCash,sum(SalesQty) SalesQty from  CompositeSales group by CG_No) a  ";
+                sqldw += "join (select distinct CompanyCode,CG_NO,sum(case when VIPNo<>'' then sumCash else 0 end) sumCash,sum(case when VIPNo<>'' then sumQty else 0 end) sumQty";
+                sqldw += ",sum(case when VIPNo='' then sumCash else 0 end) sumCash1,sum(case when VIPNo='' then sumQty else 0 end) sumQty1";
+                sqldw += " from  CompositeData where  Opendate='"+ Opendate + "'  group by CompanyCode,CG_NO) b on a.CG_No=b.CG_No group by a.CG_No";
+                DataTable dtD = PubUtility.SqlQry(string.Format(sqldw, ""), uu, "SYS");
+                dtD.TableName = "dtD";
+                ds.Tables.Add(dtD);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
         [Route("SystemSetup/LookUp")]
         public ActionResult SystemSetup_LookUp()
         {

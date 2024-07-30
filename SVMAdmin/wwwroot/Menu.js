@@ -598,6 +598,20 @@
                     PageMSSD104($(".workarea"));
                 }
             }
+            else if (pg == "MSSA102") {
+                if (window.PageMSSA102 == undefined) {
+                  $.getScript('SystemSetup/MSSA102.js',
+                        function () {
+                            PageMSSA102($(".workarea"));
+                        }
+                    );
+                }
+
+                else {
+                    alert("3");
+                    PageMSSA102($(".workarea"));
+                }
+            }
             else if (pg == "MSSA103") {
                 if (window.PageMSSA103 == undefined) {
                     $.getScript('SystemSetup/MSSA103.js',
