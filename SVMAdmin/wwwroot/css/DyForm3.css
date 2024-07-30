@@ -219,7 +219,7 @@
     height: 750px;
     width: 100%;
     /*overflow: auto;*/
-    background-image: url(images/MenuLogo-C14.jpg);
+    background-image: url(images/MenuLogo-C.jpg);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: right top;
@@ -231,7 +231,7 @@
     width: 1400px;
     left: -200px;
     overflow:auto;
-    background-image: url(images/MenuLogo-C14.jpg);
+    background-image: url(images/MenuLogo-C.jpg);
     background-repeat: no-repeat;
     background-attachment: inherit;
     background-position: right top;
