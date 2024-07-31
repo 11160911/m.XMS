@@ -42,7 +42,7 @@
               color: #ffffff;
           }
 
-              .login_content2 h1:before, .login_content2 h1:after {
+        .login_content2 h1:before, .login_content2 h1:after {
                   display: none;
               }
 
@@ -54,8 +54,9 @@
               cursor: pointer;
               text-decoration: none;
               color: white;
-              width: 250px;
-              border-radius: 8PX;
+              width: 280px;
+              height:40px;
+              border-radius: 14PX;
               font-size: 20px;
               font-weight: bold
           }
@@ -64,20 +65,46 @@
             background-color: #2da8fa;
             color:white;
         }
-
+          
+        #username {
+              border-radius: 14PX;
+              height: 40px;
+              width: 280px;
+          }
+          #password {
+              border-radius: 14PX;
+              height: 40px;
+              width: 280px;
+          }
           #divimglogin {
               margin-top: 20px;
+          }
+          #imglogin {
+              width: 180px;
+          }
+          #divDYNASTY {
+              margin-top:50px;
           }
           /*手機畫面*/
           @media (max-width:767px) {
               #divimglogin {
                   margin-top: 10px;
               }
-
+              #divDYNASTY {
+                  margin-top: 10px;
+              }
+              .btSignIn {
+                  width: 250px;
+              }
+              #username {
+                  width: 250px;
+              }
+              #password {
+                  width: 250px;
+              }
               #imglogin {
-                      width:160px;
-                  }
-
+                  width: 160px;
+              }
               /*螢幕縱向*/
               @media screen and (orientation: portrait) {
               }
@@ -93,7 +120,7 @@
       
       <div>
           <div style="position:absolute;top:0px;left:0px;width:100%">
-              <div style="position: absolute; width: 100%; text-align: center; margin-top: 20px">
+              <div id="divDYNASTY" style="position: absolute; width: 100%; text-align: center;">
                   <img id="imgCompany" src="images/世代-DYNASTY-3D.png" style="width: 190px" />
               </div>
           </div>
@@ -190,7 +217,7 @@
                   <section class="login_content2">
                       <form id="frmLogin">
                           <div style="text-align:center;margin-top:110px;">
-                              <img src="images/mXms系統3D0729.png" style="width:240px;">
+                              <img src="images/mXms系統3D0729.png" style="width:180px;">
                               <!--<img src="images/mxmsbeta2.jpg" style="width:240px;">-->
                               <h3 id="CompanyName" style="color:white" hidden></h3>
                           </div>
@@ -201,7 +228,7 @@
                               <input id="username" type="text" class="form-control Logintxt" placeholder="帳號" required="" autocomplete="off" value="" maxlength="12" />
                           </div>
                           <div style="margin-top:20px;">
-                              <input id="password" type="password" class="form-control Logintxt" placeholder="密碼" required="" value="" maxlength="20" />
+                              <input id="password" type="password" class="form-control Logintxt" placeholder="密碼"required="" value="" maxlength="20" />
                               <input id="CompanyID" type="hidden" value="xxx" />
                           </div>
                           <div style="margin-top:20px;text-align:center">
