@@ -219,7 +219,7 @@
     height: 750px;
     width: 100%;
     /*overflow: auto;*/
-    background-image: url(images/MenuLogo-C20.jpg);
+    background-image: url(images/MenuLogo-C21.jpg);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: right top;
@@ -231,7 +231,7 @@
     width: 1400px;
     left: -200px;
     overflow: auto;
-    background-image: url(images/MenuLogo-C20.jpg);
+    background-image: url(images/MenuLogo-C21.jpg);
     background-repeat: no-repeat;
     background-attachment: inherit;
     background-position: right top;
@@ -280,7 +280,7 @@
 @media (max-width:767px) {
     .DyForm3-PanelIni {
         height: 580px;
-        background-image: url(images/MenuLogo-P3.jpg);
+        background-image: url(images/MenuLogo-P6.jpg);
     }
     .DyForm3-TableIni {
         height: 380px;
@@ -306,7 +306,7 @@
             height: 650px;
             width: 100%;
             left: 0px;
-            background-image: url(images/MenuLogo-P3.jpg);
+            background-image: url(images/MenuLogo-P6.jpg);
         }
         .DyForm3-TableD {
             height: 450px;
@@ -321,7 +321,7 @@
             height: 280px;
             width: 100%;
             left: 0px;
-            background-image: url(images/MenuLogo-P3.jpg);
+            background-image: url(images/MenuLogo-P6.jpg);
         }
         .DyForm3-TableD {
             height: 110px;
