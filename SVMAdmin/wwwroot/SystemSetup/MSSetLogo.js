@@ -7,9 +7,8 @@
         grdM = new DynGrid(
             {
                 table_lement: $('#tbQMSSetLogo')[0],
-                class_collection: ["tdColbt icon_in_td btMod", "tdCol1", "tdCol2", "tdCol3", "tdCol4"],
+                class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4"],
                 fields_info: [
-                    { type: "JQ", name: "fa-trash-o", element: '<i class="fa fa-trash-o" style="font-size:24px"></i>'},
                     { type: "Text", name: "Companycode", style: "" },
                     { type: "Text", name: "CompanyName", style: "" },
                     { type: "Text", name: "ProgramID", style: "" },
@@ -65,66 +64,65 @@
     let InitModifyDeleteButton = function () {
         //$('#tbQMSSetLogo .fa-trash-o').click(function () { btMod_click(this) });
         //$('#tbQMSSetLogo tbody tr').click(function () { MSSetLogoQuery(this) });
-
         $('#tbQMSSetLogo thead tr th').mouseenter(function () {
             var fdinfo = $(this).prop('fdinfo');
             if (fdinfo.name == "Companycode") {
+                var rgb = $('#tbQMSSetLogo thead tr th#thead1').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQMSSetLogo thead tr th#thead1').css('background-color', '#ffff00')
+                }
+            }
+            else if (fdinfo.name == "CompanyName") {
                 var rgb = $('#tbQMSSetLogo thead tr th#thead2').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
                     $('#tbQMSSetLogo thead tr th#thead2').css('background-color', '#ffff00')
                 }
             }
-            else if (fdinfo.name == "CompanyName") {
+            else if (fdinfo.name == "ProgramID") {
                 var rgb = $('#tbQMSSetLogo thead tr th#thead3').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
                     $('#tbQMSSetLogo thead tr th#thead3').css('background-color', '#ffff00')
                 }
             }
-            else if (fdinfo.name == "ProgramID") {
+            else if (fdinfo.name == "ProgramName") {
                 var rgb = $('#tbQMSSetLogo thead tr th#thead4').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
                     $('#tbQMSSetLogo thead tr th#thead4').css('background-color', '#ffff00')
                 }
             }
-            else if (fdinfo.name == "ProgramName") {
-                var rgb = $('#tbQMSSetLogo thead tr th#thead5').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSSetLogo thead tr th#thead5').css('background-color', '#ffff00')
-                }
-            }
         });
         $('#tbQMSSetLogo thead tr th').mouseleave(function () {
             var fdinfo = $(this).prop('fdinfo');
             if (fdinfo.name == "Companycode") {
+                var rgb = $('#tbQMSSetLogo thead tr th#thead1').css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $('#tbQMSSetLogo thead tr th#thead1').css('background-color', '#ffb620')
+                }
+            }
+            else if (fdinfo.name == "CompanyName") {
                 var rgb = $('#tbQMSSetLogo thead tr th#thead2').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
                     $('#tbQMSSetLogo thead tr th#thead2').css('background-color', '#ffb620')
                 }
             }
-            else if (fdinfo.name == "CompanyName") {
+            else if (fdinfo.name == "ProgramID") {
                 var rgb = $('#tbQMSSetLogo thead tr th#thead3').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
                     $('#tbQMSSetLogo thead tr th#thead3').css('background-color', '#ffb620')
                 }
             }
-            else if (fdinfo.name == "ProgramID") {
+            else if (fdinfo.name == "ProgramName") {
                 var rgb = $('#tbQMSSetLogo thead tr th#thead4').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
                     $('#tbQMSSetLogo thead tr th#thead4').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "ProgramName") {
-                var rgb = $('#tbQMSSetLogo thead tr th#thead5').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSSetLogo thead tr th#thead5').css('background-color', '#ffb620')
                 }
             }
         });
@@ -132,16 +130,16 @@
             $('#tbQMSSetLogo thead tr th').css('background-color', '#ffb620')
             var fdinfo = $(this).prop('fdinfo');
             if (fdinfo.name == "Companycode") {
-                $('#tbQMSSetLogo thead tr th#thead2').css('background-color', '#ffeaa7')
+                $('#tbQMSSetLogo thead tr th#thead1').css('background-color', '#ffeaa7')
             }
             else if (fdinfo.name == "CompanyName") {
-                $('#tbQMSSetLogo thead tr th#thead3').css('background-color', '#ffeaa7')
+                $('#tbQMSSetLogo thead tr th#thead2').css('background-color', '#ffeaa7')
             }
             else if (fdinfo.name == "ProgramID") {
-                $('#tbQMSSetLogo thead tr th#thead4').css('background-color', '#ffeaa7')
+                $('#tbQMSSetLogo thead tr th#thead3').css('background-color', '#ffeaa7')
             }
             else if (fdinfo.name == "ProgramName") {
-                $('#tbQMSSetLogo thead tr th#thead5').css('background-color', '#ffeaa7')
+                $('#tbQMSSetLogo thead tr th#thead4').css('background-color', '#ffeaa7')
             }
         });
     }
@@ -172,22 +170,20 @@
     //            return;
     //        }
     //        cs_EditMode = "Q"
-    //        ClearData_EDM()
-    //        BindForm_EDM(data)
-    //        FunctionEnable_EDM(cs_EditMode)
-    //        EnableForm_EDM(true)
+    //        ClearData_Logo()
+    //        BindForm_Logo(data)
+    //        FunctionEnable_Logo(cs_EditMode)
+    //        EnableForm_Logo(true)
     //        $('#modal_EDM').modal('show');
     //    }
     //};
 
-
-
-    let GetImage_Logo = function (elmImg, picProgramID) {
-        if (picProgramID == "") {
+    let MSSetLogoGetImage_Logo = function (elmImg, picCompanyID, picProgramID) {
+        if (picCompanyID == "") {
             $('#' + elmImg).prop('src', "");
             return;
         }
-        var url = "api/GetImage_Logo?ProgramID=" + picProgramID + "&UU=" + encodeURIComponent(UU);
+        var url = "api/MSSetLogoGetImage_Logo?CompanyID=" + picCompanyID + "&ProgramID=" + picProgramID + "&UU=" + encodeURIComponent(UU);
         url += "&Ver=" + encodeURIComponent(new Date().toLocaleTimeString());
         $('#' + elmImg).prop('src', url);
     }
@@ -203,133 +199,65 @@
     }
 
     //Logo按鍵控制
-    let FunctionEnable_EDM = function (EditMode) {
+    let FunctionEnable_Logo = function (EditMode) {
         if (EditMode == "A") {
-            $('#btMod_EDM').prop('disabled', true)
-            $('#btMod_EDM').css('background-color','gray')
-            $('#btSave_EDM').prop('disabled', false)
-            $('#btSave_EDM').css('background-color', 'red')
-            $('#btCancel_EDM').prop('disabled', true)
-            $('#btCancel_EDM').css('background-color', 'gray')
-            $('#btShow_EDM').prop('disabled', true)
-            $('#btShow_EDM').css('background-color', 'gray')
-            $('#btApp_EDM').prop('disabled', true)
-            $('#btApp_EDM').css('background-color', 'gray')
-            $('#btDef_EDM').prop('disabled', true)
-            $('#btDef_EDM').css('background-color', 'gray')
-            $('#btExit_EDM').prop('disabled', false)
-            $('#btExit_EDM').css('background-color', '#6ed117')
+            $('#btMod_Logo').prop('disabled', true)
+            $('#btMod_Logo').css('background-color','gray')
+            $('#btSave_Logo').prop('disabled', false)
+            $('#btSave_Logo').css('background-color', 'red')
+            $('#btCancel_Logo').prop('disabled', true)
+            $('#btCancel_Logo').css('background-color', 'gray')
+            $('#btExit_Logo').prop('disabled', false)
+            $('#btExit_Logo').css('background-color', '#348000')
         }
         else if (EditMode == "M") {
-            $('#btMod_EDM').prop('disabled', true)
-            $('#btMod_EDM').css('background-color', 'gray')
-            $('#btSave_EDM').prop('disabled', false)
-            $('#btSave_EDM').css('background-color', 'red')
-            $('#btCancel_EDM').prop('disabled', false)
-            $('#btCancel_EDM').css('background-color', 'red')
-            $('#btShow_EDM').prop('disabled', true)
-            $('#btShow_EDM').css('background-color', 'gray')
-            $('#btApp_EDM').prop('disabled', true)
-            $('#btApp_EDM').css('background-color', 'gray')
-            $('#btDef_EDM').prop('disabled', true)
-            $('#btDef_EDM').css('background-color', 'gray')
-            $('#btExit_EDM').prop('disabled', true)
-            $('#btExit_EDM').css('background-color', 'gray')
+            $('#btMod_Logo').prop('disabled', true)
+            $('#btMod_Logo').css('background-color', 'gray')
+            $('#btSave_Logo').prop('disabled', false)
+            $('#btSave_Logo').css('background-color', 'red')
+            $('#btCancel_Logo').prop('disabled', false)
+            $('#btCancel_Logo').css('background-color', 'red')
+            $('#btExit_Logo').prop('disabled', true)
+            $('#btExit_Logo').css('background-color', 'gray')
         }
         else if (EditMode == "Q") {
-            //未批核 未作廢
-            if ($('#lblAppDate_EDM').html() == "" && $('#lblDefDate_EDM').html() == "") {
-                $('#btMod_EDM').prop('disabled', false)
-                $('#btMod_EDM').css('background-color', 'red')
-                $('#btSave_EDM').prop('disabled', true)
-                $('#btSave_EDM').css('background-color', 'gray')
-                $('#btCancel_EDM').prop('disabled', true)
-                $('#btCancel_EDM').css('background-color', 'gray')
-                $('#btShow_EDM').prop('disabled', false)
-                $('#btShow_EDM').css('background-color', 'red')
-                $('#btApp_EDM').prop('disabled', false)
-                $('#btApp_EDM').css('background-color', '#3d94f6')
-                $('#btDef_EDM').prop('disabled', true)
-                $('#btDef_EDM').css('background-color', 'gray')
-                $('#btExit_EDM').prop('disabled', false)
-                $('#btExit_EDM').css('background-color', '#6ed117')
-            }
-            //已批核 未作廢
-            else if ($('#lblAppDate_EDM').html() != "" && $('#lblDefDate_EDM').html() == "") {
-                $('#btMod_EDM').prop('disabled', true)
-                $('#btMod_EDM').css('background-color', 'gray')
-                $('#btSave_EDM').prop('disabled', true)
-                $('#btSave_EDM').css('background-color', 'gray')
-                $('#btCancel_EDM').prop('disabled', true)
-                $('#btCancel_EDM').css('background-color', 'gray')
-                $('#btShow_EDM').prop('disabled', false)
-                $('#btShow_EDM').css('background-color', 'red')
-                $('#btApp_EDM').prop('disabled', true)
-                $('#btApp_EDM').css('background-color', 'gray')
-                $('#btDef_EDM').prop('disabled', false)
-                $('#btDef_EDM').css('background-color', 'red')
-                $('#btExit_EDM').prop('disabled', false)
-                $('#btExit_EDM').css('background-color', '#6ed117')
-            }
-            //已批核 已作廢
-            else if ($('#lblAppDate_EDM').html() != "" && $('#lblDefDate_EDM').html() != "") {
-                $('#btMod_EDM').prop('disabled', true)
-                $('#btMod_EDM').css('background-color', 'gray')
-                $('#btSave_EDM').prop('disabled', true)
-                $('#btSave_EDM').css('background-color', 'gray')
-                $('#btCancel_EDM').prop('disabled', true)
-                $('#btCancel_EDM').css('background-color', 'gray')
-                $('#btShow_EDM').prop('disabled', false)
-                $('#btShow_EDM').css('background-color', 'red')
-                $('#btApp_EDM').prop('disabled', true)
-                $('#btApp_EDM').css('background-color', 'gray')
-                $('#btDef_EDM').prop('disabled', true)
-                $('#btDef_EDM').css('background-color', 'gray')
-                $('#btExit_EDM').prop('disabled', false)
-                $('#btExit_EDM').css('background-color', '#6ed117')
-            }
+            $('#btMod_Logo').prop('disabled', false)
+            $('#btMod_Logo').css('background-color', 'red')
+            $('#btSave_Logo').prop('disabled', true)
+            $('#btSave_Logo').css('background-color', 'gray')
+            $('#btCancel_Logo').prop('disabled', true)
+            $('#btCancel_Logo').css('background-color', 'gray')
+            $('#btExit_Logo').prop('disabled', false)
+            $('#btExit_Logo').css('background-color', '#348000')
         }
     };
 
     //Logo畫面控制
-    let EnableForm_EDM = function (mod) {
-        $('#txtEDMMemo_EDM').prop('disabled', mod);
-        $('#txtStartDate_EDM').prop('disabled', mod);
-        $('#txtEndDate_EDM').prop('disabled', mod);
-
-        $('#btPSNO_EDM').prop('disabled', mod);
-        $('#txtPSNO_EDM').prop('disabled', mod);
+    let EnableForm_Logo = function (mod) {
+        $('#cboCompany_Logo').prop('disabled', mod);
+        $('#cboProgramID_Logo').prop('disabled', mod);
         if (mod == true) {
+            $('#btPic_Logo').css('pointer-events', 'none');
             window.t1.enableReadOnlyMode('t1');         //停用
-            window.t2.enableReadOnlyMode('t2');         //停用
-            $('#btP2_EDM').css('pointer-events', 'none');
         }
         else {
+            $('#btPic_Logo').css('pointer-events', 'unset');
             window.t1.disableReadOnlyMode('t1');        //啟用
-            window.t2.disableReadOnlyMode('t2');        //啟用
-            $('#btP2_EDM').css('pointer-events', 'unset');
         }
     };
 
     //Logo清除資料
-    let ClearData_EDM = function () {
-        $('#lblDocNo_EDM').html('');
-        $('#lblAppUser_EDM').html('');
-        $('#lblDefUser_EDM').html('');
-        $('#txtEDMMemo_EDM').val('');
-        $('#lblAppDate_EDM').html('');
-        $('#lblDefDate_EDM').html('');
-        $('#txtStartDate_EDM').val('');
-        $('#txtEndDate_EDM').val('');
-        $('#txtPSNO_EDM').val('');
-        $('#lblPSName_EDM').html('');
+    let ClearData_Logo = function () {
+        $('#cboCompany_Logo').val('');
+        $('#lblCompanyName_Logo').html('');
+        $('#cboProgramID_Logo').val('');
+        $('#lblChineseName_Logo').html('');
+        MSSetLogoGetImage_Logo("Pic_Logo", "");
         window.t1.setData('');
-        window.t2.setData('');
-        GetImage_EDM("P2_EDM", "");
     };
 
     //Logo代入資料
-    let BindForm_EDM = function (data) {
+    let BindForm_Logo = function (data) {
         var dtH = data.getElementsByTagName('dtH');
         $('#lblDocNo_EDM').html(GetNodeValue(dtH[0], "DocNo"));
         $('#lblAppUser_EDM').html(GetNodeValue(dtH[0], "ApproveUser"));
@@ -362,31 +290,30 @@
     let btAdd_click = function (bt) {
         //Timerset();
         var pData = {
-            ProgramID: "MSSetLogo"
         }
-        PostToWebApi({ url: "api/SystemSetup/GetCompanyLogo", data: pData, success: afterGetCompanyLogo });
+        PostToWebApi({ url: "api/SystemSetup/MSSetLogoGetVMDocNo", data: pData, success: afterMSSetLogoGetVMDocNo });
     };
 
-    let afterGetCompanyLogo = function (data) {
-        if (ReturnMsg(data, 0) != "GetCompanyLogoOK") {
+    let afterMSSetLogoGetVMDocNo = function (data) {
+        if (ReturnMsg(data, 0) != "MSSetLogoGetVMDocNoOK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
-            GetImage_Logo("P1_EDM", "MSSetLogo");
-            //$('#lblCompanyLogo').html(GetNodeValue(dtE[0], "Txt"))
-            $('#lblVMDocNo_EDM').html(GetNodeValue(dtE[0], "DocNo"))
+            $('#lblVMDocNo_Logo').html(GetNodeValue(dtE[0], "DocNo"))
             cs_EditMode = "A";
-            ClearData_EDM();
-            FunctionEnable_EDM(cs_EditMode);
-            EnableForm_EDM(false)
-            $('#modal_EDM').modal('show');
+            ClearData_Logo();
+            FunctionEnable_Logo(cs_EditMode);
+            EnableForm_Logo(false)
+            $('#modal_Logo').modal('show');
         }
     };
 
     //清除
     let btClear_click = function (bt) {
         //Timerset();
+        $('#cboCompany').val('');
+        $('#lblCompanyName').html('');
         $('#cboProgramID').val('');
         $('#lblChineseName').html('');
     };
@@ -399,6 +326,7 @@
        
         ShowLoading();
         var pData = {
+            CompanyID: $('#cboCompany').val(),
             ProgramID: $('#cboProgramID').val()
         }
         PostToWebApi({ url: "api/SystemSetup/MSSetLogoQuery", data: pData, success: afterMSSetLogoQuery });
@@ -442,6 +370,203 @@
         }
     };
 
+    let GetChineseName_Logo = function (bt) {
+        if ($('#cboProgramID_Logo').val() == "") {
+            $('#lblChineseName_Logo').html('');
+            return;
+        }
+        var pData = {
+            ProgramID: $('#cboProgramID_Logo').val()
+        }
+        PostToWebApi({ url: "api/SystemSetup/GetInitmsDM", data: pData, success: afterGetChineseName_Logo });
+    };
+
+    let afterGetChineseName_Logo = function (data) {
+        if (ReturnMsg(data, 0) != "GetInitmsDMOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtE = data.getElementsByTagName('dtE');
+            $('#lblChineseName_Logo').html(GetNodeValue(dtE[0], "ChineseName"));
+        }
+    };
+
+    let GetCompanyName = function (bt) {
+        if ($('#cboCompany').val() == "") {
+            $('#lblCompanyName').html('');
+            return;
+        }
+        var pData = {
+            Company: $('#cboCompany').val()
+        }
+        PostToWebApi({ url: "api/SystemSetup/MSSetLogoGetCompany", data: pData, success: afterGetCompanyName });
+    };
+
+    let afterGetCompanyName = function (data) {
+        if (ReturnMsg(data, 0) != "MSSetLogoGetCompanyOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtE = data.getElementsByTagName('dtE');
+            $('#lblCompanyName').html(GetNodeValue(dtE[0], "ChineseName"));
+        }
+    };
+
+    let GetCompanyName_Logo = function (bt) {
+        if ($('#cboCompany_Logo').val() == "") {
+            $('#lblCompanyName_Logo').html('');
+            return;
+        }
+        var pData = {
+            Company: $('#cboCompany_Logo').val()
+        }
+        PostToWebApi({ url: "api/SystemSetup/MSSetLogoGetCompany", data: pData, success: afterGetCompanyName_Logo });
+    };
+
+    let afterGetCompanyName_Logo = function (data) {
+        if (ReturnMsg(data, 0) != "MSSetLogoGetCompanyOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtE = data.getElementsByTagName('dtE');
+            $('#lblCompanyName_Logo').html(GetNodeValue(dtE[0], "ChineseName"));
+        }
+    };
+
+    //Logo離開
+    let btExit_Logo_click = function (bt) {
+        //Timerset();
+        $('#modal_Logo').modal('hide')
+        btQuery_click();
+    };
+
+    //Logo儲存
+    let btSave_Logo_click = function (bt) {
+        //Timerset();
+        EnableForm_Logo(true)
+        $('#btSave_Logo').prop('disabled', true);
+
+        if ($('#cboCompany_Logo').val() == "") {
+            DyAlert("請選擇公司代號!", function () {
+                EnableForm_Logo(false);
+                $('#btSave_Logo').prop('disabled', false);
+            })
+            return;
+        }
+        if ($('#cboProgramID_Logo').val() == "") {
+            DyAlert("請選擇程式代號!", function () {
+                EnableForm_Logo(false);
+                $('#btSave_Logo').prop('disabled', false);
+            })
+            return;
+        }
+        var Pic = $('#Pic_Logo').attr('src');
+        if (Pic == "") {
+            DyAlert("請設定公司Logo!", function () {
+                EnableForm_Logo(false);
+                $('#btSave_Logo').prop('disabled', false);
+            })
+            return;
+        }
+        if (window.t1.getData() == "<p>&nbsp;</p>") {
+            DyAlert("請輸入公司聲明區!", function () {
+                EnableForm_Logo(false)
+                $('#btSave_Logo').prop('disabled', false);
+            })
+            return;
+        }
+
+        var pData = {
+            EditMode: cs_EditMode,
+            CompanyID: $('#cboCompany_Logo').val(),
+            ProgramID: $('#cboProgramID_Logo').val(),
+            TE: window.t1.getData(),
+            VMDocNo: $('#lblVMDocNo_Logo').html()
+        }
+        PostToWebApi({ url: "api/SystemSetup/MSSetLogo_Save", data: pData, success: afterMSSetLogo_Save });
+    };
+
+    let afterMSSetLogo_Save = function (data) {
+        if (ReturnMsg(data, 0) != "MSSetLogo_SaveOK") {
+            DyAlert(ReturnMsg(data, 1), function () {
+                EnableForm_Logo(false)
+                $('#btSave_Logo').prop('disabled', false);
+            });
+        }
+        else {
+            var dtS = data.getElementsByTagName('dtS');
+            DyAlert("存檔成功!", function () {
+                cs_EditMode = "Q";
+                FunctionEnable_Logo(cs_EditMode);
+                EnableForm_Logo(true)
+            })
+        }
+    };
+
+    //Logo圖檔上傳
+    let btPic_Logo_click = function (bt) {
+        //Timerset();
+        var Pic = $('#Pic_Logo').attr('src');
+        if (Pic == "") {
+            btUPLogo_click();
+        }
+        else {
+            $('#modal_ImgUp').modal('show');
+        }
+    };
+
+    let btUPLogo_click = function (bt) {
+        //Timerset();
+        $('#modal_ImgUp').modal('hide');
+        InitFileUpload(bt);
+        var UploadFileType = "P1";
+        $('#modal-media').prop("UploadFileType", UploadFileType);
+        $('#fileURL').val('')
+        $('#modal-media').modal('show');
+    };
+
+    let InitFileUpload = function (bt) {
+        $('#fileupload').fileupload({
+            dataType: 'xml',
+            url: "api/FileUpload_EDM",
+            dropZone: $('#dropzone'),
+            headers: { "Authorization": "Bearer " + UU }
+        });
+
+        $('#fileupload').bind('fileuploadfail',
+            function (e, data) {
+            }
+        );
+
+        $('#fileupload').bind('fileuploadsubmit', function (e, data) {
+            data.formData = {
+                "UploadFileType": $('#modal-media').prop("UploadFileType"),
+                "ImgSGID": $('#' + $('#modal-media').prop("FieldName")).val(),
+                "DocNo": $('#lblVMDocNo_Logo').html()
+            };
+        });
+
+        $('#fileupload').bind('fileuploadalways', function (e, data) {
+            AfterFileUpoad(data, bt);
+        });
+
+    };
+
+    let AfterFileUpoad = function (returndata, bt) {
+        var data = returndata.jqXHR.responseXML;
+        if (ReturnMsg(data, 0) != "FileUpload_EDMOK") {
+            DyAlert(ReturnMsg(data, 0));
+        }
+        else {
+            $('#modal-media').modal('hide');
+            var UploadFileType = $('#modal-media').prop("UploadFileType");
+            var DocNo = $('#lblVMDocNo_Logo').html();
+            GetImage_EDM("Pic_Logo", DocNo, "P1", "N");
+            $('#modal-media').prop("UploadFileType", UploadFileType);
+        }
+
+    };
+
     //FormLoad
     let GetInitMSSetLogo = function (data) {
         if (ReturnMsg(data, 0) != "InitMSSetLogoOK") {
@@ -454,15 +579,21 @@
             if (dtE.length > 0) {
                 $('#lblProgramName').html(GetNodeValue(dtE[0], "ChineseName"));
             }
-            if (dtC.length > 0) {
-                $('#lblCompany').html(GetNodeValue(dtC[0], "Company"));
-            }
+            InitSelectItem($('#cboCompany')[0], dtC, "Companycode", "Companycode", true);
+            InitSelectItem($('#cboCompany_Logo')[0], dtC, "Companycode", "Companycode", true);
             InitSelectItem($('#cboProgramID')[0], dtP, "ProgramID", "ProgramID", true);
+            InitSelectItem($('#cboProgramID_Logo')[0], dtP, "ProgramID", "ProgramID", true);
             AssignVar();
             $('#btAdd').click(function () { btAdd_click(this) });
             $('#btClear').click(function () { btClear_click(this) });
             $('#btQuery').click(function () { btQuery_click(this) });
+            $('#cboCompany').change(function () { GetCompanyName(); });
+            $('#cboCompany_Logo').change(function () { GetCompanyName_Logo(); });
             $('#cboProgramID').change(function () { GetChineseName(); });
+            $('#cboProgramID_Logo').change(function () { GetChineseName_Logo(); });
+            $('#btExit_Logo').click(function () { btExit_Logo_click(this) });
+            $('#btSave_Logo').click(function () { btSave_Logo_click(this) });
+            $('#btPic_Logo').click(function () { btPic_Logo_click(this) });
 
             //文字編輯器
             ClassicEditor
