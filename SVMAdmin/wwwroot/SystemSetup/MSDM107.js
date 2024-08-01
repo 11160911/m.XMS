@@ -789,13 +789,13 @@
             }
         }
 
-        if ($('#txtPSNO_EDM').val() == "") {
-            DyAlert("請選擇小計折價單號!", function () {
-                EnableForm_EDM(false)
-                $('#btSave_EDM').prop('disabled', false);
-            })
-            return;
-        }
+        //if ($('#txtPSNO_EDM').val() == "") {
+        //    DyAlert("請選擇小計折價單號!", function () {
+        //        EnableForm_EDM(false)
+        //        $('#btSave_EDM').prop('disabled', false);
+        //    })
+        //    return;
+        //}
         //var P2 = $('#P2_EDM').attr('src');
         //if (P2 == "") {
         //    DyAlert("請設定活動圖片!", function () { EnableForm_EDM(false) })
@@ -1325,8 +1325,15 @@
 
     let ChangeDate = function (bt) {
         if ($('#txtPSNO_EDM').val() != "") {
-            DyConfirm("將自動清除小計折價單號，請確認是否變更!", function () { $('#txtPSNO_EDM').val('');},DummyFunction())
+            DyConfirm("將自動清除小計折價單號，請確認是否變更!", function () {
+                $('#txtPSNO_EDM').val('');
+                $('#lblPSName_EDM').html('');
+            }, DummyFunction())
         }
+    };
+
+    let ChangePSNO = function (bt) {
+        $('#lblPSName_EDM').html('');
     };
     
     //FormLoad
@@ -1366,9 +1373,9 @@
             $('#btP2_EDM').click(function () { btP2_EDM_click(this) });
             $('#txtStartDate_EDM').change(function () { ChangeDate(this) }); 
             $('#txtEndDate_EDM').change(function () { ChangeDate(this) }); 
+            $('#txtPSNO_EDM').change(function () { ChangePSNO(this) }); 
 
             $('#btExit_ShowEDM').click(function () { btExit_ShowEDM_click(this) });
-
             $('#btExit_ImgUp').click(function () { btExit_ImgUp_click(this) });
             $('#btDelete_ImgUp').click(function () { btDelete_ImgUp_click(this) });
             $('#btImgUp').click(function () { btUPEDM_click(this) });

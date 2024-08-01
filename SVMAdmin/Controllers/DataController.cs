@@ -9913,7 +9913,7 @@ namespace SVMAdmin.Controllers
                 sql = "Select a.DocNO,a.EDMMemo,a.StartDate + ' ~ ' + a.EndDate as EDDate,b.PS_Name,b.ActivityCode,isnull(c.Cnt1,0)Cnt1,isnull(d.Cnt2,0)Cnt2, ";
                 sql += "isnull(a.ApproveDate,'')ApproveDate,isnull(a.DefeasanceDate,'')DefeasanceDate ";
                 sql += "From SetEDMHWeb a (nolock) ";
-                sql += "inner join PromoteSCouponHWeb b (nolock) on a.PS_NO=b.PS_NO and b.Companycode=a.Companycode and b.CouponType in('1','2') ";
+                sql += "left join PromoteSCouponHWeb b (nolock) on a.PS_NO=b.PS_NO and b.Companycode=a.Companycode and b.CouponType in('1','2') ";
                 //活動代號
                 if (ActivityCode.SqlQuote() != "")
                 {
@@ -10195,7 +10195,7 @@ namespace SVMAdmin.Controllers
                 sql += "b.DataType,b.DocImage,b.TXT ";
                 sql += "From SetEDMHWeb a (nolock) ";
                 sql += "inner join SetEDMDWeb b (nolock) on a.DocNo=b.DocNo and b.Companycode=a.Companycode ";
-                sql += "inner join PromoteSCouponHWeb c (nolock) on a.PS_NO=c.PS_NO and c.Companycode=a.Companycode and c.CouponType in('1','2') ";
+                sql += "left join PromoteSCouponHWeb c (nolock) on a.PS_NO=c.PS_NO and c.Companycode=a.Companycode and c.CouponType in('1','2') ";
                 sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                 if (DocNo.SqlQuote() != "")
                 {
