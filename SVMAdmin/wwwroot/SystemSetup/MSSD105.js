@@ -1860,7 +1860,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 $('#lblProgramName').html(GetNodeValue(dtE[0], "ChineseName"));
             }
             if (dtV.length > 0) {
-                SysYM = GetNodeValue(dtV[0], "SysDate").toString().substring(0, 7).replaceAll('/', '-');
+                SysYM = GetNodeValue(dtV[0], "EndDate").toString().substring(0, 7).replaceAll('/', '-');
                 $('#txtYM').val(SysYM);
                 $('#lblEnd').html("統計至 " + GetNodeValue(dtV[0], "EndDate") + " 止");
                 $('#lblVIPQty').html('會員總數 : ' + parseInt(GetNodeValue(dtV[0], "VIPCntAll")).toLocaleString('en-US'));
