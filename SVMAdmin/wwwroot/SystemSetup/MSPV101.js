@@ -62,10 +62,10 @@
                 return;
             }
 
-            if (chkEn.test($('#txtNewUPWD').val()) == true && chkNum.test($('#txtNewUPWD').val()) == true) {
+            if (chkEn.test($('#txtNewUPWD').val()) == true || chkNum.test($('#txtNewUPWD').val()) == true) {
             }
             else {
-                DyAlert("新密碼需包含英文及數字!", function () { $('#btOK').prop('disabled', false); })
+                DyAlert("新密碼需為英文字或數字!", function () { $('#btOK').prop('disabled', false); })
                 return;
             }
 
