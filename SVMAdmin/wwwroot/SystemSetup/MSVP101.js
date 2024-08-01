@@ -1728,6 +1728,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
         $('#txtQDayS_SendSet').val('');
         $('#txtQDayE_SendSet').val('');
         $('#rdoLCDayAll_SendSet').prop('checked', true);
+        $('#rdoLCDayAll1_SendSet').prop('checked', true);
         $('#rdoSDateAll_SendSet').prop('checked', true);
         $('#lblDeptCnt_SendSet').html('');
         $('#lblDeptName_SendSet').html('');
@@ -1837,6 +1838,21 @@ Timerset(sessionStorage.getItem('isamcomp'));
             LCDay = "2Y"
         }
 
+        //近期未來店
+        var LCDay1 = ""
+        if ($('#rdoLCDayAll1_SendSet').prop('checked') == true) {
+            LCDay1 = ""
+        }
+        else if ($('#rdoLCDay2W1_SendSet').prop('checked') == true) {
+            LCDay1 = "2W"
+        }
+        else if ($('#rdoLCDay1M1_SendSet').prop('checked') == true) {
+            LCDay1 = "1M"
+        }
+        else if ($('#rdoLCDay2M1_SendSet').prop('checked') == true) {
+            LCDay1 = "2M"
+        }
+
         //消費月份
         var SDate = ""
         if ($('#rdoSDateAll_SendSet').prop('checked') == true) {
@@ -1867,6 +1883,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 QDayS: $('#txtQDayS_SendSet').val().toString().replaceAll('-', '/'),
                 QDayE: $('#txtQDayE_SendSet').val().toString().replaceAll('-', '/'),
                 LCDay: LCDay,
+                LCDay1: LCDay1,
                 SDate: SDate,
                 chkDept: chkDept,
                 chkDeptName: chkDeptName,
@@ -2002,6 +2019,21 @@ Timerset(sessionStorage.getItem('isamcomp'));
             LCDay = "2Y"
         }
 
+        //近期未來店
+        var LCDay1 = ""
+        if ($('#rdoLCDayAll1_SendSet').prop('checked') == true) {
+            LCDay1 = ""
+        }
+        else if ($('#rdoLCDay2W1_SendSet').prop('checked') == true) {
+            LCDay1 = "2W"
+        }
+        else if ($('#rdoLCDay1M1_SendSet').prop('checked') == true) {
+            LCDay1 = "1M"
+        }
+        else if ($('#rdoLCDay2M1_SendSet').prop('checked') == true) {
+            LCDay1 = "2M"
+        }
+
         //消費月份
         var SDate = ""
         if ($('#rdoSDateAll_SendSet').prop('checked') == true) {
@@ -2032,6 +2064,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 QDayS: QDayS,
                 QDayE: QDayE,
                 LCDay: LCDay,
+                LCDay1: LCDay1,
                 SDate: SDate,
                 chkDept: chkDept,
                 chkDeptName: chkDeptName,
@@ -2284,7 +2317,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#rdoMWAll_SendSet,#rdoMW0_SendSet,#rdoMW1_SendSet').change(function () { UpdateVIPCnt(); });
             $('#rdoQDayAll_SendSet,#rdoQDay2M_SendSet,#rdoQDay3M_SendSet,#rdoQDay6M_SendSet,#rdoQDay1Y_SendSet').change(function () { UpdateVIPCnt(); });
             $('#txtQDayS_SendSet,#txtQDayE_SendSet').change(function () { UpdateVIPCnt(); });
-            $('#rdoLCDayAll_SendSet,#rdoLCDay3M_SendSet,#rdoLCDay6M_SendSet,#rdoLCDay1Y_SendSet,#rdoLCDay2Y_SendSet').change(function () { UpdateVIPCnt(); });
+            $('#rdoLCDayAll_SendSet,#rdoLCDay3M_SendSet,#rdoLCDay6M_SendSet,#rdoLCDay1Y_SendSet,#rdoLCDay2Y_SendSet,#rdoLCDayAll1_SendSet,#rdoLCDay2W1_SendSet,#rdoLCDay1M1_SendSet,#rdoLCDay2M1_SendSet').change(function () { UpdateVIPCnt(); });
             $('#rdoSDateAll_SendSet,#rdoSDate2M_SendSet,#rdoSDate3M_SendSet,#rdoSDate6M_SendSet,#rdoSDate1Y_SendSet').change(function () { UpdateVIPCnt(); });
 
             $('#btVIPFaceID_SendSet').click(function () { btVIPFaceID_SendSet_click(this) });
