@@ -73,6 +73,11 @@
                 DyAlert("新密碼長度需介於6~10碼!", function () { $('#btOK').prop('disabled', false); })
                 return;
             }
+
+            if ($('#txtOldUPWD').val().toLowerCase() == $('#txtNewUPWD').val().toLowerCase()) {
+                DyAlert("舊密碼與新密碼不可相同!", function () { $('#btOK').prop('disabled', false); })
+                return;
+            }
         }
         //確認新密碼
         if ($('#txtChkUPWD').val() == "") {
@@ -115,7 +120,7 @@
             DyAlert(ReturnMsg(data, 1), function () { $('#btOK').prop('disabled', false); });
         }
         else {
-            DyAlert("變更密碼成功!", function () {
+            DyAlert("密碼更新成功!", function () {
                 $('#btOK').prop('disabled', false);
                 $('#txtOldUPWD').val('');
                 $('#txtNewUPWD').val('');
@@ -123,7 +128,8 @@
                 $('#txtCode').val('')
                 //更新驗證碼
                 createCode();
-            }, "下次登入請使用新密碼")
+                window.location.href = "Login";
+            }, "請重新登入")
         };
     }
     let GetInitMSPV101 = function (data) {
