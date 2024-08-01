@@ -559,6 +559,11 @@
         
         $('#btPSNO_EDM').prop('disabled', mod);
         $('#txtPSNO_EDM').prop('disabled', mod);
+
+        $('#chk0_EDM').prop('disabled', mod);
+        $('#chk1_EDM').prop('disabled', mod);
+        $('#chk2_EDM').prop('disabled', mod);
+        $('#chk3_EDM').prop('disabled', mod);
         if (mod == true) {
             window.t1.enableReadOnlyMode('t1');         //停用
             window.t2.enableReadOnlyMode('t2');         //停用
@@ -583,6 +588,10 @@
         $('#cboBIRMonth_EDM').val('');
         $('#txtPSNO_EDM').val('');
         $('#lblPSName_EDM').html('');
+        $('#chk0_EDM').prop('checked', true);
+        $('#chk1_EDM').prop('checked', true);
+        $('#chk2_EDM').prop('checked', true);
+        $('#chk3_EDM').prop('checked', true);
         window.t1.setData('');
         window.t2.setData('');
         GetImage_EDM("P2_EDM", "");
@@ -601,6 +610,32 @@
         $('#cboBIRMonth_EDM').val(GetNodeValue(dtH[0], "BIR_Month"));
         $('#txtPSNO_EDM').val(GetNodeValue(dtH[0], "PS_NO"));
         $('#lblPSName_EDM').html(GetNodeValue(dtH[0], "PS_Name"));
+
+        if (GetNodeValue(dtH[0], "VIP_Type").indexOf("0") >= 0) {
+            $('#chk0_EDM').prop('checked', true);
+        }
+        else {
+            $('#chk0_EDM').prop('checked', false);
+        }
+        if (GetNodeValue(dtH[0], "VIP_Type").indexOf("1") >= 0) {
+            $('#chk1_EDM').prop('checked', true);
+        }
+        else {
+            $('#chk1_EDM').prop('checked', false);
+        }
+        if (GetNodeValue(dtH[0], "VIP_Type").indexOf("2") >= 0) {
+            $('#chk2_EDM').prop('checked', true);
+        }
+        else {
+            $('#chk2_EDM').prop('checked', false);
+        }
+        if (GetNodeValue(dtH[0], "VIP_Type").indexOf("3") >= 0) {
+            $('#chk3_EDM').prop('checked', true);
+        }
+        else {
+            $('#chk3_EDM').prop('checked', false);
+        }
+
         for (var i = 0; i < dtH.length; i++) {
             if (GetNodeValue(dtH[i], "DataType") == "P1") {
                 GetImage_EDM("P1_EDM", GetNodeValue(dtH[i], "DocNo"), GetNodeValue(dtH[i], "DataType"), "Y");
@@ -775,6 +810,14 @@
             return;
         }
 
+        if ($('#chk0_EDM').prop('checked') == false && $('#chk1_EDM').prop('checked') == false && $('#chk2_EDM').prop('checked') == false && $('#chk3_EDM').prop('checked') == false) {
+            DyAlert("請選擇會員卡別!", function () {
+                EnableForm_EDM(false)
+                $('#btSave_EDM').prop('disabled', false);
+            })
+            return;
+        }
+
         if ($('#cboBIRMonth_EDM').val() == "") {
             DyAlert("請選擇生日月份!", function () {
                 EnableForm_EDM(false)
@@ -793,13 +836,13 @@
             return;
         }
 
-        if ($('#txtPSNO_EDM').val() == "") {
-            DyAlert("請選擇小計折價單號!", function () {
-                EnableForm_EDM(false)
-                $('#btSave_EDM').prop('disabled', false);
-            })
-            return;
-        }
+        //if ($('#txtPSNO_EDM').val() == "") {
+        //    DyAlert("請選擇小計折價單號!", function () {
+        //        EnableForm_EDM(false)
+        //        $('#btSave_EDM').prop('disabled', false);
+        //    })
+        //    return;
+        //}
         //var P2 = $('#P2_EDM').attr('src');
         //if (P2 == "") {
         //    DyAlert("請設定活動圖片!", function () { EnableForm_EDM(false) })
@@ -834,6 +877,20 @@
             VMDocNo = "";
         }
 
+        var VIPType = ""
+        if ($('#chk0_EDM').prop('checked') == true) {
+            VIPType += "0";
+        }
+        if ($('#chk1_EDM').prop('checked') == true) {
+            VIPType += "1";
+        }
+        if ($('#chk2_EDM').prop('checked') == true) {
+            VIPType += "2";
+        }
+        if ($('#chk3_EDM').prop('checked') == true) {
+            VIPType += "3";
+        }
+
         var pData = {
             EditMode: cs_EditMode,
             EDMMemo: $('#txtEDMMemo_EDM').val(),
@@ -842,6 +899,7 @@
             PS_NO: $('#txtPSNO_EDM').val(),
             T1: T1,
             T2: window.t2.getData(),
+            VIPType: VIPType,
             DocNo: DocNo,
             VMDocNo: VMDocNo
         }
@@ -1416,6 +1474,11 @@
             DyConfirm("將自動清除小計折價單號，請確認是否變更!", function () { $('#txtPSNO_EDM').val(''); }, DummyFunction())
         }
     };
+
+    let ChangePSNO = function (bt) {
+        $('#lblPSName_EDM').html('')
+    };
+
     let InitComboItem = function (cboYear, cboMonth) {
         //var o = new Option("2024", "2024");
         //cboYear.append(o);
@@ -1470,6 +1533,7 @@
             $('#btP2_EDM').click(function () { btP2_EDM_click(this) });
             $('#txtStartDate_EDM').change(function () { ChangeDate(this) });
             $('#txtEndDate_EDM').change(function () { ChangeDate(this) });
+            $('#txtPSNO_EDM').change(function () { ChangePSNO(this) });
 
             $('#btExit_ShowEDM').click(function () { btExit_ShowEDM_click(this) });
 

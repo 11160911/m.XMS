@@ -43,7 +43,6 @@
             DyAlert(ReturnMsg(data, 1));
         }
         else {
-            
             var bodyHeight = $BODY.outerHeight(),
                 footerHeight = $BODY.hasClass('footer_fixed') ? -10 : $FOOTER.height(),
                 leftColHeight = $LEFT_COL.eq(1).height() + $SIDEBAR_FOOTER.height(),

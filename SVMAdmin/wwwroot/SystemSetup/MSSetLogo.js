@@ -613,10 +613,10 @@
             if (dtE.length > 0) {
                 $('#lblProgramName').html(GetNodeValue(dtE[0], "ChineseName"));
             }
-            InitSelectItem($('#cboCompany')[0], dtC, "Companycode", "Companycode", true);
-            InitSelectItem($('#cboCompany_Logo')[0], dtC, "Companycode", "Companycode", true);
-            InitSelectItem($('#cboProgramID')[0], dtP, "ProgramID", "ProgramID", true);
-            InitSelectItem($('#cboProgramID_Logo')[0], dtP, "ProgramID", "ProgramID", true);
+            InitSelectItem($('#cboCompany')[0], dtC, "Companycode", "CompanyName", true);
+            InitSelectItem($('#cboCompany_Logo')[0], dtC, "Companycode", "CompanyName", true);
+            InitSelectItem($('#cboProgramID')[0], dtP, "ProgramID", "ProgramName", true);
+            InitSelectItem($('#cboProgramID_Logo')[0], dtP, "ProgramID", "ProgramName", true);
             AssignVar();
             $('#btAdd').click(function () { btAdd_click(this) });
             $('#btClear').click(function () { btClear_click(this) });

@@ -9407,7 +9407,7 @@ namespace SVMAdmin.Controllers
                 sql = "Select a.DocNO,a.EDMMemo,a.BIR_Year,a.BIR_Month,b.PS_Name,b.ActivityCode,isnull(d.Cnt2,0)Cnt2, ";
                 sql += "isnull(a.ApproveDate,'')ApproveDate,isnull(a.DefeasanceDate,'')DefeasanceDate ";
                 sql += "From SetEDMHWeb a (nolock) ";
-                sql += "inner join PromoteSCouponHWeb b (nolock) on a.PS_NO=b.PS_NO and b.Companycode=a.Companycode and b.CouponType in('1','2') ";
+                sql += "left join PromoteSCouponHWeb b (nolock) on a.PS_NO=b.PS_NO and b.Companycode=a.Companycode and b.CouponType in('1','2') ";
                 //活動代號
                 if (ActivityCode.SqlQuote() != "")
                 {
@@ -9486,10 +9486,10 @@ namespace SVMAdmin.Controllers
                 //SetEDMHWeb
                 sql = "Select a.DocNo,a.EDMMemo,a.Bir_Year,a.Bir_Month,a.WhNoFlag,a.PS_NO,c.PS_Name + '  ' + c.StartDate + ' ~ ' + c.EndDate as PS_Name, ";
                 sql += "isnull(a.ApproveDate,'')ApproveDate,isnull(a.ApproveUser,'')ApproveUser,isnull(a.DefeasanceDate,'')DefeasanceDate,isnull(a.Defeasance,'')Defeasance, ";
-                sql += "b.DataType,b.DocImage,b.TXT ";
+                sql += "b.DataType,b.DocImage,b.TXT,a.VIP_Type ";
                 sql += "From SetEDMHWeb a (nolock) ";
                 sql += "inner join SetEDMDWeb b (nolock) on a.DocNo=b.DocNo and b.Companycode=a.Companycode ";
-                sql += "inner join PromoteSCouponHWeb c (nolock) on a.PS_NO=c.PS_NO and c.Companycode=a.Companycode and c.CouponType in('1','2') ";
+                sql += "left join PromoteSCouponHWeb c (nolock) on a.PS_NO=c.PS_NO and c.Companycode=a.Companycode and c.CouponType in('1','2') ";
                 sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                 if (DocNo.SqlQuote() != "")
                 {
@@ -9523,10 +9523,10 @@ namespace SVMAdmin.Controllers
                 //SetEDMHWeb
                 sql = "Select a.DocNo,a.EDMMemo,a.Bir_Year,a.Bir_Month,a.WhNoFlag,a.PS_NO,c.PS_Name + '  ' + c.StartDate + ' ~ ' + c.EndDate as PS_Name, ";
                 sql += "isnull(a.ApproveDate,'')ApproveDate,isnull(a.ApproveUser,'')ApproveUser,isnull(a.DefeasanceDate,'')DefeasanceDate,isnull(a.Defeasance,'')Defeasance, ";
-                sql += "b.DataType,b.DocImage,b.TXT ";
+                sql += "b.DataType,b.DocImage,b.TXT,a.VIP_Type ";
                 sql += "From SetEDMHWeb a (nolock) ";
                 sql += "inner join SetEDMDWeb b (nolock) on a.DocNo=b.DocNo and b.Companycode=a.Companycode ";
-                sql += "inner join PromoteSCouponHWeb c (nolock) on a.PS_NO=c.PS_NO and c.Companycode=a.Companycode and c.CouponType in('1','2') ";
+                sql += "left join PromoteSCouponHWeb c (nolock) on a.PS_NO=c.PS_NO and c.Companycode=a.Companycode and c.CouponType in('1','2') ";
                 sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                 if (DocNo.SqlQuote() != "")
                 {
@@ -9564,6 +9564,7 @@ namespace SVMAdmin.Controllers
                 string PS_NO = rq["PS_NO"];
                 string T1 = rq["T1"];
                 string T2 = rq["T2"];
+                string VIPType = rq["VIPType"];
                 string DocNo = rq["DocNo"];
                 string VMDocNo = rq["VMDocNo"];
                 string sql = "";
@@ -9576,12 +9577,12 @@ namespace SVMAdmin.Controllers
                     //SetEDMHWeb
                     sql = "Insert into SetEDMHWeb (Companycode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
                     sql += "DocNO,StartDate,EndDate,EDMMemo,EDM_Model,PS_NO,EDMType,ApproveDate,ApproveUser,DefeasanceDate,Defeasance, ";
-                    sql += "PS_Title,PS_MEMO,DelDate,DelUser,WhNoFlag,BIR_Year,BIR_Month) ";
+                    sql += "PS_Title,PS_MEMO,DelDate,DelUser,WhNoFlag,BIR_Year,BIR_Month,VIP_Type) ";
 
                     sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
                     sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
                     sql += "'" + DocNo + "','','','" + EDMMemo.SqlQuote() + "','', ";
-                    sql += "'" + PS_NO.SqlQuote() + "','B','','','','','','','','','','" + BIRYear.SqlQuote() + "','" + BIRMonth.SqlQuote() + "'; ";
+                    sql += "'" + PS_NO.SqlQuote() + "','B','','','','','','','','','','" + BIRYear.SqlQuote() + "','" + BIRMonth.SqlQuote() + "','" + VIPType.SqlQuote() + "'; ";
 
                     //SetEDMDWeb(P1)
                     sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
@@ -9642,7 +9643,7 @@ namespace SVMAdmin.Controllers
                     //SetEDMHWeb
                     sql = "Update SetEDMHWeb Set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
                     sql += "EDMMemo='" + EDMMemo.SqlQuote() + "',BIR_Year='" + BIRYear.SqlQuote() + "',BIR_Month='" + BIRMonth.SqlQuote() + "', ";
-                    sql += "PS_NO='" + PS_NO.SqlQuote() + "' ";
+                    sql += "PS_NO='" + PS_NO.SqlQuote() + "',VIP_Type='" + VIPType.SqlQuote() + "' ";
                     sql += "where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "'; ";
                     //SetEDMDWeb(P1)
                     sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
@@ -13732,12 +13733,12 @@ namespace SVMAdmin.Controllers
                 dtE.TableName = "dtE";
                 ds.Tables.Add(dtE);
 
-                sql = "select * from ProgramIDWeb (nolock) where 1=1 order by ProgramID ";
+                sql = "select ProgramID,ProgramID + ' ' + ChineseName ProgramName from ProgramIDWeb (nolock) where ProgramID like '%DM%' order by ProgramID ";
                 DataTable dtP = PubUtility.SqlQry(sql, uu, "SYS");
                 dtP.TableName = "dtP";
                 ds.Tables.Add(dtP);
 
-                sql = "Select Companycode From CompanyWeb (nolock) order by Companycode ";
+                sql = "Select Companycode,Companycode + ' ' + ChineseName CompanyName From CompanyWeb (nolock) order by Companycode ";
                 DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
                 dtC.TableName = "dtC";
                 ds.Tables.Add(dtC);
