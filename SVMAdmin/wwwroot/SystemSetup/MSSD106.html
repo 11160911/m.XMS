@@ -127,6 +127,7 @@
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
+                                    vertical-align: middle;
                                 }
 
                                 #tbQuery thead tr td, #tbQueryMW thead tr td {
@@ -134,12 +135,14 @@
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
+                                    vertical-align: middle;
                                 }
 
                                 #tbQuery tbody tr td, #tbQueryMW tbody tr td {
                                     font-size: 16px;
                                     padding: 3px;
                                     font-weight: bold;
+                                    vertical-align: middle;
                                 }
 
                                 th:first-child {
@@ -171,6 +174,21 @@
                                     top: 65px;
                                     z-index: 2;
                                 }
+
+                                /*手機畫面*/
+                                @media (max-width:767px) {
+                                    #tbQuery thead tr th, #tbQueryMW thead tr th {
+                                        font-size: 14px;
+                                    }
+
+                                    #tbQuery thead tr td, #tbQueryMW thead tr td {
+                                        font-size: 14px;
+                                    }
+
+                                    #tbQuery tbody tr td, #tbQueryMW tbody tr td {
+                                        font-size: 14px;
+                                    }
+                                }
                             </style>
 
                             <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom: 0px">
@@ -189,19 +207,19 @@
                                 <label class="DyForm3-Horizontal" >完整顯示請打橫看</label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%;margin-top:0px">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-top: 0px; margin-bottom: 5px">
                                 <button class="DyForm3-BtnShop" id="btVIPFaceID" type="button" style=" width: 120px;">會籍店櫃選取</button>
                                 <label class="DyForm3-Label" id="lblVIPFaceIDName" style=" margin-left: 10px; margin-top: 5px"></label>
                                 <label class="DyForm3-LabelRed" id="lblVIPFaceIDCnt" style=" margin-left: 10px; margin-top: 5px"></label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-top: 0px; margin-bottom: 0px">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-top: 0px; margin-bottom: 5px">
                                 <button class="DyForm3-BtnShop" id="btCity" type="button">縣市選取</button>
                                 <label class="DyForm3-Label" id="lblCityName" style=" margin-left: 10px; margin-top: 5px"></label>
                                 <label class="DyForm3-LabelRed" id="lblCityCnt" style=" margin-left: 10px; margin-top: 5px"></label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px">
                                 <mark class="DyForm3-DyNotEmptyMark" style="margin-left:5px" hidden>*</mark>
                                 <label class="DyForm3-Label">入會期間</label>
                                 <input id="rdoDateAll" type="radio" name="D" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
@@ -216,7 +234,7 @@
                                 <label class="DyForm3-LabelBlack" for="rdoDate1Y" style="margin-top:2px">&ensp;1年內</label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 25px; width: 100%; margin-bottom: 0px">
+                            <div class="form-group row" style="margin-left: 25px; width: 100%; margin-bottom: 5px">
                                 <mark class="DyForm3-DyNotEmptyMark" style="margin-left:5px" hidden>*</mark>
                                 <input id="rdoShop" type="radio" name="Q" style="vertical-align: middle; margin-top: 6px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
                                 <label class="DyForm3-LabelBlack" for="rdoShop" style="margin-top: 2px">&ensp;店別</label>
@@ -226,7 +244,7 @@
                                 <label class="DyForm3-LabelBlack" for="rdoMW" style="margin-top:2px">&ensp;性別-年齡層</label>
                             </div>
 
-                            <div class="form-group row" style="margin-bottom: 0px; width: 100%; margin-left: 12px ">
+                            <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 5px ">
                                 <label id="lblEnd" class="DyForm3-Label" style="font-size: 16px; margin-top: 0px "></label>
                                 <label id="lblVIPQty" class="DyForm3-LabelRed" style="font-size: 16px; margin-left: 20px "></label>
                                 <label id="lblBirNo" class="DyForm3-LabelRed" style="font-size: 16px; margin-left: 25px ">生日空白不列入計算</label>
@@ -351,11 +369,13 @@
                                             padding: 6px;
                                             background-color: #ffb620;
                                             font-weight: bold;
+                                            vertical-align: middle;
                                         }
 
                                         #tbLookup_VIPFaceID tbody tr td {
                                             font-size: 16px;
                                             padding: 0px;
+                                            vertical-align: middle;
                                         }
 
                                         th:first-child {
@@ -371,6 +391,17 @@
                                             top: 0;
                                             z-index: 2;
                                             height: 35px;
+                                        }
+
+                                        /*手機畫面*/
+                                        @media (max-width:767px) {
+                                            #tbLookup_VIPFaceID thead tr th {
+                                                font-size: 14px;
+                                            }
+
+                                            #tbLookup_VIPFaceID tbody tr td {
+                                                font-size: 14px;
+                                            }
                                         }
                                     </style>
 
@@ -434,11 +465,13 @@
                                             padding: 6px;
                                             background-color: #ffb620;
                                             font-weight: bold;
+                                            vertical-align: middle;
                                         }
 
                                         #tbLookup_City tbody tr td {
                                             font-size: 16px;
                                             padding: 0px;
+                                            vertical-align: middle;
                                         }
 
                                         th:first-child {
@@ -455,6 +488,17 @@
                                             top: 0;
                                             z-index: 2;
                                             height: 35px;
+                                        }
+
+                                        /*手機畫面*/
+                                        @media (max-width:767px) {
+                                            #tbLookup_City thead tr th {
+                                                font-size: 14px;
+                                            }
+
+                                            #tbLookup_City tbody tr td {
+                                                font-size: 14px;
+                                            }
                                         }
                                     </style>
 

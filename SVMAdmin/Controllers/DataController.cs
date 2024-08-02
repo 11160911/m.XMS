@@ -13759,11 +13759,11 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
-        [Route("SystemSetup/InitMSSetLogo")]
-        public ActionResult SystemSetup_InitMSSetLogo()
+        [Route("SystemSetup/InitMSSETLOGO")]
+        public ActionResult SystemSetup_InitMSSETLOGO()
         {
             UserInfo uu = PubUtility.GetCurrentUser(this);
-            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "InitMSSetLogoOK", "" });
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "InitMSSETLOGOOK", "" });
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
@@ -13792,11 +13792,11 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
-        [Route("SystemSetup/MSSetLogoQuery")]
-        public ActionResult SystemSetup_MSSetLogoQuery()
+        [Route("SystemSetup/MSSETLOGOQuery")]
+        public ActionResult SystemSetup_MSSETLOGOQuery()
         {
             UserInfo uu = PubUtility.GetCurrentUser(this);
-            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSetLogoQueryOK", "" });
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSETLOGOQueryOK", "" });
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
@@ -13828,11 +13828,11 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
-        [Route("SystemSetup/MSSetLogoGetCompany")]
-        public ActionResult SystemSetup_MSSetLogoGetCompany()
+        [Route("SystemSetup/MSSETLOGOGetCompany")]
+        public ActionResult SystemSetup_MSSETLOGOGetCompany()
         {
             UserInfo uu = PubUtility.GetCurrentUser(this);
-            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSetLogoGetCompanyOK", "" });
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSETLOGOGetCompanyOK", "" });
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
@@ -13857,8 +13857,8 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
-        [Route("MSSetLogoGetImage_Logo")]
-        public ActionResult MSSetLogoGetImage_Logo()
+        [Route("MSSETLOGOGetImage_Logo")]
+        public ActionResult MSSETLOGOGetImage_Logo()
         {
             try
             {
@@ -13884,11 +13884,11 @@ namespace SVMAdmin.Controllers
             }
         }
 
-        [Route("SystemSetup/MSSetLogoGetVMDocNo")]
-        public ActionResult SystemSetup_MSSetLogoGetVMDocNo()
+        [Route("SystemSetup/MSSETLOGOGetVMDocNo")]
+        public ActionResult SystemSetup_MSSETLOGOGetVMDocNo()
         {
             UserInfo uu = PubUtility.GetCurrentUser(this);
-            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSetLogoGetVMDocNoOK", "" });
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSETLOGOGetVMDocNoOK", "" });
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
@@ -13911,11 +13911,11 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
-        [Route("SystemSetup/MSSetLogo_Save")]
-        public ActionResult SystemSetup_MSSetLogo_Save()
+        [Route("SystemSetup/MSSETLOGO_Save")]
+        public ActionResult SystemSetup_MSSETLOGO_Save()
         {
             UserInfo uu = PubUtility.GetCurrentUser(this);
-            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSetLogo_SaveOK", "" });
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSETLOGO_SaveOK", "" });
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
@@ -13989,11 +13989,11 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
-        [Route("SystemSetup/MSSetLogoDelImg")]
-        public ActionResult SystemSetup_MSSetLogoDelImg()
+        [Route("SystemSetup/MSSETLOGODelImg")]
+        public ActionResult SystemSetup_MSSETLOGODelImg()
         {
             UserInfo uu = PubUtility.GetCurrentUser(this);
-            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSetLogoDelImgOK", "" });
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSETLOGODelImgOK", "" });
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
@@ -14036,11 +14036,11 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
-        [Route("SystemSetup/MSSetLogoCancel")]
-        public ActionResult SystemSetup_MSSetLogoCancel()
+        [Route("SystemSetup/MSSETLOGOCancel")]
+        public ActionResult SystemSetup_MSSETLOGOCancel()
         {
             UserInfo uu = PubUtility.GetCurrentUser(this);
-            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSetLogoCancelOK", "" });
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSETLOGOCancelOK", "" });
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {

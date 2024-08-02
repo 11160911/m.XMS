@@ -127,12 +127,14 @@
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
+                                    vertical-align: middle;
                                 }
 
                                 #tbQuery tbody tr td {
                                     font-size: 16px;
                                     padding: 3px;
                                     font-weight: bold;
+                                    vertical-align: middle;
                                 }
 
                                 th:first-child {
@@ -152,6 +154,13 @@
                                 }
                                 /*手機畫面*/
                                 @media (max-width:767px) {
+                                    #tbQuery thead tr th {
+                                        font-size: 14px;
+                                    }
+
+                                    #tbQuery tbody tr td {
+                                        font-size: 14px;
+                                    }
                                 }
                             </style>
 
@@ -188,7 +197,7 @@
                                 <input id="txtStartDate" class="DyForm3-TextBox" style="margin-left: 18px" type="date" />
                             </div>
 
-                            <div class="form-group row" style="margin-left: 15px; width: 100%; margin-bottom: 0px">
+                            <div class="form-group row" style="margin-left: 15px; width: 100%; margin-bottom: 5px">
                                 <label class="DyForm3-Label">DM主旨</label>
                                 <input id="txtEDMMemo" class="DyForm3-TextBox" style="margin-left: 22px " type="text" maxlength="100" />
                                 <!--<label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>-->
@@ -197,7 +206,7 @@
 
                             <div class="card-block forminput">
                                 <div class="x_content">
-                                    <div class="DyForm3-TableIni">
+                                    <div class="DyForm3-TableIni1">
                                         <table id="tbQuery" class="table table-bordered DyForm3-Table">
                                             <thead>
                                                 <tr>
@@ -232,12 +241,14 @@
                                         padding: 3px;
                                         background-color: #ffb620;
                                         font-weight: bold;
+                                        vertical-align: middle;
                                     }
 
                                     #tbEDMHistoryQuery tbody tr td {
                                         font-size: 16px;
                                         padding: 3px;
                                         font-weight: bold;
+                                        vertical-align: middle;
                                     }
 
                                     th:first-child {
@@ -258,11 +269,12 @@
 
                                     /*手機畫面*/
                                     @media (max-width:767px) {
-                                        /*螢幕縱向*/
-                                        @media screen and (orientation: portrait) {
+                                        #tbEDMHistoryQuery thead tr th {
+                                            font-size: 14px;
                                         }
-                                        /*螢幕橫向*/
-                                        @media screen and (orientation: landscape) {
+
+                                        #tbEDMHistoryQuery tbody tr td {
+                                            font-size: 14px;
                                         }
                                     }
                                 </style>
@@ -348,12 +360,14 @@
                                         padding: 3px;
                                         background-color: #ffb620;
                                         font-weight: bold;
+                                        vertical-align: middle;
                                     }
 
                                     #tbSendSet tbody tr td {
                                         font-size: 16px;
                                         padding: 3px;
                                         font-weight: bold;
+                                        vertical-align: middle;
                                     }
 
                                     th:first-child {
@@ -380,11 +394,12 @@
 
                                     /*手機畫面*/
                                     @media (max-width:767px) {
-                                        /*螢幕縱向*/
-                                        @media screen and (orientation: portrait) {
+                                        #tbSendSet thead tr th {
+                                            font-size: 14px;
                                         }
-                                        /*螢幕橫向*/
-                                        @media screen and (orientation: landscape) {
+
+                                        #tbSendSet tbody tr td {
+                                            font-size: 14px;
                                         }
                                     }
                                 </style>
@@ -603,12 +618,14 @@
                                         padding: 3px;
                                         background-color: #ffb620;
                                         font-weight: bold;
+                                        vertical-align: middle;
                                     }
 
                                     #tbDMSel tbody tr td {
                                         font-size: 16px;
                                         padding: 3px;
                                         font-weight: bold;
+                                        vertical-align: middle;
                                     }
 
                                     th:first-child {
@@ -629,11 +646,12 @@
 
                                     /*手機畫面*/
                                     @media (max-width:767px) {
-                                        /*螢幕縱向*/
-                                        @media screen and (orientation: portrait) {
+                                        #tbDMSel thead tr th {
+                                            font-size: 14px;
                                         }
-                                        /*螢幕橫向*/
-                                        @media screen and (orientation: landscape) {
+
+                                        #tbDMSel tbody tr td {
+                                            font-size: 14px;
                                         }
                                     }
                                 </style>
@@ -647,7 +665,7 @@
                                         <label class="DyForm3-ProgramName">DM選取</label>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%; margin-left: 20px; margin-bottom: 0px ">
+                                    <div class="form-group row" style="width: 100%; margin-left: 20px; margin-bottom: 5px ">
                                         <button class="DyForm3-BtnQuery" id="btOK_DMSel" type="button">
                                             確定
                                         </button>

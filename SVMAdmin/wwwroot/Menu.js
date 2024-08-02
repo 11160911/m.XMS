@@ -674,16 +674,16 @@
                     PageMSSD103($(".workarea"));
                 }
             }
-            else if (pg == "MSSetLogo") {
-                if (window.PageMSSetLogo == undefined) {
-                    $.getScript('SystemSetup/MSSetLogo.js',
+            else if (pg == "MSSETLOGO") {
+                if (window.PageMSSETLOGO == undefined) {
+                    $.getScript('SystemSetup/MSSETLOGO.js',
                         function () {
-                            PageMSSetLogo($(".workarea"));
+                            PageMSSETLOGO($(".workarea"));
                         }
                     );
                 }
                 else {
-                    PageMSSetLogo($(".workarea"));
+                    PageMSSETLOGO($(".workarea"));
                 }
             }
             else if (pg == "SysChangePWD") {

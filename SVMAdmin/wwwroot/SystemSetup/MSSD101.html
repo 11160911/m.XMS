@@ -129,6 +129,7 @@
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
+                                    vertical-align: middle;
                                 }
 
                                 #tbQuery thead tr td {
@@ -136,12 +137,14 @@
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
+                                    vertical-align: middle;
                                 }
 
                                 #tbQuery tbody tr td {
                                     font-size: 16px;
                                     padding: 3px;
                                     font-weight: bold;
+                                    vertical-align: middle;
                                 }
 
                                 th:first-child {
@@ -160,6 +163,20 @@
                                     height: 35px;
                                 }
 
+                                /*手機畫面*/
+                                @media (max-width:767px) {
+                                    #tbQuery thead tr th {
+                                        font-size: 14px;
+                                    }
+
+                                    #tbQuery thead tr td {
+                                        font-size: 14px;
+                                    }
+
+                                    #tbQuery tbody tr td {
+                                        font-size: 14px;
+                                    }
+                                }
                             </style>
 
                             <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom: 0px">
@@ -199,7 +216,7 @@
                                 <input class="DyForm3-TextBox" id="txtEDMMemo" type="text" maxlength="50" />-->
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px">
                                 <label class="DyForm3-Label">活動日期</label>
                                 <input class="DyForm3-TextBox" id="txtPSDate" style="margin-left: 15px; font-size: 14px" type="date" />
                                 <!--<label class="DyForm3-Label" style="margin-left:58px">DM日期</label>
@@ -254,14 +271,43 @@
                                     <style>
                                         #tbDataLookup_ActivityCode thead tr th {
                                             font-size: 16px;
-                                            padding: 0px;
+                                            padding: 6px;
                                             background-color: #ffb620;
                                             font-weight: bold;
+                                            vertical-align: middle;
                                         }
 
                                         #tbDataLookup_ActivityCode tbody tr td {
                                             font-size: 16px;
                                             padding: 0px;
+                                            vertical-align: middle;
+                                        }
+
+                                        th:first-child {
+                                            position: sticky;
+                                            left: 0; /*首行永遠固定於左 */
+                                        }
+
+                                        .table thead th {
+                                            position: sticky;
+                                            border-top: 0;
+                                            border-bottom: 0;
+                                            /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
+                                            box-shadow: 0 0px 2px 0px inset #ddd;
+                                            top: 0;
+                                            z-index: 2;
+                                            height: 35px;
+                                        }
+
+                                        /*手機畫面*/
+                                        @media (max-width:767px) {
+                                            #tbDataLookup_ActivityCode thead tr th {
+                                                font-size: 14px;
+                                            }
+
+                                            #tbDataLookup_ActivityCode tbody tr td {
+                                                font-size: 14px;
+                                            }
                                         }
                                     </style>
 
@@ -386,6 +432,7 @@
                                         background-color: #ffb620;
                                         font-weight: bold;
                                         z-index: 3;
+                                        vertical-align: middle;
                                         /*box-shadow: 0 0px 0px 1px inset #ddd*/
                                     }
 
@@ -395,6 +442,7 @@
                                         background-color: #ffb620;
                                         font-weight: bold;
                                         z-index: 2;
+                                        vertical-align: middle;
                                     }
 
                                     #tbShop_PS_Step1 tbody tr td, #tbShop_PS_Step1_2 tbody tr td {
@@ -402,6 +450,7 @@
                                         padding: 3px;
                                         font-weight: bold;
                                         z-index: 1;
+                                        vertical-align: middle;
                                     }
 
 
@@ -442,14 +491,25 @@
                                     
                                     /*手機畫面*/
                                     @media (max-width:767px) {
+                                        #tbShop_PS_Step1 thead tr th, #tbShop_PS_Step1_2 thead tr th {
+                                            font-size: 14px;
+                                        }
+
+                                        #tbShop_PS_Step1 thead tr td, #tbShop_PS_Step1_2 thead tr td {
+                                            font-size: 14px;
+                                        }
+
+                                        #tbShop_PS_Step1 tbody tr td, #tbShop_PS_Step1_2 tbody tr td {
+                                            font-size: 14px;
+                                        }
                                         /*螢幕縱向*/
                                         @media screen and (orientation: portrait) {
                                             #td0S, #td0D {
-                                                top: 135px;
+                                                top: 120px;
                                                 z-index: 2;
                                             }
                                             #td1S, #td2S, #td3S, #td4S, #td5S, #td6S, #td7S, #td8S, #td9S, #td10S, #td1D, #td2D, #td3D, #td4D, #td5D, #td6D, #td7D, #td8D {
-                                                top: 135px;
+                                                top: 120px;
                                                 z-index: 2;
                                                 color: red;
                                             }
@@ -465,24 +525,24 @@
                                         <label id="lblProgramName" class="DyForm3-ProgramName">EDM折價券回收分析</label>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%; margin-left: 20px;margin-bottom: 0px ">
+                                    <div class="form-group row" style="width: 100%; margin-left: 20px;margin-bottom: 5px ">
                                         <button id="btExit_PS_Step1" type="button" class="DyForm3-BtnRe">回上頁</button>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 0px ">
+                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 5px ">
                                         <label class="DyForm3-Label">活動代號</label>
                                         <label id="lblActivityCode_Step1" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px"></label>
                                     </div>
-                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 0px ">
+                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 5px ">
                                         <label class="DyForm3-Label">活動期間</label>
                                         <label id="lblPSDate_Step1" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px "></label>
                                     </div>
-                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 0px ">
+                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 5px ">
                                         <label class="DyForm3-Label">活動名稱</label>
                                         <label id="lblPSName_Step1" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px "></label>
                                         <label id="lblPSNO_Step1" hidden></label>
                                     </div>
-                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 0px ">
+                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 5px ">
                                         <input id="rdoShop_PS_Step1" type="radio" name="Step1" value="Shop" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left; " checked>
                                         <label class="DyForm3-LabelBlack" for="rdoShop_PS_Step1" style="margin-top: 2px;">&ensp;店別</label>
                                         <input id="rdoDate_PS_Step1" type="radio" name="Step1" value="Date" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left;  ">
@@ -594,6 +654,7 @@
                                         padding: 3px;
                                         background-color: #ffb620;
                                         font-weight: bold;
+                                        vertical-align: middle;
                                     }
 
                                     #tbSales_Shop_Step2 thead tr td {
@@ -601,12 +662,14 @@
                                         padding: 3px;
                                         background-color: #ffb620;
                                         font-weight: bold;
+                                        vertical-align: middle;
                                     }
 
                                     #tbSales_Shop_Step2 tbody tr td {
                                         font-size: 16px;
                                         padding: 3px;
                                         font-weight: bold;
+                                        vertical-align: middle;
                                     }
 
                                     th:first-child {
@@ -645,11 +708,23 @@
                                     }
                                     /*手機畫面*/
                                     @media (max-width:767px) {
-                                        /*螢幕縱向*/
-                                        @media screen and (orientation: portrait) {
+                                        #tbSales_Shop_Step2 thead tr th {
+                                            font-size: 14px;
                                         }
-                                        /*螢幕橫向*/
-                                        @media screen and (orientation: landscape) {
+
+                                        #tbSales_Shop_Step2 thead tr td {
+                                            font-size: 14px;
+                                        }
+
+                                        #tbSales_Shop_Step2 tbody tr td {
+                                            font-size: 14px;
+                                        }
+                                        #tdShopNo1, #tdShopNo2, #tdShopNo3, #tdShopNo4, #tdShopNo5, #tdShopNo6, #tdShopNo7, #tdShopNo8 {
+                                            top: 120px;
+                                        }
+
+                                        #tdShopNo0 {
+                                            top: 120px;
                                         }
                                     }
                                 </style>
@@ -659,24 +734,24 @@
                                         <label id="lblProgramName" class="DyForm3-ProgramName">EDM折價券回收分析</label>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%; margin-left: 20px; margin-bottom: 0px">
+                                    <div class="form-group row" style="width: 100%; margin-left: 20px; margin-bottom: 5px">
                                         <button id="btExit_Shop_Step2" type="button" class="DyForm3-BtnRe">回上頁</button>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 0px ">
+                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 5px ">
                                         <label class="DyForm3-Label">活動代碼</label>
                                         <label id="lblShop_ActivityCode_Step2" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px "></label>
                                     </div>
-                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 0px ">
+                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 5px ">
                                         <label class="DyForm3-Label" >活動期間</label>
                                         <label id="lblShop_Date_Step2" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px "></label>
                                     </div>
-                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 0px ">
+                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 5px ">
                                         <label class="DyForm3-Label">活動名稱</label>
                                         <label id="lblShop_PSName_Step2" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px "></label>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%; margin-bottom: 0px; margin-left: 12px ">
+                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 5px; ">
                                         <label class="DyForm3-Label">店&ensp;&ensp;&ensp;&ensp;別</label>
                                         <label id="lblShop_Step2" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px"></label>
                                         <!--<label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>-->
@@ -744,6 +819,7 @@
                                         padding: 3px;
                                         background-color: #ffb620;
                                         font-weight: bold;
+                                        vertical-align: middle;
                                     }
 
                                     #tbSales_Date_Step2 thead tr td {
@@ -751,14 +827,15 @@
                                         padding: 3px;
                                         background-color: #ffb620;
                                         font-weight: bold;
+                                        vertical-align: middle;
                                     }
 
                                     #tbSales_Date_Step2 tbody tr td {
                                         font-size: 16px;
                                         padding: 3px;
                                         font-weight: bold;
+                                        vertical-align: middle;
                                     }
-
 
                                     th:first-child {
                                         position: sticky;
@@ -797,16 +874,27 @@
 
                                     /*手機畫面*/
                                     @media (max-width:767px) {
+                                        #tbSales_Date_Step2 thead tr th {
+                                            font-size: 14px;
+                                        }
+
+                                        #tbSales_Date_Step2 thead tr td {
+                                            font-size: 14px;
+                                        }
+
+                                        #tbSales_Date_Step2 tbody tr td {
+                                            font-size: 14px;
+                                        }
                                         /*螢幕縱向*/
                                         @media screen and (orientation: portrait) {
                                             #tdDate1, #tdDate2, #tdDate3, #tdDate4, #tdDate5, #tdDate6, #tdDate7, #tdDate8 {
-                                                top: 135px;
+                                                top: 120px;
                                                 z-index: 2;
                                                 color: red;
                                             }
 
                                             #tdDate0 {
-                                                top: 135px;
+                                                top: 120px;
                                                 z-index: 2;
                                             }
                                         }
@@ -821,24 +909,24 @@
                                         <label id="lblProgramName" class="DyForm3-ProgramName">EDM折價券回收分析</label>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%; margin-left: 20px; margin-bottom: 0px">
+                                    <div class="form-group row" style="width: 100%; margin-left: 20px; margin-bottom: 5px">
                                         <button id="btExit_Date_Step2" type="button" class="DyForm3-BtnRe">回上頁</button>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 0px">
+                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 5px">
                                         <label class="DyForm3-Label">活動代碼</label>
                                         <label id="lblDate_ActivityCode_Step2" class="DyForm3-LabelBlack" style="margin-top: 3px; margin-left: 15px"></label>
                                     </div>
-                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 0px">
+                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 5px">
                                         <label class="DyForm3-Label">活動期間</label>
                                         <label id="lblDate_Date_Step2" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px "></label>
                                     </div>
-                                    <div class="form-group row" style="width: 100%;margin-left:12px; margin-bottom: 0px">
+                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 5px">
                                         <label class="DyForm3-Label">活動名稱</label>
                                         <label id="lblDate_PSName_Step2" class="DyForm3-LabelBlack" style="margin-top: 3px; margin-left: 15px "></label>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 0px">
+                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 5px">
                                         <label class="DyForm3-Label">銷售日期</label>
                                         <label id="lblOpenDate_Date_Step2" class="DyForm3-LabelBlack" style=" margin-top: 3px; margin-left: 15px "></label>
                                         <!--<label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>-->

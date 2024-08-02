@@ -120,24 +120,26 @@
                                 }
 
                                 #tbQuery thead tr th {
-                                    font-size: 14px;
+                                    font-size: 16px;
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
-                                    padding-bottom: 15px;
+                                    vertical-align: middle;
                                 }
 
                                 #tbQuery thead tr td {
-                                    font-size: 14px;
+                                    font-size: 16px;
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
+                                    vertical-align: middle;
                                 }
 
                                 #tbQuery tbody tr td {
-                                    font-size: 14px;
+                                    font-size: 16px;
                                     padding: 3px;
                                     font-weight: bold;
+                                    vertical-align: middle;
                                 }
 
                                 th:first-child {
@@ -162,22 +164,33 @@
                                 #th1, #th2, #th3, #th4, #th5 {
                                     top: 35px;
                                     z-index: 2;
-                                    height: 55px;
+                                    height: 45px;
                                 }
 
                                 #td1, #td2, #td3, #td4, #td5 {
-                                    top: 85px;
+                                    top: 75px;
                                     z-index: 2;
                                     color: red;
                                 }
 
                                 #td0 {
-                                    top: 85px;
+                                    top: 75px;
                                     z-index: 2;
                                 }
 
                                 /*手機畫面*/
                                 @media (max-width:767px) {
+                                    #tbQuery thead tr th {
+                                        font-size: 14px;
+                                    }
+
+                                    #tbQuery thead tr td {
+                                        font-size: 14px;
+                                    }
+
+                                    #tbQuery tbody tr td {
+                                        font-size: 14px;
+                                    }
                                 }
                             </style>
 
@@ -196,7 +209,7 @@
                                 </button>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom: 0px">
+                            <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom: 5px">
                                 <mark class="DyForm3-DyNotEmptyMark">*</mark>
                                 <label class="DyForm3-Label">本期</label>
                                 <input class="DyForm3-TextBox" id="txtOpenDateS2" style="margin-left: 5px; width: 120px; font-size: 14px" type="date" />
@@ -212,13 +225,13 @@
                                 <input class="DyForm3-TextBox" id="txtOpenDateE1" style="width: 120px; font-size: 14px" type="date" />
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px">
                                 <button class="DyForm3-BtnShop" id="btShopNo" type="button">店別選取</button>
                                 <label class="DyForm3-Label" id="lblShopNoName" style=" margin-left: 10px; margin-top: 5px"></label>
                                 <label class="DyForm3-LabelRed" id="lblShopNoCnt" style=" margin-left: 10px; margin-top: 5px"></label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%;margin-bottom:0px">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px">
                                 <input id="rdoS" type="radio" name="a" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
                                 <label class="DyForm3-LabelBlack" for="rdoS" style="margin-top: 2px">&ensp;店櫃</label>
                                 <input id="rdoD" type="radio" name="a" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
@@ -227,7 +240,7 @@
                                 <label class="DyForm3-LabelBlack" for="rdoB" style="margin-top:2px">&ensp;大類</label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px ">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px ">
                                 <label class="DyForm3-Label" style="font-size: 16px; margin-top: 0px ">成長率=(本期-前期)/前期</label>
                             </div>
 
@@ -287,15 +300,17 @@
                                 <div class="modal-body modal-tab-container" style="padding:8px">
                                     <style>
                                         #tbLookup_ShopNo thead tr th {
-                                            font-size: 14px;
+                                            font-size: 16px;
                                             padding: 6px;
                                             background-color: #ffb620;
                                             font-weight: bold;
+                                            vertical-align: middle;
                                         }
 
                                         #tbLookup_ShopNo tbody tr td {
-                                            font-size: 14px;
+                                            font-size: 16px;
                                             padding: 0px;
+                                            vertical-align: middle;
                                         }
 
                                         th:first-child {
@@ -311,6 +326,16 @@
                                             top: 0;
                                             z-index: 2;
                                             height: 35px;
+                                        }
+                                        /*手機畫面*/
+                                        @media (max-width:767px) {
+                                            #tbLookup_ShopNo thead tr th {
+                                                font-size: 14px;
+                                            }
+
+                                            #tbLookup_ShopNo tbody tr td {
+                                                font-size: 14px;
+                                            }
                                         }
                                     </style>
 

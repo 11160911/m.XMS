@@ -1108,11 +1108,11 @@ namespace SVMAdmin.Controllers
             return Content(strHtml, "text/html", System.Text.Encoding.UTF8);
         }
 
-        [Route("SystemSetup/MSSetLogo")]
-        public IActionResult MSSetLogo()
+        [Route("SystemSetup/MSSETLOGO")]
+        public IActionResult MSSETLOGO()
         {
             HtmlAgilityPack.HtmlDocument doc1 = new HtmlAgilityPack.HtmlDocument();
-            string strHtml = System.IO.File.ReadAllText(ConstList.HostEnvironment.WebRootPath + @"\SystemSetup\MSSetLogo.html".AdjPathByOS());
+            string strHtml = System.IO.File.ReadAllText(ConstList.HostEnvironment.WebRootPath + @"\SystemSetup\MSSETLOGO.html".AdjPathByOS());
             doc1.LoadHtml(strHtml);
 
             //Remove Node

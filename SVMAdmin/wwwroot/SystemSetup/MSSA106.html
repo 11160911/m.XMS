@@ -123,25 +123,26 @@
                                 }
 
                                 #tbQuery thead tr th {
-                                    font-size: 14px;
+                                    font-size: 16px;
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
-                                    padding-bottom: 15px;
+                                    vertical-align: middle;
                                 }
 
                                 #tbQuery thead tr td {
-                                    font-size: 14px;
+                                    font-size: 16px;
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
-                                    padding-top: 15px;
+                                    vertical-align: middle;
                                 }
 
                                 #tbQuery tbody tr td {
-                                    font-size: 14px;
+                                    font-size: 16px;
                                     padding: 3px;
                                     font-weight: bold;
+                                    vertical-align: middle;
                                 }
 
                                 th:first-child {
@@ -182,6 +183,17 @@
                                 
                                 /*手機畫面*/
                                 @media (max-width:767px) {
+                                    #tbQuery thead tr th {
+                                        font-size: 14px;
+                                    }
+
+                                    #tbQuery thead tr td {
+                                        font-size: 14px;
+                                    }
+
+                                    #tbQuery tbody tr td {
+                                        font-size: 14px;
+                                    }
                                 }
                             </style>
 
@@ -200,18 +212,18 @@
                                 </button>
                                 <label class="DyForm3-Horizontal">完整顯示請打橫看</label>
                             </div>
-                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-top: 5px; margin-bottom: 0px ">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px ">
                                 <!--<mark class="DyForm3-DyNotEmptyMark" style="margin-left:5px">*</mark>-->
                                 <label class="DyForm3-Label" style=" margin-left: 10px; margin-top: 5px">銷售期間</label>
                                 <label class="DyForm3-LabelBlack" id="lblDayRange" style=" margin-left: 10px; margin-top: 5px">2024/06/27~2024/07/03</label>
                             </div>
-                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px">
                                 <button class="DyForm3-BtnShop" id="btShopNo" type="button">店別選取</button>
                                 <label class="DyForm3-Label" id="lblShopName" style=" margin-left: 10px; margin-top: 5px"></label>
                                 <label class="DyForm3-LabelRed" id="lblShopCnt" style=" margin-left: 10px; margin-top: 5px"></label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 25px;width: 100%; margin-bottom: 0px">
+                            <div class="form-group row" style="margin-left: 25px; width: 100%; margin-bottom: 5px">
                                 <mark class="DyForm3-DyNotEmptyMark" style="margin-left:5px" hidden>*</mark>
                                 <input id="rdoOPTime" type="radio" name="Q" style="vertical-align: middle; margin-top: 6px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
                                 <label class="DyForm3-LabelBlack" for="rdoOPTime" style="margin-top:2px">&ensp;時段</label>
@@ -276,25 +288,26 @@
                             <div class="modal-content DyForm3-PanelD">
                                 <style>
                                     #tbDShop1 thead tr th {
-                                        font-size: 14px;
+                                        font-size: 16px;
                                         padding: 3px;
                                         background-color: #ffb620;
                                         font-weight: bold;
-                                        padding-bottom: 15px;
+                                        vertical-align: middle;
                                     }
 
                                     #tbDShop1 thead tr td {
-                                        font-size: 14px;
+                                        font-size: 16px;
                                         padding: 3px;
                                         background-color: #ffb620;
                                         font-weight: bold;
-                                        padding-top: 15px;
+                                        vertical-align: middle;
                                     }
 
                                     #tbDShop1 tbody tr td {
-                                        font-size: 14px;
+                                        font-size: 16px;
                                         padding: 3px;
                                         font-weight: bold;
+                                        vertical-align: middle;
                                     }
 
                                     th:first-child {
@@ -335,6 +348,17 @@
 
                                     /*手機畫面*/
                                     @media (max-width:767px) {
+                                        #tbDShop1 thead tr th {
+                                            font-size: 14px;
+                                        }
+
+                                        #tbDShop1 thead tr td {
+                                            font-size: 14px;
+                                        }
+
+                                        #tbDShop1 tbody tr td {
+                                            font-size: 14px;
+                                        }
                                     }
                                 </style>
 
@@ -344,20 +368,20 @@
 
                                 <div class="modal-body modal-tab-container" style="padding:8px">
 
-                                    <div class="form-group row" style="margin-left: 5px; width: 100%">
+                                    <div class="form-group row" style="width: 100%; margin-left: 5px; margin-bottom: 0px">
                                         <label class="DyForm3-ProgramName">七日時段業績統計表</label>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%; margin-left: 12px">
+                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom:5px">
                                         <button id="btRe_Shop1" type="button" class="DyForm3-BtnRe">回上頁</button>
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 12px; width: 100%">
+                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 5px ">
                                         <label class="DyForm3-Label">銷售期間&ensp;&ensp;</label>
                                         <label id="lblDW_Shop1" class="DyForm3-LabelBlack" style="margin-top:3px"></label>
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 12px; width: 100%">
+                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 5px ">
                                         <label class="DyForm3-Label">店&ensp;&ensp;&ensp;&ensp;別&ensp;&ensp;</label>
                                         <label id="lblShop1" class="DyForm3-LabelBlack" style="margin-top:3px"></label>
                                         <!--<label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>-->
@@ -425,15 +449,17 @@
                                 <div class="modal-body modal-tab-container" style="padding:8px">
                                     <style>
                                         #tbLookup_ShopNo thead tr th {
-                                            font-size: 14px;
+                                            font-size: 16px;
                                             padding: 6px;
                                             background-color: #ffb620;
                                             font-weight: bold;
+                                            vertical-align: middle;
                                         }
 
                                         #tbLookup_ShopNo tbody tr td {
-                                            font-size: 14px;
+                                            font-size: 16px;
                                             padding: 0px;
+                                            vertical-align: middle;
                                         }
 
                                         th:first-child {
@@ -450,6 +476,15 @@
                                             top: 0;
                                             z-index: 2;
                                             height: 35px;
+                                        }
+                                        /*手機畫面*/
+                                        @media (max-width:767px) {
+                                            #tbLookup_ShopNo thead tr th {
+                                                font-size: 14px;
+                                            }
+                                            #tbLookup_ShopNo tbody tr td {
+                                                font-size: 14px;
+                                            }
                                         }
                                     </style>
 

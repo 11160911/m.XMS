@@ -350,8 +350,8 @@ var DynGrid = function (option) {
                 td.append(img);
                 tr.prop(fdName, img);
                 img.css('height', '50px');
-                if (fdinfo.programid == "MSSetLogo") {
-                    img.prop('src', 'api/MSSetLogoGetImage_Logo?CompanyID=' + GetNodeValue(xml, 'Companycode') + '&ProgramID=' + GetNodeValue(xml, 'ProgramID') + '&UU=' + encodeURIComponent(UU) + '&Ver=' + encodeURIComponent(new Date().toLocaleTimeString()));
+                if (fdinfo.programid == "MSSETLOGO") {
+                    img.prop('src', 'api/MSSETLOGOGetImage_Logo?CompanyID=' + GetNodeValue(xml, 'Companycode') + '&ProgramID=' + GetNodeValue(xml, 'ProgramID') + '&UU=' + encodeURIComponent(UU) + '&Ver=' + encodeURIComponent(new Date().toLocaleTimeString()));
                 }
             }
             else if (fdType == 'Text' || fdType == 'TextAmt' || fdType == 'TextTime' || fdType == 'TextPercent') {

@@ -1,4 +1,4 @@
-﻿var PageMSSetLogo = function (ParentNode) {
+﻿var PageMSSETLOGO = function (ParentNode) {
 
     let grdM;
     let cs_EditMode = "";       //狀態 Q:編查 A:新增 M:修改
@@ -6,14 +6,14 @@
     let AssignVar = function () {
         grdM = new DynGrid(
             {
-                table_lement: $('#tbQMSSetLogo')[0],
+                table_lement: $('#tbQMSSETLOGO')[0],
                 class_collection: ["tdCol1", "tdCol2", "tdCol3", "tdCol4", "tdCol5"],
                 fields_info: [
                     { type: "Text", name: "Companycode", style: "" },
                     { type: "Text", name: "CompanyName", style: "" },
                     { type: "Text", name: "ProgramID", style: "" },
                     { type: "Text", name: "ProgramName", style: "" },
-                    { type: "Image", name: "Pic", style: "", programid: "MSSetLogo" }
+                    { type: "Image", name: "Pic", style: "", programid: "MSSETLOGO" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -28,104 +28,104 @@
     };
 
     let InitModifyDeleteButton = function () {
-        //$('#tbQMSSetLogo .fa-trash-o').click(function () { btMod_click(this) });
-        $('#tbQMSSetLogo tbody tr td').click(function () { MSSetLogoQuery(this) });
-        $('#tbQMSSetLogo thead tr th').mouseenter(function () {
+        //$('#tbQMSSETLOGO .fa-trash-o').click(function () { btMod_click(this) });
+        $('#tbQMSSETLOGO tbody tr td').click(function () { MSSETLOGOQuery(this) });
+        $('#tbQMSSETLOGO thead tr th').mouseenter(function () {
             var fdinfo = $(this).prop('fdinfo');
             if (fdinfo.name == "Companycode") {
-                var rgb = $('#tbQMSSetLogo thead tr th#thead1').css('background-color')
+                var rgb = $('#tbQMSSETLOGO thead tr th#thead1').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSSetLogo thead tr th#thead1').css('background-color', '#ffff00')
+                    $('#tbQMSSETLOGO thead tr th#thead1').css('background-color', '#ffff00')
                 }
             }
             else if (fdinfo.name == "CompanyName") {
-                var rgb = $('#tbQMSSetLogo thead tr th#thead2').css('background-color')
+                var rgb = $('#tbQMSSETLOGO thead tr th#thead2').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSSetLogo thead tr th#thead2').css('background-color', '#ffff00')
+                    $('#tbQMSSETLOGO thead tr th#thead2').css('background-color', '#ffff00')
                 }
             }
             else if (fdinfo.name == "ProgramID") {
-                var rgb = $('#tbQMSSetLogo thead tr th#thead3').css('background-color')
+                var rgb = $('#tbQMSSETLOGO thead tr th#thead3').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSSetLogo thead tr th#thead3').css('background-color', '#ffff00')
+                    $('#tbQMSSETLOGO thead tr th#thead3').css('background-color', '#ffff00')
                 }
             }
             else if (fdinfo.name == "ProgramName") {
-                var rgb = $('#tbQMSSetLogo thead tr th#thead4').css('background-color')
+                var rgb = $('#tbQMSSETLOGO thead tr th#thead4').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSSetLogo thead tr th#thead4').css('background-color', '#ffff00')
+                    $('#tbQMSSETLOGO thead tr th#thead4').css('background-color', '#ffff00')
                 }
             }
         });
-        $('#tbQMSSetLogo thead tr th').mouseleave(function () {
+        $('#tbQMSSETLOGO thead tr th').mouseleave(function () {
             var fdinfo = $(this).prop('fdinfo');
             if (fdinfo.name == "Companycode") {
-                var rgb = $('#tbQMSSetLogo thead tr th#thead1').css('background-color')
+                var rgb = $('#tbQMSSETLOGO thead tr th#thead1').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSSetLogo thead tr th#thead1').css('background-color', '#ffb620')
+                    $('#tbQMSSETLOGO thead tr th#thead1').css('background-color', '#ffb620')
                 }
             }
             else if (fdinfo.name == "CompanyName") {
-                var rgb = $('#tbQMSSetLogo thead tr th#thead2').css('background-color')
+                var rgb = $('#tbQMSSETLOGO thead tr th#thead2').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSSetLogo thead tr th#thead2').css('background-color', '#ffb620')
+                    $('#tbQMSSETLOGO thead tr th#thead2').css('background-color', '#ffb620')
                 }
             }
             else if (fdinfo.name == "ProgramID") {
-                var rgb = $('#tbQMSSetLogo thead tr th#thead3').css('background-color')
+                var rgb = $('#tbQMSSETLOGO thead tr th#thead3').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSSetLogo thead tr th#thead3').css('background-color', '#ffb620')
+                    $('#tbQMSSETLOGO thead tr th#thead3').css('background-color', '#ffb620')
                 }
             }
             else if (fdinfo.name == "ProgramName") {
-                var rgb = $('#tbQMSSetLogo thead tr th#thead4').css('background-color')
+                var rgb = $('#tbQMSSETLOGO thead tr th#thead4').css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
                 if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSSetLogo thead tr th#thead4').css('background-color', '#ffb620')
+                    $('#tbQMSSETLOGO thead tr th#thead4').css('background-color', '#ffb620')
                 }
             }
         });
-        $('#tbQMSSetLogo thead tr th').click(function () {
-            $('#tbQMSSetLogo thead tr th').css('background-color', '#ffb620')
+        $('#tbQMSSETLOGO thead tr th').click(function () {
+            $('#tbQMSSETLOGO thead tr th').css('background-color', '#ffb620')
             var fdinfo = $(this).prop('fdinfo');
             if (fdinfo.name == "Companycode") {
-                $('#tbQMSSetLogo thead tr th#thead1').css('background-color', '#ffeaa7')
+                $('#tbQMSSETLOGO thead tr th#thead1').css('background-color', '#ffeaa7')
             }
             else if (fdinfo.name == "CompanyName") {
-                $('#tbQMSSetLogo thead tr th#thead2').css('background-color', '#ffeaa7')
+                $('#tbQMSSETLOGO thead tr th#thead2').css('background-color', '#ffeaa7')
             }
             else if (fdinfo.name == "ProgramID") {
-                $('#tbQMSSetLogo thead tr th#thead3').css('background-color', '#ffeaa7')
+                $('#tbQMSSETLOGO thead tr th#thead3').css('background-color', '#ffeaa7')
             }
             else if (fdinfo.name == "ProgramName") {
-                $('#tbQMSSetLogo thead tr th#thead4').css('background-color', '#ffeaa7')
+                $('#tbQMSSETLOGO thead tr th#thead4').css('background-color', '#ffeaa7')
             }
         });
     }
 
     //Logo查詢
-    let MSSetLogoQuery = function (bt) {
-        $('#tbQMSSetLogo td').closest('tr').css('background-color', 'transparent');
+    let MSSETLOGOQuery = function (bt) {
+        $('#tbQMSSETLOGO td').closest('tr').css('background-color', 'transparent');
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         var node = $(grdM.ActiveRowTR()).prop('Record');
-        $('#tbQMSSetLogo td:contains(' + GetNodeValue(node, 'ProgramID') + ')').closest('tr').css('background-color', '#DEEBF7');
+        $('#tbQMSSETLOGO td:contains(' + GetNodeValue(node, 'ProgramID') + ')').closest('tr').css('background-color', '#DEEBF7');
         var pData = {
             CompanyID: GetNodeValue(node, 'Companycode'),
             ProgramID: GetNodeValue(node, 'ProgramID')
         }
-        PostToWebApi({ url: "api/SystemSetup/MSSetLogoQuery", data: pData, success: aftergrdMQuery });
+        PostToWebApi({ url: "api/SystemSetup/MSSETLOGOQuery", data: pData, success: aftergrdMQuery });
     };
 
     let aftergrdMQuery = function (data) {
-        if (ReturnMsg(data, 0) != "MSSetLogoQueryOK") {
+        if (ReturnMsg(data, 0) != "MSSETLOGOQueryOK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
@@ -144,12 +144,12 @@
         }
     };
 
-    let MSSetLogoGetImage_Logo = function (elmImg, picCompanyID, picProgramID) {
+    let MSSETLOGOGetImage_Logo = function (elmImg, picCompanyID, picProgramID) {
         if (picCompanyID == "") {
             $('#' + elmImg).prop('src', "");
             return;
         }
-        var url = "api/MSSetLogoGetImage_Logo?CompanyID=" + picCompanyID + "&ProgramID=" + picProgramID + "&UU=" + encodeURIComponent(UU);
+        var url = "api/MSSETLOGOGetImage_Logo?CompanyID=" + picCompanyID + "&ProgramID=" + picProgramID + "&UU=" + encodeURIComponent(UU);
         url += "&Ver=" + encodeURIComponent(new Date().toLocaleTimeString());
         $('#' + elmImg).prop('src', url);
     }
@@ -226,7 +226,7 @@
         $('#lblCompanyName_Logo').html('');
         $('#cboProgramID_Logo').val('');
         $('#lblChineseName_Logo').html('');
-        MSSetLogoGetImage_Logo("Pic_Logo", "");
+        MSSETLOGOGetImage_Logo("Pic_Logo", "");
         window.t1.setData('');
     };
 
@@ -237,7 +237,7 @@
         $('#lblCompanyName_Logo').html(GetNodeValue(dtE[0], "CompanyName"))
         $('#cboProgramID_Logo').val(GetNodeValue(dtE[0], "ProgramID"))
         $('#lblChineseName_Logo').html(GetNodeValue(dtE[0], "ProgramName"))
-        MSSetLogoGetImage_Logo("Pic_Logo", GetNodeValue(dtE[0], "Companycode"), GetNodeValue(dtE[0], "ProgramID"));
+        MSSETLOGOGetImage_Logo("Pic_Logo", GetNodeValue(dtE[0], "Companycode"), GetNodeValue(dtE[0], "ProgramID"));
         window.t1.setData(GetNodeValue(dtE[0], "TE"));
 
     };
@@ -247,11 +247,11 @@
         //Timerset();
         var pData = {
         }
-        PostToWebApi({ url: "api/SystemSetup/MSSetLogoGetVMDocNo", data: pData, success: afterAddLogo });
+        PostToWebApi({ url: "api/SystemSetup/MSSETLOGOGetVMDocNo", data: pData, success: afterAddLogo });
     };
 
     let afterAddLogo = function (data) {
-        if (ReturnMsg(data, 0) != "MSSetLogoGetVMDocNoOK") {
+        if (ReturnMsg(data, 0) != "MSSETLOGOGetVMDocNoOK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
@@ -277,7 +277,7 @@
     //查詢
     let btQuery_click = function (bt) {
         //Timerset();
-        $('#tbQMSSetLogo thead tr th').css('background-color', '#ffb620')
+        $('#tbQMSSETLOGO thead tr th').css('background-color', '#ffb620')
         $('#btQuery').prop('disabled', true)
 
         if ($('#cboCompany').val() == "") {
@@ -290,12 +290,12 @@
             CompanyID: $('#cboCompany').val(),
             ProgramID: $('#cboProgramID').val()
         }
-        PostToWebApi({ url: "api/SystemSetup/MSSetLogoQuery", data: pData, success: afterMSSetLogoQuery });
+        PostToWebApi({ url: "api/SystemSetup/MSSETLOGOQuery", data: pData, success: afterMSSETLOGOQuery });
     };
 
-    let afterMSSetLogoQuery = function (data) {
+    let afterMSSETLOGOQuery = function (data) {
         CloseLoading();
-        if (ReturnMsg(data, 0) != "MSSetLogoQueryOK") {
+        if (ReturnMsg(data, 0) != "MSSETLOGOQueryOK") {
             DyAlert(ReturnMsg(data, 1), function () { $('#btQuery').prop('disabled', false); });
         }
         else {
@@ -360,11 +360,11 @@
         var pData = {
             Company: $('#cboCompany').val()
         }
-        PostToWebApi({ url: "api/SystemSetup/MSSetLogoGetCompany", data: pData, success: afterGetCompanyName });
+        PostToWebApi({ url: "api/SystemSetup/MSSETLOGOGetCompany", data: pData, success: afterGetCompanyName });
     };
 
     let afterGetCompanyName = function (data) {
-        if (ReturnMsg(data, 0) != "MSSetLogoGetCompanyOK") {
+        if (ReturnMsg(data, 0) != "MSSETLOGOGetCompanyOK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
@@ -381,11 +381,11 @@
         var pData = {
             Company: $('#cboCompany_Logo').val()
         }
-        PostToWebApi({ url: "api/SystemSetup/MSSetLogoGetCompany", data: pData, success: afterGetCompanyName_Logo });
+        PostToWebApi({ url: "api/SystemSetup/MSSETLOGOGetCompany", data: pData, success: afterGetCompanyName_Logo });
     };
 
     let afterGetCompanyName_Logo = function (data) {
-        if (ReturnMsg(data, 0) != "MSSetLogoGetCompanyOK") {
+        if (ReturnMsg(data, 0) != "MSSETLOGOGetCompanyOK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
@@ -444,11 +444,11 @@
             TE: window.t1.getData(),
             VMDocNo: $('#lblVMDocNo_Logo').html()
         }
-        PostToWebApi({ url: "api/SystemSetup/MSSetLogo_Save", data: pData, success: afterMSSetLogo_Save });
+        PostToWebApi({ url: "api/SystemSetup/MSSETLOGO_Save", data: pData, success: afterMSSETLOGO_Save });
     };
 
-    let afterMSSetLogo_Save = function (data) {
-        if (ReturnMsg(data, 0) != "MSSetLogo_SaveOK") {
+    let afterMSSETLOGO_Save = function (data) {
+        if (ReturnMsg(data, 0) != "MSSETLOGO_SaveOK") {
             DyAlert(ReturnMsg(data, 1), function () {
                 EnableForm_Logo(false)
                 $('#btSave_Logo').prop('disabled', false);
@@ -540,14 +540,14 @@
             var pData = {
                 DocNo: DocNo
             }
-            PostToWebApi({ url: "api/SystemSetup/MSSetLogoDelImg", data: pData, success: afterMSSetLogoDelImg });
+            PostToWebApi({ url: "api/SystemSetup/MSSETLOGODelImg", data: pData, success: afterMSSETLOGODelImg });
         }, function () {
             DummyFunction();
         })
     };
 
-    let afterMSSetLogoDelImg = function (data) {
-        if (ReturnMsg(data, 0) != "MSSetLogoDelImgOK") {
+    let afterMSSETLOGODelImg = function (data) {
+        if (ReturnMsg(data, 0) != "MSSETLOGODelImgOK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
@@ -563,11 +563,11 @@
         //Timerset();
         var pData = {
         }
-        PostToWebApi({ url: "api/SystemSetup/MSSetLogoGetVMDocNo", data: pData, success: afterModLogo });
+        PostToWebApi({ url: "api/SystemSetup/MSSETLOGOGetVMDocNo", data: pData, success: afterModLogo });
     };
 
     let afterModLogo = function (data) {
-        if (ReturnMsg(data, 0) != "MSSetLogoGetVMDocNoOK") {
+        if (ReturnMsg(data, 0) != "MSSETLOGOGetVMDocNoOK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
@@ -587,11 +587,11 @@
             ProgramID: $('#cboProgramID_Logo').val(),
             DocNo: $('#lblVMDocNo_Logo').html()
         }
-        PostToWebApi({ url: "api/SystemSetup/MSSetLogoCancel", data: pData, success: afterMSSetLogoCancel });
+        PostToWebApi({ url: "api/SystemSetup/MSSETLOGOCancel", data: pData, success: afterMSSETLOGOCancel });
     };
 
-    let afterMSSetLogoCancel = function (data) {
-        if (ReturnMsg(data, 0) != "MSSetLogoCancelOK") {
+    let afterMSSETLOGOCancel = function (data) {
+        if (ReturnMsg(data, 0) != "MSSETLOGOCancelOK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
@@ -602,8 +602,8 @@
         }
     };
     //FormLoad
-    let GetInitMSSetLogo = function (data) {
-        if (ReturnMsg(data, 0) != "InitMSSetLogoOK") {
+    let GetInitMSSETLOGO = function (data) {
+        if (ReturnMsg(data, 0) != "InitMSSETLOGOOK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
@@ -707,13 +707,13 @@
 
     let afterLoadPage = function () {
         var pData = {
-            ProgramID: "MSSetLogo"
+            ProgramID: "MSSETLOGO"
         }
-        PostToWebApi({ url: "api/SystemSetup/InitMSSetLogo", data: pData, success: GetInitMSSetLogo });
+        PostToWebApi({ url: "api/SystemSetup/InitMSSETLOGO", data: pData, success: GetInitMSSETLOGO });
     };
 
-    if ($('#pgMSSetLogo').length == 0) {  
-        AllPages = new LoadAllPages(ParentNode, "SystemSetup/MSSetLogo", ["MSSetLogobtns", "pgMSSetLogoInit", "pgMSSetLogoAdd", "pgMSSetLogoMod"], afterLoadPage);
+    if ($('#pgMSSETLOGO').length == 0) {  
+        AllPages = new LoadAllPages(ParentNode, "SystemSetup/MSSETLOGO", ["MSSETLOGObtns", "pgMSSETLOGOInit", "pgMSSETLOGOAdd", "pgMSSETLOGOMod"], afterLoadPage);
     };
 
 }

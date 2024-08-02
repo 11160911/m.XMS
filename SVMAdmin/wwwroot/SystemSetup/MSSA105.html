@@ -120,23 +120,26 @@
                                 }
 
                                 #tbQuery thead tr th {
-                                    font-size: 14px;
+                                    font-size: 16px;
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
+                                    vertical-align: middle;
                                 }
 
                                 #tbQuery thead tr td {
-                                    font-size: 14px;
+                                    font-size: 16px;
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
+                                    vertical-align: middle;
                                 }
 
                                 #tbQuery tbody tr td {
-                                    font-size: 14px;
+                                    font-size: 16px;
                                     padding: 3px;
                                     font-weight: bold;
+                                    vertical-align: middle;
                                 }
 
                                 th:first-child {
@@ -175,6 +178,17 @@
                                 }
                                 /*手機畫面*/
                                 @media (max-width:767px) {
+                                    #tbQuery thead tr th {
+                                        font-size: 14px;
+                                    }
+
+                                    #tbQuery thead tr td {
+                                        font-size: 14px;
+                                    }
+
+                                    #tbQuery tbody tr td {
+                                        font-size: 14px;
+                                    }
                                 }
                             </style>
 
@@ -188,13 +202,13 @@
                                 </button>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 20px; width: 100%; margin-bottom: 0px">
+                            <div class="form-group row" style="margin-left: 20px; width: 100%; margin-bottom: 5px">
                                 <label class="DyForm3-Label" style="margin-left: 10px">年&nbsp;&nbsp;&nbsp;&nbsp;度</label>
                                 <select id="cboYear" class="DyForm3-TextBox" style="margin-left: 13px;">
                                 </select>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%;margin-bottom:0px">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px">
                                 <input id="rdoS" type="radio" name="a" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
                                 <label class="DyForm3-LabelBlack" for="rdoS" style="margin-top: 2px">&ensp;月份</label>
                                 <input id="rdoD" type="radio" name="a" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
@@ -202,7 +216,7 @@
                                 <input id="rdoB" type="radio" name="a" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
                                 <label class="DyForm3-LabelBlack" for="rdoB" style="margin-top:2px">&ensp;區課</label>
                             </div>
-                            <div class="form-group row" style="margin-left: 12px; width: 100%; ">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px ">
                                 <label class="DyForm3-Label" style="font-size: 16px; margin-top: 0px ">成長率=(指定年度-前一年度)/前一年度</label>
                             </div>
                             <!--<div class="form-group row" style="margin-left: 12px; width: 100%; height: 25px; margin-bottom: 0px;" >
@@ -255,23 +269,26 @@
                                     }
 
                                     #tbQuerySTEP1 thead tr th {
-                                        font-size: 14px;
+                                        font-size: 16px;
                                         padding: 3px;
                                         background-color: #ffb620;
                                         font-weight: bold;
+                                        vertical-align: middle;
                                     }
 
                                     #tbQuerySTEP1 thead tr td {
-                                        font-size: 14px;
+                                        font-size: 16px;
                                         padding: 3px;
                                         background-color: #ffb620;
                                         font-weight: bold;
+                                        vertical-align: middle;
                                     }
 
                                     #tbQuerySTEP1 tbody tr td {
-                                        font-size: 14px;
+                                        font-size: 16px;
                                         padding: 3px;
                                         font-weight: bold;
+                                        vertical-align: middle;
                                     }
 
                                     th:first-child {
@@ -280,23 +297,34 @@
                                     }
                                     /*手機畫面*/
                                     @media (max-width:767px) {
+                                        #tbQuerySTEP1 thead tr th {
+                                            font-size: 14px;
+                                        }
+
+                                        #tbQuerySTEP1 thead tr td {
+                                            font-size: 14px;
+                                        }
+
+                                        #tbQuerySTEP1 tbody tr td {
+                                            font-size: 14px;
+                                        }
                                     }
                                 </style>
                                 <div class="modal-body modal-tab-container" style="padding:8px">
 
-                                    <div class="form-group row" style="margin-left: 5px; width: 100%">
+                                    <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom:0px">
                                         <label id="lblProgramName" class="DyForm3-ProgramName">年度銷售業績比較表</label>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%; margin-left: 12px">
+                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 5px">
                                         <button id="btExit_Step1" type="button" class="DyForm3-BtnRe">回上頁</button>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%;margin-left:5px ">
+                                    <div class="form-group row" style="width: 100%; margin-left: 5px; margin-bottom: 5px ">
                                         <label class="DyForm3-Label" style="margin-left: 15px;">年度：</label>
                                         <label id="lblYear" class="DyForm3-LabelBlack" style="margin-left: 5px; margin-top: 3px"></label>
                                     </div>
-                                    <div class="form-group row" style="width: 100%;margin-left: 5px ">
+                                    <div class="form-group row" style="width: 100%; margin-left: 5px; margin-bottom: 5px ">
                                         <label id="lblTypeName" class="DyForm3-Label" style="margin-left: 15px;">月份：</label>
                                         <label id="lblMonth" class="DyForm3-LabelBlack" style="margin-left: 5px; margin-top: 3px "></label>
                                         <!--<input id="rdoShop_PS_Step1" type="radio" name="Step1" value="Shop" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left; " checked>
@@ -356,23 +384,26 @@
                                     }
 
                                     #tbQuerySTEP2 thead tr th {
-                                        font-size: 14px;
+                                        font-size: 16px;
                                         padding: 3px;
                                         background-color: #ffb620;
                                         font-weight: bold;
+                                        vertical-align: middle;
                                     }
 
                                     #tbQuerySTEP2 thead tr td {
-                                        font-size: 14px;
+                                        font-size: 16px;
                                         padding: 3px;
                                         background-color: #ffb620;
                                         font-weight: bold;
+                                        vertical-align: middle;
                                     }
 
                                     #tbQuerySTEP2 tbody tr td {
-                                        font-size: 14px;
+                                        font-size: 16px;
                                         padding: 3px;
                                         font-weight: bold;
+                                        vertical-align: middle;
                                     }
 
                                     th:first-child {
@@ -382,28 +413,38 @@
 
                                     /*手機畫面*/
                                     @media (max-width:767px) {
-                                      
+                                        #tbQuerySTEP2 thead tr th {
+                                            font-size: 14px;
+                                        }
+
+                                        #tbQuerySTEP2 thead tr td {
+                                            font-size: 14px;
+                                        }
+
+                                        #tbQuerySTEP2 tbody tr td {
+                                            font-size: 14px;
+                                        }
                                     }
                                 </style>
                                 <div class="modal-body modal-tab-container" style="padding:8px">
 
-                                    <div class="form-group row" style="margin-left: 5px; width: 100%">
+                                    <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom:0px">
                                         <label id="lblProgramName" class="DyForm3-ProgramName">年度銷售業績比較表</label>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%; margin-left: 12px">
+                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom:5px">
                                         <button id="btExit_Step2" type="button" class="DyForm3-BtnRe">回上頁</button>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%;margin-left:5px ">
+                                    <div class="form-group row" style="width: 100%; margin-left: 5px; margin-bottom: 5px ">
                                         <label class="DyForm3-Label" style="margin-left: 15px;">年度：</label>
                                         <label id="lblYear2" class="DyForm3-LabelBlack" style="margin-left: 5px; margin-top: 3px"></label>
                                     </div>
-                                    <div class="form-group row" style="width: 100%;margin-left: 5px ">
+                                    <div class="form-group row" style="width: 100%; margin-left: 5px; margin-bottom: 5px ">
                                         <label class="DyForm3-Label" style="margin-left: 15px;">區課：</label>
                                         <label id="lblType" class="DyForm3-LabelBlack" style="margin-left: 5px; margin-top: 3px "></label>
                                     </div>
-                                    <div class="form-group row" style="width: 100%;margin-left: 5px ">
+                                    <div class="form-group row" style="width: 100%; margin-left: 5px; margin-bottom: 5px ">
                                         <label class="DyForm3-Label" style="margin-left: 15px;">店別：</label>
                                         <label id="lblShop" class="DyForm3-LabelBlack" style="margin-left: 5px; margin-top: 3px "></label>
                                     </div>

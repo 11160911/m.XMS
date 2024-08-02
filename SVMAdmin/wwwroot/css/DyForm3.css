@@ -9,7 +9,7 @@
 .DyForm3-BtnAdd, .DyForm3-BtnMod, .DyForm3-BtnSave, .DyForm3-BtnCancel, .DyForm3-BtnShow, .DyForm3-BtnDef, .DyForm3-BtnRe, .DyForm3-BtnClear {
     box-shadow: inset 0px 1px 0px 0px #ffffff;
     background-color: red;
-    border-radius: 8px;
+    border-radius: 6px;
     border: 1px solid #cc3025;
     display: inline-block;
     cursor: pointer;
@@ -122,6 +122,8 @@ border: 1px solid gray;
     font-size: 16px;
     color: black;
     margin-left: 3px;
+    border-radius: 6px;
+    border:1px solid #ced4da
 }
 /*下拉選單*/
 .DyForm3-Select {
@@ -129,6 +131,8 @@ border: 1px solid gray;
     height: 30px;
     font-size: 16px;
     color: black;
+    border-radius: 6px;
+    border: 1px solid #ced4da
 }
 /*藍色Label*/
 .DyForm3-Label {
@@ -189,7 +193,7 @@ border: 1px solid gray;
 .DyForm3-BtnShowEDM {
     box-shadow: inset 0px 1px 0px 0px #ffffff;
     background-color: #348000;
-    border-radius: 8px;
+    border-radius: 6px;
     border: 1px solid #348000;
     display: inline-block;
     cursor: pointer;
@@ -215,7 +219,7 @@ border: 1px solid gray;
 .DyForm3-Table {
     width: 95%;
     margin-left: auto;
-    margin-right: auto
+    margin-right: auto; 
 }
 
 /*完整顯示請打橫看*/
