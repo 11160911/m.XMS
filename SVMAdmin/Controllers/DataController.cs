@@ -8898,7 +8898,7 @@ namespace SVMAdmin.Controllers
                 if (Flag == "S")
                 {
                     //入會數
-                    sql = "Select v.VIP_FaceID as ID,count(*) as VIPCnt ";
+                    sql = "Select v.VIP_FaceID,v.VIP_FaceID + '-' + w.ST_SName as ID,count(*) as VIPCnt ";
                     sql += "into #v ";
                     sql += "from EDDMS.dbo.VIP v (nolock) ";
                     sql += "inner join WarehouseWeb w (nolock) on v.VIP_FaceID=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=v.Companycode ";
@@ -8915,7 +8915,7 @@ namespace SVMAdmin.Controllers
                             sql += "and v.VIP_Qday between '" + CountYM + "/01' and '" + CountYM + "/31' ";
                         }
                     }
-                    sql += "Group By v.VIP_FaceID; ";
+                    sql += "Group By v.VIP_FaceID,w.ST_SName; ";
 
                     //新會員首日交易筆數/交易金額/客單價
                     sql += "Select h.ShopNo as ID,Count(*) as SalesCnt1,Sum(h.Cash) as SalesCash1,case when Count(*)=0 then 0 else Round(Sum(h.Cash)/Count(*),0) end as SalesPrice1 ";
@@ -8938,7 +8938,7 @@ namespace SVMAdmin.Controllers
                     sql += "Group By h.ShopNo; ";
 
                     //會員/非會員當月交易筆數/交易金額/客單價/交易佔比
-                    sql += "Select h.ShopNo,h.ShopNo + '-' + w.ST_SName as ID,Sum(h.Cash) as SalesCashAll,Sum(h.VIP_RecS) as SalesCnt2,Sum(h.RecS)-Sum(h.VIP_RecS) as SalesCnt3, ";
+                    sql += "Select h.ShopNo as ID,Sum(h.Cash) as SalesCashAll,Sum(h.VIP_RecS) as SalesCnt2,Sum(h.RecS)-Sum(h.VIP_RecS) as SalesCnt3, ";
                     sql += "Sum(h.VIP_Cash) as SalesCash2,Sum(h.Cash)-Sum(h.VIP_Cash) as SalesCash3, ";
                     sql += "case when Sum(h.VIP_RecS)=0 then 0 else Round(Sum(h.VIP_Cash)/Sum(h.VIP_RecS),0) end as SalesPrice2, ";
                     sql += "case when Sum(h.RecS)-Sum(h.VIP_RecS)=0 then 0 else Round((Sum(h.Cash)-Sum(h.VIP_Cash))/(Sum(h.RecS)-Sum(h.VIP_RecS)),0) end as SalesPrice3 ";
@@ -8958,22 +8958,22 @@ namespace SVMAdmin.Controllers
                             sql += "and h.OpenDate between '" + CountYM + "/01' and '" + CountYM + "/31' ";
                         }
                     }
-                    sql += "Group By h.ShopNo,w.ST_SName; ";
+                    sql += "Group By h.ShopNo; ";
 
                     //開始撈明細資料
-                    sqlQ = "Select s2.ID,isnull(v.VIPCnt,0)VIPCnt, ";
+                    sqlQ = "Select v.ID,isnull(v.VIPCnt,0)VIPCnt, ";
                     sqlQ += "isnull(s1.SalesCnt1,0)SalesCnt1,isnull(s1.SalesCash1,0)SalesCash1,isnull(s1.SalesPrice1,0)SalesPrice1, ";
                     sqlQ += "isnull(s2.SalesCnt2,0)SalesCnt2,isnull(s2.SalesCash2,0)SalesCash2,isnull(s2.SalesPrice2,0)SalesPrice2, ";
                     sqlQ += "case when isnull(s2.SalesCashAll,0)=0 and isnull(s2.SalesCash2,0)=0 then format(0,'p') when isnull(s2.SalesCashAll,0)=0 then format(1,'p') else format(cast(isnull(s2.SalesCash2,0) as Float)/cast(isnull(s2.SalesCashAll,0) as Float),'p') end as SalesPercent2, ";
                     sqlQ += "isnull(s2.SalesCnt3,0)SalesCnt3,isnull(s2.SalesCash3,0)SalesCash3,isnull(s2.SalesPrice3,0)SalesPrice3, ";
                     sqlQ += "case when isnull(s2.SalesCashAll,0)=0 and isnull(s2.SalesCash3,0)=0 then format(0,'p') when isnull(s2.SalesCashAll,0)=0 then format(1,'p') else format(cast(isnull(s2.SalesCash3,0) as Float)/cast(isnull(s2.SalesCashAll,0) as Float),'p') end as SalesPercent3 ";
-                    sqlQ += "From #s2 s2 (nolock) ";
-                    sqlQ += "left join #v v on s2.ShopNo=v.ID ";
-                    sqlQ += "left join #s1 s1 on s2.ShopNo=s1.ID ";
+                    sqlQ += "From #v v (nolock) ";
+                    sqlQ += "left join #s2 s2 on v.VIP_FaceID=s2.ID ";
+                    sqlQ += "left join #s1 s1 on v.VIP_FaceID=s1.ID ";
                     sqlQ += "Where 1=1 ";
                     //測試
                     //sqlQ += "and w.ST_ID='EDM1' ";
-                    sqlQ += "Order by s2.ShopNo ";
+                    sqlQ += "Order by v.VIP_FaceID ";
                     DataTable dtE = PubUtility.SqlQry(sql + sqlQ, uu, "SYS");
                     dtE.TableName = "dtE";
                     ds.Tables.Add(dtE);
@@ -8985,9 +8985,9 @@ namespace SVMAdmin.Controllers
                     sqlSumQ += "case when sum(isnull(s2.SalesCashAll,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.SalesCash2,0)) as Float)/cast(sum(isnull(s2.SalesCashAll,0)) as Float),'p') end as SumSalesPercent2, ";
                     sqlSumQ += "sum(isnull(s2.SalesCnt3,0))SumSalesCnt3,sum(isnull(s2.SalesCash3,0))SumSalesCash3,case when sum(isnull(s2.SalesCnt3,0))=0 then 0 else Round(sum(isnull(s2.SalesCash3,0))/sum(isnull(s2.SalesCnt3,0)),0) end as SumSalesPrice3, ";
                     sqlSumQ += "case when sum(isnull(s2.SalesCashAll,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.SalesCash3,0)) as Float)/cast(sum(isnull(s2.SalesCashAll,0)) as Float),'p') end as SumSalesPercent3 ";
-                    sqlSumQ += "From #s2 s2 (nolock) ";
-                    sqlSumQ += "left join #v v on s2.ShopNo=v.ID ";
-                    sqlSumQ += "left join #s1 s1 on s2.ShopNo=s1.ID ";
+                    sqlSumQ += "From #v v (nolock) ";
+                    sqlSumQ += "left join #s2 s2 on v.VIP_FaceID=s2.ID ";
+                    sqlSumQ += "left join #s1 s1 on v.VIP_FaceID=s1.ID ";
                     sqlSumQ += "Where 1=1 ";
                     //測試
                     //sqlSumQ += "and w.ST_ID='EDM1' ";
@@ -9068,11 +9068,11 @@ namespace SVMAdmin.Controllers
                     sqlQ += "case when isnull(s2.SalesCashAll,0)=0 and isnull(s2.SalesCash2,0)=0 then format(0,'p') when isnull(s2.SalesCashAll,0)=0 then format(1,'p') else format(cast(isnull(s2.SalesCash2,0) as Float)/cast(isnull(s2.SalesCashAll,0) as Float),'p') end as SalesPercent2, ";
                     sqlQ += "isnull(s2.SalesCnt3,0)SalesCnt3,isnull(s2.SalesCash3,0)SalesCash3,isnull(s2.SalesPrice3,0)SalesPrice3, ";
                     sqlQ += "case when isnull(s2.SalesCashAll,0)=0 and isnull(s2.SalesCash3,0)=0 then format(0,'p') when isnull(s2.SalesCashAll,0)=0 then format(1,'p') else format(cast(isnull(s2.SalesCash3,0) as Float)/cast(isnull(s2.SalesCashAll,0) as Float),'p') end as SalesPercent3 ";
-                    sqlQ += "From #s2 s2 (nolock) ";
-                    sqlQ += "left join #v v on s2.ID=v.ID ";
-                    sqlQ += "left join #s1 s1 on s2.ID=s1.ID ";
+                    sqlQ += "From #v v (nolock) ";
+                    sqlQ += "left join #s2 s2 on v.ID=s2.ID ";
+                    sqlQ += "left join #s1 s1 on v.ID=s1.ID ";
                     sqlQ += "Where 1=1 ";
-                    sqlQ += "Order by s2.ID ";
+                    sqlQ += "Order by v.ID ";
                     DataTable dtE = PubUtility.SqlQry(sql + sqlQ, uu, "SYS");
                     dtE.TableName = "dtE";
                     ds.Tables.Add(dtE);
@@ -9084,9 +9084,9 @@ namespace SVMAdmin.Controllers
                     sqlSumQ += "case when sum(isnull(s2.SalesCashAll,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.SalesCash2,0)) as Float)/cast(sum(isnull(s2.SalesCashAll,0)) as Float),'p') end as SumSalesPercent2, ";
                     sqlSumQ += "sum(isnull(s2.SalesCnt3,0))SumSalesCnt3,sum(isnull(s2.SalesCash3,0))SumSalesCash3,case when sum(isnull(s2.SalesCnt3,0))=0 then 0 else Round(sum(isnull(s2.SalesCash3,0))/sum(isnull(s2.SalesCnt3,0)),0) end as SumSalesPrice3, ";
                     sqlSumQ += "case when sum(isnull(s2.SalesCashAll,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.SalesCash3,0)) as Float)/cast(sum(isnull(s2.SalesCashAll,0)) as Float),'p') end as SumSalesPercent3 ";
-                    sqlSumQ += "From #s2 s2 (nolock) ";
-                    sqlSumQ += "left join #v v on s2.ID=v.ID ";
-                    sqlSumQ += "left join #s1 s1 on s2.ID=s1.ID ";
+                    sqlSumQ += "From #v v (nolock) ";
+                    sqlSumQ += "left join #s2 s2 on v.ID=s2.ID ";
+                    sqlSumQ += "left join #s1 s1 on v.ID=s1.ID ";
                     sqlSumQ += "Where 1=1 ";
                     DataTable dtSumQ = PubUtility.SqlQry(sql + sqlSumQ, uu, "SYS");
                     dtSumQ.TableName = "dtSumQ";
@@ -9203,11 +9203,11 @@ namespace SVMAdmin.Controllers
                     sqlQ += "isnull(s2.SalesCnt3,0)SalesCnt3,isnull(s2.SalesCash3,0)SalesCash3,isnull(s2.SalesPrice3,0)SalesPrice3, ";
                     sqlQ += "case when isnull(s2.SalesCashAll,0)=0 and isnull(s2.SalesCash3,0)=0 then format(0,'p') when isnull(s2.SalesCashAll,0)=0 then format(1,'p') else format(cast(isnull(s2.SalesCash3,0) as Float)/cast(isnull(s2.SalesCashAll,0) as Float),'p') end as SalesPercent3 ";
 
-                    sqlQ += "From #s2 s2 (nolock) ";
-                    sqlQ += "left join #v v on s2.ID=v.ID ";
-                    sqlQ += "left join #s1 s1 on s2.ID=s1.ID ";
+                    sqlQ += "From #v v (nolock) ";
+                    sqlQ += "left join #s2 s2 on v.ID=s2.ID ";
+                    sqlQ += "left join #s1 s1 on v.ID=s1.ID ";
                     sqlQ += "Where 1=1 ";
-                    sqlQ += "Order by s2.ID ";
+                    sqlQ += "Order by v.ID ";
                     DataTable dtE = PubUtility.SqlQry(sql + sqlQ, uu, "SYS");
                     dtE.TableName = "dtE";
                     ds.Tables.Add(dtE);
@@ -9220,9 +9220,9 @@ namespace SVMAdmin.Controllers
                     sqlSumQ += "sum(isnull(s2.SalesCnt3,0))SumSalesCnt3,sum(isnull(s2.SalesCash3,0))SumSalesCash3,case when sum(isnull(s2.SalesCnt3,0))=0 then 0 else Round(sum(isnull(s2.SalesCash3,0))/sum(isnull(s2.SalesCnt3,0)),0) end as SumSalesPrice3, ";
                     sqlSumQ += "case when sum(isnull(s2.SalesCashAll,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.SalesCash3,0)) as Float)/cast(sum(isnull(s2.SalesCashAll,0)) as Float),'p') end as SumSalesPercent3 ";
 
-                    sqlSumQ += "From #s2 s2 (nolock) ";
-                    sqlSumQ += "left join #v v on s2.ID=v.ID ";
-                    sqlSumQ += "left join #s1 s1 on s2.ID=s1.ID ";
+                    sqlSumQ += "From #v v (nolock) ";
+                    sqlSumQ += "left join #s2 s2 on v.ID=s2.ID ";
+                    sqlSumQ += "left join #s1 s1 on v.ID=s1.ID ";
                     sqlSumQ += "Where 1=1 ";
                     DataTable dtSumQ = PubUtility.SqlQry(sql + sqlSumQ, uu, "SYS");
                     dtSumQ.TableName = "dtSumQ";
@@ -9232,7 +9232,7 @@ namespace SVMAdmin.Controllers
                 else if (Flag == "D")
                 {
                     //入會數
-                    sql = "Select v.VIP_FaceID as ID,count(*) as VIPCnt ";
+                    sql = "Select v.VIP_FaceID,v.VIP_FaceID + '-' + w.ST_SName as ID,count(*) as VIPCnt ";
                     sql += "into #v ";
                     sql += "from EDDMS.dbo.VIP v (nolock) ";
                     sql += "inner join WarehouseWeb w (nolock) on v.VIP_FaceID=w.ST_ID and w.ST_Type not in('0','2','3') and w.Companycode=v.Companycode ";
@@ -9241,7 +9241,7 @@ namespace SVMAdmin.Controllers
                     {
                         sql += "and v.VIP_Qday='" + OpenDate + "' ";
                     }
-                    sql += "Group By v.VIP_FaceID; ";
+                    sql += "Group By v.VIP_FaceID,w.ST_SName; ";
 
                     //新會員首日交易筆數/交易金額/客單價
                     sql += "Select h.ShopNo as ID,Count(*) as SalesCnt1,Sum(h.Cash) as SalesCash1,case when Count(*)=0 then 0 else Round(Sum(h.Cash)/Count(*),0) end as SalesPrice1 ";
@@ -9256,7 +9256,7 @@ namespace SVMAdmin.Controllers
                     sql += "Group By h.ShopNo; ";
 
                     //會員/非會員當月交易筆數/交易金額/客單價/交易佔比
-                    sql += "Select h.ShopNo,h.ShopNo + '-' + w.ST_SName as ID,Sum(h.Cash) as SalesCashAll,Sum(h.VIP_RecS) as SalesCnt2,Sum(h.RecS)-Sum(h.VIP_RecS) as SalesCnt3, ";
+                    sql += "Select h.ShopNo as ID,Sum(h.Cash) as SalesCashAll,Sum(h.VIP_RecS) as SalesCnt2,Sum(h.RecS)-Sum(h.VIP_RecS) as SalesCnt3, ";
                     sql += "Sum(h.VIP_Cash) as SalesCash2,Sum(h.Cash)-Sum(h.VIP_Cash) as SalesCash3, ";
                     sql += "case when Sum(h.VIP_RecS)=0 then 0 else Round(Sum(h.VIP_Cash)/Sum(h.VIP_RecS),0) end as SalesPrice2, ";
                     sql += "case when Sum(h.RecS)-Sum(h.VIP_RecS)=0 then 0 else Round((Sum(h.Cash)-Sum(h.VIP_Cash))/(Sum(h.RecS)-Sum(h.VIP_RecS)),0) end as SalesPrice3 ";
@@ -9268,23 +9268,23 @@ namespace SVMAdmin.Controllers
                     {
                         sql += "and h.OpenDate='" + OpenDate + "' ";
                     }
-                    sql += "Group By h.ShopNo,w.ST_SName; ";
+                    sql += "Group By h.ShopNo; ";
 
                     //開始撈明細資料
-                    sqlQ = "Select s2.ID,isnull(v.VIPCnt,0)VIPCnt, ";
+                    sqlQ = "Select v.ID,isnull(v.VIPCnt,0)VIPCnt, ";
                     sqlQ += "isnull(s1.SalesCnt1,0)SalesCnt1,isnull(s1.SalesCash1,0)SalesCash1,isnull(s1.SalesPrice1,0)SalesPrice1, ";
                     sqlQ += "isnull(s2.SalesCnt2,0)SalesCnt2,isnull(s2.SalesCash2,0)SalesCash2,isnull(s2.SalesPrice2,0)SalesPrice2, ";
                     sqlQ += "case when isnull(s2.SalesCashAll,0)=0 and isnull(s2.SalesCash2,0)=0 then format(0,'p') when isnull(s2.SalesCashAll,0)=0 then format(1,'p') else format(cast(isnull(s2.SalesCash2,0) as Float)/cast(isnull(s2.SalesCashAll,0) as Float),'p') end as SalesPercent2, ";
                     sqlQ += "isnull(s2.SalesCnt3,0)SalesCnt3,isnull(s2.SalesCash3,0)SalesCash3,isnull(s2.SalesPrice3,0)SalesPrice3, ";
                     sqlQ += "case when isnull(s2.SalesCashAll,0)=0 and isnull(s2.SalesCash3,0)=0 then format(0,'p') when isnull(s2.SalesCashAll,0)=0 then format(1,'p') else format(cast(isnull(s2.SalesCash3,0) as Float)/cast(isnull(s2.SalesCashAll,0) as Float),'p') end as SalesPercent3 ";
 
-                    sqlQ += "From #s2 s2 (nolock) ";
-                    sqlQ += "left join #v v on s2.ShopNo=v.ID ";
-                    sqlQ += "left join #s1 s1 on s2.ShopNo=s1.ID ";
+                    sqlQ += "From #v v (nolock) ";
+                    sqlQ += "left join #s2 s2 on v.VIP_FaceID=s2.ID ";
+                    sqlQ += "left join #s1 s1 on v.VIP_FaceID=s1.ID ";
                     sqlQ += "Where 1=1 ";
                     //測試
                     //sqlQ += "and w.ST_ID='EDM1' ";
-                    sqlQ += "Order by s2.ShopNo ";
+                    sqlQ += "Order by v.VIP_FaceID ";
                     DataTable dtE = PubUtility.SqlQry(sql + sqlQ, uu, "SYS");
                     dtE.TableName = "dtE";
                     ds.Tables.Add(dtE);
@@ -9297,9 +9297,9 @@ namespace SVMAdmin.Controllers
                     sqlSumQ += "sum(isnull(s2.SalesCnt3,0))SumSalesCnt3,sum(isnull(s2.SalesCash3,0))SumSalesCash3,case when sum(isnull(s2.SalesCnt3,0))=0 then 0 else Round(sum(isnull(s2.SalesCash3,0))/sum(isnull(s2.SalesCnt3,0)),0) end as SumSalesPrice3, ";
                     sqlSumQ += "case when sum(isnull(s2.SalesCashAll,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.SalesCash3,0)) as Float)/cast(sum(isnull(s2.SalesCashAll,0)) as Float),'p') end as SumSalesPercent3 ";
 
-                    sqlSumQ += "From #s2 s2 (nolock) ";
-                    sqlSumQ += "left join #v v on s2.ShopNo=v.ID ";
-                    sqlSumQ += "left join #s1 s1 on s2.ShopNo=s1.ID ";
+                    sqlSumQ += "From #v v (nolock) ";
+                    sqlSumQ += "left join #s2 s2 on v.VIP_FaceID=s2.ID ";
+                    sqlSumQ += "left join #s1 s1 on v.VIP_FaceID=s1.ID ";
                     sqlSumQ += "Where 1=1 ";
                     //測試
                     //sqlSumQ += "and w.ST_ID='EDM1' ";
@@ -10233,7 +10233,7 @@ namespace SVMAdmin.Controllers
                 sql += "b.DataType,b.DocImage,b.TXT ";
                 sql += "From SetEDMHWeb a (nolock) ";
                 sql += "inner join SetEDMDWeb b (nolock) on a.DocNo=b.DocNo and b.Companycode=a.Companycode ";
-                sql += "inner join PromoteSCouponHWeb c (nolock) on a.PS_NO=c.PS_NO and c.Companycode=a.Companycode and c.CouponType in('1','2') ";
+                sql += "left join PromoteSCouponHWeb c (nolock) on a.PS_NO=c.PS_NO and c.Companycode=a.Companycode and c.CouponType in('1','2') ";
                 sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                 if (DocNo.SqlQuote() != "")
                 {

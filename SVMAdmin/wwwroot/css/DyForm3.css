@@ -29,6 +29,12 @@
         outline-style: solid;
         box-shadow: 0 0 0 3px #fc8c86;
     }
+
+.DyForm3-BtnAdd:disabled, .DyForm3-BtnMod:disabled, .DyForm3-BtnSave:disabled, .DyForm3-BtnCancel:disabled, .DyForm3-BtnShow:disabled, .DyForm3-BtnDef:disabled, .DyForm3-BtnRe:disabled, .DyForm3-BtnClear:disabled {
+border: 1px solid gray;
+}
+
+
 /*按鍵:查詢、批核*/
 .DyForm3-BtnQuery, .DyForm3-BtnApp {
     box-shadow: inset 0px 1px 0px 0px #f2f2f2;
@@ -52,6 +58,10 @@
     outline-style: solid;
     box-shadow: 0 0 0 3px #7fb3eb;
 }
+.DyForm3-BtnQuery:disabled, .DyForm3-BtnApp:disabled {
+    border: 1px solid gray;
+}
+
 /*按鍵:離開*/
 .DyForm3-BtnExit {
     box-shadow: inset 0px 1px 0px 0px #ffffff;
@@ -78,6 +88,10 @@
     box-shadow: 0 0 0 3px #8ccd55;
     color: white;
 }
+.DyForm3-BtnExit:disabled {
+    border: 1px solid gray;
+}
+
 /*必填符號*/
 .DyForm3-DyNotEmptyMark {
     color: red;
