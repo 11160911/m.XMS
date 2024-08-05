@@ -13557,7 +13557,7 @@ namespace SVMAdmin.Controllers
                 string EDDate = rq["EDDate"];
 
                 string sql = "";
-                sql = "Select a.PS_NO,a.ActivityCode,b.PS_Name,isnull(PrintStartDate,'')+'~'+a.EndDate PDate,sum(isnull(a.issueQty,0)) Cnt1, ";
+                sql = "Select a.PS_NO,a.ActivityCode,b.PS_Name,isnull(PrintStartDate,'')+'~'+a.PrintEndDate PDate,sum(isnull(a.issueQty,0)) Cnt1, ";
                 sql += "a.StartDate + '~' + a.EndDate EDDate,sum(isnull(a.ReclaimQty,0)) Cnt2, ";
                 sql += "case when sum(isnull(a.issueQty,0))=0 then FORMAT(0,'p') else format(cast(sum(isnull(a.ReclaimQty,0)) as Float)/cast(sum(isnull(a.issueQty,0)) as Float),'p') end as RePercent, ";
                 sql += "sum(isnull(a.ShareAmt,0)) ActualDiscount,sum(isnull(a.ReclaimCash,0)) Cash,sum(isnull(a.ReclaimTrans,0)) Cnt3, ";
@@ -13581,7 +13581,7 @@ namespace SVMAdmin.Controllers
                 {
                     sql += "and '" + EDDate.SqlQuote() + "' between a.StartDate and a.EndDate ";
                 }
-                sql += "group by a.PS_NO,a.ActivityCode,b.PS_Name,PrintStartDate,a.StartDate,a.EndDate ";
+                sql += "group by a.PS_NO,a.ActivityCode,b.PS_Name,PrintStartDate,PrintEndDate,a.StartDate,a.EndDate ";
                 sql += "Order by a.StartDate desc";
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
