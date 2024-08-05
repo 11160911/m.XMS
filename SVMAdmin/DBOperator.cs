@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
+using Microsoft.AspNetCore.Hosting.Server;
 
 namespace SVMAdmin
 {
@@ -710,24 +711,65 @@ namespace SVMAdmin
         private static string GetConnectionStringSqlClient(string str)
         {
             string strCon = str;
-            string[] ss = strCon.Split(new char[] { ';' });
-            strCon = "";
-            for (int i = 0; i < ss.Length; i++)
-            {
-                if (ss[i].ToUpper().IndexOf("Password".ToUpper()) > -1
-                    | ss[i].ToUpper().IndexOf("User ID".ToUpper()) > -1
-                    | ss[i].ToUpper().IndexOf("Initial Catalog".ToUpper()) > -1
-                    | ss[i].ToUpper().IndexOf("Data Source".ToUpper()) > -1
-                    | ss[i].ToUpper().IndexOf("Server".ToUpper()) > -1
-                    | ss[i].ToUpper().IndexOf("Database".ToUpper()) > -1
-                    | ss[i].ToUpper().IndexOf("Uid".ToUpper()) > -1
-                    | ss[i].ToUpper().IndexOf("Pwd".ToUpper()) > -1
-                    | ss[i].ToUpper().IndexOf("Connection Timeout".ToUpper()) > -1
-                    )
-                    strCon += ";" + ss[i];
-            }
-            strCon = strCon.Substring(1);
+            strCon = PubUtility.enCode170215(strCon);
             return strCon;
+
+            //string[] ss = strCon.Split(new char[] { ';' });
+            //strCon = "";
+            //for (int i = 0; i < ss.Length; i++)
+            //{
+            //    string strTit = PubUtility.enCode170215(ss[i].Split("=")[0]);
+
+            //    if (strTit.ToUpper().IndexOf("Password".ToUpper()) > -1
+            //        | strTit.ToUpper().IndexOf("User ID".ToUpper()) > -1
+            //        | strTit.ToUpper().IndexOf("Initial Catalog".ToUpper()) > -1
+            //        | strTit.ToUpper().IndexOf("Data Source".ToUpper()) > -1
+            //        | strTit.ToUpper().IndexOf("Server".ToUpper()) > -1
+            //        | strTit.ToUpper().IndexOf("Database".ToUpper()) > -1
+            //        | strTit.ToUpper().IndexOf("Uid".ToUpper()) > -1
+            //        | strTit.ToUpper().IndexOf("Pwd".ToUpper()) > -1
+            //        | strTit.ToUpper().IndexOf("Connection Timeout".ToUpper()) > -1
+            //        )
+            //    {
+            //        if (strTit.ToUpper().IndexOf("Server".ToUpper()) > -1) {
+            //            string con = ss[i].Trim();
+
+            //            string Server = con.Substring(0).Trim();
+            //            Server = PubUtility.enCode170215(Server);
+            //            strCon += ";" + Server;
+            //        }
+            //        else if (strTit.ToUpper().IndexOf("Database".ToUpper()) > -1)
+            //        {
+            //            string con = ss[i].Trim();
+
+            //            string Database = con.Substring(0).Trim();
+            //            Database = PubUtility.enCode170215(Database);
+            //            strCon += ";" + Database;
+            //        }
+            //        else if (strTit.ToUpper().IndexOf("Uid".ToUpper()) > -1)
+            //        {
+            //            string con = ss[i].Trim();
+
+            //            string Uid = con.Substring(0).Trim();
+            //            Uid = PubUtility.enCode170215(Uid);
+            //            strCon += ";" +  Uid;
+            //        }
+            //        else if (strTit.ToUpper().IndexOf("Pwd".ToUpper()) > -1)
+            //        {
+            //            string con = ss[i].Trim();
+
+            //            string Pwd = con.Substring(0).Trim();
+            //            Pwd = PubUtility.enCode170215(Pwd);
+            //            strCon += ";" + Pwd;
+            //        }
+            //        else
+            //        {
+            //            strCon += ";" + ss[i];
+            //        }
+            //    }
+            //}
+            //strCon = strCon.Substring(1);
+            //return strCon;
         }
 
         private static IDictionary<string,DataTable> TableInfos = new Dictionary<string, DataTable>();

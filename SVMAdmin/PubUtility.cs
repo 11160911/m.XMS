@@ -439,10 +439,10 @@ namespace SVMAdmin
         //加解密(ixms)
         public static string enCode170215(String bb)
         {
-            string k1 = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%*";
-            string k2 = "qMd5UPwX76E4Wn9oZH8OKYTrV0aB!@#Ijtc*m2syzAiL1pFgGefDSxQv$%hbNJCRklu3";
+            string k1 = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%*.\\=;,";
+            string k2 = "qMd5UPwX76E4Wn9oZH8OKYTrV0aB!@#Ijtc*m2syzAiL1pFgGefDSxQv$%hbNJCRklu3.\\=;,";
             string tt = bb;
-            int n6 = 68;
+            int n6 = 73;
             string dd = "";
             string ch = "";
             int i = 0; int j = 0; int ex = 0;
