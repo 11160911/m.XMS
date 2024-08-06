@@ -13429,6 +13429,28 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("SystemSetup/GetInitMSSA102")]
+        public ActionResult SystemSetup_GetInitMSSA102()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetInitMSSA102OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ProgramID = rq["ProgramID"];
+                string sql = "select ChineseName,convert(char(10),getdate(),111) SysDate from ProgramIDWeb (nolock) where ProgramID='" + ProgramID.SqlQuote() + "'";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
 
         [Route("SystemSetup/MSSA102Query")]
         public ActionResult SystemSetup_MSSA102Query()
@@ -13441,15 +13463,54 @@ namespace SVMAdmin.Controllers
                 IFormCollection rq = HttpContext.Request.Form;
                 string Opendate = rq["Opendate"];
 
-                string sqldw = "select a.CG_No,sum(a.SalesCash) SalesCash,sum(a.SalesQty) SalesQty,sum( b.sumCash) VIPCash,sum(b.sumQty) VIPQty,sum(b.sumCash1) NotVIPCash,sum(b.sumQty1) NotVIPQty";
-                sqldw += ",sum(case when b.VIPNo<>'' then b.sumCash else 0 end) VIPCash,sum(case when b.VIPNo<>'' then b.sumQty else 0 end) VIPQTY ";
-                sqldw += "from (select CG_No,sum(SalesCash) SalesCash,sum(SalesQty) SalesQty from  CompositeSales group by CG_No) a  ";
-                sqldw += "join (select distinct CompanyCode,CG_NO,sum(case when VIPNo<>'' then sumCash else 0 end) sumCash,sum(case when VIPNo<>'' then sumQty else 0 end) sumQty";
-                sqldw += ",sum(case when VIPNo='' then sumCash else 0 end) sumCash1,sum(case when VIPNo='' then sumQty else 0 end) sumQty1";
-                sqldw += " from  CompositeData where  Opendate='"+ Opendate + "'  group by CompanyCode,CG_NO) b on a.CG_No=b.CG_No group by a.CG_No";
+                string sqldw = "select h.CG_NO+char(13)+h.CG_Name+char(13)+h.StartDate+'~'+h.EndDate ID,sum(a.SalesAmt) SalesAmt,sum(a.SalesQty) SalesQty,sum(a.CG_Amt) CG_Amt,sum(a.CG_Qty) CG_Qty,sum(a.CGVIP_Amt) CGVIP_Amt,sum(a.CGVIP_Qty) CGVIP_Qty ";
+                sqldw += ",format(case when sum(a.SalesAmt)>0 then sum(a.CG_Amt)/sum(a.SalesAmt) else 0 end,'p') CGPer ";
+                sqldw += ",format(case when sum(a.SalesAmt)>0 then sum(a.CGVIP_Amt)/sum(a.SalesAmt) else 0 end,'p') VIPPer ";
+                sqldw += "from MSData4Web a join CompositeHWeb h on a.CompanyCode=h.CompanyCode and a.PrDocNO=h.CG_No  ";
+                sqldw += " where a.CompanyCode='" + uu.CompanyId + "' and '" + Opendate + "' between h.StartDate and h.EndDate and isnull(h.DefeasanceDate,'')=''";
+                sqldw += " group by h.CG_NO,h.CG_Name,h.StartDate,h.EndDate";
                 DataTable dtD = PubUtility.SqlQry(string.Format(sqldw, ""), uu, "SYS");
                 dtD.TableName = "dtD";
                 ds.Tables.Add(dtD);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSSA102QueryShop")]
+        public ActionResult SystemSetup_MSSA102QueryShop()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSA102QueryShopOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string CG_NO = rq["CG_NO"];
+
+                string sqldw = "select a.ShopNo ID,sum(a.SalesAmt) SalesAmt,sum(a.SalesQty) SalesQty,sum(a.CG_Amt) CG_Amt,sum(a.CG_Qty) CG_Qty,sum(a.CGVIP_Amt) CGVIP_Amt,sum(a.CGVIP_Qty) CGVIP_Qty ";
+                sqldw += ",format(case when sum(a.SalesAmt)>0 then sum(a.CG_Amt)/sum(a.SalesAmt) else 0 end,'p') CGPer ";
+                sqldw += ",format(case when sum(a.SalesAmt)>0 then sum(a.CGVIP_Amt)/sum(a.SalesAmt) else 0 end,'p') VIPPer ";
+                sqldw += "from MSData4Web a join CompositeHWeb h on a.CompanyCode=h.CompanyCode and a.PrDocNO=h.CG_No  ";
+                sqldw += " where a.CompanyCode='" + uu.CompanyId + "' and h.CG_NO='" + CG_NO + "' ";
+                sqldw += " group by a.ShopNo";
+                DataTable dtShop = PubUtility.SqlQry(string.Format(sqldw, ""), uu, "SYS");
+                dtShop.TableName = "dtShop";
+                ds.Tables.Add(dtShop);
+
+                sqldw = "select sum(a.SalesAmt) SalesAmt,sum(a.SalesQty) SalesQty,sum(a.CG_Amt) CG_Amt,sum(a.CG_Qty) CG_Qty,sum(a.CGVIP_Amt) CGVIP_Amt,sum(a.CGVIP_Qty) CGVIP_Qty ";
+                sqldw += ",format(case when sum(a.SalesAmt)>0 then sum(a.CG_Amt)/sum(a.SalesAmt) else 0 end,'p') CGPer ";
+                sqldw += ",format(case when sum(a.SalesAmt)>0 then sum(a.CGVIP_Amt)/sum(a.SalesAmt) else 0 end,'p') VIPPer ";
+                sqldw += "from MSData4Web a join CompositeHWeb h on a.CompanyCode=h.CompanyCode and a.PrDocNO=h.CG_No  ";
+                sqldw += " where a.CompanyCode='" + uu.CompanyId + "' and h.CG_NO='" + CG_NO + "' ";
+                DataTable dtSum = PubUtility.SqlQry(string.Format(sqldw, ""), uu, "SYS");
+                dtSum.TableName = "dtSum";
+                ds.Tables.Add(dtSum);
 
             }
             catch (Exception err)
@@ -13546,7 +13607,7 @@ namespace SVMAdmin.Controllers
                 string EDDate = rq["EDDate"];
 
                 string sql = "";
-                sql = "Select a.PS_NO,a.ActivityCode,b.PS_Name,isnull(PrintStartDate,'')+'~'+a.EndDate PDate,sum(isnull(a.issueQty,0)) Cnt1, ";
+                sql = "Select a.PS_NO,a.ActivityCode,b.PS_Name,isnull(PrintStartDate,'')+'~'+a.PrintEndDate PDate,sum(isnull(a.issueQty,0)) Cnt1, ";
                 sql += "a.StartDate + '~' + a.EndDate EDDate,sum(isnull(a.ReclaimQty,0)) Cnt2, ";
                 sql += "case when sum(isnull(a.issueQty,0))=0 then FORMAT(0,'p') else format(cast(sum(isnull(a.ReclaimQty,0)) as Float)/cast(sum(isnull(a.issueQty,0)) as Float),'p') end as RePercent, ";
                 sql += "sum(isnull(a.ShareAmt,0)) ActualDiscount,sum(isnull(a.ReclaimCash,0)) Cash,sum(isnull(a.ReclaimTrans,0)) Cnt3, ";
@@ -13570,7 +13631,7 @@ namespace SVMAdmin.Controllers
                 {
                     sql += "and '" + EDDate.SqlQuote() + "' between a.StartDate and a.EndDate ";
                 }
-                sql += "group by a.PS_NO,a.ActivityCode,b.PS_Name,PrintStartDate,a.StartDate,a.EndDate ";
+                sql += "group by a.PS_NO,a.ActivityCode,b.PS_Name,PrintStartDate,PrintEndDate,a.StartDate,a.EndDate ";
                 sql += "Order by a.StartDate desc";
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";

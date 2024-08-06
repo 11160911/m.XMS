@@ -120,22 +120,21 @@
                                 }
 
                                 #tbQuery thead tr th {
-                                    font-size: 14px;
+                                    font-size: 16px;
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
-                                    padding-bottom: 15px;
                                 }
 
                                 #tbQuery thead tr td {
-                                    font-size: 14px;
+                                    font-size: 16px;
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
                                 }
 
                                 #tbQuery tbody tr td {
-                                    font-size: 14px;
+                                    font-size: 16px;
                                     padding: 3px;
                                     font-weight: bold;
                                 }
@@ -153,26 +152,25 @@
                                     box-shadow: 0 0px 2px 0px inset #ddd;
                                 }
 
-                                #thead1, #thead2, #thead3, #thead4 {
+                                #tdflag, #thead1, #thead2, #thead3, #thead4 {
                                     top: 0;
                                     z-index: 2;
                                     height: 35px;
                                 }
 
-                                #th1, #th2, #th3, #th4, #th5 {
+                                #th1, #th2, #th3, #th4, #th5, #th6, #th7, #th8, #th9, #th10, #th11, #th12 {
                                     top: 35px;
                                     z-index: 2;
-                                    height: 55px;
                                 }
 
-                                #td1, #td2, #td3, #td4, #td5 {
-                                    top: 85px;
+                                #td1, #td2, #td3, #td4, #td5, #td6, #td7, #td8, #td9, #td10, #td11, #td12 {
+                                    top: 65px;
                                     z-index: 2;
                                     color: red;
                                 }
 
                                 #td0 {
-                                    top: 85px;
+                                    top: 65px;
                                     z-index: 2;
                                 }
 
@@ -184,6 +182,28 @@
                                 }
                                 /*手機畫面*/
                                 @media (max-width:767px) {
+                                    #tdflag, #thead1, #thead2, #thead3, #thead4 {
+                                        top: 0;
+                                        z-index: 2;
+                                        height: 55px;
+                                    }
+
+                                    #th1, #th2, #th3, #th4, #th5, #th6, #th7, #th8, #th9, #th10, #th11, #th12 {
+                                        top: 55px;
+                                        z-index: 2;
+                                    }
+
+                                    #td1, #td2, #td3, #td4, #td5, #td6, #td7, #td8, #td9, #td10, #td11, #td12 {
+                                        top: 130px;
+                                        z-index: 2;
+                                        color: red;
+                                    }
+
+                                    #td0 {
+                                        top: 130px;
+                                        z-index: 2;
+                                    }
+
                                     #PanelIni {
                                         background-size: 400px 430px;
                                     }
@@ -191,87 +211,48 @@
                             </style>
 
                             <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom: 0px">
-                                <label id="lblProgramName" class="DyForm3-ProgramName">期間銷售業績比較表</label>
+                                <label id="lblProgramName" class="DyForm3-ProgramName">組促銷售分析表</label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 20px; width: 100%; margin-bottom: 5px">
-                                <button class="DyForm3-BtnClear" id="btClear" type="button" style="margin-left: 0px">
-                                    清除
-                                    <i class="fa fa-close"></i>
-                                </button>
-                                <button class="DyForm3-BtnQuery" id="btQuery" type="button" style="margin-left: 40px">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px">
+                                <button class="DyForm3-BtnQuery" id="btQuery" type="button">
                                     查詢
                                     <i class="fa fa-search"></i>
                                 </button>
+                                <label class="DyForm3-Horizontal">完整顯示請打橫看</label>
                             </div>
 
                             <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom: 0px">
-                                <mark class="DyForm3-DyNotEmptyMark">*</mark>
-                                <label class="DyForm3-Label">本期</label>
-                                <input class="DyForm3-TextBox" id="txtOpenDateS2" style="margin-left: 5px; width: 120px; font-size: 14px" type="date" />
-                                <label class="DyForm3-LabelBlack">~</label>
-                                <input class="DyForm3-TextBox" id="txtOpenDateE2" style="width: 120px; font-size: 14px" type="date" />
-                            </div>
-
-                            <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom: 5px">
-                                <mark class="DyForm3-DyNotEmptyMark">*</mark>
-                                <label class="DyForm3-Label">前期</label>
-                                <input class="DyForm3-TextBox" id="txtOpenDateS1" style="margin-left: 5px; width: 120px; font-size: 14px" type="date" />
-                                <label class="DyForm3-LabelBlack">~</label>
-                                <input class="DyForm3-TextBox" id="txtOpenDateE1" style="width: 120px; font-size: 14px" type="date" />
-                            </div>
-
-                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
-                                <button class="DyForm3-BtnShop" id="btShopNo" type="button">店別選取</button>
-                                <label class="DyForm3-Label" id="lblShopNoName" style=" margin-left: 10px; margin-top: 5px"></label>
-                                <label class="DyForm3-LabelRed" id="lblShopNoCnt" style=" margin-left: 10px; margin-top: 5px"></label>
-                            </div>
-
-                            <div class="form-group row" style="margin-left: 12px; width: 100%;margin-bottom:0px">
-                                <input id="rdoS" type="radio" name="a" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
-                                <label class="DyForm3-LabelBlack" for="rdoS" style="margin-top: 2px">&ensp;店櫃</label>
-                                <input id="rdoD" type="radio" name="a" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
-                                <label class="DyForm3-LabelBlack" for="rdoD" style="margin-top:2px">&ensp;部門</label>
-                                <input id="rdoB" type="radio" name="a" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
-                                <label class="DyForm3-LabelBlack" for="rdoB" style="margin-top:2px">&ensp;大類</label>
-                            </div>
-
-                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px ">
-                                <label class="DyForm3-Label" style="font-size: 16px; margin-top: 0px ">成長率=(本期-前期)/前期</label>
+                                <label class="DyForm3-Label">促銷日期</label>
+                                <input class="DyForm3-TextBox" id="txtOpenDate" style="margin-left: 5px; width: 120px; font-size: 14px" type="date" />
                             </div>
 
                             <!--<div class="form-group row" style="margin-bottom: 30px; width: 100%; ">
-                    <label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>
-                </div>-->
+                                <label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>
+                            </div>-->
 
                             <div class="card-block forminput">
                                 <div class="x_content">
-                                    <div class="DyForm3-TableIniMob1">
-                                        <table id="tbQuery" class="table table-bordered DyForm3-Table">
+                                    <div class="DyForm3-TableIni">
+                                        <table id="tbQuery" class="table table-bordered DyForm3-Table" style="white-space: pre-line">
                                             <thead>
                                                 <!--第一層-->
                                                 <tr>
-                                                    <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店櫃</th>
-                                                    <td id="thead2" class="text-center" colspan="2">前期</td>
-                                                    <td id="thead3" class="text-center" colspan="2">本期</td>
-                                                    <td id="thead4" class="text-center" colspan="1"></td>
+                                                    <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">促銷活動</th>
+                                                    <td id="thead2" class="text-center" colspan="2">總交易</td>
+                                                    <td id="thead3" class="text-center" colspan="3">組促總交易</td>
+                                                    <td id="thead4" class="text-center" colspan="3">組促會員交易</td>
                                                 </tr>
                                                 <!--第二層-->
                                                 <tr>
-                                                    <th id="th1" class="text-center" colspan="1">數量</th>
-                                                    <th id="th2" class="text-center" colspan="1">金額</th>
-                                                    <th id="th3" class="text-center" colspan="1">數量</th>
-                                                    <th id="th4" class="text-center" colspan="1">金額</th>
-                                                    <th id="th5" class="text-center" colspan="1">成長%</th>
-                                                </tr>
-                                                <!--第三層-->
-                                                <tr class="QSum">
-                                                    <td id="td0" class="text-center" colspan="1">總數</td>
-                                                    <td id="td1" colspan="1" style="text-align: right"></td>
-                                                    <td id="td2" colspan="1" style="text-align: right"></td>
-                                                    <td id="td3" colspan="1" style="text-align: right "></td>
-                                                    <td id="td4" colspan="1" style="text-align: right "></td>
-                                                    <td id="td5" class="text-center" colspan="1"></td>
+                                                    <th id="th1" class="text-center" colspan="1">營業額</th>
+                                                    <th id="th2" class="text-center" colspan="1">數量</th>
+                                                    <th id="th3" class="text-center" colspan="1">營業額</th>
+                                                    <th id="th4" class="text-center" colspan="1">數量</th>
+                                                    <th id="th5" class="text-center" colspan="1">佔比</th>
+                                                    <th id="th6" class="text-center" colspan="1">營業額</th>
+                                                    <th id="th7" class="text-center" colspan="1">數量</th>
+                                                    <th id="th8" class="text-center" colspan="1">佔比</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -286,79 +267,191 @@
                         </div>
                     </div>
 
-                    <div class="modal fade" id="modalLookup_ShopNo" data-keyboard="false" data-backdrop="static" style="z-index:1041">
+                    <div class="modal fade" id="modal_Shop1" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="height: 580px;">
-                                <div class="modal-header" style="padding-bottom:0px">
-                                    <label class="DyForm3-ProgramName">店別查詢</label>
-                                </div>
+                            <div class="modal-content" id="modalcon_Step1">
+                                <style>
 
+                                    #tbShop1 thead tr th {
+                                        font-size: 16px;
+                                        padding: 3px;
+                                        background-color: #ffb620;
+                                        font-weight: bold;
+                                    }
+
+                                    #tbShop1 thead tr td {
+                                        font-size: 16px;
+                                        padding: 3px;
+                                        background-color: #ffb620;
+                                        font-weight: bold;
+                                    }
+
+                                    #tbShop1 tbody tr td {
+                                        font-size: 16px;
+                                        padding: 3px;
+                                        font-weight: bold;
+                                    }
+
+                                    th:first-child {
+                                        position: sticky;
+                                        left: 0; /*首行永遠固定於左 */
+                                    }
+
+                                    .table thead th, .table thead td {
+                                        position: sticky;
+                                        border-top: 0;
+                                        border-bottom: 0;
+                                        /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
+                                        box-shadow: 0 0px 2px 0px inset #ddd;
+                                    }
+
+                                    #thead1_Shop1, #thead2_Shop1, #thead3_Shop1, #thead4_Shop1, #thead5_Shop1 {
+                                        top: 0;
+                                        z-index: 2;
+                                        height: 35px;
+                                    }
+
+                                    #th1_Shop1, #th2_Shop1, #th3_Shop1, #th4_Shop1, #th5_Shop1, #th6_Shop1, #th7_Shop1, #th8_Shop1, #th9_Shop1, #th10_Shop1, #th11_Shop1, #th12_Shop1 {
+                                        top: 35px;
+                                        z-index: 2;
+                                    }
+
+                                    #td1_Shop1, #td2_Shop1, #td3_Shop1, #td4_Shop1, #td5_Shop1, #td6_Shop1, #td7_Shop1, #td8_Shop1, #td9_Shop1, #td10_Shop1, #td11_Shop1, #td12_Shop1 {
+                                        top: 65px;
+                                        z-index: 2;
+                                        color: red;
+                                    }
+
+                                    #td0_Shop1 {
+                                        top: 65px;
+                                        z-index: 2;
+                                    }
+
+                                    #modalcon_Shop1 {
+                                        height: 900px;
+                                        width: 1400px;
+                                        left: -200px;
+                                        background-image: url(images/mxmslogo9a.JPG);
+                                        background-repeat: no-repeat;
+                                        background-attachment: fixed;
+                                        background-position: center;
+                                    }
+
+                                    #divShop1 {
+                                        height: 550px;
+                                    }
+                                    /*手機畫面*/
+                                    @media (max-width:767px) {
+                                        /*螢幕縱向*/
+                                        @media screen and (orientation: portrait) {
+                                            #modalcon_Shop1 {
+                                                height: 650px;
+                                                width: 100%;
+                                                left: 0px;
+                                                background-size: 400px 430px;
+                                            }
+
+                                            #divShop1 {
+                                                height: 450px;
+                                            }
+
+                                            #th1_Shop1, #th2_Shop1, #th3_Shop1, #th4_Shop1, #th5_Shop1, #th6_Shop1, #th7_Shop1, #th8_Shop1, #th9_Shop1, #th10_Shop1, #th11_Shop1, #th12_Shop1 {
+                                                top: 77px;
+                                                z-index: 2;
+                                            }
+
+                                            #td1_Shop1, #td2_Shop1, #td3_Shop1, #td4_Shop1, #td5_Shop1, #td6_Shop1, #td7_Shop1, #td8_Shop1, #td9_Shop1, #td10_Shop1, #td11_Shop1, #td12_Shop1 {
+                                                top: 177px;
+                                                z-index: 2;
+                                                color: red;
+                                            }
+
+                                            #td0_Shop1 {
+                                                top: 177px;
+                                                z-index: 2;
+                                            }
+                                        }
+                                        /*螢幕橫向*/
+                                        @media screen and (orientation: landscape) {
+                                            #modalcon_Shop1 {
+                                                height: 280px;
+                                                width: 100%;
+                                                left: 0px;
+                                                background-size: 400px 430px;
+                                            }
+
+                                            #divShop1 {
+                                                height: 110px;
+                                            }
+                                        }
+                                    }
+                                </style>
                                 <div class="modal-body modal-tab-container" style="padding:8px">
-                                    <style>
-                                        #tbLookup_ShopNo thead tr th {
-                                            font-size: 14px;
-                                            padding: 6px;
-                                            background-color: #ffb620;
-                                            font-weight: bold;
-                                        }
 
-                                        #tbLookup_ShopNo tbody tr td {
-                                            font-size: 14px;
-                                            padding: 0px;
-                                        }
-
-                                        th:first-child {
-                                            position: sticky;
-                                            left: 0; /*首行永遠固定於左 */
-                                        }
-
-                                        .table thead th {
-                                            position: sticky;
-                                            border-top: 0;
-                                            border-bottom: 0;
-                                            /*往下滑之後邊界會消失，  改用box-shadow設定邊界*/
-                                            box-shadow: 0 0px 2px 0px inset #ddd;
-                                            top: 0;
-                                            z-index: 2;
-                                            height: 35px;
-                                        }
-                                    </style>
-
-                                    <div class="form-group row" style="width: 100%; margin-left: 20px; margin-bottom: 0px; margin-top: 5px ">
-                                        <button class="DyForm3-BtnClear" id="btLpClear_ShopNo" type="button">
-                                            清除
-                                            <i class="fa fa-close"></i>
-                                        </button>
-                                        <button class="DyForm3-BtnQuery" id="btLpOK_ShopNo" type="button" style="margin-left: 15px">
-                                            確定
-                                            <!--<i class="fa fa-search"></i>-->
-                                        </button>
-                                        <button class="DyForm3-BtnExit" id="btLpExit_ShopNo" type="button" style="margin-left: 15px">
-                                            離開
-                                            <i class="fa fa-sign-out"></i>
-                                        </button>
+                                    <div class="form-group row" style="margin-left: 5px; width: 100%">
+                                        <label id="lblProgramName" class="DyForm3-ProgramName">組促銷售分析表</label>
                                     </div>
 
-                                    <div class="form-group row" style="width: 100%; margin-left: 20px; margin-bottom: 0px; margin-top: 10px ">
-                                        <input id="txtLpQ_ShopNo" class="form-control small" style="border-radius: 10px; font-size: 16px; width: 35%; line-height: 0px; padding: 3px; height: 28px " placeholder="請輸入店別">
-                                        <button id="btLpQ_ShopNo" type="button" class="DyForm3-BtnQuery" style="margin-left: 15px">
-                                            查詢
-                                            <i class="fa fa-search"></i>
-                                        </button>
+                                    <div class="form-group row" style="width: 100%; margin-left: 12px">
+                                        <button id="btExit_Shop" type="button" class="DyForm3-BtnRe">回上頁</button>
+                                    </div>
+
+                                    <div class="form-group row" style="width: 100%; margin-left: 5px; margin-bottom: 0px; ">
+                                        <label class="DyForm3-Label" style="margin-left: 15px;">組促活動：</label>
+                                        <label id="lblCG_No" class="DyForm3-LabelBlack" style="margin-left: 5px; margin-top: 3px; margin-bottom: 0px"></label>
+                                    </div>
+                                    <div>
+                                        <label id="lblCG_Date" class="DyForm3-LabelBlack" style="margin-left: 105px; margin-top: 3px; margin-bottom: 0px"></label>
+                                    </div>
+                                    <div>
+                                        <label id="lblCG_Name" class="DyForm3-LabelBlack" style="margin-left: 105px; margin-top: 3px; margin-bottom: 0px"></label>
+                                    </div>
+                                    <div class="form-group row" style="width: 100%;margin-left: 5px ">
+                                        <input id="rdoShop_PS_Step1" type="radio" name="Step1" value="Shop" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left; " checked>
+                                        <label class="DyForm3-LabelBlack" for="rdoShop_PS_Step1" style="margin-top: 2px;">&ensp;店別</label>
+                                        <input id="rdoPLU_PS_Step1" type="radio" name="Step1" value="PLU" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left;  ">
+                                        <label class="DyForm3-LabelBlack" for="rdoDate_PS_Step1" style=" margin-top: 2px;">&ensp;商品</label>
                                     </div>
 
                                     <div class="card-block forminput">
                                         <div class="x_content">
-                                            <div style="overflow: auto; height: 350px;">
-                                                <table id="tbLookup_ShopNo" class="table table-bordered DyForm3-Table">
+                                            <div style="overflow: auto; height: 630px;">
+                                                <table id="tbShop1" class="table table-bordered DyForm3-Table">
                                                     <thead>
+                                                        <!--第一層-->
                                                         <tr>
-                                                            <th style="width:50px"></th>
-                                                            <th class="text-center">店別</th>
-                                                            <th class="text-center">店別名稱</th>
+                                                            <th id="thead1_Shop1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
+                                                            <td id="thead2_Shop1" class="text-center" colspan="2">總交易</td>
+                                                            <td id="thead3_Shop1" class="text-center" colspan="3">組促總交易</td>
+                                                            <td id="thead4_Shop1" class="text-center" colspan="3">組促會員交易</td>
+                                                        </tr>
+                                                        <!--第二層-->
+                                                        <tr>
+                                                            <th id="th1_Shop1" class="text-center" colspan="1">營業額</th>
+                                                            <th id="th2_Shop1" class="text-center" colspan="1">數量</th>
+                                                            <th id="th3_Shop1" class="text-center" colspan="1">營業額</th>
+                                                            <th id="th4_Shop1" class="text-center" colspan="1">數量</th>
+                                                            <th id="th5_Shop1" class="text-center" colspan="1">佔比</th>
+                                                            <th id="th6_Shop1" class="text-center" colspan="1">營業額</th>
+                                                            <th id="th7_Shop1" class="text-center" colspan="1">數量</th>
+                                                            <th id="th8_Shop1" class="text-center" colspan="1">佔比</th>
+                                                        </tr>
+                                                        <!--第三層-->
+                                                        <tr>
+                                                            <td id="td0_Shop1" colspan="1" class="text-center">總計</td>
+                                                            <td id="td1_Shop1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td2_Shop1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td3_Shop1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td4_Shop1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td5_Shop1" colspan="1" class="text-center"></td>
+                                                            <td id="td6_Shop1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td7_Shop1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td8_Shop1" colspan="1" class="text-center"></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
+                                                        <tr>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -366,274 +459,8 @@
                                     </div>
 
                                 </div>
+
                             </div>
-                        </div>
-                    </div>
-
-
-                </article>
-                <article id="MSSA102btns" hidden>
-                    <div class="col-md-12 col-sm-12">
-                        <div class="form-group row col-md">
-                            <button id="btAdd" type="button" class="btn btn-primary" style="width: 55px; font-size: 14px; background-color: blue">新增</button>
-                            <button id="btMod" type="button" class="btn btn-success" style="width: 55px; font-size: 14px; background-color:green">編查</button>
-                            <button id="btToFTP" type="button" class="btn btn-warning" style="color: white; width: 55px; font-size: 14px; background-color: gold ">上傳</button>
-                            <button id="btRtn" type="button" class="btn btn-secondary" style="color: white; background-color: mediumpurple; width: 55px; font-size: 14px">返回</button>
-                        </div>
-                        <div class="form-group row">
-                            <div>
-                                <label id="lblShop2" class="col-form-label" style="color: blue; line-height: 10px;">999999 智販店</label>
-                            </div>
-                            <div>
-                                <label class="col-form-label" style="line-height:10px;">&nbsp;&nbsp;&nbsp;分區：</label>
-                            </div>
-                            <div>
-                                <label id="lblBINNo2" class="col-form-label" style="color: blue; line-height: 10px;">001</label>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div>
-                                <label class="col-form-label" style="line-height:10px;">盤點日期：</label>
-                            </div>
-                            <div>
-                                <label id="lblDate2" class="col-form-label" style="color: blue; line-height: 10px;">2022/06/01</label>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article id="pgMSSA102Add" class="row" hidden>
-                    <div class="col-md-12 col-sm-12" style="margin:0;padding:0">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <div class="form-group row">
-                                    <div><input id="txtBarcode1" type="text" class="form-control" style="width:170px" placeholder="請輸入商品條碼" autocomplete="off" /></div>
-                                    <label>&nbsp;</label>
-                                    <div><button id="btBCSave1" type="button" class="btn btn-primary">確認</button></div>
-                                </div>
-                                <div class="form-group row">
-                                    <div><input id="txtQty1" type="text" class="form-control" style="width:170px" placeholder="請輸入盤點數量" autocomplete="off" inputmode="numeric" /></div>
-                                    <label>&nbsp;</label>
-                                    <div><button id="btKeyin1" type="button" class="btn btn-warning" hidden>手動</button></div>
-                                    <div><button id="btQtySave1" type="button" class="btn btn-primary" hidden>確認</button></div>
-                                </div>
-                                <div class="form-group row">
-                                    <div><label class="col-md" style="line-height:10px;">條碼：</label></div>
-                                    <div><label id="lblBarcode" class="col-md-7">1234567890123456</label></div>
-                                </div>
-                                <div class="form-group row">
-                                    <div><label class="col-md" style="line-height:10px;">本次輸入數量：</label></div>
-                                    <div><label id="lblQty1" class="col-md-7" style="float: right; text-align: right; position: absolute; right: 30% ">5</label></div>
-                                </div>
-                                <div class="form-group row">
-                                    <div><label id="lblSQty1title" class="col-md" style="line-height:10px;">001分區單品總數：</label></div>
-                                    <div><label id="lblSQty1" class="col-md-7" style="float: right; text-align: right; position: absolute; right: 30% ">5</label></div>
-                                </div>
-                                <div class="form-group row">
-                                    <div><label id="lblSBQty1title" class="col-md" style="line-height:10px;">001分區總數：</label></div>
-                                    <div><label id="lblSBQty1" class="col-md-7" style="float: right; text-align: right; position: absolute; right: 30% ">23</label></div>
-                                </div>
-                                <div class="form-group row">
-                                    <div><label id="lblSWQty1title" class="col-md" style="line-height:10px;">999999門市總數：</label></div>
-                                    <div><label id="lblSWQty1" class="col-md-7" style="float: right; text-align: right; position: absolute; right: 30% ">137</label></div>
-                                </div>
-                                <div class="form-group row">
-                                    <div><label class="col-md" style="line-height:10px;">零售價：</label></div>
-                                    <div><label id="lblPrice" class="col-md-7" style="float: right; text-align: right; position: absolute; right: 30% ">120</label></div>
-                                </div>
-                                <label id="lblGDName" class="col-form-label" style="color: darkred">商品名稱：</label>
-                            </div>
-                            <!--  class="col-md-5" class="col-md-7" -->
-                        </div>
-                    </div>
-
-                </article>
-
-                <article id="pgMSSA102Mod" class="row" hidden>
-                    <div class="modal fade" id="modal_ISAM01PLUMod" data-keyboard="false" data-backdrop="static">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">智販機換店設定</h4>
-                                </div>
-                                <div class="modal-body modal-tab-container">
-                                    <style>
-                                        #modal-Role .msg-valid {
-                                            color: red;
-                                            font-size: 0.85rem;
-                                        }
-                                    </style>
-                                    <!--<style>
-                            #modal-content .col-form-label {
-                                text-align: center;
-                                color: red;
-                                font-size: 0.85rem;
-                            }
-                        </style>-->
-                                    <div class="card-block forminput">
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-3 text-right">品號</label>
-                                            <label id="lblModPLU" class="col-form-label" style="color:blue;">1234567890123456</label>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-3 text-right">品名</label>
-                                            <label id="lblModPLUName" class="col-form-label" style="color:blue">罐頭</label>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-3 text-right">原數量</label>
-                                            <label id="lblModQty1" class="col-form-label" style="color:blue">7</label>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-4 text-right">修改後數量</label>
-                                            <input id="txtModQty1" type="text" class="form-control" style="text-align:right;width:80px" autocomplete="off" inputmode="numeric"></input>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button id="btModCancel" type="button" class="btn btn-primary">取消</button>
-                                            <button id="btModSave" type="button" class="btn btn-danger">確認</button>
-                                        </div>
-
-                                    </div><!-- /.modal-content -->
-
-
-
-                                </div><!-- /.modal-dialog -->
-                            </div><!-- /.modal -->
-                        </div>
-                    </div>
-
-                    <div class="modal fade" id="modal_ISAM01PLUDel" data-keyboard="false" data-backdrop="static">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">智販機換店設定</h4>
-                                </div>
-                                <div class="modal-body modal-tab-container">
-                                    <style>
-                                        #modal-Role .msg-valid {
-                                            color: red;
-                                            font-size: 0.85rem;
-                                        }
-                                    </style>
-                                    <!--<style>
-                            #modal-content .col-form-label {
-                                text-align: center;
-                                color: red;
-                                font-size: 0.85rem;
-                            }
-                        </style>-->
-                                    <div class="card-block forminput">
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-3 text-right">品號</label>
-                                            <label id="lblPLU" class="col-form-label" style="color:blue">1234567890123456</label>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-3 text-right">品名</label>
-                                            <label id="lblPLUName" class="col-form-label" style="color:blue">罐頭</label>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-3 text-right">數量</label>
-                                            <label id="lblDelQty1" class="col-form-label" style="color:blue">7</label>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button id="btDelCancel" type="button" class="btn btn-primary">取消</button>
-                                            <button id="btDelSave" type="button" class="btn btn-danger">刪除</button>
-                                        </div>
-
-                                    </div><!-- /.modal-content -->
-                                </div><!-- /.modal-dialog -->
-                            </div><!-- /.modal -->
-                        </div>
-                    </div>
-
-                    <style>
-                        #tbISAM01Mod .fa-trash-o {
-                            font-size: 28px;
-                            color: red;
-                        }
-
-                        #tbISAM01Mod .fa-file-text-o {
-                            font-size: 25px;
-                            color: blue;
-                        }
-
-
-                        #tbISAM01Mod {
-                            width: 100%;
-                        }
-
-                            #tbISAM01Mod thead, #tbISAM01Mod tbody, #tbISAM01Mod tr, #tbISAM01Mod td, #tbISAM01Modth {
-                                display: block;
-                            }
-
-                                #tbISAM01Mod tr:after {
-                                    content: ' ';
-                                    display: block;
-                                    visibility: hidden;
-                                    clear: both;
-                                }
-
-                                #tbISAM01Mod thead th {
-                                    height: 50px;
-                                    /*text-align: left;*/
-                                }
-
-                            #tbISAM01Mod tbody {
-                                height: 300px;
-                                overflow-y: auto;
-                            }
-
-
-                            #tbISAM01Mod thead th {
-                                /*width: 24.6%;*/
-                                float: left;
-                            }
-
-                            #tbISAM01Mod tbody td {
-                                width: 14%;
-                                float: left;
-                                font-size: 14px;
-                                word-wrap: break-word;
-                                word-break: break-all;
-                            }
-                    </style>
-
-                    <div class="col-md-12 col-sm-12" style="margin:0;padding:0">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <div class="form-group row">
-                                    <div><input id="txtBarcode3" type="text" class="form-control" style="width:170px" placeholder="請輸入條碼" autocomplete="off" /></div>
-                                    <label>&nbsp;</label>
-                                    <div><button id="btBCSave3" type="button" class="btn btn-primary">查詢</button></div>
-                                </div>
-                            </div>
-
-                            <div class="card-block forminput">
-                                <div class="x_content">
-                                    <table id="tbISAM01Mod" class="table table-striped" style="width:100%">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 12%; font-size: 14px">刪</th>
-                                                <th style="width: 48%; font-size: 14px">&nbsp;&nbsp;條碼</th>
-                                                <th style="width: 23%; text-align: right; font-size: 14px">&nbsp;數量</th>
-                                                <th style="width: 17%; font-size: 14px">修改</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><span class="fa fa-trash-o"></span></td>
-                                                <td>4023147812345678</td>
-                                                <td>1</td>
-                                                <td><span></span></td>
-                                            </tr>
-                                        </tbody>
-
-                                    </table>
-                                </div>
-                            </div>
-
-
-
-                            <!-- style="table-layout:auto" </div> -->
                         </div>
                     </div>
 

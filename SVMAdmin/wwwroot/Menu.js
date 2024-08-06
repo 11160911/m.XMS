@@ -608,7 +608,6 @@
                 }
 
                 else {
-                    alert("3");
                     PageMSSA102($(".workarea"));
                 }
             }
