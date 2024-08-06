@@ -685,17 +685,21 @@
         //    DyAlert("請設定活動圖片!", function () { EnableForm_EDM(false) })
         //    return;
         //}
-        if (window.t2.getData() == "<p>&nbsp;</p>") {
-            DyAlert("請輸入優惠券內容!", function () {
+        //if (window.t2.getData() == "<p>&nbsp;</p>") {
+        //    DyAlert("請輸入優惠券內容!", function () {
+        //        EnableForm_EDM(false)
+        //        $('#btSave_EDM').prop('disabled', false);
+        //    })
+        //    return;
+        //}
+
+        var P2 = $('#P2_EDM').attr('src');
+        if (window.t1.getData() == "<p>&nbsp;</p>" && P2 == "" && window.t2.getData() == "<p>&nbsp;</p>") {
+            DyAlert("活動內容、活動圖、優惠券內容，請擇一輸入!", function () {
                 EnableForm_EDM(false)
                 $('#btSave_EDM').prop('disabled', false);
             })
             return;
-        }
-
-        var T1 = ""
-        if (window.t1.getData() != "<p>&nbsp;</p>") {
-            T1 = window.t1.getData();
         }
 
         var DocNo = ""
@@ -734,7 +738,7 @@
             BIRYear: $('#cboBIRYear_EDM').val(),
             BIRMonth: $('#cboBIRMonth_EDM').val(),
             PS_NO: $('#txtPSNO_EDM').val(),
-            T1: T1,
+            T1: window.t1.getData(),
             T2: window.t2.getData(),
             VIPType: VIPType,
             DocNo: DocNo,
