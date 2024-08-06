@@ -199,20 +199,20 @@ var DynGrid = function (option) {
                 function () {
                     SortData(this);
                     $(elm_table).find('thead tr th').css('background-color', '#ffb620')
-                    $(this).css('background-color', '#ffeaa7')
+                    $(this).css('background-color', '#FFFF9B')
                 }
             );
             $(elm_table).find('thead tr th').mouseenter(function () {
                 var rgb = $(this).css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
+                if (hexcolor != '#ffff9b') {
                     $(this).css('background-color', '#ffff00')
                 }
             });
             $(elm_table).find('thead tr th').mouseleave(function () {
                 var rgb = $(this).css('background-color')
                 var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
+                if (hexcolor != '#ffff9b') {
                     $(this).css('background-color', '#ffb620')
                 }
             });

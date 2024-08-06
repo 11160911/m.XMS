@@ -11057,7 +11057,7 @@ namespace SVMAdmin.Controllers
                 sql += "b.ActivityCode,b.PS_Name,b.StartDate + ' ~ ' + b.EndDate as EDDate2, ";
                 sql += "case b.WhNoFlag when 'Y' then '全部店' else cast(isnull(c.Cnt1,0) as varchar) + '店' end as WhNoFlag,isnull(d.Cnt2,0)Cnt2 ";
                 sql += "From SetEDMHWEB a (nolock) ";
-                sql += "inner join PromoteSCouponHWeb b (nolock) on a.PS_NO=b.PS_NO and b.Companycode=a.Companycode and b.CouponType in('1','2') ";
+                sql += "left join PromoteSCouponHWeb b (nolock) on a.PS_NO=b.PS_NO and b.Companycode=a.Companycode and b.CouponType in('1','2') ";
                 sql += "left join (Select PS_NO,Count(*)Cnt1 From PromoteSCouponShopWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by PS_NO)c on a.PS_NO=c.PS_NO ";
                 sql += "left join (Select EDM_DocNo,Count(*)Cnt2 From SetEDMVIP_HWeb (nolock) Where Companycode='" + uu.CompanyId + "' group by EDM_DocNo)d on a.DocNo=d.EDM_DocNo ";
 
