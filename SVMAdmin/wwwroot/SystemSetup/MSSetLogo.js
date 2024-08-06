@@ -18,7 +18,8 @@
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
-                sortable: "Y"
+                sortable: "Y",
+                step: "Y"
             }
         );
         return;
@@ -30,93 +31,15 @@
     let InitModifyDeleteButton = function () {
         //$('#tbQMSSETLOGO .fa-trash-o').click(function () { btMod_click(this) });
         $('#tbQMSSETLOGO tbody tr td').click(function () { MSSETLOGOQuery(this) });
-        $('#tbQMSSETLOGO thead tr th').mouseenter(function () {
-            var fdinfo = $(this).prop('fdinfo');
-            if (fdinfo.name == "Companycode") {
-                var rgb = $('#tbQMSSETLOGO thead tr th#thead1').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSSETLOGO thead tr th#thead1').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "CompanyName") {
-                var rgb = $('#tbQMSSETLOGO thead tr th#thead2').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSSETLOGO thead tr th#thead2').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "ProgramID") {
-                var rgb = $('#tbQMSSETLOGO thead tr th#thead3').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSSETLOGO thead tr th#thead3').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "ProgramName") {
-                var rgb = $('#tbQMSSETLOGO thead tr th#thead4').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSSETLOGO thead tr th#thead4').css('background-color', '#ffff00')
-                }
-            }
-        });
-        $('#tbQMSSETLOGO thead tr th').mouseleave(function () {
-            var fdinfo = $(this).prop('fdinfo');
-            if (fdinfo.name == "Companycode") {
-                var rgb = $('#tbQMSSETLOGO thead tr th#thead1').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSSETLOGO thead tr th#thead1').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "CompanyName") {
-                var rgb = $('#tbQMSSETLOGO thead tr th#thead2').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSSETLOGO thead tr th#thead2').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "ProgramID") {
-                var rgb = $('#tbQMSSETLOGO thead tr th#thead3').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSSETLOGO thead tr th#thead3').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "ProgramName") {
-                var rgb = $('#tbQMSSETLOGO thead tr th#thead4').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSSETLOGO thead tr th#thead4').css('background-color', '#ffb620')
-                }
-            }
-        });
-        $('#tbQMSSETLOGO thead tr th').click(function () {
-            $('#tbQMSSETLOGO thead tr th').css('background-color', '#ffb620')
-            var fdinfo = $(this).prop('fdinfo');
-            if (fdinfo.name == "Companycode") {
-                $('#tbQMSSETLOGO thead tr th#thead1').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "CompanyName") {
-                $('#tbQMSSETLOGO thead tr th#thead2').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "ProgramID") {
-                $('#tbQMSSETLOGO thead tr th#thead3').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "ProgramName") {
-                $('#tbQMSSETLOGO thead tr th#thead4').css('background-color', '#ffeaa7')
-            }
-        });
     }
 
     //Logo查詢
     let MSSETLOGOQuery = function (bt) {
-        $('#tbQMSSETLOGO td').closest('tr').css('background-color', 'transparent');
+        //$('#tbQMSSETLOGO td').closest('tr').css('background-color', 'transparent');
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         var node = $(grdM.ActiveRowTR()).prop('Record');
-        $('#tbQMSSETLOGO td:contains(' + GetNodeValue(node, 'ProgramID') + ')').closest('tr').css('background-color', '#DEEBF7');
+        //$('#tbQMSSETLOGO td:contains(' + GetNodeValue(node, 'ProgramID') + ')').closest('tr').css('background-color', '#DEEBF7');
         var pData = {
             CompanyID: GetNodeValue(node, 'Companycode'),
             ProgramID: GetNodeValue(node, 'ProgramID')
@@ -277,7 +200,7 @@
     //查詢
     let btQuery_click = function (bt) {
         //Timerset();
-        $('#tbQMSSETLOGO thead tr th').css('background-color', '#ffb620')
+        //$('#tbQMSSETLOGO thead tr th').css('background-color', '#ffb620')
         $('#btQuery').prop('disabled', true)
 
         if ($('#cboCompany').val() == "") {

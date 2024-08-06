@@ -27,7 +27,8 @@
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
-                sortable: "Y"
+                sortable: "Y",
+                step: "Y"
             }
         );
         grdD = new DynGrid(
@@ -47,7 +48,8 @@
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: gridclick1,
-                sortable: "Y"
+                sortable: "Y",
+                step: "Y"
             }
         );
         grdDD = new DynGrid(
@@ -66,7 +68,6 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                afterBind: gridclick2,
                 sortable: "Y"
             }
         );
@@ -95,153 +96,6 @@
 
     let InitModifyDeleteButton = function () {
         $('#tbQuery tbody tr td').click(function () { Step1_click(this) });
-
-        $('#tbQuery thead tr th').mouseenter(function () {
-            var fdinfo = $(this).prop('fdinfo');
-            if (fdinfo.name == "ID") {
-                var rgb = $('#tbQuery thead tr th#thead1').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#thead1').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "Cash1") {
-                var rgb = $('#tbQuery thead tr th#th1').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th1').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "Cnt1") {
-                var rgb = $('#tbQuery thead tr th#th2').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th2').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "CusCash1") {
-                var rgb = $('#tbQuery thead tr th#th3').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th3').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "VCash") {
-                var rgb = $('#tbQuery thead tr th#th4').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th4').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "VCnt") {
-                var rgb = $('#tbQuery thead tr th#th5').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th5').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "VCusCash") {
-                var rgb = $('#tbQuery thead tr th#th6').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th6').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "VPer") {
-                var rgb = $('#tbQuery thead tr th#th7').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th7').css('background-color', '#ffff00')
-                }
-            }
-        });
-        $('#tbQuery thead tr th').mouseleave(function () {
-            var fdinfo = $(this).prop('fdinfo');
-            if (fdinfo.name == "ID") {
-                var rgb = $('#tbQuery thead tr th#thead1').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#thead1').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "Cash1") {
-                var rgb = $('#tbQuery thead tr th#th1').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th1').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "Cnt1") {
-                var rgb = $('#tbQuery thead tr th#th2').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th2').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "CusCash1") {
-                var rgb = $('#tbQuery thead tr th#th3').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th3').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "VCash") {
-                var rgb = $('#tbQuery thead tr th#th4').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th4').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "VCnt") {
-                var rgb = $('#tbQuery thead tr th#th5').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th5').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "VCusCash") {
-                var rgb = $('#tbQuery thead tr th#th6').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th6').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "VPer") {
-                var rgb = $('#tbQuery thead tr th#th7').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQuery thead tr th#th7').css('background-color', '#ffb620')
-                }
-            }
-        });
-        $('#tbQuery thead tr th').click(function () {
-            $('#tbQuery thead tr th').css('background-color', '#ffb620')
-            var fdinfo = $(this).prop('fdinfo');
-            if (fdinfo.name == "ID") {
-                $('#tbQuery thead tr th#thead1').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "Cash1") {
-                $('#tbQuery thead tr th#th1').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "Cnt1") {
-                $('#tbQuery thead tr th#th2').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "CusCash1") {
-                $('#tbQuery thead tr th#th3').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "VCash") {
-                $('#tbQuery thead tr th#th4').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "VCnt") {
-                $('#tbQuery thead tr th#th5').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "VCusCash") {
-                $('#tbQuery thead tr th#th6').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "VPer") {
-                $('#tbQuery thead tr th#th7').css('background-color', '#ffeaa7')
-            }
-        });
     }
 //#region 下展第二層
     let Step1_click = function (bt) {
@@ -252,11 +106,9 @@
             $('#lblD_DateTitle').html('日期區間');
         }
 
-        $('#tbQuery td').closest('tr').css('background-color', 'transparent');
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         var node = $(grdM.ActiveRowTR()).prop('Record');
-        $('#tbQuery td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
         if (heads.toString().indexOf("銷售日期") >= 0) {
             $('#lblD_Date').html(GetNodeValue(node, 'ID'));
             $('#D_lblrdo1').html('&ensp;區域');
@@ -291,7 +143,7 @@
         } else {
             $('#D_grp3').hide();
         }
-        $('#tbQueryD thead tr th').css('background-color', '#ffb620')
+        //$('#tbQueryD thead tr th').css('background-color', '#ffb620')
         $('#modal_D').modal('show');
         setTimeout(function () {
             MSSA101Query_D();
@@ -407,303 +259,8 @@
 
     let gridclick1 = function () {
         $('#tbQueryD tbody tr td').click(function () { Step2_click(this) });
-
-        $('#tbQueryD thead tr th').mouseenter(function () {
-            var fdinfo = $(this).prop('fdinfo');
-            if (fdinfo.name == "ID") {
-                var rgb = $('#tbQueryD thead tr th#Dthead1').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryD thead tr th#Dthead1').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "Cash1") {
-                var rgb = $('#tbQueryD thead tr th#Dth1').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryD thead tr th#Dth1').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "Cnt1") {
-                var rgb = $('#tbQueryD thead tr th#Dth2').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryD thead tr th#Dth2').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "CusCash1") {
-                var rgb = $('#tbQueryD thead tr th#Dth3').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryD thead tr th#Dth3').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "VCash") {
-                var rgb = $('#tbQueryD thead tr th#Dth4').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryD thead tr th#Dth4').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "VCnt") {
-                var rgb = $('#tbQueryD thead tr th#Dth5').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryD thead tr th#Dth5').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "VCusCash") {
-                var rgb = $('#tbQueryD thead tr th#Dth6').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryD thead tr th#Dth6').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "VPer") {
-                var rgb = $('#tbQueryD thead tr th#Dth7').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryD thead tr th#Dth7').css('background-color', '#ffff00')
-                }
-            }
-        });
-        $('#tbQueryD thead tr th').mouseleave(function () {
-            var fdinfo = $(this).prop('fdinfo');
-            if (fdinfo.name == "ID") {
-                var rgb = $('#tbQueryD thead tr th#Dthead1').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryD thead tr th#Dthead1').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "Cash1") {
-                var rgb = $('#tbQueryD thead tr th#Dth1').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryD thead tr th#Dth1').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "Cnt1") {
-                var rgb = $('#tbQueryD thead tr th#Dth2').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryD thead tr th#Dth2').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "CusCash1") {
-                var rgb = $('#tbQueryD thead tr th#Dth3').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryD thead tr th#Dth3').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "VCash") {
-                var rgb = $('#tbQueryD thead tr th#Dth4').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryD thead tr th#Dth4').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "VCnt") {
-                var rgb = $('#tbQueryD thead tr th#Dth5').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryD thead tr th#Dth5').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "VCusCash") {
-                var rgb = $('#tbQueryD thead tr th#Dth6').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryD thead tr th#Dth6').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "VPer") {
-                var rgb = $('#tbQueryD thead tr th#Dth7').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryD thead tr th#Dth7').css('background-color', '#ffb620')
-                }
-            }
-        });
-        $('#tbQueryD thead tr th').click(function () {
-            $('#tbQueryD thead tr th').css('background-color', '#ffb620')
-            var fdinfo = $(this).prop('fdinfo');
-            if (fdinfo.name == "ID") {
-                $('#tbQueryD thead tr th#Dthead1').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "Cash1") {
-                $('#tbQueryD thead tr th#Dth1').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "Cnt1") {
-                $('#tbQueryD thead tr th#Dth2').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "CusCash1") {
-                $('#tbQueryD thead tr th#Dth3').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "VCash") {
-                $('#tbQueryD thead tr th#Dth4').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "VCnt") {
-                $('#tbQueryD thead tr th#Dth5').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "VCusCash") {
-                $('#tbQueryD thead tr th#Dth6').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "VPer") {
-                $('#tbQueryD thead tr th#Dth7').css('background-color', '#ffeaa7')
-            }
-        });
     }
 
-    let gridclick2 = function () {
-        $('#tbQueryDD thead tr th').mouseenter(function () {
-            var fdinfo = $(this).prop('fdinfo');
-            if (fdinfo.name == "ID") {
-                var rgb = $('#tbQueryDD thead tr th#DDthead1').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryDD thead tr th#DDthead1').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "Cash1") {
-                var rgb = $('#tbQueryDD thead tr th#DDth1').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryDD thead tr th#DDth1').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "Cnt1") {
-                var rgb = $('#tbQueryDD thead tr th#DDth2').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryDD thead tr th#DDth2').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "CusCash1") {
-                var rgb = $('#tbQueryDD thead tr th#DDth3').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryDD thead tr th#DDth3').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "VCash") {
-                var rgb = $('#tbQueryDD thead tr th#DDth4').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryDD thead tr th#DDth4').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "VCnt") {
-                var rgb = $('#tbQueryDD thead tr th#DDth5').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryDD thead tr th#DDth5').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "VCusCash") {
-                var rgb = $('#tbQueryDD thead tr th#DDth6').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryDD thead tr th#DDth6').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "VPer") {
-                var rgb = $('#tbQueryDD thead tr th#DDth7').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryDD thead tr th#DDth7').css('background-color', '#ffff00')
-                }
-            }
-        });
-        $('#tbQueryDD thead tr th').mouseleave(function () {
-            var fdinfo = $(this).prop('fdinfo');
-            if (fdinfo.name == "ID") {
-                var rgb = $('#tbQueryDD thead tr th#DDthead1').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryDD thead tr th#DDthead1').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "Cash1") {
-                var rgb = $('#tbQueryDD thead tr th#DDth1').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryDD thead tr th#DDth1').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "Cnt1") {
-                var rgb = $('#tbQueryDD thead tr th#DDth2').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryDD thead tr th#DDth2').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "CusCash1") {
-                var rgb = $('#tbQueryDD thead tr th#DDth3').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryDD thead tr th#DDth3').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "VCash") {
-                var rgb = $('#tbQueryDD thead tr th#DDth4').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryDD thead tr th#DDth4').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "VCnt") {
-                var rgb = $('#tbQueryDD thead tr th#DDth5').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryDD thead tr th#DDth5').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "VCusCash") {
-                var rgb = $('#tbQueryDD thead tr th#DDth6').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryDD thead tr th#DDth6').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "VPer") {
-                var rgb = $('#tbQueryDD thead tr th#DDth7').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQueryDD thead tr th#DDth7').css('background-color', '#ffb620')
-                }
-            }
-        });
-        $('#tbQueryDD thead tr th').click(function () {
-            $('#tbQueryDD thead tr th').css('background-color', '#ffb620')
-            var fdinfo = $(this).prop('fdinfo');
-            if (fdinfo.name == "ID") {
-                $('#tbQueryDD thead tr th#DDthead1').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "Cash1") {
-                $('#tbQueryDD thead tr th#DDth1').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "Cnt1") {
-                $('#tbQueryDD thead tr th#DDth2').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "CusCash1") {
-                $('#tbQueryDD thead tr th#DDth3').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "VCash") {
-                $('#tbQueryDD thead tr th#DDth4').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "VCnt") {
-                $('#tbQueryDD thead tr th#DDth5').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "VCusCash") {
-                $('#tbQueryDD thead tr th#DDth6').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "VPer") {
-                $('#tbQueryDD thead tr th#DDth7').css('background-color', '#ffeaa7')
-            }
-        });
-    }
 //#region 下展第三層
     let Step2_click = function (bt) {
         var head = $('#tbQuery thead tr th#thead1').html();
@@ -714,11 +271,11 @@
             return;
         }
 
-        $('#tbQueryD td').closest('tr').css('background-color', 'transparent');
+        //$('#tbQueryD td').closest('tr').css('background-color', 'transparent');
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         var node = $(grdD.ActiveRowTR()).prop('Record');
-        $('#tbQueryD td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
+        //$('#tbQueryD td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
 
         if (heads.toString().indexOf("銷售日期") >= 0 || head.toString().indexOf("銷售日期") >= 0) {
             $('#lblDD_DateTitle').html('日&emsp;&emsp;期');
@@ -749,7 +306,7 @@
         } else {
             $('#lblDD_Area').html($('#lblD_Area').html());
         }
-        $('#tbQueryDD thead tr th').css('background-color', '#ffb620')
+        //$('#tbQueryDD thead tr th').css('background-color', '#ffb620')
         $('#modal_DD').modal('show');
         setTimeout(function () {
             MSSA101Query_DD();
@@ -892,7 +449,7 @@
 //#region 查詢
     let btQuery_click = function (bt) {
         //Timerset();
-        $('#tbQuery thead tr th').css('background-color', '#ffb620')
+        //$('#tbQuery thead tr th').css('background-color', '#ffb620')
         $('#btQuery').prop('disabled', true)
         
         //期間1
@@ -908,7 +465,7 @@
         }
 
         if (DateDiff("d", $('#txtOpenDateS1').val(), $('#txtOpenDateE1').val()) > parseInt(QDays)) {
-            DyAlert("日期區間必須小於等於" + QDays + "天!!");
+            DyAlert("日期區間必須小於等於" + QDays + "天!!", function () { $('#btQuery').prop('disabled', false); });
             return;
         }
         if ($('#rdoA').prop('checked') == true && chkShopNo!="") { $('#rdoS').prop('checked', 'true'); }
@@ -986,7 +543,7 @@
     };
 
     let ClearQuery = function () {
-        $('#tbQuery thead tr th').css('background-color', '#ffb620')
+        //$('#tbQuery thead tr th').css('background-color', '#ffb620')
         grdM.BindData(null)
         //$('#tbQuery tbody').remove();
         var heads = $('#tbQuery thead tr th#thead1');

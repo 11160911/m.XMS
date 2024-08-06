@@ -27,7 +27,8 @@
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
-                sortable: "Y"
+                sortable: "Y",
+                step: "Y"
             }
         );
         grdLookUp_ActivityCode = new DynGrid(
@@ -104,153 +105,6 @@
     let InitModifyDeleteButton = function () {
         $('#tbQMSDM104 .fa-trash-o').click(function () { btDelete_click(this) });
         $('#tbQMSDM104 tbody tr .tdCol1,#tbQMSDM104 tbody tr .tdCol2,#tbQMSDM104 tbody tr .tdCol3,#tbQMSDM104 tbody tr .tdCol4,#tbQMSDM104 tbody tr .tdCol5,#tbQMSDM104 tbody tr .tdCol6,#tbQMSDM104 tbody tr .tdCol7,#tbQMSDM104 tbody tr .tdCol8').click(function () { MSDM104Query_EDM_click(this) });
-
-        $('#tbQMSDM104 thead tr th').mouseenter(function () {
-            var fdinfo = $(this).prop('fdinfo');
-            if (fdinfo.name == "DocNO") {
-                var rgb = $('#tbQMSDM104 thead tr th#thead2').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSDM104 thead tr th#thead2').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "EDMMemo") {
-                var rgb = $('#tbQMSDM104 thead tr th#thead3').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSDM104 thead tr th#thead3').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "EDDate") {
-                var rgb = $('#tbQMSDM104 thead tr th#thead4').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSDM104 thead tr th#thead4').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "PS_Name") {
-                var rgb = $('#tbQMSDM104 thead tr th#thead5').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSDM104 thead tr th#thead5').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "ActivityCode") {
-                var rgb = $('#tbQMSDM104 thead tr th#thead6').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSDM104 thead tr th#thead6').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "Cnt") {
-                var rgb = $('#tbQMSDM104 thead tr th#thead7').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSDM104 thead tr th#thead7').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "ApproveDate") {
-                var rgb = $('#tbQMSDM104 thead tr th#thead8').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSDM104 thead tr th#thead8').css('background-color', '#ffff00')
-                }
-            }
-            else if (fdinfo.name == "DefeasanceDate") {
-                var rgb = $('#tbQMSDM104 thead tr th#thead9').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSDM104 thead tr th#thead9').css('background-color', '#ffff00')
-                }
-            }
-        });
-        $('#tbQMSDM104 thead tr th').mouseleave(function () {
-            var fdinfo = $(this).prop('fdinfo');
-            if (fdinfo.name == "DocNO") {
-                var rgb = $('#tbQMSDM104 thead tr th#thead2').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSDM104 thead tr th#thead2').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "EDMMemo") {
-                var rgb = $('#tbQMSDM104 thead tr th#thead3').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSDM104 thead tr th#thead3').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "EDDate") {
-                var rgb = $('#tbQMSDM104 thead tr th#thead4').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSDM104 thead tr th#thead4').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "PS_Name") {
-                var rgb = $('#tbQMSDM104 thead tr th#thead5').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSDM104 thead tr th#thead5').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "ActivityCode") {
-                var rgb = $('#tbQMSDM104 thead tr th#thead6').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSDM104 thead tr th#thead6').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "Cnt") {
-                var rgb = $('#tbQMSDM104 thead tr th#thead7').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSDM104 thead tr th#thead7').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "ApproveDate") {
-                var rgb = $('#tbQMSDM104 thead tr th#thead8').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSDM104 thead tr th#thead8').css('background-color', '#ffb620')
-                }
-            }
-            else if (fdinfo.name == "DefeasanceDate") {
-                var rgb = $('#tbQMSDM104 thead tr th#thead9').css('background-color')
-                var hexcolor = SetRgbTo16(rgb);
-                if (hexcolor != '#ffeaa7') {
-                    $('#tbQMSDM104 thead tr th#thead9').css('background-color', '#ffb620')
-                }
-            }
-        });
-        $('#tbQMSDM104 thead tr th').click(function () {
-            $('#tbQMSDM104 thead tr th').css('background-color', '#ffb620')
-            var fdinfo = $(this).prop('fdinfo');
-            if (fdinfo.name == "DocNO") {
-                $('#tbQMSDM104 thead tr th#thead2').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "EDMMemo") {
-                $('#tbQMSDM104 thead tr th#thead3').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "EDDate") {
-                $('#tbQMSDM104 thead tr th#thead4').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "PS_Name") {
-                $('#tbQMSDM104 thead tr th#thead5').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "ActivityCode") {
-                $('#tbQMSDM104 thead tr th#thead6').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "Cnt") {
-                $('#tbQMSDM104 thead tr th#thead7').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "ApproveDate") {
-                $('#tbQMSDM104 thead tr th#thead8').css('background-color', '#ffeaa7')
-            }
-            else if (fdinfo.name == "DefeasanceDate") {
-                $('#tbQMSDM104 thead tr th#thead9').css('background-color', '#ffeaa7')
-            }
-        });
     }
 
     let btDelete_click = function (bt) {
@@ -795,12 +649,12 @@
 
     //EDM查詢
     let MSDM104Query_EDM_click = function (bt) {
-        $('#tbQMSDM104 td').closest('tr').css('background-color', 'transparent');
+        //$('#tbQMSDM104 td').closest('tr').css('background-color', 'transparent');
 
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         var node = $(grdM.ActiveRowTR()).prop('Record');
-        $('#tbQMSDM104 td:contains(' + GetNodeValue(node, 'DocNo') + ')').closest('tr').css('background-color', '#DEEBF7');
+        //$('#tbQMSDM104 td:contains(' + GetNodeValue(node, 'DocNo') + ')').closest('tr').css('background-color', '#DEEBF7');
         var pData = {
             DocNo: GetNodeValue(node, 'DocNo')
         }
@@ -1219,7 +1073,7 @@
     //查詢
     let btQuery_click = function (bt) {
         //Timerset();
-        $('#tbQMSDM104 thead tr th').css('background-color', '#ffb620')
+        //$('#tbQMSDM104 thead tr th').css('background-color', '#ffb620')
         $('#btQuery').prop('disabled', true)
         var App = "";
         var Def = "";

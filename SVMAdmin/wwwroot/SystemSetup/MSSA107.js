@@ -23,7 +23,8 @@
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
-                sortable: "N"
+                sortable: "N",
+                step: "Y"
             }
         );
 
@@ -79,12 +80,11 @@
         if (heads.toString().indexOf("時段") >= 0) {
             return;
         }
-
-        $('#tbQuery td').closest('tr').css('background-color', 'transparent');
+        //$('#tbQuery td').closest('tr').css('background-color', 'transparent');
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         var node = $(grdM.ActiveRowTR()).prop('Record');
-        $('#tbQuery td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
+        //$('#tbQuery td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
         $('#lblDW_Shop1').html($('#tbQuery thead th#th1').html());
         $('#lblShop1').html(GetNodeValue(node, 'ID'));
         //alert($('#lblShop1').html());
@@ -352,7 +352,7 @@
 //#endregion
 
     let ClearQuery = function () {
-        $('#tbQuery thead tr th').css('background-color', '#ffb620')
+        //$('#tbQuery thead tr th').css('background-color', '#ffb620')
         grdM.BindData(null)
         var heads = $('#tbQuery thead tr th#th0');
         if ($('#rdoShop').prop('checked')) {

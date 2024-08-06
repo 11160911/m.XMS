@@ -193,10 +193,29 @@ var DynGrid = function (option) {
     }
 
     if (option.sortable != null) {
+        //當有排序功能時，Grid標題需有變色效果
         if (option.sortable == "Y") {
             $(elm_table).find('thead tr th').click(
-                function () { SortData(this); }
+                function () {
+                    SortData(this);
+                    $(elm_table).find('thead tr th').css('background-color', '#ffb620')
+                    $(this).css('background-color', '#ffeaa7')
+                }
             );
+            $(elm_table).find('thead tr th').mouseenter(function () {
+                var rgb = $(this).css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $(this).css('background-color', '#ffff00')
+                }
+            });
+            $(elm_table).find('thead tr th').mouseleave(function () {
+                var rgb = $(this).css('background-color')
+                var hexcolor = SetRgbTo16(rgb);
+                if (hexcolor != '#ffeaa7') {
+                    $(this).css('background-color', '#ffb620')
+                }
+            });
         }
         if (option.sortable == "Y1") {
             var col1 = $('#thead1').prop('fdinfo',{ type: "Text", name: "ID" });
@@ -227,7 +246,6 @@ var DynGrid = function (option) {
 
     if (option.fixPage != null)
         fixPage = option.fixPage;
-
 
     var click_btExpXls = function () {
         var xmls = thisXmls;
@@ -627,6 +645,49 @@ var DynGrid = function (option) {
 
         if (option.afterBind != null)
             option.afterBind();
+
+        if (option.sortable != null) {
+            if (option.sortable == "Y") {
+                $(elm_table).find('thead tr th').css('background-color', '#ffb620')
+            }
+        }
+        //當有下一層時，Grid明細需有變色效果
+        if (option.step != null) {
+            if (option.step == "Y") {
+                $(elm_table).find('tbody tr:first').css('background-color', 'rgb(0,255,255,0.2)')
+
+                $(elm_table).find('tbody tr').click(
+                    function () {
+                        $(elm_table).find('tbody tr').css('background-color', 'transparent');
+                        $(this).css('background-color', 'rgb(0,0,255,0.2)');
+                    }
+                );
+                $(elm_table).find('tbody tr').mouseenter(
+                    function () {
+                        var rgbfirst = $(elm_table).find('tbody tr:first').css('background-color');
+                        var hexcolorfirst = SetRgbTo16(rgbfirst);
+                        if (hexcolorfirst == '#00ffff') {
+                            $(elm_table).find('tbody tr:first').css('background-color', 'transparent')
+                        }
+
+                        var rgb = $(this).css('background-color');
+                        var hexcolor = SetRgbTo16(rgb);
+                        if (hexcolor != '#0000ff') {
+                            $(this).css('background-color', 'rgb(0,255,255,0.2)')
+                        }
+                    }
+                );
+                $(elm_table).find('tbody tr').mouseleave(
+                    function () {
+                        var rgb = $(this).css('background-color')
+                        var hexcolor = SetRgbTo16(rgb);
+                        if (hexcolor != '#0000ff') {
+                            $(this).css('background-color', 'transparent')
+                        }
+                    }
+                );
+            }
+        }
     };
 
     this.BindData = function (data) {

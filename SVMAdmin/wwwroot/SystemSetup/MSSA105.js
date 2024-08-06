@@ -17,7 +17,8 @@
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitDetailButton,
-                sortable: "N"
+                sortable: "N",
+                step: "Y"
             }
         );
 
@@ -34,7 +35,8 @@
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitDetail2Button,
-                sortable: "N"
+                sortable: "N",
+                step: "Y"
             }
         );
 
@@ -71,15 +73,12 @@
     };
     //第二層
     let Step2_click = function (bt) {
-        $('#tbQuerySTEP1 td').closest('tr').css('background-color', 'transparent');
-
+        //$('#tbQuerySTEP1 td').closest('tr').css('background-color', 'transparent');
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         var node = $(grdSTEP1.ActiveRowTR()).prop('Record');
-        $('#tbQuerySTEP1 td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
-
+        //$('#tbQuerySTEP1 td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
         $('#modal_Step2').modal('show');
-
         $('#lblYear2').html($('#cboYear').val() + '年');
         $('#lblType').html($('#lblMonth').html());
         $('#lblShop').html(GetNodeValue(node, 'ID'));
@@ -134,15 +133,12 @@
     };
     //第一層
     let Step1_click = function (bt) {
-        $('#tbQuery td').closest('tr').css('background-color', 'transparent');
-
+        //$('#tbQuery td').closest('tr').css('background-color', 'transparent');
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
         var node = $(grdM.ActiveRowTR()).prop('Record');
-        $('#tbQuery td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
-
+        //$('#tbQuery td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
         $('#modal_Step1').modal('show');
-
         $('#lblYear').html($('#cboYear').val() + '年');
         $('#lblMonth').html(GetNodeValue(node, 'ID'));
         setTimeout(function () {
