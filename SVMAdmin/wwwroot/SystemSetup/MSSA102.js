@@ -29,9 +29,9 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                afterBind: InitModifyDeleteButton,
+                afterBind: InitDetailButton,
                 sortable: "Y",
-                step:"Y"
+                step: "Y"
             }
         );
 
@@ -52,11 +52,27 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                afterBind: InitShopHead,
-               sortable: "Y"
+                sortable: "Y"
             }
         );
 
+        grdM_PLU = new DynGrid(
+            {
+                table_lement: $('#tbPLU1')[0],
+                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 text-center"],
+                fields_info: [
+                    { type: "Text", name: "ID", style: "width:260px;vertical-align: middle;" },
+                    { type: "TextAmt", name: "CG_Amt", style: "vertical-align: middle;" },
+                    { type: "TextAmt", name: "CG_Qty", style: "vertical-align: middle;" },
+                    { type: "TextAmt", name: "CGVIP_Amt", style: "vertical-align: middle;" },
+                    { type: "TextAmt", name: "CGVIP_Qty", style: "vertical-align: middle;" },
+                    { type: "TextPercent", name: "VIPPer", style: "vertical-align: middle;" }
+                ],
+                //rows_per_page: 10,
+                method_clickrow: click_PLU,
+                sortable: "Y"
+            }
+        );
 
 
         return;
@@ -66,12 +82,9 @@
 
     };
 
-    let InitModifyDeleteButton = function () {
-        
-        $('#tbQuery tbody tr td').click(function () { Step1_click(this) });
-    }
-    let InitShopHead = function () {
+    let InitDetailButton = function () {
 
+        $('#tbQuery tbody tr td').click(function () { Step1_click(this) });
     }
 
     let Step1_click = function (bt) {
@@ -85,12 +98,11 @@
         $('.msg-valid').hide();
         var node = $(grdM.ActiveRowTR()).prop('Record');
         $('#tbQuery td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
+
         var cg = GetNodeValue(node, 'ID');
-        
         $('#lblCG_No').html(cg.split('\n')[0]);
         $('#lblCG_Date').html(cg.split('\n')[1]);
         $('#lblCG_Name').html(cg.split('\n')[2]);
-        //alert($('#lblShop1').html());
 
         $('#modal_Shop1').modal('show');
         setTimeout(function () {
@@ -100,8 +112,30 @@
 
     let QueryShop1 = function () {
         ShowLoading();
+
+        var Flag = "";
+
+        if ($('#rdoShop').prop('checked') == true) {
+            Flag = "S";
+            $('#tbShop1').show();
+            $('#tbPLU1').hide();
+
+        }
+        else if ($('#rdoPLU').prop('checked') == true) {
+            Flag = "P";
+            $('#tbShop1').hide();
+            if ($('#tbPLU1').attr('hidden') == undefined) {
+                $('#tbPLU1').show();
+            }
+            else {
+                $('#tbPLU1').removeAttr('hidden');
+                $('#tbPLU1').show();
+            }
+        }
+
         var pData = {
-            CG_No: $('#lblCG_No').html() 
+            CG_No: $('#lblCG_No').html(),
+            Flag: Flag
         }
         PostToWebApi({ url: "api/SystemSetup/MSSA102QueryShop", data: pData, success: afterMSSA102Query_Shop });
     };
@@ -114,30 +148,54 @@
         else {
             var dtShop = data.getElementsByTagName('dtShop');
             var dtSum = data.getElementsByTagName('dtSum');
-            grdM_Shop.BindData(dtShop);
 
-            if (dtShop.length == 0) {
-                DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
-                $('#tbShop1 thead td#td1').html('');
-                $('#tbShop1 thead td#td2').html('');
-                $('#tbShop1 thead td#td3').html('');
-                $('#tbShop1 thead td#td4').html('');
-                $('#tbShop1 thead td#td5').html('');
-                $('#tbShop1 thead td#td6').html('');
-                $('#tbShop1 thead td#td7').html('');
-                $('#tbShop1 thead td#td8').html('');
-                return;
+            if ($('#rdoShop').prop('checked') == true) {
+                grdM_Shop.BindData(dtShop);
+
+                if (dtShop.length == 0) {
+                    DyAlert("無符合資料!");
+                    $(".modal-backdrop").remove();
+                    $('#tbShop1 thead td#td1_Shop1').html('');
+                    $('#tbShop1 thead td#td2_Shop1').html('');
+                    $('#tbShop1 thead td#td3_Shop1').html('');
+                    $('#tbShop1 thead td#td4_Shop1').html('');
+                    $('#tbShop1 thead td#td5_Shop1').html('');
+                    $('#tbShop1 thead td#td6_Shop1').html('');
+                    $('#tbShop1 thead td#td7_Shop1').html('');
+                    $('#tbShop1 thead td#td8_Shop1').html('');
+                    return;
+                }
+
+                $('#tbShop1 thead td#td1_Shop1').html(parseInt(GetNodeValue(dtSum[0], "SalesAmt")).toLocaleString('en-US'));
+                $('#tbShop1 thead td#td2_Shop1').html(parseInt(GetNodeValue(dtSum[0], "SalesQty")).toLocaleString('en-US'));
+                $('#tbShop1 thead td#td3_Shop1').html(parseInt(GetNodeValue(dtSum[0], "CG_Amt")).toLocaleString('en-US'));
+                $('#tbShop1 thead td#td4_Shop1').html(parseInt(GetNodeValue(dtSum[0], "CG_Qty")).toLocaleString('en-US'));
+                $('#tbShop1 thead td#td5_Shop1').html(GetNodeValue(dtSum[0], "CGPer"));
+                $('#tbShop1 thead td#td6_Shop1').html(parseInt(GetNodeValue(dtSum[0], "CGVIP_Amt")).toLocaleString('en-US'));
+                $('#tbShop1 thead td#td7_Shop1').html(parseInt(GetNodeValue(dtSum[0], "CGVIP_Qty")).toLocaleString('en-US'));
+                $('#tbShop1 thead td#td8_Shop1').html(GetNodeValue(dtSum[0], "VIPPer"));
             }
+            else if ($('#rdoPLU').prop('checked') == true) {
+                grdM_PLU.BindData(dtShop);
 
-            $('#tbShop1 thead td#td1_Shop1').html(parseInt(GetNodeValue(dtSum[0], "SalesAmt")).toLocaleString('en-US'));
-            $('#tbShop1 thead td#td2_Shop1').html(parseInt(GetNodeValue(dtSum[0], "SalesQty")).toLocaleString('en-US'));
-            $('#tbShop1 thead td#td3_Shop1').html(parseInt(GetNodeValue(dtSum[0], "CG_Amt")).toLocaleString('en-US'));
-            $('#tbShop1 thead td#td4_Shop1').html(parseInt(GetNodeValue(dtSum[0], "CG_Qty")).toLocaleString('en-US'));
-            $('#tbShop1 thead td#td5_Shop1').html(GetNodeValue(dtSum[0], "CGPer"));
-            $('#tbShop1 thead td#td6_Shop1').html(parseInt(GetNodeValue(dtSum[0], "CGVIP_Amt")).toLocaleString('en-US'));
-            $('#tbShop1 thead td#td7_Shop1').html(parseInt(GetNodeValue(dtSum[0], "CGVIP_Qty")).toLocaleString('en-US'));
-            $('#tbShop1 thead td#td8_Shop1').html(GetNodeValue(dtSum[0], "VIPPer"));
+                if (dtShop.length == 0) {
+                    DyAlert("無符合資料!");
+                    $(".modal-backdrop").remove();
+                    $('#tbPLU1 thead td#td1_PLU1').html('');
+                    $('#tbPLU1 thead td#td2_PLU1').html('');
+                    $('#tbPLU1 thead td#td3_PLU1').html('');
+                    $('#tbPLU1 thead td#td4_PLU1').html('');
+                    $('#tbPLU1 thead td#td5_PLU1').html('');
+                    return;
+                }
+
+                $('#tbPLU1 thead td#td1_PLU1').html(parseInt(GetNodeValue(dtSum[0], "CG_Amt")).toLocaleString('en-US'));
+                $('#tbPLU1 thead td#td2_PLU1').html(parseInt(GetNodeValue(dtSum[0], "CG_Qty")).toLocaleString('en-US'));
+                $('#tbPLU1 thead td#td3_PLU1').html(parseInt(GetNodeValue(dtSum[0], "CGVIP_Amt")).toLocaleString('en-US'));
+                $('#tbPLU1 thead td#td4_PLU1').html(parseInt(GetNodeValue(dtSum[0], "CGVIP_Qty")).toLocaleString('en-US'));
+                $('#tbPLU1 thead td#td5_PLU1').html(GetNodeValue(dtSum[0], "VIPPer"));
+
+            }
         }
     };
     let btRe_Shop1_click = function (bt) {
@@ -150,28 +208,41 @@
     let ClearShop1 = function () {
         var pData = {
         }
-        PostToWebApi({ url: "api/SystemSetup/MSSD105Clear_Step1", data: pData, success: afterMSSA102Clear_Shop1 });
+        PostToWebApi({ url: "api/SystemSetup/MSSD102Clear_Step1", data: pData, success: afterMSSA102Clear_Shop1 });
     };
 
     let afterMSSA102Clear_Shop1 = function (data) {
-        if (ReturnMsg(data, 0) != "MSSD105Clear_Step1OK") {
+        if (ReturnMsg(data, 0) != "MSSD102Clear_Step1OK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
-            grdShop1.BindData(dtE);
 
-            $(".modal-backdrop").remove();
-            $('#tbShop1 thead td#td1_Shop1').html('');
-            $('#tbShop1 thead td#td2_Shop1').html('');
-            $('#tbShop1 thead td#td3_Shop1').html('');
-            $('#tbShop1 thead td#td4_Shop1').html('');
-            $('#tbShop1 thead td#td5_Shop1').html('');
-            $('#tbShop1 thead td#td6_Shop1').html('');
-            $('#tbShop1 thead td#td7_Shop1').html('');
-            $('#tbShop1 thead td#td8_Shop1').html('');
+            if ($('#rdoShop').prop('checked') == true) {
+                grdM_Shop.BindData(dtE);
 
-        }
+                $(".modal-backdrop").remove();
+                $('#tbShop1 thead td#td1_Shop1').html('');
+                $('#tbShop1 thead td#td2_Shop1').html('');
+                $('#tbShop1 thead td#td3_Shop1').html('');
+                $('#tbShop1 thead td#td4_Shop1').html('');
+                $('#tbShop1 thead td#td5_Shop1').html('');
+                $('#tbShop1 thead td#td6_Shop1').html('');
+                $('#tbShop1 thead td#td7_Shop1').html('');
+                $('#tbShop1 thead td#td8_Shop1').html('');
+            }
+            else if ($('#rdoPLU').prop('checked') == true) {
+                grdM_PLU.BindData(dtE);
+
+                $(".modal-backdrop").remove();
+                $('#tbPLU1 thead td#td1_PLU1').html('');
+                $('#tbPLU1 thead td#td2_PLU1').html('');
+                $('#tbPLU1 thead td#td3_PLU1').html('');
+                $('#tbPLU1 thead td#td4_PLU1').html('');
+                $('#tbPLU1 thead td#td5_PLU1').html('');
+            }
+            $('#rdoShop').prop('checked', 'true');
+       }
     };
 
     //清除
@@ -210,7 +281,7 @@
             DyAlert("促銷日期需輸入!", function () { $('#btQuery').prop('disabled', false); })
             return
         }
-        
+
         ShowLoading();
 
         setTimeout(function () {
@@ -238,12 +309,12 @@
                 return;
             }
 
-      
+
         }
     };
 
 
-//#region FormLoad
+    //#region FormLoad
     let GetInitMSSA102 = function (data) {
         if (ReturnMsg(data, 0) != "GetInitMSSA102OK") {
             DyAlert(ReturnMsg(data, 1));
@@ -260,20 +331,20 @@
             $('#btClear').click(function () { btClear_click(this) });
 
             $('#btExit_Shop').click(function () { btRe_Shop1_click(this) });
-           //$('#rdoS,#rdoD').change(function () { ClearQuery() });
+            $('#rdoShop,#rdoPLU').change(function () { Step1_click() });
         }
     };
-    
+
     let afterLoadPage = function () {
         var pData = {
             ProgramID: "MSSA102"
         }
         PostToWebApi({ url: "api/SystemSetup/GetInitMSSA102", data: pData, success: GetInitMSSA102 });
     };
-//#endregion
-    
+    //#endregion
 
-    if ($('#pgMSSA102').length == 0) {  
+
+    if ($('#pgMSSA102').length == 0) {
         AllPages = new LoadAllPages(ParentNode, "SystemSetup/MSSA102", ["pgMSSA102Init"], afterLoadPage);
     };
 
