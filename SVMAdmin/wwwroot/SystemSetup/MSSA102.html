@@ -124,6 +124,7 @@
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
+                                    vertical-align: middle;
                                 }
 
                                 #tbQuery thead tr td {
@@ -131,12 +132,14 @@
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
+                                    vertical-align: middle;
                                 }
 
                                 #tbQuery tbody tr td {
                                     font-size: 16px;
                                     padding: 3px;
                                     font-weight: bold;
+                                    vertical-align: middle;
                                 }
 
                                 th:first-child {
@@ -269,7 +272,7 @@
 
                     <div class="modal fade" id="modal_Shop1" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" id="modalcon_Step1">
+                            <div class="modal-content  DyForm3-PanelD" >
                                 <style>
 
                                     #tbShop1 thead tr th {
@@ -277,6 +280,7 @@
                                         padding: 3px;
                                         background-color: #ffb620;
                                         font-weight: bold;
+                                        vertical-align: middle;
                                     }
 
                                     #tbShop1 thead tr td {
@@ -284,12 +288,14 @@
                                         padding: 3px;
                                         background-color: #ffb620;
                                         font-weight: bold;
+                                        vertical-align: middle;
                                     }
 
                                     #tbShop1 tbody tr td {
                                         font-size: 16px;
                                         padding: 3px;
                                         font-weight: bold;
+                                        vertical-align: middle;
                                     }
 
                                     th:first-child {
@@ -327,29 +333,10 @@
                                         z-index: 2;
                                     }
 
-                                    #modalcon_Shop1 {
-                                        height: 900px;
-                                        width: 1400px;
-                                        left: -200px;
-                                        background-image: url(images/mxmslogo9a.JPG);
-                                        background-repeat: no-repeat;
-                                        background-attachment: fixed;
-                                        background-position: center;
-                                    }
-
-                                    #divShop1 {
-                                        height: 550px;
-                                    }
                                     /*手機畫面*/
                                     @media (max-width:767px) {
                                         /*螢幕縱向*/
                                         @media screen and (orientation: portrait) {
-                                            #modalcon_Shop1 {
-                                                height: 650px;
-                                                width: 100%;
-                                                left: 0px;
-                                                background-size: 400px 430px;
-                                            }
 
                                             #divShop1 {
                                                 height: 450px;
@@ -373,16 +360,25 @@
                                         }
                                         /*螢幕橫向*/
                                         @media screen and (orientation: landscape) {
-                                            #modalcon_Shop1 {
-                                                height: 280px;
-                                                width: 100%;
-                                                left: 0px;
-                                                background-size: 400px 430px;
+
+                                            #th1_Shop1, #th2_Shop1, #th3_Shop1, #th4_Shop1, #th5_Shop1, #th6_Shop1, #th7_Shop1, #th8_Shop1, #th9_Shop1, #th10_Shop1, #th11_Shop1, #th12_Shop1 {
+                                                top: 67px;
+                                                z-index: 2;
                                             }
 
-                                            #divShop1 {
-                                                height: 110px;
+                                            #td1_Shop1, #td2_Shop1, #td3_Shop1, #td4_Shop1, #td5_Shop1, #td6_Shop1, #td7_Shop1, #td8_Shop1, #td9_Shop1, #td10_Shop1, #td11_Shop1, #td12_Shop1 {
+                                                top: 155px;
+                                                z-index: 2;
+                                                color: red;
                                             }
+
+                                            #td0_Shop1 {
+                                                top: 155px;
+                                                z-index: 2;
+                                            }
+                                        }
+                                        /*螢幕橫向*/
+                                        @media screen and (orientation: landscape) {
                                         }
                                     }
                                 </style>
@@ -415,7 +411,7 @@
 
                                     <div class="card-block forminput">
                                         <div class="x_content">
-                                            <div style="overflow: auto; height: 630px;">
+                                            <div class="DyForm3-TableD">
                                                 <table id="tbShop1" class="table table-bordered DyForm3-Table">
                                                     <thead>
                                                         <!--第一層-->
