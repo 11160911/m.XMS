@@ -13587,6 +13587,150 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("SystemSetup/GetInitMSSA102")]
+        public ActionResult SystemSetup_GetInitMSSA102()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "GetInitMSSA102OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string ProgramID = rq["ProgramID"];
+                string sql = "select ChineseName,convert(char(10),getdate(),111) SysDate from ProgramIDWeb (nolock) where ProgramID='" + ProgramID.SqlQuote() + "'";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSSA102Query")]
+        public ActionResult SystemSetup_MSSA102Query()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSA102QueryOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Opendate = rq["Opendate"];
+
+                string sqldw = "select h.CG_NO+char(13)+h.CG_Name+char(13)+h.StartDate+'~'+h.EndDate ID,sum(a.SalesAmt) SalesAmt,sum(a.SalesQty) SalesQty,sum(a.CG_Amt) CG_Amt,sum(a.CG_Qty) CG_Qty,sum(a.CGVIP_Amt) CGVIP_Amt,sum(a.CGVIP_Qty) CGVIP_Qty ";
+                sqldw += ",format(case when sum(a.SalesAmt)>0 then sum(a.CG_Amt)/sum(a.SalesAmt) else 0 end,'p') CGPer ";
+                sqldw += ",format(case when sum(a.SalesAmt)>0 then sum(a.CGVIP_Amt)/sum(a.SalesAmt) else 0 end,'p') VIPPer ";
+                sqldw += "from MSData4Web a join CompositeHWeb h on a.CompanyCode=h.CompanyCode and a.PrDocNO=h.CG_No  ";
+                sqldw += " where a.CompanyCode='" + uu.CompanyId + "' and '" + Opendate + "' between h.StartDate and h.EndDate and isnull(h.DefeasanceDate,'')=''";
+                sqldw += " group by h.CG_NO,h.CG_Name,h.StartDate,h.EndDate";
+                DataTable dtD = PubUtility.SqlQry(string.Format(sqldw, ""), uu, "SYS");
+                dtD.TableName = "dtD";
+                ds.Tables.Add(dtD);
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSSA102QueryShop")]
+        public ActionResult SystemSetup_MSSA102QueryShop()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSA102QueryShopOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string CG_NO = rq["CG_NO"];
+                string Flag = rq["Flag"];
+
+                if (Flag == "S")
+                {
+                    string sqldw = "select a.ShopNO+char(13)+b.ST_Sname ID,sum(a.SalesAmt) SalesAmt,sum(a.SalesQty) SalesQty,sum(a.CG_Amt) CG_Amt,sum(a.CG_Qty) CG_Qty,sum(a.CGVIP_Amt) CGVIP_Amt,sum(a.CGVIP_Qty) CGVIP_Qty ";
+                    sqldw += ",format(case when sum(a.SalesAmt)>0 then sum(a.CG_Amt)/sum(a.SalesAmt) else 0 end,'p') CGPer ";
+                    sqldw += ",format(case when sum(a.SalesAmt)>0 then sum(a.CGVIP_Amt)/sum(a.SalesAmt) else 0 end,'p') VIPPer ";
+                    sqldw += "from MSData4Web a join CompositeHWeb h on a.CompanyCode=h.CompanyCode and a.PrDocNO=h.CG_No  ";
+                    sqldw += " join WarehouseWeb b  on a.CompanyCode=b.CompanyCode and a.ShopNO=b.ST_ID ";
+                    sqldw += " where a.CompanyCode='" + uu.CompanyId + "' and h.CG_NO='" + CG_NO + "' ";
+                    sqldw += " group by a.ShopNO,b.ST_Sname";
+                    DataTable dtShop = PubUtility.SqlQry(string.Format(sqldw, ""), uu, "SYS");
+                    dtShop.TableName = "dtShop";
+                    ds.Tables.Add(dtShop);
+
+                    sqldw = "select sum(a.SalesAmt) SalesAmt,sum(a.SalesQty) SalesQty,sum(a.CG_Amt) CG_Amt,sum(a.CG_Qty) CG_Qty,sum(a.CGVIP_Amt) CGVIP_Amt,sum(a.CGVIP_Qty) CGVIP_Qty ";
+                    sqldw += ",format(case when sum(a.SalesAmt)>0 then sum(a.CG_Amt)/sum(a.SalesAmt) else 0 end,'p') CGPer ";
+                    sqldw += ",format(case when sum(a.SalesAmt)>0 then sum(a.CGVIP_Amt)/sum(a.SalesAmt) else 0 end,'p') VIPPer ";
+                    sqldw += "from MSData4Web a join CompositeHWeb h on a.CompanyCode=h.CompanyCode and a.PrDocNO=h.CG_No  ";
+                    sqldw += " where a.CompanyCode='" + uu.CompanyId + "' and h.CG_NO='" + CG_NO + "' ";
+                    DataTable dtSum = PubUtility.SqlQry(string.Format(sqldw, ""), uu, "SYS");
+                    dtSum.TableName = "dtSum";
+                    ds.Tables.Add(dtSum);
+                }
+                else if (Flag == "P")
+                {
+                    string sql = "select a.GoodsNO+char(13)+b.GD_NAME ID,sum(a.CG_Cash) CG_Amt,sum(a.CG_Qty) CG_Qty,sum(a.CGVIP_Cash) CGVIP_Amt,sum(a.CGVIP_Qty) CGVIP_Qty "; 
+                    sql += ",format(case when sum(a.CG_Cash)>0 then sum(a.CGVIP_Cash)/sum(a.CG_Cash) else 0 end,'p') VIPPer ";
+                    sql += "from MSData4_1Web a left join PLUWeb b on a.CompanyCode=b.CompanyCode and a.GoodsNO=b.GD_NO ";
+                    sql += "where a.CompanyCode='" + uu.CompanyId + "' and a.PrDocNO='" + CG_NO + "'";
+                    sql += " group by a.GoodsNO,b.GD_NAME";
+                    DataTable dtShop = PubUtility.SqlQry(string.Format(sql, ""), uu, "SYS");
+                    dtShop.TableName = "dtShop";
+                    ds.Tables.Add(dtShop);
+
+                    sql = "select sum(a.CG_Cash) CG_Amt,sum(a.CG_Qty) CG_Qty,sum(a.CGVIP_Cash) CGVIP_Amt,sum(a.CGVIP_Qty) CGVIP_Qty ";
+                    sql += ",format(case when sum(a.CG_Cash)>0 then sum(a.CGVIP_Cash)/sum(a.CG_Cash) else 0 end,'p') VIPPer ";
+                    sql += "from MSData4_1Web a left join PLUWeb b on a.CompanyCode=b.CompanyCode and a.GoodsNO=b.GD_NO ";
+                    sql += "where a.CompanyCode='" + uu.CompanyId + "' and a.PrDocNO='" + CG_NO + "'";
+                    DataTable dtSum = PubUtility.SqlQry(string.Format(sql, ""), uu, "SYS");
+                    dtSum.TableName = "dtSum";
+                    ds.Tables.Add(dtSum);
+                }
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSSD102Clear_Step1")]
+        public ActionResult SystemSetup_MSSD102Clear_Step1()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSD102Clear_Step1OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string sql = "";
+
+                sql = "Select '' as ID,'' as SalesAmt, ";
+                sql += "'' as SalesQty,'' as CG_Amt,'' as CG_Qty, ";
+                sql += "'' as CGVIP_Amt,'' as CGVIP_Qty,'' as CGPer, ";
+                sql += "'' as VIPPer ";
+                sql += "From MSData4Web (nolock) ";
+                sql += "Where 1=2 ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
         [Route("SystemSetup/LookUp")]
         public ActionResult SystemSetup_LookUp()
         {
