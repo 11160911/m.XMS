@@ -13545,12 +13545,13 @@ namespace SVMAdmin.Controllers
 
                 if (Flag == "S")
                 {
-                    string sqldw = "select a.ShopNo ID,sum(a.SalesAmt) SalesAmt,sum(a.SalesQty) SalesQty,sum(a.CG_Amt) CG_Amt,sum(a.CG_Qty) CG_Qty,sum(a.CGVIP_Amt) CGVIP_Amt,sum(a.CGVIP_Qty) CGVIP_Qty ";
+                    string sqldw = "select a.ShopNO+char(13)+b.ST_Sname ID,sum(a.SalesAmt) SalesAmt,sum(a.SalesQty) SalesQty,sum(a.CG_Amt) CG_Amt,sum(a.CG_Qty) CG_Qty,sum(a.CGVIP_Amt) CGVIP_Amt,sum(a.CGVIP_Qty) CGVIP_Qty ";
                     sqldw += ",format(case when sum(a.SalesAmt)>0 then sum(a.CG_Amt)/sum(a.SalesAmt) else 0 end,'p') CGPer ";
                     sqldw += ",format(case when sum(a.SalesAmt)>0 then sum(a.CGVIP_Amt)/sum(a.SalesAmt) else 0 end,'p') VIPPer ";
                     sqldw += "from MSData4Web a join CompositeHWeb h on a.CompanyCode=h.CompanyCode and a.PrDocNO=h.CG_No  ";
+                    sqldw += " join WarehouseWeb b  on a.CompanyCode=b.CompanyCode and a.ShopNO=b.ST_ID ";
                     sqldw += " where a.CompanyCode='" + uu.CompanyId + "' and h.CG_NO='" + CG_NO + "' ";
-                    sqldw += " group by a.ShopNo";
+                    sqldw += " group by a.ShopNO,b.ST_Sname";
                     DataTable dtShop = PubUtility.SqlQry(string.Format(sqldw, ""), uu, "SYS");
                     dtShop.TableName = "dtShop";
                     ds.Tables.Add(dtShop);
