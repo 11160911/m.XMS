@@ -146,7 +146,7 @@
 
             <!-- top navigation -->
             <div class="top_nav">
-                <div class="nav_menu" style="background-color: white; background-image: url(images/Web抬頭-地球.png);background-position: 45px; background-repeat: no-repeat; background-size:350px 40px">
+                <div class="nav_menu" style="background-color: white; background-image: url(images/mxms抬頭1.jpg); background-position: 45px; background-repeat: no-repeat; ">
 
                     <div class="nav toggle">
                         <a id="menu_toggle"><i class="fa fa-bars"></i></a>
@@ -177,43 +177,241 @@
             <div class="right_col" role="main" style="background-color: whitesmoke;">
                 <div class="workarea">
                     <style>
+                        .MenuCard {
+                            background-color: transparent;
+                            width: 350px;
+                            border:1px solid black;
+                            margin-bottom:5px;
+                        }
+                        .MenuCardH {
+                            padding-bottom:0px;
+                            background-color: #0064A8;
+                            justify-content: space-between;
+                            display:flex;
+                        }
                         /*手機畫面*/
                         @media (max-width:767px) {
                         }
                     </style>
-                        <article class="x_panel DyForm3-PanelIni" >
+                    <article class="x_panel DyForm3-PanelMenu">
                         <!-- <img src="images/home5.jpg" style="width: 85%;height:90%; display: block; margin: auto " / >-->
-                        
-    
+
+                        <div class="form-group row" style="width: 100%;margin-left:12px">
+                            <label class="DyForm3-LabelBlack"> 最新統計時間&ensp;:&ensp;</label>
+                            <label id="lblSysDate" class="DyForm3-LabelRed"> </label>
+                        </div>
+                        <!--第一層-->
+                        <div class="form-group row" style="width: 100%;justify-content:space-around">
+                            <!--今日-->
+                            <div class="card MenuCard">
+                                <div class="card-header MenuCardH">
+                                    <label class="DyForm3-LabelBlack" style="color:white">今日</label>
+                                    <label id="lblA1" class="DyForm3-LabelBlack" style="color:white"></label>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group row" style="width: 100%; justify-content:space-between">
+                                        <label class="DyForm3-LabelBlack">即時營業額</label>
+                                        <label id="lblA2" class="DyForm3-LabelBlack" style="color:red"></label>
+                                    </div>
+                                    <div class="form-group row" style="width: 100%; justify-content: space-between">
+                                        <label class="DyForm3-LabelBlack">來客數</label>
+                                        <label id="lblA3" class="DyForm3-LabelBlack" style="color:blue"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--昨日-->
+                            <div class="card MenuCard">
+                                <div class="card-header MenuCardH">
+                                    <label class="DyForm3-LabelBlack" style="color:white">昨日</label>
+                                    <label id="lblB1" class="DyForm3-LabelBlack" style="color:white"></label>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group row" style="width: 100%; justify-content:space-between">
+                                        <label class="DyForm3-LabelBlack">昨日營業額</label>
+                                        <label id="lblB2" class="DyForm3-LabelBlack" style="color:red"></label>
+                                    </div>
+                                    <div class="form-group row" style="width: 100%; justify-content: space-between">
+                                        <label class="DyForm3-LabelBlack">來客數</label>
+                                        <label id="lblB3" class="DyForm3-LabelBlack" style="color:blue"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--本月-->
+                            <div class="card MenuCard">
+                                <div class="card-header MenuCardH">
+                                    <label class="DyForm3-LabelBlack" style="color:white">本月</label>
+                                    <label id="lblC1" class="DyForm3-LabelBlack" style="color:white"></label>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group row" style="width: 100%; justify-content:space-between">
+                                        <label class="DyForm3-LabelBlack">本月累計營業額</label>
+                                        <label id="lblC2" class="DyForm3-LabelBlack" style="color:red"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--本年度-->
+                            <div class="card MenuCard">
+                                <div class="card-header MenuCardH">
+                                    <label class="DyForm3-LabelBlack" style="color:white">本年度</label>
+                                    <label id="lblD1" class="DyForm3-LabelBlack" style="color:white"></label>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group row" style="width: 100%; justify-content:space-between">
+                                        <label class="DyForm3-LabelBlack">年度累計營業額</label>
+                                        <label id="lblD2" class="DyForm3-LabelBlack" style="color:red"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--第二層-->
+                        <div class="form-group row" style="width: 100%;justify-content:space-around">
+                            <!--本月商品銷售排行前10名-->
+                            <div class="card MenuCard">
+                                <div class="card-header MenuCardH">
+                                    <label class="DyForm3-LabelBlack" style="color:white;margin-left:auto;margin-right:auto">本月商品銷售排行前10名</label>
+                                </div>
+                                <div class="card-body">
+                                    <table id="tbE" class="DyForm3-Table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">排行</th>
+                                                <th class="text-center">商品</th>
+                                                <th class="text-center">銷售數量</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--本月店別銷售排行前10名-->
+                            <div class="card MenuCard">
+                                <div class="card-header MenuCardH">
+                                    <label class="DyForm3-LabelBlack" style="color:white;margin-left:auto;margin-right:auto">本月店別銷售排行前10名</label>
+                                </div>
+                                <div class="card-body">
+                                    <table id="tbF" class="DyForm3-Table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">排行</th>
+                                                <th class="text-center">店別</th>
+                                                <th class="text-center">銷售金額</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--本月各區業績比較圖-->
+                            <div class="card MenuCard">
+                                <div class="card-header MenuCardH">
+                                    <label class="DyForm3-LabelBlack" style="color:white;margin-left:auto;margin-right:auto">本月各區業績比較圖</label>
+                                </div>
+                                <div class="card-body">
+                                    <div id="divG" style="width: 100%; height: 100%; "></div>
+                                </div>
+                            </div>
+                            <!--本年度各月業績比較圖-->
+                            <div class="card MenuCard">
+                                <div class="card-header MenuCardH">
+                                    <label class="DyForm3-LabelBlack" style="color:white;margin-left:auto;margin-right:auto">本年度各月業績比較圖</label>
+                                </div>
+                                <div class="card-body">
+                                    <div id="divH" style="width: 100%; height: 100%; "></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--第三層-->
+                        <!--<div div class="form-group row" style="width: 100%; margin: auto">
+                            <div class="card MenuCard" style="width: 100%; height: 100% ">
+                                <div class="card-header MenuCardH">
+                                    <label class="DyForm3-LabelBlack" style="color:white;margin-left:auto;margin-right:auto">日客單價曲線圖</label>
+                                </div>
+                                <div class="card-body">
+                                    <div id="divI" style="width: 100%; height: 100%; "></div>
+                                </div>
+                            </div>
+                        </div>-->
+                        <!--折線圖放大版，寬高固定-->
+                        <div div class="form-group row" style="width: 1400px;margin:auto">
+                            <!--日客單價曲線圖-->
+                            <div class="card MenuCard" style="width:1800px;height:300px">
+                                <div class="card-header MenuCardH">
+                                    <label class="DyForm3-LabelBlack" style="color:white;margin-left:auto;margin-right:auto">日客單價曲線圖</label>
+                                </div>
+                                <div class="card-body">
+                                    <div id="divI" style="width: 100%; height: 250px; "></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--第四層-->
+                        <div div class="form-group row" style="width: 1400px; margin: auto">
+                            <div class="card MenuCard" style="width: 1800px">
+                                <div class="card-header MenuCardH">
+                                    <label class="DyForm3-LabelBlack" style="color:white;margin-left:auto;margin-right:auto">公佈欄</label>
+                                </div>
+                                <div class="card-body">
+                                    <table id="tbJ" class="table table-bordered DyForm3-Table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">發佈日期</th>
+                                                <th class="text-center">標題</th>
+                                                <th class="text-center">附件名稱</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
                         <!-- 數位儀表版-- >
-                        <!-- <div class="form-group row" style="width: 100%" >
-                        <label class="DyForm3-LabelBlack" > 最新統計時間&ensp;:&ensp;</label >
-                        <label id="lblTime" class="DyForm3-LabelRed" > </label >
-                        </div >
+    <!-- <div class="form-group row" style="width: 100%" >
+    <label class="DyForm3-LabelBlack" > 最新統計時間&ensp;:&ensp;</label >
+    <label id="lblTime" class="DyForm3-LabelRed" > </label >
+    </div >
 
-                        <div class="form-group row" style="width: 100%" >
-                        <div style="border:1px;width:25%" >
-                        <div class="form-group row" >
-                        <label class="DyForm3-LabelBlack" > 即時營業額&ensp;:&ensp;</label >
-                        <label id="lblNowCash" class="DyForm3-LabelRed" > </label >
-                        </div >
-                        </div >
-                        <div class="form-group row" style="border:1px;width:25%" >
-                        <label class="DyForm3-LabelBlack" > 昨日營業額&ensp;:&ensp;</label >
-                        <label id="lbloldCash" class="DyForm3-LabelRed" > </label >
-                        </div >
-                        </div >
+    <div class="form-group row" style="width: 100%" >
+    <div style="border:1px;width:25%" >
+    <div class="form-group row" >
+    <label class="DyForm3-LabelBlack" > 即時營業額&ensp;:&ensp;</label >
+    <label id="lblNowCash" class="DyForm3-LabelRed" > </label >
+    </div >
+    </div >
+    <div class="form-group row" style="border:1px;width:25%" >
+    <label class="DyForm3-LabelBlack" > 昨日營業額&ensp;:&ensp;</label >
+    <label id="lbloldCash" class="DyForm3-LabelRed" > </label >
+    </div >
+    </div >
 
-                        <div class="form-group row" style="width: 100%" >
-                        <div id="divline" style="width: 100%;height:250px;" > </div >
-                        </div >
-                        <div class="form-group row" style="width: 100%" >
-                        <div id="divBar" style="width: 100%; height: 250px; " > </div >
-                        </div >
-                        <div class="form-group row" style="width: 100%" >
-                        <div id="divPie" style="width: 100%; height: 250px; " > </div >
-                        </div >-->
-                        </article >
+    <div class="form-group row" style="width: 100%" >
+    <div id="divline" style="width: 100%;height:250px;" > </div >
+    </div >
+    <div class="form-group row" style="width: 100%" >
+    <div id="divBar" style="width: 100%; height: 250px; " > </div >
+    </div >
+    <div class="form-group row" style="width: 100%" >
+    <div id="divPie" style="width: 100%; height: 250px; " > </div >
+    </div >-->
+                    </article>
                         </div >
                         <div class="pull-right" >
                         <p > ©2024 世代流通資訊股份有限公司 版權所有</p >

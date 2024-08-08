@@ -403,11 +403,11 @@ namespace SVMAdmin.Controllers
                     sql += "where c.Companycode='" + uu.CompanyId + "') ";
                     sql += "order by a.SectionID,a.orderSequence ";
                 }
-                DataTable dtA = PubUtility.SqlQry(sql, uu, "SYS");
-                dtA.TableName = "dtAllFunction";
+                DataTable dtAll = PubUtility.SqlQry(sql, uu, "SYS");
+                dtAll.TableName = "dtAllFunction";
                 if (ds.Tables["dtAllFunction"] == null)
-                    if (dtA.DataSet == null)
-                        ds.Tables.Add(dtA);
+                    if (dtAll.DataSet == null)
+                        ds.Tables.Add(dtAll);
 
                 //DataTable dt = ConstList.AllFunction(dtA);
                 //if (ds.Tables["dtAllFunction"] == null)
@@ -422,10 +422,119 @@ namespace SVMAdmin.Controllers
                 dtU.TableName = "dtEmployee";
                 ds.Tables.Add(dtU);
 
+                sql = "Select OpenDate A1,sum(cash) A2,sum(RecCount) A3 ";
+                sql += "From SalesAtonceHWeb (nolock) ";
+                sql += "Where Companycode='" + uu.CompanyId + "' ";
+                sql += "and OpenDate=convert(char(10),getdate(),111) ";
+                sql += "group by OpenDate ";
+                DataTable dtA = PubUtility.SqlQry(sql, uu, "SYS");
+                dtA.TableName = "dtA";
+                ds.Tables.Add(dtA);
+
+                sql = "Select OpenDate B1,sum(cash) B2,sum(RecS) B3 ";
+                sql += "From SalesHWeb (nolock) ";
+                sql += "Where Companycode='" + uu.CompanyId + "' ";
+                sql += "and OpenDate=convert(char,dateadd(DD,-1,getdate()),111) ";
+                sql += "group by OpenDate ";
+                DataTable dtB = PubUtility.SqlQry(sql, uu, "SYS");
+                dtB.TableName = "dtB";
+                ds.Tables.Add(dtB);
+
+                sql = "Select left(OpenDate,7) C1,sum(cash) C2 ";
+                sql += "From SalesHWeb (nolock) ";
+                sql += "Where Companycode='" + uu.CompanyId + "' ";
+                sql += "and left(OpenDate,7)=convert(char(7),getdate(),111) ";
+                sql += "group by left(OpenDate,7) ";
+                DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                dtC.TableName = "dtC";
+                ds.Tables.Add(dtC);
+
+                sql = "Select left(OpenDate,4) D1,sum(cash) D2 ";
+                sql += "From SalesHWeb (nolock) ";
+                sql += "Where Companycode='" + uu.CompanyId + "' ";
+                sql += "and left(OpenDate,4)=convert(char(4),getdate(),111) ";
+                sql += "group by left(OpenDate,4) ";
+                DataTable dtD = PubUtility.SqlQry(sql, uu, "SYS");
+                dtD.TableName = "dtD";
+                ds.Tables.Add(dtD);
+
+                sql = "Select Top 10 ROW_NUMBER() over(order by sum(a.num) desc) E1,b.GD_Name E2,sum(a.num) E3 ";
+                sql += "From SalesDWeb a (nolock) ";
+                sql += "left join PLUWeb b (nolock) on a.GoodsNo=b.GD_NO and b.Companycode=a.Companycode ";
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                sql += "and left(a.OpenDate,7)=convert(char(7),getdate(),111) ";
+                sql += "group by a.GoodsNo,b.GD_Name ";
+                sql += "order by sum(a.num) desc ";
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+
+                sql = "Select Top 10 ROW_NUMBER() over(order by sum(a.cash) desc) F1,b.ST_SName F2,sum(a.cash) F3 ";
+                sql += "From SalesHWeb a (nolock) ";
+                sql += "left join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode ";
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                sql += "and left(a.OpenDate,7)=convert(char(7),getdate(),111) ";
+                sql += "group by a.ShopNo,b.ST_SName ";
+                sql += "order by sum(a.cash) desc ";
+                DataTable dtF = PubUtility.SqlQry(sql, uu, "SYS");
+                dtF.TableName = "dtF";
+                ds.Tables.Add(dtF);
+
+                sql = "Select c.Type_Name name,sum(cash) value ";
+                sql += "from SalesHWeb a (nolock) ";
+                sql += "left join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.CompanyCode=a.CompanyCode ";
+                sql += "inner join TypeDataWeb c (nolock) on b.ST_placeID=c.Type_ID and c.Type_Code='A' and c.CompanyCode=a.CompanyCode ";
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                sql += "and left(a.OpenDate,7)=convert(char(7),getdate(),111) ";
+                sql += "group by b.ST_placeID,c.Type_Name ";
+                DataTable dtG = PubUtility.SqlQry(sql, uu, "SYS");
+                dtG.TableName = "dtG";
+                ds.Tables.Add(dtG);
+
+                sql = "DECLARE @Table AS TABLE ([month] VARCHAR(2));DECLARE @id INT;SET @id=1;WHILE @id<=12 BEGIN INSERT INTO @Table (month) VALUES (RIGHT('0' + Ltrim(Str(@id)), 2)); SET @id += 1; END; ";
+                sql += "select left(OpenDate,7)ym1,sum(Cash)cash1 into #h1 ";
+                sql += "from SalesHWeb (nolock) ";
+                sql += "where Companycode='" + uu.CompanyId + "' ";
+                sql += "and left(OpenDate,4)=convert(char(4),dateadd(YEAR,-1,getdate()),111) ";
+                sql += "group by left(OpenDate,7) order by left(OpenDate,7); ";
+                sql += "select left(OpenDate,7)ym2,sum(Cash)cash2 into #h2 ";
+                sql += "from SalesHWeb (nolock) ";
+                sql += "where Companycode='" + uu.CompanyId + "' ";
+                sql += "and left(OpenDate,4)=convert(char(4),getdate(),111) ";
+                sql += "group by left(OpenDate,7) order by left(OpenDate,7); ";
+
+                sql += "Select a.month + '月' name, ";
+                sql += "b.cash1 value1,c.cash2 value2 ";
+                sql += "From @Table a ";
+                sql += "left join #h1 b on a.month=right(b.ym1,2) ";
+                sql += "left join #h2 c on a.month=right(c.ym2,2) ";
+                sql += "order by a.month ";
+                DataTable dtH = PubUtility.SqlQry(sql, uu, "SYS");
+                dtH.TableName = "dtH";
+                ds.Tables.Add(dtH);
+
+                sql = "select OpenDate name,sum(VIP_Cash)/sum(VIP_RecS) value1,sum(Cash-VIP_Cash)/SUM(RecS-VIP_RecS) value2,sum(Cash)/sum(RecS) value3 ";
+                sql += "from SalesHWeb (nolock) ";
+                sql += "where CompanyCode='" + uu.CompanyId + "' ";
+                sql += "and OpenDate between convert(char,dateadd(DD,-365,getdate()),111) and convert(char,dateadd(DD,-1,getdate()),111) ";
+                sql += "group by OpenDate ";
+                sql += "order by OpenDate ";
+                DataTable dtI = PubUtility.SqlQry(sql, uu, "SYS");
+                dtI.TableName = "dtI";
+                ds.Tables.Add(dtI);
+
+                sql = "select AnnounceDate J1,Title J2,FileName J3,Att J4 ";
+                sql += "from MessageHweb (nolock)  ";
+                sql += "where CompanyCode='" + uu.CompanyId + "' and EndDate>=convert(char(10),getdate(),111)  ";
+                sql += "and ISNULL(ApproveDate,'')<>'' and ISNULL(DeDate,'')='' order by AnnounceDate desc ";
+                DataTable dtJ = PubUtility.SqlQry(sql, uu, "SYS");
+                dtJ.TableName = "dtJ";
+                ds.Tables.Add(dtJ);
+
                 //sql = "select top 5 opendate name,sum(cash)value,sum(cash)/sum(recs) a2 from SalesHWeb (nolock) where CompanyCode='" + uu.CompanyId + "' group by opendate order by opendate ";
-                //DataTable dtH = PubUtility.SqlQry(sql, uu, "SYS");
-                //dtH.TableName = "dtH";
-                //ds.Tables.Add(dtH);
+                //DataTable dtG = PubUtility.SqlQry(sql, uu, "SYS");
+                //dtG.TableName = "dtG";
+                //ds.Tables.Add(dtG);
             }
             catch (Exception err)
             {

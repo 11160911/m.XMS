@@ -30,7 +30,11 @@
 (function ($) {
     var dtFun;
     var LogOut = false;
-    
+    let grdE;
+    let grdF;
+    let grdJ;
+
+
     var Initdoc = function () {
         UU = sessionStorage.getItem('token');
         PostToWebApi({ url: "api/GetMenuInit", success: AfterInit, complete: GetHeads });
@@ -38,7 +42,6 @@
     };
 
     var AfterInit = function (data) {
-        
         if (ReturnMsg(data, 0) != "GetMenuInitOK") {
             DyAlert(ReturnMsg(data, 1));
         }
@@ -47,10 +50,8 @@
                 footerHeight = $BODY.hasClass('footer_fixed') ? -10 : $FOOTER.height(),
                 leftColHeight = $LEFT_COL.eq(1).height() + $SIDEBAR_FOOTER.height(),
                 contentHeight = bodyHeight < leftColHeight ? leftColHeight : bodyHeight;
-
             contentHeight -= $NAV_MENU.height() + footerHeight;
             $RIGHT_COL.css('min-height', contentHeight);
-
             //$("a[href='Login']").attr("href", "Login");
             $('#logout').click(function () {
                 var pData = {
@@ -67,10 +68,8 @@
             $('#navbarDropdown').text(GetNodeValue(dtEmployeeSV[0], 'ChineseName') + '-' + GetNodeValue(dtEmployeeSV[0], 'UName'));
             dtFun = data.getElementsByTagName('dtAllFunction');
             SetMenu();
-            //$('#lblTime').html(GetNodeValue(dtEmployeeSV[0], 'SysDate'))
-            //Setline(data);
-            //SetBar(data);
-            //SetPie(data);
+            AssignVar();
+            SetHome(data);
             init_sidebar();
             return;
         }
@@ -102,20 +101,140 @@
         }
     };
 
+    let AssignVar = function () {
+        grdE = new DynGrid(
+            {
+                table_lement: $('#tbE')[0],
+                class_collection: ["tdCol1 text-center", "tdCol2 text-center", "tdCol3 text-center"],
+                fields_info: [
+                    { type: "Text", name: "E1", style: "width:15%" },
+                    { type: "Text", name: "E2", style: "width:55%" },
+                    { type: "TextAmt", name: "E3", style: "width:30%" }
+                ],
+                //rows_per_page: 10,
+                method_clickrow: click_PLU
+            }
+        );
+
+        grdF = new DynGrid(
+            {
+                table_lement: $('#tbF')[0],
+                class_collection: ["tdCol1 text-center", "tdCol2 text-center", "tdCol3 text-center"],
+                fields_info: [
+                    { type: "Text", name: "F1", style: "" },
+                    { type: "Text", name: "F2" },
+                    { type: "TextAmt", name: "F3" }
+                ],
+                //rows_per_page: 10,
+                method_clickrow: click_PLU
+            }
+        );
+
+        grdJ = new DynGrid(
+            {
+                table_lement: $('#tbJ')[0],
+                class_collection: ["tdCol1 text-center", "tdCol2 text-center", "tdCol3 text-center"],
+                fields_info: [
+                    { type: "Text", name: "J1", style: "" },
+                    { type: "Text", name: "J2" },
+                    { type: "Text", name: "J3" }
+                ],
+                //rows_per_page: 10,
+                method_clickrow: click_PLU,
+                afterBind: gridclickJ,
+                sortable: "Y",
+                step: "Y"
+            }
+        );
+
+        return;
+    };
+    let gridclickJ = function () {
+        //$('#tbJ tbody tr td').click(function () { Step1_click(this) });
+    }
+
+    let click_PLU = function (tr) {
+
+    };
+
+    let SetHome = function (data) {
+        var dtEmployeeSV = data.getElementsByTagName('dtEmployee');
+        var dtA = data.getElementsByTagName('dtA');
+        var dtB = data.getElementsByTagName('dtB');
+        var dtC = data.getElementsByTagName('dtC');
+        var dtD = data.getElementsByTagName('dtD');
+        var dtE = data.getElementsByTagName('dtE');
+        var dtF = data.getElementsByTagName('dtF');
+        var dtJ = data.getElementsByTagName('dtJ');
+        $('#lblSysDate').html(GetNodeValue(dtEmployeeSV[0], 'SysDate'))
+        //今日
+        $('#lblA1').html(GetNodeValue(dtA[0], 'A1'))
+        $('#lblA2').html(parseFloat(GetNodeValue(dtA[0], 'A2')).toLocaleString('en-US'))
+        $('#lblA3').html(parseFloat(GetNodeValue(dtA[0], 'A3')).toLocaleString('en-US'))
+        //昨日
+        $('#lblB1').html(GetNodeValue(dtB[0], 'B1'))
+        $('#lblB2').html(parseFloat(GetNodeValue(dtB[0], 'B2')).toLocaleString('en-US'))
+        $('#lblB3').html(parseFloat(GetNodeValue(dtB[0], 'B3')).toLocaleString('en-US'))
+        //本月
+        $('#lblC1').html(GetNodeValue(dtC[0], 'C1'))
+        $('#lblC2').html(parseFloat(GetNodeValue(dtC[0], 'C2')).toLocaleString('en-US'))
+        //本年度
+        $('#lblD1').html(GetNodeValue(dtD[0], 'D1'))
+        $('#lblD2').html(parseFloat(GetNodeValue(dtD[0], 'D2')).toLocaleString('en-US'))
+        //本月商品銷售排行前10名
+        grdE.BindData(dtE);
+        //本月店別銷售排行前10名
+        grdF.BindData(dtF);
+        //本月各區業績比較圖(圓餅圖)
+        SetPie(data);
+        //本年度各月業績比較圖(長條圖)
+        SetBar(data);
+        //日客單價曲線圖(折線圖)
+        Setline(data);
+        //本月店別銷售排行前10名
+        grdJ.BindData(dtJ);
+        download(GetNodeValue(dtJ[0], 'J4'))
+    }
+
+    const base64toArrayBuffer = function (base64) {
+        var binary_string = window.atob(base64);
+        var len = binary_string.length;
+        var bytes = new Uint8Array(len);
+        for (var i = 0; i < len; i++) {
+            bytes[i] = binary_string.charCodeAt(i);
+        }
+        return bytes.buffer;
+    }
+
+    const download = function (data) {
+        const arrayBuffer = base64toArrayBuffer(data)
+        const url = window.URL.createObjectURL(new Blob([arrayBuffer]))
+        const link = document.createElement('a')
+        link.style.display = 'none'
+        link.href = url
+        link.download = "response.pdf"
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        URL.revokeObjectURL(url);
+    }
+
+
     //繪製折線圖
     let Setline = function (data) {
-        var dtH = data.getElementsByTagName('dtH');
-        a1 = [];
-        a2 = [];
-        ss = [];
-        for (var i = 0; i < dtH.length; i++) {
-            a1.push(GetNodeValue(dtH[i], 'value'));
-            a2.push(GetNodeValue(dtH[i], 'a2'));
-            ss.push(GetNodeValue(dtH[i], 'name'));
+        var dtI = data.getElementsByTagName('dtI');
+        var name = [];
+        var value1 = [];
+        var value2 = [];
+        var value3 = [];
+        for (var i = 0; i < dtI.length; i++) {
+            name.push(GetNodeValue(dtI[i], 'name'));
+            value1.push(GetNodeValue(dtI[i], 'value1'));
+            value2.push(GetNodeValue(dtI[i], 'value2'));
+            value3.push(GetNodeValue(dtI[i], 'value3'));
         }
-
         // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('divline'));
+        var myChart = echarts.init(document.getElementById('divI'));
         // 指定图表的配置项和数据
         var option = {
             title: {
@@ -125,23 +244,34 @@
                 trigger: 'axis'
             },
             legend: {
-                data: ['金額', '客單價']
+                data: ['會員客單價', '非會員客單價', '總客單價']
             },
             xAxis: {
-                data: ss
+                data: name
             },
             yAxis: {
             },
+            //grid: {
+            //    top: 10,
+            //    x: 45,
+            //    x2: 30,
+            //    y2: 80
+            //},
             series: [
                 {
-                    name: '金額',
+                    name: '會員客單價',
                     type: 'line',
-                    data: a1
+                    data: value1
                 },
                 {
-                    name: '客單價',
+                    name: '非會員客單價',
                     type: 'line',
-                    data: a2
+                    data: value2
+                },
+                {
+                    name: '總客單價',
+                    type: 'line',
+                    data: value3
                 }
             ],
         };
@@ -150,9 +280,9 @@
     }
     //繪製圓餅圖
     let SetPie = function (data) {
-        var dtH = data.getElementsByTagName('dtH');
-        Records = [];
-        for (var r = 0; r < dtH.length; r++) {
+        var dtG = data.getElementsByTagName('dtG');
+        var Records = [];
+        for (var r = 0; r < dtG.length; r++) {
             var record = {};
             for (var c = 0; c < 2; c++) {
                 var fdname = "";
@@ -163,18 +293,18 @@
                     fdname = "name";
                 }
                 if (fdname != null) {
-                    var value = GetNodeValue(dtH[r], fdname);
+                    var value = GetNodeValue(dtG[r], fdname);
                     record[fdname] = value;
                 }
             }
             Records.push(record);
         }
         // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('divPie'));
+        var myChart = echarts.init(document.getElementById('divG'));
         option = {
             title: {
-                text: 'Referer of a Website',
-                subtext: 'Fake Data',
+                text: '',
+                subtext: '',
                 left: 'center'
             },
             tooltip: {
@@ -182,13 +312,20 @@
             },
             legend: {
                 orient: 'vertical',
-                left: 'left'
+                bottom:'bottom'
             },
             series:
             {
-                name: 'Access From',
+                name: '',
                 type: 'pie',
-                radius: '50%',
+                radius: '100%',
+                label: {
+                    show: true,
+                    position: "inside",
+                    formatter: '{d}%',
+                    fontSize: 14,
+                    color: "white"
+                },
                 data: Records,
                 emphasis: {
                     itemStyle: {
@@ -205,17 +342,17 @@
     //繪製長條圖
     let SetBar = function (data) {
         var dtH = data.getElementsByTagName('dtH');
-        a1 = [];
-        a2 = [];
-        ss = [];
+        var name = [];
+        var value1 = [];
+        var value2 = [];
         for (var i = 0; i < dtH.length; i++) {
-            a1.push(GetNodeValue(dtH[i], 'value'));
-            a2.push(GetNodeValue(dtH[i], 'a2'));
-            ss.push(GetNodeValue(dtH[i], 'name'));
+            name.push(GetNodeValue(dtH[i], 'name'));
+            value1.push(GetNodeValue(dtH[i], 'value1'));
+            value2.push(GetNodeValue(dtH[i], 'value2'));
         }
 
         // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('divBar'));
+        var myChart = echarts.init(document.getElementById('divH'));
         // 指定图表的配置项和数据
         var option = {
             title: {
@@ -225,24 +362,48 @@
                 trigger: 'axis'
             },
             legend: {
-                data: ['金額', '客單價']
+                data: ['去年', '今年']
             },
             xAxis: {
-                data: ss
+                data: name,
+                axisLabel: {
+                    interval: 0,
+                    formatter: function (params) {
+                        let newParamsName = '';
+                        const paramsNameNumber = params.length;
+                        const provideNumber = 2; //決定一行顯示幾個字
+                        const rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+                        if (paramsNameNumber > provideNumber) {
+                            for (let p = 0; p < rowNumber; p++) {
+                                const start = p * provideNumber;
+                                const end = start + provideNumber;
+                                const tempstr = p === rowNumber - 1 ? params.substring(start, paramsNameNumber) : params.substring(start, end) + '\n';
+                                newParamsName += tempstr;
+                            }
+                        }
+                        else {
+                            newParamsName = params;
+                        }
+                        return newParamsName;
+                    }
+                }
             },
             yAxis: {
                 //data: [5000, 10000, 20000, 30000, 100000, 300000, 500000]
             },
+            grid: {
+                left:"25%"
+            },
             series: [
                 {
-                    name: '金額',
+                    name: '去年',
                     type: 'bar',
-                    data: a1
+                    data: value1
                 },
                 {
-                    name: '客單價',
+                    name: '今年',
                     type: 'bar',
-                    data: a2
+                    data: value2
                 }
             ],
         };

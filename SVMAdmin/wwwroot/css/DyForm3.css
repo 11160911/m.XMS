@@ -231,6 +231,18 @@ border: 1px solid gray;
     font-weight: bold;
 }
 
+/*Menu主畫面*/
+.DyForm3-PanelMenu {
+    padding: 0px;
+    height: 750px;
+    width: 100%;
+    overflow: auto;
+    background-image: url(images/MenuLogo-C21.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: right top;
+}
+
 /*第一層主畫面*/
 .DyForm3-PanelIni {
     padding: 0px;
@@ -296,6 +308,10 @@ border: 1px solid gray;
 
 /*手機畫面*/
 @media (max-width:767px) {
+    .DyForm3-PanelMenu {
+        height: 580px;
+        background-image: url(images/MenuLogo-P6.jpg);
+    }
     .DyForm3-PanelIni {
         height: 580px;
         background-image: url(images/MenuLogo-P6.jpg);
