@@ -181,7 +181,7 @@
                 fields_info: [
                     { type: "Text", name: "J1", style: "" },
                     { type: "Text", name: "J2" },
-                    { type: "Text", name: "J3", style: "text-decoration: underline" }
+                    { type: "Text", name: "J3", style: "text-decoration: underline;cursor:pointer" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,

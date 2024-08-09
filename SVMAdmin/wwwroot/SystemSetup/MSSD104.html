@@ -117,7 +117,7 @@
 
                 <article id="pgMSSD104Init" class="row">
                     <div class="col-md-12 col-sm-12">
-                        <div class="x_panel" style="padding: 0px; height: 100%; width: 100%; background-image: url(images/Web底圖-地球-2.png); background-position: center 50px; background-repeat: no-repeat; background-attachment: fixed; background-size: 580px 810px ">
+                        <div class="x_panel DyForm3-PanelIni">
                             <style>
                                 .ErrorControl {
                                     background-color: red;
@@ -128,6 +128,7 @@
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
+                                    vertical-align: middle;
                                 }
 
                                 #tbQuery thead tr td {
@@ -135,18 +136,21 @@
                                     padding: 3px;
                                     background-color: #ffb620;
                                     font-weight: bold;
+                                    vertical-align: middle;
                                 }
 
                                 #tbQuery tbody tr td {
                                     font-size: 16px;
                                     padding: 3px;
                                     font-weight: bold;
+                                    vertical-align: middle;
                                 }
 
                                 th:first-child {
                                     position: sticky;
                                     left: 0; /*首行永遠固定於左 */
                                 }
+
                                 .table thead th {
                                     position: sticky;
                                     border-top: 0;
@@ -157,24 +161,40 @@
                                     z-index: 2;
                                     height: 35px;
                                 }
+
+                                /*手機畫面*/
+                                @media (max-width:767px) {
+                                    #tbQuery thead tr th {
+                                        font-size: 14px;
+                                    }
+
+                                    #tbQuery thead tr td {
+                                        font-size: 14px;
+                                    }
+
+                                    #tbQuery tbody tr td {
+                                        font-size: 14px;
+                                    }
+                                }
                             </style>
 
-                            <div class="form-group row" style="margin-left: 5px; width: 100%">
+                            <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom: 0px">
                                 <label id="lblProgramName" class="DyForm3-ProgramName">生日折價券回收分析</label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 20px; width: 100%">
+                            <div class="form-group row" style="margin-left: 20px; width: 100%; margin-bottom: 5px">
                                 <button class="DyForm3-BtnClear" id="btClear" type="button">
                                     清除
                                     <i class="fa fa-close"></i>
                                 </button>
-                                <button class="DyForm3-BtnQuery" id="btQuery" type="button" style="margin-left: 500px;">
+                                <button class="DyForm3-BtnQuery" id="btQuery" type="button" style="margin-left: 40px;">
                                     查詢
                                     <i class="fa fa-search"></i>
                                 </button>
+                                <label class="DyForm3-Horizontal">完整顯示請打橫看</label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px">
                                 <label class="DyForm3-Label">活動代號</label>
                                 <input id="txtActivityCode" class="DyForm3-TextBox" style="margin-left: 15px" type="text" maxlength="20" />
                                 <button id="btActivityCode" class="DyForm3-BtnLookUp" type="button">
