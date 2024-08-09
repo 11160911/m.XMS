@@ -33,7 +33,7 @@
     let grdE;
     let grdF;
     let grdJ;
-
+    var CURRENT_URL = window.location.href.split('#')[0];
 
     var Initdoc = function () {
         UU = sessionStorage.getItem('token');
@@ -70,6 +70,21 @@
             SetMenu();
             AssignVar();
             SetHome(data);
+            $('#btReJ').click(function () {
+                $('#modalJ').modal('hide');
+            })
+            $('#lblFileName').click(function () {
+                download($('#lblAtt').html(), $('#lblFileName').html())
+            })
+            $('#lblA4').click(function () {
+                ProgramStart("MSSA108");
+            })
+            $('#lblC3').click(function () {
+                ProgramStart("MSSA101");
+            })
+            $('#imgHome').click(function () {
+                window.location.reload();
+            })
             init_sidebar();
             return;
         }
@@ -92,6 +107,35 @@
         }
     };
 
+    let ProgramStart = function (Program) {
+        var gobackhref = CURRENT_URL + "#" + Program;
+        window.location.href = gobackhref;
+
+        if (Program == "MSSA108") {
+            if (window.PageMSSA108 == undefined)
+                $.getScript('SystemSetup/' + Program + '.js',
+                    function () {
+                        PageMSSA108($(".workarea"));
+                    }
+                );
+            else {
+                PageMSSA108($(".workarea"));
+            }
+        }
+        else if (Program == "MSSA101") {
+            if (window.PageMSSA101 == undefined)
+                $.getScript('SystemSetup/' + Program + '.js',
+                    function () {
+                        PageMSSA101($(".workarea"));
+                    }
+                );
+            else {
+                PageMSSA101($(".workarea"));
+            }
+        }
+        $('#Menu').remove();
+    }
+
     let afterLogOut = function (data) {
         if (ReturnMsg(data, 0) != "LogOutOK") {
             DyAlert(ReturnMsg(data, 1));
@@ -105,11 +149,11 @@
         grdE = new DynGrid(
             {
                 table_lement: $('#tbE')[0],
-                class_collection: ["tdCol1 text-center", "tdCol2 text-center", "tdCol3 text-center"],
+                class_collection: ["tdCol1 text-center", "tdCol2", "tdCol3 label-align"],
                 fields_info: [
                     { type: "Text", name: "E1", style: "width:15%" },
                     { type: "Text", name: "E2", style: "width:55%" },
-                    { type: "TextAmt", name: "E3", style: "width:30%" }
+                    { type: "TextAmt", name: "E3", style: "width:30%;color:blue" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU
@@ -119,11 +163,11 @@
         grdF = new DynGrid(
             {
                 table_lement: $('#tbF')[0],
-                class_collection: ["tdCol1 text-center", "tdCol2 text-center", "tdCol3 text-center"],
+                class_collection: ["tdCol1 text-center", "tdCol2 text-center", "tdCol3 label-align"],
                 fields_info: [
                     { type: "Text", name: "F1", style: "" },
                     { type: "Text", name: "F2" },
-                    { type: "TextAmt", name: "F3" }
+                    { type: "TextAmt", name: "F3", style: "color:blue" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU
@@ -137,7 +181,7 @@
                 fields_info: [
                     { type: "Text", name: "J1", style: "" },
                     { type: "Text", name: "J2" },
-                    { type: "Text", name: "J3" }
+                    { type: "Text", name: "J3", style: "text-decoration: underline" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -149,8 +193,33 @@
 
         return;
     };
+
     let gridclickJ = function () {
-        //$('#tbJ tbody tr td').click(function () { Step1_click(this) });
+        $('#tbJ tbody tr .tdCol3').click(function () { DownLoadJ(this) });
+        $('#tbJ tbody tr .tdCol1,#tbJ tbody tr .tdCol2').click(function () { StepJ(this) });
+    }
+
+    let StepJ = function (bt) {
+        $(bt).closest('tr').click();
+        $('.msg-valid').hide();
+        var node = $(grdJ.ActiveRowTR()).prop('Record');
+        $('#lblMONo').html(GetNodeValue(node, 'J5'))
+        $('#lblAnnounceDate').html(GetNodeValue(node, 'J1'))
+        $('#lblMONo2').html(GetNodeValue(node, 'J6'))
+        $('#lblAnnounceUser').html(GetNodeValue(node, 'J7'))
+        $('#lblTitle').html(GetNodeValue(node, 'J8'))
+        $('#lblContent').html(GetNodeValue(node, 'J9'))
+        $('#lblFileName').html(GetNodeValue(node, 'J3'))
+        $('#lblAtt').html(GetNodeValue(node, 'J4'))
+        $('#modalJ').modal('show');
+    }
+
+    let DownLoadJ = function (bt) {
+        $(bt).closest('tr').click();
+        $('.msg-valid').hide();
+        var node = $(grdJ.ActiveRowTR()).prop('Record');
+        download(GetNodeValue(node, 'J4'), GetNodeValue(node, 'J3'))
+   
     }
 
     let click_PLU = function (tr) {
@@ -191,9 +260,8 @@
         SetBar(data);
         //日客單價曲線圖(折線圖)
         Setline(data);
-        //本月店別銷售排行前10名
+        //公佈欄
         grdJ.BindData(dtJ);
-        download(GetNodeValue(dtJ[0], 'J4'))
     }
 
     const base64toArrayBuffer = function (base64) {
@@ -205,14 +273,14 @@
         }
         return bytes.buffer;
     }
-
-    const download = function (data) {
+    //下載檔案
+    const download = function (data,FileName) {
         const arrayBuffer = base64toArrayBuffer(data)
         const url = window.URL.createObjectURL(new Blob([arrayBuffer]))
         const link = document.createElement('a')
         link.style.display = 'none'
         link.href = url
-        link.download = "response.pdf"
+        link.download = FileName
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)
@@ -311,21 +379,23 @@
                 trigger: 'item'
             },
             legend: {
-                orient: 'vertical',
-                bottom:'bottom'
+                orient: 'horizontal',
+                bottom: '0%'
             },
             series:
             {
                 name: '',
                 type: 'pie',
-                radius: '100%',
+                radius: ['0%','85%'],
+                center: ['50%','45%'],
                 label: {
                     show: true,
                     position: "inside",
                     formatter: '{d}%',
-                    fontSize: 14,
+                    fontSize: 12,
                     color: "white"
                 },
+                minAngle: 1,
                 data: Records,
                 emphasis: {
                     itemStyle: {

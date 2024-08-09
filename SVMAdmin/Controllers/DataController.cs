@@ -428,6 +428,10 @@ namespace SVMAdmin.Controllers
                 sql += "and OpenDate=convert(char(10),getdate(),111) ";
                 sql += "group by OpenDate ";
                 DataTable dtA = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtA.Rows.Count == 0) {
+                    sql = "Select convert(char(10),getdate(),111) A1,0 A2,0 A3 ";
+                    dtA = PubUtility.SqlQry(sql, uu, "SYS");
+                }
                 dtA.TableName = "dtA";
                 ds.Tables.Add(dtA);
 
@@ -437,6 +441,11 @@ namespace SVMAdmin.Controllers
                 sql += "and OpenDate=convert(char,dateadd(DD,-1,getdate()),111) ";
                 sql += "group by OpenDate ";
                 DataTable dtB = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtB.Rows.Count == 0)
+                {
+                    sql = "Select convert(char,dateadd(DD,-1,getdate()),111) B1,0 B2,0 B3 ";
+                    dtB = PubUtility.SqlQry(sql, uu, "SYS");
+                }
                 dtB.TableName = "dtB";
                 ds.Tables.Add(dtB);
 
@@ -446,6 +455,11 @@ namespace SVMAdmin.Controllers
                 sql += "and left(OpenDate,7)=convert(char(7),getdate(),111) ";
                 sql += "group by left(OpenDate,7) ";
                 DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtC.Rows.Count == 0)
+                {
+                    sql = "Select convert(char(7),getdate(),111) C1,0 C2 ";
+                    dtC = PubUtility.SqlQry(sql, uu, "SYS");
+                }
                 dtC.TableName = "dtC";
                 ds.Tables.Add(dtC);
 
@@ -455,10 +469,15 @@ namespace SVMAdmin.Controllers
                 sql += "and left(OpenDate,4)=convert(char(4),getdate(),111) ";
                 sql += "group by left(OpenDate,4) ";
                 DataTable dtD = PubUtility.SqlQry(sql, uu, "SYS");
+                if (dtD.Rows.Count == 0)
+                {
+                    sql = "Select convert(char(4),getdate(),111) D1,0 D2 ";
+                    dtD = PubUtility.SqlQry(sql, uu, "SYS");
+                }
                 dtD.TableName = "dtD";
                 ds.Tables.Add(dtD);
 
-                sql = "Select Top 10 ROW_NUMBER() over(order by sum(a.num) desc) E1,b.GD_Name E2,sum(a.num) E3 ";
+                sql = "Select Top 10 ROW_NUMBER() over(order by sum(a.num) desc) E1,left(b.GD_Name,8) E2,sum(a.num) E3 ";
                 sql += "From SalesDWeb a (nolock) ";
                 sql += "left join PLUWeb b (nolock) on a.GoodsNo=b.GD_NO and b.Companycode=a.Companycode ";
                 sql += "Where a.Companycode='" + uu.CompanyId + "' ";
@@ -525,18 +544,15 @@ namespace SVMAdmin.Controllers
                 dtI.TableName = "dtI";
                 ds.Tables.Add(dtI);
 
-                sql = "select AnnounceDate J1,Title J2,FileName J3,Att J4 ";
-                sql += "from MessageHweb (nolock)  ";
-                sql += "where CompanyCode='" + uu.CompanyId + "' and EndDate>=convert(char(10),getdate(),111)  ";
-                sql += "and ISNULL(ApproveDate,'')<>'' and ISNULL(DeDate,'')='' order by AnnounceDate desc ";
+                sql = "select a.AnnounceDate J1,a.Title J2,a.FileName J3,a.Att J4, ";
+                sql += "a.MO_No J5,a.MO_No2 J6,b.Man_Name J7,a.Title J8,a.Content J9 ";
+                sql += "from MessageHweb a (nolock)  ";
+                sql += "left join EmployeeWeb b (nolock) on a.AnnounceUser=b.Man_ID and b.CompanyCode=a.CompanyCode ";
+                sql += "where a.CompanyCode='" + uu.CompanyId + "' and a.EndDate>=convert(char(10),getdate(),111)  ";
+                sql += "and ISNULL(a.ApproveDate,'')<>'' and ISNULL(a.DeDate,'')='' order by a.AnnounceDate desc ";
                 DataTable dtJ = PubUtility.SqlQry(sql, uu, "SYS");
                 dtJ.TableName = "dtJ";
                 ds.Tables.Add(dtJ);
-
-                //sql = "select top 5 opendate name,sum(cash)value,sum(cash)/sum(recs) a2 from SalesHWeb (nolock) where CompanyCode='" + uu.CompanyId + "' group by opendate order by opendate ";
-                //DataTable dtG = PubUtility.SqlQry(sql, uu, "SYS");
-                //dtG.TableName = "dtG";
-                //ds.Tables.Add(dtG);
             }
             catch (Exception err)
             {
@@ -13476,7 +13492,7 @@ namespace SVMAdmin.Controllers
             {
                 IFormCollection rq = HttpContext.Request.Form;
                 string ProgramID = rq["ProgramID"];
-                string sql = "select ChineseName,convert(char(10),dateadd(d,-1,getdate()),111) SysDate from ProgramIDWeb (nolock) where ProgramID='" + ProgramID.SqlQuote() + "'";
+                string sql = "select ChineseName,convert(char(7),dateadd(d,-1,getdate()),111) + '/01' SysDate1,convert(char(10),dateadd(d,-1,getdate()),111) SysDate2 from ProgramIDWeb (nolock) where ProgramID='" + ProgramID.SqlQuote() + "'";
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
                 ds.Tables.Add(dtE);

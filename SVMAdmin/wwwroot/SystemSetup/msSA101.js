@@ -434,8 +434,8 @@
         else {
             var dtE = data.getElementsByTagName('dtE');
             if (dtE.length > 0) {
-                $('#txtOpenDateS1').val(GetNodeValue(dtE[0], "SysDate").toString().trim().replaceAll('/', '-'));
-                $('#txtOpenDateE1').val(GetNodeValue(dtE[0], "SysDate").toString().trim().replaceAll('/', '-'));
+                $('#txtOpenDateS1').val(GetNodeValue(dtE[0], "SysDate1").toString().trim().replaceAll('/', '-'));
+                $('#txtOpenDateE1').val(GetNodeValue(dtE[0], "SysDate2").toString().trim().replaceAll('/', '-'));
             }
             $('#lblShopNoCnt').html('');
             $('#lblShopNoName').html('');
@@ -694,8 +694,8 @@
             var dtE = data.getElementsByTagName('dtE');
             if (dtE.length > 0) {
                 $('#lblProgramName').html(GetNodeValue(dtE[0], "ChineseName"));
-                $('#txtOpenDateS1').val(GetNodeValue(dtE[0], "SysDate").toString().trim().replaceAll('/', '-'));
-                $('#txtOpenDateE1').val(GetNodeValue(dtE[0], "SysDate").toString().trim().replaceAll('/', '-'));
+                $('#txtOpenDateS1').val(GetNodeValue(dtE[0], "SysDate1").toString().trim().replaceAll('/', '-'));
+                $('#txtOpenDateE1').val(GetNodeValue(dtE[0], "SysDate2").toString().trim().replaceAll('/', '-'));
             }
             AssignVar();
 
