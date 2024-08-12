@@ -315,9 +315,21 @@
                 data: ['會員客單價', '非會員客單價', '總客單價']
             },
             xAxis: {
-                data: name
+                data: name,
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: 'black'
+                    }   
+                }
             },
             yAxis: {
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: 'black'
+                    }
+                }
             },
             //grid: {
             //    top: 10,
@@ -437,6 +449,10 @@
             xAxis: {
                 data: name,
                 axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: 'black'
+                    },
                     interval: 0,
                     formatter: function (params) {
                         let newParamsName = '';
@@ -459,7 +475,12 @@
                 }
             },
             yAxis: {
-                //data: [5000, 10000, 20000, 30000, 100000, 300000, 500000]
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: 'black'
+                    }
+                }
             },
             grid: {
                 left:"25%"

@@ -190,19 +190,45 @@
             <div class="right_col" role="main" style="background-color: whitesmoke;">
                 <div class="workarea">
                     <style>
+                        .fontsizeH {
+                            font-size : 20px;
+                        }
+                        .fontsizeD {
+                            font-size: 18px;
+                        }
+                        .fontsizeCash {
+                            font-size: 20px;
+                        }
+                        #MenuDiv1, #MenuDiv2 {
+                            width: 95%;
+                            margin: auto;
+                            justify-content: space-between;
+                            margin-bottom: 0px;
+                        }
+                        #MenuDiv3 {
+                            width: 95%;
+                            height: 300px;
+                            margin: auto;
+                            margin-bottom: 5px;
+                        }
+                        #MenuDiv4 {
+                            width: 95%;
+                            margin: auto;
+                            margin-bottom: 0px;
+                        }
                         .MenuCard1 {
                             background-color: transparent;
                             width: 350px;
-                            height:160px;
+                            height:180px;
                             border: 1px solid black;
-                            margin-bottom: 5px;
+                            margin-bottom: 10px;
                         }
                         .MenuCard2 {
                             background-color: transparent;
                             width: 350px;
                             height: 380px;
                             border: 1px solid black;
-                            margin-bottom: 5px;
+                            margin-bottom: 10px;
                             overflow:auto
                         }
                         .MenuCard3 {
@@ -225,96 +251,102 @@
                             display:flex;
                         }
                         .tableMenu {
-                            font-size: 16px;
+                            font-size: 18px;
                             color:black;
                             font-weight: bold;
                         }
                         /*手機畫面*/
                         @media (max-width:767px) {
+                            #MenuDiv3, #MenuDiv4 {
+                                width: 1400px;
+                            }
                         }
                     </style>
                     <article id="Menu" class="x_panel DyForm3-PanelMenu">
-                        <!-- <img src="images/home5.jpg" style="width: 85%;height:90%; display: block; margin: auto " / >-->
-
                         <div class="form-group row" style="width: 100%; margin-left: 12px; margin-top: 5px">
-                            <label class="DyForm3-LabelBlack" style="font-size:18px"> 最新統計時間&ensp;:&ensp;</label>
-                            <label id="lblSysDate" class="DyForm3-LabelRed" style="font-size:18px"></label>
+                            <label class="DyForm3-LabelBlack fontsizeH"> 最新統計時間&ensp;:&ensp;</label>
+                            <label id="lblSysDate" class="DyForm3-LabelRed fontsizeH"></label>
                         </div>
                         <!--第一層-->
-                        <div class="form-group row" style="width: 100%;justify-content:space-around;margin-bottom:0px">
+                        <div id="MenuDiv1" class="form-group row">
                             <!--今日-->
                             <div class="card MenuCard1">
                                 <div class="card-header MenuCardH">
-                                    <label class="DyForm3-LabelBlack" style="color:white">今日</label>
-                                    <label id="lblA1" class="DyForm3-LabelBlack" style="color:white"></label>
+                                    <label class="DyForm3-LabelBlack fontsizeD" style="color:white">今日</label>
+                                    <label id="lblA1" class="DyForm3-LabelBlack fontsizeD" style="color:white"></label>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group row" style="width: 100%; justify-content: space-between; margin-bottom: 0px">
-                                        <label class="DyForm3-LabelBlack">即時營業額</label>
-                                        <label id="lblA2" class="DyForm3-LabelRed"></label>
+                                        <label class="DyForm3-LabelBlack fontsizeD">即時營業額</label>
+                                        <label id="lblA2" class="DyForm3-LabelRed fontsizeCash"></label>
                                     </div>
                                     <div class="form-group row" style="width: 100%; justify-content: space-between; margin-bottom: 0px">
-                                        <label class="DyForm3-LabelBlack">來客數</label>
-                                        <label id="lblA3" class="DyForm3-Label"></label>
+                                        <label class="DyForm3-LabelBlack fontsizeD">來客數</label>
+                                        <label id="lblA3" class="DyForm3-Label fontsizeD"></label>
                                     </div>
                                     <div class="form-group row" style="width: 100%; margin-bottom: 0px">
-                                        <a href="#" id="lblA4" class="DyForm3-Label" style="text-decoration: underline;margin-left:auto">即時業績統計</a>
+                                        <a href="#" id="lblA4" class="DyForm3-Label fontsizeD" style="text-decoration: underline;margin-left:auto">即時業績統計</a>
                                     </div>
                                 </div>
                             </div>
                             <!--昨日-->
                             <div class="card MenuCard1">
                                 <div class="card-header MenuCardH">
-                                    <label class="DyForm3-LabelBlack" style="color:white">昨日</label>
-                                    <label id="lblB1" class="DyForm3-LabelBlack" style="color:white"></label>
+                                    <label class="DyForm3-LabelBlack fontsizeD" style="color:white">昨日</label>
+                                    <label id="lblB1" class="DyForm3-LabelBlack fontsizeD" style="color:white"></label>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group row" style="width: 100%; justify-content: space-between; margin-bottom: 0px">
-                                        <label class="DyForm3-LabelBlack">昨日營業額</label>
-                                        <label id="lblB2" class="DyForm3-LabelRed"></label>
+                                        <label class="DyForm3-LabelBlack fontsizeD">昨日營業額</label>
+                                        <label id="lblB2" class="DyForm3-LabelRed fontsizeCash"></label>
                                     </div>
                                     <div class="form-group row" style="width: 100%; justify-content: space-between; margin-bottom: 0px">
-                                        <label class="DyForm3-LabelBlack">來客數</label>
-                                        <label id="lblB3" class="DyForm3-Label"></label>
+                                        <label class="DyForm3-LabelBlack fontsizeD">來客數</label>
+                                        <label id="lblB3" class="DyForm3-Label fontsizeD"></label>
                                     </div>
                                 </div>
                             </div>
                             <!--本月-->
                             <div class="card MenuCard1">
                                 <div class="card-header MenuCardH">
-                                    <label class="DyForm3-LabelBlack" style="color:white">本月</label>
-                                    <label id="lblC1" class="DyForm3-LabelBlack" style="color:white"></label>
+                                    <label class="DyForm3-LabelBlack fontsizeD" style="color:white">本月</label>
+                                    <label id="lblC1" class="DyForm3-LabelBlack fontsizeD" style="color:white"></label>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group row" style="width: 100%; justify-content: space-between; margin-bottom: 0px">
-                                        <label class="DyForm3-LabelBlack">本月累計營業額</label>
-                                        <label id="lblC2" class="DyForm3-LabelRed"></label>
+                                        <label class="DyForm3-LabelBlack fontsizeD">本月累計營業額</label>
                                     </div>
                                     <div class="form-group row" style="width: 100%; margin-bottom: 0px">
-                                        <a href="#" id="lblC3" class="DyForm3-Label" style="text-decoration: underline;margin-left:auto">VIP銷售分析</a>
+                                        <label id="lblC2" class="DyForm3-LabelRed fontsizeCash" style="margin:auto"></label>
+                                    </div>
+                                    <div class="form-group row" style="width: 100%; margin-bottom: 0px">
+                                        <a href="#" id="lblC3" class="DyForm3-Label fontsizeD" style="text-decoration: underline;margin-left:auto">VIP銷售分析</a>
                                     </div>
                                 </div>
                             </div>
                             <!--本年度-->
                             <div class="card MenuCard1">
                                 <div class="card-header MenuCardH">
-                                    <label class="DyForm3-LabelBlack" style="color:white">本年度</label>
-                                    <label id="lblD1" class="DyForm3-LabelBlack" style="color:white"></label>
+                                    <label class="DyForm3-LabelBlack fontsizeD" style="color:white">本年度</label>
+                                    <label id="lblD1" class="DyForm3-LabelBlack fontsizeD" style="color:white"></label>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group row" style="width: 100%; justify-content: space-between; margin-bottom: 0px">
-                                        <label class="DyForm3-LabelBlack">年度累計營業額</label>
-                                        <label id="lblD2" class="DyForm3-LabelRed"></label>
+                                        <label class="DyForm3-LabelBlack fontsizeD">年度累計營業額</label>
+                              
+                                    </div>
+                                    <div class="form-group row" style="width: 100%; margin-bottom: 0px">
+                                        <label id="lblD2" class="DyForm3-LabelRed fontsizeCash" style="margin:auto"></label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!--第二層-->
-                        <div class="form-group row" style="width: 100%; justify-content: space-around; margin-bottom: 0px">
+                        <div id="MenuDiv2" class="form-group row">
                             <!--本月商品銷售排行前10名-->
                             <div class="card MenuCard2">
                                 <div class="card-header MenuCardH">
-                                    <label class="DyForm3-LabelBlack" style="color:white;margin-left:auto;margin-right:auto">本月商品銷售排行前10名</label>
+                                    <label class="DyForm3-LabelBlack fontsizeD" style="color:white;margin-left:auto;margin-right:auto">本月商品銷售排行前10名</label>
                                 </div>
                                 <div class="card-body">
                                     <table id="tbE" class="DyForm3-Table tableMenu">
@@ -336,7 +368,7 @@
                             <!--本月店別銷售排行前10名-->
                             <div class="card MenuCard2">
                                 <div class="card-header MenuCardH">
-                                    <label class="DyForm3-LabelBlack" style="color:white;margin-left:auto;margin-right:auto">本月店別銷售排行前10名</label>
+                                    <label class="DyForm3-LabelBlack fontsizeD" style="color:white;margin-left:auto;margin-right:auto">本月店別銷售排行前10名</label>
                                 </div>
                                 <div class="card-body">
                                     <table id="tbF" class="DyForm3-Table tableMenu">
@@ -358,7 +390,7 @@
                             <!--本月各區業績比較圖-->
                             <div class="card MenuCard2">
                                 <div class="card-header MenuCardH">
-                                    <label class="DyForm3-LabelBlack" style="color:white;margin-left:auto;margin-right:auto">本月各區業績比較圖</label>
+                                    <label class="DyForm3-LabelBlack fontsizeD" style="color:white;margin-left:auto;margin-right:auto">本月各區業績比較圖</label>
                                 </div>
                                 <div class="card-body">
                                     <div id="divG" style="width: 100%; height: 100%; "></div>
@@ -366,7 +398,7 @@
                             </div>
                             <!--本年度各月業績比較圖-->
                             <div class="card MenuCard2">
-                                <div class="card-header MenuCardH">
+                                <div class="card-header MenuCardH fontsizeD">
                                     <label class="DyForm3-LabelBlack" style="color:white;margin-left:auto;margin-right:auto">本年度各月業績比較圖</label>
                                 </div>
                                 <div class="card-body">
@@ -386,11 +418,11 @@
         </div>
     </div>-->
                         <!--折線圖放大版，寬高固定-->
-                        <div div class="form-group row" style="width: 1400px;height:300px; margin: auto; margin-bottom: 5px">
+                        <div id="MenuDiv3" div class="form-group row">
                             <!--日客單價曲線圖-->
                             <div class="card MenuCard3">
                                 <div class="card-header MenuCardH">
-                                    <label class="DyForm3-LabelBlack" style="color:white;margin-left:auto;margin-right:auto">日客單價曲線圖</label>
+                                    <label class="DyForm3-LabelBlack fontsizeD" style="color:white;margin-left:auto;margin-right:auto">日客單價曲線圖</label>
                                 </div>
                                 <div class="card-body">
                                     <div id="divI" style="width: 100%; height: 250px; "></div>
@@ -398,10 +430,10 @@
                             </div>
                         </div>
                         <!--第四層-->
-                        <div div class="form-group row" style="width: 1400px; margin: auto; margin-bottom: 0px">
+                        <div id="MenuDiv4" div class="form-group row">
                             <!--公佈欄-->
                             <div class="card MenuCard4">
-                                <div class="card-header MenuCardH">
+                                <div class="card-header MenuCardH fontsizeD">
                                     <label class="DyForm3-LabelBlack" style="color:white;margin-left:auto;margin-right:auto">公佈欄</label>
                                 </div>
                                 <div class="card-body">
