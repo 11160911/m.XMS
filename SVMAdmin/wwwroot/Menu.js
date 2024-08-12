@@ -82,6 +82,9 @@
             $('#lblC3').click(function () {
                 ProgramStart("MSSA101");
             })
+            $('#lblD3').click(function () {
+                ProgramStart("MSSA105");
+            })
             $('#imgHome').click(function () {
                 window.location.reload();
             })
@@ -133,6 +136,17 @@
                 PageMSSA101($(".workarea"));
             }
         }
+        else if (Program == "MSSA105") {
+            if (window.PageMSSA105 == undefined)
+                $.getScript('SystemSetup/' + Program + '.js',
+                    function () {
+                        PageMSSA105($(".workarea"));
+                    }
+                );
+            else {
+                PageMSSA105($(".workarea"));
+            }
+        }
         $('#Menu').remove();
     }
 
@@ -152,7 +166,7 @@
                 class_collection: ["tdCol1 text-center", "tdCol2", "tdCol3 label-align"],
                 fields_info: [
                     { type: "Text", name: "E1", style: "width:15%" },
-                    { type: "Text", name: "E2", style: "width:55%" },
+                    { type: "Text", name: "E2", style: "width:55%;font-size:15px" },
                     { type: "TextAmt", name: "E3", style: "width:30%;color:blue" }
                 ],
                 //rows_per_page: 10,
@@ -312,7 +326,10 @@
                 trigger: 'axis'
             },
             legend: {
-                data: ['會員客單價', '非會員客單價', '總客單價']
+                data: ['會員客單價', '非會員客單價', '總客單價'],
+                textStyle: {
+                    fontSize: 16
+                }
             },
             xAxis: {
                 data: name,
@@ -444,7 +461,10 @@
                 trigger: 'axis'
             },
             legend: {
-                data: ['去年', '今年']
+                data: ['去年', '今年'],
+                textStyle: {
+                    fontSize: 16
+                }
             },
             xAxis: {
                 data: name,
