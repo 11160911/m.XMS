@@ -336,7 +336,8 @@
                 axisLabel: {
                     show: true,
                     textStyle: {
-                        color: 'black'
+                        color: 'black',
+                        fontSize: 14
                     }   
                 }
             },
@@ -344,7 +345,8 @@
                 axisLabel: {
                     show: true,
                     textStyle: {
-                        color: 'black'
+                        color: 'black',
+                        fontSize: 14
                     }
                 }
             },
@@ -471,7 +473,8 @@
                 axisLabel: {
                     show: true,
                     textStyle: {
-                        color: 'black'
+                        color: 'black',
+                        fontSize: 14
                     },
                     interval: 0,
                     formatter: function (params) {
@@ -498,7 +501,8 @@
                 axisLabel: {
                     show: true,
                     textStyle: {
-                        color: 'black'
+                        color: 'black',
+                        fontSize: 14
                     }
                 }
             },
