@@ -76,13 +76,13 @@
             $('#lblFileName').click(function () {
                 download($('#lblAtt').html(), $('#lblFileName').html())
             })
-            $('#lblA4').click(function () {
+            $('#btA4').click(function () {
                 ProgramStart("MSSA108");
             })
-            $('#lblC3').click(function () {
+            $('#btC3').click(function () {
                 ProgramStart("MSSA101");
             })
-            $('#lblD3').click(function () {
+            $('#btD3').click(function () {
                 ProgramStart("MSSA105");
             })
             $('#imgHome').click(function () {

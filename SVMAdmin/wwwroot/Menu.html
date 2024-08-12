@@ -194,13 +194,33 @@
                             font-size : 20px;
                         }
                         .fontsizeD {
-                            font-size: 20px;
-                        }
-                        .fontsizeURL {
-                            font-size: 18px;
+                            font-size: 19px;
                         }
                         .fontsizeCash {
-                            font-size: 24px;
+                            font-size: 25px;
+                        }
+                        .btnProgram {
+                            box-shadow: inset 0px 1px 0px 0px #ffffff;
+                            background-color: red;
+                            border-radius: 6px;
+                            border: 1px solid #cc3025;
+                            display: inline-block;
+                            cursor: pointer;
+                            color: #ffffff;
+                            font-family: Arial;
+                            font-size: 14px;
+                            font-weight: bold;
+                            padding: 3px 14px;
+                            text-decoration: none;
+                            text-shadow: 0px 1px 0px #631b16;
+                            width: 110px;
+                            height: 30px;
+                            margin-left: auto;
+                        }
+                        .btnProgram:focus {
+                            outline-color: transparent;
+                            outline-style: solid;
+                            box-shadow: 0 0 0 3px #fc8c86;
                         }
                         #MenuDiv1, #MenuDiv2 {
                             width: 95%;
@@ -222,10 +242,9 @@
                         .MenuCard1 {
                             background-color: transparent;
                             width: 360px;
-                            height: 200px;
+                            height: 190px;
                             border: 1px solid black;
                             margin-bottom: 10px;
-                            overflow: auto;
                         }
                         .MenuCard2 {
                             background-color: transparent;
@@ -289,7 +308,10 @@
                                         <label id="lblA3" class="DyForm3-Label fontsizeD"></label>
                                     </div>
                                     <div class="form-group row" style="width: 100%; margin-bottom: 0px">
-                                        <a href="#" id="lblA4" class="DyForm3-Label fontsizeURL" style="text-decoration: underline;margin-left:auto">即時業績統計</a>
+                                        <button class="btnProgram" id="btA4">
+                                            點我查詢
+                                            <i class="fa fa-search"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -324,7 +346,10 @@
                                         <label id="lblC2" class="DyForm3-LabelRed fontsizeCash" style="margin:auto"></label>
                                     </div>
                                     <div class="form-group row" style="width: 100%; margin-bottom: 0px">
-                                        <a href="#" id="lblC3" class="DyForm3-Label fontsizeURL" style="text-decoration: underline;margin-left:auto">VIP銷售分析</a>
+                                        <button class="btnProgram" id="btC3">
+                                            點我查詢
+                                            <i class="fa fa-search"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -343,9 +368,10 @@
                                         <label id="lblD2" class="DyForm3-LabelRed fontsizeCash" style="margin:auto"></label>
                                     </div>
                                     <div class="form-group row" style="width: 100%; margin-bottom: 0px">
-                                        <a href="#" id="lblD3" class="DyForm3-Label fontsizeURL" style="text-decoration: underline;margin-left:auto">
-                                            年度銷售業績比較表
-                                        </a>
+                                        <button class="btnProgram" id="btD3">
+                                            點我查詢
+                                            <i class="fa fa-search"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>

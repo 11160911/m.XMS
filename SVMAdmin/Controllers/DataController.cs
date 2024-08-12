@@ -477,7 +477,7 @@ namespace SVMAdmin.Controllers
                 dtD.TableName = "dtD";
                 ds.Tables.Add(dtD);
 
-                sql = "Select Top 10 ROW_NUMBER() over(order by sum(a.num) desc) E1,left(b.GD_Name,8) E2,sum(a.num) E3 ";
+                sql = "Select Top 10 ROW_NUMBER() over(order by sum(a.num) desc) E1,left(b.GD_Name,9) E2,sum(a.num) E3 ";
                 sql += "From SalesDWeb a (nolock) ";
                 sql += "left join PLUWeb b (nolock) on a.GoodsNo=b.GD_NO and b.Companycode=a.Companycode ";
                 sql += "Where a.Companycode='" + uu.CompanyId + "' ";
@@ -12407,35 +12407,43 @@ namespace SVMAdmin.Controllers
             {
                 IFormCollection rq = HttpContext.Request.Form;
                 string ActivityCode = rq["ActivityCode"];
-                string PSName = rq["PSName"];
                 string BirYear = rq["BirYear"];
+                string PSName = rq["PSName"];
                 string BirMonth = rq["BirMonth"];
 
                 string sql = "";
                 sql = "Select a.PS_NO,a.ActivityCode,b.PS_Name,a.StartDate + '~' + a.EndDate EDDate, ";
-
-                sql += "sum(isnull(a.issueQty,0))Cnt1,sum(isnull(a.ReclaimQty,0))Cnt2, ";
-                sql += "case when sum(isnull(a.issueQty,0))=0 then format(0,'0.0%') else format(cast(sum(isnull(a.ReclaimQty,0)) as Float)/cast(sum(isnull(a.issueQty,0)) as Float),'0.0%') end as RePercent, ";
-                sql += "sum(isnull(a.ShareAmt,0))ActualDiscount,sum(isnull(a.ReclaimCash,0))Cash,sum(isnull(a.ReclaimTrans,0))Cnt3, ";
-                sql += "case when sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(sum(isnull(a.ReclaimCash,0))/sum(isnull(a.ReclaimTrans,0)),0) end as SalesPrice ";
+                sql += "c.BIR_Year,c.BIR_Month,sum(isnull(a.issueQty,0))issueQty,sum(isnull(a.ReclaimQty,0))ReclaimQty, ";
+                sql += "case when sum(isnull(a.issueQty,0))=0 then format(0,'p1') else format(cast(sum(isnull(a.ReclaimQty,0)) as Float)/cast(sum(isnull(a.issueQty,0)) as Float),'p1') end as RePercent, ";
+                sql += "sum(isnull(a.ShareAmt,0))ShareAmt,sum(isnull(a.ReclaimCash,0))ReclaimCash,sum(isnull(a.ReclaimTrans,0))ReclaimTrans, ";
+                sql += "case when sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(sum(isnull(a.ReclaimCash,0))/sum(isnull(a.ReclaimTrans,0)),0) end as Price ";
 
                 sql += "From MsData2Web a (nolock) ";
-                sql += "inner join PromoteSCouponHWeb b (nolock) on a.PS_NO=b.PS_NO and b.Companycode=a.Companycode and b.CouponType in('1','2') ";
+                sql += "left join PromoteSCouponHWeb b (nolock) on a.PS_NO=b.PS_NO and b.Companycode=a.Companycode and b.CouponType in('1','2') ";
                 //活動名稱
                 if (PSName.SqlQuote() != "")
                 {
                     sql += "and b.PS_Name like '%" + PSName.SqlQuote() + "%' ";
                 }
-                sql += "and b.PS_NO in (Select PS_NO From SetEDMHWeb (nolock) Where EDMType='V' and isnull(ApproveDate,'')<>'' and Companycode='" + uu.CompanyId + "' ";
-                sql += ") ";
+                sql += "inner join SetEDMHWeb c (nolock) on a.PS_NO=c.PS_NO and c.Companycode=a.Companycode and c.EDMType='B' ";
+                //DM年度
+                if (BirYear.SqlQuote() != "") {
+                    sql += "and c.BIR_Year='" + BirYear.SqlQuote() + "' ";
+                }
+                //生日月份
+                if (BirMonth.SqlQuote() != "")
+                {
+                    sql += "and c.BIR_Month='" + BirMonth.SqlQuote() + "' ";
+                }
+
                 sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                 //活動代號
                 if (ActivityCode.SqlQuote() != "")
                 {
                     sql += "and a.ActivityCode like '%" + ActivityCode.SqlQuote() + "%' ";
                 }
-                sql += "group by a.PS_NO,a.ActivityCode,b.PS_Name,a.StartDate,a.EndDate ";
-                sql += "Order by a.StartDate ";
+                sql += "group by a.PS_NO,a.ActivityCode,b.PS_Name,a.StartDate,a.EndDate,c.BIR_Year,c.BIR_Month ";
+                sql += "Order by a.ActivityCode ";
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
                 ds.Tables.Add(dtE);
@@ -12447,6 +12455,103 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+
+        [Route("SystemSetup/MSSD104QueryD")]
+        public ActionResult SystemSetup_MSSD104QueryD()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSD104QueryDOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string PS_NO = rq["PS_NO"];
+                string Flag = rq["Flag"];
+                string sql = "";
+                string sqlD = "";
+                string sqlH = "";
+
+                //店別
+                if (Flag == "S") {
+                    sql = "Select a.ShopNo + '-' + b.ST_SName ID,Sum(isnull(a.issueQty,0))issueQty, ";
+                    sql += "Sum(isnull(a.ReclaimQty,0))ReclaimQty, ";
+                    sql += "case when Sum(isnull(a.issueQty,0))=0 then format(0,'p1') else format(cast(Sum(isnull(a.ReclaimQty,0)) as Float)/cast(sum(isnull(a.issueQty,0)) as Float),'p1') end as RePercent, ";
+                    sql += "Sum(isnull(a.ShareAmt,0))ShareAmt,Sum(isnull(a.ReclaimCash,0))ReclaimCash,Sum(isnull(a.ReclaimTrans,0))ReclaimTrans, ";
+                    sql += "case when Sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(Sum(isnull(a.ReclaimCash,0))/Sum(isnull(a.ReclaimTrans,0)),0) end as Price, ";
+                    sql += "Sum(isnull(a.TotalCash,0))TotalCash,Sum(isnull(a.TotalTrans,0))TotalTrans, ";
+                    sql += "case when Sum(isnull(a.TotalTrans,0))=0 then 0 else Round(Sum(isnull(a.TotalCash,0))/Sum(isnull(a.TotalTrans,0)),0) end as PriceAll ";
+                    sql += "into #S ";
+
+                    sql += "From MSData2Web a (nolock) ";
+                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode and b.ST_Type not in('2','3') ";
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                    if (PS_NO.SqlQuote() != "") {
+                        sql += "and a.PS_NO='" + PS_NO.SqlQuote() + "' ";
+                    }
+                    sql += "group by a.ShopNo,b.ST_SName ";
+                    sql += "order by a.ShopNo; ";
+                    //明細資料
+                    sqlD = "Select * From #S ";
+                    DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+                    //彙總資料
+                    sqlH = "Select Sum(isnull(a.issueQty,0))SumissueQty,Sum(isnull(a.ReclaimQty,0))SumReclaimQty, ";
+                    sqlH += "case when Sum(isnull(a.issueQty,0))=0 then format(0,'p1') else format(cast(Sum(isnull(a.ReclaimQty,0)) as Float)/cast(sum(isnull(a.issueQty,0)) as Float),'p1') end as SumRePercent, ";
+                    sqlH += "Sum(isnull(a.ShareAmt,0))SumShareAmt,Sum(isnull(a.ReclaimCash,0))SumReclaimCash,Sum(isnull(a.ReclaimTrans,0))SumReclaimTrans, ";
+                    sqlH += "case when Sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(Sum(isnull(a.ReclaimCash,0))/Sum(isnull(a.ReclaimTrans,0)),0) end as SumPrice, ";
+                    sqlH += "Sum(isnull(a.TotalCash,0))SumTotalCash,Sum(isnull(a.TotalTrans,0))SumTotalTrans, ";
+                    sqlH += "case when Sum(isnull(a.TotalTrans,0))=0 then 0 else Round(Sum(isnull(a.TotalCash,0))/Sum(isnull(a.TotalTrans,0)),0) end as SumPriceAll ";
+                    sqlH += "From #S a ";
+                    DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
+                    dtH.TableName = "dtH";
+                    ds.Tables.Add(dtH);
+
+                }
+                //銷售日期
+                else if (Flag == "D") {
+                    sql = "Select a.SalesDate ID,Sum(isnull(a.ReclaimQty,0))ReclaimQty,Sum(isnull(a.ShareAmt,0))ShareAmt, ";
+                    sql += "Sum(isnull(a.ReclaimCash,0))ReclaimCash,Sum(isnull(a.ReclaimTrans,0))ReclaimTrans, ";
+                    sql += "case when Sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(Sum(isnull(a.ReclaimCash,0))/Sum(isnull(a.ReclaimTrans,0)),0) end as Price, ";
+                    sql += "Sum(isnull(a.TotalCash,0))TotalCash,Sum(isnull(a.TotalTrans,0))TotalTrans, ";
+                    sql += "case when Sum(isnull(a.TotalTrans,0))=0 then 0 else Round(Sum(isnull(a.TotalCash,0))/Sum(isnull(a.TotalTrans,0)),0) end as PriceAll ";
+                    sql += "into #S ";
+
+                    sql += "From MSData1Web a (nolock) ";
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                    if (PS_NO.SqlQuote() != "") {
+                        sql += "and a.PS_NO='" + PS_NO.SqlQuote() + "' ";
+                    }
+                    sql += "group by a.SalesDate ";
+                    sql += "order by a.SalesDate; ";
+                    //明細資料
+                    sqlD = "Select * From #S ";
+                    DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+
+                    //彙總資料
+                    sqlH = "Select Sum(isnull(a.ReclaimQty,0))SumReclaimQty,Sum(isnull(a.ShareAmt,0))SumShareAmt, ";
+                    sqlH += "Sum(isnull(a.ReclaimCash,0))SumReclaimCash,Sum(isnull(a.ReclaimTrans,0))SumReclaimTrans, ";
+                    sqlH += "case when Sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(Sum(isnull(a.ReclaimCash,0))/Sum(isnull(a.ReclaimTrans,0)),0) end as SumPrice, ";
+                    sqlH += "Sum(isnull(a.TotalCash,0))SumTotalCash,Sum(isnull(a.TotalTrans,0))SumTotalTrans, ";
+                    sqlH += "case when Sum(isnull(a.TotalTrans,0))=0 then 0 else Round(Sum(isnull(a.TotalCash,0))/Sum(isnull(a.TotalTrans,0)),0) end as SumPriceAll ";
+                    sqlH += "From #S a ";
+                    DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
+                    dtH.TableName = "dtH";
+                    ds.Tables.Add(dtH);
+
+                }
+                
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
         #endregion
 
         [Route("SystemSetup/GetInitMSSA103")]
