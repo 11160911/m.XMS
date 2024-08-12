@@ -88,22 +88,18 @@
     }
 
     let Step1_click = function (bt) {
-        //var heads = $('#tbQuery thead tr th#th0').html();
-        //if (heads.toString().indexOf("時段") >= 0) {
-        //    return;
-        //}
 
         $('#tbQuery td').closest('tr').css('background-color', 'transparent');
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
-        var node = $(grdM.ActiveRowTR()).prop('Record');
-        $('#tbQuery td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
+        var node = $(grdM.ActiveRowTR()).prop('Record');       
+        $('#tbQuery td:contains(' + GetNodeValue(node, 'ID').replace('(', '').replace(')', '') + ')').closest('tr').css('background-color', '#DEEBF7');
 
         var cg = GetNodeValue(node, 'ID');
         $('#lblCG_No').html(cg.split('\n')[0]);
         $('#lblCG_Date').html(cg.split('\n')[1]);
         $('#lblCG_Name').html(cg.split('\n')[2]);
-
+        
         $('#modal_Shop1').modal('show');
         setTimeout(function () {
             QueryShop1();
