@@ -532,9 +532,9 @@ namespace SVMAdmin.Controllers
                 dtH.TableName = "dtH";
                 ds.Tables.Add(dtH);
 
-                sql = "select OpenDate name,case when sum(VIP_RecS)=0 then 0 else sum(VIP_Cash)/sum(VIP_RecS) end as value1, ";
-                sql += "case when SUM(RecS-VIP_RecS)=0 then 0 else sum(Cash-VIP_Cash)/SUM(RecS-VIP_RecS) end as value2, ";
-                sql += "case when sum(RecS)=0 then 0 else sum(Cash)/sum(RecS) end as value3 ";
+                sql = "select OpenDate name,case when sum(VIP_RecS)=0 then 0 else Round(sum(VIP_Cash)/sum(VIP_RecS),0) end as value1, ";
+                sql += "case when sum(RecS-VIP_RecS)=0 then 0 else Round(sum(Cash-VIP_Cash)/sum(RecS-VIP_RecS),0) end as value2, ";
+                sql += "case when sum(RecS)=0 then 0 else Round(sum(Cash)/sum(RecS),0) end as value3 ";
                 sql += "from SalesHWeb (nolock) ";
                 sql += "where CompanyCode='" + uu.CompanyId + "' ";
                 sql += "and OpenDate between convert(char,dateadd(DD,-365,getdate()),111) and convert(char,dateadd(DD,-1,getdate()),111) ";

@@ -200,7 +200,6 @@
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: gridclickJ,
-                sortable: "Y",
                 step: "Y"
             }
         );
@@ -301,7 +300,6 @@
         URL.revokeObjectURL(url);
     }
 
-
     //繪製折線圖
     let Setline = function (data) {
         var dtI = data.getElementsByTagName('dtI');
@@ -325,6 +323,7 @@
             tooltip: {
                 trigger: 'axis'
             },
+            color: ['blue', 'green', 'red'],
             legend: {
                 data: ['會員客單價', '非會員客單價', '總客單價'],
                 textStyle: {
@@ -462,6 +461,7 @@
             tooltip: {
                 trigger: 'axis'
             },
+            color: ['blue', 'red'],
             legend: {
                 data: ['去年', '今年'],
                 textStyle: {
