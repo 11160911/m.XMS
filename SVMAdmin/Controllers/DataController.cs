@@ -12552,6 +12552,109 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("SystemSetup/MSSD104QueryDD")]
+        public ActionResult SystemSetup_MSSD104QueryDD()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSD104QueryDDOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string PS_NO = rq["PS_NO"];
+                string ID = rq["ID"];
+                string Flag = rq["Flag"];
+                string sql = "";
+                string sqlD = "";
+                string sqlH = "";
+
+                //店別
+                if (Flag == "S")
+                {
+                    sql = "Select a.SalesDate ID,Sum(isnull(a.ReclaimQty,0))ReclaimQty,Sum(isnull(a.ShareAmt,0))ShareAmt, ";
+                    sql += "Sum(isnull(a.ReclaimCash,0))ReclaimCash,Sum(isnull(a.ReclaimTrans,0))ReclaimTrans, ";
+                    sql += "case when Sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(Sum(isnull(a.ReclaimCash,0))/Sum(isnull(a.ReclaimTrans,0)),0) end as Price, ";
+                    sql += "Sum(isnull(a.TotalCash,0))TotalCash,Sum(isnull(a.TotalTrans,0))TotalTrans, ";
+                    sql += "case when Sum(isnull(a.TotalTrans,0))=0 then 0 else Round(Sum(isnull(a.TotalCash,0))/Sum(isnull(a.TotalTrans,0)),0) end as PriceAll ";
+                    sql += "into #S ";
+
+                    sql += "From MSData1Web a (nolock) ";
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                    if (PS_NO.SqlQuote() != "")
+                    {
+                        sql += "and a.PS_NO='" + PS_NO.SqlQuote() + "' ";
+                    }
+                    if (ID.SqlQuote() != "") {
+                        sql += "and a.ShopNo='" + ID.SqlQuote() + "' ";
+                    }
+                    sql += "group by a.SalesDate ";
+                    sql += "order by a.SalesDate; ";
+                    //明細資料
+                    sqlD = "Select * From #S ";
+                    DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+
+                    //彙總資料
+                    sqlH = "Select Sum(isnull(a.ReclaimQty,0))SumReclaimQty,Sum(isnull(a.ShareAmt,0))SumShareAmt, ";
+                    sqlH += "Sum(isnull(a.ReclaimCash,0))SumReclaimCash,Sum(isnull(a.ReclaimTrans,0))SumReclaimTrans, ";
+                    sqlH += "case when Sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(Sum(isnull(a.ReclaimCash,0))/Sum(isnull(a.ReclaimTrans,0)),0) end as SumPrice, ";
+                    sqlH += "Sum(isnull(a.TotalCash,0))SumTotalCash,Sum(isnull(a.TotalTrans,0))SumTotalTrans, ";
+                    sqlH += "case when Sum(isnull(a.TotalTrans,0))=0 then 0 else Round(Sum(isnull(a.TotalCash,0))/Sum(isnull(a.TotalTrans,0)),0) end as SumPriceAll ";
+                    sqlH += "From #S a ";
+                    DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
+                    dtH.TableName = "dtH";
+                    ds.Tables.Add(dtH);
+                }
+                //銷售日期
+                else if (Flag == "D")
+                {
+                    sql = "Select a.ShopNo + '-' + b.ST_SName ID,Sum(isnull(a.ReclaimQty,0))ReclaimQty,Sum(isnull(a.ShareAmt,0))ShareAmt, ";
+                    sql += "Sum(isnull(a.ReclaimCash,0))ReclaimCash,Sum(isnull(a.ReclaimTrans,0))ReclaimTrans, ";
+                    sql += "case when Sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(Sum(isnull(a.ReclaimCash,0))/Sum(isnull(a.ReclaimTrans,0)),0) end as Price, ";
+                    sql += "Sum(isnull(a.TotalCash,0))TotalCash,Sum(isnull(a.TotalTrans,0))TotalTrans, ";
+                    sql += "case when Sum(isnull(a.TotalTrans,0))=0 then 0 else Round(Sum(isnull(a.TotalCash,0))/Sum(isnull(a.TotalTrans,0)),0) end as PriceAll ";
+                    sql += "into #S ";
+
+                    sql += "From MSData1Web a (nolock) ";
+                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode and b.ST_Type not in('2','3') ";
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                    if (PS_NO.SqlQuote() != "")
+                    {
+                        sql += "and a.PS_NO='" + PS_NO.SqlQuote() + "' ";
+                    }
+                    if (ID.SqlQuote() != "")
+                    {
+                        sql += "and a.SalesDate='" + ID.SqlQuote() + "' ";
+                    }
+                    sql += "group by a.ShopNo,b.ST_SName ";
+                    sql += "order by a.ShopNo; ";
+                    //明細資料
+                    sqlD = "Select * From #S ";
+                    DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+
+                    //彙總資料
+                    sqlH = "Select Sum(isnull(a.ReclaimQty,0))SumReclaimQty,Sum(isnull(a.ShareAmt,0))SumShareAmt, ";
+                    sqlH += "Sum(isnull(a.ReclaimCash,0))SumReclaimCash,Sum(isnull(a.ReclaimTrans,0))SumReclaimTrans, ";
+                    sqlH += "case when Sum(isnull(a.ReclaimTrans,0))=0 then 0 else Round(Sum(isnull(a.ReclaimCash,0))/Sum(isnull(a.ReclaimTrans,0)),0) end as SumPrice, ";
+                    sqlH += "Sum(isnull(a.TotalCash,0))SumTotalCash,Sum(isnull(a.TotalTrans,0))SumTotalTrans, ";
+                    sqlH += "case when Sum(isnull(a.TotalTrans,0))=0 then 0 else Round(Sum(isnull(a.TotalCash,0))/Sum(isnull(a.TotalTrans,0)),0) end as SumPriceAll ";
+                    sqlH += "From #S a ";
+                    DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
+                    dtH.TableName = "dtH";
+                    ds.Tables.Add(dtH);
+                }
+
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
         #endregion
 
         [Route("SystemSetup/GetInitMSSA103")]
