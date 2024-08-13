@@ -14,15 +14,15 @@
                 fields_info: [
                     { type: "Text", name: "ID", style: "" },
                     { type: "TextAmt", name: "VIPCnt"},
-                    { type: "TextAmt", name: "SalesCnt1"},
                     { type: "TextAmt", name: "SalesCash1"},
+                    { type: "TextAmt", name: "SalesCnt1"},
                     { type: "TextAmt", name: "SalesPrice1"},
-                    { type: "TextAmt", name: "SalesCnt2"},
                     { type: "TextAmt", name: "SalesCash2"},
+                    { type: "TextAmt", name: "SalesCnt2"},
                     { type: "TextAmt", name: "SalesPrice2" },
                     { type: "TextPercent", name: "SalesPercent2" },
-                    { type: "TextAmt", name: "SalesCnt3" },
                     { type: "TextAmt", name: "SalesCash3" },
+                    { type: "TextAmt", name: "SalesCnt3" },
                     { type: "TextAmt", name: "SalesPrice3" },
                     { type: "TextPercent", name: "SalesPercent3" }
                 ],
@@ -41,15 +41,15 @@
                 fields_info: [
                     { type: "Text", name: "ID", style: "" },
                     { type: "TextAmt", name: "VIPCnt" },
-                    { type: "TextAmt", name: "SalesCnt1" },
                     { type: "TextAmt", name: "SalesCash1" },
+                    { type: "TextAmt", name: "SalesCnt1" },
                     { type: "TextAmt", name: "SalesPrice1" },
-                    { type: "TextAmt", name: "SalesCnt2" },
                     { type: "TextAmt", name: "SalesCash2" },
+                    { type: "TextAmt", name: "SalesCnt2" },
                     { type: "TextAmt", name: "SalesPrice2" },
                     { type: "TextPercent", name: "SalesPercent2" },
-                    { type: "TextAmt", name: "SalesCnt3" },
                     { type: "TextAmt", name: "SalesCash3" },
+                    { type: "TextAmt", name: "SalesCnt3" },
                     { type: "TextAmt", name: "SalesPrice3" },
                     { type: "TextPercent", name: "SalesPercent3" }
                 ],
@@ -66,15 +66,15 @@
                 fields_info: [
                     { type: "Text", name: "ID", style: "" },
                     { type: "TextAmt", name: "VIPCnt" },
-                    { type: "TextAmt", name: "SalesCnt1" },
                     { type: "TextAmt", name: "SalesCash1" },
+                    { type: "TextAmt", name: "SalesCnt1" },
                     { type: "TextAmt", name: "SalesPrice1" },
-                    { type: "TextAmt", name: "SalesCnt2" },
                     { type: "TextAmt", name: "SalesCash2" },
+                    { type: "TextAmt", name: "SalesCnt2" },
                     { type: "TextAmt", name: "SalesPrice2" },
                     { type: "TextPercent", name: "SalesPercent2" },
-                    { type: "TextAmt", name: "SalesCnt3" },
                     { type: "TextAmt", name: "SalesCash3" },
+                    { type: "TextAmt", name: "SalesCnt3" },
                     { type: "TextAmt", name: "SalesPrice3" },
                     { type: "TextPercent", name: "SalesPercent3" }
                 ],
@@ -182,15 +182,15 @@
 
             var dtSumQ = data.getElementsByTagName('dtSumQ');
             $('#tbQuery thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPCnt")).toLocaleString('en-US'));
-            $('#tbQuery thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCnt1")).toLocaleString('en-US'));
-            $('#tbQuery thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCash1")).toLocaleString('en-US'));
+            $('#tbQuery thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCash1")).toLocaleString('en-US'));
+            $('#tbQuery thead td#td3').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCnt1")).toLocaleString('en-US'));
             $('#tbQuery thead td#td4').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesPrice1")).toLocaleString('en-US'));
-            $('#tbQuery thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCnt2")).toLocaleString('en-US'));
-            $('#tbQuery thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCash2")).toLocaleString('en-US'));
+            $('#tbQuery thead td#td5').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCash2")).toLocaleString('en-US'));
+            $('#tbQuery thead td#td6').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCnt2")).toLocaleString('en-US'));
             $('#tbQuery thead td#td7').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesPrice2")).toLocaleString('en-US'));
             $('#tbQuery thead td#td8').html(GetNodeValue(dtSumQ[0], "SumSalesPercent2"));
-            $('#tbQuery thead td#td9').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCnt3")).toLocaleString('en-US'));
-            $('#tbQuery thead td#td10').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCash3")).toLocaleString('en-US'));
+            $('#tbQuery thead td#td9').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCash3")).toLocaleString('en-US'));
+            $('#tbQuery thead td#td10').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCnt3")).toLocaleString('en-US'));
             $('#tbQuery thead td#td11').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesPrice3")).toLocaleString('en-US'));
             $('#tbQuery thead td#td12').html(GetNodeValue(dtSumQ[0], "SumSalesPercent3"));
         }
@@ -264,15 +264,15 @@
             }
             var dtSumQ = data.getElementsByTagName('dtSumQ');
             $('#tbShop1 thead td#td1_Shop1').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPCnt")).toLocaleString('en-US'));
-            $('#tbShop1 thead td#td2_Shop1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCnt1")).toLocaleString('en-US'));
-            $('#tbShop1 thead td#td3_Shop1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCash1")).toLocaleString('en-US'));
+            $('#tbShop1 thead td#td2_Shop1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCash1")).toLocaleString('en-US'));
+            $('#tbShop1 thead td#td3_Shop1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCnt1")).toLocaleString('en-US'));
             $('#tbShop1 thead td#td4_Shop1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesPrice1")).toLocaleString('en-US'));
-            $('#tbShop1 thead td#td5_Shop1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCnt2")).toLocaleString('en-US'));
-            $('#tbShop1 thead td#td6_Shop1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCash2")).toLocaleString('en-US'));
+            $('#tbShop1 thead td#td5_Shop1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCash2")).toLocaleString('en-US'));
+            $('#tbShop1 thead td#td6_Shop1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCnt2")).toLocaleString('en-US'));
             $('#tbShop1 thead td#td7_Shop1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesPrice2")).toLocaleString('en-US'));
             $('#tbShop1 thead td#td8_Shop1').html(GetNodeValue(dtSumQ[0], "SumSalesPercent2"));
-            $('#tbShop1 thead td#td9_Shop1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCnt3")).toLocaleString('en-US'));
-            $('#tbShop1 thead td#td10_Shop1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCash3")).toLocaleString('en-US'));
+            $('#tbShop1 thead td#td9_Shop1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCash3")).toLocaleString('en-US'));
+            $('#tbShop1 thead td#td10_Shop1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCnt3")).toLocaleString('en-US'));
             $('#tbShop1 thead td#td11_Shop1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesPrice3")).toLocaleString('en-US'));
             $('#tbShop1 thead td#td12_Shop1').html(GetNodeValue(dtSumQ[0], "SumSalesPercent3"));
         }
@@ -317,15 +317,15 @@
             }
             var dtSumQ = data.getElementsByTagName('dtSumQ');
             $('#tbDate1 thead td#td1_Date1').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPCnt")).toLocaleString('en-US'));
-            $('#tbDate1 thead td#td2_Date1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCnt1")).toLocaleString('en-US'));
-            $('#tbDate1 thead td#td3_Date1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCash1")).toLocaleString('en-US'));
+            $('#tbDate1 thead td#td2_Date1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCash1")).toLocaleString('en-US'));
+            $('#tbDate1 thead td#td3_Date1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCnt1")).toLocaleString('en-US'));
             $('#tbDate1 thead td#td4_Date1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesPrice1")).toLocaleString('en-US'));
-            $('#tbDate1 thead td#td5_Date1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCnt2")).toLocaleString('en-US'));
-            $('#tbDate1 thead td#td6_Date1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCash2")).toLocaleString('en-US'));
+            $('#tbDate1 thead td#td5_Date1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCash2")).toLocaleString('en-US'));
+            $('#tbDate1 thead td#td6_Date1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCnt2")).toLocaleString('en-US'));
             $('#tbDate1 thead td#td7_Date1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesPrice2")).toLocaleString('en-US'));
             $('#tbDate1 thead td#td8_Date1').html(GetNodeValue(dtSumQ[0], "SumSalesPercent2"));
-            $('#tbDate1 thead td#td9_Date1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCnt3")).toLocaleString('en-US'));
-            $('#tbDate1 thead td#td10_Date1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCash3")).toLocaleString('en-US'));
+            $('#tbDate1 thead td#td9_Date1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCash3")).toLocaleString('en-US'));
+            $('#tbDate1 thead td#td10_Date1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCnt3")).toLocaleString('en-US'));
             $('#tbDate1 thead td#td11_Date1').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesPrice3")).toLocaleString('en-US'));
             $('#tbDate1 thead td#td12_Date1').html(GetNodeValue(dtSumQ[0], "SumSalesPercent3"));
         }
