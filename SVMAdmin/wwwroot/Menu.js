@@ -166,7 +166,7 @@
                 class_collection: ["tdCol1 text-center", "tdCol2", "tdCol3 label-align"],
                 fields_info: [
                     { type: "Text", name: "E1", style: "width:15%" },
-                    { type: "Text", name: "E2", style: "width:55%;font-size:15px" },
+                    { type: "Text", name: "E2", style: "width:55%" },
                     { type: "TextAmt", name: "E3", style: "width:30%;color:blue" }
                 ],
                 //rows_per_page: 10,
@@ -416,7 +416,7 @@
             {
                 name: '',
                 type: 'pie',
-                radius: ['0%','85%'],
+                radius: ['0%','90%'],
                 center: ['50%','45%'],
                 label: {
                     show: true,
@@ -464,8 +464,9 @@
             color: ['blue', 'red'],
             legend: {
                 data: ['去年', '今年'],
+                top: 20,
                 textStyle: {
-                    fontSize: 16
+                    fontSize: 14
                 }
             },
             xAxis: {
@@ -507,7 +508,8 @@
                 }
             },
             grid: {
-                left:"25%"
+                left: "25%",
+                top: "35%"
             },
             series: [
                 {
