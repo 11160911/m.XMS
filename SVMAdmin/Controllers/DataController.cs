@@ -14562,6 +14562,219 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        #region MSSD107
+        [Route("SystemSetup/MSSD107Query")]
+        public ActionResult SystemSetup_MSSD107Query()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSD107QueryOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string YY = rq["YY"];
+                string Flag = rq["Flag"];
+                string sql = "";
+                string sqlD = "";
+                string sqlH = "";
+
+                //月份
+                if (Flag == "M")
+                {
+                    sql = "select left(OpenDate,4) YY,substring(OpenDate,6,2) + '月' ID,SUM(isnull(Cash,0))Cash,SUM(isnull(RecS,0))RecS, ";
+                    sql += "case when SUM(isnull(RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))/SUM(isnull(RecS,0)),0) end as Price, ";
+                    sql += "SUM(isnull(VIP_Cash,0))VIP_Cash,SUM(isnull(VIP_RecS,0))VIP_RecS, ";
+                    sql += "case when SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(VIP_Cash,0))/SUM(isnull(VIP_RecS,0)),0) end as VIPPrice, ";
+                    sql += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as VIPPercent, ";
+                    sql += "SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) VIPNo_Cash,SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)) VIPNo_RecS, ";
+                    sql += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0))/SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)),0) end as VIPNoPrice, ";
+                    sql += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as VIPNoPercent ";
+                    sql += "into #S ";
+                    sql += "from SalesHWeb (nolock) ";
+                    sql += "Where Companycode='" + uu.CompanyId + "' ";
+                    if (YY.SqlQuote() != "") {
+                        sql += "and left(OpenDate,4)='" + YY.SqlQuote() + "' ";
+                    }
+                    sql += "group by left(OpenDate,4),substring(OpenDate,6,2) ";
+                    sql += "order by substring(OpenDate,6,2); ";
+                    //明細資料
+                    sqlD = "Select * From #S ";
+                    DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+                    //彙總資料
+                    sqlH = "Select Sum(isnull(Cash,0))SumCash,Sum(isnull(RecS,0))SumRecS, ";
+                    sqlH += "case when SUM(isnull(RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))/SUM(isnull(RecS,0)),0) end as SumPrice, ";
+                    sqlH += "SUM(isnull(VIP_Cash,0))SumVIP_Cash,SUM(isnull(VIP_RecS,0))SumVIP_RecS, ";
+                    sqlH += "case when SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(VIP_Cash,0))/SUM(isnull(VIP_RecS,0)),0) end as SumVIPPrice, ";
+                    sqlH += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as SumVIPPercent, ";
+                    sqlH += "SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) SumVIPNo_Cash,SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)) SumVIPNo_RecS, ";
+                    sqlH += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0))/SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)),0) end as SumVIPNoPrice, ";
+                    sqlH += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as SumVIPNoPercent ";
+                    sqlH += "From #S ";
+                    DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
+                    dtH.TableName = "dtH";
+                    ds.Tables.Add(dtH);
+                }
+                //店別
+                else if (Flag == "S")
+                {
+                    sql = "select left(OpenDate,4) YY,ShopNo + '-' + ST_SName ID,SUM(isnull(Cash,0))Cash,SUM(isnull(RecS,0))RecS, ";
+                    sql += "case when SUM(isnull(RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))/SUM(isnull(RecS,0)),0) end as Price, ";
+                    sql += "SUM(isnull(VIP_Cash,0))VIP_Cash,SUM(isnull(VIP_RecS,0))VIP_RecS, ";
+                    sql += "case when SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(VIP_Cash,0))/SUM(isnull(VIP_RecS,0)),0) end as VIPPrice, ";
+                    sql += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as VIPPercent, ";
+                    sql += "SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) VIPNo_Cash,SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)) VIPNo_RecS, ";
+                    sql += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0))/SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)),0) end as VIPNoPrice, ";
+                    sql += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as VIPNoPercent ";
+                    sql += "into #S ";
+                    sql += "from SalesHWeb a (nolock) ";
+                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.ST_Type not in ('2','3') ";
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                    if (YY.SqlQuote() != "")
+                    {
+                        sql += "and left(OpenDate,4)='" + YY.SqlQuote() + "' ";
+                    }
+                    sql += "group by left(OpenDate,4),ShopNo,ST_SName ";
+                    sql += "order by ShopNo; ";
+                    //明細資料
+                    sqlD = "Select * From #S ";
+                    DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+                    //彙總資料
+                    sqlH = "Select Sum(isnull(Cash,0))SumCash,Sum(isnull(RecS,0))SumRecS, ";
+                    sqlH += "case when SUM(isnull(RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))/SUM(isnull(RecS,0)),0) end as SumPrice, ";
+                    sqlH += "SUM(isnull(VIP_Cash,0))SumVIP_Cash,SUM(isnull(VIP_RecS,0))SumVIP_RecS, ";
+                    sqlH += "case when SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(VIP_Cash,0))/SUM(isnull(VIP_RecS,0)),0) end as SumVIPPrice, ";
+                    sqlH += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as SumVIPPercent, ";
+                    sqlH += "SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) SumVIPNo_Cash,SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)) SumVIPNo_RecS, ";
+                    sqlH += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0))/SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)),0) end as SumVIPNoPrice, ";
+                    sqlH += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as SumVIPNoPercent ";
+                    sqlH += "From #S ";
+                    DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
+                    dtH.TableName = "dtH";
+                    ds.Tables.Add(dtH);
+                }
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSSD107QueryD")]
+        public ActionResult SystemSetup_MSSD107QueryD()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSD107QueryDOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string YY = rq["YY"];
+                string ID = rq["ID"];
+                string Flag = rq["Flag"];
+                string sql = "";
+                string sqlD = "";
+                string sqlH = "";
+
+                //月份
+                if (Flag == "M")
+                {
+                    string YM = YY + "/" + ID;
+                    sql = "select ShopNo + '-' + ST_SName ID,SUM(isnull(Cash,0))Cash,SUM(isnull(RecS,0))RecS, ";
+                    sql += "case when SUM(isnull(RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))/SUM(isnull(RecS,0)),0) end as Price, ";
+                    sql += "SUM(isnull(VIP_Cash,0))VIP_Cash,SUM(isnull(VIP_RecS,0))VIP_RecS, ";
+                    sql += "case when SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(VIP_Cash,0))/SUM(isnull(VIP_RecS,0)),0) end as VIPPrice, ";
+                    sql += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as VIPPercent, ";
+                    sql += "SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) VIPNo_Cash,SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)) VIPNo_RecS, ";
+                    sql += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0))/SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)),0) end as VIPNoPrice, ";
+                    sql += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as VIPNoPercent ";
+                    sql += "into #S ";
+                    sql += "from SalesHWeb a (nolock) ";
+                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.ST_Type not in ('2','3') ";
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                    if (YM != "")
+                    {
+                        sql += "and left(OpenDate,7)='" + YM + "' ";
+                    }
+                    sql += "group by ShopNo,ST_SName ";
+                    sql += "order by ShopNo; ";
+                    //明細資料
+                    sqlD = "Select * From #S ";
+                    DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+                    //彙總資料
+                    sqlH = "Select Sum(isnull(Cash,0))SumCash,Sum(isnull(RecS,0))SumRecS, ";
+                    sqlH += "case when SUM(isnull(RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))/SUM(isnull(RecS,0)),0) end as SumPrice, ";
+                    sqlH += "SUM(isnull(VIP_Cash,0))SumVIP_Cash,SUM(isnull(VIP_RecS,0))SumVIP_RecS, ";
+                    sqlH += "case when SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(VIP_Cash,0))/SUM(isnull(VIP_RecS,0)),0) end as SumVIPPrice, ";
+                    sqlH += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as SumVIPPercent, ";
+                    sqlH += "SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) SumVIPNo_Cash,SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)) SumVIPNo_RecS, ";
+                    sqlH += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0))/SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)),0) end as SumVIPNoPrice, ";
+                    sqlH += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as SumVIPNoPercent ";
+                    sqlH += "From #S ";
+                    DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
+                    dtH.TableName = "dtH";
+                    ds.Tables.Add(dtH);
+                }
+                //店別
+                else if (Flag == "S")
+                {
+                    sql = "select substring(OpenDate,6,2) + '月' ID,SUM(isnull(Cash,0))Cash,SUM(isnull(RecS,0))RecS, ";
+                    sql += "case when SUM(isnull(RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))/SUM(isnull(RecS,0)),0) end as Price, ";
+                    sql += "SUM(isnull(VIP_Cash,0))VIP_Cash,SUM(isnull(VIP_RecS,0))VIP_RecS, ";
+                    sql += "case when SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(VIP_Cash,0))/SUM(isnull(VIP_RecS,0)),0) end as VIPPrice, ";
+                    sql += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as VIPPercent, ";
+                    sql += "SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) VIPNo_Cash,SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)) VIPNo_RecS, ";
+                    sql += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0))/SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)),0) end as VIPNoPrice, ";
+                    sql += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as VIPNoPercent ";
+                    sql += "into #S ";
+                    sql += "from SalesHWeb (nolock) ";
+                    sql += "Where Companycode='" + uu.CompanyId + "' ";
+                    if (YY.SqlQuote() != "")
+                    {
+                        sql += "and left(OpenDate,4)='" + YY.SqlQuote() + "' ";
+                    }
+                    if (ID.SqlQuote() != "") {
+                        sql += "and ShopNo='" + ID.SqlQuote() + "' ";
+                    }
+                    sql += "group by substring(OpenDate,6,2) ";
+                    sql += "order by substring(OpenDate,6,2); ";
+                    //明細資料
+                    sqlD = "Select * From #S ";
+                    DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+                    //彙總資料
+                    sqlH = "Select Sum(isnull(Cash,0))SumCash,Sum(isnull(RecS,0))SumRecS, ";
+                    sqlH += "case when SUM(isnull(RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))/SUM(isnull(RecS,0)),0) end as SumPrice, ";
+                    sqlH += "SUM(isnull(VIP_Cash,0))SumVIP_Cash,SUM(isnull(VIP_RecS,0))SumVIP_RecS, ";
+                    sqlH += "case when SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(VIP_Cash,0))/SUM(isnull(VIP_RecS,0)),0) end as SumVIPPrice, ";
+                    sqlH += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as SumVIPPercent, ";
+                    sqlH += "SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) SumVIPNo_Cash,SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)) SumVIPNo_RecS, ";
+                    sqlH += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0))/SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)),0) end as SumVIPNoPrice, ";
+                    sqlH += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as SumVIPNoPercent ";
+                    sqlH += "From #S ";
+                    DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
+                    dtH.TableName = "dtH";
+                    ds.Tables.Add(dtH);
+                }
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+        #endregion
+
+
         [Route("FileUpload_EDM")]
         public ActionResult FileUpload_EDM()
         {

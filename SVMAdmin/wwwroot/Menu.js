@@ -977,6 +977,18 @@
                     PageMSSETLOGO($(".workarea"));
                 }
             }
+            else if (pg == "MSSD107") {
+                if (window.PageMSSD107 == undefined) {
+                    $.getScript('SystemSetup/MSSD107.js',
+                        function () {
+                            PageMSSD107($(".workarea"));
+                        }
+                    );
+                }
+                else {
+                    PageMSSD107($(".workarea"));
+                }
+            }
             else if (pg == "SysChangePWD") {
                 $('#OLD_PWD').val("");
                 $('#NEW_PWD').val("");
