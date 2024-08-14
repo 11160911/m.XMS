@@ -14637,7 +14637,7 @@ namespace SVMAdmin.Controllers
                     sql += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as VIPNoPercent ";
                     sql += "into #S ";
                     sql += "from SalesHWeb a (nolock) ";
-                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.ST_Type not in ('0','2','3') ";
+                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.ST_Type not in ('0','2','3') and b.Companycode=a.Companycode ";
                     sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                     if (YY.SqlQuote() != "")
                     {
