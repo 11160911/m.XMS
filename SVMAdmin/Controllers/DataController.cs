@@ -13782,16 +13782,24 @@ namespace SVMAdmin.Controllers
                 }
                 sql += ";";
                 
-                sql += "Select " + sqlIDColname + " ID,isnull(sum(Cash),0) Cash1,isnull(sum(Recs),0) Cnt1,";
-                sql += "case when isnull(sum(Recs),0)=0 then 0 else round(isnull(sum(Cash),0)/isnull(sum(Recs),0),0) end  CusCash1,";
-                sql += "isnull(sum(VIP_Cash),0) VCash,isnull(sum(VIP_Recs),0) VCnt,";
-                sql += "case when isnull(sum(VIP_Recs),0)=0 then 0 else round(isnull(sum(VIP_Cash),0)/isnull(sum(VIP_Recs),0),0) end VCusCash,";
-                sql += "case when isnull(sum(Cash),0)=0 and isnull(sum(VIP_Cash),0)=0 then format(0,'p') when isnull(sum(Cash),0)=0 then format(1,'p') else format(cast(isnull(sum(VIP_Cash),0) as float)/cast(isnull(sum(Cash),0) as float),'p') end VPer into #tmpSel ";
+                sql += "Select " + sqlIDColname + " ID,isnull(sum(Cash),0) Cash1,isnull(sum(Recs),0) Cnt1, ";
+                sql += "case when isnull(sum(Recs),0)=0 then 0 else round(isnull(sum(Cash),0)/isnull(sum(Recs),0),0) end  CusCash1, ";
+                sql += "isnull(sum(VIP_Cash),0) VCash,isnull(sum(VIP_Recs),0) VCnt, ";
+                sql += "case when isnull(sum(VIP_Recs),0)=0 then 0 else round(isnull(sum(VIP_Cash),0)/isnull(sum(VIP_Recs),0),0) end VCusCash, ";
+                sql += "case when isnull(sum(Cash),0)=0 and isnull(sum(VIP_Cash),0)=0 then format(0,'p') when isnull(sum(Cash),0)=0 then format(1,'p') else format(cast(isnull(sum(VIP_Cash),0) as float)/cast(isnull(sum(Cash),0) as float),'p') end VPer, ";
+                sql += "isnull(sum(Cash),0)-isnull(sum(VIP_Cash),0) VNoCash,isnull(sum(Recs),0)-isnull(sum(VIP_Recs),0) VNoCnt, ";
+                sql += "case when isnull(sum(Recs),0)-isnull(sum(VIP_Recs),0)=0 then 0 else round((isnull(sum(Cash),0)-isnull(sum(VIP_Cash),0))/(isnull(sum(Recs),0)-isnull(sum(VIP_Recs),0)),0) end VNoCusCash, ";
+                sql += "case when isnull(sum(Cash),0)=0 and isnull(sum(Cash),0)-isnull(sum(VIP_Cash),0)=0 then format(0,'p') when isnull(sum(Cash),0)=0 then format(1,'p') else format(cast(isnull(sum(Cash),0)-isnull(sum(VIP_Cash),0) as float)/cast(isnull(sum(Cash),0) as float),'p') end VNoPer ";
+                sql += "into #tmpSel ";
                 sql += "from (" + sqlBaseData + ") a "+sqlGroup+";";
+
                 sql += "insert into #tmpSel select 'SumAll',isnull(sum([Cash1]),0), isnull(sum([Cnt1]),0),";
                 sql += "case when isnull(sum([Cnt1]),0)= 0 then 0 else round(isnull(sum(Cash1), 0) / isnull(sum([Cnt1]), 0),0) end,";
                 sql += "isnull(sum([VCash]),0), isnull(sum([VCnt]),0),case when isnull(sum([VCnt]),0)= 0 then 0 else round(isnull(sum(VCash), 0) / isnull(sum([VCnt]), 0),0) end,";
-                sql += "case when isnull(sum(Cash1),0)= 0 then format(1,'p') else format(cast(isnull(sum(VCash),0) as float)/cast(isnull(sum(Cash1),0) as float),'p') end from #tmpSel;";
+                sql += "case when isnull(sum(Cash1),0)= 0 then format(1,'p') else format(cast(isnull(sum(VCash),0) as float)/cast(isnull(sum(Cash1),0) as float),'p') end, ";
+                sql += "isnull(sum([VNoCash]),0),isnull(sum([VNoCnt]),0),case when isnull(sum([VNoCnt]),0)= 0 then 0 else round(isnull(sum(VNoCash), 0) / isnull(sum([VNoCnt]), 0),0) end,";
+                sql += "case when isnull(sum(Cash1),0)= 0 then format(1,'p') else format(cast(isnull(sum(VNoCash),0) as float)/cast(isnull(sum(Cash1),0) as float),'p') end ";
+                sql += "from #tmpSel; ";
                 sql += "select * from #tmpSel order by [ID];";
                 DataTable dtDelt = PubUtility.SqlQry(sql, uu, "SYS");
                 dtDelt.TableName = "dtDelt";
@@ -14587,7 +14595,7 @@ namespace SVMAdmin.Controllers
                     sql += "case when SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(VIP_Cash,0))/SUM(isnull(VIP_RecS,0)),0) end as VIPPrice, ";
                     sql += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as VIPPercent, ";
                     sql += "SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) VIPNo_Cash,SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)) VIPNo_RecS, ";
-                    sql += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0))/SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)),0) end as VIPNoPrice, ";
+                    sql += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round((SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)))/(SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))),0) end as VIPNoPrice, ";
                     sql += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as VIPNoPercent ";
                     sql += "into #S ";
                     sql += "from SalesHWeb (nolock) ";
@@ -14609,7 +14617,7 @@ namespace SVMAdmin.Controllers
                     sqlH += "case when SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(VIP_Cash,0))/SUM(isnull(VIP_RecS,0)),0) end as SumVIPPrice, ";
                     sqlH += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as SumVIPPercent, ";
                     sqlH += "SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) SumVIPNo_Cash,SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)) SumVIPNo_RecS, ";
-                    sqlH += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0))/SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)),0) end as SumVIPNoPrice, ";
+                    sqlH += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round((SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)))/(SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))),0) end as SumVIPNoPrice, ";
                     sqlH += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as SumVIPNoPercent ";
                     sqlH += "From #S ";
                     DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
@@ -14625,11 +14633,11 @@ namespace SVMAdmin.Controllers
                     sql += "case when SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(VIP_Cash,0))/SUM(isnull(VIP_RecS,0)),0) end as VIPPrice, ";
                     sql += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as VIPPercent, ";
                     sql += "SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) VIPNo_Cash,SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)) VIPNo_RecS, ";
-                    sql += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0))/SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)),0) end as VIPNoPrice, ";
+                    sql += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round((SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)))/(SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))),0) end as VIPNoPrice, ";
                     sql += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as VIPNoPercent ";
                     sql += "into #S ";
                     sql += "from SalesHWeb a (nolock) ";
-                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.ST_Type not in ('2','3') ";
+                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.ST_Type not in ('0','2','3') ";
                     sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                     if (YY.SqlQuote() != "")
                     {
@@ -14649,7 +14657,7 @@ namespace SVMAdmin.Controllers
                     sqlH += "case when SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(VIP_Cash,0))/SUM(isnull(VIP_RecS,0)),0) end as SumVIPPrice, ";
                     sqlH += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as SumVIPPercent, ";
                     sqlH += "SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) SumVIPNo_Cash,SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)) SumVIPNo_RecS, ";
-                    sqlH += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0))/SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)),0) end as SumVIPNoPrice, ";
+                    sqlH += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round((SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)))/(SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))),0) end as SumVIPNoPrice, ";
                     sqlH += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as SumVIPNoPercent ";
                     sqlH += "From #S ";
                     DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
@@ -14691,11 +14699,11 @@ namespace SVMAdmin.Controllers
                     sql += "case when SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(VIP_Cash,0))/SUM(isnull(VIP_RecS,0)),0) end as VIPPrice, ";
                     sql += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as VIPPercent, ";
                     sql += "SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) VIPNo_Cash,SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)) VIPNo_RecS, ";
-                    sql += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0))/SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)),0) end as VIPNoPrice, ";
+                    sql += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round((SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)))/(SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))),0) end as VIPNoPrice, ";
                     sql += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as VIPNoPercent ";
                     sql += "into #S ";
                     sql += "from SalesHWeb a (nolock) ";
-                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.ST_Type not in ('2','3') ";
+                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.ST_Type not in ('0','2','3') ";
                     sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                     if (YM != "")
                     {
@@ -14715,7 +14723,7 @@ namespace SVMAdmin.Controllers
                     sqlH += "case when SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(VIP_Cash,0))/SUM(isnull(VIP_RecS,0)),0) end as SumVIPPrice, ";
                     sqlH += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as SumVIPPercent, ";
                     sqlH += "SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) SumVIPNo_Cash,SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)) SumVIPNo_RecS, ";
-                    sqlH += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0))/SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)),0) end as SumVIPNoPrice, ";
+                    sqlH += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round((SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)))/(SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))),0) end as SumVIPNoPrice, ";
                     sqlH += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as SumVIPNoPercent ";
                     sqlH += "From #S ";
                     DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
@@ -14731,7 +14739,7 @@ namespace SVMAdmin.Controllers
                     sql += "case when SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(VIP_Cash,0))/SUM(isnull(VIP_RecS,0)),0) end as VIPPrice, ";
                     sql += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as VIPPercent, ";
                     sql += "SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) VIPNo_Cash,SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)) VIPNo_RecS, ";
-                    sql += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0))/SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)),0) end as VIPNoPrice, ";
+                    sql += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round((SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)))/(SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))),0) end as VIPNoPrice, ";
                     sql += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as VIPNoPercent ";
                     sql += "into #S ";
                     sql += "from SalesHWeb (nolock) ";
@@ -14757,7 +14765,7 @@ namespace SVMAdmin.Controllers
                     sqlH += "case when SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(VIP_Cash,0))/SUM(isnull(VIP_RecS,0)),0) end as SumVIPPrice, ";
                     sqlH += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as SumVIPPercent, ";
                     sqlH += "SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) SumVIPNo_Cash,SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)) SumVIPNo_RecS, ";
-                    sqlH += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0))/SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0)),0) end as SumVIPNoPrice, ";
+                    sqlH += "case when SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))=0 then 0 else Round((SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)))/(SUM(isnull(RecS,0))-SUM(isnull(VIP_RecS,0))),0) end as SumVIPNoPrice, ";
                     sqlH += "case when SUM(isnull(Cash,0))=0 then format(0,'p') else format(cast(SUM(isnull(Cash,0))-SUM(isnull(VIP_Cash,0)) as Float)/cast(SUM(isnull(Cash,0)) as Float),'p') end as SumVIPNoPercent ";
                     sqlH += "From #S ";
                     DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");

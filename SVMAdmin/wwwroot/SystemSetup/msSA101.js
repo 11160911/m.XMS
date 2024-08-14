@@ -13,7 +13,7 @@
         grdM = new DynGrid(
             {
                 table_lement: $('#tbQuery')[0],
-                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 text-center"],
+                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 text-center", "tdCol9 label-align", "tdCol10 label-align", "tdCol11 label-align", "tdCol12 text-center"],
                 fields_info: [
                     { type: "Text", name: "ID", style: "" },
                     { type: "TextAmt", name: "Cash1" },
@@ -22,7 +22,11 @@
                     { type: "TextAmt", name: "VCash" },
                     { type: "TextAmt", name: "VCnt" },
                     { type: "TextAmt", name: "VCusCash" },
-                    { type: "TextPercent", name: "VPer" }
+                    { type: "TextPercent", name: "VPer" },
+                    { type: "TextAmt", name: "VNoCash" },
+                    { type: "TextAmt", name: "VNoCnt" },
+                    { type: "TextAmt", name: "VNoCusCash" },
+                    { type: "TextPercent", name: "VNoPer" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -34,7 +38,7 @@
         grdD = new DynGrid(
             {
                 table_lement: $('#tbQueryD')[0],
-                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 text-center"],
+                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 text-center", "tdCol9 label-align", "tdCol10 label-align", "tdCol11 label-align", "tdCol12 text-center"],
                 fields_info: [
                     { type: "Text", name: "ID", style: "" },
                     { type: "TextAmt", name: "Cash1" },
@@ -43,7 +47,11 @@
                     { type: "TextAmt", name: "VCash" },
                     { type: "TextAmt", name: "VCnt" },
                     { type: "TextAmt", name: "VCusCash" },
-                    { type: "TextPercent", name: "VPer" }
+                    { type: "TextPercent", name: "VPer" },
+                    { type: "TextAmt", name: "VNoCash" },
+                    { type: "TextAmt", name: "VNoCnt" },
+                    { type: "TextAmt", name: "VNoCusCash" },
+                    { type: "TextPercent", name: "VNoPer" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -55,7 +63,7 @@
         grdDD = new DynGrid(
             {
                 table_lement: $('#tbQueryDD')[0],
-                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 text-center"],
+                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6 label-align", "tdCol7 label-align", "tdCol8 text-center", "tdCol9 label-align", "tdCol10 label-align", "tdCol11 label-align", "tdCol12 text-center"],
                 fields_info: [
                     { type: "Text", name: "ID", style: "" },
                     { type: "TextAmt", name: "Cash1" },
@@ -64,7 +72,11 @@
                     { type: "TextAmt", name: "VCash" },
                     { type: "TextAmt", name: "VCnt" },
                     { type: "TextAmt", name: "VCusCash" },
-                    { type: "TextPercent", name: "VPer" }
+                    { type: "TextPercent", name: "VPer" },
+                    { type: "TextAmt", name: "VNoCash" },
+                    { type: "TextAmt", name: "VNoCnt" },
+                    { type: "TextAmt", name: "VNoCusCash" },
+                    { type: "TextPercent", name: "VNoPer" }
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
@@ -236,6 +248,10 @@
             $('#tbQueryD thead td#Dtd5').html(parseInt(GetNodeValue(dtSum[0], "VCnt")).toLocaleString('en-US'));
             $('#tbQueryD thead td#Dtd6').html(parseInt(GetNodeValue(dtSum[0], "VCusCash")).toLocaleString('en-US'));
             $('#tbQueryD thead td#Dtd7').html(GetNodeValue(dtSum[0], "VPer"));
+            $('#tbQueryD thead td#Dtd8').html(parseInt(GetNodeValue(dtSum[0], "VNoCash")).toLocaleString('en-US'));
+            $('#tbQueryD thead td#Dtd9').html(parseInt(GetNodeValue(dtSum[0], "VNoCnt")).toLocaleString('en-US'));
+            $('#tbQueryD thead td#Dtd10').html(parseInt(GetNodeValue(dtSum[0], "VNoCusCash")).toLocaleString('en-US'));
+            $('#tbQueryD thead td#Dtd11').html(GetNodeValue(dtSum[0], "VNoPer"));
         }
     };
 
@@ -389,6 +405,10 @@
             $('#tbQueryDD thead td#DDtd5').html(parseInt(GetNodeValue(dtSum[0], "VCnt")).toLocaleString('en-US'));
             $('#tbQueryDD thead td#DDtd6').html(parseInt(GetNodeValue(dtSum[0], "VCusCash")).toLocaleString('en-US'));
             $('#tbQueryDD thead td#DDtd7').html(GetNodeValue(dtSum[0], "VPer"));
+            $('#tbQueryDD thead td#DDtd8').html(parseInt(GetNodeValue(dtSum[0], "VNoCash")).toLocaleString('en-US'));
+            $('#tbQueryDD thead td#DDtd9').html(parseInt(GetNodeValue(dtSum[0], "VNoCnt")).toLocaleString('en-US'));
+            $('#tbQueryDD thead td#DDtd10').html(parseInt(GetNodeValue(dtSum[0], "VNoCusCash")).toLocaleString('en-US'));
+            $('#tbQueryDD thead td#DDtd11').html(GetNodeValue(dtSum[0], "VNoPer"));
         }
     };
 
@@ -539,6 +559,10 @@
             $('#tbQuery thead td#td5').html(parseInt(GetNodeValue(dtSum[0], "VCnt")).toLocaleString('en-US'));
             $('#tbQuery thead td#td6').html(parseInt(GetNodeValue(dtSum[0], "VCusCash")).toLocaleString('en-US'));
             $('#tbQuery thead td#td7').html(GetNodeValue(dtSum[0], "VPer"));
+            $('#tbQuery thead td#td8').html(parseInt(GetNodeValue(dtSum[0], "VNoCash")).toLocaleString('en-US'));
+            $('#tbQuery thead td#td9').html(parseInt(GetNodeValue(dtSum[0], "VNoCnt")).toLocaleString('en-US'));
+            $('#tbQuery thead td#td10').html(parseInt(GetNodeValue(dtSum[0], "VNoCusCash")).toLocaleString('en-US'));
+            $('#tbQuery thead td#td11').html(GetNodeValue(dtSum[0], "VNoPer"));
         }
     };
 
@@ -722,7 +746,6 @@
         PostToWebApi({ url: "api/SystemSetup/GetInitMSSA101", data: pData, success: GetInitMSSA101 });
     };
 //#endregion
-    
 
     if ($('#pgMSSA101').length == 0) {  
         AllPages = new LoadAllPages(ParentNode, "SystemSetup/MSSA101", ["pgMSSA101Init"], afterLoadPage);

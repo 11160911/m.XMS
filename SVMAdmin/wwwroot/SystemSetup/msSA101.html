@@ -155,19 +155,19 @@
                                     box-shadow: 0 0px 2px 0px inset #ddd;
                                 }
 
-                                #thead1, #thead2, #thead3 {
+                                #thead1, #thead2, #thead3, #thead4 {
                                     top: 0;
                                     z-index: 2;
                                     height: 35px;
                                 }
 
-                                #th1, #th2, #th3, #th4, #th5, #th6, #th7 {
+                                #th1, #th2, #th3, #th4, #th5, #th6, #th7, #th8, #th9, #th10, #th11 {
                                     top: 35px;
                                     z-index: 2;
                                     height: 45px;
                                 }
 
-                                #td1, #td2, #td3, #td4, #td5, #td6, #td7 {
+                                #td1, #td2, #td3, #td4, #td5, #td6, #td7, #td8, #td9, #td10, #td11 {
                                     top: 80px;
                                     z-index: 2;
                                     color: red;
@@ -193,7 +193,7 @@
                                     }
                                     /*螢幕縱向*/
                                     @media screen and (orientation: portrait) {
-                                        #td1, #td2, #td3, #td4, #td5, #td6, #td7 {
+                                        #td1, #td2, #td3, #td4, #td5, #td6, #td7, #td8, #td9, #td10, #td11 {
                                             top: 100px;
                                             z-index: 2;
                                             color: red;
@@ -205,7 +205,7 @@
                                     }
                                     /*螢幕橫向*/
                                     @media screen and (orientation: landscape) {
-                                        #td1, #td2, #td3, #td4, #td5, #td6, #td7 {
+                                        #td1, #td2, #td3, #td4, #td5, #td6, #td7, #td8, #td9, #td10, #td11 {
                                             top: 75px;
                                             z-index: 2;
                                             color: red;
@@ -284,6 +284,7 @@
                                                     <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
                                                     <td id="thead2" class="text-center" colspan="3">總交易</td>
                                                     <td id="thead3" class="text-center" colspan="4">會員交易</td>
+                                                    <td id="thead4" class="text-center" colspan="4">非會員交易</td>
                                                 </tr>
                                                 <!--第二層-->
                                                 <tr>
@@ -295,6 +296,10 @@
                                                     <th id="th5" class="text-center" colspan="1">交易筆數</th>
                                                     <th id="th6" class="text-center" colspan="1">客單價</th>
                                                     <th id="th7" class="text-center" colspan="1">營業額佔比</th>
+                                                    <th id="th8" class="text-center" colspan="1">營業額</th>
+                                                    <th id="th9" class="text-center" colspan="1">交易筆數</th>
+                                                    <th id="th10" class="text-center" colspan="1">客單價</th>
+                                                    <th id="th11" class="text-center" colspan="1">營業額佔比</th>
                                                 </tr>
                                                 <!--第三層-->
                                                 <tr class="QSum">
@@ -306,6 +311,10 @@
                                                     <td id="td5" colspan="1" style="text-align: right "></td>
                                                     <td id="td6" colspan="1" style="text-align: right "></td>
                                                     <td id="td7" class="text-center" colspan="1"></td>
+                                                    <td id="td8" colspan="1" style="text-align: right "></td>
+                                                    <td id="td9" colspan="1" style="text-align: right "></td>
+                                                    <td id="td10" colspan="1" style="text-align: right "></td>
+                                                    <td id="td11" class="text-center" colspan="1"></td>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -360,19 +369,19 @@
                                         box-shadow: 0 0px 2px 0px inset #ddd;
                                     }
 
-                                    #Dthead1, #Dthead2, #Dthead3 {
+                                    #Dthead1, #Dthead2, #Dthead3, #Dthead4 {
                                         top: 0;
                                         z-index: 2;
                                         height: 35px;
                                     }
 
-                                    #Dth1, #Dth2, #Dth3, #Dth4, #Dth5, #Dth6, #Dth7 {
+                                    #Dth1, #Dth2, #Dth3, #Dth4, #Dth5, #Dth6, #Dth7, #Dth8, #Dth9, #Dth10, #Dth11 {
                                         top: 35px;
                                         z-index: 2;
                                         height: 45px;
                                     }
 
-                                    #Dtd1, #Dtd2, #Dtd3, #Dtd4, #Dtd5, #Dtd6, #Dtd7 {
+                                    #Dtd1, #Dtd2, #Dtd3, #Dtd4, #Dtd5, #Dtd6, #Dtd7, #Dtd8, #Dtd9, #Dtd10, #Dtd11 {
                                         top: 80px;
                                         z-index: 2;
                                         color: red;
@@ -401,7 +410,7 @@
                                         }
                                         /*螢幕縱向*/
                                         @media screen and (orientation: portrait) {
-                                            #Dtd1, #Dtd2, #Dtd3, #Dtd4, #Dtd5, #Dtd6, #Dtd7 {
+                                            #Dtd1, #Dtd2, #Dtd3, #Dtd4, #Dtd5, #Dtd6, #Dtd7, #Dtd8, #Dtd9, #Dtd10, #Dtd11 {
                                                 top: 100px;
                                                 z-index: 2;
                                                 color: red;
@@ -459,6 +468,7 @@
                                                             <th id="Dthead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">銷售日期</th>
                                                             <td id="Dthead2" class="text-center" colspan="3">總交易</td>
                                                             <td id="Dthead3" class="text-center" colspan="4">會員交易</td>
+                                                            <td id="Dthead4" class="text-center" colspan="4">非會員交易</td>
                                                         </tr>
                                                         <!--第二層-->
                                                         <tr>
@@ -469,6 +479,10 @@
                                                             <th id="Dth5" class="text-center" colspan="1">交易筆數</th>
                                                             <th id="Dth6" class="text-center" colspan="1">客單價</th>
                                                             <th id="Dth7" class="text-center" colspan="1">營業額佔比</th>
+                                                            <th id="Dth8" class="text-center" colspan="1">營業額</th>
+                                                            <th id="Dth9" class="text-center" colspan="1">交易筆數</th>
+                                                            <th id="Dth10" class="text-center" colspan="1">客單價</th>
+                                                            <th id="Dth11" class="text-center" colspan="1">營業額佔比</th>
                                                         </tr>
                                                         <!--第三層-->
                                                         <tr class="QDSum">
@@ -480,6 +494,10 @@
                                                             <td id="Dtd5" colspan="1" style="text-align: right "></td>
                                                             <td id="Dtd6" colspan="1" style="text-align: right "></td>
                                                             <td id="Dtd7" class="text-center" colspan="1"></td>
+                                                            <td id="Dtd8" colspan="1" style="text-align: right "></td>
+                                                            <td id="Dtd9" colspan="1" style="text-align: right "></td>
+                                                            <td id="Dtd10" colspan="1" style="text-align: right "></td>
+                                                            <td id="Dtd11" class="text-center" colspan="1"></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -536,19 +554,19 @@
                                         box-shadow: 0 0px 2px 0px inset #ddd;
                                     }
 
-                                    #DDthead1, #DDthead2, #DDthead3 {
+                                    #DDthead1, #DDthead2, #DDthead3, #DDthead4 {
                                         top: 0;
                                         z-index: 2;
                                         height: 35px;
                                     }
 
-                                    #DDth1, #DDth2, #DDth3, #DDth4, #DDth5, #DDth6, #DDth7 {
+                                    #DDth1, #DDth2, #DDth3, #DDth4, #DDth5, #DDth6, #DDth7, #DDth8, #DDth9, #DDth10, #DDth11 {
                                         top: 35px;
                                         z-index: 2;
                                         height: 45px;
                                     }
 
-                                    #DDtd1, #DDtd2, #DDtd3, #DDtd4, #DDtd5, #DDtd6, #DDtd7 {
+                                    #DDtd1, #DDtd2, #DDtd3, #DDtd4, #DDtd5, #DDtd6, #DDtd7, #DDtd8, #DDtd9, #DDtd10, #DDtd11 {
                                         top: 80px;
                                         z-index: 2;
                                         color: red;
@@ -579,7 +597,7 @@
                                         }
                                         /*螢幕縱向*/
                                         @media screen and (orientation: portrait) {
-                                            #DDtd1, #DDtd2, #DDtd3, #DDtd4, #DDtd5, #DDtd6, #DDtd7 {
+                                            #DDtd1, #DDtd2, #DDtd3, #DDtd4, #DDtd5, #DDtd6, #DDtd7, #DDtd8, #DDtd9, #DDtd10, #DDtd11 {
                                                 top: 100px;
                                                 z-index: 2;
                                                 color: red;
@@ -631,6 +649,7 @@
                                                             <th id="DDthead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">銷售日期</th>
                                                             <td id="DDthead2" class="text-center" colspan="3">總交易</td>
                                                             <td id="DDthead3" class="text-center" colspan="4">會員交易</td>
+                                                            <td id="DDthead4" class="text-center" colspan="4">非會員交易</td>
                                                         </tr>
                                                         <!--第二層-->
                                                         <tr>
@@ -641,6 +660,10 @@
                                                             <th id="DDth5" class="text-center" colspan="1">交易筆數</th>
                                                             <th id="DDth6" class="text-center" colspan="1">客單價</th>
                                                             <th id="DDth7" class="text-center" colspan="1">營業額佔比</th>
+                                                            <th id="DDth8" class="text-center" colspan="1">營業額</th>
+                                                            <th id="DDth9" class="text-center" colspan="1">交易筆數</th>
+                                                            <th id="DDth10" class="text-center" colspan="1">客單價</th>
+                                                            <th id="DDth11" class="text-center" colspan="1">營業額佔比</th>
                                                         </tr>
                                                         <!--第三層-->
                                                         <tr class="QDDSum">
@@ -652,6 +675,10 @@
                                                             <td id="DDtd5" colspan="1" style="text-align: right "></td>
                                                             <td id="DDtd6" colspan="1" style="text-align: right "></td>
                                                             <td id="DDtd7" class="text-center" colspan="1"></td>
+                                                            <td id="DDtd8" colspan="1" style="text-align: right "></td>
+                                                            <td id="DDtd9" colspan="1" style="text-align: right "></td>
+                                                            <td id="DDtd10" colspan="1" style="text-align: right "></td>
+                                                            <td id="DDtd11" class="text-center" colspan="1"></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
