@@ -70,7 +70,8 @@
     //清除
     let btClear_click = function (bt) {
         //Timerset();
-        $('#cboYear').val('');
+        var y2 = new Date().getFullYear();
+        $('#cboYear').val(y2);
         $('#rdoM').prop('checked','true');
     };
 
@@ -257,6 +258,7 @@
         for (i = 2020; i <= y2; i++) {
             cboYear.append($('<option>', { value: i, text: i }));
         }
+        $('#cboYear').val(y2)
         //for (i = 1; i <= 12; i++) {
         //    cboMonth.append($('<option>', { value: ('0' + i).substr(-2), text: i + '月' }));
         //}
