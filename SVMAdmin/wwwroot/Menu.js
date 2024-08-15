@@ -94,6 +94,9 @@
             $('#btH,#CardH').click(function () {
                 ProgramStart("MSSA105");
             })
+            $('#SysDate').click(function () {
+                window.location.href = "#lblSysDate";
+            })
             init_sidebar();
             return;
         }
