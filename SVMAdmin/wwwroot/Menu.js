@@ -85,7 +85,7 @@
             $('#btD3').click(function () {
                 ProgramStart("MSSA105");
             })
-            $('#imgHome').click(function () {
+            $('#imgHome,#imgHomeP').click(function () {
                 window.location.reload();
             })
             init_sidebar();
