@@ -559,11 +559,19 @@ namespace SVMAdmin.Controllers
                 sql += "a.MO_No J5,a.MO_No2 J6,b.Man_Name J7,a.Title J8,a.Content J9 ";
                 sql += "from MessageHweb a (nolock)  ";
                 sql += "left join EmployeeWeb b (nolock) on a.AnnounceUser=b.Man_ID and b.CompanyCode=a.CompanyCode ";
-                sql += "where a.CompanyCode='" + uu.CompanyId + "' and a.EndDate>=convert(char(10),getdate(),111)  ";
+                sql += "where a.CompanyCode='" + uu.CompanyId + "' and a.AnnounceDate<=convert(char(10),getdate(),111) and a.EndDate>=convert(char(10),getdate(),111) ";
                 sql += "and ISNULL(a.ApproveDate,'')<>'' and ISNULL(a.DeDate,'')='' order by a.AnnounceDate desc ";
                 DataTable dtJ = PubUtility.SqlQry(sql, uu, "SYS");
                 dtJ.TableName = "dtJ";
                 ds.Tables.Add(dtJ);
+
+                sql = "select * ";
+                sql += "from MessageHweb a (nolock)  ";
+                sql += "where a.CompanyCode='" + uu.CompanyId + "' and a.AnnounceDate=convert(char(10),getdate(),111) and a.EndDate>=convert(char(10),getdate(),111) ";
+                sql += "and ISNULL(a.ApproveDate,'')<>'' and ISNULL(a.DeDate,'')='' ";
+                DataTable dtJ1 = PubUtility.SqlQry(sql, uu, "SYS");
+                dtJ1.TableName = "dtJ1";
+                ds.Tables.Add(dtJ1);
             }
             catch (Exception err)
             {

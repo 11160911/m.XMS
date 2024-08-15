@@ -76,17 +76,23 @@
             $('#lblFileName').click(function () {
                 download($('#lblAtt').html(), $('#lblFileName').html())
             })
-            $('#btA4').click(function () {
+            $('#btA4,#CardA').click(function () {
                 ProgramStart("MSSA108");
             })
-            $('#btC3').click(function () {
+            $('#btC3,#CardC,#btB3,#CardB').click(function () {
                 ProgramStart("MSSA101");
             })
-            $('#btD3').click(function () {
-                ProgramStart("MSSA105");
+            $('#btD3,#CardD').click(function () {
+                ProgramStart("MSSD107");
             })
             $('#imgHome,#imgHomeP').click(function () {
                 window.location.reload();
+            })
+            $('#CardJCntText,#CardJCnt').click(function () {
+                window.location.href = "#CardJ";
+            })
+            $('#btH,#CardH').click(function () {
+                ProgramStart("MSSA105");
             })
             init_sidebar();
             return;
@@ -147,6 +153,18 @@
                 PageMSSA105($(".workarea"));
             }
         }
+        else if (Program == "MSSD107") {
+            if (window.PageMSSD107 == undefined)
+                $.getScript('SystemSetup/' + Program + '.js',
+                    function () {
+                        PageMSSD107($(".workarea"));
+                    }
+                );
+            else {
+                PageMSSD107($(".workarea"));
+            }
+        }
+
         $('#Menu').remove();
     }
 
@@ -191,7 +209,7 @@
         grdJ = new DynGrid(
             {
                 table_lement: $('#tbJ')[0],
-                class_collection: ["tdCol1 text-center", "tdCol2 text-center", "tdCol3 text-center"],
+                class_collection: ["tdCol1 text-center", "tdCol2", "tdCol3"],
                 fields_info: [
                     { type: "Text", name: "J1", style: "" },
                     { type: "Text", name: "J2" },
@@ -248,7 +266,9 @@
         var dtE = data.getElementsByTagName('dtE');
         var dtF = data.getElementsByTagName('dtF');
         var dtJ = data.getElementsByTagName('dtJ');
+        var dtJ1 = data.getElementsByTagName('dtJ1');
         $('#lblSysDate').html(GetNodeValue(dtEmployeeSV[0], 'SysDate'))
+        $('#CardJCnt').html(dtJ1.length)
         //今日
         $('#lblA1').html(GetNodeValue(dtA[0], 'A1'))
         $('#lblA2').html(parseFloat(GetNodeValue(dtA[0], 'A2')).toLocaleString('en-US'))
