@@ -477,13 +477,24 @@ namespace SVMAdmin.Controllers
                 dtD.TableName = "dtD";
                 ds.Tables.Add(dtD);
 
-                sql = "Select Top 10 ROW_NUMBER() over(order by sum(a.num) desc) E1,left(b.GD_Name,9) E2,sum(a.num) E3 ";
+                //sql = "Select Top 10 ROW_NUMBER() over(order by sum(a.num) desc) E1,left(b.GD_Name,9) E2,sum(a.num) E3 ";
+                //sql += "From SalesDWeb a (nolock) ";
+                //sql += "left join PLUWeb b (nolock) on a.GoodsNo=b.GD_NO and b.Companycode=a.Companycode ";
+                //sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                //sql += "and left(a.OpenDate,7)=convert(char(7),getdate(),111) ";
+                //sql += "group by a.GoodsNo,b.GD_Name ";
+                //sql += "order by sum(a.num) desc ";
+
+                sql = "Select Top 10 ROW_NUMBER() over(order by sum(a.num) desc) E1,a.GoodsNo,sum(a.num) E3 ";
+                sql += "into #E ";
                 sql += "From SalesDWeb a (nolock) ";
-                sql += "left join PLUWeb b (nolock) on a.GoodsNo=b.GD_NO and b.Companycode=a.Companycode ";
                 sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                 sql += "and left(a.OpenDate,7)=convert(char(7),getdate(),111) ";
-                sql += "group by a.GoodsNo,b.GD_Name ";
-                sql += "order by sum(a.num) desc ";
+                sql += "group by a.GoodsNo ";
+                sql += "order by sum(a.num) desc; ";
+
+                sql += "Select a.E1,left(b.GD_Name,9) E2,a.E3 ";
+                sql += "From #E a left join PLUWeb b (nolock) on a.GoodsNo=b.GD_NO and b.Companycode='" + uu.CompanyId + "' ";
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
                 ds.Tables.Add(dtE);
