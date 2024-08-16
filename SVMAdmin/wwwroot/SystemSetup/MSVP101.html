@@ -298,9 +298,9 @@
                                         <label id="lblEVNO_EDMHistoryQuery" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px"></label>
 
                                         <label class="DyForm3-Label" style="margin-left:50px">DM單號</label>
-                                        <label id="lblEDMDocNo_EDMHistoryQuery" class="DyForm3-LabelBlack" style="margin-left: 15px"></label>
+                                        <label id="lblEDMDocNo_EDMHistoryQuery" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px"></label>
                                         <label class="DyForm3-Label" style="margin-left:50px">DM期間</label>
-                                        <label id="lblEDDate_EDMHistoryQuery" class="DyForm3-LabelBlack" style="margin-left: 15px"></label>
+                                        <label id="lblEDDate_EDMHistoryQuery" class="DyForm3-LabelBlack" style="margin-left: 15px; margin-top: 3px"></label>
                                     </div>
                                     <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 0px ">
                                         <label class="DyForm3-Label">發送日期</label>
@@ -503,11 +503,24 @@
                                         <input id="txtQDayE_SendSet" class="DyForm3-TextBox" style="margin-left: 15px" type="date" />
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 29px; width: 100%; margin-bottom: 0px">
+                                    <div class="form-group row" style="margin-left: 45px; width: 100%; margin-bottom: 0px">
                                         <mark class="DyForm3-DyNotEmptyMark" style="margin-left:5px" hidden>*</mark>
-                                        <label class="DyForm3-Label">最近來店日</label>
+                                        <label class="DyForm3-Label">來&ensp;店&ensp;日</label>
+                                        <input id="rdoLCDayY_SendSet" type="radio" name="e" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
+                                        <label class="DyForm3-LabelBlack" for="rdoLCDayY_SendSet" style="margin-top: 2px">&ensp;最近有來店</label>
+                                        <input id="rdoLCDayN_SendSet" type="radio" name="e" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
+                                        <label class="DyForm3-LabelBlack" for="rdoLCDayN_SendSet" style="margin-top:2px">&ensp;最近沒來店</label>
+                                    </div>
+
+                                    <div class="form-group row" style="margin-left: 111px; width: 100%; margin-bottom: 0px">
                                         <input id="rdoLCDayAll_SendSet" type="radio" name="c" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
                                         <label class="DyForm3-LabelBlack" for="rdoLCDayAll_SendSet" style="margin-top: 2px">&ensp;不限</label>
+                                        <input id="rdoLCDay2W_SendSet" type="radio" name="c" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
+                                        <label class="DyForm3-LabelBlack" for="rdoLCDay2W_SendSet" style="margin-top:2px">&ensp;2周內</label>
+                                        <input id="rdoLCDay1M_SendSet" type="radio" name="c" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
+                                        <label class="DyForm3-LabelBlack" for="rdoLCDay1M_SendSet" style="margin-top:2px">&ensp;1個月內</label>
+                                        <input id="rdoLCDay2M_SendSet" type="radio" name="c" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
+                                        <label class="DyForm3-LabelBlack" for="rdoLCDay2M_SendSet" style="margin-top:2px">&ensp;2個月內</label>
                                         <input id="rdoLCDay3M_SendSet" type="radio" name="c" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
                                         <label class="DyForm3-LabelBlack" for="rdoLCDay3M_SendSet" style="margin-top:2px">&ensp;3個月內</label>
                                         <input id="rdoLCDay6M_SendSet" type="radio" name="c" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
@@ -516,19 +529,6 @@
                                         <label class="DyForm3-LabelBlack" for="rdoLCDay1Y_SendSet" style="margin-top:2px">&ensp;1年內</label>
                                         <input id="rdoLCDay2Y_SendSet" type="radio" name="c" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
                                         <label class="DyForm3-LabelBlack" for="rdoLCDay2Y_SendSet" style="margin-top:2px">&ensp;2年內</label>
-                                    </div>
-
-                                    <div class="form-group row" style="margin-left: 29px; width: 100%; margin-bottom: 0px">
-                                        <mark class="DyForm3-DyNotEmptyMark" style="margin-left:5px" hidden>*</mark>
-                                        <label class="DyForm3-Label">近期未來店</label>
-                                        <input id="rdoLCDayAll1_SendSet" type="radio" name="e" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
-                                        <label class="DyForm3-LabelBlack" for="rdoLCDayAll1_SendSet" style="margin-top: 2px">&ensp;不限</label>
-                                        <input id="rdoLCDay2W1_SendSet" type="radio" name="e" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
-                                        <label class="DyForm3-LabelBlack" for="rdoLCDay2W1_SendSet" style="margin-top:2px">&ensp;2周內</label>
-                                        <input id="rdoLCDay1M1_SendSet" type="radio" name="e" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
-                                        <label class="DyForm3-LabelBlack" for="rdoLCDay1M1_SendSet" style="margin-top:2px">&ensp;1個月內</label>
-                                        <input id="rdoLCDay2M1_SendSet" type="radio" name="e" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
-                                        <label class="DyForm3-LabelBlack" for="rdoLCDay2M1_SendSet" style="margin-top:2px">&ensp;2個月內</label>
                                     </div>
 
                                     <div class="form-group row" style="margin-left: 29px; width: 100%; margin-bottom: 0px">

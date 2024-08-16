@@ -11932,8 +11932,8 @@ namespace SVMAdmin.Controllers
                 string QDay = rq["QDay"];
                 string QDayS = rq["QDayS"];
                 string QDayE = rq["QDayE"];
+                string LCDayFlag = rq["LCDayFlag"];
                 string LCDay = rq["LCDay"];
-                string LCDay1 = rq["LCDay1"];
                 string SDate = rq["SDate"];
                 string chkDept = rq["chkDept"];
                 string chkDeptName = rq["chkDeptName"];
@@ -11982,35 +11982,91 @@ namespace SVMAdmin.Controllers
                 if (QDayS != "") {
                     sqlcon1 += "and a.VIP_Qday between '" + QDayS + "' and '" + QDayE + "' ";
                 }
-                
-                if (LCDay == "3M")
-                {
-                    sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(MONTH,-3,getdate()),111) and convert(char(10),getdate(),111) ";
-                }
-                else if (LCDay == "6M")
-                {
-                    sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(MONTH,-6,getdate()),111) and convert(char(10),getdate(),111) ";
-                }
-                else if (LCDay == "1Y")
-                {
-                    sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(MONTH,-12,getdate()),111) and convert(char(10),getdate(),111) ";
-                }
-                else if (LCDay == "2Y")
-                {
-                    sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(MONTH,-24,getdate()),111) and convert(char(10),getdate(),111) ";
-                }
 
-                if (LCDay1 == "2W")
-                {
-                    sqlcon1 += "and a.VIP_LCDay not between convert(char,dateadd(DAY,-15,getdate()),111) and convert(char(10),getdate(),111) ";
+                string LCDayVIPH = "";
+                string LCDayVIPD = "";
+                if (LCDayFlag == "Y") {
+                    LCDayVIPH = "最近有來店";
+                    if (LCDay == "") {
+                        LCDayVIPD = "不限";
+                    }
+                    else if(LCDay == "2W")
+                    {
+                        LCDayVIPD = "2周內";
+                        sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(DAY,-15,getdate()),111) and convert(char(10),getdate(),111) ";
+                    }
+                    else if (LCDay == "1M")
+                    {
+                        LCDayVIPD = "1個月內";
+                        sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(MONTH,-1,getdate()),111) and convert(char(10),getdate(),111) ";
+                    }
+                    else if (LCDay == "2M")
+                    {
+                        LCDayVIPD = "2個月內";
+                        sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(MONTH,-2,getdate()),111) and convert(char(10),getdate(),111) ";
+                    }
+                    else if (LCDay == "3M")
+                    {
+                        LCDayVIPD = "3個月內";
+                        sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(MONTH,-3,getdate()),111) and convert(char(10),getdate(),111) ";
+                    }
+                    else if (LCDay == "6M")
+                    {
+                        LCDayVIPD = "6個月內";
+                        sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(MONTH,-6,getdate()),111) and convert(char(10),getdate(),111) ";
+                    }
+                    else if (LCDay == "1Y")
+                    {
+                        LCDayVIPD = "1年內";
+                        sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(MONTH,-12,getdate()),111) and convert(char(10),getdate(),111) ";
+                    }
+                    else if (LCDay == "2Y")
+                    {
+                        LCDayVIPD = "2年內";
+                        sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(MONTH,-24,getdate()),111) and convert(char(10),getdate(),111) ";
+                    }
                 }
-                else if (LCDay1 == "1M")
-                {
-                    sqlcon1 += "and a.VIP_LCDay not between convert(char,dateadd(MONTH,-1,getdate()),111) and convert(char(10),getdate(),111) ";
-                }
-                else if (LCDay1 == "2M")
-                {
-                    sqlcon1 += "and a.VIP_LCDay not between convert(char,dateadd(MONTH,-2,getdate()),111) and convert(char(10),getdate(),111) ";
+                else if (LCDayFlag == "N") {
+                    LCDayVIPH = "最近沒來店";
+                    if (LCDay == "")
+                    {
+                        LCDayVIPD = "不限";
+                    }
+                    else if(LCDay == "2W")
+                    {
+                        LCDayVIPD = "2周內";
+                        sqlcon1 += "and a.VIP_LCDay not between convert(char,dateadd(DAY,-15,getdate()),111) and convert(char(10),getdate(),111) ";
+                    }
+                    else if (LCDay == "1M")
+                    {
+                        LCDayVIPD = "1個月內";
+                        sqlcon1 += "and a.VIP_LCDay not between convert(char,dateadd(MONTH,-1,getdate()),111) and convert(char(10),getdate(),111) ";
+                    }
+                    else if (LCDay == "2M")
+                    {
+                        LCDayVIPD = "2個月內";
+                        sqlcon1 += "and a.VIP_LCDay not between convert(char,dateadd(MONTH,-2,getdate()),111) and convert(char(10),getdate(),111) ";
+                    }
+                    else if (LCDay == "3M")
+                    {
+                        LCDayVIPD = "3個月內";
+                        sqlcon1 += "and a.VIP_LCDay not between convert(char,dateadd(MONTH,-3,getdate()),111) and convert(char(10),getdate(),111) ";
+                    }
+                    else if (LCDay == "6M")
+                    {
+                        LCDayVIPD = "6個月內";
+                        sqlcon1 += "and a.VIP_LCDay not between convert(char,dateadd(MONTH,-6,getdate()),111) and convert(char(10),getdate(),111) ";
+                    }
+                    else if (LCDay == "1Y")
+                    {
+                        LCDayVIPD = "1年內";
+                        sqlcon1 += "and a.VIP_LCDay not between convert(char,dateadd(MONTH,-12,getdate()),111) and convert(char(10),getdate(),111) ";
+                    }
+                    else if (LCDay == "2Y")
+                    {
+                        LCDayVIPD = "2年內";
+                        sqlcon1 += "and a.VIP_LCDay not between convert(char,dateadd(MONTH,-24,getdate()),111) and convert(char(10),getdate(),111) ";
+                    }
                 }
 
                 //sqlcon2
@@ -12143,103 +12199,51 @@ namespace SVMAdmin.Controllers
                         sql += "'" + VMEVNO + "',6,'','','','','入會區間','" + QDayS + "' + ' ~ ' + '" + QDayE + "' ";
                     }
 
-                    if (LCDay == "")
-                    {
-                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
-                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',7,'','','','','最近來店日','不限' ";
-                    }
-                    else if (LCDay == "3M")
-                    {
-                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
-                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',7,'','','','','最近來店日','3個月內' ";
-                    }
-                    else if (LCDay == "6M")
-                    {
-                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
-                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',7,'','','','','最近來店日','6個月內' ";
-                    }
-                    else if (LCDay == "1Y")
-                    {
-                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
-                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',7,'','','','','最近來店日','1年內' ";
-                    }
-                    else if (LCDay == "2Y")
-                    {
-                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
-                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',7,'','','','','最近來店日','2年內' ";
-                    }
-
-                    if (LCDay1 == "")
-                    {
-                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
-                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',8,'','','','','近期未來店','不限' ";
-                    }
-                    else if (LCDay1 == "2W")
-                    {
-                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
-                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',8,'','','','','近期未來店','2周內' ";
-                    }
-                    else if (LCDay1 == "1M")
-                    {
-                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
-                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',8,'','','','','近期未來店','1個月內' ";
-                    }
-                    else if (LCDay1 == "2M")
-                    {
-                        sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
-                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',8,'','','','','近期未來店','2個月內' ";
-                    }
+                    sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
+                    sql += "'" + VMEVNO + "',7,'','','','','" + LCDayVIPH + "','" + LCDayVIPD + "' ";
 
                     if (SDate == "")
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',9,'','','','','消費月份','無' ";
+                        sql += "'" + VMEVNO + "',8,'','','','','消費月份','無' ";
                     }
                     else if (SDate == "2M")
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',9,'','','','','消費月份','2個月內' ";
+                        sql += "'" + VMEVNO + "',8,'','','','','消費月份','2個月內' ";
                     }
                     else if (SDate == "3M")
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',9,'','','','','消費月份','3個月內' ";
+                        sql += "'" + VMEVNO + "',8,'','','','','消費月份','3個月內' ";
                     }
                     else if (SDate == "6M")
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',9,'','','','','消費月份','6個月內' ";
+                        sql += "'" + VMEVNO + "',8,'','','','','消費月份','6個月內' ";
                     }
                     else if (SDate == "1Y")
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',9,'','','','','消費月份','1年內' ";
+                        sql += "'" + VMEVNO + "',8,'','','','','消費月份','1年內' ";
                     }
                     if (chkDept != "")
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',10,'','','','','消費部門','" + chkDeptName.Replace("'", "") + "' ";
+                        sql += "'" + VMEVNO + "',9,'','','','','消費部門','" + chkDeptName.Replace("'", "") + "' ";
                     }
                     if (chkBgno != "")
                     {
                         sql += ";Insert into SetEDMVIP_SetWeb (CompanyCode,CrtUser,CrtDate,CrtTime,EVNO,SeqNo,TableName,SetCode,SetDataS,SetDataE,ColTitle,ColData) ";
                         sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),convert(char(12),getdate(),108), ";
-                        sql += "'" + VMEVNO + "',11,'','','','','消費大類','" + chkBgnoName.Replace("'", "") + "' ";
+                        sql += "'" + VMEVNO + "',10,'','','','','消費大類','" + chkBgnoName.Replace("'", "") + "' ";
                     }
                     PubUtility.ExecuteSql(sql, uu, "SYS");
 

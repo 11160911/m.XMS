@@ -1598,8 +1598,8 @@ Timerset(sessionStorage.getItem('isamcomp'));
         $('#rdoQDayAll_SendSet').prop('checked', true);
         $('#txtQDayS_SendSet').val('');
         $('#txtQDayE_SendSet').val('');
+        $('#rdoLCDayY_SendSet').prop('checked', true);
         $('#rdoLCDayAll_SendSet').prop('checked', true);
-        $('#rdoLCDayAll1_SendSet').prop('checked', true);
         $('#rdoSDateAll_SendSet').prop('checked', true);
         $('#lblDeptCnt_SendSet').html('');
         $('#lblDeptName_SendSet').html('');
@@ -1691,10 +1691,28 @@ Timerset(sessionStorage.getItem('isamcomp'));
             QDay = "1Y"
         }
 
-        //最近來店日
+
+        var LCDayFlag = ""
+        //最近有來店
+        if ($('#rdoLCDayY_SendSet').prop('checked') == true) {
+            LCDayFlag = "Y"
+        }
+        //最近沒來店
+        else if ($('#rdoLCDayN_SendSet').prop('checked') == true) {
+            LCDayFlag = "N"
+        }
         var LCDay = ""
         if ($('#rdoLCDayAll_SendSet').prop('checked') == true) {
             LCDay = ""
+        }
+        else if ($('#rdoLCDay2W_SendSet').prop('checked') == true) {
+            LCDay = "2W"
+        }
+        else if ($('#rdoLCDay1M_SendSet').prop('checked') == true) {
+            LCDay = "1M"
+        }
+        else if ($('#rdoLCDay2M_SendSet').prop('checked') == true) {
+            LCDay = "2M"
         }
         else if ($('#rdoLCDay3M_SendSet').prop('checked') == true) {
             LCDay = "3M"
@@ -1707,21 +1725,6 @@ Timerset(sessionStorage.getItem('isamcomp'));
         }
         else if ($('#rdoLCDay2Y_SendSet').prop('checked') == true) {
             LCDay = "2Y"
-        }
-
-        //近期未來店
-        var LCDay1 = ""
-        if ($('#rdoLCDayAll1_SendSet').prop('checked') == true) {
-            LCDay1 = ""
-        }
-        else if ($('#rdoLCDay2W1_SendSet').prop('checked') == true) {
-            LCDay1 = "2W"
-        }
-        else if ($('#rdoLCDay1M1_SendSet').prop('checked') == true) {
-            LCDay1 = "1M"
-        }
-        else if ($('#rdoLCDay2M1_SendSet').prop('checked') == true) {
-            LCDay1 = "2M"
         }
 
         //消費月份
@@ -1753,8 +1756,8 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 QDay: QDay,
                 QDayS: $('#txtQDayS_SendSet').val().toString().replaceAll('-', '/'),
                 QDayE: $('#txtQDayE_SendSet').val().toString().replaceAll('-', '/'),
+                LCDayFlag: LCDayFlag,
                 LCDay: LCDay,
-                LCDay1: LCDay1,
                 SDate: SDate,
                 chkDept: chkDept,
                 chkDeptName: chkDeptName,
@@ -1810,8 +1813,6 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 return;
             }
         }
-
-
         //會員卡別
         var VIP_Type = "";
         var VIP_TypeName = "";
@@ -1863,7 +1864,6 @@ Timerset(sessionStorage.getItem('isamcomp'));
         else if ($('#rdoQDay1Y_SendSet').prop('checked') == true) {
             QDay = "1Y"
         }
-
         //入會日期
         var QDayS = ""
         var QDayE = ""
@@ -1871,11 +1871,27 @@ Timerset(sessionStorage.getItem('isamcomp'));
             QDayS = $('#txtQDayS_SendSet').val().toString().replaceAll('-', '/');
             QDayE = $('#txtQDayE_SendSet').val().toString().replaceAll('-', '/');
         }
-
-        //最近來店日
+        var LCDayFlag = ""
+        //最近有來店
+        if ($('#rdoLCDayY_SendSet').prop('checked') == true) {
+            LCDayFlag = "Y"
+        }
+        //最近沒來店
+        else if ($('#rdoLCDayN_SendSet').prop('checked') == true) {
+            LCDayFlag = "N"
+        }
         var LCDay = ""
         if ($('#rdoLCDayAll_SendSet').prop('checked') == true) {
             LCDay = ""
+        }
+        else if ($('#rdoLCDay2W_SendSet').prop('checked') == true) {
+            LCDay = "2W"
+        }
+        else if ($('#rdoLCDay1M_SendSet').prop('checked') == true) {
+            LCDay = "1M"
+        }
+        else if ($('#rdoLCDay2M_SendSet').prop('checked') == true) {
+            LCDay = "2M"
         }
         else if ($('#rdoLCDay3M_SendSet').prop('checked') == true) {
             LCDay = "3M"
@@ -1888,21 +1904,6 @@ Timerset(sessionStorage.getItem('isamcomp'));
         }
         else if ($('#rdoLCDay2Y_SendSet').prop('checked') == true) {
             LCDay = "2Y"
-        }
-
-        //近期未來店
-        var LCDay1 = ""
-        if ($('#rdoLCDayAll1_SendSet').prop('checked') == true) {
-            LCDay1 = ""
-        }
-        else if ($('#rdoLCDay2W1_SendSet').prop('checked') == true) {
-            LCDay1 = "2W"
-        }
-        else if ($('#rdoLCDay1M1_SendSet').prop('checked') == true) {
-            LCDay1 = "1M"
-        }
-        else if ($('#rdoLCDay2M1_SendSet').prop('checked') == true) {
-            LCDay1 = "2M"
         }
 
         //消費月份
@@ -1934,8 +1935,8 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 QDay: QDay,
                 QDayS: QDayS,
                 QDayE: QDayE,
+                LCDayFlag: LCDayFlag,
                 LCDay: LCDay,
-                LCDay1: LCDay1,
                 SDate: SDate,
                 chkDept: chkDept,
                 chkDeptName: chkDeptName,
@@ -2188,7 +2189,9 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#rdoMWAll_SendSet,#rdoMW0_SendSet,#rdoMW1_SendSet').change(function () { UpdateVIPCnt(); });
             $('#rdoQDayAll_SendSet,#rdoQDay2M_SendSet,#rdoQDay3M_SendSet,#rdoQDay6M_SendSet,#rdoQDay1Y_SendSet').change(function () { UpdateVIPCnt(); });
             $('#txtQDayS_SendSet,#txtQDayE_SendSet').change(function () { UpdateVIPCnt(); });
-            $('#rdoLCDayAll_SendSet,#rdoLCDay3M_SendSet,#rdoLCDay6M_SendSet,#rdoLCDay1Y_SendSet,#rdoLCDay2Y_SendSet,#rdoLCDayAll1_SendSet,#rdoLCDay2W1_SendSet,#rdoLCDay1M1_SendSet,#rdoLCDay2M1_SendSet').change(function () { UpdateVIPCnt(); });
+
+            $('#rdoLCDayY_SendSet,#rdoLCDayN_SendSet,#rdoLCDayAll_SendSet,#rdoLCDay2W_SendSet,#rdoLCDay1M_SendSet,#rdoLCDay2M_SendSet,#rdoLCDay3M_SendSet,#rdoLCDay6M_SendSet,#rdoLCDay1Y_SendSet,#rdoLCDay2Y_SendSet').change(function () { UpdateVIPCnt(); });
+
             $('#rdoSDateAll_SendSet,#rdoSDate2M_SendSet,#rdoSDate3M_SendSet,#rdoSDate6M_SendSet,#rdoSDate1Y_SendSet').change(function () { UpdateVIPCnt(); });
 
             $('#btVIPFaceID_SendSet').click(function () { btVIPFaceID_SendSet_click(this) });
