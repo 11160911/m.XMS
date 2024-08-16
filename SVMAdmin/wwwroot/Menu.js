@@ -230,6 +230,12 @@
     };
 
     let gridclickE = function () {
+        $('#tbE tbody tr .tdCol2').mouseenter(function () {
+            $(this).closest('tr').click();
+            $('.msg-valid').hide();
+            var node = $(grdE.ActiveRowTR()).prop('Record');
+            $(this).attr("title", GetNodeValue(node, 'GD_Name'));
+        });
     }
 
     let gridclickJ = function () {

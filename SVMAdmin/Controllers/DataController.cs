@@ -498,7 +498,7 @@ namespace SVMAdmin.Controllers
                 sql += "group by a.GoodsNo ";
                 sql += "order by sum(a.num) desc; ";
 
-                sql += "Select a.E1,left(b.GD_Name,12) E2,a.E3 ";
+                sql += "Select a.E1,left(b.GD_Name,12) E2,a.E3,b.GD_Name ";
                 sql += "From #E a left join PLUWeb b (nolock) on a.GoodsNo=b.GD_NO and b.Companycode='" + uu.CompanyId + "' ";
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
