@@ -11993,37 +11993,37 @@ namespace SVMAdmin.Controllers
                     else if(LCDay == "2W")
                     {
                         LCDayVIPD = "2周內";
-                        sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(DAY,-15,getdate()),111) and convert(char(10),getdate(),111) ";
+                        sqlcon1 += "and isnull(a.VIP_LCDay,'') between convert(char,dateadd(DAY,-15,getdate()),111) and convert(char(10),getdate(),111) ";
                     }
                     else if (LCDay == "1M")
                     {
                         LCDayVIPD = "1個月內";
-                        sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(MONTH,-1,getdate()),111) and convert(char(10),getdate(),111) ";
+                        sqlcon1 += "and isnull(a.VIP_LCDay,'') between convert(char,dateadd(MONTH,-1,getdate()),111) and convert(char(10),getdate(),111) ";
                     }
                     else if (LCDay == "2M")
                     {
                         LCDayVIPD = "2個月內";
-                        sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(MONTH,-2,getdate()),111) and convert(char(10),getdate(),111) ";
+                        sqlcon1 += "and isnull(a.VIP_LCDay,'') between convert(char,dateadd(MONTH,-2,getdate()),111) and convert(char(10),getdate(),111) ";
                     }
                     else if (LCDay == "3M")
                     {
                         LCDayVIPD = "3個月內";
-                        sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(MONTH,-3,getdate()),111) and convert(char(10),getdate(),111) ";
+                        sqlcon1 += "and isnull(a.VIP_LCDay,'') between convert(char,dateadd(MONTH,-3,getdate()),111) and convert(char(10),getdate(),111) ";
                     }
                     else if (LCDay == "6M")
                     {
                         LCDayVIPD = "6個月內";
-                        sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(MONTH,-6,getdate()),111) and convert(char(10),getdate(),111) ";
+                        sqlcon1 += "and isnull(a.VIP_LCDay,'') between convert(char,dateadd(MONTH,-6,getdate()),111) and convert(char(10),getdate(),111) ";
                     }
                     else if (LCDay == "1Y")
                     {
                         LCDayVIPD = "1年內";
-                        sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(MONTH,-12,getdate()),111) and convert(char(10),getdate(),111) ";
+                        sqlcon1 += "and isnull(a.VIP_LCDay,'') between convert(char,dateadd(MONTH,-12,getdate()),111) and convert(char(10),getdate(),111) ";
                     }
                     else if (LCDay == "2Y")
                     {
                         LCDayVIPD = "2年內";
-                        sqlcon1 += "and a.VIP_LCDay between convert(char,dateadd(MONTH,-24,getdate()),111) and convert(char(10),getdate(),111) ";
+                        sqlcon1 += "and isnull(a.VIP_LCDay,'') between convert(char,dateadd(MONTH,-24,getdate()),111) and convert(char(10),getdate(),111) ";
                     }
                 }
                 else if (LCDayFlag == "N") {
@@ -12035,37 +12035,37 @@ namespace SVMAdmin.Controllers
                     else if(LCDay == "2W")
                     {
                         LCDayVIPD = "2周內";
-                        sqlcon1 += "and a.VIP_LCDay not between convert(char,dateadd(DAY,-15,getdate()),111) and convert(char(10),getdate(),111) ";
+                        sqlcon1 += "and isnull(a.VIP_LCDay,'') not between convert(char,dateadd(DAY,-15,getdate()),111) and convert(char(10),getdate(),111) ";
                     }
                     else if (LCDay == "1M")
                     {
                         LCDayVIPD = "1個月內";
-                        sqlcon1 += "and a.VIP_LCDay not between convert(char,dateadd(MONTH,-1,getdate()),111) and convert(char(10),getdate(),111) ";
+                        sqlcon1 += "and isnull(a.VIP_LCDay,'') not between convert(char,dateadd(MONTH,-1,getdate()),111) and convert(char(10),getdate(),111) ";
                     }
                     else if (LCDay == "2M")
                     {
                         LCDayVIPD = "2個月內";
-                        sqlcon1 += "and a.VIP_LCDay not between convert(char,dateadd(MONTH,-2,getdate()),111) and convert(char(10),getdate(),111) ";
+                        sqlcon1 += "and isnull(a.VIP_LCDay,'') not between convert(char,dateadd(MONTH,-2,getdate()),111) and convert(char(10),getdate(),111) ";
                     }
                     else if (LCDay == "3M")
                     {
                         LCDayVIPD = "3個月內";
-                        sqlcon1 += "and a.VIP_LCDay not between convert(char,dateadd(MONTH,-3,getdate()),111) and convert(char(10),getdate(),111) ";
+                        sqlcon1 += "and isnull(a.VIP_LCDay,'') not between convert(char,dateadd(MONTH,-3,getdate()),111) and convert(char(10),getdate(),111) ";
                     }
                     else if (LCDay == "6M")
                     {
                         LCDayVIPD = "6個月內";
-                        sqlcon1 += "and a.VIP_LCDay not between convert(char,dateadd(MONTH,-6,getdate()),111) and convert(char(10),getdate(),111) ";
+                        sqlcon1 += "and isnull(a.VIP_LCDay,'') not between convert(char,dateadd(MONTH,-6,getdate()),111) and convert(char(10),getdate(),111) ";
                     }
                     else if (LCDay == "1Y")
                     {
                         LCDayVIPD = "1年內";
-                        sqlcon1 += "and a.VIP_LCDay not between convert(char,dateadd(MONTH,-12,getdate()),111) and convert(char(10),getdate(),111) ";
+                        sqlcon1 += "and isnull(a.VIP_LCDay,'') not between convert(char,dateadd(MONTH,-12,getdate()),111) and convert(char(10),getdate(),111) ";
                     }
                     else if (LCDay == "2Y")
                     {
                         LCDayVIPD = "2年內";
-                        sqlcon1 += "and a.VIP_LCDay not between convert(char,dateadd(MONTH,-24,getdate()),111) and convert(char(10),getdate(),111) ";
+                        sqlcon1 += "and isnull(a.VIP_LCDay,'') not between convert(char,dateadd(MONTH,-24,getdate()),111) and convert(char(10),getdate(),111) ";
                     }
                 }
 
