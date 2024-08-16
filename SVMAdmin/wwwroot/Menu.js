@@ -76,22 +76,22 @@
             $('#lblFileName').click(function () {
                 download($('#lblAtt').html(), $('#lblFileName').html())
             })
-            $('#btA4,#CardA').click(function () {
+            $('#btA4').click(function () {
                 ProgramStart("MSSA108");
             })
-            $('#btC3,#CardC,#btB3,#CardB').click(function () {
+            $('#btC3,#btB3').click(function () {
                 ProgramStart("MSSA101");
             })
-            $('#btD3,#CardD').click(function () {
+            $('#btD3').click(function () {
                 ProgramStart("MSSD107");
             })
-            $('#imgHome,#imgHomeP').click(function () {
+            $('#imgHome,#imgHomeP,#Update').click(function () {
                 window.location.reload();
             })
             $('#CardJCntText,#CardJCnt').click(function () {
                 window.location.href = "#CardJ";
             })
-            $('#btH,#CardH').click(function () {
+            $('#btH').click(function () {
                 ProgramStart("MSSA105");
             })
             $('#SysDate').click(function () {
@@ -187,11 +187,12 @@
                 class_collection: ["tdCol1 text-center", "tdCol2", "tdCol3 label-align"],
                 fields_info: [
                     { type: "Text", name: "E1", style: "width:15%" },
-                    { type: "Text", name: "E2", style: "width:55%" },
-                    { type: "TextAmt", name: "E3", style: "width:30%;color:blue" }
+                    { type: "Text", name: "E2", style: "width:65%" },
+                    { type: "TextAmt", name: "E3", style: "width:20%;color:blue" }
                 ],
                 //rows_per_page: 10,
-                method_clickrow: click_PLU
+                method_clickrow: click_PLU,
+                afterBind: gridclickE
             }
         );
 
@@ -228,6 +229,9 @@
         return;
     };
 
+    let gridclickE = function () {
+    }
+
     let gridclickJ = function () {
         $('#tbJ tbody tr .tdCol3').click(function () { DownLoadJ(this) });
         $('#tbJ tbody tr .tdCol1,#tbJ tbody tr .tdCol2').click(function () { StepJ(this) });
@@ -261,7 +265,7 @@
     };
 
     let SetHome = function (data) {
-        var dtEmployeeSV = data.getElementsByTagName('dtEmployee');
+        var dtTran = data.getElementsByTagName('dtTran');
         var dtA = data.getElementsByTagName('dtA');
         var dtB = data.getElementsByTagName('dtB');
         var dtC = data.getElementsByTagName('dtC');
@@ -270,7 +274,7 @@
         var dtF = data.getElementsByTagName('dtF');
         var dtJ = data.getElementsByTagName('dtJ');
         var dtJ1 = data.getElementsByTagName('dtJ1');
-        $('#lblSysDate').html(GetNodeValue(dtEmployeeSV[0], 'SysDate'))
+        $('#lblSysDate').html(GetNodeValue(dtTran[0], 'LastTrans'))
         $('#CardJCnt').html(dtJ1.length)
         //今日
         $('#lblA1').html(GetNodeValue(dtA[0], 'A1'))
@@ -432,8 +436,13 @@
                 trigger: 'item'
             },
             legend: {
+                type: 'scroll',
                 orient: 'horizontal',
-                bottom: '0%'
+                bottom: '0%',
+                textStyle: {
+                    fontSize: 12
+                },
+                itemWidth:18
             },
             series:
             {
@@ -498,7 +507,7 @@
                     show: true,
                     textStyle: {
                         color: 'black',
-                        fontSize: 14
+                        fontSize: 12
                     },
                     interval: 0,
                     formatter: function (params) {
@@ -526,7 +535,7 @@
                     show: true,
                     textStyle: {
                         color: 'black',
-                        fontSize: 14
+                        fontSize: 12
                     }
                 }
             },
