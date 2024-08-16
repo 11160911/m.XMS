@@ -531,7 +531,7 @@
                 }
             },
             grid: {
-                left: "25%",
+                left: "30%",
                 top: "35%"
             },
             series: [
