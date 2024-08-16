@@ -454,13 +454,13 @@
             {
                 name: '',
                 type: 'pie',
-                radius: ['0%','90%'],
+                radius: ['0%','85%'],
                 center: ['50%','45%'],
                 label: {
                     show: true,
                     position: "inside",
                     formatter: '{d}%',
-                    fontSize: 12,
+                    fontSize: 11,
                     color: "white"
                 },
                 minAngle: 1,
