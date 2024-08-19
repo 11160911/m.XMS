@@ -482,24 +482,21 @@ namespace SVMAdmin.Controllers
                 dtD.TableName = "dtD";
                 ds.Tables.Add(dtD);
 
-                //sql = "Select Top 10 ROW_NUMBER() over(order by sum(a.num) desc) E1,left(b.GD_Name,9) E2,sum(a.num) E3 ";
+                //sql = "Select Top 10 ROW_NUMBER() over(order by sum(a.num) desc) E1,a.GoodsNo,sum(a.num) E3 ";
+                //sql += "into #E ";
                 //sql += "From SalesDWeb a (nolock) ";
-                //sql += "left join PLUWeb b (nolock) on a.GoodsNo=b.GD_NO and b.Companycode=a.Companycode ";
                 //sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                 //sql += "and left(a.OpenDate,7)=convert(char(7),getdate(),111) ";
-                //sql += "group by a.GoodsNo,b.GD_Name ";
-                //sql += "order by sum(a.num) desc ";
+                //sql += "and a.OpenDate between '2024/08/01' and '2024/08/31' ";
+                //sql += "group by a.GoodsNo ";
+                //sql += "order by sum(a.num) desc; ";
+                //sql += "Select a.E1,case when len(b.GD_Name)>10 then left(b.GD_Name,10) + '...' else b.GD_Name end as E2,a.E3,b.GD_Name ";
+                //sql += "From #E a left join PLUWeb b (nolock) on a.GoodsNo=b.GD_NO and b.Companycode='" + uu.CompanyId + "' ";
 
-                sql = "Select Top 10 ROW_NUMBER() over(order by sum(a.num) desc) E1,a.GoodsNo,sum(a.num) E3 ";
-                sql += "into #E ";
-                sql += "From SalesDWeb a (nolock) ";
-                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
-                sql += "and left(a.OpenDate,7)=convert(char(7),getdate(),111) ";
-                sql += "group by a.GoodsNo ";
-                sql += "order by sum(a.num) desc; ";
-
-                sql += "Select a.E1,case when len(b.GD_Name)>10 then left(b.GD_Name,10) + '...' else b.GD_Name end as E2,a.E3,b.GD_Name ";
-                sql += "From #E a left join PLUWeb b (nolock) on a.GoodsNo=b.GD_NO and b.Companycode='" + uu.CompanyId + "' ";
+                sql = "Select Top 10 ROW_NUMBER() over(order by sum(a.num) desc) E1,case when len(b.GD_Name)>10 then left(b.GD_Name,10) + '...' else b.GD_Name end as E2,sum(a.num) E3 ";
+                sql += "From (Select Companycode, OpenDate, GoodsNo, num from SalesDWeb (nolock) Where Companycode='" + uu.CompanyId + "' and OpenDate between convert(char(7),getdate(),111) + '/01' and convert(char(7),getdate(),111) + '/31')a ";
+                sql += "left join PLUWeb b (nolock) on a.GoodsNo=b.GD_NO and a.CompanyCode=b.CompanyCode ";
+                sql += "Where b.Companycode='" + uu.CompanyId + "' group by a.GoodsNo,b.GD_Name order by sum(a.num) desc ";
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
                 ds.Tables.Add(dtE);
@@ -12902,6 +12899,155 @@ namespace SVMAdmin.Controllers
                     DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
                     dtH.TableName = "dtH";
                     ds.Tables.Add(dtH);
+                }
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSSA103QueryD1")]
+        public ActionResult SystemSetup_MSSA103QueryD1()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSA103QueryD1OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string OpenDateS1 = rq["OpenDateS1"];
+                string OpenDateE1 = rq["OpenDateE1"];
+                string OpenDateS2 = rq["OpenDateS2"];
+                string OpenDateE2 = rq["OpenDateE2"];
+                string ID = rq["ID"];
+                string Flag = rq["Flag"];
+
+                string sql = "";
+                string sqlD = "";
+                string sqlH = "";
+
+                //部門
+                if (Flag == "D")
+                {
+                    //前期
+                    sql = "select p.GD_Dept id,Sum(a.Num)Qty1,Sum(a.Cash)Cash1 into #s1 ";
+                    sql += "from SalesDWeb a (nolock) ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                    sql += "inner join PLUWeb p (nolock) on a.GoodsNo=p.GD_NO and p.Companycode='" + uu.CompanyId + "' ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    if (OpenDateS1 != "")
+                    {
+                        sql += "and a.OpenDate between '" + OpenDateS1 + "' and '" + OpenDateE1 + "' ";
+                    }
+                    if (ID != "")
+                    {
+                        sql += "and a.ShopNo='" + ID + "' ";
+                    }
+                    sql += "group by p.GD_Dept; ";
+
+                    //本期
+                    sql += "select p.GD_Dept id,Sum(a.Num)Qty2,Sum(a.Cash)Cash2 into #s2 ";
+                    sql += "from SalesDWeb a (nolock) ";
+                    sql += "inner join WarehouseWeb w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                    sql += "inner join PLUWeb p (nolock) on a.GoodsNo=p.GD_NO and p.Companycode='" + uu.CompanyId + "' ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    if (OpenDateS2 != "")
+                    {
+                        sql += "and a.OpenDate between '" + OpenDateS2 + "' and '" + OpenDateE2 + "' ";
+                    }
+                    if (ID != "")
+                    {
+                        sql += "and a.ShopNo='" + ID + "' ";
+                    }
+                    sql += "group by p.GD_Dept; ";
+
+                    //明細資料
+                    sqlD = "select a.type_id + '-' + a.type_name id,isnull(s1.Qty1,0)Qty1,isnull(s1.Cash1,0)Cash1, ";
+                    sqlD += "isnull(s2.Qty2,0)Qty2,isnull(s2.Cash2,0)Cash2, ";
+                    sqlD += "case when isnull(s1.Cash1,0)=0 and isnull(s2.Cash2,0)=0 then format(0,'p') when isnull(s1.Cash1,0)=0 then format(1,'p') else format(cast(isnull(s2.Cash2,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float),'p') end as Per ";
+                    sqlD += "from TypeDataWeb a (nolock) ";
+                    sqlD += "left join #s1 s1 on a.type_id=s1.id ";
+                    sqlD += "left join #s2 s2 on a.type_id=s2.id ";
+                    sqlD += "where a.CompanyCode='" + uu.CompanyId + "' and a.type_code='G' ";
+                    sqlD += "order by a.type_id ";
+                    DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+
+                    //彙總資料
+                    sqlH = "select sum(isnull(s1.Qty1,0))SumQty1,sum(isnull(s1.Cash1,0))SumCash1, ";
+                    sqlH += "sum(isnull(s2.Qty2,0))SumQty2,sum(isnull(s2.Cash2,0))SumCash2, ";
+                    sqlH += "case when sum(isnull(s1.Cash1,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.Cash2,0))-sum(isnull(s1.Cash1,0)) as Float)/cast(sum(isnull(s1.Cash1,0)) as Float),'p') end as SumPer ";
+                    sqlH += "from TypeDataWeb a (nolock) ";
+                    sqlH += "left join #s1 s1 on a.type_id=s1.id ";
+                    sqlH += "left join #s2 s2 on a.type_id=s2.id ";
+                    sqlH += "where a.CompanyCode='" + uu.CompanyId + "' and a.type_code='G' ";
+                    DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
+                    dtH.TableName = "dtH";
+                    ds.Tables.Add(dtH);
+                }
+                //大類
+                else if (Flag == "B")
+                {
+                    ////期間1
+                    //sql = "select p.GD_BGNO id,Sum(a.Num)Qty1,Sum(a.Cash)Cash1 into #s1 ";
+                    //sql += "from SalesDWeb a (nolock) ";
+                    //sql += "inner join WarehouseWeb w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                    //sql += "inner join PLUWeb p (nolock) on a.GoodsNo=p.GD_NO and p.Companycode='" + uu.CompanyId + "' ";
+                    //sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    //if (OpenDateS1 != "")
+                    //{
+                    //    sql += "and a.OpenDate between '" + OpenDateS1 + "' and '" + OpenDateE1 + "' ";
+                    //}
+                    //if (ShopNo != "")
+                    //{
+                    //    sql += "and a.ShopNo in(" + ShopNo + ") ";
+                    //}
+                    //sql += "group by p.GD_BGNO; ";
+
+                    ////期間2
+                    //sql += "select p.GD_BGNO id,Sum(a.Num)Qty2,Sum(a.Cash)Cash2 into #s2 ";
+                    //sql += "from SalesDWeb a (nolock) ";
+                    //sql += "inner join WarehouseWeb w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                    //sql += "inner join PLUWeb p (nolock) on a.GoodsNo=p.GD_NO and p.Companycode='" + uu.CompanyId + "' ";
+                    //sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    //if (OpenDateS2 != "")
+                    //{
+                    //    sql += "and a.OpenDate between '" + OpenDateS2 + "' and '" + OpenDateE2 + "' ";
+                    //}
+                    //if (ShopNo != "")
+                    //{
+                    //    sql += "and a.ShopNo in(" + ShopNo + ") ";
+                    //}
+                    //sql += "group by p.GD_BGNO; ";
+
+                    ////明細資料
+                    //sqlD = "select a.type_id + '-' + a.type_name id,isnull(s1.Qty1,0)Qty1,isnull(s1.Cash1,0)Cash1, ";
+                    //sqlD += "isnull(s2.Qty2,0)Qty2,isnull(s2.Cash2,0)Cash2, ";
+                    //sqlD += "case when isnull(s1.Cash1,0)=0 and isnull(s2.Cash2,0)=0 then format(0,'p') when isnull(s1.Cash1,0)=0 then format(1,'p') else format(cast(isnull(s2.Cash2,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float),'p') end as Per ";
+                    //sqlD += "from TypeDataWeb a (nolock) ";
+                    //sqlD += "left join #s1 s1 on a.type_id=s1.id ";
+                    //sqlD += "left join #s2 s2 on a.type_id=s2.id ";
+                    //sqlD += "where a.CompanyCode='" + uu.CompanyId + "' and a.type_code='L' ";
+                    //sqlD += "order by a.type_id ";
+                    //DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                    //dtE.TableName = "dtE";
+                    //ds.Tables.Add(dtE);
+
+                    ////彙總資料
+                    //sqlH = "select sum(isnull(s1.Qty1,0))SumQty1,sum(isnull(s1.Cash1,0))SumCash1, ";
+                    //sqlH += "sum(isnull(s2.Qty2,0))SumQty2,sum(isnull(s2.Cash2,0))SumCash2, ";
+                    //sqlH += "case when sum(isnull(s1.Cash1,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.Cash2,0))-sum(isnull(s1.Cash1,0)) as Float)/cast(sum(isnull(s1.Cash1,0)) as Float),'p') end as SumPer ";
+                    //sqlH += "from TypeDataWeb a (nolock) ";
+                    //sqlH += "left join #s1 s1 on a.type_id=s1.id ";
+                    //sqlH += "left join #s2 s2 on a.type_id=s2.id ";
+                    //sqlH += "where a.CompanyCode='" + uu.CompanyId + "' and a.type_code='L' ";
+                    //DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
+                    //dtH.TableName = "dtH";
+                    //ds.Tables.Add(dtH);
                 }
             }
             catch (Exception err)
