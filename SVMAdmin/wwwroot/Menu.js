@@ -629,12 +629,30 @@
                       <li><a href="index3.html">Dashboard3</a></li>
                     </ul>
                   </li>
-
-
 */
             if (icat != strCat) {  //
                 strCat = icat;
-                var strLi = '<li><a><i class="fa ' + GetNodeValue(dtFun[i], 'icon') + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
+                //var strLi = '<li><a><i class="fa ' + GetNodeValue(dtFun[i], 'icon') + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
+                var strLi = '';
+                if (strCat == "MS01") {
+                    strLi = '<li><a><i class="fa fa-dashboard' + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
+                }
+                else if (strCat == "MS02") {
+                    strLi = '<li><a><i class="fa fa-th-large' + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
+                }
+                else if (strCat == "MS05") {
+                    strLi = '<li><a><i class="fa fa-cubes' + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
+                }
+                else if (strCat == "MS06") {
+                    strLi = '<li><a><i class="fa fa-users' + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
+                }
+                else if (strCat == "MS98") {
+                    strLi = '<li><a><i class="fa fa-cog' + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
+                }
+                else if (strCat == "MS99") {
+                    strLi = '<li><a><i class="fa fa-cogs' + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
+                }
+
                 strLi += '<ul class="nav child_menu">';
                 strLi += "</ul></li>";
                 //var strLi = '<li><a><i class="fa ' + GetNodeValue(dtFun[i], 'icon') + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' </a>';
@@ -647,7 +665,6 @@
                 //apg.prop('Description', GetNodeValue(dtFun[i], "Description"));
                 //apg.prop('SECU_PERMIT', GetNodeValue(dtFun[i], "SECU_PERMIT"));
                 //apg.prop('href', '#' + GetNodeValue(dtFun[i], "Page"));
-
                 menu.append(licat);
             }
             strLi = '<li><a href="#">' + GetNodeValue(dtFun[i], 'Description') + '</a></li>';
