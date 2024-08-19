@@ -635,10 +635,10 @@
                 //var strLi = '<li><a><i class="fa ' + GetNodeValue(dtFun[i], 'icon') + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
                 var strLi = '';
                 if (strCat == "MS01") {
-                    strLi = '<li><a><i class="fa fa-dashboard' + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
+                    strLi = '<li><a><i class="fa fa-line-chart' + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
                 }
                 else if (strCat == "MS02") {
-                    strLi = '<li><a><i class="fa fa-th-large' + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
+                    strLi = '<li><a><i class="fa fa-bar-chart' + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
                 }
                 else if (strCat == "MS05") {
                     strLi = '<li><a><i class="fa fa-cubes' + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
