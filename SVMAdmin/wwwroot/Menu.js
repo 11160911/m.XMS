@@ -644,7 +644,7 @@
                     strLi = '<li><a><i class="fa fa-cubes' + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
                 }
                 else if (strCat == "MS06") {
-                    strLi = '<li><a><i class="fa fa-users' + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
+                    strLi = '<li><a><i class="fa fa-send' + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
                 }
                 else if (strCat == "MS98") {
                     strLi = '<li><a><i class="fa fa-cog' + '"></i> ' + GetNodeValue(dtFun[i], 'CategoryC') + ' <span class="fa fa-chevron-down"></span></a>';
