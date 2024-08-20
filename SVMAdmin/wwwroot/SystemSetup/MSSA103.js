@@ -141,9 +141,6 @@
                 QueryD2();
             }, 500);
         }
-        else if ($(heads).html() == "大類") {
-          
-        }
     };
 
     let QueryD1 = function () {

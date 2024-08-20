@@ -495,7 +495,9 @@ namespace SVMAdmin.Controllers
 
                 sql = "Select Top 10 ROW_NUMBER() over(order by sum(a.num) desc) E1,case when len(b.GD_Name)>10 then left(b.GD_Name,10) + '...' else b.GD_Name end as E2,sum(a.num) E3,b.GD_Name ";
                 sql += "From (Select Companycode, OpenDate, GoodsNo, num from SalesDWeb (nolock) Where Companycode='" + uu.CompanyId + "' and OpenDate between convert(char(7),getdate(),111) + '/01' and convert(char(7),getdate(),111) + '/31')a ";
-                sql += "left join PLUWeb b (nolock) on a.GoodsNo=b.GD_NO and a.CompanyCode=b.CompanyCode ";
+                sql += "inner join PLUWeb b (nolock) on a.GoodsNo=b.GD_NO and a.CompanyCode=b.CompanyCode ";
+                //20240820 增加條件判斷PLUWeb.Flag<>X才列入(因大九九不需看到購物袋商品)
+                sql += "and isnull(b.Flag1,'')<>'X' ";
                 sql += "Where b.Companycode='" + uu.CompanyId + "' group by a.GoodsNo,b.GD_Name order by sum(a.num) desc ";
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
@@ -13381,6 +13383,186 @@ namespace SVMAdmin.Controllers
                     sqlH += "From #s1 a (nolock) ";
                     sqlH += "Where 1=1 ";
                     sqlH += "order by a.Qty desc,a.id ";
+                    sqlH += ")aa ";
+                    sqlH += "Where 1=1 ";
+                    DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
+                    dtH.TableName = "dtH";
+                    ds.Tables.Add(dtH);
+                }
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSSA108QueryD1")]
+        public ActionResult SystemSetup_MSSA108QueryD1()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSA108QueryD1OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Today = rq["Today"];
+                string ShopNo = rq["ShopNo"];
+                string Flag = rq["Flag"];
+                string sqlD = "";
+                string sqlH = "";
+                string sql = "";
+
+
+                sql = "Select a.GoodsNo id,c.GD_Name name,sum(a.Num)Qty,sum(a.Cash)Cash into #s1 ";
+                sql += "From SalesAtonceDWeb a (nolock) ";
+                sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode and b.st_type not in ('2','3') ";
+                sql += "inner join PLUWeb c (nolock) on a.GoodsNo=c.GD_NO and c.Companycode=a.Companycode ";
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                if (Today != "")
+                {
+                    sql += "and a.OpenDate='" + Today + "' ";
+                }
+                if (ShopNo != "")
+                {
+                    sql += "and a.ShopNo='" + ShopNo + "' ";
+                }
+                sql += "group by a.GoodsNo,c.GD_Name; ";
+
+                //明細資料
+                sqlD = "Select top 20 a.id ID,a.name Name,isnull(a.Qty,0)Qty,isnull(a.Cash,0)Cash ";
+                sqlD += "From #s1 a (nolock) ";
+                sqlD += "Where 1=1 ";
+                if (Flag == "20C") {
+                    sqlD += "order by a.Cash desc,a.id ";
+                }
+                else if (Flag == "20N") {
+                    sqlD += "order by a.Qty desc,a.id ";
+                }
+                DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+                //彙總資料
+                sqlH = "select sum(isnull(aa.Qty,0))SumQty,sum(isnull(aa.Cash,0))SumCash ";
+                sqlH += "From ( ";
+                sqlH += "Select top 20 isnull(a.Qty,0)Qty,isnull(a.Cash,0)Cash ";
+                sqlH += "From #s1 a (nolock) ";
+                sqlH += "Where 1=1 ";
+                if (Flag == "20C")
+                {
+                    sqlH += "order by a.Cash desc,a.id ";
+                }
+                else if (Flag == "20N")
+                {
+                    sqlH += "order by a.Qty desc,a.id ";
+                }
+                sqlH += ")aa ";
+                sqlH += "Where 1=1 ";
+                DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
+                dtH.TableName = "dtH";
+                ds.Tables.Add(dtH);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSSA108QueryD2")]
+        public ActionResult SystemSetup_MSSA108QueryD2()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSA108QueryD2OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Today = rq["Today"];
+                string Area = rq["Area"];
+                string Flag = rq["Flag"];
+                string sqlD = "";
+                string sqlH = "";
+                string sql = "";
+
+                if (Flag == "S")
+                {
+                    sql = "Select a.ShopNo id,b.st_sname name,sum(a.RecCount)RecCount,sum(a.Qty)Qty,sum(a.Cash)Cash into #s1 ";
+                    sql += "From SalesAtonceHWeb a (nolock) ";
+                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode and b.st_type not in ('2','3') ";
+                    if (Area != "") {
+                        sql += "and b.st_placeid='" + Area + "' ";
+                    }
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                    if (Today != "") {
+                        sql += "and a.OpenDate='" + Today + "' ";
+                    }
+                    sql += "group by a.ShopNo,b.st_sname; ";
+
+                    //明細資料
+                    sqlD = "Select a.id + '-' + a.name id,isnull(a.RecCount,0)RecCount,isnull(a.Qty,0)Qty, ";
+                    sqlD += "isnull(a.Cash,0)Cash, ";
+                    sqlD += "case when isnull(a.RecCount,0)=0 then 0 else Round(isnull(a.Cash,0) / isnull(a.RecCount,0), 0) end as Price ";
+                    sqlD += "From #s1 a (nolock) ";
+                    sqlD += "Where 1=1 ";
+                    sqlD += "order by a.id ";
+                    DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+
+                    //彙總資料
+                    sqlH = "select sum(isnull(a.RecCount,0))SumRecCount,sum(isnull(a.Qty,0))SumQty, ";
+                    sqlH += "sum(isnull(a.Cash,0))SumCash, ";
+                    sqlH += "case when sum(isnull(a.RecCount,0))=0 then 0 else Round(sum(isnull(a.Cash,0)) / sum(isnull(a.RecCount,0)), 0) end as SumPrice ";
+                    sqlH += "From #s1 a (nolock) ";
+                    sqlH += "Where 1=1 ";
+                    DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
+                    dtH.TableName = "dtH";
+                    ds.Tables.Add(dtH);
+                }
+                else {
+                    sql = "Select a.GoodsNo id,c.GD_Name name,sum(a.Num)Qty,sum(a.Cash)Cash into #s1 ";
+                    sql += "From SalesAtonceDWeb a (nolock) ";
+                    sql += "inner join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode and b.st_type not in ('2','3') ";
+                    sql += "inner join PLUWeb c (nolock) on a.GoodsNo=c.GD_NO and c.Companycode=a.Companycode ";
+                    sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                    if (Today != "")
+                    {
+                        sql += "and a.OpenDate='" + Today + "' ";
+                    }
+                    sql += "group by a.GoodsNo,c.GD_Name; ";
+
+                    //明細資料
+                    sqlD = "Select top 20 a.id ID,a.name Name,isnull(a.Qty,0)Qty,isnull(a.Cash,0)Cash ";
+                    sqlD += "From #s1 a (nolock) ";
+                    sqlD += "Where 1=1 ";
+                    if (Flag == "20C")
+                    {
+                        sqlD += "order by a.Cash desc,a.id ";
+                    }
+                    else if (Flag == "20N")
+                    {
+                        sqlD += "order by a.Qty desc,a.id ";
+                    }
+                    DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+                    //彙總資料
+                    sqlH = "select sum(isnull(aa.Qty,0))SumQty,sum(isnull(aa.Cash,0))SumCash ";
+                    sqlH += "From ( ";
+                    sqlH += "Select top 20 isnull(a.Qty,0)Qty,isnull(a.Cash,0)Cash ";
+                    sqlH += "From #s1 a (nolock) ";
+                    sqlH += "Where 1=1 ";
+                    if (Flag == "20C")
+                    {
+                        sqlH += "order by a.Cash desc,a.id ";
+                    }
+                    else if (Flag == "20N")
+                    {
+                        sqlH += "order by a.Qty desc,a.id ";
+                    }
                     sqlH += ")aa ";
                     sqlH += "Where 1=1 ";
                     DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
