@@ -229,6 +229,7 @@ border: 1px solid gray;
     font-size: 14px;
     color: #0033cc;
     font-weight: bold;
+    display:none;
 }
 
 /*Menu主畫面*/
@@ -330,9 +331,11 @@ border: 1px solid gray;
         height: 310px;
         width: 100%;
     }
-   
     .DyForm3-TableIniEDM {
         height: 220px;
+    }
+    .DyForm3-Horizontal {
+        display:inline ;
     }
     /*螢幕縱向*/
     @media screen and (orientation: portrait) {
