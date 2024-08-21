@@ -493,7 +493,7 @@ namespace SVMAdmin.Controllers
                 //sql += "Select a.E1,case when len(b.GD_Name)>10 then left(b.GD_Name,10) + '...' else b.GD_Name end as E2,a.E3,b.GD_Name ";
                 //sql += "From #E a left join PLUWeb b (nolock) on a.GoodsNo=b.GD_NO and b.Companycode='" + uu.CompanyId + "' ";
 
-                sql = "Select Top 10 ROW_NUMBER() over(order by sum(a.num) desc) E1,case when DATALENGTH(cast(b.GD_NAME as varchar))>26 then CAST(b.GD_Name as varchar(26)) + '...' else b.GD_Name end as E2,sum(a.num) E3,b.GD_Name ";
+                sql = "Select Top 10 ROW_NUMBER() over(order by sum(a.num) desc) E1,case when DATALENGTH(cast(b.GD_NAME as varchar))>22 then CAST(b.GD_Name as varchar(22)) + '...' else b.GD_Name end as E2,sum(a.num) E3,b.GD_Name ";
                 sql += "From (Select Companycode, OpenDate, GoodsNo, num from SalesDWeb (nolock) Where Companycode='" + uu.CompanyId + "' and OpenDate between convert(char(7),getdate(),111) + '/01' and convert(char(7),getdate(),111) + '/31')a ";
                 sql += "inner join PLUWeb b (nolock) on a.GoodsNo=b.GD_NO and a.CompanyCode=b.CompanyCode ";
                 //20240820 增加條件判斷PLUWeb.Flag<>X才列入(因大九九不需看到購物袋商品)
