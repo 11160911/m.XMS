@@ -14950,7 +14950,9 @@ namespace SVMAdmin.Controllers
                 dtP.TableName = "dtP";
                 ds.Tables.Add(dtP);
 
-                sql = "Select Companycode,Companycode + ' ' + ChineseName CompanyName From CompanyWeb (nolock) order by Companycode ";
+                sql = "Select a.Companycode,a.Companycode + ' ' + b.ChineseName CompanyName From ProgramIdCompanyWWeb a (nolock) ";
+                sql += "inner join CompanyWeb b (nolock) on a.Companycode=b.Companycode ";
+                sql += "group by a.Companycode,b.ChineseName order by a.Companycode ";
                 DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
                 dtC.TableName = "dtC";
                 ds.Tables.Add(dtC);
