@@ -85,7 +85,7 @@
             $('#btD3').click(function () {
                 ProgramStart("MSSD107");
             })
-            $('#imgHome,#imgHomeP,#Update').click(function () {
+            $('#imgHomeC,#imgHomeP,#Update').click(function () {
                 window.location.reload();
             })
             $('#CardJCntText,#CardJCnt').click(function () {

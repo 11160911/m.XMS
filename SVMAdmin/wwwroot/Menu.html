@@ -61,17 +61,28 @@
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <style>
+                        #imgHomeC {
+                            margin-left: 25px;
+                            margin-top: 10px;
+                            width: 170px;
+                            cursor: pointer
+                        }
                         #imgHomeP {
                             display: none;
-                            width: 80%;
+                            width: 100%;
                             cursor: pointer;
                             margin-top:10px;
-                            margin-left:5px;
+                        }
+                        #sidemenu {
+                            margin-top: 40px;
                         }
                         /*手機畫面*/
                         @media (max-width:767px) {
                             #imgHomeP {
                                 display: inline;
+                            }
+                            #sidemenu {
+                                margin-top: 20px;
                             }
                         }
                     </style>
@@ -79,14 +90,14 @@
                     <div class="navbar nav_title" style="border: 0;height:5px">
                     </div>
                     <div class="profile clearfix">
-                        <img id="imgHome" src="images/世代-智販元件-05.png" style="margin-left:10px ;margin-top:3px ;width: 170px;cursor:pointer" />
+                        <img id="imgHomeC" src="images/Home.png" />
                         <!--<label style="font-size:25px;color:white">雲端盤點管理系統</label>-->
                         <div class="clearfix"></div>
                     </div>
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu ">
                         <div class="menu_section">
-                            <img id="imgHomeP" src="images/世代首頁-P.jpg" />
-                            <ul class="nav side-menu">
+                            <img id="imgHomeP" src="images/Home.png" />
+                            <ul id="sidemenu" class="nav side-menu">
                                 <li>
                                     <a><i class="fa fa-home"></i> Home </a>
                                     <!--<a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
