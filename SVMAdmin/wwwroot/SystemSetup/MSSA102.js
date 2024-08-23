@@ -1,14 +1,8 @@
 ﻿var PageMSSA102 = function (ParentNode) {
 
     let grdM;
-    let grdLookUp_ShopNo;
-
-    let EditMode = "";
-    let DelPLU = "";
-    let DelPLUQty;
-    let ModPLU = "";
-    let ModPLUQty;
-    let chkShopNo = "";
+    let grdM_Shop;
+    let grdM_PLU;
 
     let AssignVar = function () {
 
@@ -99,7 +93,21 @@
         $('#lblCG_No').html(cg.split('\n')[0]);
         $('#lblCG_Date').html(cg.split('\n')[1]);
         $('#lblCG_Name').html(cg.split('\n')[2]);
-        
+        if ($('#rdoShop').prop('checked') == true) {
+            $('#lblTip1_Shop1').html('總交易&ensp;:&ensp;')
+            $('#lblTip2_Shop1').html('組促期間實際總交易業績')
+            $('#lblTip3_Shop1').html('組促總交易&ensp;:&ensp;')
+            $('#lblTip4_Shop1').html('組促期間有達到促銷條件之每筆交易總和')
+            $('#divTip_Shop1').show();
+        }
+        else if ($('#rdoPLU').prop('checked') == true) {
+            $('#lblTip1_Shop1').html('組促商品&ensp;:&ensp;')
+            $('#lblTip2_Shop1').html('組促商品在期間達成促銷條件之統計')
+            $('#lblTip3_Shop1').html('會員組促商品&ensp;:&ensp;')
+            $('#lblTip4_Shop1').html('組促商品在期間會員交易達成促銷條件之統計')
+            $('#divTip_Shop1').hide();
+        }
+
         $('#modal_Shop1').modal('show');
         setTimeout(function () {
             QueryShop1();

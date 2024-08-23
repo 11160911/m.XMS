@@ -176,6 +176,9 @@
                                     top: 65px;
                                     z-index: 2;
                                 }
+                                #lblTip1, #lblTip2, #lblTip3, #lblTip4, #lblTip5, #lblTip6 {
+                                    font-size: 14px;
+                                }
                                 /*手機畫面*/
                                 @media (max-width:767px) {
                                     #tdflag, #thead1, #thead2, #thead3, #thead4 {
@@ -199,6 +202,10 @@
                                         top: 130px;
                                         z-index: 2;
                                     }
+
+                                    #lblTip1, #lblTip2, #lblTip3, #lblTip4, #lblTip5, #lblTip6 {
+                                        font-size: 12px;
+                                    }
                                 }
                             </style>
 
@@ -206,7 +213,7 @@
                                 <label id="lblProgramName" class="DyForm3-ProgramName">組促銷售分析表</label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px">
+                            <div class="form-group row" style="margin-left: 20px; width: 100%; margin-bottom: 5px">
                                 <button class="DyForm3-BtnQuery" id="btQuery" type="button">
                                     查詢
                                     <i class="fa fa-search"></i>
@@ -214,14 +221,23 @@
                                 <label class="DyForm3-Horizontal">完整顯示請打橫看</label>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom: 0px">
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px">
                                 <label class="DyForm3-Label">促銷日期</label>
                                 <input class="DyForm3-TextBox" id="txtOpenDate" style="margin-left: 5px; width: 120px; font-size: 14px" type="date" />
                             </div>
 
-                            <!--<div class="form-group row" style="margin-bottom: 30px; width: 100%; ">
-                                <label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>
-                            </div>-->
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
+                                <label id="lblTip1" class="DyForm3-Label">總交易&ensp;:&ensp;</label>
+                                <label id="lblTip2" class="DyForm3-LabelBlack" style="margin-top: 3px; margin-bottom: 0px;font-weight:unset">組促期間實際總交易業績</label>
+                            </div>
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
+                                <label id="lblTip3" class="DyForm3-Label">組促總交易&ensp;:&ensp;</label>
+                                <label id="lblTip4" class="DyForm3-LabelBlack" style="margin-top: 3px; margin-bottom: 0px; font-weight: unset">組促期間有達到促銷條件之每筆交易總和</label>
+                            </div>
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
+                                <label id="lblTip5" class="DyForm3-Label">組促會員交易&ensp;:&ensp;</label>
+                                <label id="lblTip6" class="DyForm3-LabelBlack" style="margin-top: 3px; margin-bottom: 0px; font-weight: unset">組促期間有達到促銷條件之每筆會員交易總和</label>
+                            </div>
 
                             <div class="card-block forminput">
                                 <div class="x_content">
@@ -322,8 +338,14 @@
                                         z-index: 2;
                                     }
 
+                                    #lblTip1_Shop1, #lblTip2_Shop1, #lblTip3_Shop1, #lblTip4_Shop1, #lblTip5_Shop1, #lblTip6_Shop1 {
+                                        font-size: 14px;
+                                    }
                                     /*手機畫面*/
                                     @media (max-width:767px) {
+                                        #lblTip1_Shop1, #lblTip2_Shop1, #lblTip3_Shop1, #lblTip4_Shop1, #lblTip5_Shop1, #lblTip6_Shop1 {
+                                            font-size: 12px;
+                                        }
                                         /*螢幕縱向*/
                                         @media screen and (orientation: portrait) {
 
@@ -404,6 +426,19 @@
                                         <label class="DyForm3-LabelBlack" for="rdoPLU" style=" margin-top: 2px;">&ensp;商品</label>
                                     </div>
 
+                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
+                                        <label id="lblTip1_Shop1" class="DyForm3-Label"></label>
+                                        <label id="lblTip2_Shop1" class="DyForm3-LabelBlack" style="margin-top: 3px; margin-bottom: 0px; font-weight:unset;"></label>
+                                    </div>
+                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
+                                        <label id="lblTip3_Shop1" class="DyForm3-Label"></label>
+                                        <label id="lblTip4_Shop1" class="DyForm3-LabelBlack" style="margin-top: 3px; margin-bottom: 0px; font-weight: unset;"></label>
+                                    </div>
+                                    <div id="divTip_Shop1" class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 0px">
+                                        <label id="lblTip5_Shop1" class="DyForm3-Label">組促會員交易&ensp;:&ensp;</label>
+                                        <label id="lblTip6_Shop1" class="DyForm3-LabelBlack" style="margin-top: 3px; margin-bottom: 0px; font-weight: unset;">組促期間有達到促銷條件之每筆會員交易總和</label>
+                                    </div>
+
                                     <div class="card-block forminput">
                                         <div class="x_content">
                                             <div class="DyForm3-TableD">
@@ -451,14 +486,14 @@
                                                         <!--第一層-->
                                                         <tr>
                                                             <th id="thead1_PLU1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">商品</th>
-                                                            <td id="thead2_PLU1" class="text-center" colspan="2">組促總交易</td>
-                                                            <td id="thead3_PLU1" class="text-center" colspan="3">組促會員交易</td>
+                                                            <td id="thead2_PLU1" class="text-center" colspan="2">組促商品</td>
+                                                            <td id="thead3_PLU1" class="text-center" colspan="3">會員組促商品</td>
                                                         </tr>
                                                         <!--第二層-->
                                                         <tr>
-                                                            <th id="th1_PLU1" class="text-center" colspan="1">營業額</th>
+                                                            <th id="th1_PLU1" class="text-center" colspan="1">銷售金額</th>
                                                             <th id="th2_PLU1" class="text-center" colspan="1">數量</th>
-                                                            <th id="th3_PLU1" class="text-center" colspan="1">營業額</th>
+                                                            <th id="th3_PLU1" class="text-center" colspan="1">銷售金額</th>
                                                             <th id="th4_PLU1" class="text-center" colspan="1">數量</th>
                                                             <th id="th5_PLU1" class="text-center" colspan="1">佔比</th>
                                                         </tr>
