@@ -880,6 +880,7 @@ var DyConfirm = function (txtMessage, HandlerYes, HandlerNo, txtMessage2, txtMes
 }
 
 var ShowLoading = function () {
+    $('#modal_Loading').modal({ backdrop: 'static', keyboard: false });
     $('#modal_Loading').modal('show');
 }
 
