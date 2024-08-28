@@ -269,7 +269,7 @@
 
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 $('#tbQuery thead td#td1').html('');
                 $('#tbQuery thead td#td2').html('');
                 $('#tbQuery thead td#td3').html('');

@@ -538,7 +538,7 @@
 
             if (dtDelt.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 var sumtdQ = document.querySelector('.QSum');
                 for (i = 0; i < sumtdQ.childElementCount; i++) {
                     if (i == 0) {

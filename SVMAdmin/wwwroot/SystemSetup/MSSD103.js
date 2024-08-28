@@ -346,7 +346,7 @@
 
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
         }

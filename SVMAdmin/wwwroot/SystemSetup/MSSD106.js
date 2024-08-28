@@ -360,7 +360,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
             if (dtBin.length == 0) {
                 //alert("No RowData");
                 DyAlert("無符合資料!", txtBarcode3_ini);
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             txtBarcode3_ini()
@@ -530,13 +530,13 @@ Timerset(sessionStorage.getItem('isamcomp'));
 Timerset(sessionStorage.getItem('isamcomp'));
             if ($('#txtBarcode1').val() == "") {
                 DyAlert("請輸入條碼!", txtBarcode1_ini);
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
                 }
 
             if ($('#txtBarcode1').val().length > 16) {
                 DyAlert("條碼限制輸入16個字元!", txtBarcode1_ini);
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
                 }
 
@@ -813,18 +813,18 @@ Timerset(sessionStorage.getItem('isamcomp'));
         Timerset(sessionStorage.getItem('isamcomp'));
         if ($('#txtISAMDate').val() == "" | $('#txtISAMDate').val() == null) {
             DyAlert("請輸入盤點日期!!", function () { $('#txtISAMDate').focus() });
-            $(".modal-backdrop").remove();
+            //$(".modal-backdrop").remove();
             return;
         }
         if ($('#txtBinNo').val() == "" | $('#txtBinNo').val() == null) {
             DyAlert("請輸入分區代碼!!", function () { $('#txtBinNo').focus() });
-            $(".modal-backdrop").remove();
+            //$(".modal-backdrop").remove();
             return;
         }
         else {
             if ($('#txtBinNo').val().length>3) {
                 DyAlert("分區代碼不可超過3個字元!!", function () { $('#txtBinNo').focus() });
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
         }
@@ -938,7 +938,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                     DyAlert("無符合資料!");
                     $('#lblEnd').html('');
                     $('#lblVIPQty').html('');
-                    $(".modal-backdrop").remove();
+                    //$(".modal-backdrop").remove();
                     $('#tbQuery thead td#td1').html('');
                     $('#tbQuery thead td#td2').html('');
                     $('#tbQuery thead td#td2p').html('');
@@ -990,7 +990,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                     DyAlert("無符合資料!");
                     $('#lblEnd').html('');
                     $('#lblVIPQty').html('');
-                    $(".modal-backdrop").remove();
+                    //$(".modal-backdrop").remove();
                     $('#tbQueryMW thead td#td1_MW').html('');
                     $('#tbQueryMW thead td#td2_MW').html('');
                     $('#tbQueryMW thead td#td2p_MW').html('');
@@ -1080,7 +1080,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 DyAlert("無符合資料!", function () {
                     $('#btLpQ_VIPFaceID').prop('disabled', false);
                 });
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             grdLookUp_VIPFaceID.BindData(dtE);
@@ -1187,7 +1187,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 DyAlert("無符合資料!", function () {
                     $('#btLpQ_City').prop('disabled', false);
                 });
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             grdLookUp_City.BindData(dtE);

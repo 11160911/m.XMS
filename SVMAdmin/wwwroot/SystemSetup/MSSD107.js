@@ -123,7 +123,7 @@
             }
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 var sumtdQD = document.querySelector('.QSum');
                 for (i = 0; i < sumtdQD.childElementCount; i++) {
                     if (i == 0) {
@@ -206,7 +206,7 @@
             grdD.BindData(dtE);
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 var sumtdQD = document.querySelector('.QSumD');
                 for (i = 0; i < sumtdQD.childElementCount; i++) {
                     if (i == 0) {

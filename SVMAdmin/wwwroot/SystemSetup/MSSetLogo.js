@@ -55,7 +55,7 @@
             var dtE = data.getElementsByTagName('dtE');
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             cs_EditMode = "Q"
@@ -226,7 +226,7 @@
             grdM.BindData(dtE);
             if (dtE.length == 0) {
                 DyAlert("無符合資料!", function () { $('#btQuery').prop('disabled', false); });
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             $('#btQuery').prop('disabled', false);

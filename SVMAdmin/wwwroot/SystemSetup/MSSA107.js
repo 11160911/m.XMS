@@ -116,7 +116,7 @@
            
             if (dtDelt.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 $('#tbDShop1 thead td#td1_Shop1').html('');
                 $('#tbDShop1 thead td#td2_Shop1').html('');
                 $('#tbDShop1 thead td#td3_Shop1').html('');
@@ -215,7 +215,7 @@
         }    
         if (dtDelt.length == 0 && InitFlag != "Y") {
             DyAlert("無符合資料!");
-            $(".modal-backdrop").remove();
+            //$(".modal-backdrop").remove();
             $('#tbQuery thead td#td1').html('');
             $('#tbQuery thead td#td2').html('');
             $('#tbQuery thead td#td3').html('');
@@ -294,7 +294,7 @@
                 DyAlert("無符合資料!", function () {
                     $('#btLpQ_ShopNo').prop('disabled', false);
                 });
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             grdLookUp_ShopNo.BindData(dtE);

@@ -561,6 +561,7 @@
 
     let btQLookup_ActivityCode_click = function (bt) {
         //Timerset();
+        $('#btQLookup_ActivityCode').prop('disabled', true)
         var pData = {
             ActivityCode: $('#txtQLookup_ActivityCode').val()
         }
@@ -569,16 +570,17 @@
 
     let afterMSSD101_QLookUpActivityCode = function (data) {
         if (ReturnMsg(data, 0) != "MSSD101_LookUpActivityCodeOK") {
-            DyAlert(ReturnMsg(data, 1));
+            DyAlert(ReturnMsg(data, 1), function () { $('#btQLookup_ActivityCode').prop('disabled', false) });
         }
         else {
             var dtE = data.getElementsByTagName('dtE');
             if (dtE.length == 0) {
-                DyAlert("無符合資料!");
+                DyAlert("無符合資料!", function () { $('#btQLookup_ActivityCode').prop('disabled', false) });
                 //$(".modal-backdrop").remove();
                 return;
             }
             grdLookUp_ActivityCode.BindData(dtE);
+            $('#btQLookup_ActivityCode').prop('disabled', false);
         }
     };
 

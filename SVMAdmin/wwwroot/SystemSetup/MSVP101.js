@@ -228,7 +228,7 @@
                 DyAlert("無符合資料!");
                 $("#divVIPCon_EDMHistoryQuery").empty();
                 $("#lblVIPCnt_EDMHistoryQuery").html('0 筆')
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             $("#lblVIPCnt_EDMHistoryQuery").html(parseInt(GetNodeValue(dtC[0], "Cnt")).toLocaleString('en-US') + ' 筆')
@@ -1068,7 +1068,7 @@
                 $('#btDMSend_SendSet').prop('disabled', true);
                 $('#btDMSend_SendSet').css('background-color', 'gray');
                 DyAlert("無符合資料!", function () { $('#btQuery_SendSet').prop('disabled', false); });
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             if ($('#lblDocNo_SendSet').html() == "") {

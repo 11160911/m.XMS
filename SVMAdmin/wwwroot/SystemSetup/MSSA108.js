@@ -221,7 +221,7 @@
             grdD1.BindData(dtE);
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 var sumtdQD = document.querySelector('.QSumD_D1');
                 for (i = 0; i < sumtdQD.childElementCount; i++) {
                     sumtdQD.children[i].innerHTML = "";
@@ -285,7 +285,7 @@
                 grdD2.BindData(dtE);
                 if (dtE.length == 0) {
                     DyAlert("無符合資料!");
-                    $(".modal-backdrop").remove();
+                    //$(".modal-backdrop").remove();
                     var sumtdQD = document.querySelector('.QSumD_D2');
                     for (i = 0; i < sumtdQD.childElementCount; i++) {
                         sumtdQD.children[i].innerHTML = "";
@@ -303,7 +303,7 @@
                 grdD21.BindData(dtE);
                 if (dtE.length == 0) {
                     DyAlert("無符合資料!");
-                    $(".modal-backdrop").remove();
+                    //$(".modal-backdrop").remove();
                     var sumtdQD = document.querySelector('.QSumD_D2-1');
                     for (i = 0; i < sumtdQD.childElementCount; i++) {
                         sumtdQD.children[i].innerHTML = "";
@@ -349,7 +349,7 @@
             grdDD1.BindData(dtE);
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 var sumtdQD = document.querySelector('.QSumD_DD1');
                 for (i = 0; i < sumtdQD.childElementCount; i++) {
                     sumtdQD.children[i].innerHTML = "";
@@ -382,7 +382,7 @@
             grdD3.BindData(dtE);
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 var sumtdQD = document.querySelector('.QSumD_D3');
                 for (i = 0; i < sumtdQD.childElementCount; i++) {
                     sumtdQD.children[i].innerHTML = "";
@@ -488,7 +488,7 @@
                 }
                 if (dtD.length == 0) {
                     DyAlert("無符合資料!");
-                    $(".modal-backdrop").remove();
+                    //$(".modal-backdrop").remove();
                     $('#tbQuery thead td#td1').html('');
                     $('#tbQuery thead td#td2').html('');
                     $('#tbQuery thead td#td3').html('');
@@ -505,7 +505,7 @@
                 grdTop20.BindData(dtD);
                 if (dtD.length == 0) {
                     DyAlert("無符合資料!");
-                    $(".modal-backdrop").remove();
+                    //$(".modal-backdrop").remove();
                     $('#tbTop20 thead td#tdTop20_1').html('');
                     $('#tbTop20 thead td#tdTop20_2').html('');
                     return;

@@ -93,7 +93,7 @@
             var dtE = data.getElementsByTagName('dtE');
             if (dtE.length == 0) {
                 DyAlert("此DM單據無資料，無法刪除!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             if (GetNodeValue(dtE[0], "ApproveDate") != "") {
@@ -306,7 +306,7 @@
                 DyAlert("請設定DM資料!", function () {
                     $('#modal_DM_A').modal('hide');
                 });
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             for (var i = 0; i < dtE.length; i++) {
@@ -527,7 +527,7 @@
             var dtH = data.getElementsByTagName('dtH');
             if (dtH.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             cs_EditMode = "Q"
@@ -960,7 +960,7 @@
             grdM.BindData(dtE);
             if (dtE.length == 0) {
                 DyAlert("無符合資料!", function () { $('#btQuery').prop('disabled', false); });
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             $('#btQuery').prop('disabled', false);
@@ -1019,7 +1019,7 @@
                 DyAlert("無符合資料!", function () {
                     $('#btQLookup_ActivityCode').prop('disabled', false)
                 });
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
             grdLookUp_ActivityCode.BindData(dtE);

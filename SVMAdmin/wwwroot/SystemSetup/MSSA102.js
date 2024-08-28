@@ -158,7 +158,7 @@
 
                 if (dtShop.length == 0) {
                     DyAlert("無符合資料!");
-                    $(".modal-backdrop").remove();
+                    //$(".modal-backdrop").remove();
                     $('#tbShop1 thead td#td1_Shop1').html('');
                     $('#tbShop1 thead td#td2_Shop1').html('');
                     $('#tbShop1 thead td#td3_Shop1').html('');
@@ -184,7 +184,7 @@
 
                 if (dtShop.length == 0) {
                     DyAlert("無符合資料!");
-                    $(".modal-backdrop").remove();
+                    //$(".modal-backdrop").remove();
                     $('#tbPLU1 thead td#td1_PLU1').html('');
                     $('#tbPLU1 thead td#td2_PLU1').html('');
                     $('#tbPLU1 thead td#td3_PLU1').html('');
@@ -225,7 +225,7 @@
             if ($('#rdoShop').prop('checked') == true) {
                 grdM_Shop.BindData(dtE);
 
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 $('#tbShop1 thead td#td1_Shop1').html('');
                 $('#tbShop1 thead td#td2_Shop1').html('');
                 $('#tbShop1 thead td#td3_Shop1').html('');
@@ -238,7 +238,7 @@
             else if ($('#rdoPLU').prop('checked') == true) {
                 grdM_PLU.BindData(dtE);
 
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 $('#tbPLU1 thead td#td1_PLU1').html('');
                 $('#tbPLU1 thead td#td2_PLU1').html('');
                 $('#tbPLU1 thead td#td3_PLU1').html('');
@@ -280,15 +280,11 @@
             $('#btQuery').prop('disabled', false);
             var dtD = data.getElementsByTagName('dtD');
             grdM.BindData(dtD);
-
-
             if (dtD.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
-
-
         }
     };
 
@@ -322,7 +318,6 @@
         PostToWebApi({ url: "api/SystemSetup/GetInitMSSA102", data: pData, success: GetInitMSSA102 });
     };
     //#endregion
-
 
     if ($('#pgMSSA102').length == 0) {
         AllPages = new LoadAllPages(ParentNode, "SystemSetup/MSSA102", ["pgMSSA102Init"], afterLoadPage);

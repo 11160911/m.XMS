@@ -232,7 +232,7 @@
                 grdDate_PSNO.BindData(dtE);
                 if (dtE.length == 0) {
                     DyAlert("無符合資料!");
-                    $(".modal-backdrop").remove();
+                    //$(".modal-backdrop").remove();
                     $('#tbDate_PSNO thead td#tdDate1_PSNO').html('');
                     $('#tbDate_PSNO thead td#tdDate2_PSNO').html('');
                     $('#tbDate_PSNO thead td#tdDate3_PSNO').html('');
@@ -396,7 +396,7 @@
 
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 return;
             }
         }

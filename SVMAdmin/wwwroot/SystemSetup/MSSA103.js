@@ -184,7 +184,7 @@
 
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 var sumtdQD = document.querySelector('.QSumD_D1');
                 for (i = 0; i < sumtdQD.childElementCount; i++) {
                     if (i == 0) {
@@ -251,7 +251,7 @@
 
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 var sumtdQD = document.querySelector('.QSumD_DD1');
                 for (i = 0; i < sumtdQD.childElementCount; i++) {
                     if (i == 0) {
@@ -302,7 +302,7 @@
             grdD2.BindData(dtE);
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 var sumtdQD = document.querySelector('.QSumD_D2');
                 for (i = 0; i < sumtdQD.childElementCount; i++) {
                     if (i == 0) {
@@ -446,7 +446,7 @@
 
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 $('#tbQuery thead td#td1').html('');
                 $('#tbQuery thead td#td2').html('');
                 $('#tbQuery thead td#td3').html('');

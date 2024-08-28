@@ -1,5 +1,4 @@
 ﻿var PageMSSD105 = function (ParentNode) {
-
     let grdM;
     let grdShop1;
     let grdDate1;
@@ -86,7 +85,6 @@
 
         return;
     };
-
     let click_PLU = function (tr) {
 
     };
@@ -111,7 +109,6 @@
     //查詢
     let btQuery_click = function (bt) {
         //Timerset();
-        //$('#tbQuery thead tr th').css('background-color', '#ffb620')
         $('#btQuery').prop('disabled', true)
         if ($('#txtYM').val() == "") {
             DyAlert("請輸入年月!", function () { $('#btQuery').prop('disabled', false); })
@@ -161,7 +158,7 @@
 
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 $('#tbQuery thead td#td1').html('');
                 $('#tbQuery thead td#td2').html('');
                 $('#tbQuery thead td#td3').html('');
@@ -176,10 +173,8 @@
                 $('#tbQuery thead td#td12').html('');
                 return;
             }
-
             //$('#tbQuery tbody tr .tdCol9').html($('#tbQuery tbody tr .tdCol9').html() + '%')
             //$('#tbQuery tbody tr .tdCol13').html($('#tbQuery tbody tr .tdCol13').html() + '%')
-
             var dtSumQ = data.getElementsByTagName('dtSumQ');
             $('#tbQuery thead td#td1').html(parseInt(GetNodeValue(dtSumQ[0], "SumVIPCnt")).toLocaleString('en-US'));
             $('#tbQuery thead td#td2').html(parseInt(GetNodeValue(dtSumQ[0], "SumSalesCash1")).toLocaleString('en-US'));
@@ -247,7 +242,7 @@
 
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 $('#tbShop1 thead td#td1_Shop1').html('');
                 $('#tbShop1 thead td#td2_Shop1').html('');
                 $('#tbShop1 thead td#td3_Shop1').html('');
@@ -300,7 +295,7 @@
 
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
-                $(".modal-backdrop").remove();
+                //$(".modal-backdrop").remove();
                 $('#tbDate1 thead td#td1_Date1').html('');
                 $('#tbDate1 thead td#td2_Date1').html('');
                 $('#tbDate1 thead td#td3_Date1').html('');
@@ -352,7 +347,7 @@
             var dtE = data.getElementsByTagName('dtE');
             grdShop1.BindData(dtE);
 
-            $(".modal-backdrop").remove();
+            //$(".modal-backdrop").remove();
             $('#tbShop1 thead td#td1_Shop1').html('');
             $('#tbShop1 thead td#td2_Shop1').html('');
             $('#tbShop1 thead td#td3_Shop1').html('');
@@ -389,7 +384,7 @@
             var dtE = data.getElementsByTagName('dtE');
             grdDate1.BindData(dtE);
 
-            $(".modal-backdrop").remove();
+            //$(".modal-backdrop").remove();
             $('#tbDate1 thead td#td1_Date1').html('');
             $('#tbDate1 thead td#td2_Date1').html('');
             $('#tbDate1 thead td#td3_Date1').html('');
