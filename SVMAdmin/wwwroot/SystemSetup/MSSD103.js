@@ -417,7 +417,6 @@
         $('#btLpOK_ActivityCode').prop('disabled', true);
         var obchkedtd = $('#tbDataLookup_ActivityCode input[type="radio"]:checked');
         var chkedRow = obchkedtd.length.toString();
-
         if (chkedRow == 0) {
             DyAlert("未選取活動代號，請重新確認!", function () {
                 $('#btLpOK_ActivityCode').prop('disabled', false);
@@ -428,6 +427,7 @@
             var trNode = $(a).prop('Record');
             $('#txtActivityCode').val(GetNodeValue(trNode, "ActivityCode"))
             $('#btLpOK_ActivityCode').prop('disabled', false);
+            ClearQuery();
             $('#modal_Lookup_ActivityCode').modal('hide')
         }
     };
@@ -443,9 +443,9 @@
     };
 //#endregion
 
-
-
-    
+let ClearQuery = function () {
+    grdM.BindData(null)
+}
 
 //#region FormLoad
     let GetInitMSSD103 = function (data) {
@@ -460,6 +460,8 @@
             $('#btQuery').click(function () { btQuery_click(this) });
             $('#btClear').click(function () { btClear_click(this) });
             $('#btActivityCode').click(function () { btActivityCode_click(this) });
+            $('#txtActivityCode,#txtPSName').keydown(function () { ClearQuery() });
+            $('#txtEDDate').change(function () { ClearQuery() });
             $('#btQLookup_ActivityCode').click(function () { btQLookup_ActivityCode_click(this) });
             $('#btLpOK_ActivityCode').click(function () { btLpOK_ActivityCode_click(this) });
             $('#btLpExit_ActivityCode').click(function () { btLpExit_ActivityCode_click(this) });
@@ -469,6 +471,8 @@
             $('#rdoShop_D,#rdoDate_D').change(function () { QueryD() });
 
             $('#btRe_DD').click(function () { btRe_DD_click(this) });
+
+            btQuery_click();
         }
     };
     
@@ -480,7 +484,6 @@
     };
 //#endregion
     
-
     if ($('#pgMSSD103').length == 0) {  
         AllPages = new LoadAllPages(ParentNode, "SystemSetup/MSSD103", ["pgMSSD103Init"], afterLoadPage);
     };

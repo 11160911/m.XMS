@@ -307,6 +307,7 @@
         $('#btLpOK_ShopNo').prop('disabled', true);
         var obchkedtd = $('#tbLookup_ShopNo .checkbox:checked');
         chkedRow = obchkedtd.length.toString();   //本次已勾選的總筆數
+        ClearQuery();
         if (chkedRow == 0) {
             $('#lblShopCnt').html('');
             $('#lblShopName').html('');
@@ -395,16 +396,18 @@
             AssignVar();
             $('#btQuery').click(function () { btQuery_click(this) });
             $('#btClear').click(function () { btClear_click(this) });
+            $('#cbDayName').change(function () { ClearQuery() })
             $('#btShopNo').click(function () { btShopNo_click(this) });
             $('#btLpQ_ShopNo').click(function () { btLpQ_ShopNo_click(this) });
             $('#btLpOK_ShopNo').click(function () { btLpOK_ShopNo_click(this) });
             $('#btLpExit_ShopNo').click(function () { btLpExit_ShopNo_click(this) });
             $('#btLpClear_ShopNo').click(function () { btLpClear_ShopNo_click(this) });
             $('#btRe_Shop1').click(function () { btRe_Shop1_click(this) });
-            $('#rdoOPTime,#rdoShop').change(function () { ClearQuery() });
+            $('#rdoOPTime,#rdoShop').change(function () { btQuery_click() });
             //$('#rdoOPTime').prop('checked', 'true');
             SetMSSA107Query(data);
             InitFlag = "";
+            btQuery_click();
         }
     };
     

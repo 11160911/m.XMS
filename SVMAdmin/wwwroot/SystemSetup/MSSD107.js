@@ -282,9 +282,11 @@
             InitComboItem($('#cboYear'))
             $('#btQuery').click(function () { btQuery_click(this) });
             $('#btClear').click(function () { btClear_click(this) });
-            $('#rdoM,#rdoS').change(function () { ClearQuery() });
+            $('#rdoM,#rdoS').change(function () { btQuery_click() });
+            $('#cboYear').change(function () { ClearQuery() })
 
             $('#btRe_D').click(function () { btRe_D_click(this) });
+            btQuery_click();
         }
     };
     

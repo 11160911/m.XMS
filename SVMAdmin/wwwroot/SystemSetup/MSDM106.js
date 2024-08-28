@@ -1178,6 +1178,7 @@
             var trNode = $(a).prop('Record');
             $('#txtActivityCode').val(GetNodeValue(trNode, "ActivityCode"))
             $('#btLpOK_ActivityCode').prop('disabled', false);
+            ClearQuery();
             $('#modal_Lookup_ActivityCode').modal('hide')
         }
     };
@@ -1334,6 +1335,10 @@
         }
 
     };
+
+    let ClearQuery = function () {
+        grdM.BindData(null)
+    }
     //FormLoad
     let GetInitMSDM106 = function (data) {
         if (ReturnMsg(data, 0) != "GetInitmsDMOK") {
@@ -1352,6 +1357,8 @@
             $('#btAdd').click(function () { btAdd_click(this) });
             $('#btClear').click(function () { btClear_click(this) });
             $('#btQuery').click(function () { btQuery_click(this) });
+            $('#txtDocNo,#txtEDMMemo,#txtActivityCode').keydown(function () { ClearQuery() })
+            $('#cboBIRYear,#cboBIRMonth,#chkNoApp,#chkApp,#chkNoDef,#chkDef').change(function () { ClearQuery() })
 
             $('#btActivityCode').click(function () { btActivityCode_click(this) });
             $('#btQLookup_ActivityCode').click(function () { btQLookup_ActivityCode_click(this) });
@@ -1381,7 +1388,7 @@
             $('#btExit_ImgUp').click(function () { btExit_ImgUp_click(this) });
             $('#btDelete_ImgUp').click(function () { btDelete_ImgUp_click(this) });
             $('#btImgUp').click(function () { btUPEDM_click(this) });
-
+            btQuery_click();
             //文字編輯器
             ClassicEditor
                 .create(document.querySelector('#txtT1_EDM'), {

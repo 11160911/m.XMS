@@ -488,7 +488,7 @@
             DyAlert("日期區間必須小於等於" + QDays + "天!!", function () { $('#btQuery').prop('disabled', false); });
             return;
         }
-        if ($('#rdoA').prop('checked') == true && chkShopNo!="") { $('#rdoS').prop('checked', 'true'); }
+        //if ($('#rdoA').prop('checked') == true && chkShopNo!="") { $('#rdoS').prop('checked', 'true'); }
         ShowLoading();
 
         var Flag = ""
@@ -662,13 +662,13 @@
         $('#btLpOK_ShopNo').prop('disabled', true);
         var obchkedtd = $('#tbLookup_ShopNo .checkbox:checked');
         chkedRow = obchkedtd.length.toString();   //本次已勾選的總筆數
+        ClearQuery();
         if (chkedRow == 0) {
             $('#lblShopNoCnt').html('');
             $('#lblShopNoName').html('');
             chkShopNo = "";
             $('#btLpOK_ShopNo').prop('disabled', false);
             $('#modalLookup_ShopNo').modal('hide');
-            ClearQuery();
             return
         } else {
             chkShopNo = "";
@@ -692,8 +692,7 @@
             }
             $('#btLpOK_ShopNo').prop('disabled', false);
             $('#modalLookup_ShopNo').modal('hide');
-            if ($('#rdoA').prop('checked') == true) { $('#rdoS').prop('checked', 'true'); }
-            ClearQuery();
+            //if ($('#rdoA').prop('checked') == true) { $('#rdoS').prop('checked', 'true'); }
         }
     };
 
@@ -725,8 +724,8 @@
 
             $('#btQuery').click(function () { btQuery_click(this) });
             $('#btClear').click(function () { btClear_click(this) });
-            $('#rdoS,#rdoA,#rdoD,#txtOpenDateS1,#txtOpenDateE1').change(function () { ClearQuery() });
-
+            $('#txtOpenDateS1,#txtOpenDateE1').change(function () { ClearQuery() });
+            $('#rdoS,#rdoA,#rdoD').change(function () { btQuery_click() });
 
             $('#btShopNo').click(function () { btShopNo_click(this) });
             $('#btLpQ_ShopNo').click(function () { btLpQ_ShopNo_click(this) });
@@ -736,6 +735,7 @@
             $('#btRe_D').click(function () { btRe_D_click(this) });
             $('#D_rdoShop,#D_rdo1').change(function () { MSSA101Query_D() });
             $('#btRe_DD').click(function () { btRe_DD_click(this) });
+            btQuery_click();
         }
     };
     

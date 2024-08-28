@@ -1205,6 +1205,7 @@
             var trNode = $(a).prop('Record');
             $('#txtActivityCode').val(GetNodeValue(trNode, "ActivityCode"))
             $('#btLpOK_ActivityCode').prop('disabled', false);
+            ClearQuery();
             $('#modal_Lookup_ActivityCode').modal('hide')
         }
     };
@@ -1294,6 +1295,7 @@
             var trNode = $(a).prop('Record');
             $('#txtShopNo').val(GetNodeValue(trNode, "ST_ID") + ' ' + GetNodeValue(trNode, "ST_SName"))
             $('#btLpOK_ShopNo').prop('disabled', false)
+            ClearQuery();
             $('#modal_Lookup_ShopNo').modal('hide')
         }
     };
@@ -1544,6 +1546,10 @@
         $("#txtQLookup_PSNO_EDM").val('');
         $("#tbDataLookup_PSNO_EDM .checkbox").prop('checked', false);
     };
+
+    let ClearQuery = function () {
+        grdM.BindData(null)
+    }
     //FormLoad
     let GetInitMSDM104 = function (data) {
         if (ReturnMsg(data, 0) != "GetInitmsDMOK") {
@@ -1559,6 +1565,8 @@
             $('#btAdd').click(function () { btAdd_click(this) });
             $('#btClear').click(function () { btClear_click(this) });
             $('#btQuery').click(function () { btQuery_click(this) });
+            $('#txtDocNo,#txtActivityCode,#txtEDMMemo,#txtShopNo').keydown(function () { ClearQuery() })
+            $('#txtEDDate,#chkNoApp,#chkApp,#chkNoDef,#chkDef').change(function () { ClearQuery() })
 
             $('#btActivityCode').click(function () { btActivityCode_click(this) });
             $('#btQLookup_ActivityCode').click(function () { btQLookup_ActivityCode_click(this) });
@@ -1596,7 +1604,7 @@
             $('#btExit_ImgUp').click(function () { btExit_ImgUp_click(this) });
             $('#btDelete_ImgUp').click(function () { btDelete_ImgUp_click(this) });
             $('#btImgUp').click(function () { btUPEDM_click(this) });
-
+            btQuery_click();
             //文字編輯器
             ClassicEditor
                 .create(document.querySelector('#txtT1_EDM'), {

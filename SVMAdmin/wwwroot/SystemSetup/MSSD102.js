@@ -473,6 +473,7 @@
             var trNode = $(a).prop('Record');
             $('#txtActivityCode').val(GetNodeValue(trNode, "ActivityCode"))
             $('#btLpOK_ActivityCode').prop('disabled', false);
+            ClearQuery();
             $('#modal_Lookup_ActivityCode').modal('hide')
         }
     };
@@ -496,6 +497,10 @@
         //Timerset();
         $('#modal_PSNO_ShopNoDate').modal('hide')
     };
+
+    let ClearQuery = function () {
+        grdM.BindData(null)
+    }
 //#region FormLoad
     let GetInitMSSD102 = function (data) {
         if (ReturnMsg(data, 0) != "GetInitmsDMOK") {
@@ -508,6 +513,9 @@
 
             $('#btQuery').click(function () { btQuery_click(this) });
             $('#btClear').click(function () { btClear_click(this) });
+            $('#txtActivityCode,#txtPSName').keydown(function () { ClearQuery() })
+            $('#txtEDDate').change(function () { ClearQuery() })
+
             $('#btActivityCode').click(function () { btActivityCode_click(this) });
             $('#btQLookup_ActivityCode').click(function () { btQLookup_ActivityCode_click(this) });
             $('#btLpOK_ActivityCode').click(function () { btLpOK_ActivityCode_click(this) });
@@ -518,6 +526,7 @@
             $('#rdoShop_PSNO,#rdoDate_PSNO').change(function () { QueryPSNO($('#lblPSNO_PSNO').html()) });
 
             $('#btRe_PSNO_ShopNoDate').click(function () { btRe_PSNO_ShopNoDate_click(this) });
+            btQuery_click();
         }
     };
     

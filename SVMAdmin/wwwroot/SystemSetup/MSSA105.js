@@ -306,14 +306,27 @@
         //$('#pgMSSD101_PS_STEP1').hide();
     };
 
-    let rdo_click = function (bt) {
-        $('#tbQuery tbody').find('tr').remove();
-        $('#tbQuery thead td#td1').html('');
-        $('#tbQuery thead td#td2').html('');
-        $('#tbQuery thead td#td3').html('');
-
-        //$('#pgMSSD101Init').show();
-        //$('#pgMSSD101_PS_STEP1').hide();
+    let ClearQuery = function () {
+        grdM.BindData(null)
+        var heads = $('#tbQuery thead tr th#thead1');
+        if ($('#rdoS').prop('checked')) {
+            $(heads).html('月份');
+        }
+        else if ($('#rdoD').prop('checked')) {
+            $(heads).html('店別');
+        }
+        else if ($('#rdoB').prop('checked')) {
+            $(heads).html('區課');
+        }
+        var sumtdQ = document.querySelector('.QSum');
+        for (i = 0; i < sumtdQ.childElementCount; i++) {
+            if (i == 0) {
+                sumtdQ.children[i].innerHTML = "總業績";
+            }
+            else {
+                sumtdQ.children[i].innerHTML = "";
+            }
+        }
     };
 
     let InitComboItem = function (cboYear) {
@@ -341,11 +354,9 @@
             $('#btQuery').click(function () { btQuery_click(this) });
             $('#btExit_Step1').click(function () { btExit_Step1_click(this) });
             $('#btExit_Step2').click(function () { btExit_Step2_click(this) });
-            $('#rdoS').click(function () { rdo_click(this) });
-            $('#rdoD').click(function () { rdo_click(this) });
-            $('#rdoB').click(function () { rdo_click(this) });
-            $('#cboYear').change(function () { rdo_click(this) });
-
+            $('#rdoS,#rdoD,#rdoB').change(function () { btQuery_click(this) });
+            $('#cboYear').change(function () { ClearQuery() });
+            btQuery_click();
         }
     };
 
@@ -361,6 +372,4 @@
         AllPages = new LoadAllPages(ParentNode, "SystemSetup/MSSA105", ["pgMSSA105Init"], afterLoadPage);
     };
     //#endregion
-
-
 }

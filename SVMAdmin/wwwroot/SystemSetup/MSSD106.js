@@ -1093,6 +1093,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
         $('#btLpOK_VIPFaceID').prop('disabled', true);
         var obchkedtd = $('#tbLookup_VIPFaceID .checkbox:checked');
         chkedRow = obchkedtd.length.toString();   //本次已勾選的總筆數
+        ClearQuery();
         if (chkedRow == 0) {
             $('#lblVIPFaceIDCnt').html('');
             $('#lblVIPFaceIDName').html('');
@@ -1121,6 +1122,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
                 $('#lblVIPFaceIDName').html(VIPFaceIDName.substr(0, VIPFaceIDName.length - 1))
             }
             $('#btLpOK_VIPFaceID').prop('disabled', false);
+
             $('#modal_Lookup_VIPFaceID').modal('hide');
         }
     };
@@ -1198,6 +1200,7 @@ Timerset(sessionStorage.getItem('isamcomp'));
         $('#btLpOK_City').prop('disabled', true);
         var obchkedtd = $('#tbLookup_City .checkbox:checked');
         chkedRow = obchkedtd.length.toString();   //本次已勾選的總筆數
+        ClearQuery();
         if (chkedRow == 0) {
             $('#lblCityCnt').html('');
             $('#lblCityName').html('');
@@ -1323,7 +1326,9 @@ Timerset(sessionStorage.getItem('isamcomp'));
             $('#btLpExit_City').click(function () { btLpExit_City_click(this) });
             $('#btLpClear_City').click(function () { btLpClear_City_click(this) });
 
-            $('#rdoShop,#rdoCity,#rdoMW').change(function () { ClearQuery() });
+            $('#rdoDateAll,#rdoDate2M,#rdoDate3M,#rdoDate6M,#rdoDate1Y').change(function () { ClearQuery() });
+            $('#rdoShop,#rdoCity,#rdoMW').change(function () { btQuery_click() });
+            btQuery_click();
         }
     };
     

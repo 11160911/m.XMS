@@ -443,6 +443,7 @@
             var trNode = $(a).prop('Record');
             $('#txtActivityCode').val(GetNodeValue(trNode, "ActivityCode"))
             $('#btLpOK_ActivityCode').prop('disabled', false);
+            ClearQuery();
             $('#modalLookup_ActivityCode').modal('hide')
         }
     };
@@ -468,7 +469,6 @@
         $('#modalDD').modal('hide')
     };
 
-
     let InitComboItem = function (cboYear, cboMonth) {
         var y2 = new Date().getFullYear();
         for (i = 2024; i <= y2 + 1; i++) {
@@ -479,6 +479,10 @@
             cboMonth.append($('<option>', { value: ('0' + i).substr(-2), text: i + '月' }));
         }
     };
+
+    let ClearQuery = function () {
+        grdM.BindData(null)
+    }
 //#region FormLoad
     let GetInitMSSD104 = function (data) {
         if (ReturnMsg(data, 0) != "GetInitmsDMOK") {
@@ -491,6 +495,9 @@
             AssignVar();
             $('#btQuery').click(function () { btQuery_click(this) });
             $('#btClear').click(function () { btClear_click(this) });
+            $('#txtActivityCode,#txtPSName').keydown(function () { ClearQuery() })
+            $('#cboBIRYear,#cboBIRMonth').change(function () { ClearQuery() })
+
             $('#btActivityCode').click(function () { btActivityCode_click(this) });
             $('#btLpQ_ActivityCode').click(function () { btLpQ_ActivityCode_click(this) });
             $('#btLpOK_ActivityCode').click(function () { btLpOK_ActivityCode_click(this) });
@@ -501,6 +508,8 @@
             $('#btRe_D').click(function () { btRe_D_click(this) });
    
             $('#btRe_DD').click(function () { btRe_DD_click(this) });
+
+            btQuery_click();
         }
     };
     

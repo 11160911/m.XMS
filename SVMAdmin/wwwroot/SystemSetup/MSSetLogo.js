@@ -524,6 +524,10 @@
             EnableForm_Logo(true)
         }
     };
+
+    let ClearQuery = function () {
+        grdM.BindData(null)
+    }
     //FormLoad
     let GetInitMSSETLOGO = function (data) {
         if (ReturnMsg(data, 0) != "InitMSSETLOGOOK") {
@@ -544,9 +548,15 @@
             $('#btAdd').click(function () { btAdd_click(this) });
             $('#btClear').click(function () { btClear_click(this) });
             $('#btQuery').click(function () { btQuery_click(this) });
-            $('#cboCompany').change(function () { GetCompanyName(); });
+            $('#cboCompany').change(function () {
+                GetCompanyName();
+                ClearQuery();
+            });
             $('#cboCompany_Logo').change(function () { GetCompanyName_Logo(); });
-            $('#cboProgramID').change(function () { GetChineseName(); });
+            $('#cboProgramID').change(function () {
+                GetChineseName();
+                ClearQuery();
+            });
             $('#cboProgramID_Logo').change(function () { GetChineseName_Logo(); });
             $('#btMod_Logo').click(function () { btMod_Logo_click(this) });
             $('#btSave_Logo').click(function () { btSave_Logo_click(this) });
@@ -556,7 +566,6 @@
             $('#btExit_ImgUp').click(function () { btExit_ImgUp_click(this) });
             $('#btDelete_ImgUp').click(function () { btDelete_ImgUp_click(this) });
             $('#btImgUp').click(function () { btUPLogo_click(this) });
-
             //文字編輯器
             ClassicEditor
                 .create(document.querySelector('#txtTE_Logo'), {

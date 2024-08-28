@@ -11831,11 +11831,11 @@ namespace SVMAdmin.Controllers
                 sql += "Where a.Companycode='" + uu.CompanyId + "' and a.EDMType='E' and isnull(a.EV_Model,'')='VP101'";
                 if (EVNO.SqlQuote() != "")
                 {
-                    sql += "and a.EVNO='" + EVNO.SqlQuote() + "' ";
+                    sql += "and a.EVNO like '" + EVNO.SqlQuote() + "%' ";
                 }
                 if (EDM_DocNo.SqlQuote() != "")
                 {
-                    sql += "and a.EDM_DocNo='" + EDM_DocNo.SqlQuote() + "' ";
+                    sql += "and a.EDM_DocNo like '" + EDM_DocNo.SqlQuote() + "%' ";
                 }
                 if (StartDate.SqlQuote() != "")
                 {

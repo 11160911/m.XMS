@@ -249,31 +249,6 @@
        }
     };
 
-    //清除
-    let btClear_click = function (bt) {
-        //Timerset();
-        var pData = {
-            ProgramID: "MSSA102"
-        }
-        PostToWebApi({ url: "api/SystemSetup/GetInitMSSA102", data: pData, success: MSSA102Clear });
-    };
-
-    let MSSA102Clear = function (data) {
-        if (ReturnMsg(data, 0) != "GetInitMSSA102OK") {
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
-            var dtE = data.getElementsByTagName('dtE');
-            if (dtE.length > 0) {
-                $('#txtOpenDate').val(GetNodeValue(dtE[0], "SysDate1").toString().trim().replaceAll('/', '-'));
-            }
-            //$('#lblShopNoCnt').html('');
-            //$('#lblShopNoName').html('');
-            //chkShopNo = "";
-            //$('#rdoS').prop('checked', 'true');
-        }
-    };
-
     //查詢
     let btQuery_click = function (bt) {
         //Timerset();
@@ -317,7 +292,9 @@
         }
     };
 
-
+    let ClearQuery = function () {
+        grdM.BindData(null)
+    }
     //#region FormLoad
     let GetInitMSSA102 = function (data) {
         if (ReturnMsg(data, 0) != "GetInitMSSA102OK") {
@@ -330,12 +307,11 @@
                 $('#txtOpenDate').val(GetNodeValue(dtE[0], "SysDate").toString().trim().replaceAll('/', '-'));
             }
             AssignVar();
-
             $('#btQuery').click(function () { btQuery_click(this) });
-            $('#btClear').click(function () { btClear_click(this) });
-
+            $('#txtOpenDate').change(function () { ClearQuery() });
             $('#btExit_Shop').click(function () { btRe_Shop1_click(this) });
             $('#rdoShop,#rdoPLU').change(function () { Step1_click() });
+            btQuery_click();
         }
     };
 

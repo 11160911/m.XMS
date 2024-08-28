@@ -454,7 +454,9 @@
             $('#btClear').click(function () { btClear_click(this) });
             $('#btRe_Shop1').click(function () { btRe_Shop1_click(this) });
             $('#btRe_Date1').click(function () { btRe_Date1_click(this) });
-            $('#rdoShop,#rdoDate').change(function () { ClearQuery() });
+            $('#rdoShop,#rdoDate').change(function () { btQuery_click() });
+            $('#txtYM').change(function () { ClearQuery() })
+            btQuery_click();
         }
     };
     
