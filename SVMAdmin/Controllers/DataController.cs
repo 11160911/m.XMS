@@ -383,6 +383,10 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
+                if (uu.UserID == null) {
+                    throw new Exception("null");
+                }
+
                 string sql = "";
                 if (uu.UserID.ToLower() == uu.CompanyId.ToLower())
                 {
@@ -1246,9 +1250,6 @@ namespace SVMAdmin.Controllers
             }
             return sgid;
         }
-
-
-
 
 
 

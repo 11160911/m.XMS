@@ -43,7 +43,12 @@
 
     var AfterInit = function (data) {
         if (ReturnMsg(data, 0) != "GetMenuInitOK") {
-            DyAlert(ReturnMsg(data, 1));
+            if (ReturnMsg(data, 1) == "null") {
+                window.location.href = "Login";
+            }
+            else {
+                DyAlert(ReturnMsg(data, 1));
+            }
         }
         else {
             var bodyHeight = $BODY.outerHeight(),

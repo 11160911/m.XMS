@@ -261,7 +261,15 @@ namespace SVMAdmin
         public static UserInfo GetCurrentUser(string token)
         {
             UserInfo uu = new UserInfo();
-            token = token.Substring(7);
+
+            if (token == null)
+            {
+                token = "";
+            }
+            else {
+                token = token.Substring(7);
+            }
+
             return DecodeUser(token);
         }
 
