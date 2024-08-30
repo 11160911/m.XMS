@@ -700,7 +700,7 @@
         }
         else {
             $('#FunctionDesc').text($(menuitem).prop('Description'));
-            Timerset();
+            //Timerset();
             ChkDevice();
             //$MENU_TOGGLE.click();
             OpenPage(menuitem);
@@ -1166,7 +1166,7 @@
             setContentHeight();
         }).parent().addClass('active');
 
-        Timerset();
+        //Timerset();
         // recompute content when resizing
         $(window).smartresize(function () {
             setContentHeight();
