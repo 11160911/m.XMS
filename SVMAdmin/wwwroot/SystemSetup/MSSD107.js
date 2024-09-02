@@ -47,7 +47,8 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                sortable: "Y"
+                sortable: "Y",
+                step: "Y"
             }
         );
         return;

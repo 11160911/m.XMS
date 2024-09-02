@@ -47,7 +47,8 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_Row,
-                sortable: "N"
+                sortable: "N",
+                step: "Y"
             }
         );
 
@@ -64,7 +65,8 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_Row,
-                sortable: "N"
+                sortable: "N",
+                step: "Y"
             }
         );
 
@@ -133,7 +135,8 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_Row,
-                sortable: "Y"
+                sortable: "Y",
+                step: "Y"
             }
         );
 
@@ -154,7 +157,8 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_Row,
-                sortable: "Y"
+                sortable: "Y",
+                step: "Y"
             }
         );
 

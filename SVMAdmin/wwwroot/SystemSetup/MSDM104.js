@@ -45,7 +45,8 @@
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 //afterBind: InitModifyDeleteButton,
-                sortable: "N"
+                sortable: "N",
+                step: "Y"
             }
         );
         grdLookUp_ShopNo = new DynGrid(
@@ -60,7 +61,8 @@
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 //afterBind: InitModifyDeleteButton,
-                sortable: "N"
+                sortable: "N",
+                step: "Y"
             }
         );
         grdLookUp_ShopNo_EDM = new DynGrid(
@@ -75,7 +77,8 @@
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 //afterBind: InitModifyDeleteButton,
-                sortable: "N"
+                sortable: "N",
+                step: "Y"
             }
         );
         grdLookUp_PSNO_EDM = new DynGrid(
@@ -93,7 +96,8 @@
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 //afterBind: InitModifyDeleteButton,
-                sortable: "N"
+                sortable: "N",
+                step: "Y"
             }
         );
         return;

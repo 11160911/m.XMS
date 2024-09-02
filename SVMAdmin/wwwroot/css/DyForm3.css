@@ -219,7 +219,8 @@ border: 1px solid gray;
 .DyForm3-Table {
     width: 95%;
     margin-left: auto;
-    margin-right: auto; 
+    margin-right: auto;
+    white-space: nowrap;
 }
 
 /*完整顯示請打橫看*/
@@ -305,6 +306,13 @@ border: 1px solid gray;
 .DyForm3-TableD1 {
     overflow: auto;
     height: 550px;
+}
+
+/*Grid內的放大鏡圖案樣式*/
+.DyForm3-Search {
+    font-size: 20px;
+    color: #0077FE;
+    /*cursor: pointer;*/
 }
 
 /*手機畫面*/

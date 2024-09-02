@@ -63,7 +63,8 @@
                 rows_per_page: 100,
                 method_clickrow: click_PLU,
                 afterBind: gridclick_SendSet,
-                sortable: "N"
+                sortable: "N",
+                step: "Y"
             }
         );
 
@@ -83,7 +84,8 @@
                 ],
                 rows_per_page: 100,
                 method_clickrow: click_PLU,
-                sortable: "N"
+                sortable: "N",
+                step: "Y"
             }
         );
 
@@ -98,7 +100,8 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                sortable: "N"
+                sortable: "N",
+                step: "Y"
             }
         );
 
@@ -112,7 +115,8 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                sortable: "N"
+                sortable: "N",
+                step: "Y"
             }
         );
 
@@ -127,7 +131,8 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                sortable: "N"
+                sortable: "N",
+                step: "Y"
             }
         );
 
@@ -142,7 +147,8 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                sortable: "N"
+                sortable: "N",
+                step: "Y"
             }
         );
 
@@ -165,7 +171,8 @@
                 rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: gridclick_DMSel,
-                sortable: "N"
+                sortable: "N",
+                step: "Y"
             }
         );
         return;

@@ -80,7 +80,8 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                sortable: "Y"
+                sortable: "Y",
+                step: "Y"
             }
         );
 
@@ -95,7 +96,8 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                sortable: "N"
+                sortable: "N",
+                step: "Y"
             }
         );
 
@@ -225,6 +227,28 @@
         else {
             var dtDelt = data.getElementsByTagName('dtDelt');
             grdD.BindData(dtDelt);
+
+            //檢查當有下一層畫面時第一欄放大鏡顯示，反之，下一層無畫面時第一欄放大鏡隱藏
+            //var heads = $('#tbQuery thead tr th#thead1').html();
+            //var headsD = $('#tbQueryD thead tr th#Dthead1').html();
+            //if (heads.toString().indexOf("店別") >= 0) {
+            //    $('#tbQueryD thead tr:eq(0)').find('td:eq(0)').hide();
+            //    $('#tbQueryD tbody tr').find('td:eq(0)').hide();
+            //}
+            //else if (heads.toString().indexOf("銷售日期") >= 0) {
+            //    if (headsD.toString().indexOf("店別") >= 0) {
+            //        $('#tbQueryD thead tr:eq(0)').find('td:eq(0)').hide();
+            //        $('#tbQueryD tbody tr').find('td:eq(0)').hide();
+            //    }
+            //    else if (headsD.toString().indexOf("區域") >= 0) {
+            //        $('#tbQueryD thead tr:eq(0)').find('td:eq(0)').show();
+            //        $('#tbQueryD tbody tr').find('td:eq(0)').show();
+            //    }
+            //}
+            //else if (heads.toString().indexOf("區域") >= 0) {
+            //    $('#tbQueryD thead tr:eq(0)').find('td:eq(0)').show();
+            //    $('#tbQueryD tbody tr').find('td:eq(0)').show();
+            //}
 
             if (dtDelt.length == 0) {
                 DyAlert("無符合資料!");

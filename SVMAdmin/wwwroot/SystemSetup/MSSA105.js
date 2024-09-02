@@ -51,7 +51,8 @@
                     { type: "TextPercent", name: "Per" }
                 ],
                 //rows_per_page: 10,
-                sortable: "N"
+                sortable: "N",
+                step: "Y"
             }
         );
 

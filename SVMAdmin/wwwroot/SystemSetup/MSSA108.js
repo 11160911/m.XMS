@@ -55,7 +55,8 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                sortable: "Y"
+                sortable: "Y",
+                step: "Y"
             }
         );
         grdD2 = new DynGrid(
@@ -88,7 +89,8 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                sortable: "Y"
+                sortable: "Y",
+                step: "Y"
             }
         );
         grdDD1 = new DynGrid(
@@ -103,7 +105,8 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                sortable: "Y"
+                sortable: "Y",
+                step: "Y"
             }
         );
         grdD3 = new DynGrid(
@@ -117,7 +120,8 @@
                 ],
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
-                sortable: "Y"
+                sortable: "Y",
+                step: "Y"
             }
         );
 

@@ -42,7 +42,8 @@
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 //afterBind: InitModifyDeleteButton,
-                sortable: "N"
+                sortable: "N",
+                step: "Y"
             }
         );
 
@@ -58,7 +59,8 @@
                 //rows_per_page: 10,
                 method_clickrow: click_PLU,
                 afterBind: InitModifyDeleteButton,
-                sortable: "N"
+                sortable: "N",
+                step: "Y"
             }
         );
 
