@@ -188,12 +188,13 @@
                                     #tbQuery thead tr td {
                                         font-size: 12px;
                                     }
-
                                     #tbQuery tbody tr td {
                                         font-size: 12px;
                                     }
-
-                                    #tdflag, #thead1, #thead2, #thead3, #thead4 {
+                                    #lblTip1, #lblTip2, #lblTip3, #lblTip4, #lblTip5, #lblTip6 {
+                                        font-size: 12px;
+                                    }
+                                    /*#tdflag, #thead1, #thead2, #thead3, #thead4 {
                                         height: 55px;
                                     }
 
@@ -203,11 +204,7 @@
 
                                     #td0, #td1, #td2, #td3, #td4, #td5, #td6, #td7, #td8, #td9, #td10, #td11, #td12 {
                                         top: 130px;
-                                    }
-
-                                    #lblTip1, #lblTip2, #lblTip3, #lblTip4, #lblTip5, #lblTip6 {
-                                        font-size: 12px;
-                                    }
+                                    }*/
                                 }
                             </style>
 
@@ -244,7 +241,7 @@
                             <div class="card-block forminput">
                                 <div class="x_content">
                                     <div class="DyForm3-TableIni">
-                                        <table id="tbQuery" class="table table-bordered DyForm3-Table" style="white-space: pre-line">
+                                        <table id="tbQuery" class="table table-bordered DyForm3-Table">
                                             <thead>
                                                 <!--第一層-->
                                                 <tr>
@@ -279,7 +276,7 @@
 
                     <div class="modal fade" id="modal_Shop1" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content  DyForm3-PanelD" >
+                            <div class="modal-content DyForm3-PanelD" >
                                 <style>
 
                                     #tbShop1 thead tr th, #tbPLU1 thead tr th {
@@ -349,51 +346,24 @@
                                         #tbShop1 thead tr th, #tbPLU1 thead tr th {
                                             font-size: 12px;
                                         }
-
                                         #tbShop1 thead tr td, #tbPLU1 thead tr td {
                                             font-size: 12px;
                                         }
-
                                         #tbShop1 tbody tr td, #tbPLU1 tbody tr td {
                                             font-size: 12px;
                                         }
-                                        
                                         #lblTip1_Shop1, #lblTip2_Shop1, #lblTip3_Shop1, #lblTip4_Shop1, #lblTip5_Shop1, #lblTip6_Shop1 {
                                             font-size: 12px;
                                         }
+
+                                        #td0_Shop1, #td0_PLU1, #td1_Shop1, #td2_Shop1, #td3_Shop1, #td4_Shop1, #td5_Shop1, #td6_Shop1, #td7_Shop1, #td8_Shop1, #td1_PLU1, #td2_PLU1, #td3_PLU1, #td4_PLU1, #td5_PLU1 {
+                                            top: 58px;
+                                        }
                                         /*螢幕縱向*/
                                         @media screen and (orientation: portrait) {
-
-                                            #divShop1 {
-                                                height: 450px;
-                                            }
-                                            #thead1_Shop1, #thead1_PLU1 {
-                                                height: 155px;
-                                            }
-
-                                            #thead2_Shop1, #thead3_Shop1, #thead4_Shop1, #thead5_Shop1, #thead2_PLU1, #thead3_PLU1 {
-                                                height: 55px;
-                                            }
-
-                                            #th1_Shop1, #th2_Shop1, #th3_Shop1, #th4_Shop1, #th5_Shop1, #th6_Shop1, #th7_Shop1, #th8_Shop1, #th1_PLU1, #th2_PLU1, #th3_PLU1, #th4_PLU1, #th5_PLU1 {
-                                                top: 55px;
-                                                height: 100px;
-                                            }
-
-                                            #td0_Shop1, #td0_PLU1, #td1_Shop1, #td2_Shop1, #td3_Shop1, #td4_Shop1, #td5_Shop1, #td6_Shop1, #td7_Shop1, #td8_Shop1, #td1_PLU1, #td2_PLU1, #td3_PLU1, #td4_PLU1, #td5_PLU1 {
-                                                top: 155px;
-                                            }
-
                                         }
                                         /*螢幕橫向*/
                                         @media screen and (orientation: landscape) {
-                                            #th1_Shop1, #th2_Shop1, #th3_Shop1, #th4_Shop1, #th5_Shop1, #th6_Shop1, #th7_Shop1, #th8_Shop1, #th1_PLU1, #th2_PLU1, #th3_PLU1, #th4_PLU1, #th5_PLU1 {
-                                                top: 67px;
-                                            }
-
-                                            #td0_Shop1, #td0_PLU1, #td1_Shop1, #td2_Shop1, #td3_Shop1, #td4_Shop1, #td5_Shop1, #td6_Shop1, #td7_Shop1, #td8_Shop1, #td1_PLU1, #td2_PLU1, #td3_PLU1, #td4_PLU1, #td5_PLU1 {
-                                                top: 155px;
-                                            }
                                         }
                                     }
                                 </style>
@@ -440,7 +410,7 @@
                                     <div class="card-block forminput">
                                         <div class="x_content">
                                             <div class="DyForm3-TableD">
-                                                <table id="tbShop1" class="table table-bordered DyForm3-Table" style="white-space: pre-line">
+                                                <table id="tbShop1" class="table table-bordered DyForm3-Table">
                                                     <thead>
                                                         <!--第一層-->
                                                         <tr>
@@ -479,7 +449,7 @@
                                                     </tbody>
 
                                                 </table>
-                                                <table id="tbPLU1" class="table table-bordered DyForm3-Table" hidden style="white-space: pre-line">
+                                                <table id="tbPLU1" class="table table-bordered DyForm3-Table" hidden>
                                                     <thead>
                                                         <!--第一層-->
                                                         <tr>
