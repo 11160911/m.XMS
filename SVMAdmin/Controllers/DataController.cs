@@ -7976,7 +7976,7 @@ namespace SVMAdmin.Controllers
                 sql += "and isnull(a.ApproveDate,'')<>'' and isnull(a.DefeasanceDate,'')='' ";
                 if (EndDate.SqlQuote() != "")
                 {
-                    sql += "and isnull(a.EndDate,'')>'" + EndDate.SqlQuote() + "' ";
+                    sql += "and isnull(a.EndDate,'')>='" + EndDate.SqlQuote() + "' ";
                 }
                 if (WhNoFlag.SqlQuote() == "Y")
                 {
@@ -7991,8 +7991,6 @@ namespace SVMAdmin.Controllers
                     sql += "and a.PS_NO like '" + PS_NO.SqlQuote() + "%' ";
                 }
                 sql += "order by a.StartDate,a.PS_NO ";
-
-
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
                 ds.Tables.Add(dtE);
