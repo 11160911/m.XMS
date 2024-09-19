@@ -5,10 +5,10 @@ String.prototype.padRight = function (l, c) { return this + Array(l - this.lengt
 
 var DummyFunction = function () { };
 
-var UU = null;
+var UU = sessionStorage.getItem('token');
 
 var PostToWebApi = function (option) {
-
+    console.log("UU : " + UU);
     let AlertErr = function (XMLHttpRequest, textStatus, errorThrown) {
         alert(XMLHttpRequest.status);
     };

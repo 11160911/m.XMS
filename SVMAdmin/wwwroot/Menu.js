@@ -596,6 +596,7 @@
                 headers[keyValue[0].trim()] = keyValue[1].trim();
             });
         UU = headers.authorization;
+        sessionStorage.setItem("token", UU);
     };
 
     var Timerstart = function () {
