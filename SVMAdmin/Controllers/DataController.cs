@@ -7690,8 +7690,12 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
-                IFormCollection rq = HttpContext.Request.Form;
+                if (uu.UserID == null)
+                {
+                    throw new Exception("null");
+                }
 
+                IFormCollection rq = HttpContext.Request.Form;
                 string sql = "select * from Account (nolock) Where UID='" + uu.UserID + "' ";
                 DataTable dtA = PubUtility.SqlQry(sql, uu, "SYS");
                 dtA.TableName = "dtA";
@@ -7714,6 +7718,11 @@ namespace SVMAdmin.Controllers
             DataTable dtMessage = ds.Tables["dtMessage"];
             try
             {
+                if (uu.UserID == null)
+                {
+                    throw new Exception("null");
+                }
+
                 IFormCollection rq = HttpContext.Request.Form;
                 string ProgramID = rq["ProgramID"];
 

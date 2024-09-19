@@ -696,7 +696,12 @@
 
     let afterClickMenu = function (data) {
         if (ReturnMsg(data, 0) != "ClickMenuOK") {
-            DyAlert(ReturnMsg(data, 1));
+            if (ReturnMsg(data, 1) == "null") {
+                window.location.href = "Login";
+            }
+            else {
+                DyAlert(ReturnMsg(data, 1));
+            }
         }
         else {
             $('#FunctionDesc').text($(menuitem).prop('Description'));
