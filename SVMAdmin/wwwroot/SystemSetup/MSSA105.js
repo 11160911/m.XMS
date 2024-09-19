@@ -68,7 +68,7 @@
 
     };
     let InitDetail2Button = function () {
-        if ($('#rdoB').prop('checked') == true) //區課
+        if (($('#rdoS').prop('checked') == true && $('#rdoB1').prop('checked') == true) | ($('#rdoB').prop('checked') == true && $('#rdoD2').prop('checked') == true) | ($('#rdoB').prop('checked') == true && $('#rdoS2').prop('checked') == true)) 
             $('#tbQuerySTEP1 tbody tr td').click(function () { Step2_click(this) });
 
     };
@@ -81,8 +81,25 @@
         //$('#tbQuerySTEP1 td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
         $('#modal_Step2').modal('show');
         $('#lblYear2').html($('#cboYear').val() + '年');
-        $('#lblType').html($('#lblMonth').html());
-        $('#lblShop').html(GetNodeValue(node, 'ID'));
+        if ($('#rdoS').prop('checked') == true && $('#rdoB1').prop('checked') == true){
+            $('#lblType2Name').html('月份');
+            $('#lblType2').html($('#lblMonth').html());
+            $('#lblShop2Name').html('區課');
+            $('#lblShop2').html(GetNodeValue(node, 'ID'));
+        }
+        else if ($('#rdoB').prop('checked') == true && $('#rdoD2').prop('checked') == true) {
+            $('#lblType2Name').html('區課');
+            $('#lblType2').html($('#lblMonth').html());
+            $('#lblShop2Name').html('店別');
+            $('#lblShop2').html(GetNodeValue(node, 'ID'));
+        }
+        else if ($('#rdoB').prop('checked') == true && $('#rdoS2').prop('checked') == true) {
+            $('#lblType2Name').html('區課');
+            $('#lblType2').html($('#lblMonth').html());
+            $('#lblShop2Name').html('月份');
+            $('#lblShop2').html(GetNodeValue(node, 'ID'));
+        }
+
         setTimeout(function () {
             Query_Step2_click();
         }, 500);
@@ -92,17 +109,33 @@
         ShowLoading();
 
         var Year = $('#lblYear2').html()
-        var Type = $('#lblType').html()
-        var Shop = $('#lblShop').html()
+        var Type = $('#lblType2').html()
+        var Shop = $('#lblShop2').html()
         var Flag = ""
-        if ($('#rdoB').prop('checked') == true) {
-            Flag = "B";
+        if ($('#rdoS').prop('checked') == true && $('#rdoB1').prop('checked') == true) {
+            Flag = "B1";
+            Type = Type.substring(0, 2);
+            Shop = Shop.split('-')[0];
+            $('#tbQuerySTEP2 thead tr th#thead1').html('店別');
+            $('#tbQuerySTEP2 thead td#td0').html('店別總業績');
+        }
+        else if ($('#rdoB').prop('checked') == true && $('#rdoD2').prop('checked') == true) {
+            Flag = "D2";
             Type = Type.split('-')[0];
             Shop = Shop.split('-')[0];
+            $('#tbQuerySTEP2 thead tr th#thead1').html('月份');
+            $('#tbQuerySTEP2 thead td#td0').html('月總業績');
         }
-
+        else if ($('#rdoB').prop('checked') == true && $('#rdoS2').prop('checked') == true) {
+            Flag = "S2";
+            Type = Type.split('-')[0];
+            Shop = Shop.substring(0, 2);
+            $('#tbQuerySTEP2 thead tr th#thead1').html('店別');
+            $('#tbQuerySTEP2 thead td#td0').html('店別總業績');
+        }
         setTimeout(function () {
             var pData = {
+                Flag: Flag,
                 Year: Year,
                 Shop: Shop,
                 Type: Type
@@ -139,6 +172,18 @@
         $('.msg-valid').hide();
         var node = $(grdM.ActiveRowTR()).prop('Record');
         //$('#tbQuery td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
+        if ($('#rdoS').prop('checked') == true) {
+            $('#rdoGroup1').show();
+            $('#rdoGroup2').hide();
+        }
+        else if ($('#rdoD').prop('checked') == true) {
+            $('#rdoGroup1').hide();
+            $('#rdoGroup2').hide();
+        }
+        else if ($('#rdoB').prop('checked') == true) {
+            $('#rdoGroup1').hide();
+            $('#rdoGroup2').show();
+        }
         $('#modal_Step1').modal('show');
         $('#lblYear').html($('#cboYear').val() + '年');
         $('#lblMonth').html(GetNodeValue(node, 'ID'));
@@ -153,15 +198,25 @@
         var Year = $('#lblYear').html()
         var Month = $('#lblMonth').html()
         var Flag = ""
+        var SubType = ""
         //月份
         if ($('#rdoS').prop('checked') == true) {
+            if ($('#rdoD1').prop('checked') == true) {
+                SubType = $('#rdoD1').val();
+                $('#tbQuerySTEP1 thead tr th#thead1').html('店別');
+                $('#tbQuerySTEP1 thead td#td0').html('店別總業績');
+            }
+            else {
+                SubType = $('#rdoB1').val();
+                $('#tbQuerySTEP1 thead tr th#thead1').html('區課');
+                $('#tbQuerySTEP1 thead td#td0').html('區課總業績');
+            }
             Flag = "S";
             $('#lblTypeName').html('月份：');
-            $('#tbQuerySTEP1 thead tr th#thead1').html('店別');
-            $('#tbQuerySTEP1 thead td#td0').html('店總業績');
         }
         //店別
         else if ($('#rdoD').prop('checked') == true) {
+            SubType = "";
             Flag = "D";
             Month = Month.split('-')[0];
             $('#lblTypeName').html('店別：');
@@ -170,18 +225,27 @@
         }
         //區課
         else if ($('#rdoB').prop('checked') == true) {
+            if ($('#rdoD2').prop('checked') == true) {
+                SubType = $('#rdoD2').val();
+                $('#tbQuerySTEP1 thead tr th#thead1').html('店別');
+                $('#tbQuerySTEP1 thead td#td0').html('店總業績');
+            }
+            else {
+                SubType = $('#rdoS2').val();
+                $('#tbQuerySTEP1 thead tr th#thead1').html('月份');
+                $('#tbQuerySTEP1 thead td#td0').html('月份總業績');
+            }
             Flag = "B";
             Month = Month.split('-')[0];
             $('#lblTypeName').html('區課：');
-            $('#tbQuerySTEP1 thead tr th#thead1').html('店別');
-            $('#tbQuerySTEP1 thead td#td0').html('店總業績');
         }
 
         setTimeout(function () {
             var pData = {
                 Year: Year,
                 Month: Month,
-                Flag: Flag
+                Flag: Flag,
+                SubType: SubType
             }
             PostToWebApi({ url: "api/SystemSetup/MSSA105Query_Step1", data: pData, success: afterQuery_Step1 });
         }, 1000);
@@ -356,6 +420,7 @@
             $('#btExit_Step1').click(function () { btExit_Step1_click(this) });
             $('#btExit_Step2').click(function () { btExit_Step2_click(this) });
             $('#rdoS,#rdoD,#rdoB').change(function () { btQuery_click(this) });
+            $('#rdoD1,#rdoB1,#rdoD2,#rdoS2').change(function () { Step1_click(this) });
             $('#cboYear').change(function () { ClearQuery() });
             btQuery_click();
         }
