@@ -14177,6 +14177,7 @@ namespace SVMAdmin.Controllers
                 Year = Year.Substring(0, 4);
                 string YearBef = (Convert.ToInt32(Year) - 1).ToString();
                 string Month = rq["Month"];
+                string SubType = rq["SubType"];
 
                 string sql = "";
                 string sqlD = "";
@@ -14186,22 +14187,45 @@ namespace SVMAdmin.Controllers
                 if (Flag == "S")
                 {
                     Month = Month.Substring(0, 2);
-                    //期間1
-                    sql = "select a.ShopNo ID,w.ST_SName Name,Sum(a.Cash)Cash1 into #s1 ";
-                    sql += "from SalesHWeb a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
-                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
-                    sql += "and opendate like '" + YearBef + '/' + Month + "%' ";
-                    sql += "group by a.ShopNo,w.ST_SName; ";
+                    if (SubType == "Shop")      //店櫃
+                    {
+                        //期間1
+                        sql = "select a.ShopNo ID,w.ST_SName Name,Sum(a.Cash)Cash1 into #s1 ";
+                        sql += "from SalesHWeb a (nolock) ";
+                        sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                        sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                        sql += "and opendate like '" + YearBef + '/' + Month + "%' ";
+                        sql += "group by a.ShopNo,w.ST_SName; ";
 
-                    //期間2
-                    sql += "select a.ShopNo ID,w.ST_SName Name,Sum(a.Cash)Cash1 into #s2 ";
-                    sql += "from SalesHWeb a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
-                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
-                    sql += "and opendate like '" + Year + '/' + Month + "%' ";
-                    sql += "group by a.ShopNo,w.ST_SName; ";
+                        //期間2
+                        sql += "select a.ShopNo ID,w.ST_SName Name,Sum(a.Cash)Cash1 into #s2 ";
+                        sql += "from SalesHWeb a (nolock) ";
+                        sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                        sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                        sql += "and opendate like '" + Year + '/' + Month + "%' ";
+                        sql += "group by a.ShopNo,w.ST_SName; ";
 
+
+                    }
+                    else if (SubType == "Area")     //區課
+                    {
+                        //期間1
+                        sql = "select w.ST_PlaceID ID,t.Type_Name Name,sum(Cash) Cash1 into #s1 from SalesHWeb s ";
+                        sql += "join WarehouseWeb w on s.CompanyCode=w.CompanyCode and s.ShopNo=w.ST_ID  and w.ST_Type not in('2','3') ";
+                        sql += "join TypeDataWeb t on w.ST_PlaceID=t.Type_ID and t.Companycode=w.CompanyCode  and Type_Code='A' ";
+                        sql += "where s.Companycode='" + uu.CompanyId + "' ";
+                        sql += "and s.OpenDate like '" + YearBef + '/' + Month + "%' ";
+                        sql += "group by w.ST_PlaceID,t.Type_Name; ";
+
+                        //期間2
+                        sql += "select w.ST_PlaceID ID,t.Type_Name Name,sum(Cash) Cash1 into #s2 from SalesHWeb s ";
+                        sql += "join WarehouseWeb w on s.CompanyCode=w.CompanyCode and s.ShopNo=w.ST_ID  and w.ST_Type not in('2','3') ";
+                        sql += "join TypeDataWeb t on w.ST_PlaceID=t.Type_ID and t.Companycode=w.CompanyCode  and Type_Code='A' ";
+                        sql += "where s.Companycode='" + uu.CompanyId + "' ";
+                        sql += "and s.OpenDate like '" + Year + '/' + Month + "%' ";
+                        sql += "group by w.ST_PlaceID,t.Type_Name; ";
+
+                    }
                     //明細資料
                     sqlD = "select case when isnull(s1.ID,'')='' then isnull(s2.ID,'') + '-' + isnull(s2.Name,'') else isnull(s1.ID,'') + '-' + isnull(s1.Name,'') end as id, ";
                     sqlD += "isnull(s1.Cash1,0)Cash1,isnull(s2.Cash1,0)Cash2, ";
@@ -14264,40 +14288,79 @@ namespace SVMAdmin.Controllers
                 //區課
                 else if (Flag == "B")
                 {
-                    //期間1
-                    sql = "select a.ShopNo ID,w.ST_SName Name,Sum(a.Cash)Cash1 into #s1 ";
-                    sql += "from SalesHWeb a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
-                    sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
-                    sql += "where a.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Month + "' ";
-                    sql += "and opendate like '" + YearBef + "%' ";
-                    sql += "group by a.ShopNo,w.ST_SName; ";
+                    if (SubType == "Shop")  //店櫃
+                    {
+                        //期間1
+                        sql = "select a.ShopNo ID,w.ST_SName Name,Sum(a.Cash)Cash1 into #s1 ";
+                        sql += "from SalesHWeb a (nolock) ";
+                        sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                        sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
+                        sql += "where a.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Month + "' ";
+                        sql += "and opendate like '" + YearBef + "%' ";
+                        sql += "group by a.ShopNo,w.ST_SName; ";
 
-                    //期間2
-                    sql += "select a.ShopNo ID,w.ST_SName Name,Sum(a.Cash)Cash1 into #s2 ";
-                    sql += "from SalesHWeb a (nolock) ";
-                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
-                    sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
-                    sql += "where a.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Month + "' ";
-                    sql += "and opendate like '" + Year + "%' ";
-                    sql += "group by a.ShopNo,w.ST_SName ; ";
+                        //期間2
+                        sql += "select a.ShopNo ID,w.ST_SName Name,Sum(a.Cash)Cash1 into #s2 ";
+                        sql += "from SalesHWeb a (nolock) ";
+                        sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                        sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
+                        sql += "where a.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Month + "' ";
+                        sql += "and opendate like '" + Year + "%' ";
+                        sql += "group by a.ShopNo,w.ST_SName ; ";
 
-                    //明細資料
-                    sqlD = "select case when isnull(s1.ID,'')='' then isnull(s2.ID,'') + '-' + isnull(s2.Name,'') else isnull(s1.ID,'') + '-' + isnull(s1.Name,'') end as id, ";
-                    sqlD += "isnull(s1.Cash1,0)Cash1,isnull(s2.Cash1,0)Cash2, ";
-                    sqlD += "case when isnull(s1.Cash1,0)=0 and isnull(s2.Cash1,0)=0 then format(0,'p') when isnull(s1.Cash1,0)=0 then format(1,'p') else format(cast(isnull(s2.Cash1,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float),'p') end as Per ";
-                    sqlD += "from #s1 s1 ";
-                    sqlD += "Full join #s2 s2 on s1.ID=s2.ID ";
-                    sqlD += "order by id ";
-                    DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
-                    dtE.TableName = "dtE";
-                    ds.Tables.Add(dtE);
+                        //明細資料
+                        sqlD = "select case when isnull(s1.ID,'')='' then isnull(s2.ID,'') + '-' + isnull(s2.Name,'') else isnull(s1.ID,'') + '-' + isnull(s1.Name,'') end as id, ";
+                        sqlD += "isnull(s1.Cash1,0)Cash1,isnull(s2.Cash1,0)Cash2, ";
+                        sqlD += "case when isnull(s1.Cash1,0)=0 and isnull(s2.Cash1,0)=0 then format(0,'p') when isnull(s1.Cash1,0)=0 then format(1,'p') else format(cast(isnull(s2.Cash1,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float),'p') end as Per ";
+                        sqlD += "from #s1 s1 ";
+                        sqlD += "Full join #s2 s2 on s1.ID=s2.ID ";
+                        sqlD += "order by id ";
+                        DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                        dtE.TableName = "dtE";
+                        ds.Tables.Add(dtE);
+                    }
+                    else if (SubType == "Month")    //月份
+                    {
+                        //期間1
+                        sql = "select substring(a.Opendate,6,2) Month,Sum(a.Cash)Cash1 into #s1 ";
+                        sql += "from SalesHWeb a (nolock) ";
+                        sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                        sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
+                        sql += "where a.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Month + "' ";
+                        sql += "and opendate like '" + YearBef + "%' ";
+                        sql += "group by substring(a.Opendate,6,2) ; ";
+
+                        //期間2
+                        sql += "select substring(a.Opendate,6,2) Month,Sum(a.Cash)Cash1 into #s2 ";
+                        sql += "from SalesHWeb a (nolock) ";
+                        sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                        sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
+                        sql += "where a.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Month + "' ";
+                        sql += "and opendate like '" + Year + "%' ";
+                        sql += "group by substring(a.Opendate,6,2); ";
+
+                        //明細資料
+                        sqlD = "select case when isnull(s1.Month,'')='' then isnull(s2.Month,'')+'月' else isnull(s1.Month,'')+'月' end as id, ";
+                        sqlD += "isnull(s1.Cash1,0)Cash1,isnull(s2.Cash1,0)Cash2, ";
+                        sqlD += "case when isnull(s1.Cash1,0)=0 and isnull(s2.Cash1,0)=0 then format(0,'p') when isnull(s1.Cash1,0)=0 then format(1,'p') else format(cast(isnull(s2.Cash1,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float),'p') end as Per ";
+                        sqlD += "from #s1 s1 ";
+                        sqlD += "Full join #s2 s2 on s1.Month=s2.Month ";
+                        sqlD += "order by id ";
+                        DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                        dtE.TableName = "dtE";
+                        ds.Tables.Add(dtE);
+                    }
 
                     //彙總資料
                     sqlH = "select sum(isnull(s1.Cash1,0))SumCash1,sum(isnull(s2.Cash1,0))SumCash2, ";
                     sqlH += "case when sum(isnull(s1.Cash1,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.Cash1,0))-sum(isnull(s1.Cash1,0)) as Float)/cast(sum(isnull(s1.Cash1,0)) as Float),'p') end as SumPer ";
                     sqlH += "from #s1 s1 ";
-                    sqlH += "Full join #s2 s2 on s1.id=s2.id ";
+                    sqlH += "Full join #s2 s2 ";
+                    if (SubType == "Shop") 
+                        sqlH += " on s1.id=s2.id";
+                    else if (SubType == "Month")
+                        sqlH += " on s1.Month=s2.Month";
+
                     DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
                     dtH.TableName = "dtH";
                     ds.Tables.Add(dtH);
@@ -14319,6 +14382,7 @@ namespace SVMAdmin.Controllers
             try
             {
                 IFormCollection rq = HttpContext.Request.Form;
+                string Flag = rq["Flag"];
                 string Year = rq["Year"];
                 Year = Year.Substring(0, 4);
                 string YearBef = (Convert.ToInt32(Year) - 1).ToString();
@@ -14329,43 +14393,130 @@ namespace SVMAdmin.Controllers
                 string sqlD = "";
                 string sqlH = "";
 
-                //期間1
-                sql = "select substring(a.Opendate,6,2) Month,Sum(a.Cash)Cash1 into #s1 ";
-                sql += "from SalesHWeb a (nolock) ";
-                sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
-                sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
-                sql += "where a.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Type + "' ";
-                sql += "and opendate like '" + YearBef + "%' and a.Shopno='" + Shop + "' ";
-                sql += "group by substring(a.Opendate,6,2); ";
 
-                //期間2
-                sql += "select substring(a.Opendate,6,2) Month,Sum(a.Cash)Cash1 into #s2 ";
-                sql += "from SalesHWeb a (nolock) ";
-                sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
-                sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
-                sql += "where a.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Type + "' ";
-                sql += "and opendate like '" + Year + "%' and a.Shopno='" + Shop + "'";
-                sql += "group by substring(a.Opendate,6,2) ; ";
+                //月份區課
+                if (Flag == "B1")
+                {
+                    //期間1
+                    sql = "select a.shopno,w.st_sname,Sum(a.Cash)Cash1 into #s1 ";
+                    sql += "from SalesHWeb a (nolock) ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                    sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Shop + "' ";
+                    sql += "and opendate like '" + YearBef +'/'+ Type + "%' ";
+                    sql += "group by a.shopno,w.st_sname; ";
 
-                //明細資料
-                sqlD = "select case when isnull(s1.Month,'')='' then isnull(s2.Month,'')+'月' else isnull(s1.Month,'')+'月' end as id, ";
-                sqlD += "isnull(s1.Cash1,0)Cash1,isnull(s2.Cash1,0)Cash2, ";
-                sqlD += "case when isnull(s1.Cash1,0)=0 and isnull(s2.Cash1,0)=0 then format(0,'p') when isnull(s1.Cash1,0)=0 then format(1,'p') else format(cast(isnull(s2.Cash1,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float),'p') end as Per ";
-                sqlD += "from #s1 s1 ";
-                sqlD += "Full join #s2 s2 on s1.Month=s2.Month ";
-                sqlD += "order by id ";
-                DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
-                dtE.TableName = "dtE";
-                ds.Tables.Add(dtE);
+                    //期間2
+                    sql += "select a.shopno,w.st_sname,Sum(a.Cash)Cash1 into #s2 ";
+                    sql += "from SalesHWeb a (nolock) ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                    sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Shop + "' ";
+                    sql += "and opendate like '" + Year + '/' + Type + "%' ";
+                    sql += "group by a.shopno,w.st_sname ";
 
-                //彙總資料
-                sqlH = "select sum(isnull(s1.Cash1,0))SumCash1,sum(isnull(s2.Cash1,0))SumCash2, ";
-                sqlH += "case when sum(isnull(s1.Cash1,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.Cash1,0))-sum(isnull(s1.Cash1,0)) as Float)/cast(sum(isnull(s1.Cash1,0)) as Float),'p') end as SumPer ";
-                sqlH += "from #s1 s1 ";
-                sqlH += "Full join #s2 s2 on s1.Month=s2.Month ";
-                DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
-                dtH.TableName = "dtH";
-                ds.Tables.Add(dtH);
+                    //明細資料
+                    sqlD = "select case when isnull(s1.shopno,'')='' then isnull(s2.shopno+'-'+s2.st_sname,'') else isnull(s1.shopno+'-'+s1.st_sname,'') end as id, ";
+                    sqlD += "isnull(s1.Cash1,0)Cash1,isnull(s2.Cash1,0)Cash2, ";
+                    sqlD += "case when isnull(s1.Cash1,0)=0 and isnull(s2.Cash1,0)=0 then format(0,'p') when isnull(s1.Cash1,0)=0 then format(1,'p') else format(cast(isnull(s2.Cash1,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float),'p') end as Per ";
+                    sqlD += "from #s1 s1 ";
+                    sqlD += "Full join #s2 s2 on s1.shopno=s2.shopno ";
+                    sqlD += "order by id ";
+                    DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+
+                    //彙總資料
+                    sqlH = "select sum(isnull(s1.Cash1,0))SumCash1,sum(isnull(s2.Cash1,0))SumCash2, ";
+                    sqlH += "case when sum(isnull(s1.Cash1,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.Cash1,0))-sum(isnull(s1.Cash1,0)) as Float)/cast(sum(isnull(s1.Cash1,0)) as Float),'p') end as SumPer ";
+                    sqlH += "from #s1 s1 ";
+                    sqlH += "Full join #s2 s2 on s1.shopno=s2.shopno ";
+                    DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
+                    dtH.TableName = "dtH";
+                    ds.Tables.Add(dtH);
+                }
+                //區課店別
+                else if (Flag == "D2")
+                {
+                    //期間1
+                    sql = "select substring(a.Opendate,6,2) Month,Sum(a.Cash)Cash1 into #s1 ";
+                    sql += "from SalesHWeb a (nolock) ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                    sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Type + "' and a.ShopNo='" + Shop + "' ";
+                    sql += "and opendate like '" + YearBef + "%' ";
+                    sql += "group by substring(a.Opendate,6,2); ";
+
+                    //期間2
+                    sql += "select substring(a.Opendate,6,2) Month,Sum(a.Cash)Cash1 into #s2 ";
+                    sql += "from SalesHWeb a (nolock) ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                    sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Type + "' and a.ShopNo='" + Shop + "' ";
+                    sql += "and opendate like '" + Year + "%' ";
+                    sql += "group by substring(a.Opendate,6,2) ";
+
+                    //明細資料
+                    sqlD = "select case when isnull(s1.Month,'')='' then isnull(s2.Month,'')+'月' else isnull(s1.Month,'')+'月' end as id, ";
+                    sqlD += "isnull(s1.Cash1,0)Cash1,isnull(s2.Cash1,0)Cash2, ";
+                    sqlD += "case when isnull(s1.Cash1,0)=0 and isnull(s2.Cash1,0)=0 then format(0,'p') when isnull(s1.Cash1,0)=0 then format(1,'p') else format(cast(isnull(s2.Cash1,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float),'p') end as Per ";
+                    sqlD += "from #s1 s1 ";
+                    sqlD += "Full join #s2 s2 on s1.Month=s2.Month ";
+                    sqlD += "order by id ";
+                    DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+
+                    //彙總資料
+                    sqlH = "select sum(isnull(s1.Cash1,0))SumCash1,sum(isnull(s2.Cash1,0))SumCash2, ";
+                    sqlH += "case when sum(isnull(s1.Cash1,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.Cash1,0))-sum(isnull(s1.Cash1,0)) as Float)/cast(sum(isnull(s1.Cash1,0)) as Float),'p') end as SumPer ";
+                    sqlH += "from #s1 s1 ";
+                    sqlH += "Full join #s2 s2 on s1.Month=s2.Month ";
+                    DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
+                    dtH.TableName = "dtH";
+                    ds.Tables.Add(dtH);
+                }
+                //區課月份
+                else if (Flag == "S2")
+                {
+                    //期間1
+                    sql = "select a.shopno,w.st_sname,Sum(a.Cash)Cash1 into #s1 ";
+                    sql += "from SalesHWeb a (nolock) ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                    sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Type + "' ";
+                    sql += "and opendate like '" + YearBef + '/' + Shop + "%' ";
+                    sql += "group by a.shopno,w.st_sname; ";
+
+                    //期間2
+                    sql += "select a.shopno,w.st_sname,Sum(a.Cash)Cash1 into #s2 ";
+                    sql += "from SalesHWeb a (nolock) ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                    sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Type + "' ";
+                    sql += "and opendate like '" + Year + '/' + Shop + "%' ";
+                    sql += "group by a.shopno,w.st_sname ";
+
+                    //明細資料
+                    sqlD = "select case when isnull(s1.shopno,'')='' then isnull(s2.shopno+'-'+s2.st_sname,'') else isnull(s1.shopno+'-'+s1.st_sname,'') end as id, ";
+                    sqlD += "isnull(s1.Cash1,0)Cash1,isnull(s2.Cash1,0)Cash2, ";
+                    sqlD += "case when isnull(s1.Cash1,0)=0 and isnull(s2.Cash1,0)=0 then format(0,'p') when isnull(s1.Cash1,0)=0 then format(1,'p') else format(cast(isnull(s2.Cash1,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float),'p') end as Per ";
+                    sqlD += "from #s1 s1 ";
+                    sqlD += "Full join #s2 s2 on s1.shopno=s2.shopno ";
+                    sqlD += "order by id ";
+                    DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                    dtE.TableName = "dtE";
+                    ds.Tables.Add(dtE);
+
+                    //彙總資料
+                    sqlH = "select sum(isnull(s1.Cash1,0))SumCash1,sum(isnull(s2.Cash1,0))SumCash2, ";
+                    sqlH += "case when sum(isnull(s1.Cash1,0))=0 then format(1,'p') else format(cast(sum(isnull(s2.Cash1,0))-sum(isnull(s1.Cash1,0)) as Float)/cast(sum(isnull(s1.Cash1,0)) as Float),'p') end as SumPer ";
+                    sqlH += "from #s1 s1 ";
+                    sqlH += "Full join #s2 s2 on s1.shopno=s2.shopno ";
+                    DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
+                    dtH.TableName = "dtH";
+                    ds.Tables.Add(dtH);
+                }
             }
             catch (Exception err)
             {
