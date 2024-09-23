@@ -14695,7 +14695,7 @@ namespace SVMAdmin.Controllers
                 sqldw += ",format(case when sum(a.SalesAmt)>0 then sum(a.CG_Amt)/sum(a.SalesAmt) else 0 end,'p') CGPer ";
                 sqldw += ",format(case when sum(a.SalesAmt)>0 then sum(a.CGVIP_Amt)/sum(a.SalesAmt) else 0 end,'p') VIPPer ";
                 sqldw += "from MSData4Web a join CompositeHWeb h on a.CompanyCode=h.CompanyCode and a.PrDocNO=h.CG_No  ";
-                sqldw += " where a.CompanyCode='" + uu.CompanyId + "' and '" + Opendate + "' between h.StartDate and h.EndDate and isnull(h.DefeasanceDate,'')=''";
+                sqldw += " where h.CompanyCode='" + uu.CompanyId + "' and '" + Opendate + "' between h.StartDate and h.EndDate and isnull(h.DefeasanceDate,'')=''";
                 sqldw += " group by h.CG_NO,h.CG_Name,h.StartDate,h.EndDate";
                 DataTable dtD = PubUtility.SqlQry(string.Format(sqldw, ""), uu, "SYS");
                 dtD.TableName = "dtD";
