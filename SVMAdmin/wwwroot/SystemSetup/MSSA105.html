@@ -119,7 +119,7 @@
                                     background-color: red;
                                 }
 
-                                #tbQuery thead tr th {
+                                #tbQuery thead tr th, #tbQuery1 thead tr th {
                                     font-size: 16px;
                                     padding: 3px;
                                     background-color: #ffb620;
@@ -127,7 +127,7 @@
                                     vertical-align: middle;
                                 }
 
-                                #tbQuery thead tr td {
+                                #tbQuery thead tr td, #tbQuery1 thead tr td {
                                     font-size: 16px;
                                     padding: 3px;
                                     background-color: #ffb620;
@@ -135,12 +135,12 @@
                                     vertical-align: middle;
                                 }
 
-                                #tbQuery tbody tr td {
+                                #tbQuery tbody tr td, #tbQuery1 tbody tr td {
                                     font-size: 16px;
                                     padding: 3px;
                                     font-weight: bold;
                                     vertical-align: middle;
-                                    cursor:pointer;
+                                    cursor: pointer;
                                 }
 
                                 th:first-child {
@@ -162,12 +162,12 @@
                                     height: 45px;
                                 }
 
-                                #th1, #th2,#th4 {
+                                #th1, #th2, #th4, #th3, #th5 {
                                     top: 45px;
                                     z-index: 2;
                                 }
 
-                                #td1, #td2, #td3 {
+                                #td1, #td2, #td3, #td4, #td5 {
                                     top: 72px;
                                     z-index: 2;
                                     color: red;
@@ -179,19 +179,19 @@
                                 }
                                 /*手機畫面*/
                                 @media (max-width:767px) {
-                                    #tbQuery thead tr th {
+                                    #tbQuery thead tr th, #tbQuery1 thead tr th {
                                         font-size: 12px;
                                     }
 
-                                    #tbQuery thead tr td {
+                                    #tbQuery thead tr td, #tbQuery1 thead tr td {
                                         font-size: 12px;
                                     }
 
-                                    #tbQuery tbody tr td {
+                                    #tbQuery tbody tr td, #tbQuery1 tbody tr td {
                                         font-size: 12px;
                                     }
 
-                                    #td0, #td1, #td2, #td3 {
+                                    #td0, #td1, #td2, #td3, #td4, #td5 {
                                         top: 66px;
                                     }
                                 }
@@ -222,15 +222,48 @@
                                 <label class="DyForm3-LabelBlack" for="rdoB" style="margin-top:2px">&ensp;區課</label>
                             </div>
                             <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px ">
-                                <label class="DyForm3-Label" style="font-size: 16px; margin-top: 0px ">成長率=(指定年度-前一年度)/前一年度</label>
+                                <label class="DyForm3-Label" style="font-size: 16px; margin-top: 0px ">年成長率=(指定年度-前一年度)/前一年度</label>
                             </div>
-                            <!--<div class="form-group row" style="margin-left: 12px; width: 100%; height: 25px; margin-bottom: 0px;" >
-        <label class="DyForm3-Label" style="font-size: 16px; position: absolute; right: 30px ">成長率=(指定年度-前一年度)/前一年度</label>
-    </div>-->
+                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px ">
+                                <label class="DyForm3-Label" style="font-size: 16px; margin-top: 0px ">月成長率=(本月業績-上月業績)/上月業績</label>
+                            </div>
+
                             <div class="card-block forminput">
                                 <div class="x_content">
                                     <div class="DyForm3-TableIniMob">
                                         <table id="tbQuery" class="table table-bordered DyForm3-Table">
+                                            <thead>
+                                                <!--第一層-->
+                                                <tr>
+                                                    <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">月份</th>
+                                                    <td id="thead2" class="text-center" colspan="2">前一年度業績</td>
+                                                    <td id="thead3" class="text-center" colspan="2">指定年度業績</td>
+                                                    <td id="thead4" class="text-center" colspan="1" style="vertical-align: middle;"></td>
+                                                </tr>
+                                                <!--第二層-->
+                                                <tr>
+                                                    <th id="th1" class="text-center" colspan="1">金額</th>
+                                                    <th id="th3" class="text-center" colspan="1">月成長%</th>
+                                                    <th id="th2" class="text-center" colspan="1">金額</th>
+                                                    <th id="th5" class="text-center" colspan="1">月成長%</th>
+                                                    <th id="th4" class="text-center" colspan="1" style="vertical-align: middle;">年成長%</th>
+                                                </tr>
+                                                <!--第三層-->
+                                                <tr class="QSum">
+                                                    <td id="td0" class="text-center" colspan="1">總業績</td>
+                                                    <td id="td1" colspan="1" style="text-align: right"></td>
+                                                    <td id="td4" colspan="1" style="text-align: right"></td>
+                                                    <td id="td2" colspan="1" style="text-align: right"></td>
+                                                    <td id="td5" colspan="1" style="text-align: right"></td>
+                                                    <td id="td3" class="text-center" colspan="1"></td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <table id="tbQuery1" class="table table-bordered DyForm3-Table">
                                             <thead>
                                                 <!--第一層-->
                                                 <tr>
@@ -243,7 +276,7 @@
                                                 <tr>
                                                     <th id="th1" class="text-center" colspan="1">金額</th>
                                                     <th id="th2" class="text-center" colspan="1">金額</th>
-                                                    <th id="th4" class="text-center" colspan="1" style="vertical-align: middle;">成長%</th>
+                                                    <th id="th4" class="text-center" colspan="1" style="vertical-align: middle;">年成長%</th>
                                                 </tr>
                                                 <!--第三層-->
                                                 <tr class="QSum">
@@ -273,7 +306,7 @@
                                         background-color: red;
                                     }
 
-                                    #tbQuerySTEP1 thead tr th {
+                                    #tbQuerySTEP1 thead tr th, #tbQuerySTEP11 thead tr th {
                                         font-size: 16px;
                                         padding: 3px;
                                         background-color: #ffb620;
@@ -281,7 +314,7 @@
                                         vertical-align: middle;
                                     }
 
-                                    #tbQuerySTEP1 thead tr td {
+                                    #tbQuerySTEP1 thead tr td, #tbQuerySTEP11 thead tr td {
                                         font-size: 16px;
                                         padding: 3px;
                                         background-color: #ffb620;
@@ -289,12 +322,12 @@
                                         vertical-align: middle;
                                     }
 
-                                    #tbQuerySTEP1 tbody tr td {
+                                    #tbQuerySTEP1 tbody tr td, #tbQuerySTEP11 tbody tr td {
                                         font-size: 16px;
                                         padding: 3px;
                                         font-weight: bold;
                                         vertical-align: middle;
-                                        cursor:pointer;
+                                        cursor: pointer;
                                     }
 
                                     th:first-child {
@@ -303,15 +336,15 @@
                                     }
                                     /*手機畫面*/
                                     @media (max-width:767px) {
-                                        #tbQuerySTEP1 thead tr th {
+                                        #tbQuerySTEP1 thead tr th, #tbQuerySTEP11 thead tr th {
                                             font-size: 12px;
                                         }
 
-                                        #tbQuerySTEP1 thead tr td {
+                                        #tbQuerySTEP1 thead tr td, #tbQuerySTEP11 thead tr td {
                                             font-size: 12px;
                                         }
 
-                                        #tbQuerySTEP1 tbody tr td {
+                                        #tbQuerySTEP1 tbody tr td, #tbQuerySTEP11 tbody tr td {
                                             font-size: 12px;
                                         }
                                     }
@@ -333,11 +366,6 @@
                                     <div class="form-group row" style="width: 100%; margin-left: 5px; margin-bottom: 5px ">
                                         <label id="lblTypeName" class="DyForm3-Label" style="margin-left: 15px;">月份：</label>
                                         <label id="lblMonth" class="DyForm3-LabelBlack" style="margin-left: 5px; margin-top: 3px "></label>
-                                        <!--<input id="rdoShop_PS_Step1" type="radio" name="Step1" value="Shop" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left; " checked>
-        <label class="DyForm3-LabelBlack" for="rdoShop_PS_Step1" style="margin-top: 2px;">&ensp;店別</label>
-        <input id="rdoDate_PS_Step1" type="radio" name="Step1" value="Date" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left;  ">
-        <label class="DyForm3-LabelBlack" for="rdoDate_PS_Step1" style=" margin-top: 2px;">&ensp;銷售日期</label>
-        <label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>-->
                                     </div>
                                     <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px" id="rdoGroup1">
                                         <input id="rdoD1" type="radio" name="b" value="Shop" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
@@ -352,7 +380,10 @@
                                         <label class="DyForm3-LabelBlack" for="rdoS2" style="margin-top: 2px">&ensp;月份</label>
                                     </div>
                                     <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px ">
-                                        <label class="DyForm3-Label" style="font-size: 16px; margin-top: 0px ">成長率=(指定年度-前一年度)/前一年度</label>
+                                        <label class="DyForm3-Label" style="font-size: 16px; margin-top: 0px ">年成長率=(指定年度-前一年度)/前一年度</label>
+                                    </div>
+                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px ">
+                                        <label class="DyForm3-Label" style="font-size: 16px; margin-top: 0px ">月成長率=(本月業績-上月業績)/上月業績</label>
                                     </div>
                                     <div class="card-block forminput">
                                         <div class="x_content">
@@ -385,6 +416,38 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
+                                                <table id="tbQuerySTEP11" class="table table-bordered DyForm3-Table">
+                                                    <thead>
+                                                        <!--第一層-->
+                                                        <tr>
+                                                            <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
+                                                            <td id="thead2" class="text-center" colspan="2">前一年度業績</td>
+                                                            <td id="thead3" class="text-center" colspan="2">指定年度業績</td>
+                                                            <td id="thead4" class="text-center" colspan="1" style="vertical-align: middle;"></td>
+                                                        </tr>
+                                                        <!--第二層-->
+                                                        <tr>
+                                                            <th id="th1" class="text-center" colspan="1">金額</th>
+                                                            <th id="th3" class="text-center" colspan="1">月成長%</th>
+                                                            <th id="th2" class="text-center" colspan="1">金額</th>
+                                                            <th id="th5" class="text-center" colspan="1">月成長%</th>
+                                                            <th id="th4" class="text-center" colspan="1" style="vertical-align: middle;">年成長%</th>
+                                                        </tr>
+                                                        <!--第三層-->
+                                                        <tr>
+                                                            <td id="td0" class="text-center" colspan="1">月總業績</td>
+                                                            <td id="td1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td4" colspan="1" style="text-align: right"></td>
+                                                            <td id="td2" colspan="1" style="text-align: right"></td>
+                                                            <td id="td5" colspan="1" style="text-align: right"></td>
+                                                            <td id="td3" class="text-center" colspan="1"></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -403,7 +466,7 @@
                                         background-color: red;
                                     }
 
-                                    #tbQuerySTEP2 thead tr th {
+                                    #tbQuerySTEP2 thead tr th, #tbQuerySTEP22 thead tr th {
                                         font-size: 16px;
                                         padding: 3px;
                                         background-color: #ffb620;
@@ -411,7 +474,7 @@
                                         vertical-align: middle;
                                     }
 
-                                    #tbQuerySTEP2 thead tr td {
+                                    #tbQuerySTEP2 thead tr td, #tbQuerySTEP22 thead tr td {
                                         font-size: 16px;
                                         padding: 3px;
                                         background-color: #ffb620;
@@ -419,12 +482,12 @@
                                         vertical-align: middle;
                                     }
 
-                                    #tbQuerySTEP2 tbody tr td {
+                                    #tbQuerySTEP2 tbody tr td, #tbQuerySTEP22 tbody tr td {
                                         font-size: 16px;
                                         padding: 3px;
                                         font-weight: bold;
                                         vertical-align: middle;
-                                        cursor:pointer;
+                                        cursor: pointer;
                                     }
 
                                     th:first-child {
@@ -434,15 +497,15 @@
 
                                     /*手機畫面*/
                                     @media (max-width:767px) {
-                                        #tbQuerySTEP2 thead tr th {
+                                        #tbQuerySTEP2 thead tr th, #tbQuerySTEP22 thead tr th {
                                             font-size: 12px;
                                         }
 
-                                        #tbQuerySTEP2 thead tr td {
+                                        #tbQuerySTEP2 thead tr td, #tbQuerySTEP22 thead tr td {
                                             font-size: 12px;
                                         }
 
-                                        #tbQuerySTEP2 tbody tr td {
+                                        #tbQuerySTEP2 tbody tr td, #tbQuerySTEP22 tbody tr td {
                                             font-size: 12px;
                                         }
                                     }
@@ -470,7 +533,10 @@
                                         <label id="lblShop2" class="DyForm3-LabelBlack" style="margin-left: 5px; margin-top: 3px "></label>
                                     </div>
                                     <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px ">
-                                        <label class="DyForm3-Label" style="font-size: 16px; margin-top: 0px ">成長率=(指定年度-前一年度)/前一年度</label>
+                                        <label class="DyForm3-Label" style="font-size: 16px; margin-top: 0px ">年成長率=(指定年度-前一年度)/前一年度</label>
+                                    </div>
+                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px ">
+                                        <label class="DyForm3-Label" style="font-size: 16px; margin-top: 0px ">月成長率=(本月業績-上月業績)/上月業績</label>
                                     </div>
 
                                     <div class="card-block forminput">
@@ -504,6 +570,39 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
+                                                <table id="tbQuerySTEP22" class="table table-bordered DyForm3-Table">
+                                                    <thead>
+                                                        <!--第一層-->
+                                                        <tr>
+                                                            <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">月份</th>
+                                                            <td id="thead2" class="text-center" colspan="2">前一年度業績</td>
+                                                            <td id="thead3" class="text-center" colspan="2">指定年度業績</td>
+                                                            <td id="thead4" class="text-center" colspan="1" style="vertical-align: middle;"></td>
+                                                        </tr>
+                                                        <!--第二層-->
+                                                        <tr>
+                                                            <th id="th1" class="text-center" colspan="1">金額</th>
+                                                            <th id="th3" class="text-center" colspan="1">月成長%</th>
+                                                            <th id="th2" class="text-center" colspan="1">金額</th>
+                                                            <th id="th5" class="text-center" colspan="1">月成長%</th>
+                                                            <th id="th4" class="text-center" colspan="1" style="vertical-align: middle;">年成長%</th>
+                                                        </tr>
+                                                        <!--第三層-->
+                                                        <tr>
+                                                            <td id="td0" class="text-center" colspan="1">店總業績</td>
+                                                            <td id="td1" colspan="1" style="text-align: right"></td>
+                                                            <td id="td4" colspan="1" style="text-align: right"></td>
+                                                            <td id="td2" colspan="1" style="text-align: right"></td>
+                                                            <td id="td5" colspan="1" style="text-align: right"></td>
+                                                            <td id="td3" class="text-center" colspan="1"></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
                                             </div>
                                         </div>
                                     </div>

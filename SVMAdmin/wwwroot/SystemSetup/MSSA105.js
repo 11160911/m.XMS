@@ -7,6 +7,26 @@
         grdM = new DynGrid(
             {
                 table_lement: $('#tbQuery')[0],
+                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6"],
+                fields_info: [
+                    { type: "Text", name: "ID", style: "" },
+                    { type: "TextAmt", name: "Cash1" },
+                    { type: "TextPercent", name: "Per1" },
+                    { type: "TextAmt", name: "Cash2" },
+                    { type: "TextPercent", name: "Per2" },
+                    { type: "TextPercent", name: "Per" }
+                ],
+                //rows_per_page: 10,
+                method_clickrow: click_PLU,
+                afterBind: InitDetailButton,
+                sortable: "N",
+                step: "Y"
+            }
+        );
+
+        grdM1 = new DynGrid(
+            {
+                table_lement: $('#tbQuery1')[0],
                 class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4"],
                 fields_info: [
                     { type: "Text", name: "ID", style: "" },
@@ -40,6 +60,26 @@
             }
         );
 
+        grdSTEP11 = new DynGrid(
+            {
+                table_lement: $('#tbQuerySTEP11')[0],
+                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6"],
+                fields_info: [
+                    { type: "Text", name: "ID", style: "" },
+                    { type: "TextAmt", name: "Cash1" },
+                    { type: "TextPercent", name: "Per1" },
+                    { type: "TextAmt", name: "Cash2" },
+                    { type: "TextPercent", name: "Per2" },
+                    { type: "TextPercent", name: "Per" }
+                ],
+                //rows_per_page: 10,
+                method_clickrow: click_PLU,
+                afterBind: InitDetail2Button,
+                sortable: "N",
+                step: "Y"
+            }
+        );
+
         grdSTEP2 = new DynGrid(
             {
                 table_lement: $('#tbQuerySTEP2')[0],
@@ -48,6 +88,24 @@
                     { type: "Text", name: "ID", style: "" },
                     { type: "TextAmt", name: "Cash1" },
                     { type: "TextAmt", name: "Cash2" },
+                    { type: "TextPercent", name: "Per" }
+                ],
+                //rows_per_page: 10,
+                sortable: "N",
+                step: "Y"
+            }
+        );
+
+        grdSTEP22 = new DynGrid(
+            {
+                table_lement: $('#tbQuerySTEP22')[0],
+                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align", "tdCol6"],
+                fields_info: [
+                    { type: "Text", name: "ID", style: "" },
+                    { type: "TextAmt", name: "Cash1" },
+                    { type: "TextPercent", name: "Per1" },
+                    { type: "TextAmt", name: "Cash2" },
+                    { type: "TextPercent", name: "Per2" },
                     { type: "TextPercent", name: "Per" }
                 ],
                 //rows_per_page: 10,
@@ -65,11 +123,15 @@
 
     let InitDetailButton = function () {
         $('#tbQuery tbody tr td').click(function () { Step1_click(this) });
+        $('#tbQuery1 tbody tr td').click(function () { Step1_click(this) });
 
     };
     let InitDetail2Button = function () {
-        if (($('#rdoS').prop('checked') == true && $('#rdoB1').prop('checked') == true) | ($('#rdoB').prop('checked') == true && $('#rdoD2').prop('checked') == true) | ($('#rdoB').prop('checked') == true && $('#rdoS2').prop('checked') == true)) 
+        if (($('#rdoS').prop('checked') == true && $('#rdoB1').prop('checked') == true) | ($('#rdoB').prop('checked') == true && $('#rdoD2').prop('checked') == true) | ($('#rdoB').prop('checked') == true && $('#rdoS2').prop('checked') == true)) {
             $('#tbQuerySTEP1 tbody tr td').click(function () { Step2_click(this) });
+            $('#tbQuerySTEP11 tbody tr td').click(function () { Step2_click(this) });
+
+        }
 
     };
     //第二層
@@ -77,23 +139,29 @@
         //$('#tbQuerySTEP1 td').closest('tr').css('background-color', 'transparent');
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
-        var node = $(grdSTEP1.ActiveRowTR()).prop('Record');
+        $('#tbQuerySTEP2').hide();
+        $('#tbQuerySTEP22').hide();
+        
+        var node;
         //$('#tbQuerySTEP1 td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
         $('#modal_Step2').modal('show');
         $('#lblYear2').html($('#cboYear').val() + '年');
-        if ($('#rdoS').prop('checked') == true && $('#rdoB1').prop('checked') == true){
+        if ($('#rdoS').prop('checked') == true && $('#rdoB1').prop('checked') == true) {
+            node = $(grdSTEP1.ActiveRowTR()).prop('Record')
             $('#lblType2Name').html('月份');
             $('#lblType2').html($('#lblMonth').html());
             $('#lblShop2Name').html('區課');
             $('#lblShop2').html(GetNodeValue(node, 'ID'));
         }
         else if ($('#rdoB').prop('checked') == true && $('#rdoD2').prop('checked') == true) {
+            node = $(grdSTEP1.ActiveRowTR()).prop('Record')
             $('#lblType2Name').html('區課');
             $('#lblType2').html($('#lblMonth').html());
             $('#lblShop2Name').html('店別');
             $('#lblShop2').html(GetNodeValue(node, 'ID'));
         }
         else if ($('#rdoB').prop('checked') == true && $('#rdoS2').prop('checked') == true) {
+            node = $(grdSTEP11.ActiveRowTR()).prop('Record')
             $('#lblType2Name').html('區課');
             $('#lblType2').html($('#lblMonth').html());
             $('#lblShop2Name').html('月份');
@@ -123,8 +191,8 @@
             Flag = "D2";
             Type = Type.split('-')[0];
             Shop = Shop.split('-')[0];
-            $('#tbQuerySTEP2 thead tr th#thead1').html('月份');
-            $('#tbQuerySTEP2 thead td#td0').html('月總業績');
+            $('#tbQuerySTEP22 thead tr th#thead1').html('月份');
+            $('#tbQuerySTEP22 thead td#td0').html('月總業績');
         }
         else if ($('#rdoB').prop('checked') == true && $('#rdoS2').prop('checked') == true) {
             Flag = "S2";
@@ -154,15 +222,28 @@
             var YearBef = Year - 1;
             $('#tbQuerySTEP2 #thead2').html(YearBef + '年度業績');
             $('#tbQuerySTEP2 #thead3').html(Year + '年度業績');
+            $('#tbQuerySTEP22 #thead2').html(YearBef + '年度業績');
+            $('#tbQuerySTEP22 #thead3').html(Year + '年度業績');
 
             var dtH = data.getElementsByTagName('dtH');
-            $('#tbQuerySTEP2 thead td#td1').html(parseInt(GetNodeValue(dtH[0], "SumCash1")).toLocaleString('en-US'));
-            $('#tbQuerySTEP2 thead td#td2').html(parseInt(GetNodeValue(dtH[0], "SumCash2")).toLocaleString('en-US'));
-            $('#tbQuerySTEP2 thead td#td3').html(GetNodeValue(dtH[0], "SumPer"));
 
             var dtE = data.getElementsByTagName('dtE');
-            grdSTEP2.BindData(dtE);
-
+            if ($('#rdoB').prop('checked') == true && $('#rdoD2').prop('checked') == true) {
+                $('#tbQuerySTEP2').hide();
+                $('#tbQuerySTEP22').show();
+                $('#tbQuerySTEP22 thead td#td1').html(parseInt(GetNodeValue(dtH[0], "SumCash1")).toLocaleString('en-US'));
+                $('#tbQuerySTEP22 thead td#td2').html(parseInt(GetNodeValue(dtH[0], "SumCash2")).toLocaleString('en-US'));
+                $('#tbQuerySTEP22 thead td#td3').html(GetNodeValue(dtH[0], "SumPer"));
+                grdSTEP22.BindData(dtE);
+            }
+            else {
+                $('#tbQuerySTEP2').show();
+                $('#tbQuerySTEP22').hide();
+                $('#tbQuerySTEP2 thead td#td1').html(parseInt(GetNodeValue(dtH[0], "SumCash1")).toLocaleString('en-US'));
+                $('#tbQuerySTEP2 thead td#td2').html(parseInt(GetNodeValue(dtH[0], "SumCash2")).toLocaleString('en-US'));
+                $('#tbQuerySTEP2 thead td#td3').html(GetNodeValue(dtH[0], "SumPer"));
+                grdSTEP2.BindData(dtE);
+            }
         }
     };
     //第一層
@@ -170,19 +251,25 @@
         //$('#tbQuery td').closest('tr').css('background-color', 'transparent');
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
-        var node = $(grdM.ActiveRowTR()).prop('Record');
+        $('#tbQuerySTEP1').hide();
+        $('#tbQuerySTEP11').hide();
+        
+        var node;
         //$('#tbQuery td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
         if ($('#rdoS').prop('checked') == true) {
             $('#rdoGroup1').show();
             $('#rdoGroup2').hide();
+            node = $(grdM.ActiveRowTR()).prop('Record')
         }
         else if ($('#rdoD').prop('checked') == true) {
             $('#rdoGroup1').hide();
             $('#rdoGroup2').hide();
+            node = $(grdM1.ActiveRowTR()).prop('Record')
         }
         else if ($('#rdoB').prop('checked') == true) {
             $('#rdoGroup1').hide();
             $('#rdoGroup2').show();
+            node = $(grdM1.ActiveRowTR()).prop('Record')
         }
         $('#modal_Step1').modal('show');
         $('#lblYear').html($('#cboYear').val() + '年');
@@ -220,8 +307,8 @@
             Flag = "D";
             Month = Month.split('-')[0];
             $('#lblTypeName').html('店別：');
-            $('#tbQuerySTEP1 thead tr th#thead1').html('月份');
-            $('#tbQuerySTEP1 thead td#td0').html('月總業績');
+            $('#tbQuerySTEP11 thead tr th#thead1').html('月份');
+            $('#tbQuerySTEP11 thead td#td0').html('月總業績');
         }
         //區課
         else if ($('#rdoB').prop('checked') == true) {
@@ -232,8 +319,8 @@
             }
             else {
                 SubType = $('#rdoS2').val();
-                $('#tbQuerySTEP1 thead tr th#thead1').html('月份');
-                $('#tbQuerySTEP1 thead td#td0').html('月份總業績');
+                $('#tbQuerySTEP11 thead tr th#thead1').html('月份');
+                $('#tbQuerySTEP11 thead td#td0').html('月份總業績');
             }
             Flag = "B";
             Month = Month.split('-')[0];
@@ -262,16 +349,48 @@
             var YearBef = Year - 1;
             $('#tbQuerySTEP1 #thead2').html(YearBef + '年度業績');
             $('#tbQuerySTEP1 #thead3').html(Year + '年度業績');
+            $('#tbQuerySTEP11 #thead2').html(YearBef + '年度業績');
+            $('#tbQuerySTEP11 #thead3').html(Year + '年度業績');
 
             var dtH = data.getElementsByTagName('dtH');
-            $('#tbQuerySTEP1 thead td#td1').html(parseInt(GetNodeValue(dtH[0], "SumCash1")).toLocaleString('en-US'));
-            $('#tbQuerySTEP1 thead td#td2').html(parseInt(GetNodeValue(dtH[0], "SumCash2")).toLocaleString('en-US'));
-            $('#tbQuerySTEP1 thead td#td3').html(GetNodeValue(dtH[0], "SumPer"));
 
             var dtE = data.getElementsByTagName('dtE');
-            grdSTEP1.BindData(dtE);
-
-
+            if ($('#rdoS').prop('checked') == true) {
+                $('#tbQuerySTEP1 thead td#td1').html(parseInt(GetNodeValue(dtH[0], "SumCash1")).toLocaleString('en-US'));
+                $('#tbQuerySTEP1 thead td#td2').html(parseInt(GetNodeValue(dtH[0], "SumCash2")).toLocaleString('en-US'));
+                $('#tbQuerySTEP1 thead td#td3').html(GetNodeValue(dtH[0], "SumPer"));
+                $('#tbQuerySTEP1').show();
+                $('#tbQuerySTEP11').hide();
+                grdSTEP1.BindData(dtE);
+            }
+            //店別
+            else if ($('#rdoD').prop('checked') == true) {
+                $('#tbQuerySTEP11 thead td#td1').html(parseInt(GetNodeValue(dtH[0], "SumCash1")).toLocaleString('en-US'));
+                $('#tbQuerySTEP11 thead td#td2').html(parseInt(GetNodeValue(dtH[0], "SumCash2")).toLocaleString('en-US'));
+                $('#tbQuerySTEP11 thead td#td3').html(GetNodeValue(dtH[0], "SumPer"));
+                $('#tbQuerySTEP1').hide();
+                $('#tbQuerySTEP11').show();
+                grdSTEP11.BindData(dtE);
+            }
+            //區課
+            else if ($('#rdoB').prop('checked') == true) {
+                if ($('#rdoD2').prop('checked') == true) {
+                    $('#tbQuerySTEP1 thead td#td1').html(parseInt(GetNodeValue(dtH[0], "SumCash1")).toLocaleString('en-US'));
+                    $('#tbQuerySTEP1 thead td#td2').html(parseInt(GetNodeValue(dtH[0], "SumCash2")).toLocaleString('en-US'));
+                    $('#tbQuerySTEP1 thead td#td3').html(GetNodeValue(dtH[0], "SumPer"));
+                    $('#tbQuerySTEP1').show();
+                    $('#tbQuerySTEP11').hide();
+                    grdSTEP1.BindData(dtE);
+                }
+                else {
+                    $('#tbQuerySTEP11 thead td#td1').html(parseInt(GetNodeValue(dtH[0], "SumCash1")).toLocaleString('en-US'));
+                    $('#tbQuerySTEP11 thead td#td2').html(parseInt(GetNodeValue(dtH[0], "SumCash2")).toLocaleString('en-US'));
+                    $('#tbQuerySTEP11 thead td#td3').html(GetNodeValue(dtH[0], "SumPer"));
+                    $('#tbQuerySTEP1').hide();
+                    $('#tbQuerySTEP11').show();
+                    grdSTEP11.BindData(dtE);
+                }
+            }
         }
     };
 
@@ -318,8 +437,18 @@
         }
         else {
             $('#btQuery').prop('disabled', false);
+
             var dtE = data.getElementsByTagName('dtE');
-            grdM.BindData(dtE);
+            if ($('#rdoS').prop('checked')) {
+                $('#tbQuery').show();
+                $('#tbQuery1').hide();
+                grdM.BindData(dtE);
+            }
+            else {
+                $('#tbQuery').hide();
+                $('#tbQuery1').show();
+                grdM1.BindData(dtE);
+            }
 
             var heads = $('#tbQuery thead tr th#thead1');
             if ($('#rdoS').prop('checked')) {
@@ -338,17 +467,30 @@
                 $('#tbQuery thead td#td1').html('');
                 $('#tbQuery thead td#td2').html('');
                 $('#tbQuery thead td#td3').html('');
+                $('#tbQuery1 thead td#td1').html('');
+                $('#tbQuery1 thead td#td2').html('');
+                $('#tbQuery1 thead td#td3').html('');
                 return;
             }
             var Year = $('#cboYear').val();
             var YearBef = Year - 1;
+
             $('#tbQuery #thead2').html(YearBef + '年度業績');
             $('#tbQuery #thead3').html(Year + '年度業績');
+            $('#tbQuery1 #thead2').html(YearBef + '年度業績');
+            $('#tbQuery1 #thead3').html(Year + '年度業績');
 
             var dtH = data.getElementsByTagName('dtH');
-            $('#tbQuery thead td#td1').html(parseInt(GetNodeValue(dtH[0], "SumCash1")).toLocaleString('en-US'));
-            $('#tbQuery thead td#td2').html(parseInt(GetNodeValue(dtH[0], "SumCash2")).toLocaleString('en-US'));
-            $('#tbQuery thead td#td3').html(GetNodeValue(dtH[0], "SumPer"));
+            if ($('#rdoS').prop('checked')) {
+                $('#tbQuery thead td#td1').html(parseInt(GetNodeValue(dtH[0], "SumCash1")).toLocaleString('en-US'));
+                $('#tbQuery thead td#td2').html(parseInt(GetNodeValue(dtH[0], "SumCash2")).toLocaleString('en-US'));
+                $('#tbQuery thead td#td3').html(GetNodeValue(dtH[0], "SumPer"));
+            }
+            else {
+                $('#tbQuery1 thead td#td1').html(parseInt(GetNodeValue(dtH[0], "SumCash1")).toLocaleString('en-US'));
+                $('#tbQuery1 thead td#td2').html(parseInt(GetNodeValue(dtH[0], "SumCash2")).toLocaleString('en-US'));
+                $('#tbQuery1 thead td#td3').html(GetNodeValue(dtH[0], "SumPer"));
+            }
         }
     };
     let btExit_Step1_click = function (bt) {
@@ -416,6 +558,7 @@
 
             AssignVar();
 
+            $('#tbQuery1').hide();
             $('#btQuery').click(function () { btQuery_click(this) });
             $('#btExit_Step1').click(function () { btExit_Step1_click(this) });
             $('#btExit_Step2').click(function () { btExit_Step2_click(this) });

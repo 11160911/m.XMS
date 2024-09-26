@@ -14,6 +14,7 @@ using ZXing.QrCode.Internal;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using System.Drawing;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 
 
 namespace SVMAdmin.Controllers
@@ -14030,6 +14031,7 @@ namespace SVMAdmin.Controllers
                 string Year = rq["Year"];
                 string Flag = rq["Flag"];
                 string YearBef = (Convert.ToInt32(Year) - 1).ToString();
+                string YearLast= (Convert.ToInt32(Year) - 2).ToString();
 
                 string sql = "";
                 string sqlD = "";
@@ -14039,21 +14041,27 @@ namespace SVMAdmin.Controllers
                 if (Flag == "S")
                 {
                     //期間1
-                    sql = "select substring(a.Opendate,6,2) Month,Sum(a.Cash)Cash1 into #s1 ";
+                    sql = "select substring(a.Opendate,1,7) Month,Sum(a.Cash)Cash1,";
+                    sql += "(select Sum(Cash)Cash1 from SalesHWeb  (nolock) where Companycode='" + uu.CompanyId + "' and substring(opendate,1,7)  =convert(varchar(7), dateadd(m,-1, convert(date,substring(a.OpenDate,1,7 )+'/01')),111) group by substring(Opendate,1,7) ) Cash2 ";
+                    sql += " into #s1data ";
                     sql += "from SalesHWeb a (nolock) ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and opendate like '" + YearBef + "%' ";
-                    sql += "group by substring(a.Opendate,6,2); ";
+                    sql += "group by substring(a.Opendate,1,7); ";
 
+                    sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format((Cash1-Cash2)/Cash2,'p') end Per into #s1 from #s1data;";
                     //期間2
-                    sql += "select substring(a.Opendate,6,2) Month,Sum(a.Cash)Cash1 into #s2 ";
+                    sql += "select substring(a.Opendate,1,7) Month,Sum(a.Cash)Cash1, ";
+                    sql += "(select Sum(Cash)Cash1 from SalesHWeb  (nolock) where Companycode='" + uu.CompanyId + "' and substring(opendate,1,7)  =convert(varchar(7), dateadd(m,-1, convert(date,substring(a.OpenDate,1,7 )+'/01')),111) group by substring(Opendate,1,7) ) Cash2 ";
+                    sql += " into #s2data ";
                     sql += "from SalesHWeb a (nolock) ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and opendate like '" + Year + "%' ";
-                    sql += "group by substring(a.Opendate,6,2); ";
+                    sql += "group by substring(a.Opendate,1,7); ";
 
+                    sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format((Cash1-Cash2)/Cash2,'p') end Per into #s2 from #s2data;";
                     //明細資料
-                    sqlD = "select case when isnull(s1.Month,'')='' then s2.Month +'月' else s1.Month +'月' end id,isnull(s1.Cash1,0)Cash1,isnull(s2.Cash1,0)Cash2, ";
+                    sqlD = "select case when isnull(s1.Month,'')='' then s2.Month +'月' else s1.Month +'月' end id,isnull(s1.Cash1,0)Cash1,isnull(s1.per,0) Per1,isnull(s2.Cash1,0)Cash2,isnull(s2.per,0) Per2, ";
                     sqlD += "case when isnull(s1.Cash1,0)=0 and isnull(s2.Cash1,0)=0 then format(0,'p') when isnull(s1.Cash1,0)=0 then format(1,'p') else format(cast(isnull(s2.Cash1,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float),'p') end as Per ";
                     sqlD += "from #s1 s1 ";
                     sqlD += "Full join #s2 s2 on s1.Month=s2.Month ";
@@ -14250,24 +14258,30 @@ namespace SVMAdmin.Controllers
                 else if (Flag == "D")
                 {
                     //期間1
-                    sql = "select substring(a.Opendate,6,2) Month,Sum(a.Cash)Cash1 into #s1 ";
+                    sql = "select substring(a.Opendate,1,7) Month,Sum(a.Cash)Cash1, ";
+                    sql += "(select Sum(Cash) Cash1 from SalesHWeb  (nolock) where Companycode='" + uu.CompanyId + "' and ShopNo='" + Month + "' and substring(opendate,1,7)  =convert(varchar(7), dateadd(m,-1, convert(date,substring(a.OpenDate,1,7 )+'/01')),111) group by substring(Opendate,1,7) ) Cash2 ";
+                    sql += " into #s1data ";
                     sql += "from SalesHWeb a (nolock) ";
                     sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' and a.ShopNo='" + Month + "' ";
                     sql += "and opendate like '" + YearBef + "%' ";
-                    sql += "group by substring(a.Opendate,6,2) ; ";
+                    sql += "group by substring(a.Opendate,1,7) ; ";
 
+                    sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format((Cash1-Cash2)/Cash2,'p') end Per into #s1 from #s1data;";
                     //期間2
-                    sql += "select substring(a.Opendate,6,2) Month,Sum(a.Cash)Cash1 into #s2 ";
+                    sql += "select substring(a.Opendate,1,7) Month,Sum(a.Cash)Cash1, ";
+                    sql += "(select Sum(Cash) Cash1 from SalesHWeb  (nolock) where Companycode='" + uu.CompanyId + "' and ShopNo='" + Month + "' and substring(opendate,1,7)  =convert(varchar(7), dateadd(m,-1, convert(date,substring(a.OpenDate,1,7 )+'/01')),111) group by substring(Opendate,1,7) ) Cash2 ";
+                    sql += " into #s2data ";
                     sql += "from SalesHWeb a (nolock) ";
                     sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' and a.ShopNo='" + Month + "' ";
                     sql += "and opendate like '" + Year + "%' ";
-                    sql += "group by substring(a.Opendate,6,2); ";
+                    sql += "group by substring(a.Opendate,1,7); ";
 
+                    sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format((Cash1-Cash2)/Cash2,'p') end Per into #s2 from #s2data;";
                     //明細資料
                     sqlD = "select case when isnull(s1.Month,'')='' then isnull(s2.Month,'')+'月' else isnull(s1.Month,'')+'月' end as id, ";
-                    sqlD += "isnull(s1.Cash1,0)Cash1,isnull(s2.Cash1,0)Cash2, ";
+                    sqlD += "isnull(s1.Cash1,0)Cash1,isnull(s1.per,0) Per1,isnull(s2.Cash1,0)Cash2,isnull(s2.per,0) Per2, ";
                     sqlD += "case when isnull(s1.Cash1,0)=0 and isnull(s2.Cash1,0)=0 then format(0,'p') when isnull(s1.Cash1,0)=0 then format(1,'p') else format(cast(isnull(s2.Cash1,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float),'p') end as Per ";
                     sqlD += "from #s1 s1 ";
                     sqlD += "Full join #s2 s2 on s1.Month=s2.Month ";
@@ -14322,26 +14336,38 @@ namespace SVMAdmin.Controllers
                     else if (SubType == "Month")    //月份
                     {
                         //期間1
-                        sql = "select substring(a.Opendate,6,2) Month,Sum(a.Cash)Cash1 into #s1 ";
+                        sql = "select substring(a.Opendate,1,7) Month,Sum(a.Cash)Cash1, ";
+                        sql += "(select Sum(Cash)Cash1 from SalesHWeb b (nolock) ";
+                        sql += "inner join EDDMS.dbo.Warehouse w (nolock) on b.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                        sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
+                        sql += " where b.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Month + "' and substring(opendate,1,7)  =convert(varchar(7), dateadd(m,-1, convert(date,substring(a.OpenDate,1,7 )+'/01')),111) group by substring(Opendate,1,7) ) Cash2 ";
+                        sql += " into #s1data ";
                         sql += "from SalesHWeb a (nolock) ";
                         sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
                         sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
                         sql += "where a.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Month + "' ";
                         sql += "and opendate like '" + YearBef + "%' ";
-                        sql += "group by substring(a.Opendate,6,2) ; ";
+                        sql += "group by substring(a.Opendate,1,7) ; ";
 
+                        sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format((Cash1-Cash2)/Cash2,'p') end Per into #s1 from #s1data;";
                         //期間2
-                        sql += "select substring(a.Opendate,6,2) Month,Sum(a.Cash)Cash1 into #s2 ";
+                        sql += "select substring(a.Opendate,1,7) Month,Sum(a.Cash)Cash1, ";
+                        sql += "(select Sum(Cash)Cash1 from SalesHWeb b (nolock) ";
+                        sql += "inner join EDDMS.dbo.Warehouse w (nolock) on b.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                        sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
+                        sql += "where b.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Month + "' and substring(opendate,1,7)  =convert(varchar(7), dateadd(m,-1, convert(date,substring(a.OpenDate,1,7 )+'/01')),111) group by substring(Opendate,1,7) ) Cash2 ";
+                        sql += " into #s2data ";
                         sql += "from SalesHWeb a (nolock) ";
                         sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
                         sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
                         sql += "where a.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Month + "' ";
                         sql += "and opendate like '" + Year + "%' ";
-                        sql += "group by substring(a.Opendate,6,2); ";
+                        sql += "group by substring(a.Opendate,1,7); ";
 
+                        sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format((Cash1-Cash2)/Cash2,'p') end Per into #s2 from #s2data;";
                         //明細資料
                         sqlD = "select case when isnull(s1.Month,'')='' then isnull(s2.Month,'')+'月' else isnull(s1.Month,'')+'月' end as id, ";
-                        sqlD += "isnull(s1.Cash1,0)Cash1,isnull(s2.Cash1,0)Cash2, ";
+                        sqlD += "isnull(s1.Cash1,0)Cash1,isnull(s1.per,0) Per1,isnull(s2.Cash1,0)Cash2,isnull(s2.per,0) Per2, ";
                         sqlD += "case when isnull(s1.Cash1,0)=0 and isnull(s2.Cash1,0)=0 then format(0,'p') when isnull(s1.Cash1,0)=0 then format(1,'p') else format(cast(isnull(s2.Cash1,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float),'p') end as Per ";
                         sqlD += "from #s1 s1 ";
                         sqlD += "Full join #s2 s2 on s1.Month=s2.Month ";
@@ -14439,26 +14465,38 @@ namespace SVMAdmin.Controllers
                 else if (Flag == "D2")
                 {
                     //期間1
-                    sql = "select substring(a.Opendate,6,2) Month,Sum(a.Cash)Cash1 into #s1 ";
+                    sql = "select substring(a.Opendate,1,7) Month,Sum(a.Cash)Cash1, ";
+                    sql += "(select Sum(Cash) Cash1 from SalesHWeb b (nolock) ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on b.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                    sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
+                    sql += " where b.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Type + "'  and ShopNo='" + Shop + "' and substring(opendate,1,7)  =convert(varchar(7), dateadd(m,-1, convert(date,substring(a.OpenDate,1,7 )+'/01')),111) group by substring(Opendate,1,7) ) Cash2 ";
+                    sql += " into #s1data ";
                     sql += "from SalesHWeb a (nolock) ";
                     sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
                     sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Type + "' and a.ShopNo='" + Shop + "' ";
                     sql += "and opendate like '" + YearBef + "%' ";
-                    sql += "group by substring(a.Opendate,6,2); ";
+                    sql += "group by substring(a.Opendate,1,7); ";
 
+                    sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format((Cash1-Cash2)/Cash2,'p') end Per into #s1 from #s1data;";
                     //期間2
-                    sql += "select substring(a.Opendate,6,2) Month,Sum(a.Cash)Cash1 into #s2 ";
+                    sql += "select substring(a.Opendate,1,7) Month,Sum(a.Cash)Cash1, ";
+                    sql += "(select Sum(Cash) Cash1 from SalesHWeb b (nolock) ";
+                    sql += "inner join EDDMS.dbo.Warehouse w (nolock) on b.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
+                    sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
+                    sql += " where b.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Type + "'  and ShopNo='" + Shop + "' and substring(opendate,1,7)  =convert(varchar(7), dateadd(m,-1, convert(date,substring(a.OpenDate,1,7 )+'/01')),111) group by substring(Opendate,1,7) ) Cash2 ";
+                    sql += " into #s2data ";
                     sql += "from SalesHWeb a (nolock) ";
                     sql += "inner join EDDMS.dbo.Warehouse w (nolock) on a.ShopNo=w.ST_ID and w.Companycode='" + uu.CompanyId + "' and w.ST_Type not in('2','3') ";
                     sql += "inner join TypeDataWeb p (nolock) on w.ST_PlaceID=p.Type_ID and p.Companycode='" + uu.CompanyId + "' and Type_Code='A' ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' and p.Type_ID='" + Type + "' and a.ShopNo='" + Shop + "' ";
                     sql += "and opendate like '" + Year + "%' ";
-                    sql += "group by substring(a.Opendate,6,2) ";
+                    sql += "group by substring(a.Opendate,1,7) ";
 
+                    sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format((Cash1-Cash2)/Cash2,'p') end Per into #s2 from #s2data;";
                     //明細資料
                     sqlD = "select case when isnull(s1.Month,'')='' then isnull(s2.Month,'')+'月' else isnull(s1.Month,'')+'月' end as id, ";
-                    sqlD += "isnull(s1.Cash1,0)Cash1,isnull(s2.Cash1,0)Cash2, ";
+                    sqlD += "isnull(s1.Cash1,0)Cash1,isnull(s1.per,0) Per1,isnull(s2.Cash1,0)Cash2,isnull(s2.per,0) Per2, ";
                     sqlD += "case when isnull(s1.Cash1,0)=0 and isnull(s2.Cash1,0)=0 then format(0,'p') when isnull(s1.Cash1,0)=0 then format(1,'p') else format(cast(isnull(s2.Cash1,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float),'p') end as Per ";
                     sqlD += "from #s1 s1 ";
                     sqlD += "Full join #s2 s2 on s1.Month=s2.Month ";
