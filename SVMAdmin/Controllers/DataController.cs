@@ -508,12 +508,12 @@ namespace SVMAdmin.Controllers
                 dtE.TableName = "dtE";
                 ds.Tables.Add(dtE);
 
-                sql = "Select Top 10 ROW_NUMBER() over(order by sum(a.cash) desc) F1,b.ST_SName F2,sum(a.cash) F3 ";
+                sql = "Select Top 10 ROW_NUMBER() over(order by sum(a.cash) desc) F1,b.ST_Name F2,sum(a.cash) F3 ";
                 sql += "From SalesHWeb a (nolock) ";
                 sql += "left join WarehouseWeb b (nolock) on a.ShopNo=b.ST_ID and b.Companycode=a.Companycode ";
                 sql += "Where a.Companycode='" + uu.CompanyId + "' ";
                 sql += "and left(a.OpenDate,7)=convert(char(7),getdate(),111) ";
-                sql += "group by a.ShopNo,b.ST_SName ";
+                sql += "group by a.ShopNo,b.ST_Name ";
                 sql += "order by sum(a.cash) desc ";
                 DataTable dtF = PubUtility.SqlQry(sql, uu, "SYS");
                 dtF.TableName = "dtF";
