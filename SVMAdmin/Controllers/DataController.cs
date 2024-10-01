@@ -14049,7 +14049,7 @@ namespace SVMAdmin.Controllers
                     sql += "and opendate like '" + YearBef + "%' ";
                     sql += "group by substring(a.Opendate,1,7); ";
 
-                    sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format((Cash1-Cash2)/Cash2,'p') end Per into #s1 from #s1data;";
+                    sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format(cast(Cash1-Cash2 as Float)/cast(Cash2 as Float),'p') end Per into #s1 from #s1data;";
                     //期間2
                     sql += "select substring(a.Opendate,1,7) Month,Sum(a.Cash)Cash1, ";
                     sql += "(select Sum(Cash)Cash1 from SalesHWeb  (nolock) where Companycode='" + uu.CompanyId + "' and substring(opendate,1,7)  =convert(varchar(7), dateadd(m,-1, convert(date,substring(a.OpenDate,1,7 )+'/01')),111) group by substring(Opendate,1,7) ) Cash2 ";
@@ -14059,7 +14059,7 @@ namespace SVMAdmin.Controllers
                     sql += "and opendate like '" + Year + "%' ";
                     sql += "group by substring(a.Opendate,1,7); ";
 
-                    sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format((Cash1-Cash2)/Cash2,'p') end Per into #s2 from #s2data;";
+                    sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format(cast(Cash1-Cash2 as Float)/cast(Cash2 as Float),'p') end Per into #s2 from #s2data;";
                     //明細資料
                     sqlD = "select case when isnull(s1.Month,'')='' then s2.Month +'月' else s1.Month +'月' end id,isnull(s1.Cash1,0)Cash1,isnull(s1.per,0) Per1,isnull(s2.Cash1,0)Cash2,isnull(s2.per,0) Per2, ";
                     sqlD += "case when isnull(s1.Cash1,0)=0 and isnull(s2.Cash1,0)=0 then format(0,'p') when isnull(s1.Cash1,0)=0 then format(1,'p') else format(cast(isnull(s2.Cash1,0)-isnull(s1.Cash1,0) as Float)/cast(isnull(s1.Cash1,0) as Float),'p') end as Per ";
@@ -14267,7 +14267,7 @@ namespace SVMAdmin.Controllers
                     sql += "and opendate like '" + YearBef + "%' ";
                     sql += "group by substring(a.Opendate,1,7) ; ";
 
-                    sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format((Cash1-Cash2)/Cash2,'p') end Per into #s1 from #s1data;";
+                    sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format(cast(Cash1-Cash2 as Float)/cast(Cash2 as Float),'p') end Per into #s1 from #s1data;";
                     //期間2
                     sql += "select substring(a.Opendate,1,7) Month,Sum(a.Cash)Cash1, ";
                     sql += "(select Sum(Cash) Cash1 from SalesHWeb  (nolock) where Companycode='" + uu.CompanyId + "' and ShopNo='" + Month + "' and substring(opendate,1,7)  =convert(varchar(7), dateadd(m,-1, convert(date,substring(a.OpenDate,1,7 )+'/01')),111) group by substring(Opendate,1,7) ) Cash2 ";
@@ -14278,7 +14278,7 @@ namespace SVMAdmin.Controllers
                     sql += "and opendate like '" + Year + "%' ";
                     sql += "group by substring(a.Opendate,1,7); ";
 
-                    sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format((Cash1-Cash2)/Cash2,'p') end Per into #s2 from #s2data;";
+                    sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format(cast(Cash1-Cash2 as Float)/cast(Cash2 as Float),'p') end Per into #s2 from #s2data;";
                     //明細資料
                     sqlD = "select case when isnull(s1.Month,'')='' then isnull(s2.Month,'')+'月' else isnull(s1.Month,'')+'月' end as id, ";
                     sqlD += "isnull(s1.Cash1,0)Cash1,isnull(s1.per,0) Per1,isnull(s2.Cash1,0)Cash2,isnull(s2.per,0) Per2, ";
@@ -14349,7 +14349,7 @@ namespace SVMAdmin.Controllers
                         sql += "and opendate like '" + YearBef + "%' ";
                         sql += "group by substring(a.Opendate,1,7) ; ";
 
-                        sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format((Cash1-Cash2)/Cash2,'p') end Per into #s1 from #s1data;";
+                        sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format(cast(Cash1-Cash2 as Float)/cast(Cash2 as Float),'p') end Per into #s1 from #s1data;";
                         //期間2
                         sql += "select substring(a.Opendate,1,7) Month,Sum(a.Cash)Cash1, ";
                         sql += "(select Sum(Cash)Cash1 from SalesHWeb b (nolock) ";
@@ -14364,7 +14364,7 @@ namespace SVMAdmin.Controllers
                         sql += "and opendate like '" + Year + "%' ";
                         sql += "group by substring(a.Opendate,1,7); ";
 
-                        sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format((Cash1-Cash2)/Cash2,'p') end Per into #s2 from #s2data;";
+                        sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format(cast(Cash1-Cash2 as Float)/cast(Cash2 as Float),'p') end Per into #s2 from #s2data;";
                         //明細資料
                         sqlD = "select case when isnull(s1.Month,'')='' then isnull(s2.Month,'')+'月' else isnull(s1.Month,'')+'月' end as id, ";
                         sqlD += "isnull(s1.Cash1,0)Cash1,isnull(s1.per,0) Per1,isnull(s2.Cash1,0)Cash2,isnull(s2.per,0) Per2, ";
@@ -14478,7 +14478,7 @@ namespace SVMAdmin.Controllers
                     sql += "and opendate like '" + YearBef + "%' ";
                     sql += "group by substring(a.Opendate,1,7); ";
 
-                    sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format((Cash1-Cash2)/Cash2,'p') end Per into #s1 from #s1data;";
+                    sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format(cast(Cash1-Cash2 as Float)/cast(Cash2 as Float),'p') end Per into #s1 from #s1data;";
                     //期間2
                     sql += "select substring(a.Opendate,1,7) Month,Sum(a.Cash)Cash1, ";
                     sql += "(select Sum(Cash) Cash1 from SalesHWeb b (nolock) ";
@@ -14493,7 +14493,7 @@ namespace SVMAdmin.Controllers
                     sql += "and opendate like '" + Year + "%' ";
                     sql += "group by substring(a.Opendate,1,7) ";
 
-                    sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format((Cash1-Cash2)/Cash2,'p') end Per into #s2 from #s2data;";
+                    sql += "select  substring(Month,6,2 ) Month,Cash1,case when isnull(cash2,0)=0 then format(1,'p') else format(cast(Cash1-Cash2 as Float)/cast(Cash2 as Float),'p') end Per into #s2 from #s2data;";
                     //明細資料
                     sqlD = "select case when isnull(s1.Month,'')='' then isnull(s2.Month,'')+'月' else isnull(s1.Month,'')+'月' end as id, ";
                     sqlD += "isnull(s1.Cash1,0)Cash1,isnull(s1.per,0) Per1,isnull(s2.Cash1,0)Cash2,isnull(s2.per,0) Per2, ";
