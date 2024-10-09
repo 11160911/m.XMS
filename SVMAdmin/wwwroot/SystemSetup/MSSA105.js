@@ -1,6 +1,8 @@
 ﻿var PageMSSA105 = function (ParentNode) {
 
     let grdM;
+    let grdSTEP1;
+    let grdSTEP2;
 
     let AssignVar = function () {
 

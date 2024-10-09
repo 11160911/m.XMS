@@ -119,7 +119,7 @@
                                     background-color: red;
                                 }
 
-                                #tbQuery thead tr th,#tbShop thead tr th,#tbMonth thead tr th  {
+                                #tbQuery thead tr th, #tbType thead tr th, #tbMonth thead tr th {
                                     font-size: 16px;
                                     padding: 3px;
                                     background-color: #ffb620;
@@ -127,7 +127,7 @@
                                     vertical-align: middle;
                                 }
 
-                                #tbQuery thead tr td ,#tbShop thead tr td,#tbMonth thead tr td{
+                                #tbQuery thead tr td, #tbType thead tr td, #tbMonth thead tr td {
                                     font-size: 16px;
                                     padding: 3px;
                                     background-color: #ffb620;
@@ -135,7 +135,7 @@
                                     vertical-align: middle;
                                 }
 
-                                #tbQuery tbody tr td,#tbShop tbody tr td,#tbMonth tbody tr td {
+                                #tbQuery tbody tr td, #tbType tbody tr td, #tbMonth tbody tr td {
                                     font-size: 16px;
                                     padding: 3px;
                                     font-weight: bold;
@@ -156,7 +156,7 @@
                                     box-shadow: 0 0px 2px 0px inset #ddd;
                                 }
 
-                                #thead1, #thead2, #thead3, #thead4,#thead1S, #thead2S, #thead3S, #thead4S,#thead1M, #thead2M #thead3M, #thead4M {
+                                #thead1, #thead2, #thead3, #thead4, #thead5, #thead1S, #thead2S, #thead3S, #thead4S, #thead1M, #thead2M, #thead3M, #thead4M {
                                     top: 0;
                                     z-index: 2;
                                     height: 45px;
@@ -167,8 +167,8 @@
                                     z-index: 2;
                                 }
 
-                                #td1, #td2, #td3,#td1S, #td2S,#td1M, #td2M {
-                                    top: 72px;
+                                #td1, #td2, #td3, #td1S, #td2S, #td1M, #td2M {
+                                    top: 45px;
                                     z-index: 2;
                                     color: red;
                                 }
@@ -177,23 +177,38 @@
                                     top: 72px;
                                     z-index: 2;
                                 }
+
+                                .DyForm3-LabelBlack,.DyForm3-Label {
+                                    margin-bottom : 2px;
+                                }
                                 /*手機畫面*/
                                 @media (max-width:767px) {
-                                    #tbQuery thead tr th,#tbShop thead tr th,#tbMonth thead tr th {
+                                    #tbQuery thead tr th, #tbType thead tr th, #tbMonth thead tr th {
                                         font-size: 12px;
                                     }
 
-                                    #tbQuery thead tr td,#tbShop thead tr td,#tbMonth thead tr td {
+                                    #tbQuery thead tr td, #tbType thead tr td, #tbMonth thead tr td {
                                         font-size: 12px;
                                     }
 
-                                    #tbQuery tbody tr td,#tbShop tbody tr td,#tbMonth tbody tr td {
+                                    #tbQuery tbody tr td, #tbType tbody tr td, #tbMonth tbody tr td {
                                         font-size: 12px;
                                     }
 
                                     #td0, #td1, #td2, #td3, #td1S, #td2S, #td1M, #td2M {
-                                        top: 66px;
+                                        top: 45px;
                                     }
+
+                                    #lblDept,#lblBNID {
+                                        margin-right:40px;
+                                    }
+
+                                    .DyForm3-TableIni1 {
+                                        height: 250px;
+                                    }
+                                 /*   #lblTop {
+                                        margin-left:200px;
+                                    }*/
                                 }
                             </style>
 
@@ -217,9 +232,9 @@
                                 </select>
                             </div>
 
-                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px">
-                                <label class="DyForm3-Label">月份</label>
-                                <select id="cboMonth" class="DyForm3-Select" style="width: 80px;margin-left: 18px ">
+                            <div class="form-group row" style="margin-left: 20px; width: 100%; margin-bottom: 5px">
+                                <label class="DyForm3-Label" style="margin-left: 10px">月&nbsp;&nbsp;&nbsp;&nbsp;份</label>
+                                <select id="cboMonth" class="DyForm3-Select" style="width: 80px;margin-left: 13px ">
                                     <option value="">月份</option>
                                 </select>
                             </div>
@@ -230,7 +245,7 @@
                                 <input id="rdoShop" type="radio" name="Opt" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
                                 <label class="DyForm3-LabelBlack" for="rdoShop" style="margin-top:2px">&ensp;店別</label>
                                 <input id="rdoDept" type="radio" name="Opt" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
-                                <label class="DyForm3-LabelBlack" for="rdoDept" style="margin-top:2px">&ensp;部門</label>
+                                <label class="DyForm3-LabelBlack" for="rdoDept" style="margin-top:2px" id="lblDept">&ensp;部門</label>
                                 <input id="rdoBGNO" type="radio" name="Opt" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
                                 <label class="DyForm3-LabelBlack" for="rdoBGNO" style="margin-top:2px">&ensp;大類</label>
                                 <input id="rdoMDNO" type="radio" name="Opt" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
@@ -243,25 +258,28 @@
                                 <input id="rdoSMNO" type="radio" name="Opt" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
                                 <label class="DyForm3-LabelBlack" for="rdoSMNO" style="margin-top:2px">&ensp;小類</label>
                                 <input id="rdoBNID" type="radio" name="Opt" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
-                                <label class="DyForm3-LabelBlack" for="rdoBNID" style="margin-top:2px">&ensp;品牌</label>
+                                <label class="DyForm3-LabelBlack" for="rdoBNID" style="margin-top:2px" id="lblBNID">&ensp;品牌</label>
                                 <input id="rdoSERIES" type="radio" name="Opt" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
                                 <label class="DyForm3-LabelBlack" for="rdoSERIES" style="margin-top:2px">&ensp;系列</label>
                                 <input id="rdoMONTH" type="radio" name="Opt" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
-                                <label class="DyForm3-LabelBlack" for="rdoMONTH" style="margin-top:2px" id="lblMONTH" >&ensp;月份</label>
+                                <label class="DyForm3-LabelBlack" for="rdoMONTH" style="margin-top:2px" id="lblMONTH">&ensp;月份</label>
+                            </div>
+                            <div class="form-group row DyForm3-LabelSort" id="lblTop">
+                                <label class="DyForm3-Label" style="font-size: 12px; margin-top: 0px;">商品品項只顯示前100項</label>
                             </div>
 
                             <div class="card-block forminput">
-                                <div class="x_content">
-                                    <div class="DyForm3-TableIniMob">
+                                <div class="x_content" style=" margin-top: 20px;">
+                                    <div class="DyForm3-TableIni1">
                                         <table id="tbQuery" class="table table-bordered DyForm3-Table">
                                             <thead>
                                                 <!--第一層-->
                                                 <tr>
                                                     <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">序</th>
-                                                    <td id="thead2" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">品號</td>
-                                                    <td id="thead3" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">品名</td>
-                                                    <td id="thead4" class="text-center" colspan="1">銷售量</td>
-                                                    <td id="thead5" class="text-center" colspan="1">銷售金額</td>
+                                                    <th id="thead2" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">品號</th>
+                                                    <th id="thead3" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">品名</th>
+                                                    <th id="thead4" class="text-center" colspan="1">銷售量</th>
+                                                    <th id="thead5" class="text-center" colspan="1">銷售金額</th>
                                                 </tr>
                                                 <!--第二層-->
                                                 <tr class="QSum">
@@ -275,14 +293,14 @@
                                             </tbody>
                                         </table>
 
-                                        <table id="tbShop" class="table table-bordered DyForm3-Table">
+                                        <table id="tbType" class="table table-bordered DyForm3-Table">
                                             <thead>
                                                 <!--第一層-->
                                                 <tr>
                                                     <th id="thead1S" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">序</th>
-                                                    <td id="thead2S" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</td>
-                                                    <td id="thead3S" class="text-center" colspan="1">銷售量</td>
-                                                    <td id="thead4S" class="text-center" colspan="1">銷售金額</td>
+                                                    <th id="thead2S" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
+                                                    <th id="thead3S" class="text-center" colspan="1">銷售量</th>
+                                                    <th id="thead4S" class="text-center" colspan="1">銷售金額</th>
                                                 </tr>
                                                 <!--第二層-->
                                                 <tr class="QSum">
@@ -296,14 +314,14 @@
                                             </tbody>
                                         </table>
 
-                                         <table id="tbMonth" class="table table-bordered DyForm3-Table">
+                                        <table id="tbMonth" class="table table-bordered DyForm3-Table">
                                             <thead>
                                                 <!--第一層-->
                                                 <tr>
                                                     <th id="thead1M" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">月份</th>
-                                                    <td id="thead2M" class="text-center" colspan="1">銷售量</td>
-                                                    <td id="thead3M" class="text-center" colspan="1">銷售金額</td>
-                                                    <td id="thead4M" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">月成長%</td>
+                                                    <th id="thead2M" class="text-center" colspan="1">銷售量</th>
+                                                    <th id="thead3M" class="text-center" colspan="1">銷售金額</th>
+                                                    <th id="thead4M" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">月成長%</th>
                                                 </tr>
                                                 <!--第二層-->
                                                 <tr class="QSum">
@@ -316,13 +334,13 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                   </div>
+                                    </div>
                                 </div>
                             </div>
 
                         </div>
                     </div>
-                    
+
                     <div class="modal fade" id="modal_Step1" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content DyForm3-PanelD">
@@ -331,7 +349,7 @@
                                         background-color: red;
                                     }
 
-                                    #tbQuerySTEP1 thead tr th {
+                                    #tbQuery_STEP thead tr th, #tbType_STEP thead tr th, #tbMonth_STEP thead tr th {
                                         font-size: 16px;
                                         padding: 3px;
                                         background-color: #ffb620;
@@ -339,7 +357,7 @@
                                         vertical-align: middle;
                                     }
 
-                                    #tbQuerySTEP1 thead tr td {
+                                    #tbQuery_STEP thead tr td, #tbType_STEP thead tr td, #tbMonth_STEP thead tr td {
                                         font-size: 16px;
                                         padding: 3px;
                                         background-color: #ffb620;
@@ -347,12 +365,12 @@
                                         vertical-align: middle;
                                     }
 
-                                    #tbQuerySTEP1 tbody tr td {
+                                    #tbQuery_STEP tbody tr td, #tbType_STEP tbody tr td, #tbMonth_STEP tbody tr td {
                                         font-size: 16px;
                                         padding: 3px;
                                         font-weight: bold;
                                         vertical-align: middle;
-                                        cursor:pointer;
+                                        cursor: pointer;
                                     }
 
                                     th:first-child {
@@ -361,15 +379,15 @@
                                     }
                                     /*手機畫面*/
                                     @media (max-width:767px) {
-                                        #tbQuerySTEP1 thead tr th {
+                                        #tbQuery_STEP thead tr th, #tbType_STEP thead tr th, #tbMonth_STEP thead tr th {
                                             font-size: 12px;
                                         }
 
-                                        #tbQuerySTEP1 thead tr td {
+                                        #tbQuery_STEP thead tr td, #tbType_STEP thead tr td, #tbMonth_STEP thead tr td {
                                             font-size: 12px;
                                         }
 
-                                        #tbQuerySTEP1 tbody tr td {
+                                        #tbQuery_STEP tbody tr td, #tbType_STEP tbody tr td, #tbMonth_STEP tbody tr td {
                                             font-size: 12px;
                                         }
                                     }
@@ -377,7 +395,7 @@
                                 <div class="modal-body modal-tab-container" style="padding:8px">
 
                                     <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom:0px">
-                                        <label id="lblProgramName" class="DyForm3-ProgramName">年度銷售業績比較表</label>
+                                        <label id="lblProgramName" class="DyForm3-ProgramName">銷售類別排行分析</label>
                                     </div>
 
                                     <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom: 5px">
@@ -389,53 +407,88 @@
                                         <label id="lblYear" class="DyForm3-LabelBlack" style="margin-left: 5px; margin-top: 3px"></label>
                                     </div>
                                     <div class="form-group row" style="width: 100%; margin-left: 5px; margin-bottom: 5px ">
-                                        <label id="lblTypeName" class="DyForm3-Label" style="margin-left: 15px;">月份：</label>
+                                        <label class="DyForm3-Label" style="margin-left: 15px;">月份：</label>
                                         <label id="lblMonth" class="DyForm3-LabelBlack" style="margin-left: 5px; margin-top: 3px "></label>
                                         <!--<input id="rdoShop_PS_Step1" type="radio" name="Step1" value="Shop" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left; " checked>
-        <label class="DyForm3-LabelBlack" for="rdoShop_PS_Step1" style="margin-top: 2px;">&ensp;店別</label>
-        <input id="rdoDate_PS_Step1" type="radio" name="Step1" value="Date" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left;  ">
-        <label class="DyForm3-LabelBlack" for="rdoDate_PS_Step1" style=" margin-top: 2px;">&ensp;銷售日期</label>
-        <label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>-->
+                                        <label class="DyForm3-LabelBlack" for="rdoShop_PS_Step1" style="margin-top: 2px;">&ensp;店別</label>
+                                        <input id="rdoDate_PS_Step1" type="radio" name="Step1" value="Date" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left;  ">
+                                        <label class="DyForm3-LabelBlack" for="rdoDate_PS_Step1" style=" margin-top: 2px;">&ensp;銷售日期</label>
+                                        <label class="DyForm3-LabelSort">點擊欄位標題可進行排序</label>-->
                                     </div>
-                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px" id="rdoGroup1">
-                                        <input id="rdoD1" type="radio" name="b" value="Shop" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
-                                        <label class="DyForm3-LabelBlack" for="rdoD1" style="margin-top:2px">&ensp;店別</label>
-                                        <input id="rdoB1" type="radio" name="b" value="Area" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
-                                        <label class="DyForm3-LabelBlack" for="rdoB1" style="margin-top:2px">&ensp;區課</label>
+                                    <div id="lblTypeData" class="form-group row" style="width: 100%; margin-left: 5px; margin-bottom: 5px ">
+                                        <label id="lblTypeName" class="DyForm3-Label" style="margin-left: 15px;">商品：</label>
+                                        <label id="lblTypeID" class="DyForm3-LabelBlack" style="margin-left: 5px; margin-top: 3px"></label>
                                     </div>
-                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px" id="rdoGroup2">
-                                        <input id="rdoD2" type="radio" name="c" value="Shop" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
-                                        <label class="DyForm3-LabelBlack" for="rdoD2" style="margin-top:2px">&ensp;店別</label>
-                                        <input id="rdoS2" type="radio" name="c" value="Month" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
-                                        <label class="DyForm3-LabelBlack" for="rdoS2" style="margin-top: 2px">&ensp;月份</label>
+                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 2px" id="rdoGroup1">
+                                        <input id="rdoM" type="radio" name="OptSTEP" value="Month" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
+                                        <label class="DyForm3-LabelBlack" for="rdoM" style="margin-top: 2px" id="lblM">&ensp;月份</label>
+                                        <input id="rdoS" type="radio" name="OptSTEP" value="Shop" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
+                                        <label class="DyForm3-LabelBlack" for="rdoS" style="margin-top:2px" id="lblS">&ensp;店別</label>
+                                        <input id="rdoP" type="radio" name="OptSTEP" value="PLU" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
+                                        <label class="DyForm3-LabelBlack" for="rdoP" style="margin-top:2px" id="lblP">&ensp;商品</label>
                                     </div>
-                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px ">
-                                        <label class="DyForm3-Label" style="font-size: 16px; margin-top: 0px ">成長率=(指定年度-前一年度)/前一年度</label>
+                                    <div class="form-group row DyForm3-LabelSort"  id="lblTop_STEP">
+                                        <label class="DyForm3-Label" style="font-size: 12px; margin-top: 0px;">商品品項只顯示前100項</label>
                                     </div>
                                     <div class="card-block forminput">
-                                        <div class="x_content">
-                                            <div class="DyForm3-TableD">
-                                                <table id="tbQuerySTEP1" class="table table-bordered DyForm3-Table">
+                                        <div class="x_content" style=" margin-top: 20px;">
+                                            <div class="DyForm3-TableD1">
+                                                <table id="tbQuery_STEP" class="table table-bordered DyForm3-Table">
                                                     <thead>
                                                         <!--第一層-->
                                                         <tr>
-                                                            <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
-                                                            <td id="thead2" class="text-center" colspan="1">前一年度業績</td>
-                                                            <td id="thead3" class="text-center" colspan="1">指定年度業績</td>
-                                                            <td id="thead4" class="text-center" colspan="1" style="vertical-align: middle;"></td>
+                                                            <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">序</th>
+                                                            <th id="thead2" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">品號</th>
+                                                            <th id="thead3" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">品名</th>
+                                                            <th id="thead4" class="text-center" colspan="1">銷售量</th>
+                                                            <th id="thead5" class="text-center" colspan="1">銷售金額</th>
                                                         </tr>
                                                         <!--第二層-->
-                                                        <tr>
-                                                            <th id="th1" class="text-center" colspan="1">金額</th>
-                                                            <th id="th2" class="text-center" colspan="1">金額</th>
-                                                            <th id="th4" class="text-center" colspan="1" style="vertical-align: middle;">成長%</th>
-                                                        </tr>
-                                                        <!--第三層-->
-                                                        <tr>
-                                                            <td id="td0" class="text-center" colspan="1">月總業績</td>
+                                                        <tr class="QSum1">
                                                             <td id="td1" colspan="1" style="text-align: right"></td>
                                                             <td id="td2" colspan="1" style="text-align: right"></td>
-                                                            <td id="td3" class="text-center" colspan="1"></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                                <table id="tbType_STEP" class="table table-bordered DyForm3-Table">
+                                                    <thead>
+                                                        <!--第一層-->
+                                                        <tr>
+                                                            <th id="thead1S" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">序</th>
+                                                            <th id="thead2S" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
+                                                            <th id="thead3S" class="text-center" colspan="1">銷售量</th>
+                                                            <th id="thead4S" class="text-center" colspan="1">銷售金額</th>
+                                                        </tr>
+                                                        <!--第二層-->
+                                                        <tr class="QSum1">
+                                                            <td id="td1S" colspan="1" style="text-align: right"></td>
+                                                            <td id="td2S" colspan="1" style="text-align: right"></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                                <table id="tbMonth_STEP" class="table table-bordered DyForm3-Table">
+                                                    <thead>
+                                                        <!--第一層-->
+                                                        <tr>
+                                                            <th id="thead1M" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">月份</th>
+                                                            <th id="thead2M" class="text-center" colspan="1">銷售量</th>
+                                                            <th id="thead3M" class="text-center" colspan="1">銷售金額</th>
+                                                            <th id="thead4M" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">月成長%</th>
+                                                        </tr>
+                                                        <!--第二層-->
+                                                        <tr class="QSum1">
+                                                            <td id="td1M" colspan="1" style="text-align: right"></td>
+                                                            <td id="td2M" colspan="1" style="text-align: right"></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -482,7 +535,7 @@
                                         padding: 3px;
                                         font-weight: bold;
                                         vertical-align: middle;
-                                        cursor:pointer;
+                                        cursor: pointer;
                                     }
 
                                     th:first-child {
