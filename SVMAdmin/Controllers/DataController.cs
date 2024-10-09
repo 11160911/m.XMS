@@ -12693,6 +12693,7 @@ namespace SVMAdmin.Controllers
         }
         #endregion
 
+        #region MSSA103
         [Route("SystemSetup/GetInitMSSA103")]
         public ActionResult SystemSetup_GetInitMSSA103()
         {
@@ -13253,7 +13254,9 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+        #endregion
 
+        #region MSSA108
         [Route("SystemSetup/MSSA108Query")]
         public ActionResult SystemSetup_MSSA108Query()
         {
@@ -13720,7 +13723,9 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+        #endregion
 
+        #region MSSA107
         [Route("SystemSetup/GetInitMSSA107")]
         public ActionResult SystemSetup_GetInitMSSA107()
         {
@@ -13874,7 +13879,9 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+        #endregion
 
+        #region MSSA106
         [Route("SystemSetup/GetInitMSSA106")]
         public ActionResult SystemSetup_GetInitMSSA106()
         {
@@ -14018,7 +14025,9 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+        #endregion
 
+        #region MSSA105
         [Route("SystemSetup/MSSA105Query")]
         public ActionResult SystemSetup_MSSA105Query()
         {
@@ -14399,6 +14408,7 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+
         [Route("SystemSetup/MSSA105Query_Step2")]
         public ActionResult SystemSetup_MSSA105Query_Step2()
         {
@@ -14563,7 +14573,9 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+        #endregion
 
+        #region MSSA101
         [Route("SystemSetup/GetInitMSSA101")]
         public ActionResult SystemSetup_GetInitMSSA101()
         {
@@ -14694,7 +14706,9 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+        #endregion
 
+        #region MSSA102
         [Route("SystemSetup/GetInitMSSA102")]
         public ActionResult SystemSetup_GetInitMSSA102()
         {
@@ -14838,6 +14852,240 @@ namespace SVMAdmin.Controllers
             }
             return PubUtility.DatasetXML(ds);
         }
+        #endregion
+
+        #region MSSA109
+        [Route("SystemSetup/MSSA109Query")]
+        public ActionResult SystemSetup_MSSA109Query()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSA109QueryOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Year = rq["Year"];
+                string Flag = rq["Flag"];
+                string Month = rq["Month"];
+                string YYYYMM;
+                if (Month != "")
+                    YYYYMM = Year + '/' + Month;
+                else
+                    YYYYMM = Year;
+
+                string sql = "";
+                string sqlD = "";
+                string sqlH = "";
+
+                
+                if (Flag == "PQ")   //商品數量
+                {
+                    sql = "select top 100 ROW_NUMBER() over (ORDER BY sum(Qty) desc ) SeqNo,a.GD_NO,SUBSTRING(GD_NAME,1,15) GD_NAME,sum(Qty) Qty,Sum(Cash) Cash into #S1 ";
+                    sql += "from MSData5Web a (nolock) join PLUWeb b (nolock) on a.CompanyCode =b.CompanyCode and a.GD_NO=b.GD_NO ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and S_YYYYMM like '" + YYYYMM + "%' ";
+                    sql += "group by a.GD_NO ,GD_NAME ; ";
+
+                }
+                else if (Flag == "PM")      //商品金額
+                {
+                    sql = "select top 100 ROW_NUMBER() over (ORDER BY sum(Cash) desc ) SeqNo,a.GD_NO,SUBSTRING(GD_NAME,1,15) GD_NAME,sum(Qty) Qty,Sum(Cash) Cash into #S1 ";
+                    sql += "from MSData5Web a (nolock) join PLUWeb b (nolock) on a.CompanyCode =b.CompanyCode and a.GD_NO=b.GD_NO ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and S_YYYYMM like '" + YYYYMM + "%' ";
+                    sql += "group by a.GD_NO ,GD_NAME ; ";
+
+                }
+                else if (Flag == "W")      //店
+                {
+                    sql = "select  ROW_NUMBER() over (ORDER BY sum(Cash) desc ) SeqNo ,S_ShopNO+' '+b.ST_Sname Name,sum(Qty) Qty,Sum(Cash) Cash into #S1 ";
+                    sql += "from MSData5Web a (nolock) join WarehouseWeb b(nolock) on a.CompanyCode =b.CompanyCode and a.S_ShopNO=b.ST_ID ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and S_YYYYMM like '" + YYYYMM + "%' ";
+                    sql += "group by S_ShopNO,b.ST_Sname ; ";
+
+                }
+                else if (Flag == "MM")      //月
+                {
+                    sql = "select  SUBSTRING(S_YYYYMM,6,2) SeqNo,sum(Qty) Qty,sum(Cash) Cash ";
+                    sql += ",(select Sum(Cash) Cash1 from MSData5Web  (nolock) where Companycode='" + uu.CompanyId + "' and  S_YYYYMM  =convert(varchar(7), dateadd(m,-1, convert(date,a.S_YYYYMM+'/01')),111) group by S_YYYYMM ) Cash2";
+                    sql += " into #M ";
+                    sql += "from MSData5Web a (nolock) ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and S_YYYYMM like '" + YYYYMM + "%' ";
+                    sql += "group by S_YYYYMM ; ";
+                    sql += "select  SeqNo,Qty,Cash,Case when Cash2 is null then format(1,'p') else format(cast(Cash-Cash2 as float)/cast(Cash2 as float),'p') end Per into #S1 from  #M;";
+                }
+                else       //部門,大,中,小類,系列
+                {
+                    string ColName = "";
+                    if (Flag == "D")
+                        ColName = "GD_Dept";
+                    else if (Flag == "L")
+                        ColName = "GD_BGNo";
+                    else if (Flag == "M")
+                        ColName = "GD_MDNo";
+                    else if (Flag == "S")
+                        ColName = "GD_SMNo";
+                    else if (Flag == "G")
+                        ColName = "GD_BNID";
+                    else if (Flag == "E")
+                        ColName = "GD_SERIES";
+
+                    sql = "select  ROW_NUMBER() over (ORDER BY sum(Cash) desc ) SeqNo ,c.Type_ID+' '+c.Type_Name Name,sum(Qty) Qty,Sum(Cash) Cash into #S1 ";
+                    sql += "from MSData5Web a (nolock) ";
+                    sql += " join TypeDataWeb c (nolock) on a.CompanyCode =c.CompanyCode and a." + ColName + "=c.Type_ID and Type_Code='" + Flag+ "' ";
+                    sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                    sql += "and S_YYYYMM like '" + YYYYMM + "%' ";
+                    sql += "group by c.Type_ID ,c.Type_Name ; ";
+
+                }
+                //明細
+                sqlD = "select * From #S1 order by SeqNo";
+                DataTable dtE = PubUtility.SqlQry(sql+sqlD, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+                //彙總資料
+                sqlH = "select sum(qty) SumQty,sum(Cash) SumCash From #S1 ";
+                DataTable dtH = PubUtility.SqlQry(sql+sqlH, uu, "SYS");
+                dtH.TableName = "dtH";
+                ds.Tables.Add(dtH);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+
+        [Route("SystemSetup/MSSA109Query_Step1")]
+        public ActionResult SystemSetup_MSSA109Query_Step1()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSSA109Query_Step1OK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string Year = rq["Year"];
+                string Flag = rq["Flag"];
+                string SubFlag = rq["SubFlag"];
+                string Month = rq["Month"];
+                string YYYYMM;
+                if (Month != "" )
+                    YYYYMM = Year + '/' + Month.Replace("月","");
+                else
+                    YYYYMM = Year;
+                string SubType = rq["SubType"];
+
+                string sql = "";
+                string sqlD = "";
+                string sqlH = "";
+
+                if (Flag == "PQ" | Flag == "PM")   //商品數量,金額
+                {
+                    if (SubFlag == "Month")
+                    {
+                        sql = "select  SUBSTRING(S_YYYYMM,6,2) SeqNo,sum(Qty) Qty,sum(Cash) Cash ";
+                        sql += ",(select Sum(Cash) Cash1 from MSData5Web  (nolock) where Companycode='" + uu.CompanyId + "' and  S_YYYYMM  =convert(varchar(7), dateadd(m,-1, convert(date,a.S_YYYYMM+'/01')),111) and GD_NO='" + SubType + "'group by S_YYYYMM ) Cash2";
+                        sql += " into #M ";
+                        sql += "from MSData5Web a (nolock) ";
+                        sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                        sql += "and S_YYYYMM like '" + Year + "%' ";
+                        sql += "and GD_NO='" + SubType + "'";
+                        sql += "group by S_YYYYMM ; ";
+                        sql += "select  SeqNo,Qty,Cash,Case when Cash2 is null then format(1,'p') else format(cast(Cash-Cash2 as float)/cast(Cash2 as float),'p') end Per into #S1 from  #M;";
+                    }
+                    else {
+                        sql = "select  ROW_NUMBER() over (ORDER BY sum(Cash) desc ) SeqNo ,S_ShopNO+' '+b.ST_Sname Name,sum(Qty) Qty,Sum(Cash) Cash into #S1 ";
+                        sql += "from MSData5Web a (nolock) join WarehouseWeb b(nolock) on a.CompanyCode =b.CompanyCode and a.S_ShopNO=b.ST_ID ";
+                        sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                        sql += "and S_YYYYMM like '" + YYYYMM + "%' ";
+                        sql += "and GD_NO='" + SubType + "'";
+                        sql += "group by S_ShopNO,b.ST_Sname ; ";
+                    }
+
+                }
+                else if (Flag == "MM")      //月
+                {
+                    if (SubFlag == "PLU")
+                    {
+                        sql = "select  ROW_NUMBER() over (ORDER BY sum(Qty) desc ) SeqNo,a.GD_NO,SUBSTRING(GD_NAME,1,15) GD_NAME,sum(Qty) Qty,Sum(Cash) Cash into #S1 ";
+                        sql += "from MSData5Web a (nolock) join PLUWeb b (nolock) on a.CompanyCode =b.CompanyCode and a.GD_NO=b.GD_NO ";
+                        sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                        sql += "and S_YYYYMM like '" + YYYYMM + "%' ";
+                        sql += "group by a.GD_NO ,GD_NAME ; ";
+                    }
+                    else {
+                         sql = "select  ROW_NUMBER() over (ORDER BY sum(Cash) desc ) SeqNo ,S_ShopNO+' '+b.ST_Sname Name,sum(Qty) Qty,Sum(Cash) Cash into #S1 ";
+                        sql += "from MSData5Web a (nolock) join WarehouseWeb b(nolock) on a.CompanyCode =b.CompanyCode and a.S_ShopNO=b.ST_ID ";
+                        sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                        sql += "and S_YYYYMM like '" + YYYYMM + "%' ";
+                        sql += "group by S_ShopNO,b.ST_Sname ; ";
+                   }
+
+                }
+                else       //部門,大,中,小類,系列
+                {
+                    string ColName = "";
+                    if (Flag == "D")
+                        ColName = "GD_Dept";
+                    else if (Flag == "L")
+                        ColName = "GD_BGNo";
+                    else if (Flag == "M")
+                        ColName = "GD_MDNo";
+                    else if (Flag == "S")
+                        ColName = "GD_SMNo";
+                    else if (Flag == "G")
+                        ColName = "GD_BNID";
+                    else if (Flag == "E")
+                        ColName = "GD_SERIES";
+                    else if (Flag == "W")
+                        ColName = "S_ShopNO";
+
+                    if (SubFlag == "Month")
+                    {
+                        sql = "select  SUBSTRING(S_YYYYMM,6,2) SeqNo,sum(Qty) Qty,sum(Cash) Cash ";
+                        sql += ",(select Sum(Cash) Cash1 from MSData5Web  (nolock) where Companycode='" + uu.CompanyId + "' and  S_YYYYMM  =convert(varchar(7), dateadd(m,-1, convert(date,a.S_YYYYMM+'/01')),111) and " + ColName + "='" + SubType + "'group by S_YYYYMM ) Cash2";
+                        sql += " into #M ";
+                        sql += "from MSData5Web a (nolock) ";
+                        sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                        sql += "and S_YYYYMM like '" + Year + "%' ";
+                        sql += "and " + ColName + "='" + SubType + "'";
+                        sql += "group by S_YYYYMM ; ";
+                        sql += "select  SeqNo,Qty,Cash,Case when Cash2 is null then format(1,'p') else format(cast(Cash-Cash2 as float)/cast(Cash2 as float),'p') end Per into #S1 from  #M;";
+                    }
+                    else {
+                        sql = "select ROW_NUMBER() over (ORDER BY sum(Qty) desc ) SeqNo,a.GD_NO,SUBSTRING(GD_NAME,1,15) GD_NAME,sum(Qty) Qty,Sum(Cash) Cash into #S1 ";
+                        sql += "from MSData5Web a (nolock) left join PLUWeb b (nolock) on a.CompanyCode =b.CompanyCode and a.GD_NO=b.GD_NO ";
+                        sql += "where a.Companycode='" + uu.CompanyId + "' ";
+                        sql += "and S_YYYYMM like '" + YYYYMM + "%' ";
+                        sql += "and a." + ColName + "='" + SubType + "'";
+                        sql += "group by a.GD_NO ,GD_NAME ; ";
+
+                    }
+
+                }
+                //明細
+                sqlD = "select top 100 * From #S1 order by SeqNo";
+                DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+                //彙總資料
+                sqlH = "select sum(qty) SumQty,sum(Cash) SumCash From #S1 ";
+                DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
+                dtH.TableName = "dtH";
+                ds.Tables.Add(dtH);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = "Exception";
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
+        #endregion
 
         [Route("SystemSetup/LookUp")]
         public ActionResult SystemSetup_LookUp()

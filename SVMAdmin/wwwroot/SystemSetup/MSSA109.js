@@ -1,21 +1,26 @@
 ﻿var PageMSSA109 = function (ParentNode) {
 
-    let grdM;
+    let grdQuery;
+    let grdQuery_STEP;
+    let grdType;
+    let grdType_STEP;
+    let grdMonth;
+    let grdMonth_STEP;
 
     let AssignVar = function () {
 
-        grdM = new DynGrid(
+        grdQuery = new DynGrid(
             {
                 table_lement: $('#tbQuery')[0],
-                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4", "tdCol5"],
+                class_collection: ["tdCol1 text-center", "tdCol2 text-center", "tdCol3 text-center", "tdCol4 label-align", "tdCol5 label-align"],
                 fields_info: [
-                    { type: "Text", name: "ID", style: "" },
+                    { type: "Text", name: "SeqNo", style: "" },
                     { type: "Text", name: "GD_NO" },
                     { type: "Text", name: "GD_Name" },
                     { type: "TextAmt", name: "Qty" },
                     { type: "TextAmt", name: "Cash" }
                 ],
-                //rows_per_page: 10,
+                rows_per_page: 100,
                 method_clickrow: click_PLU,
                 afterBind: InitDetailButton,
                 sortable: "N",
@@ -23,35 +28,92 @@
             }
         );
 
-        grdSTEP1 = new DynGrid(
+        grdQuery_STEP = new DynGrid(
             {
-                table_lement: $('#tbQuerySTEP1')[0],
-                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4"],
+                table_lement: $('#tbQuery_STEP')[0],
+                class_collection: ["tdCol1 text-center", "tdCol2 text-center", "tdCol3 text-center", "tdCol4 label-align", "tdCol5 label-align"],
                 fields_info: [
-                    { type: "Text", name: "ID", style: "" },
-                    { type: "TextAmt", name: "Cash1" },
-                    { type: "TextAmt", name: "Cash2" },
-                    { type: "TextPercent", name: "Per" }
+                    { type: "Text", name: "SeqNo", style: "" },
+                    { type: "Text", name: "GD_NO" },
+                    { type: "Text", name: "GD_Name" },
+                    { type: "TextAmt", name: "Qty" },
+                    { type: "TextAmt", name: "Cash" }
                 ],
-                //rows_per_page: 10,
+                rows_per_page: 100,
                 method_clickrow: click_PLU,
-                afterBind: InitDetail2Button,
+                afterBind: InitDetailButton,
                 sortable: "N",
                 step: "Y"
             }
         );
 
-        grdSTEP2 = new DynGrid(
+        grdType = new DynGrid(
             {
-                table_lement: $('#tbQuerySTEP2')[0],
+                table_lement: $('#tbType')[0],
+                class_collection: ["tdCol1 text-center", "tdCol2 text-center", "tdCol3 label-align", "tdCol4 label-align"],
+                fields_info: [
+                    { type: "Text", name: "SeqNo", style: "" },
+                    { type: "Text", name: "Name" },
+                    { type: "TextAmt", name: "Qty" },
+                    { type: "TextAmt", name: "Cash" }
+                ],
+                rows_per_page: 100,
+                method_clickrow: click_PLU,
+                afterBind: InitDetailButtonType,
+                sortable: "N",
+                step: "Y"
+            }
+        );
+
+        grdType_STEP = new DynGrid(
+            {
+                table_lement: $('#tbType_STEP')[0],
+                class_collection: ["tdCol1 text-center", "tdCol2 text-center", "tdCol3 label-align", "tdCol4 label-align"],
+                fields_info: [
+                    { type: "Text", name: "SeqNo", style: "" },
+                    { type: "Text", name: "Name" },
+                    { type: "TextAmt", name: "Qty" },
+                    { type: "TextAmt", name: "Cash" }
+                ],
+                rows_per_page: 100,
+                method_clickrow: click_PLU,
+                afterBind: InitDetailButtonType,
+                sortable: "N",
+                step: "Y"
+            }
+        );
+
+        grdMonth = new DynGrid(
+            {
+                table_lement: $('#tbMonth')[0],
                 class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4"],
                 fields_info: [
-                    { type: "Text", name: "ID", style: "" },
-                    { type: "TextAmt", name: "Cash1" },
-                    { type: "TextAmt", name: "Cash2" },
+                    { type: "Text", name: "SeqNo", style: "" },
+                    { type: "TextAmt", name: "Qty" },
+                    { type: "TextAmt", name: "Cash" },
                     { type: "TextPercent", name: "Per" }
                 ],
-                //rows_per_page: 10,
+                rows_per_page: 100,
+                method_clickrow: click_PLU,
+                afterBind: InitDetailButtonMonth,
+                sortable: "N",
+                step: "Y"
+            }
+        );
+
+        grdMonth_STEP = new DynGrid(
+            {
+                table_lement: $('#tbMonth_STEP')[0],
+                class_collection: ["tdCol1 text-center", "tdCol2 label-align", "tdCol3 label-align", "tdCol4"],
+                fields_info: [
+                    { type: "Text", name: "SeqNo", style: "" },
+                    { type: "TextAmt", name: "Qty" },
+                    { type: "TextAmt", name: "Cash" },
+                    { type: "TextPercent", name: "Per" }
+                ],
+                rows_per_page: 100,
+                method_clickrow: click_PLU,
+                afterBind: InitDetailButtonMonth,
                 sortable: "N",
                 step: "Y"
             }
@@ -68,126 +130,138 @@
         $('#tbQuery tbody tr td').click(function () { Step1_click(this) });
 
     };
-    let InitDetail2Button = function () {
-        if (($('#rdoS').prop('checked') == true && $('#rdoB1').prop('checked') == true) | ($('#rdoB').prop('checked') == true && $('#rdoD2').prop('checked') == true) | ($('#rdoB').prop('checked') == true && $('#rdoS2').prop('checked') == true)) 
-            $('#tbQuerySTEP1 tbody tr td').click(function () { Step2_click(this) });
+    let InitDetailButtonType = function () {
+        $('#tbType tbody tr td').click(function () { Step1_click(this) });
 
     };
-    //第二層
-    let Step2_click = function (bt) {
-        //$('#tbQuerySTEP1 td').closest('tr').css('background-color', 'transparent');
-        $(bt).closest('tr').click();
-        $('.msg-valid').hide();
-        var node = $(grdSTEP1.ActiveRowTR()).prop('Record');
-        //$('#tbQuerySTEP1 td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
-        $('#modal_Step2').modal('show');
-        $('#lblYear2').html($('#cboYear').val() + '年');
-        if ($('#rdoS').prop('checked') == true && $('#rdoB1').prop('checked') == true){
-            $('#lblType2Name').html('月份');
-            $('#lblType2').html($('#lblMonth').html());
-            $('#lblShop2Name').html('區課');
-            $('#lblShop2').html(GetNodeValue(node, 'ID'));
-        }
-        else if ($('#rdoB').prop('checked') == true && $('#rdoD2').prop('checked') == true) {
-            $('#lblType2Name').html('區課');
-            $('#lblType2').html($('#lblMonth').html());
-            $('#lblShop2Name').html('店別');
-            $('#lblShop2').html(GetNodeValue(node, 'ID'));
-        }
-        else if ($('#rdoB').prop('checked') == true && $('#rdoS2').prop('checked') == true) {
-            $('#lblType2Name').html('區課');
-            $('#lblType2').html($('#lblMonth').html());
-            $('#lblShop2Name').html('月份');
-            $('#lblShop2').html(GetNodeValue(node, 'ID'));
-        }
+    let InitDetailButtonMonth = function () {
+        $('#tbMonth tbody tr td').click(function () { Step1_click(this) });
 
-        setTimeout(function () {
-            Query_Step2_click();
-        }, 500);
-
-    };
-    let Query_Step2_click = function () {
-        ShowLoading();
-
-        var Year = $('#lblYear2').html()
-        var Type = $('#lblType2').html()
-        var Shop = $('#lblShop2').html()
-        var Flag = ""
-        if ($('#rdoS').prop('checked') == true && $('#rdoB1').prop('checked') == true) {
-            Flag = "B1";
-            Type = Type.substring(0, 2);
-            Shop = Shop.split('-')[0];
-            $('#tbQuerySTEP2 thead tr th#thead1').html('店別');
-            $('#tbQuerySTEP2 thead td#td0').html('店別總業績');
-        }
-        else if ($('#rdoB').prop('checked') == true && $('#rdoD2').prop('checked') == true) {
-            Flag = "D2";
-            Type = Type.split('-')[0];
-            Shop = Shop.split('-')[0];
-            $('#tbQuerySTEP2 thead tr th#thead1').html('月份');
-            $('#tbQuerySTEP2 thead td#td0').html('月總業績');
-        }
-        else if ($('#rdoB').prop('checked') == true && $('#rdoS2').prop('checked') == true) {
-            Flag = "S2";
-            Type = Type.split('-')[0];
-            Shop = Shop.substring(0, 2);
-            $('#tbQuerySTEP2 thead tr th#thead1').html('店別');
-            $('#tbQuerySTEP2 thead td#td0').html('店別總業績');
-        }
-        setTimeout(function () {
-            var pData = {
-                Flag: Flag,
-                Year: Year,
-                Shop: Shop,
-                Type: Type
-            }
-            PostToWebApi({ url: "api/SystemSetup/MSSA105Query_Step2", data: pData, success: afterQuery_Step2 });
-        }, 1000);
-    };
-    let afterQuery_Step2 = function (data) {
-        CloseLoading();
-        if (ReturnMsg(data, 0) != "MSSA105Query_Step2OK") {
-            DyAlert(ReturnMsg(data, 1));
-        }
-        else {
-            $('#modal_Step2').css("padding-right", "0px");
-            var Year = $('#cboYear').val();
-            var YearBef = Year - 1;
-            $('#tbQuerySTEP2 #thead2').html(YearBef + '年度業績');
-            $('#tbQuerySTEP2 #thead3').html(Year + '年度業績');
-
-            var dtH = data.getElementsByTagName('dtH');
-            $('#tbQuerySTEP2 thead td#td1').html(parseInt(GetNodeValue(dtH[0], "SumCash1")).toLocaleString('en-US'));
-            $('#tbQuerySTEP2 thead td#td2').html(parseInt(GetNodeValue(dtH[0], "SumCash2")).toLocaleString('en-US'));
-            $('#tbQuerySTEP2 thead td#td3').html(GetNodeValue(dtH[0], "SumPer"));
-
-            var dtE = data.getElementsByTagName('dtE');
-            grdSTEP2.BindData(dtE);
-
-        }
     };
     //第一層
     let Step1_click = function (bt) {
         //$('#tbQuery td').closest('tr').css('background-color', 'transparent');
         $(bt).closest('tr').click();
         $('.msg-valid').hide();
-        var node = $(grdM.ActiveRowTR()).prop('Record');
+        var node;
+
+        grdQuery_STEP.BindData(null)
+        grdType_STEP.BindData(null)
+        grdMonth_STEP.BindData(null)
+        var sumtdQ = document.querySelectorAll('.QSum1');
+        ; for (i = 0; i < sumtdQ.length; i++) {
+            for (j = 0; j < sumtdQ[i].childElementCount; j++) {
+                sumtdQ[i].children[j].innerHTML = "";
+            }
+        }
+
+        //表頭顯示
         //$('#tbQuery td:contains(' + GetNodeValue(node, 'ID') + ')').closest('tr').css('background-color', '#DEEBF7');
-        if ($('#rdoS').prop('checked') == true) {
+        if ($('#rdoPLUQ').prop('checked') == true | $('#rdoPLUM').prop('checked') == true) {
+            node = $(grdQuery.ActiveRowTR()).prop('Record')
+            $('#rdoM').show();
+            $('#rdoS').show();
+            $('#rdoP').hide();
+            $('#lblM').show();
+            $('#lblS').show();
+            $('#lblP').hide();
+            $('#lblTypeData').show();
+            if ($('#rdoM').prop('checked') == false && $('#rdoS').prop('checked') == false)
+                $('#rdoM').prop('checked', true);
+        }
+        else if ($('#rdoMONTH').prop('checked') == true) {
+            node = $(grdMonth.ActiveRowTR()).prop('Record')
+            $('#rdoM').hide();
+            $('#rdoS').show();
+            $('#rdoP').show();
+            $('#lblM').hide();
+            $('#lblS').show();
+            $('#lblP').show();
+            $('#lblTypeData').hide();
+            if ($('#rdoS').prop('checked') == false && $('#rdoP').prop('checked') == false)
+                $('#rdoS').prop('checked', true);
+        }
+        else {
+            node = $(grdType.ActiveRowTR()).prop('Record')
+            $('#rdoM').show();
+            $('#rdoS').hide();
+            $('#rdoP').show();
+            $('#lblM').show();
+            $('#lblS').hide();
+            $('#lblP').show();
+            $('#lblTypeData').show();
+            if ($('#rdoM').prop('checked') == false && $('#rdoP').prop('checked') == false)
+                $('#rdoM').prop('checked', true);
+        }
+
+        var strMonth = $('#cboMonth').val();
+        if (strMonth != "") {
+            $('#lblMonth').html($('#cboMonth').val() + '月');
+            $('#rdoGroup1').hide();
+            if ($('#rdoPLUQ').prop('checked') == true | $('#rdoPLUM').prop('checked') == true)
+                $('#rdoS').prop('checked', true);
+            else
+                $('#rdoP').prop('checked', true);
+        }
+        else {
             $('#rdoGroup1').show();
-            $('#rdoGroup2').hide();
+            if ($('#rdoMONTH').prop('checked') == true)
+                $('#lblMonth').html(GetNodeValue(node, 'SeqNo') + '月');
+            else
+                $('#lblMonth').html('');
         }
-        else if ($('#rdoD').prop('checked') == true) {
-            $('#rdoGroup1').hide();
-            $('#rdoGroup2').hide();
+        //GRID顯示
+        if ($('#rdoM').prop('checked') == true) {
+            $('#tbQuery_STEP').hide();
+            $('#tbType_STEP').hide();
+            $('#tbMonth_STEP').show();
+            $('#lblTop_STEP').hide();
         }
-        else if ($('#rdoB').prop('checked') == true) {
-            $('#rdoGroup1').hide();
-            $('#rdoGroup2').show();
+        else if ($('#rdoS').prop('checked') == true) {
+            $('#tbQuery_STEP').hide();
+            $('#tbType_STEP').show();
+            $('#tbMonth_STEP').hide();
+            $('#lblTop_STEP').hide();
         }
+        else if ($('#rdoP').prop('checked') == true) {
+            $('#tbQuery_STEP').show();
+            $('#tbType_STEP').hide();
+            $('#tbMonth_STEP').hide();
+            $('#lblTop_STEP').show();
+        }
+
         $('#modal_Step1').modal('show');
+
+        //表頭內容
         $('#lblYear').html($('#cboYear').val() + '年');
-        $('#lblMonth').html(GetNodeValue(node, 'ID'));
+
+        $('#lblTypeID').html(GetNodeValue(node, 'Name'));
+        if ($('#rdoPLUQ').prop('checked') == true | $('#rdoPLUM').prop('checked') == true) {
+            $('#lblTypeName').html('商品：');
+            $('#lblTypeID').html(GetNodeValue(node, 'GD_No') + ' ' + GetNodeValue(node, 'GD_Name'));
+        }
+        else if ($('#rdoShop').prop('checked') == true) {
+            $('#lblTypeName').html('店別：');
+        }
+        else if ($('#rdoDept').prop('checked') == true) {
+            $('#lblTypeName').html('部門：');
+        }
+        else if ($('#rdoBGNO').prop('checked') == true) {
+            $('#lblTypeName').html('大類：');
+        }
+        else if ($('#rdoMDNO').prop('checked') == true) {
+            $('#lblTypeName').html('中類：');
+        }
+        else if ($('#rdoSMNO').prop('checked') == true) {
+            $('#lblTypeName').html('小類：');
+        }
+        else if ($('#rdoBNID').prop('checked') == true) {
+            $('#lblTypeName').html('品牌：');
+        }
+        else if ($('#rdoSERIES').prop('checked') == true) {
+            $('#lblTypeName').html('系列：');
+        }
+
         setTimeout(function () {
             Query_Step1_click();
         }, 500);
@@ -196,49 +270,68 @@
     let Query_Step1_click = function () {
         ShowLoading();
 
-        var Year = $('#lblYear').html()
+        var Year = $('#cboYear').val()
         var Month = $('#lblMonth').html()
         var Flag = ""
-        var SubType = ""
-        //月份
-        if ($('#rdoS').prop('checked') == true) {
-            if ($('#rdoD1').prop('checked') == true) {
-                SubType = $('#rdoD1').val();
-                $('#tbQuerySTEP1 thead tr th#thead1').html('店別');
-                $('#tbQuerySTEP1 thead td#td0').html('店別總業績');
-            }
-            else {
-                SubType = $('#rdoB1').val();
-                $('#tbQuerySTEP1 thead tr th#thead1').html('區課');
-                $('#tbQuerySTEP1 thead td#td0').html('區課總業績');
-            }
-            Flag = "S";
-            $('#lblTypeName').html('月份：');
+        var SubFlag = ""
+        var SubType = $('#lblTypeID').html()
+
+                       
+        //商品數量
+        if ($('#rdoPLUQ').prop('checked') == true) {
+            Flag = "PQ";
+        }
+        //商品金額
+        if ($('#rdoPLUM').prop('checked') == true) {
+            Flag = "PM";
         }
         //店別
-        else if ($('#rdoD').prop('checked') == true) {
-            SubType = "";
-            Flag = "D";
-            Month = Month.split('-')[0];
-            $('#lblTypeName').html('店別：');
-            $('#tbQuerySTEP1 thead tr th#thead1').html('月份');
-            $('#tbQuerySTEP1 thead td#td0').html('月總業績');
+        else if ($('#rdoShop').prop('checked') == true) {
+            Flag = "W";
         }
-        //區課
-        else if ($('#rdoB').prop('checked') == true) {
-            if ($('#rdoD2').prop('checked') == true) {
-                SubType = $('#rdoD2').val();
-                $('#tbQuerySTEP1 thead tr th#thead1').html('店別');
-                $('#tbQuerySTEP1 thead td#td0').html('店總業績');
-            }
-            else {
-                SubType = $('#rdoS2').val();
-                $('#tbQuerySTEP1 thead tr th#thead1').html('月份');
-                $('#tbQuerySTEP1 thead td#td0').html('月份總業績');
-            }
-            Flag = "B";
-            Month = Month.split('-')[0];
-            $('#lblTypeName').html('區課：');
+        //部門
+        else if ($('#rdoDept').prop('checked') == true) {
+            Flag = "D";
+        }
+        //大類
+        if ($('#rdoBGNO').prop('checked') == true) {
+            Flag = "L";
+        }
+        //中類
+        else if ($('#rdoMDNO').prop('checked') == true) {
+            Flag = "M";
+        }
+        //小類
+        else if ($('#rdoSMNO').prop('checked') == true) {
+            Flag = "S";
+        }
+        //品牌
+        if ($('#rdoBNID').prop('checked') == true) {
+            Flag = "G";
+        }
+        //系列
+        else if ($('#rdoSERIES').prop('checked') == true) {
+            Flag = "E";
+        }
+        //月份
+        else if ($('#rdoMONTH').prop('checked') == true) {
+            Flag = "MM";
+        }
+        //子條件
+        //月份
+        if ($('#rdoM').prop('checked') == true) {
+            SubFlag = $('#rdoM').val();
+            SubType = SubType.split(' ')[0];
+        }
+        //店別
+        else if ($('#rdoS').prop('checked') == true) {
+            SubFlag = $('#rdoS').val();
+            SubType = SubType.split(' ')[0];
+        }
+        //商品
+        else if ($('#rdoP').prop('checked') == true) {
+            SubFlag = $('#rdoP').val();
+            SubType = SubType.split(' ')[0];
         }
 
         setTimeout(function () {
@@ -246,33 +339,39 @@
                 Year: Year,
                 Month: Month,
                 Flag: Flag,
+                SubFlag: SubFlag,
                 SubType: SubType
             }
-            PostToWebApi({ url: "api/SystemSetup/MSSA105Query_Step1", data: pData, success: afterQuery_Step1 });
+            PostToWebApi({ url: "api/SystemSetup/MSSA109Query_Step1", data: pData, success: afterQuery_Step1 });
         }, 1000);
     };
 
     let afterQuery_Step1 = function (data) {
         CloseLoading();
-        if (ReturnMsg(data, 0) != "MSSA105Query_Step1OK") {
+        if (ReturnMsg(data, 0) != "MSSA109Query_Step1OK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
             $('#modal_Step1').css("padding-right", "0px");
-            var Year = $('#cboYear').val();
-            var YearBef = Year - 1;
-            $('#tbQuerySTEP1 #thead2').html(YearBef + '年度業績');
-            $('#tbQuerySTEP1 #thead3').html(Year + '年度業績');
 
             var dtH = data.getElementsByTagName('dtH');
-            $('#tbQuerySTEP1 thead td#td1').html(parseInt(GetNodeValue(dtH[0], "SumCash1")).toLocaleString('en-US'));
-            $('#tbQuerySTEP1 thead td#td2').html(parseInt(GetNodeValue(dtH[0], "SumCash2")).toLocaleString('en-US'));
-            $('#tbQuerySTEP1 thead td#td3').html(GetNodeValue(dtH[0], "SumPer"));
 
             var dtE = data.getElementsByTagName('dtE');
-            grdSTEP1.BindData(dtE);
-
-
+            if ($('#rdoM').prop('checked') == true) {
+                grdMonth_STEP.BindData(dtE);
+                $('#tbMonth_STEP thead td#td1M').html(parseInt(GetNodeValue(dtH[0], "SumQty")).toLocaleString('en-US'));
+                $('#tbMonth_STEP thead td#td2M').html(parseInt(GetNodeValue(dtH[0], "SumCash")).toLocaleString('en-US'));
+            }
+            else if ($('#rdoP').prop('checked') == true) {
+                grdQuery_STEP.BindData(dtE);
+                $('#tbQuery_STEP thead td#td1').html(parseInt(GetNodeValue(dtH[0], "SumQty")).toLocaleString('en-US'));
+                $('#tbQuery_STEP thead td#td2').html(parseInt(GetNodeValue(dtH[0], "SumCash")).toLocaleString('en-US'));
+            }
+            else if ($('#rdoS').prop('checked') == true) {
+                grdType_STEP.BindData(dtE);
+                $('#tbType_STEP thead td#td1S').html(parseInt(GetNodeValue(dtH[0], "SumQty")).toLocaleString('en-US'));
+                $('#tbType_STEP thead td#td2S').html(parseInt(GetNodeValue(dtH[0], "SumCash")).toLocaleString('en-US'));
+            }
         }
     };
 
@@ -308,7 +407,7 @@
         }
         //大類
         if ($('#rdoBGNO').prop('checked') == true) {
-            Flag = "B";
+            Flag = "L";
         }
         //中類
         else if ($('#rdoMDNO').prop('checked') == true) {
@@ -320,20 +419,20 @@
         }
         //品牌
         if ($('#rdoBNID').prop('checked') == true) {
-            Flag = "B";
+            Flag = "G";
         }
         //系列
         else if ($('#rdoSERIES').prop('checked') == true) {
-            Flag = "D";
+            Flag = "E";
         }
         //月份
         else if ($('#rdoMONTH').prop('checked') == true) {
-            Flag = "S";
+            Flag = "MM";
         }
-
         setTimeout(function () {
             var pData = {
                 Year: $('#cboYear').val(),
+                Month: $('#cboMonth').val(),
                 Flag: Flag
             }
             PostToWebApi({ url: "api/SystemSetup/MSSA109Query", data: pData, success: afterMSSA109Query });
@@ -348,28 +447,31 @@
         else {
             $('#btQuery').prop('disabled', false);
             var dtE = data.getElementsByTagName('dtE');
-            grdM.BindData(dtE);
-
-            //商品數量,商品金額
-            if ($('#rdoPLUQ').prop('checked') == true | $('#rdoPLUM').prop('checked') == true) {
-                $('#tbQuery').show();
-                $('#tbShop').hide();
-                $('#tbMonth').hide();
-            }
-
-
             if (dtE.length == 0) {
                 DyAlert("無符合資料!");
                 //$(".modal-backdrop").remove();
-                $('#tbQuery thead td#td1').html('');
-                $('#tbQuery thead td#td2').html('');
-                $('#tbQuery thead td#td3').html('');
                 return;
             }
 
             var dtH = data.getElementsByTagName('dtH');
-            $('#tbQuery thead td#td1').html(parseInt(GetNodeValue(dtH[0], "SumCash1")).toLocaleString('en-US'));
-            $('#tbQuery thead td#td2').html(parseInt(GetNodeValue(dtH[0], "SumCash2")).toLocaleString('en-US'));
+            //商品數量,商品金額
+            if ($('#rdoPLUQ').prop('checked') == true | $('#rdoPLUM').prop('checked') == true) {
+                grdQuery.BindData(dtE);
+                $('#tbQuery thead td#td1').html(parseInt(GetNodeValue(dtH[0], "SumQty")).toLocaleString('en-US'));
+                $('#tbQuery thead td#td2').html(parseInt(GetNodeValue(dtH[0], "SumCash")).toLocaleString('en-US'));
+            }
+            //月份
+            else if ($('#rdoMONTH').prop('checked') == true) {
+                grdMonth.BindData(dtE);
+                $('#tbMonth thead td#td1M').html(parseInt(GetNodeValue(dtH[0], "SumQty")).toLocaleString('en-US'));
+                $('#tbMonth thead td#td2M').html(parseInt(GetNodeValue(dtH[0], "SumCash")).toLocaleString('en-US'));
+            }
+            //店,部門,大,中,小類,系列
+            else {
+                grdType.BindData(dtE);
+                $('#tbType thead td#td1S').html(parseInt(GetNodeValue(dtH[0], "SumQty")).toLocaleString('en-US'));
+                $('#tbType thead td#td2S').html(parseInt(GetNodeValue(dtH[0], "SumCash")).toLocaleString('en-US'));
+            }
         }
     };
     let btExit_Step1_click = function (bt) {
@@ -391,26 +493,66 @@
         //$('#pgMSSD101Init').show();
         //$('#pgMSSD101_PS_STEP1').hide();
     };
-
-    let ClearQuery = function () {
-        grdM.BindData(null)
-        var heads = $('#tbQuery thead tr th#thead1');
-        if ($('#rdoS').prop('checked')) {
-            $(heads).html('月份');
+    let ResetGrid = function () {
+        //商品數量,商品金額
+        if ($('#rdoPLUQ').prop('checked') == true | $('#rdoPLUM').prop('checked') == true) {
+            $('#tbQuery').show();
+            $('#tbType').hide();
+            $('#tbMonth').hide();
+            $('#lblTop').show();
         }
-        else if ($('#rdoD').prop('checked')) {
+        //月份
+        else if ($('#rdoMONTH').prop('checked') == true) {
+            $('#tbQuery').hide();
+            $('#tbType').hide();
+            $('#tbMonth').show();
+            $('#lblTop').hide();
+        }
+        //店,部門,大,中,小類,系列
+        else {
+            $('#tbQuery').hide();
+            $('#tbType').show();
+            $('#tbMonth').hide();
+            $('#lblTop').hide();
+        }
+
+        var heads = $('#tbType thead tr th#thead2S');
+        if ($('#rdoShop').prop('checked')) {
             $(heads).html('店別');
         }
-        else if ($('#rdoB').prop('checked')) {
-            $(heads).html('區課');
+        //else if ($('#rdoMONTH').prop('checked')) {
+        //    $(heads).html('月份');
+        //}
+        else if ($('#rdoDept').prop('checked')) {
+            $(heads).html('部門');
         }
-        var sumtdQ = document.querySelector('.QSum');
-        for (i = 0; i < sumtdQ.childElementCount; i++) {
-            if (i == 0) {
-                sumtdQ.children[i].innerHTML = "總業績";
-            }
-            else {
-                sumtdQ.children[i].innerHTML = "";
+        else if ($('#rdoBGNO').prop('checked')) {
+            $(heads).html('大類');
+        }
+        else if ($('#rdoMDNO').prop('checked')) {
+            $(heads).html('中類');
+        }
+        else if ($('#rdoSMNO').prop('checked')) {
+            $(heads).html('小類');
+        }
+        else if ($('#rdoBNID').prop('checked')) {
+            $(heads).html('品牌');
+        }
+        else if ($('#rdoSERIES').prop('checked')) {
+            $(heads).html('系列');
+        }
+    }
+    let ClearQuery = function () {
+        grdQuery.BindData(null)
+        grdType.BindData(null)
+        grdMonth.BindData(null)
+
+        ResetGrid()
+
+        var sumtdQ = document.querySelectorAll('.QSum');
+        ; for (i = 0; i < sumtdQ.length; i++) {
+            for (j = 0; j < sumtdQ[i].childElementCount; j++) {
+                sumtdQ[i].children[j].innerHTML = "";
             }
         }
     };
@@ -422,6 +564,8 @@
         else {
             $('#rdoMONTH').hide();
             $('#lblMONTH').hide();
+            if ($('#rdoMONTH').prop('checked') == true)
+                $('#rdoPLUQ').prop('checked', true);
         }
     }
 
@@ -453,17 +597,19 @@
             AssignVar();
 
             $('#tbQuery').show();
-            $('#tbShop').hide();
+            $('#tbType').hide();
             $('#tbMonth').hide();
 
             $('#btQuery').click(function () { btQuery_click(this) });
+            $('#btClear').click(function () { ClearQuery() });
             $('#btExit_Step1').click(function () { btExit_Step1_click(this) });
             $('#btExit_Step2').click(function () { btExit_Step2_click(this) });
-            $('#rdoS,#rdoD,#rdoB').change(function () { btQuery_click(this) });
-            $('#rdoD1,#rdoB1,#rdoD2,#rdoS2').change(function () { Step1_click(this) });
+            $('#rdoPLUQ,#rdoShop,#rdoDept,#rdoBGNO,#rdoMDNO,#rdoPLUM,#rdoSMNO,#rdoBNID,#rdoSERIES,#rdoMONTH').change(function () { ClearQuery() });
+            $('#rdoM,#rdoS,#rdoP').change(function () { Step1_click(this) });
             $('#cboYear').change(function () { ClearQuery() });
             $('#cboMonth').change(function () { HideMonth() });
-            btQuery_click();
+            $('#cboMonth').change(function () { ClearQuery() });
+            //btQuery_click();
         }
     };
 
