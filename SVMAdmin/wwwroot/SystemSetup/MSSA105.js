@@ -1,6 +1,8 @@
 ﻿var PageMSSA105 = function (ParentNode) {
 
     let grdM;
+    let grdSTEP1;
+    let grdSTEP2;
 
     let AssignVar = function () {
 
@@ -450,15 +452,14 @@
                 grdM1.BindData(dtE);
             }
 
-            var heads = $('#tbQuery thead tr th#thead1');
             if ($('#rdoS').prop('checked')) {
-                $(heads).html('月份');
+                $('#tbQuery thead tr th#thead1').html('月份');
             }
             else if ($('#rdoD').prop('checked')) {
-                $(heads).html('店別');
+                $('#tbQuery1 thead tr th#thead1').html('店別');
             }
             else if ($('#rdoB').prop('checked')) {
-                $(heads).html('區課');
+                $('#tbQuery1 thead tr th#thead1').html('區課');
             }
 
             if (dtE.length == 0) {
