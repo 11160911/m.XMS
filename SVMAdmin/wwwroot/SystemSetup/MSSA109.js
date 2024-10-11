@@ -166,7 +166,7 @@
             $('#lblS').show();
             $('#lblP').hide();
             $('#lblTypeData').show();
-            if ($('#rdoM').prop('checked') == false && $('#rdoS').prop('checked') == false)
+            //if ($('#rdoM').prop('checked') == false && $('#rdoS').prop('checked') == false)
                 $('#rdoM').prop('checked', true);
         }
         else if ($('#rdoMONTH').prop('checked') == true) {
@@ -178,7 +178,7 @@
             $('#lblS').show();
             $('#lblP').show();
             $('#lblTypeData').hide();
-            if ($('#rdoS').prop('checked') == false && $('#rdoP').prop('checked') == false)
+            //if ($('#rdoS').prop('checked') == false && $('#rdoP').prop('checked') == false)
                 $('#rdoS').prop('checked', true);
         }
         else {
@@ -190,7 +190,7 @@
             $('#lblS').hide();
             $('#lblP').show();
             $('#lblTypeData').show();
-            if ($('#rdoM').prop('checked') == false && $('#rdoP').prop('checked') == false)
+            //if ($('#rdoM').prop('checked') == false && $('#rdoP').prop('checked') == false)
                 $('#rdoM').prop('checked', true);
         }
 
@@ -210,25 +210,9 @@
             else
                 $('#lblMonth').html('');
         }
-        //GRID顯示
-        if ($('#rdoM').prop('checked') == true) {
-            $('#tbQuery_STEP').hide();
-            $('#tbType_STEP').hide();
-            $('#tbMonth_STEP').show();
-            $('#lblTop_STEP').hide();
-        }
-        else if ($('#rdoS').prop('checked') == true) {
-            $('#tbQuery_STEP').hide();
-            $('#tbType_STEP').show();
-            $('#tbMonth_STEP').hide();
-            $('#lblTop_STEP').hide();
-        }
-        else if ($('#rdoP').prop('checked') == true) {
-            $('#tbQuery_STEP').show();
-            $('#tbType_STEP').hide();
-            $('#tbMonth_STEP').hide();
-            $('#lblTop_STEP').show();
-        }
+        $('#tbQuery_STEP').hide();
+        $('#tbType_STEP').hide();
+        $('#tbMonth_STEP').hide();
 
         $('#modal_Step1').modal('show');
 
@@ -276,6 +260,25 @@
         var SubFlag = ""
         var SubType = $('#lblTypeID').html()
 
+        //GRID顯示
+        if ($('#rdoM').prop('checked') == true) {
+            $('#tbQuery_STEP').hide();
+            $('#tbType_STEP').hide();
+            $('#tbMonth_STEP').show();
+            $('#lblTop_STEP').hide();
+        }
+        else if ($('#rdoS').prop('checked') == true) {
+            $('#tbQuery_STEP').hide();
+            $('#tbType_STEP').show();
+            $('#tbMonth_STEP').hide();
+            $('#lblTop_STEP').hide();
+        }
+        else if ($('#rdoP').prop('checked') == true) {
+            $('#tbQuery_STEP').show();
+            $('#tbType_STEP').hide();
+            $('#tbMonth_STEP').hide();
+            $('#lblTop_STEP').show();
+        }
                        
         //商品數量
         if ($('#rdoPLUQ').prop('checked') == true) {
@@ -379,7 +382,7 @@
     let btQuery_click = function (bt) {
         //Timerset();
         $('#btQuery').prop('disabled', true)
-
+        ClearQuery();
         //年
         if ($('#cboYear').val() == "") {
             DyAlert("年度需輸入!", function () { $('#btQuery').prop('disabled', false); })
@@ -542,6 +545,10 @@
             $(heads).html('系列');
         }
     }
+    let ClearQueryInit = function () {
+        $('#cboMonth').val('');
+        ClearQuery();
+    }
     let ClearQuery = function () {
         grdQuery.BindData(null)
         grdType.BindData(null)
@@ -601,15 +608,15 @@
             $('#tbMonth').hide();
 
             $('#btQuery').click(function () { btQuery_click(this) });
-            $('#btClear').click(function () { ClearQuery() });
+            $('#btClear').click(function () { ClearQueryInit() });
             $('#btExit_Step1').click(function () { btExit_Step1_click(this) });
             $('#btExit_Step2').click(function () { btExit_Step2_click(this) });
-            $('#rdoPLUQ,#rdoShop,#rdoDept,#rdoBGNO,#rdoMDNO,#rdoPLUM,#rdoSMNO,#rdoBNID,#rdoSERIES,#rdoMONTH').change(function () { ClearQuery() });
-            $('#rdoM,#rdoS,#rdoP').change(function () { Step1_click(this) });
+            $('#rdoPLUQ,#rdoShop,#rdoDept,#rdoBGNO,#rdoMDNO,#rdoPLUM,#rdoSMNO,#rdoBNID,#rdoSERIES,#rdoMONTH').change(function () { btQuery_click() });
+            $('#rdoM,#rdoS,#rdoP').change(function () { Query_Step1_click(this) });
             $('#cboYear').change(function () { ClearQuery() });
             $('#cboMonth').change(function () { HideMonth() });
             $('#cboMonth').change(function () { ClearQuery() });
-            //btQuery_click();
+            btQuery_click();
         }
     };
 

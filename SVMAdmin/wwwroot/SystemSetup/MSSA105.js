@@ -261,6 +261,7 @@
         if ($('#rdoS').prop('checked') == true) {
             $('#rdoGroup1').show();
             $('#rdoGroup2').hide();
+            $('#rdoD1').prop('checked', true);
             node = $(grdM.ActiveRowTR()).prop('Record')
         }
         else if ($('#rdoD').prop('checked') == true) {
@@ -271,6 +272,7 @@
         else if ($('#rdoB').prop('checked') == true) {
             $('#rdoGroup1').hide();
             $('#rdoGroup2').show();
+            $('#rdoD2').prop('checked', true);
             node = $(grdM1.ActiveRowTR()).prop('Record')
         }
         $('#modal_Step1').modal('show');
@@ -564,7 +566,7 @@
             $('#btExit_Step1').click(function () { btExit_Step1_click(this) });
             $('#btExit_Step2').click(function () { btExit_Step2_click(this) });
             $('#rdoS,#rdoD,#rdoB').change(function () { btQuery_click(this) });
-            $('#rdoD1,#rdoB1,#rdoD2,#rdoS2').change(function () { Step1_click(this) });
+            $('#rdoD1,#rdoB1,#rdoD2,#rdoS2').change(function () { Query_Step1_click(this) });
             $('#cboYear').change(function () { ClearQuery() });
             btQuery_click();
         }
