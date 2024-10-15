@@ -178,8 +178,8 @@
                                     z-index: 2;
                                 }
 
-                                .DyForm3-LabelBlack, .DyForm3-Label {
-                                    margin-bottom: 2px;
+                                .DyForm3-LabelBlack,.DyForm3-Label {
+                                    margin-bottom : 2px;
                                 }
                                 /*手機畫面*/
                                 @media (max-width:767px) {
@@ -199,14 +199,14 @@
                                         top: 45px;
                                     }
 
-                                    /*#lblDept, #lblBNID {
-                                        margin-right: 40px;
-                                    }*/
+                                    #lblDept,#lblBNID {
+                                        margin-right:40px;
+                                    }
 
                                     .DyForm3-TableIni1 {
                                         height: 250px;
                                     }
-                                    /*   #lblTop {
+                                 /*   #lblTop {
                                         margin-left:200px;
                                     }*/
                                 }
@@ -242,21 +242,19 @@
                             <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px">
                                 <input id="rdoPLUQ" type="radio" name="Opt" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left " checked>
                                 <label class="DyForm3-LabelBlack" for="rdoPLUQ" style="margin-top: 2px">&ensp;商品(依銷量)</label>
-                                <input id="rdoShop" type="radio" name="Opt" style="vertical-align: middle; margin-top: 6px; margin-left: 26px; width: 15px; height: 15px; list-style: none; text-align: left ">
+                                <input id="rdoShop" type="radio" name="Opt" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
                                 <label class="DyForm3-LabelBlack" for="rdoShop" style="margin-top:2px">&ensp;店別</label>
                                 <input id="rdoDept" type="radio" name="Opt" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
                                 <label class="DyForm3-LabelBlack" for="rdoDept" style="margin-top:2px" id="lblDept">&ensp;部門</label>
+                                <input id="rdoBGNO" type="radio" name="Opt" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
+                                <label class="DyForm3-LabelBlack" for="rdoBGNO" style="margin-top:2px">&ensp;大類</label>
+                                <input id="rdoMDNO" type="radio" name="Opt" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
+                                <label class="DyForm3-LabelBlack" for="rdoMDNO" style="margin-top:2px">&ensp;中類</label>
                             </div>
 
                             <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px">
                                 <input id="rdoPLUM" type="radio" name="Opt" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
                                 <label class="DyForm3-LabelBlack" for="rdoPLUM" style="margin-top: 2px">&ensp;商品(依金額)</label>
-                                <input id="rdoBGNO" type="radio" name="Opt" style="vertical-align: middle; margin-top: 6px; margin-left: 26px; width: 15px; height: 15px; list-style: none; text-align: left ">
-                                <label class="DyForm3-LabelBlack" for="rdoBGNO" style="margin-top:2px">&ensp;大類</label>
-                                <input id="rdoMDNO" type="radio" name="Opt" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
-                                <label class="DyForm3-LabelBlack" for="rdoMDNO" style="margin-top:2px">&ensp;中類</label>
-                            </div>
-                            <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px">
                                 <input id="rdoSMNO" type="radio" name="Opt" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
                                 <label class="DyForm3-LabelBlack" for="rdoSMNO" style="margin-top:2px">&ensp;小類</label>
                                 <input id="rdoBNID" type="radio" name="Opt" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
@@ -266,7 +264,6 @@
                                 <input id="rdoMONTH" type="radio" name="Opt" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
                                 <label class="DyForm3-LabelBlack" for="rdoMONTH" style="margin-top:2px" id="lblMONTH">&ensp;月份</label>
                             </div>
-
                             <div class="form-group row DyForm3-LabelSort" id="lblTop">
                                 <label class="DyForm3-Label" style="font-size: 12px; margin-top: 0px;">商品品項只顯示前100項</label>
                             </div>
@@ -342,7 +339,7 @@
                             </div>
 
                         </div>
-                        </div>
+                    </div>
 
                     <div class="modal fade" id="modal_Step1" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
