@@ -37,11 +37,13 @@
 
     var Initdoc = function () {
         UU = sessionStorage.getItem('token');
+        ShowLoading();
         PostToWebApi({ url: "api/GetMenuInit", success: AfterInit, complete: GetHeads });
         //$('#imglogo').css('cursor', 'pointer');
     };
 
     var AfterInit = function (data) {
+        CloseLoading();
         if (ReturnMsg(data, 0) != "GetMenuInitOK") {
             if (ReturnMsg(data, 1) == "null") {
                 window.location.href = "Login";
