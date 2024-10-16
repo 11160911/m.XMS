@@ -547,6 +547,8 @@
     }
     let ClearQueryInit = function () {
         $('#cboMonth').val('');
+        $('#rdoMONTH').show();
+        $('#lblMONTH').show();
         ClearQuery();
     }
     let ClearQuery = function () {
