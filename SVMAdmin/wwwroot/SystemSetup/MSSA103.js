@@ -395,7 +395,7 @@
                 return;
             }
             if (DateDiff("d", $('#txtOpenDateS1').val(), $('#txtOpenDateE1').val()) > parseInt(QDays)) {
-                DyAlert("前期必須小於等於" + QDays + "天!!");
+                DyAlert("前期必須小於等於" + QDays + "天!!", function () { $('#btQuery').prop('disabled', false); });
                 return;
             }
         }
