@@ -181,6 +181,10 @@
                                 .DyForm3-LabelBlack, .DyForm3-Label {
                                     margin-bottom: 2px;
                                 }
+
+                                   #lblTop {
+                                        width:50%;
+                                    }
                                 /*手機畫面*/
                                 @media (max-width:767px) {
                                     #tbQuery thead tr th, #tbType thead tr th, #tbMonth thead tr th {
@@ -206,9 +210,9 @@
                                     .DyForm3-TableIni1 {
                                         height: 250px;
                                     }
-                                    /*   #lblTop {
-                                        margin-left:200px;
-                                    }*/
+                                    #lblTop {
+                                        width: 100%;
+                                    }
                                 }
                             </style>
 
@@ -267,12 +271,12 @@
                                 <label class="DyForm3-LabelBlack" for="rdoMONTH" style="margin-top:2px" id="lblMONTH">&ensp;月份</label>
                             </div>
 
-                            <div class="form-group row DyForm3-LabelSort" id="lblTop">
-                                <label class="DyForm3-Label" style="font-size: 12px; margin-top: 0px;">商品品項只顯示前100項</label>
+                            <div class="form-group row" id="lblTop" style="margin-bottom:0px">
+                                <label style="font-size: 16px; color: red; font-weight: bold; margin-left:auto;margin-bottom:0px">商品品項只顯示前100項</label>
                             </div>
 
                             <div class="card-block forminput">
-                                <div class="x_content" style=" margin-top: 20px;">
+                                <div class="x_content">
                                     <div class="DyForm3-TableIniMob1">
                                         <table id="tbQuery" class="table table-bordered DyForm3-Table">
                                             <thead>
@@ -346,7 +350,7 @@
 
                     <div class="modal fade" id="modal_Step1" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content DyForm3-PanelD">
+                            <div class="modal-content DyForm3-PanelMobD">
                                 <style>
                                     .ErrorControl {
                                         background-color: red;
@@ -430,12 +434,14 @@
                                         <input id="rdoP" type="radio" name="OptSTEP" value="PLU" style="vertical-align: middle; margin-top: 6px; margin-left: 15px; width: 15px; height: 15px; list-style: none; text-align: left ">
                                         <label class="DyForm3-LabelBlack" for="rdoP" style="margin-top:2px" id="lblP">&ensp;商品</label>
                                     </div>
-                                    <div class="form-group row DyForm3-LabelSort"  id="lblTop_STEP">
-                                        <label class="DyForm3-Label" style="font-size: 12px; margin-top: 0px;">商品品項只顯示前100項</label>
+                                    <div class="form-group row"  id="lblTop_STEP" style="margin-bottom:0px">
+                                        <label class="DyForm3-LabelSort">商品品項只顯示前100項</label>
                                     </div>
+
+
                                     <div class="card-block forminput">
-                                        <div class="x_content" style=" margin-top: 20px;">
-                                            <div class="DyForm3-TableD1">
+                                        <div class="x_content">
+                                            <div class="DyForm3-TableD1" style="margin-top:20px">
                                                 <table id="tbQuery_STEP" class="table table-bordered DyForm3-Table">
                                                     <thead>
                                                         <!--第一層-->
@@ -511,7 +517,7 @@
 
                     <div class="modal fade" id="modal_Step2" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content DyForm3-PanelD">
+                            <div class="modal-content DyForm3-PanelMobD">
                                 <style>
                                     .ErrorControl {
                                         background-color: red;

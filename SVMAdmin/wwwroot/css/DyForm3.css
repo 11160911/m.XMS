@@ -269,6 +269,18 @@ border: 1px solid gray;
     background-position: right top;
 }
 
+/*第二層主畫面(mobile)*/
+.DyForm3-PanelMobD {
+    /*height: 50%;
+    width: 50%;*/
+    /*left: -200px;*/
+    overflow: auto;
+    background-image: url(images/MenuLogo-C21.jpg);
+    background-repeat: no-repeat;
+    background-attachment: inherit;
+    background-position: right top;
+}
+
 /*第一層Table*/
 .DyForm3-TableIni {
     overflow: auto;
@@ -353,6 +365,9 @@ border: 1px solid gray;
             left: 0px;
             background-image: url(images/MenuLogo-P6.jpg);
         }
+        .DyForm3-PanelMobD {
+            background-image: url(images/MenuLogo-P6.jpg);
+        }
         .DyForm3-TableD {
             height: 450px;
         }
@@ -366,6 +381,9 @@ border: 1px solid gray;
             height: 280px;
             width: 100%;
             left: 0px;
+            background-image: url(images/MenuLogo-P6.jpg);
+        }
+        .DyForm3-PanelMobD {
             background-image: url(images/MenuLogo-P6.jpg);
         }
         .DyForm3-TableD {
