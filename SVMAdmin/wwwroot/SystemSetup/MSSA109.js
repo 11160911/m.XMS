@@ -602,9 +602,10 @@
                 $('#lblProgramName').html(GetNodeValue(dtE[0], "ChineseName"));
             }
             InitComboItem($("#cboYear"), $('#cboMonth'));    //下拉選單
+            $('#cboMonth').val(GetNodeValue(dtE[0], "SysDate").substr(5, 2))
+            HideMonth();
 
             AssignVar();
-
             $('#tbQuery').show();
             $('#tbType').hide();
             $('#tbMonth').hide();
