@@ -455,9 +455,14 @@ namespace SVMAdmin.Controllers
                 DataTable dtDASH = PubUtility.SqlQry(sql, uu, "SYS");
                 dtDASH.TableName = "dtDASH";
                 ds.Tables.Add(dtDASH);
-                
+
+                sql = "select '" + uu.UserID.ToLower() + "' as UserID,'" + uu.CompanyId.ToLower() + "' as CompanyId ";
+                DataTable dtAdmin = PubUtility.SqlQry(sql, uu, "SYS");
+                dtAdmin.TableName = "dtAdmin";
+                ds.Tables.Add(dtAdmin);
+
                 //檢查人員群組為[DASH]才允許顯示儀錶板，若不在此群組則只顯示公佈欄
-                if (dtDASH.Rows.Count > 0) {
+                if (dtDASH.Rows.Count > 0 || uu.UserID.ToLower() == uu.CompanyId.ToLower()) {
                     sql = "Select OpenDate A1,sum(cash) A2,sum(RecCount) A3 ";
                     sql += "From SalesAtonceHWeb (nolock) ";
                     sql += "Where Companycode='" + uu.CompanyId + "' ";

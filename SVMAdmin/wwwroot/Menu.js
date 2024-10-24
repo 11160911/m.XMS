@@ -289,7 +289,9 @@
 
         //檢查人員群組為[DASH]才允許顯示儀錶板，若不在此群組則只顯示公佈欄
         var dtDASH = data.getElementsByTagName('dtDASH');
-        if (dtDASH.length > 0) {
+        //檢查若為系統管理員則直接顯示儀錶板
+        var dtAdmin = data.getElementsByTagName('dtAdmin');
+        if (dtDASH.length > 0 || GetNodeValue(dtAdmin[0], 'UserID') == GetNodeValue(dtAdmin[0], 'CompanyId')) {
             if ($('#MenuDiv1').attr('hidden') == undefined) {
                 $('#MenuDiv1').show();
             }
