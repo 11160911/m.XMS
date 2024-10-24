@@ -277,44 +277,74 @@
 
     };
 
+    //繪製儀錶板
     let SetHome = function (data) {
         var dtTran = data.getElementsByTagName('dtTran');
-        var dtA = data.getElementsByTagName('dtA');
-        var dtB = data.getElementsByTagName('dtB');
-        var dtC = data.getElementsByTagName('dtC');
-        var dtD = data.getElementsByTagName('dtD');
-        var dtE = data.getElementsByTagName('dtE');
-        var dtF = data.getElementsByTagName('dtF');
         var dtJ = data.getElementsByTagName('dtJ');
         var dtJ1 = data.getElementsByTagName('dtJ1');
         $('#lblSysDate').html(GetNodeValue(dtTran[0], 'LastTrans'))
         $('#CardJCnt').html(dtJ1.length)
-        //今日
-        $('#lblA1').html(GetNodeValue(dtA[0], 'A1'))
-        $('#lblA2').html(parseFloat(GetNodeValue(dtA[0], 'A2')).toLocaleString('en-US'))
-        $('#lblA3').html(parseFloat(GetNodeValue(dtA[0], 'A3')).toLocaleString('en-US'))
-        //昨日
-        $('#lblB1').html(GetNodeValue(dtB[0], 'B1'))
-        $('#lblB2').html(parseFloat(GetNodeValue(dtB[0], 'B2')).toLocaleString('en-US'))
-        $('#lblB3').html(parseFloat(GetNodeValue(dtB[0], 'B3')).toLocaleString('en-US'))
-        //本月
-        $('#lblC1').html(GetNodeValue(dtC[0], 'C1'))
-        $('#lblC2').html(parseFloat(GetNodeValue(dtC[0], 'C2')).toLocaleString('en-US'))
-        //本年度
-        $('#lblD1').html(GetNodeValue(dtD[0], 'D1'))
-        $('#lblD2').html(parseFloat(GetNodeValue(dtD[0], 'D2')).toLocaleString('en-US'))
-        //本月商品銷售排行前10名
-        grdE.BindData(dtE);
-        //本月店別銷售排行前10名
-        grdF.BindData(dtF);
-        //本月各區業績比較圖(圓餅圖)
-        SetPie(data);
-        //本年度各月業績比較圖(長條圖)
-        SetBar(data);
-        //日客單價曲線圖(折線圖)
-        Setline(data);
         //公佈欄
         grdJ.BindData(dtJ);
+
+        //檢查人員群組為[DASH]才允許顯示儀錶板，若不在此群組則只顯示公佈欄
+        var dtDASH = data.getElementsByTagName('dtDASH');
+        if (dtDASH.length > 0) {
+            if ($('#MenuDiv1').attr('hidden') == undefined) {
+                $('#MenuDiv1').show();
+            }
+            else {
+                $('#MenuDiv1').removeAttr('hidden');
+                $('#MenuDiv1').show();
+            }
+            if ($('#MenuDiv2').attr('hidden') == undefined) {
+                $('#MenuDiv2').show();
+            }
+            else {
+                $('#MenuDiv2').removeAttr('hidden');
+                $('#MenuDiv2').show();
+            }
+            if ($('#MenuDiv3').attr('hidden') == undefined) {
+                $('#MenuDiv3').show();
+            }
+            else {
+                $('#MenuDiv3').removeAttr('hidden');
+                $('#MenuDiv3').show();
+            }
+
+            var dtA = data.getElementsByTagName('dtA');
+            var dtB = data.getElementsByTagName('dtB');
+            var dtC = data.getElementsByTagName('dtC');
+            var dtD = data.getElementsByTagName('dtD');
+            var dtE = data.getElementsByTagName('dtE');
+            var dtF = data.getElementsByTagName('dtF');
+            //今日
+            $('#lblA1').html(GetNodeValue(dtA[0], 'A1'))
+            $('#lblA2').html(parseFloat(GetNodeValue(dtA[0], 'A2')).toLocaleString('en-US'))
+            $('#lblA3').html(parseFloat(GetNodeValue(dtA[0], 'A3')).toLocaleString('en-US'))
+            //昨日
+            $('#lblB1').html(GetNodeValue(dtB[0], 'B1'))
+            $('#lblB2').html(parseFloat(GetNodeValue(dtB[0], 'B2')).toLocaleString('en-US'))
+            $('#lblB3').html(parseFloat(GetNodeValue(dtB[0], 'B3')).toLocaleString('en-US'))
+            //本月
+            $('#lblC1').html(GetNodeValue(dtC[0], 'C1'))
+            $('#lblC2').html(parseFloat(GetNodeValue(dtC[0], 'C2')).toLocaleString('en-US'))
+            //本年度
+            $('#lblD1').html(GetNodeValue(dtD[0], 'D1'))
+            $('#lblD2').html(parseFloat(GetNodeValue(dtD[0], 'D2')).toLocaleString('en-US'))
+            //本月商品銷售排行前10名
+            grdE.BindData(dtE);
+            //本月店別銷售排行前10名
+            grdF.BindData(dtF);
+            //本月各區業績比較圖(圓餅圖)
+            SetPie(data);
+            //本年度各月業績比較圖(長條圖)
+            SetBar(data);
+            //日客單價曲線圖(折線圖)
+            Setline(data);
+        }
+        else {
+        }
     }
 
     const base64toArrayBuffer = function (base64) {
