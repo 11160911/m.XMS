@@ -92,13 +92,16 @@
             $('#btD3').click(function () {
                 ProgramStart("MSSD107");
             })
+            $('#btE1,#btF1').click(function () {
+                ProgramStart("MSSA109");
+            })
             $('#imgHomeC,#imgHomeP,#Update').click(function () {
                 window.location.reload();
             })
             $('#CardJCntText,#CardJCnt').click(function () {
                 window.location.href = "#CardJ";
             })
-            $('#btH').click(function () {
+            $('#btG1,#btH').click(function () {
                 ProgramStart("MSSA105");
             })
             $('#SysDate').click(function () {
@@ -172,6 +175,17 @@
                 );
             else {
                 PageMSSD107($(".workarea"));
+            }
+        }
+        else if (Program == "MSSA109") {
+            if (window.PageMSSA109 == undefined)
+                $.getScript('SystemSetup/' + Program + '.js',
+                    function () {
+                        PageMSSA109($(".workarea"));
+                    }
+                );
+            else {
+                PageMSSA109($(".workarea"));
             }
         }
 
@@ -286,7 +300,6 @@
         $('#CardJCnt').html(dtJ1.length)
         //公佈欄
         grdJ.BindData(dtJ);
-
         //檢查人員群組為[DASH]才允許顯示儀錶板，若不在此群組則只顯示公佈欄
         var dtDASH = data.getElementsByTagName('dtDASH');
         //檢查若為系統管理員則直接顯示儀錶板
@@ -346,6 +359,14 @@
             Setline(data);
         }
         else {
+        }
+
+        if ($('#MenuDiv4').attr('hidden') == undefined) {
+            $('#MenuDiv4').show();
+        }
+        else {
+            $('#MenuDiv4').removeAttr('hidden');
+            $('#MenuDiv4').show();
         }
     }
 
