@@ -50,12 +50,13 @@
         grdType = new DynGrid(
             {
                 table_lement: $('#tbType')[0],
-                class_collection: ["tdCol1 text-center", "tdCol2 text-center", "tdCol3 label-align", "tdCol4 label-align"],
+                class_collection: ["tdCol1 text-center", "tdCol2 text-center", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align"],
                 fields_info: [
                     { type: "Text", name: "SeqNo", style: "" },
                     { type: "Text", name: "Name" },
                     { type: "TextAmt", name: "Qty" },
-                    { type: "TextAmt", name: "Cash" }
+                    { type: "TextAmt", name: "Cash" },
+                    { type: "TextPercent", name: "AmtPer" }
                 ],
                 rows_per_page: 100,
                 method_clickrow: click_PLU,
@@ -68,12 +69,13 @@
         grdType_STEP = new DynGrid(
             {
                 table_lement: $('#tbType_STEP')[0],
-                class_collection: ["tdCol1 text-center", "tdCol2 text-center", "tdCol3 label-align", "tdCol4 label-align"],
+                class_collection: ["tdCol1 text-center", "tdCol2 text-center", "tdCol3 label-align", "tdCol4 label-align", "tdCol5 label-align"],
                 fields_info: [
                     { type: "Text", name: "SeqNo", style: "" },
                     { type: "Text", name: "Name" },
                     { type: "TextAmt", name: "Qty" },
-                    { type: "TextAmt", name: "Cash" }
+                    { type: "TextAmt", name: "Cash" },
+                    { type: "TextPercent", name: "AmtPer" }
                 ],
                 rows_per_page: 100,
                 method_clickrow: click_PLU,
@@ -479,20 +481,10 @@
     };
     let btExit_Step1_click = function (bt) {
         $('#modal_Step1').modal('hide');
-        $('#tbQuerySTEP1 tbody').find('tr').remove();
-        $('#tbQuerySTEP1 thead td#td1').html('');
-        $('#tbQuerySTEP1 thead td#td2').html('');
-        $('#tbQuerySTEP1 thead td#td3').html('');
-        //$('#pgMSSD101Init').show();
-        //$('#pgMSSD101_PS_STEP1').hide();
-    };
-    let btExit_Step2_click = function (bt) {
-        $('#modal_Step2').modal('hide');
-        $('#tbQuerySTEP2 tbody').find('tr').remove();
-        $('#tbQuerySTEP2 thead td#td1').html('');
-        $('#tbQuerySTEP2 thead td#td2').html('');
-        $('#tbQuerySTEP2 thead td#td3').html('');
-
+        //$('#tbQuerySTEP1 tbody').find('tr').remove();
+        //$('#tbQuerySTEP1 thead td#td1').html('');
+        //$('#tbQuerySTEP1 thead td#td2').html('');
+        //$('#tbQuerySTEP1 thead td#td3').html('');
         //$('#pgMSSD101Init').show();
         //$('#pgMSSD101_PS_STEP1').hide();
     };
@@ -613,7 +605,6 @@
             $('#btQuery').click(function () { btQuery_click(this) });
             $('#btClear').click(function () { ClearQueryInit() });
             $('#btExit_Step1').click(function () { btExit_Step1_click(this) });
-            $('#btExit_Step2').click(function () { btExit_Step2_click(this) });
             $('#rdoPLUQ,#rdoShop,#rdoDept,#rdoBGNO,#rdoMDNO,#rdoPLUM,#rdoSMNO,#rdoBNID,#rdoSERIES,#rdoMONTH').change(function () { btQuery_click() });
             $('#rdoM,#rdoS,#rdoP').change(function () { Query_Step1_click(this) });
             $('#cboYear').change(function () { ClearQuery() });

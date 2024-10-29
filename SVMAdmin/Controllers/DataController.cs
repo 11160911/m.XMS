@@ -14958,16 +14958,19 @@ namespace SVMAdmin.Controllers
                     sql += "group by c.Type_ID ,c.Type_Name ; ";
 
                 }
-                //明細
-                sqlD = "select * From #S1 order by SeqNo";
-                DataTable dtE = PubUtility.SqlQry(sql+sqlD, uu, "SYS");
-                dtE.TableName = "dtE";
-                ds.Tables.Add(dtE);
                 //彙總資料
                 sqlH = "select sum(qty) SumQty,sum(Cash) SumCash From #S1 ";
                 DataTable dtH = PubUtility.SqlQry(sql+sqlH, uu, "SYS");
                 dtH.TableName = "dtH";
                 ds.Tables.Add(dtH);
+                //明細
+                if (Flag == "PQ" | Flag == "PM" | Flag == "MM")
+                    sqlD = "select * From #S1 order by SeqNo";
+                else
+                    sqlD = "select *,format(cast(isnull(Cash,0) as Float)/" + dtH.Rows[0]["SumCash"] + ",'p') AmtPer From #S1 order by SeqNo";
+                DataTable dtE = PubUtility.SqlQry(sql+sqlD, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
             }
             catch (Exception err)
             {
@@ -15085,16 +15088,19 @@ namespace SVMAdmin.Controllers
                     }
 
                 }
-                //明細
-                sqlD = "select top 100 * From #S1 order by SeqNo";
-                DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
-                dtE.TableName = "dtE";
-                ds.Tables.Add(dtE);
                 //彙總資料
                 sqlH = "select sum(qty) SumQty,sum(Cash) SumCash From #S1 ";
                 DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
                 dtH.TableName = "dtH";
                 ds.Tables.Add(dtH);
+                //明細
+                if (SubFlag == "Month"| SubFlag == "PLU")
+                    sqlD = "select top 100 * From #S1 order by SeqNo";
+                else
+                    sqlD = "select top 100 *,format(cast(isnull(Cash,0) as Float)/" + dtH.Rows[0]["SumCash"] + ",'p') AmtPer  From #S1 order by SeqNo";
+                DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
             }
             catch (Exception err)
             {
