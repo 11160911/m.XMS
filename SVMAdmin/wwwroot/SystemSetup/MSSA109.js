@@ -294,7 +294,7 @@
         }
         //部門
         else if ($('#rdoDept').prop('checked') == true) {
-            Flag = "D";
+            Flag = "G";
         }
         //大類
         if ($('#rdoBGNO').prop('checked') == true) {
@@ -310,7 +310,7 @@
         }
         //品牌
         if ($('#rdoBNID').prop('checked') == true) {
-            Flag = "G";
+            Flag = "B";
         }
         //系列
         else if ($('#rdoSERIES').prop('checked') == true) {
@@ -406,7 +406,7 @@
         }
         //部門
         else if ($('#rdoDept').prop('checked') == true) {
-            Flag = "D";
+            Flag = "G";
         }
         //大類
         if ($('#rdoBGNO').prop('checked') == true) {
@@ -422,7 +422,7 @@
         }
         //品牌
         if ($('#rdoBNID').prop('checked') == true) {
-            Flag = "G";
+            Flag = "B";
         }
         //系列
         else if ($('#rdoSERIES').prop('checked') == true) {

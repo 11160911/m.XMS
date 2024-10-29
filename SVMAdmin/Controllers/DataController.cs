@@ -14919,7 +14919,7 @@ namespace SVMAdmin.Controllers
                 else       //部門,大,中,小類,系列
                 {
                     string ColName = "";
-                    if (Flag == "D")
+                    if (Flag == "G")
                         ColName = "GD_Dept";
                     else if (Flag == "L")
                         ColName = "GD_BGNo";
@@ -14927,14 +14927,14 @@ namespace SVMAdmin.Controllers
                         ColName = "GD_MDNo";
                     else if (Flag == "S")
                         ColName = "GD_SMNo";
-                    else if (Flag == "G")
+                    else if (Flag == "B")
                         ColName = "GD_BNID";
                     else if (Flag == "E")
                         ColName = "GD_SERIES";
 
                     sql = "select  ROW_NUMBER() over (ORDER BY sum(Cash) desc ) SeqNo ,c.Type_ID+' '+c.Type_Name Name,sum(Qty) Qty,Sum(Cash) Cash into #S1 ";
                     sql += "from MSData5Web a (nolock) ";
-                    sql += " join TypeDataWeb c (nolock) on a.CompanyCode =c.CompanyCode and a." + ColName + "=c.Type_ID and Type_Code='" + Flag+ "' ";
+                    sql += "left join TypeDataWeb c (nolock) on a.CompanyCode =c.CompanyCode and a." + ColName + "=c.Type_ID and Type_Code='" + Flag+ "' ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and S_YYYYMM like '" + YYYYMM + "%' ";
                     sql += "group by c.Type_ID ,c.Type_Name ; ";
@@ -15029,7 +15029,7 @@ namespace SVMAdmin.Controllers
                 else       //部門,大,中,小類,系列
                 {
                     string ColName = "";
-                    if (Flag == "D")
+                    if (Flag == "G")
                         ColName = "GD_Dept";
                     else if (Flag == "L")
                         ColName = "GD_BGNo";
@@ -15037,7 +15037,7 @@ namespace SVMAdmin.Controllers
                         ColName = "GD_MDNo";
                     else if (Flag == "S")
                         ColName = "GD_SMNo";
-                    else if (Flag == "G")
+                    else if (Flag == "B")
                         ColName = "GD_BNID";
                     else if (Flag == "E")
                         ColName = "GD_SERIES";
