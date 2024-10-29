@@ -298,8 +298,6 @@
         var dtJ1 = data.getElementsByTagName('dtJ1');
         $('#lblSysDate').html(GetNodeValue(dtTran[0], 'LastTrans'))
         $('#CardJCnt').html(dtJ1.length)
-        //公佈欄
-        grdJ.BindData(dtJ);
         //檢查人員群組為[DASH]才允許顯示儀錶板，若不在此群組則只顯示公佈欄
         var dtDASH = data.getElementsByTagName('dtDASH');
         //檢查若為系統管理員則直接顯示儀錶板
@@ -368,6 +366,8 @@
             $('#MenuDiv4').removeAttr('hidden');
             $('#MenuDiv4').show();
         }
+        //公佈欄
+        grdJ.BindData(dtJ);
     }
 
     const base64toArrayBuffer = function (base64) {
