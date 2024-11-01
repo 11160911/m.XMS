@@ -156,7 +156,7 @@
                                     box-shadow: 0 0px 2px 0px inset #ddd;
                                 }
 
-                                #thead1, #thead2, #thead3, #thead4, #thead5, #thead1S, #thead2S, #thead3S, #thead4S, #thead1M, #thead2M, #thead3M, #thead4M {
+                                #thead1, #thead2, #thead3, #thead4, #thead5, #thead1S, #thead2S, #thead3S, #thead4S, #thead5S, #thead1M, #thead2M, #thead3M, #thead4M {
                                     top: 0;
                                     z-index: 2;
                                     height: 45px;
@@ -308,6 +308,7 @@
                                                     <th id="thead2S" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
                                                     <th id="thead3S" class="text-center" colspan="1">銷售量</th>
                                                     <th id="thead4S" class="text-center" colspan="1">銷售金額</th>
+                                                    <th id="thead5S" class="text-center" colspan="1" rowspan="2">佔比</th>
                                                 </tr>
                                                 <!--第二層-->
                                                 <tr class="QSum">
@@ -472,6 +473,7 @@
                                                             <th id="thead2S" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">店別</th>
                                                             <th id="thead3S" class="text-center" colspan="1">銷售量</th>
                                                             <th id="thead4S" class="text-center" colspan="1">銷售金額</th>
+                                                            <th id="thead5S" class="text-center" colspan="1" rowspan="2">佔比</th>
                                                         </tr>
                                                         <!--第二層-->
                                                         <tr class="QSum1">
@@ -498,125 +500,6 @@
                                                         <tr class="QSum1">
                                                             <td id="td1M" colspan="1" style="text-align: right"></td>
                                                             <td id="td2M" colspan="1" style="text-align: right"></td>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal fade" id="modal_Step2" data-keyboard="false" data-backdrop="static">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content DyForm3-PanelMobD">
-                                <style>
-                                    .ErrorControl {
-                                        background-color: red;
-                                    }
-
-                                    #tbQuerySTEP2 thead tr th {
-                                        font-size: 16px;
-                                        padding: 3px;
-                                        background-color: #ffb620;
-                                        font-weight: bold;
-                                        vertical-align: middle;
-                                    }
-
-                                    #tbQuerySTEP2 thead tr td {
-                                        font-size: 16px;
-                                        padding: 3px;
-                                        background-color: #ffb620;
-                                        font-weight: bold;
-                                        vertical-align: middle;
-                                    }
-
-                                    #tbQuerySTEP2 tbody tr td {
-                                        font-size: 16px;
-                                        padding: 3px;
-                                        font-weight: bold;
-                                        vertical-align: middle;
-                                        cursor: pointer;
-                                    }
-
-                                    th:first-child {
-                                        position: sticky;
-                                        left: 0; /*首行永遠固定於左 */
-                                    }
-
-                                    /*手機畫面*/
-                                    @media (max-width:767px) {
-                                        #tbQuerySTEP2 thead tr th {
-                                            font-size: 12px;
-                                        }
-
-                                        #tbQuerySTEP2 thead tr td {
-                                            font-size: 12px;
-                                        }
-
-                                        #tbQuerySTEP2 tbody tr td {
-                                            font-size: 12px;
-                                        }
-                                    }
-                                </style>
-                                <div class="modal-body modal-tab-container" style="padding:8px">
-
-                                    <div class="form-group row" style="margin-left: 5px; width: 100%; margin-bottom:0px">
-                                        <label id="lblProgramName" class="DyForm3-ProgramName">年度銷售業績比較表</label>
-                                    </div>
-
-                                    <div class="form-group row" style="width: 100%; margin-left: 12px; margin-bottom:5px">
-                                        <button id="btExit_Step2" type="button" class="DyForm3-BtnRe">回上頁</button>
-                                    </div>
-
-                                    <div class="form-group row" style="width: 100%; margin-left: 5px; margin-bottom: 5px ">
-                                        <label class="DyForm3-Label" style="margin-left: 15px;">年度：</label>
-                                        <label id="lblYear2" class="DyForm3-LabelBlack" style="margin-left: 5px; margin-top: 3px"></label>
-                                    </div>
-                                    <div class="form-group row" style="width: 100%; margin-left: 5px; margin-bottom: 5px ">
-                                        <label id="lblType2Name" class="DyForm3-Label" style="margin-left: 15px;">區課：</label>
-                                        <label id="lblType2" class="DyForm3-LabelBlack" style="margin-left: 5px; margin-top: 3px "></label>
-                                    </div>
-                                    <div class="form-group row" style="width: 100%; margin-left: 5px; margin-bottom: 5px ">
-                                        <label id="lblShop2Name" class="DyForm3-Label" style="margin-left: 15px;">店別：</label>
-                                        <label id="lblShop2" class="DyForm3-LabelBlack" style="margin-left: 5px; margin-top: 3px "></label>
-                                    </div>
-                                    <div class="form-group row" style="margin-left: 12px; width: 100%; margin-bottom: 5px ">
-                                        <label class="DyForm3-Label" style="font-size: 16px; margin-top: 0px ">成長率=(指定年度-前一年度)/前一年度</label>
-                                    </div>
-
-                                    <div class="card-block forminput">
-                                        <div class="x_content">
-                                            <div class="DyForm3-TableD">
-                                                <table id="tbQuerySTEP2" class="table table-bordered DyForm3-Table">
-                                                    <thead>
-                                                        <!--第一層-->
-                                                        <tr>
-                                                            <th id="thead1" class="text-center" colspan="1" rowspan="2" style="vertical-align: middle;">月份</th>
-                                                            <td id="thead2" class="text-center" colspan="1">前一年度業績</td>
-                                                            <td id="thead3" class="text-center" colspan="1">指定年度業績</td>
-                                                            <td id="thead4" class="text-center" colspan="1" style="vertical-align: middle;"></td>
-                                                        </tr>
-                                                        <!--第二層-->
-                                                        <tr>
-                                                            <th id="th1" class="text-center" colspan="1">金額</th>
-                                                            <th id="th2" class="text-center" colspan="1">金額</th>
-                                                            <th id="th4" class="text-center" colspan="1" style="vertical-align: middle;">成長%</th>
-                                                        </tr>
-                                                        <!--第三層-->
-                                                        <tr>
-                                                            <td id="td0" class="text-center" colspan="1">店總業績</td>
-                                                            <td id="td1" colspan="1" style="text-align: right"></td>
-                                                            <td id="td2" colspan="1" style="text-align: right"></td>
-                                                            <td id="td3" class="text-center" colspan="1"></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>

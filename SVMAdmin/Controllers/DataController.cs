@@ -15011,7 +15011,7 @@ namespace SVMAdmin.Controllers
                 else       //部門,大,中,小類,系列
                 {
                     string ColName = "";
-                    if (Flag == "D")
+                    if (Flag == "G")
                         ColName = "GD_Dept";
                     else if (Flag == "L")
                         ColName = "GD_BGNo";
@@ -15019,29 +15019,32 @@ namespace SVMAdmin.Controllers
                         ColName = "GD_MDNo";
                     else if (Flag == "S")
                         ColName = "GD_SMNo";
-                    else if (Flag == "G")
+                    else if (Flag == "B")
                         ColName = "GD_BNID";
                     else if (Flag == "E")
                         ColName = "GD_SERIES";
 
                     sql = "select  ROW_NUMBER() over (ORDER BY sum(Cash) desc ) SeqNo ,c.Type_ID+' '+c.Type_Name Name,sum(Qty) Qty,Sum(Cash) Cash into #S1 ";
                     sql += "from MSData5Web a (nolock) ";
-                    sql += " join TypeDataWeb c (nolock) on a.CompanyCode =c.CompanyCode and a." + ColName + "=c.Type_ID and Type_Code='" + Flag+ "' ";
+                    sql += "left join TypeDataWeb c (nolock) on a.CompanyCode =c.CompanyCode and a." + ColName + "=c.Type_ID and Type_Code='" + Flag+ "' ";
                     sql += "where a.Companycode='" + uu.CompanyId + "' ";
                     sql += "and S_YYYYMM like '" + YYYYMM + "%' ";
                     sql += "group by c.Type_ID ,c.Type_Name ; ";
 
                 }
-                //明細
-                sqlD = "select * From #S1 order by SeqNo";
-                DataTable dtE = PubUtility.SqlQry(sql+sqlD, uu, "SYS");
-                dtE.TableName = "dtE";
-                ds.Tables.Add(dtE);
                 //彙總資料
                 sqlH = "select sum(qty) SumQty,sum(Cash) SumCash From #S1 ";
                 DataTable dtH = PubUtility.SqlQry(sql+sqlH, uu, "SYS");
                 dtH.TableName = "dtH";
                 ds.Tables.Add(dtH);
+                //明細
+                if (Flag == "PQ" | Flag == "PM" | Flag == "MM")
+                    sqlD = "select * From #S1 order by SeqNo";
+                else
+                    sqlD = "select *,format(cast(isnull(Cash,0) as Float)/" + dtH.Rows[0]["SumCash"] + ",'p') AmtPer From #S1 order by SeqNo";
+                DataTable dtE = PubUtility.SqlQry(sql+sqlD, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
             }
             catch (Exception err)
             {
@@ -15121,7 +15124,7 @@ namespace SVMAdmin.Controllers
                 else       //部門,大,中,小類,系列
                 {
                     string ColName = "";
-                    if (Flag == "D")
+                    if (Flag == "G")
                         ColName = "GD_Dept";
                     else if (Flag == "L")
                         ColName = "GD_BGNo";
@@ -15129,7 +15132,7 @@ namespace SVMAdmin.Controllers
                         ColName = "GD_MDNo";
                     else if (Flag == "S")
                         ColName = "GD_SMNo";
-                    else if (Flag == "G")
+                    else if (Flag == "B")
                         ColName = "GD_BNID";
                     else if (Flag == "E")
                         ColName = "GD_SERIES";
@@ -15159,16 +15162,19 @@ namespace SVMAdmin.Controllers
                     }
 
                 }
-                //明細
-                sqlD = "select top 100 * From #S1 order by SeqNo";
-                DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
-                dtE.TableName = "dtE";
-                ds.Tables.Add(dtE);
                 //彙總資料
                 sqlH = "select sum(qty) SumQty,sum(Cash) SumCash From #S1 ";
                 DataTable dtH = PubUtility.SqlQry(sql + sqlH, uu, "SYS");
                 dtH.TableName = "dtH";
                 ds.Tables.Add(dtH);
+                //明細
+                if (SubFlag == "Month"| SubFlag == "PLU")
+                    sqlD = "select top 100 * From #S1 order by SeqNo";
+                else
+                    sqlD = "select top 100 *,format(cast(isnull(Cash,0) as Float)/" + dtH.Rows[0]["SumCash"] + ",'p') AmtPer  From #S1 order by SeqNo";
+                DataTable dtE = PubUtility.SqlQry(sql + sqlD, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
             }
             catch (Exception err)
             {
