@@ -29,7 +29,6 @@
         outline-style: solid;
         box-shadow: 0 0 0 3px #fc8c86;
     }
-
 .DyForm3-BtnAdd:disabled, .DyForm3-BtnMod:disabled, .DyForm3-BtnSave:disabled, .DyForm3-BtnCancel:disabled, .DyForm3-BtnShow:disabled, .DyForm3-BtnDef:disabled, .DyForm3-BtnRe:disabled, .DyForm3-BtnClear:disabled {
 border: 1px solid gray;
 }
@@ -175,7 +174,7 @@ border: 1px solid gray;
     width: 90px;
     height: 30px;
 }
-    .DyForm3-BtnShop:focus {
+.DyForm3-BtnShop:focus {
         outline-color: transparent;
         outline-style: solid;
         box-shadow: 0 0 0 3px #dcedff;
@@ -188,7 +187,6 @@ border: 1px solid gray;
     position: absolute;
     right: 30px
 }
-
 /*按鍵:DM預覽*/
 .DyForm3-BtnShowEDM {
     box-shadow: inset 0px 1px 0px 0px #ffffff;
@@ -208,13 +206,38 @@ border: 1px solid gray;
     width: 90px;
     height: 30px;
 }
-
-    .DyForm3-BtnShowEDM:focus {
+.DyForm3-BtnShowEDM:focus {
         outline-color: transparent;
         outline-style: solid;
         box-shadow: 0 0 0 3px #8ccd55;
     }
-
+/*按鍵:會員專區預覽*/
+.DyForm3-BtnVShow {
+    box-shadow: inset 0px 1px 0px 0px #ffffff;
+    background-color: red;
+    border-radius: 6px;
+    border: 1px solid #cc3025;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 3px 14px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #631b16;
+    margin: 0px;
+    width: 115px;
+    height: 30px;
+}
+.DyForm3-BtnVShow:focus {
+    outline-color: transparent;
+    outline-style: solid;
+    box-shadow: 0 0 0 3px #fc8c86;
+}
+.DyForm3-BtnVShow:disabled {
+    border: 1px solid gray;
+}
 /*Table*/
 .DyForm3-Table {
     width: 95%;
@@ -222,7 +245,6 @@ border: 1px solid gray;
     margin-right: auto;
     white-space: nowrap;
 }
-
 /*完整顯示請打橫看*/
 .DyForm3-Horizontal {
     margin-top: 7px;
@@ -232,7 +254,6 @@ border: 1px solid gray;
     font-weight: bold;
     display:none;
 }
-
 /*Menu主畫面*/
 .DyForm3-PanelMenu {
     padding: 0px;

@@ -476,6 +476,8 @@
             $('#btCancel_EDM').css('background-color', 'gray')
             $('#btShow_EDM').prop('disabled', true)
             $('#btShow_EDM').css('background-color', 'gray')
+            $('#btVShow_EDM').prop('disabled', true)
+            $('#btVShow_EDM').css('background-color', 'gray')
             $('#btApp_EDM').prop('disabled', true)
             $('#btApp_EDM').css('background-color', 'gray')
             $('#btDef_EDM').prop('disabled', true)
@@ -492,6 +494,8 @@
             $('#btCancel_EDM').css('background-color', 'red')
             $('#btShow_EDM').prop('disabled', true)
             $('#btShow_EDM').css('background-color', 'gray')
+            $('#btVShow_EDM').prop('disabled', true)
+            $('#btVShow_EDM').css('background-color', 'gray')
             $('#btApp_EDM').prop('disabled', true)
             $('#btApp_EDM').css('background-color', 'gray')
             $('#btDef_EDM').prop('disabled', true)
@@ -510,6 +514,8 @@
                 $('#btCancel_EDM').css('background-color', 'gray')
                 $('#btShow_EDM').prop('disabled', false)
                 $('#btShow_EDM').css('background-color', 'red')
+                $('#btVShow_EDM').prop('disabled', false)
+                $('#btVShow_EDM').css('background-color', 'red')
                 $('#btApp_EDM').prop('disabled', false)
                 $('#btApp_EDM').css('background-color', '#3d94f6')
                 $('#btDef_EDM').prop('disabled', true)
@@ -527,6 +533,8 @@
                 $('#btCancel_EDM').css('background-color', 'gray')
                 $('#btShow_EDM').prop('disabled', false)
                 $('#btShow_EDM').css('background-color', 'red')
+                $('#btVShow_EDM').prop('disabled', false)
+                $('#btVShow_EDM').css('background-color', 'red')
                 $('#btApp_EDM').prop('disabled', true)
                 $('#btApp_EDM').css('background-color', 'gray')
                 $('#btDef_EDM').prop('disabled', false)
@@ -544,6 +552,8 @@
                 $('#btCancel_EDM').css('background-color', 'gray')
                 $('#btShow_EDM').prop('disabled', false)
                 $('#btShow_EDM').css('background-color', 'red')
+                $('#btVShow_EDM').prop('disabled', false)
+                $('#btVShow_EDM').css('background-color', 'red')
                 $('#btApp_EDM').prop('disabled', true)
                 $('#btApp_EDM').css('background-color', 'gray')
                 $('#btDef_EDM').prop('disabled', true)
@@ -576,11 +586,15 @@
             window.t1.enableReadOnlyMode('t1');         //停用
             window.t2.enableReadOnlyMode('t2');         //停用
             $('#btP2_EDM').css('pointer-events', 'none');
+            window.v1.enableReadOnlyMode('v1');         //停用
+            window.v2.enableReadOnlyMode('v2');         //停用
         }
         else {
             window.t1.disableReadOnlyMode('t1');        //啟用
             window.t2.disableReadOnlyMode('t2');        //啟用
             $('#btP2_EDM').css('pointer-events', 'unset');
+            window.v1.disableReadOnlyMode('v1');        //啟用
+            window.v2.disableReadOnlyMode('v2');        //啟用
         }
     };
 
@@ -601,6 +615,8 @@
         $('#lblPSName_EDM').html('');
         window.t1.setData('');
         window.t2.setData('');
+        window.v1.setData('');
+        window.v2.setData('');
         GetImage_EDM("P2_EDM", "");
     };
 
@@ -647,6 +663,12 @@
             }
             else if (GetNodeValue(dtH[i], "DataType") == "T2") {
                 window.t2.setData(GetNodeValue(dtH[i], "TXT"));
+            }
+            else if (GetNodeValue(dtH[i], "DataType") == "V1") {
+                window.v1.setData(GetNodeValue(dtH[i], "TXT"));
+            }
+            else if (GetNodeValue(dtH[i], "DataType") == "V2") {
+                window.v2.setData(GetNodeValue(dtH[i], "TXT"));
             }
         }
     };
@@ -787,6 +809,22 @@
             })
             return;
         }
+        else {
+            if (window.v1.getData() == "<p>&nbsp;</p>") {
+                DyAlert("請輸入會員專區-優惠券主題!", function () {
+                    EnableForm_EDM(false)
+                    $('#btSave_EDM').prop('disabled', false)
+                })
+                return;
+            }
+            if (window.v2.getData() == "<p>&nbsp;</p>") {
+                DyAlert("請輸入會員專區-優惠券注意事項!", function () {
+                    EnableForm_EDM(false)
+                    $('#btSave_EDM').prop('disabled', false)
+                })
+                return;
+            }
+        }
         var P2 = $('#P2_EDM').attr('src');
         if (P2 == "") {
             DyAlert("請設定活動圖片!", function () {
@@ -809,11 +847,6 @@
         }
         else {
             WhNoFlag = "N";
-        }
-
-        var T1 = ""
-        if (window.t1.getData() != "<p>&nbsp;</p>") {
-            T1 = window.t1.getData();
         }
 
         var DocNo = ""
@@ -840,10 +873,12 @@
             WhNoFlag: WhNoFlag,
             chkShopNo: chkShopNo,
             PS_NO: $('#txtPSNO_EDM').val(),
-            T1: T1,
+            T1: window.t1.getData(),
             T2: window.t2.getData(),
             DocNo: DocNo,
-            VMDocNo: VMDocNo
+            VMDocNo: VMDocNo,
+            V1: window.v1.getData(),
+            V2: window.v2.getData()
         }
         PostToWebApi({ url: "api/SystemSetup/MSDM104_Save_EDM", data: pData, success: afterMSDM104_Save_EDM });
     };
@@ -1052,6 +1087,34 @@
         $('#modal_ShowEDM').modal('hide');
     };
 
+    //會員專區預覽
+    let btVShow_EDM_click = function (bt) {
+        MSDM104VShow();
+    };
+
+    let MSDM104VShow = function () {
+        var pData = {
+        }
+        PostToWebApi({ url: "api/SystemSetup/GetCompanyShowEDM", data: pData, success: afterMSDM104VShow });
+    };
+
+    let afterMSDM104VShow = function (data) {
+        if (ReturnMsg(data, 0) != "GetCompanyShowEDMOK") {
+            DyAlert(ReturnMsg(data, 1));
+        }
+        else {
+            var dtE = data.getElementsByTagName('dtE');
+            var hostname = location.hostname;
+            //測試環境
+            if (hostname.indexOf("94") >= 0 || hostname.indexOf("localhost") >= 0) {
+                window.open("http://192.168.1.94/SHOWCOUPONWEB/SHOWCOUPONWEB?company=" + GetNodeValue(dtE[0], "CompanyID") + ";" + $('#lblDocNo_EDM').html() + "");
+            }
+            //正式環境
+            else {
+                window.open("https://www.portal.e-dynasty.com.tw/SHOWCOUPONWEB/SHOWCOUPONWEB?company=" + GetNodeValue(dtE[0], "CompanyID") + ";" + $('#lblDocNo_EDM').html() + "");
+            }
+        }
+    };
 
     //EDM離開
     let btExit_EDM_click = function (bt) {
@@ -1589,6 +1652,7 @@
             $('#btApp_EDM').click(function () { btApp_EDM_click(this) });
             $('#btDef_EDM').click(function () { btDef_EDM_click(this) });
             $('#btShow_EDM').click(function () { btShow_EDM_click(this) });
+            $('#btVShow_EDM').click(function () { btVShow_EDM_click(this) });
             $('#btExit_EDM').click(function () { btExit_EDM_click(this) });
             $('#chkAllShopNo_EDM').change(function () { GetAllShop(); });
             $('#btShopNo_EDM').click(function () { btShopNo_EDM_click(this) });
@@ -1712,9 +1776,109 @@
                 })
                 .catch(handleSampleError);
 
+            ClassicEditor
+                .create(document.querySelector('#txtV1_EDM'), {
+                    toolbar: {
+                        items: [
+                            'Undo',                     //上一步
+                            'Redo',                     //下一步
+                            'bold',                     //粗體
+                            'Italic',                   //斜體
+                            'Underline',                //底線
+                            'Strikethrough',            //刪除線
+                            'fontColor',                //文字顏色
+                            'fontSize',                 //文字大小
+                            'FontBackgroundColor',      //文字背景顏色
+                            'fontFamily',                //文字字型
+                            'Indent',                    //增加縮排
+                            'Outdent',                   //減少縮排
+                            'alignment'             //置左、置中、置右
+                        ]
+                    },
+                    placeholder: '請在這裡填寫會員專區-優惠券主題!',                    //文字編輯器顯示的預設文字
+                    removePlugins: ['Title'],                                           //移除文字編輯器的標題
+                    fontSize: {
+                        options: [10, 12, 14, 'default', 18, 20, 22, 26, 28, 30, 32, 34],    //設定文字大小的格式
+                        supportAllValues: true                                          //支援其他地方複製的文字大小至文字編輯器
+                    },
+                    fontFamily: {
+                        options: [
+                            'default',
+                            'Arial, Helvetica, sans-serif',
+                            'Courier New, Courier, monospace',
+                            'Georgia, serif',
+                            'Lucida Sans Unicode, Lucida Grande, sans-serif',
+                            'Tahoma, Geneva, sans-serif',
+                            'Times New Roman, Times, serif',
+                            'Trebuchet MS, Helvetica, sans-serif',
+                            'Verdana, Geneva, sans-serif'                               //設定文字字型的格式
+                        ],
+                        supportAllValues: true                                          //支援其他地方複製的文字字型至文字編輯器
+                    },
+                    resize: 50,
+                    alignment: {
+                        options: ['left', 'center', 'right'],
+                        supportAllValues: true
+                    }
+                })
+                .then(v1 => {
+                    window.v1 = v1;                                                     //使用window.v1.getData()取得文字編輯html內容
+                })
+                .catch(handleSampleError);
+
+            ClassicEditor
+                .create(document.querySelector('#txtV2_EDM'), {
+                    toolbar: {
+                        items: [
+                            'Undo',                     //上一步
+                            'Redo',                     //下一步
+                            'bold',                     //粗體
+                            'Italic',                   //斜體
+                            'Underline',                //底線
+                            'Strikethrough',            //刪除線
+                            'fontColor',                //文字顏色
+                            'fontSize',                 //文字大小
+                            'FontBackgroundColor',      //文字背景顏色
+                            'fontFamily',                //文字字型
+                            'Indent',                    //增加縮排
+                            'Outdent',                   //減少縮排
+                            'alignment'             //置左、置中、置右
+                        ]
+                    },
+                    placeholder: '請在這裡填寫會員專區-優惠券注意事項!',                    //文字編輯器顯示的預設文字
+                    removePlugins: ['Title'],                                           //移除文字編輯器的標題
+                    fontSize: {
+                        options: [10, 12, 14, 'default', 18, 20, 22, 26, 28, 30, 32, 34],    //設定文字大小的格式
+                        supportAllValues: true                                          //支援其他地方複製的文字大小至文字編輯器
+                    },
+                    fontFamily: {
+                        options: [
+                            'default',
+                            'Arial, Helvetica, sans-serif',
+                            'Courier New, Courier, monospace',
+                            'Georgia, serif',
+                            'Lucida Sans Unicode, Lucida Grande, sans-serif',
+                            'Tahoma, Geneva, sans-serif',
+                            'Times New Roman, Times, serif',
+                            'Trebuchet MS, Helvetica, sans-serif',
+                            'Verdana, Geneva, sans-serif'                               //設定文字字型的格式
+                        ],
+                        supportAllValues: true                                          //支援其他地方複製的文字字型至文字編輯器
+                    },
+                    resize: 50,
+                    alignment: {
+                        options: ['left', 'center', 'right'],
+                        supportAllValues: true
+                    }
+                })
+                .then(v2 => {
+                    window.v2 = v2;                                                     //使用window.v2.getData()取得文字編輯html內容
+                })
+                .catch(handleSampleError);
+
             //window.t1.enableReadOnlyMode('t1');          停用
             //window.t1.disableReadOnlyMode('t1');         啟用
-                    }
+        }
     };
 
     let handleSampleError = function (error) {

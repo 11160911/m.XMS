@@ -520,6 +520,7 @@
                                     <button class="DyForm3-BtnSave" id="btSave_EDM" type="button" style="margin-left:6px">儲存</button>
                                     <button class="DyForm3-BtnCancel" id="btCancel_EDM" type="button" style="margin-left: 6px">取消</button>
                                     <button class="DyForm3-BtnShow" id="btShow_EDM" type="button" style="margin-left: 6px">預覽</button>
+                                    <button class="DyForm3-BtnVShow" id="btVShow_EDM" type="button" style="margin-left: 6px">會員專區預覽</button>
                                     <button class="DyForm3-BtnApp" id="btApp_EDM" type="button" style="margin-left: 6px">批核</button>
                                     <button class="DyForm3-BtnDef" id="btDef_EDM" type="button" style="margin-left: 6px">作廢</button>
                                     <button class="DyForm3-BtnExit" id="btExit_EDM" type="button" style="margin-left: 6px">離開</button>
@@ -582,17 +583,49 @@
                                         <label class="DyForm3-Label" id="lblPSName_EDM" style=" margin-left: 10px; margin-top: 3px"></label>
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 5px; margin-top: 5px; width: 100%">
-                                        <!--460x154-->
-                                        <div id="btP1_EDM" style="width: 530px; height: 165px; border: 2px solid #000;">
-                                            <img id="P1_EDM">
+                                    <div class="form-group row" style="margin: auto; justify-content: flex-start; width: 100% ">
+                                        <div style="width:50%">
+                                            <!--460x154-->
+                                            <div id="btP1_EDM" style="width: 530px; height: 165px; border: 2px solid #000;">
+                                                <img id="P1_EDM">
+                                            </div>
+                                            <!--<label id="lblCompanyLogo" class="DyForm3-Label"></label>-->
                                         </div>
-                                        <!--<label id="lblCompanyLogo" class="DyForm3-Label"></label>-->
+                                        <div style="width: 50%">
+                                            <div class="form-group row" style="width: 100%; justify-content: center; margin-bottom: 0px">
+                                                <label class="DyForm3-LabelRed" style="">會員專區設定 : 有小計折價單號時，必須設定</label>
+                                            </div>
+                                            <div class="form-group row" style="width: 100%; justify-content: center; margin-bottom: 0px">
+                                                <label class="DyForm3-LabelBlack" style="">會員專區-優惠券主題設定</label>
+                                            </div>
+                                            <div class="form-group row" style="width: 100%; justify-content: center; margin-bottom: 0px">
+                                                <textarea id="txtV1_EDM"></textarea>
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <div class="form-group row" style="margin-left: 5px; margin-top: 5px; width: 100%;">
-                                        <textarea id="txtT1_EDM"></textarea>
+
+                                    <div class="form-group row" style="margin: auto; justify-content: flex-start; width: 100%">
+                                        <div style="width:50%">
+                                            <textarea id="txtT1_EDM"></textarea>
+                                        </div>
+                                        <div style="width: 50%">
+                                            <div class="form-group row" style="width: 100%; justify-content: center; margin-bottom: 0px">
+                                                <label class="DyForm3-LabelBlack" style="">會員專區-優惠券注意事項</label>
+                                            </div>
+                                            <div class="form-group row" style="width: 100%; justify-content: center; margin-bottom: 0px">
+                                                <textarea id="txtV2_EDM"></textarea>
+                                            </div>
+                                        </div>
                                     </div>
+
+
+
+
+
+
+
+
 
                                     <div class="form-group row" style="margin-left: 5px; margin-top: 5px; width: 100%">
                                         <!--484x700-->

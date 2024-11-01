@@ -8111,6 +8111,8 @@ namespace SVMAdmin.Controllers
                 string T2 = rq["T2"];
                 string DocNo = rq["DocNo"];
                 string VMDocNo = rq["VMDocNo"];
+                string V1 = rq["V1"];
+                string V2 = rq["V2"];
                 string sql = "";
                 string sqlP2 = "";
 
@@ -8138,15 +8140,13 @@ namespace SVMAdmin.Controllers
                     sql += "From EDMSetWeb (nolock) Where Companycode='" + uu.CompanyId + "' and ProgramID='MSDM104';";
 
                     //SetEDMDWeb(T1)
-                    if (T1.SqlQuote() != "")
-                    {
-                        sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
-                        sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
+                    sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
+                    sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
 
-                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
-                        sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
-                        sql += "'" + DocNo + "','T1','','T','','" + T1.SqlQuote() + "','','';";
-                    }
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + DocNo + "','T1','','T','','" + T1.SqlQuote() + "','','';";
+
                     //SetEDMDWeb(P2)
                     sqlP2 = "Select * From SetEDM (nolock) Where Companycode='" + uu.CompanyId + "' and DocNo='" + VMDocNo + "' and DataType='P2' ";
                     DataTable dtP2 = PubUtility.SqlQry(sqlP2, uu, "SYS");
@@ -8163,12 +8163,30 @@ namespace SVMAdmin.Controllers
                         }
                         sql += "Delete From SetEDM Where Companycode='" + uu.CompanyId + "' and DocNo='" + VMDocNo + "' and DataType='P2'; ";
                     }
+                    
                     //SetEDMDWeb(T2)
                     sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
                     sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
+                    
                     sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
                     sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
                     sql += "'" + DocNo + "','T2','','T','','" + T2.SqlQuote() + "','',''; ";
+
+                    //SetEDMDWeb(V1)
+                    sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
+                    sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
+                    
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + DocNo + "','V1','','T','','" + V1.SqlQuote() + "','','';";
+
+                    //SetEDMDWeb(V2)
+                    sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
+                    sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
+                    
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + DocNo + "','V2','','T','','" + V2.SqlQuote() + "','','';";
 
                     //SetEDMDWeb(TE)
                     sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
@@ -8214,13 +8232,10 @@ namespace SVMAdmin.Controllers
                     sql += "Where a.Companycode='" + uu.CompanyId + "' and a.DocNo='" + DocNo.SqlQuote() + "' ";
                     sql += "and a.DataType='P1'; ";
                     //SetEDMDWeb(T1)
-                    if (T1.SqlQuote() != "")
-                    {
-                        sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
-                        sql += "TXT='" + T1.SqlQuote() + "' ";
-                        sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
-                        sql += "and DataType='T1'; ";
-                    }
+                    sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                    sql += "TXT='" + T1.SqlQuote() + "' ";
+                    sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
+                    sql += "and DataType='T1'; ";
 
                     //SetEDMDWeb(P2)
                     sqlP2 = "Select * From SetEDM (nolock) Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' and DataType='P2' ";
@@ -8249,6 +8264,18 @@ namespace SVMAdmin.Controllers
                     sql += "TXT='" + T2.SqlQuote() + "' ";
                     sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
                     sql += "and DataType='T2'; ";
+
+                    //SetEDMDWeb(V1)
+                    sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                    sql += "TXT='" + V1.SqlQuote() + "' ";
+                    sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
+                    sql += "and DataType='V1'; ";
+
+                    //SetEDMDWeb(V2)
+                    sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                    sql += "TXT='" + V2.SqlQuote() + "' ";
+                    sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
+                    sql += "and DataType='V2'; ";
 
                     //SetEDMDWeb(TE)
                     sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
@@ -9744,6 +9771,8 @@ namespace SVMAdmin.Controllers
                 string VIPType = rq["VIPType"];
                 string DocNo = rq["DocNo"];
                 string VMDocNo = rq["VMDocNo"];
+                string V1 = rq["V1"];
+                string V2 = rq["V2"];
                 string sql = "";
                 string sqlP2 = "";
 
@@ -9771,15 +9800,12 @@ namespace SVMAdmin.Controllers
                     sql += "From EDMSetWeb (nolock) Where Companycode='" + uu.CompanyId + "' and ProgramID='MSDM106'; ";
 
                     //SetEDMDWeb(T1)
-                    if (T1.SqlQuote() != "")
-                    {
-                        sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
-                        sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
+                    sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
+                    sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
 
-                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
-                        sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
-                        sql += "'" + DocNo + "','T1','','T','','" + T1.SqlQuote() + "','',''; ";
-                    }
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + DocNo + "','T1','','T','','" + T1.SqlQuote() + "','',''; ";
 
                     //SetEDMDWeb(P2)
                     sqlP2 = "Select * From SetEDM (nolock) Where Companycode='" + uu.CompanyId + "' and DocNo='" + VMDocNo + "' and DataType='P2' ";
@@ -9799,13 +9825,28 @@ namespace SVMAdmin.Controllers
                     }
 
                     //SetEDMDWeb(T2)
-                    if (T2.SqlQuote() != "") {
-                        sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
-                        sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
-                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
-                        sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
-                        sql += "'" + DocNo + "','T2','','T','','" + T2.SqlQuote() + "','',''; ";
-                    }
+                    sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
+                    sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
+
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + DocNo + "','T2','','T','','" + T2.SqlQuote() + "','',''; ";
+
+                    //SetEDMDWeb(V1)
+                    sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
+                    sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
+                    
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + DocNo + "','V1','','T','','" + V1.SqlQuote() + "','',''; ";
+
+                    //SetEDMDWeb(V2)
+                    sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
+                    sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
+                    
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + DocNo + "','V2','','T','','" + V2.SqlQuote() + "','',''; ";
 
                     //SetEDMDWeb(TE)
                     sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
@@ -9824,6 +9865,7 @@ namespace SVMAdmin.Controllers
                     sql += "EDMMemo='" + EDMMemo.SqlQuote() + "',BIR_Year='" + BIRYear.SqlQuote() + "',BIR_Month='" + BIRMonth.SqlQuote() + "', ";
                     sql += "PS_NO='" + PS_NO.SqlQuote() + "',VIP_Type='" + VIPType.SqlQuote() + "' ";
                     sql += "where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "'; ";
+                    
                     //SetEDMDWeb(P1)
                     sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
                     sql += "DocImage=b.Pic ";
@@ -9831,14 +9873,13 @@ namespace SVMAdmin.Controllers
                     sql += "inner join EDMSetWeb b (nolock) on a.Companycode=b.Companycode and b.Programid='MSDM106' ";
                     sql += "Where a.Companycode='" + uu.CompanyId + "' and a.DocNo='" + DocNo.SqlQuote() + "' ";
                     sql += "and a.DataType='P1'; ";
+                    
                     //SetEDMDWeb(T1)
-                    if (T1.SqlQuote() != "")
-                    {
-                        sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
-                        sql += "TXT='" + T1.SqlQuote() + "' ";
-                        sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
-                        sql += "and DataType='T1'; ";
-                    }
+                    sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                    sql += "TXT='" + T1.SqlQuote() + "' ";
+                    sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
+                    sql += "and DataType='T1'; ";
+                    
                     //SetEDMDWeb(P2)
                     sqlP2 = "Select * From SetEDM (nolock) Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' and DataType='P2' ";
                     DataTable dtP2 = PubUtility.SqlQry(sqlP2, uu, "SYS");
@@ -9862,12 +9903,22 @@ namespace SVMAdmin.Controllers
                     }
 
                     //SetEDMDWeb(T2)
-                    if (T2.SqlQuote() != "") {
-                        sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
-                        sql += "TXT='" + T2.SqlQuote() + "' ";
-                        sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
-                        sql += "and DataType='T2'; ";
-                    }
+                    sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                    sql += "TXT='" + T2.SqlQuote() + "' ";
+                    sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
+                    sql += "and DataType='T2'; ";
+
+                    //SetEDMDWeb(V1)
+                    sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                    sql += "TXT='" + V1.SqlQuote() + "' ";
+                    sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
+                    sql += "and DataType='V1'; ";
+
+                    //SetEDMDWeb(V2)
+                    sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                    sql += "TXT='" + V2.SqlQuote() + "' ";
+                    sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
+                    sql += "and DataType='V2'; ";
 
                     //SetEDMDWeb(TE)
                     sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
@@ -10214,6 +10265,8 @@ namespace SVMAdmin.Controllers
                 string T2 = rq["T2"];
                 string DocNo = rq["DocNo"];
                 string VMDocNo = rq["VMDocNo"];
+                string V1 = rq["V1"];
+                string V2 = rq["V2"];
                 string sql = "";
                 string sqlP2 = "";
 
@@ -10241,15 +10294,12 @@ namespace SVMAdmin.Controllers
                     sql += "From EDMSetWeb (nolock) Where Companycode='" + uu.CompanyId + "' and ProgramID='MSDM107'; ";
 
                     //SetEDMDWeb(T1)
-                    if (T1.SqlQuote() != "")
-                    {
-                        sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
-                        sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
+                    sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
+                    sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
 
-                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
-                        sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
-                        sql += "'" + DocNo + "','T1','','T','','" + T1.SqlQuote() + "','',''; ";
-                    }
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + DocNo + "','T1','','T','','" + T1.SqlQuote() + "','',''; ";
 
                     //SetEDMDWeb(P2)
                     sqlP2 = "Select * From SetEDM (nolock) Where Companycode='" + uu.CompanyId + "' and DocNo='" + VMDocNo + "' and DataType='P2' ";
@@ -10269,13 +10319,25 @@ namespace SVMAdmin.Controllers
                     }
 
                     //SetEDMDWeb(T2)
-                    if (T2.SqlQuote() != "") {
-                        sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
-                        sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
-                        sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
-                        sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
-                        sql += "'" + DocNo + "','T2','','T','','" + T2.SqlQuote() + "','',''; ";
-                    }
+                    sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
+                    sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + DocNo + "','T2','','T','','" + T2.SqlQuote() + "','',''; ";
+
+                    //SetEDMDWeb(V1)
+                    sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
+                    sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + DocNo + "','V1','','T','','" + V1.SqlQuote() + "','',''; ";
+
+                    //SetEDMDWeb(V2)
+                    sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
+                    sql += "DocNO,DataType,FileName,DocType,DocImage,TXT,URL,MEMO) ";
+                    sql += "Select '" + uu.CompanyId + "','" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + uu.UserID + "',convert(char(10),getdate(),111),right(convert(varchar, getdate(), 121),12), ";
+                    sql += "'" + DocNo + "','V2','','T','','" + V2.SqlQuote() + "','',''; ";
 
                     //SetEDMDWeb(TE)
                     sql += "Insert into SetEDMDWeb (CompanyCode,CrtUser,CrtDate,CrtTime,ModUser,ModDate,ModTime, ";
@@ -10295,6 +10357,7 @@ namespace SVMAdmin.Controllers
                     sql += "EDMMemo='" + EDMMemo.SqlQuote() + "',StartDate='" + StartDate.SqlQuote() + "',EndDate='" + EndDate.SqlQuote() + "', ";
                     sql += "PS_NO='" + PS_NO.SqlQuote() + "' ";
                     sql += "where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "'; ";
+
                     //SetEDMDWeb(P1)
                     sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
                     sql += "DocImage=b.Pic ";
@@ -10302,14 +10365,13 @@ namespace SVMAdmin.Controllers
                     sql += "inner join EDMSetWeb b (nolock) on a.Companycode=b.Companycode and b.Programid='MSDM107' ";
                     sql += "Where a.Companycode='" + uu.CompanyId + "' and a.DocNo='" + DocNo.SqlQuote() + "' ";
                     sql += "and a.DataType='P1'; ";
+
                     //SetEDMDWeb(T1)
-                    if (T1.SqlQuote() != "")
-                    {
-                        sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
-                        sql += "TXT='" + T1.SqlQuote() + "' ";
-                        sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
-                        sql += "and DataType='T1'; ";
-                    }
+                    sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                    sql += "TXT='" + T1.SqlQuote() + "' ";
+                    sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
+                    sql += "and DataType='T1'; ";
+
                     //SetEDMDWeb(P2)
                     sqlP2 = "Select * From SetEDM (nolock) Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' and DataType='P2' ";
                     DataTable dtP2 = PubUtility.SqlQry(sqlP2, uu, "SYS");
@@ -10331,13 +10393,25 @@ namespace SVMAdmin.Controllers
                         }
                         sql += "Delete From SetEDM Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' and DataType='P2'; ";
                     }
+
                     //SetEDMDWeb(T2)
-                    if (T2.SqlQuote() != "") {
-                        sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
-                        sql += "TXT='" + T2.SqlQuote() + "' ";
-                        sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
-                        sql += "and DataType='T2'; ";
-                    }
+                    sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                    sql += "TXT='" + T2.SqlQuote() + "' ";
+                    sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
+                    sql += "and DataType='T2'; ";
+
+                    //SetEDMDWeb(V1)
+                    sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                    sql += "TXT='" + V1.SqlQuote() + "' ";
+                    sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
+                    sql += "and DataType='V1'; ";
+
+                    //SetEDMDWeb(V2)
+                    sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
+                    sql += "TXT='" + V2.SqlQuote() + "' ";
+                    sql += "Where Companycode='" + uu.CompanyId + "' and DocNo='" + DocNo.SqlQuote() + "' ";
+                    sql += "and DataType='V2'; ";
+
                     //SetEDMDWeb(TE)
                     sql += "Update SetEDMDWeb set ModDate=convert(char(10),getdate(),111),ModTime=right(convert(varchar, getdate(), 121),12),ModUser='" + uu.UserID + "', ";
                     sql += "TXT=b.TE ";
