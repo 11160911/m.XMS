@@ -154,6 +154,12 @@ border: 1px solid gray;
     color: red;
     font-weight: bold;
 }
+/*藍色Label*/
+.DyForm3-LabelBlue {
+    font-size: 16px;
+    color: blue;
+    font-weight: bold;
+}
 /*指定店倉*/
 .DyForm3-BtnShop {
     box-shadow: inset 0px 1px 0px 0px #ffffff;

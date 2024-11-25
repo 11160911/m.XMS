@@ -342,6 +342,8 @@
             //本月
             $('#lblC1').html(GetNodeValue(dtC[0], 'C1'))
             $('#lblC2').html(parseFloat(GetNodeValue(dtC[0], 'C2')).toLocaleString('en-US'))
+            $('#lblC3').html(parseFloat(GetNodeValue(dtC[0], 'C3')).toLocaleString('en-US'))
+            $('#lblC4').html(GetNodeValue(dtC[0], 'C4'))
             //本年度
             $('#lblD1').html(GetNodeValue(dtD[0], 'D1'))
             $('#lblD2').html(parseFloat(GetNodeValue(dtD[0], 'D2')).toLocaleString('en-US'))

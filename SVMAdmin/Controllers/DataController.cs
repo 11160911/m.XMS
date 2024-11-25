@@ -491,15 +491,23 @@ namespace SVMAdmin.Controllers
                     dtB.TableName = "dtB";
                     ds.Tables.Add(dtB);
 
-                    sql = "Select left(OpenDate,7) C1,sum(cash) C2 ";
-                    sql += "From SalesHWeb (nolock) ";
-                    sql += "Where Companycode='" + uu.CompanyId + "' ";
-                    sql += "and left(OpenDate,7)=convert(char(7),getdate(),111) ";
-                    sql += "group by left(OpenDate,7) ";
+
+                    sql = "Select a.C1,isnull(a.C2,0)C2,isnull(b.C3,0)C3, ";
+                    sql += "case when isnull(b.C3,0)=0 then format(0,'p') else format(cast(isnull(a.C2,0)-isnull(b.C3,0) as float)/cast(isnull(b.C3,0) as float),'p') end C4 ";
+                    sql += "From ";
+                    sql += "( ";
+                    sql += "Select Companycode,left(OpenDate,7)C1,sum(cash)C2 From SalesHWeb (nolock) Where Companycode='" + uu.CompanyId + "' ";
+                    sql += "and left(OpenDate,7)=convert(char(7),getdate(),111) group by Companycode,left(OpenDate,7) ";
+                    sql += ")a ";
+                    sql += "left join ";
+                    sql += "( ";
+                    sql += "Select Companycode,sum(cash)C3 From SalesHWeb (nolock) Where Companycode='" + uu.CompanyId + "' ";
+                    sql += "and left(OpenDate,7)=convert(char(7),dateadd(MM,-1,getdate()),111) group by Companycode ";
+                    sql += ")b on a.Companycode=b.Companycode ";
                     DataTable dtC = PubUtility.SqlQry(sql, uu, "SYS");
                     if (dtC.Rows.Count == 0)
                     {
-                        sql = "Select convert(char(7),getdate(),111) C1,0 C2 ";
+                        sql = "Select convert(char(7),getdate(),111) C1,0 C2,0 C3,format(0,'p') C4 ";
                         dtC = PubUtility.SqlQry(sql, uu, "SYS");
                     }
                     dtC.TableName = "dtC";
