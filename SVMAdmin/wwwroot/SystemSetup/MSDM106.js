@@ -1280,7 +1280,7 @@
             })
             return;
         }
-        var EDate = $('#cboBIRYear_EDM').val() + "/" + $('#cboBIRMonth_EDM').val() + "/" + "31";
+        var EDate = $('#cboBIRYear_EDM').val() + "-" + $('#cboBIRMonth_EDM').val() + "-" + "01";
         var pData = {
             EndDate: EDate,
             PS_NO: $('#txtPSNO_EDM').val()

@@ -10234,14 +10234,13 @@ namespace SVMAdmin.Controllers
                 sql += "and a.CouponType in('1','2') ";
                 if (EndDate.SqlQuote() != "")
                 {
-                    sql += "and isnull(a.EndDate,'')>='" + EndDate.SqlQuote() + "' ";
+                    sql += "and isnull(a.EndDate,'')>=Eomonth('" + EndDate.SqlQuote() + "') ";
                 }
                 if (PS_NO.SqlQuote() != "")
                 {
                     sql += "and a.PS_NO like '" + PS_NO.SqlQuote() + "%' ";
                 }
                 sql += "order by a.StartDate,a.PS_NO ";
-
 
                 DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
                 dtE.TableName = "dtE";
