@@ -10096,6 +10096,44 @@ namespace SVMAdmin.Controllers
             return PubUtility.DatasetXML(ds);
         }
 
+        [Route("SystemSetup/MSDM106_LookUpPSNO_EDM")]
+        public ActionResult SystemSetup_MSDM106_LookUpPSNO_EDM()
+        {
+            UserInfo uu = PubUtility.GetCurrentUser(this);
+            System.Data.DataSet ds = PubUtility.GetApiReturn(new string[] { "MSDM106_LookUpPSNO_EDMOK", "" });
+            DataTable dtMessage = ds.Tables["dtMessage"];
+            try
+            {
+                IFormCollection rq = HttpContext.Request.Form;
+                string EndDate = rq["EndDate"];
+                string PS_NO = rq["PS_NO"];
+                string sql = "";
+                sql = "Select a.PS_NO,a.PS_Name,a.ActivityCode,a.StartDate,a.EndDate ";
+                sql += "From PromoteSCouponHWeb a (nolock) ";
+                sql += "Where a.Companycode='" + uu.CompanyId + "' ";
+                sql += "and isnull(a.ApproveDate,'')<>'' and isnull(a.DefeasanceDate,'')='' ";
+                sql += "and a.CouponType in('1','2') ";
+                if (EndDate.SqlQuote() != "")
+                {
+                    sql += "and isnull(a.EndDate,'')>=Eomonth('" + EndDate.SqlQuote() + "') ";
+                }
+                if (PS_NO.SqlQuote() != "")
+                {
+                    sql += "and a.PS_NO like '" + PS_NO.SqlQuote() + "%' ";
+                }
+                sql += "order by a.StartDate,a.PS_NO ";
+
+                DataTable dtE = PubUtility.SqlQry(sql, uu, "SYS");
+                dtE.TableName = "dtE";
+                ds.Tables.Add(dtE);
+            }
+            catch (Exception err)
+            {
+                dtMessage.Rows[0][0] = err.Message;
+                dtMessage.Rows[0][1] = err.Message;
+            }
+            return PubUtility.DatasetXML(ds);
+        }
         #endregion 
 
         [Route("SystemSetup/MSDMLookUpActivityCode")]
@@ -10234,7 +10272,7 @@ namespace SVMAdmin.Controllers
                 sql += "and a.CouponType in('1','2') ";
                 if (EndDate.SqlQuote() != "")
                 {
-                    sql += "and isnull(a.EndDate,'')>=Eomonth('" + EndDate.SqlQuote() + "') ";
+                    sql += "and isnull(a.EndDate,'')>='" + EndDate.SqlQuote() + "' ";
                 }
                 if (PS_NO.SqlQuote() != "")
                 {

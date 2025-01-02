@@ -1285,11 +1285,11 @@
             EndDate: EDate,
             PS_NO: $('#txtPSNO_EDM').val()
         }
-        PostToWebApi({ url: "api/SystemSetup/MSDM107_LookUpPSNO_EDM", data: pData, success: afterMSDM107_LookUpPSNO_EDM });
+        PostToWebApi({ url: "api/SystemSetup/MSDM106_LookUpPSNO_EDM", data: pData, success: afterMSDM106_LookUpPSNO_EDM });
     };
 
-    let afterMSDM107_LookUpPSNO_EDM = function (data) {
-        if (ReturnMsg(data, 0) != "MSDM107_LookUpPSNO_EDMOK") {
+    let afterMSDM106_LookUpPSNO_EDM = function (data) {
+        if (ReturnMsg(data, 0) != "MSDM106_LookUpPSNO_EDMOK") {
             DyAlert(ReturnMsg(data, 1));
         }
         else {
@@ -1316,11 +1316,11 @@
             EndDate: EDate,
             PS_NO: $('#txtQLookup_PSNO_EDM').val()
         }
-        PostToWebApi({ url: "api/SystemSetup/MSDM107_LookUpPSNO_EDM", data: pData, success: afterQMSDM107_LookUpPSNO_EDM });
+        PostToWebApi({ url: "api/SystemSetup/MSDM106_LookUpPSNO_EDM", data: pData, success: afterQMSDM106_LookUpPSNO_EDM });
     };
 
-    let afterQMSDM107_LookUpPSNO_EDM = function (data) {
-        if (ReturnMsg(data, 0) != "MSDM107_LookUpPSNO_EDMOK") {
+    let afterQMSDM106_LookUpPSNO_EDM = function (data) {
+        if (ReturnMsg(data, 0) != "MSDM106_LookUpPSNO_EDMOK") {
             //$('#modal_Lookup_PSNO_EDM').modal('hide');
             DyAlert(ReturnMsg(data, 1), function () {
                 $('#btQLookup_PSNO_EDM').prop('disabled', false);
