@@ -161,9 +161,7 @@
     let QueryPSNO = function (PS_NO) {
         //$('#tbShopNo_PSNO thead tr th').css('background-color', '#ffb620')
         //$('#tbDate_PSNO thead tr th').css('background-color', '#ffb620')
-        ShowLoading();
         var Flag = "";
-
         if ($('#rdoShop_PSNO').prop('checked') == true) {
             Flag = "S";
             $('#tbShopNo_PSNO').show();
@@ -181,10 +179,8 @@
                 $('#tbDate_PSNO').show();
             }
         }
-
         var OpenDate1 = $('#lblEDDate_PSNO').html().split('~')[0]
         var OpenDate2 = $('#lblEDDate_PSNO').html().split('~')[1]
-
         var pData = {
             PS_NO: PS_NO,
             OpenDate1: OpenDate1,
@@ -271,6 +267,7 @@
             $('#lblType_PSNO_ShopNoDate').html('店&ensp;&ensp;&ensp;&ensp;別')
             $('#lblTypeID_PSNO_ShopNoDate').html(GetNodeValue(node, 'ID'))
             $('#modal_PSNO_ShopNoDate').modal('show');
+            ShowLoading();
             setTimeout(function () {
                 QueryPSNO_ShopNoDate($('#lblPSNO_PSNO_ShopNoDate').html(), GetNodeValue(node, 'ID').split('-')[0]);
             }, 500);
@@ -284,6 +281,7 @@
             $('#lblType_PSNO_ShopNoDate').html('銷售日期')
             $('#lblTypeID_PSNO_ShopNoDate').html(GetNodeValue(node, 'ID'))
             $('#modal_PSNO_ShopNoDate').modal('show');
+            ShowLoading();
             setTimeout(function () {
                 QueryPSNO_ShopNoDate($('#lblPSNO_PSNO_ShopNoDate').html(), GetNodeValue(node, 'ID'));
             }, 500);
@@ -292,19 +290,15 @@
 
     let QueryPSNO_ShopNoDate = function (PS_NO, ID) {
         //$('#tbShopNo_PSNO_ShopNoDate thead tr th').css('background-color', '#ffb620')
-        ShowLoading();
         var Flag = "";
-
         if ($('#rdoShop_PSNO').prop('checked') == true) {
             Flag = "S";
         }
         else if ($('#rdoDate_PSNO').prop('checked') == true) {
             Flag = "D";
         }
-
         var OpenDate1 = $('#lblEDDate_PSNO_ShopNoDate').html().split('~')[0]
         var OpenDate2 = $('#lblEDDate_PSNO_ShopNoDate').html().split('~')[1]
-
         var pData = {
             PS_NO: PS_NO,
             ID: ID,
@@ -525,7 +519,12 @@
             $('#btLpClear_ActivityCode').click(function () { btLpClear_ActivityCode_click(this) });
 
             $('#btRe_PSNO').click(function () { btRe_PSNO_click(this) });
-            $('#rdoShop_PSNO,#rdoDate_PSNO').change(function () { QueryPSNO($('#lblPSNO_PSNO').html()) });
+            $('#rdoShop_PSNO,#rdoDate_PSNO').change(function () {
+                ShowLoading();
+                setTimeout(function () {
+                    QueryPSNO($('#lblPSNO_PSNO').html())
+                }, 500);
+            });
 
             $('#btRe_PSNO_ShopNoDate').click(function () { btRe_PSNO_ShopNoDate_click(this) });
             btQuery_click();
