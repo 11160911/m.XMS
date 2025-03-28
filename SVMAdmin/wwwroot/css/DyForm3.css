@@ -1,12 +1,12 @@
-﻿body {
+﻿/*網頁取消反白*/
+/*body {
     -webkit-user-select: none;
     -webkit-touch-callout: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
     background-color: white;
-}
-
+}*/
 /*程式名稱*/
 .DyForm3-ProgramName {
     margin-top: 5px;
